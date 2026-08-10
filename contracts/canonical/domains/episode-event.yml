@@ -1,0 +1,73 @@
+# Bounded longitudinal evidence for one discharge episode.
+specification_kind: canonical_domain
+specification_id: platform.canonical-episode-event
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Canonical episode event domain
+status: active
+description: >-
+  A small controlled event record whose occurrence and availability times are
+  distinct and whose occurrence belongs to one episode observation interval.
+
+domain_id: episode_event
+additional_fields_policy: reject
+primary_key:
+  - event_id
+
+fields:
+  event_id:
+    type: identifier
+    required: true
+    nullable: false
+  episode_id:
+    type: string
+    required: true
+    nullable: false
+  event_type:
+    type: string
+    required: true
+    nullable: false
+    vocabulary_specification:
+      specification_kind: canonical_vocabulary
+      specification_id: platform.episode-event-types
+      specification_version: "0.1.0"
+  event_time:
+    type: timestamp
+    required: true
+    nullable: false
+  available_at:
+    type: timestamp
+    required: true
+    nullable: false
+  source_reference_id:
+    type: string
+    required: false
+    nullable: true
+
+relationships:
+  - relationship_id: event_episode
+    fields:
+      - episode_id
+    references_domain: discharge_episode
+    references_fields:
+      - episode_id
+
+temporal_roles:
+  occurrence_field: event_time
+  availability_field: available_at
+  availability_order: not_before_occurrence
+
+temporal_rules:
+  - rule_id: occurrence_within_episode_window
+    field: event_time
+    no_earlier_than_parent_field: discharge_time
+    no_later_than_parent_field: followup_window_end
+  - rule_id: availability_not_before_occurrence
+    earlier_field: event_time
+    later_field: available_at
+    allow_equal: true
+  - rule_id: availability_not_after_bundle_as_of
+    field: available_at
+    no_later_than_bundle_field: as_of_time
+

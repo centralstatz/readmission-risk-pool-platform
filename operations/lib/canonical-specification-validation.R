@@ -1,4 +1,4 @@
-# Validation of maintained Phase 2.1 canonical specification assets.
+# Validation of maintained Phase 2 canonical specification assets.
 
 rrp_validate_canonical_bundle_specification <- function(
   document,
@@ -193,6 +193,22 @@ rrp_validate_canonical_specification_repository <- function(repository_root) {
       )) {
         results[[length(results) + 1L]] <-
           rrp_validate_canonical_example_document(document, relative)
+      } else if (identical(document$specification_kind, "canonical_domain")) {
+        results[[length(results) + 1L]] <-
+          rrp_validate_clinical_domain_specification(document, relative)
+      } else if (identical(document$specification_kind, "canonical_vocabulary")) {
+        results[[length(results) + 1L]] <-
+          rrp_validate_clinical_vocabulary_specification(document, relative)
+      } else if (identical(document$specification_kind, "canonical_profile")) {
+        results[[length(results) + 1L]] <-
+          rrp_validate_clinical_profile_specification(document, relative)
+      } else if (identical(
+        document$specification_kind, "canonical_clinical_fixture"
+      )) {
+        results[[length(results) + 1L]] <-
+          rrp_validate_clinical_fixture_document(
+            document, repository_root, relative
+          )
       } else {
         issue <- rrp_canonical_issue(
           "canonical.specification.kind",
@@ -246,7 +262,7 @@ rrp_validate_canonical_specification_repository <- function(repository_root) {
   )
 
   rrp_validation_result(
-    "Canonical bundle foundation validation",
+    "Canonical specification validation",
     rrp_bind_rows(checks, rrp_empty_checks),
     rrp_bind_rows(issues, rrp_empty_issues)
   )
@@ -265,10 +281,20 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
     "contracts/canonical/examples/failed-capability-claim.yml",
     "contracts/canonical/examples/dependency-failure.yml",
     "contracts/canonical/examples/temporal-availability-failure.yml",
+    "contracts/canonical/examples/readmission-initial-profile-valid.yml",
+    "contracts/canonical/domains/discharge-episode.yml",
+    "contracts/canonical/domains/baseline-risk.yml",
+    "contracts/canonical/domains/episode-event.yml",
+    "contracts/canonical/vocabularies/baseline-value-types.yml",
+    "contracts/canonical/vocabularies/episode-event-types.yml",
+    "contracts/canonical/profiles/readmission-initial-profile.yml",
     "docs/architecture/canonical-bundle-foundation.md",
+    "docs/architecture/canonical-clinical-profile.md",
     "operations/lib/canonical-bundle-validation.R",
+    "operations/lib/canonical-clinical-validation.R",
     "operations/lib/canonical-specification-validation.R",
     "tests/phase2/test-canonical-bundle-foundation.R",
+    "tests/phase2/test-canonical-clinical-profile.R",
     "tests/run-phase2-tests.R"
   )
   missing <- required_files[!file.exists(file.path(repository_root, required_files))]
@@ -276,14 +302,14 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase2_required_files",
       "missing_phase2_file",
-      "Required Phase 2.1 foundation file is missing.",
+      "Required Phase 2 canonical boundary file is missing.",
       file
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase2_required_files",
     length(missing) == 0L,
-    paste(length(required_files), "required Phase 2.1 files")
+    paste(length(required_files), "required Phase 2 files")
   )
 
   actual_canonical_files <- vapply(
@@ -312,14 +338,14 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase2_scope",
       "premature_phase2_content",
-      "Clinical-domain or later-phase implementation content is premature.",
+      "Unapproved canonical or later-phase implementation content is present.",
       path
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase2_scope",
     length(unexpected) + length(premature) == 0L,
-    "only approved generic canonical assets; no clinical or later-phase scaffold"
+    "only approved Phase 2 canonical assets; no later-phase scaffold"
   )
 
   record_path <- file.path(
@@ -331,24 +357,24 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
     ""
   }
   record_heading <-
-    "### Iteration 2.1 — Canonical capability and bundle identity foundation"
+    "### Iteration 2.2 — First readmission-specific canonical domain contracts"
   recorded <- grepl(record_heading, record_text, fixed = TRUE)
   if (!recorded) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase2_implementation_record",
       "missing_phase2_implementation_record",
-      "Implementation record must contain the completed Iteration 2.1 entry.",
+      "Implementation record must contain the completed Iteration 2.2 entry.",
       "docs/architecture/platform-implementation-record.md"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase2_implementation_record",
     recorded,
-    "Iteration 2.1 implementation evidence is recorded"
+    "Iteration 2.2 implementation evidence is recorded"
   )
 
   rrp_validation_result(
-    "Phase 2.1 checkpoint validation",
+    "Phase 2 checkpoint validation",
     rrp_bind_rows(checks, rrp_empty_checks),
     rrp_bind_rows(issues, rrp_empty_issues)
   )

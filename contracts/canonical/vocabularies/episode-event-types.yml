@@ -1,0 +1,24 @@
+specification_kind: canonical_vocabulary
+specification_id: platform.episode-event-types
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Initial episode event types
+status: active
+description: >-
+  Deliberately small initial vocabulary for meaningful post-discharge evidence;
+  it is not an enumeration of every future healthcare event.
+
+values:
+  care_transition_contact: A patient or caregiver transition contact occurred.
+  followup_visit: A post-discharge ambulatory follow-up visit occurred.
+  emergency_department_visit: An emergency-department visit occurred.
+  medication_issue: A post-discharge medication access or reconciliation issue was recorded.
+  hospital_readmission: A hospital readmission was recorded as longitudinal evidence.
+  death_notification: Death information was recorded as longitudinal evidence.
+
+extension_policy: >-
+  Platform values require definition, a specification minor version, mapping
+  evidence, and conformance updates. Arbitrary or implementation-namespaced
+  event types are not admitted by version 0.1.0.
+

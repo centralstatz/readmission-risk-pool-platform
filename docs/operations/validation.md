@@ -6,13 +6,13 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the currently declared
-  Phase 2.1 canonical-bundle foundation milestone requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase 2
+  canonical implementation-boundary requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
-foundation, Phase 1 specification foundation, and Phase 2.1 generic canonical
-handoff; later
+foundation, Phase 1 specification foundation, and Phase 2 generic and clinical
+canonical handoff; later
 phases will add stricter component-specific claims only when those components
 exist.
 
@@ -41,7 +41,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the current Phase 2.1 foundation checkpoint:
+Validate the completed Phase 2 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -91,7 +91,8 @@ Development mode composes:
 - portable paths in executable and configuration content;
 - obvious secret filenames and common token/private-key patterns;
 - visible fictional classification for patient-like committed fixtures; and
-- specification-envelope, foundation-example, and canonical-bundle example
+- specification-envelope, foundation-example, generic canonical-bundle,
+  clinical domain/profile/vocabulary, and fictional clinical fixture
   conformance; and
 - all Phase 0, Phase 1, and Phase 2 temporary-fixture tests.
 
@@ -102,19 +103,19 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0, Phase 1, and Phase 2.1 metadata, policy, operation,
+- required Phase 0, Phase 1, and Phase 2 metadata, policy, operation,
   specification, and test files;
-- absence of readmission-specific clinical-domain schemas and later-phase
-  implementation scaffolding;
+- presence of the approved three-domain clinical profile and absence of
+  synthetic/runtime or later-phase implementation scaffolding;
 - an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–2.1 foundation contracts. It does
+This is strict only relative to the Phase 0–2 canonical contracts. It does
 not prove:
 
 - public release or license readiness;
-- readmission-specific canonical clinical-domain or producer conformance;
+- producer/source-mapping conformance;
 - runtime, provider, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
@@ -151,6 +152,10 @@ observability, provenance, metrics, or audit system.
   requirement/status declarations, dependency references, or temporal
   availability. Expected-failure examples must retain their declared issue
   codes.
+- **Canonical clinical conformance:** Correct field types, keys, source-model
+  identity, controlled values, child episode references, episode/terminal
+  windows, or capability/payload contradictions. Optional available domains
+  may use zero records; unavailable/unsupported domains may not claim data.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

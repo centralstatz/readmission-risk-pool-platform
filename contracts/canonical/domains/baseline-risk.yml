@@ -1,0 +1,102 @@
+# Immutable source-provided discharge baseline; not a platform provider result.
+specification_kind: canonical_domain
+specification_id: platform.canonical-baseline-risk
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Canonical baseline risk domain
+status: active
+description: >-
+  Source-provided baseline score meaning preserved without calibration,
+  normalization, or transformation by the canonical boundary.
+
+domain_id: baseline_risk
+additional_fields_policy: reject
+primary_key:
+  - episode_id
+  - source_model_id
+  - source_model_version
+  - score_time
+
+fields:
+  episode_id:
+    type: string
+    required: true
+    nullable: false
+  source_model_id:
+    type: identifier
+    required: true
+    nullable: false
+  source_model_version:
+    type: version
+    required: true
+    nullable: false
+  score_time:
+    type: timestamp
+    required: true
+    nullable: false
+  available_at:
+    type: timestamp
+    required: true
+    nullable: false
+  value_type:
+    type: string
+    required: true
+    nullable: false
+    vocabulary_specification:
+      specification_kind: canonical_vocabulary
+      specification_id: platform.baseline-value-types
+      specification_version: "0.1.0"
+  probability:
+    type: number
+    required: false
+    nullable: true
+    minimum: 0
+    maximum: 1
+  numeric_score:
+    type: number
+    required: false
+    nullable: true
+  category:
+    type: string
+    required: false
+    nullable: true
+  source_reference_id:
+    type: string
+    required: false
+    nullable: true
+
+relationships:
+  - relationship_id: baseline_episode
+    fields:
+      - episode_id
+    references_domain: discharge_episode
+    references_fields:
+      - episode_id
+
+conditional_rules:
+  - rule_id: exactly_one_value_representation
+    discriminator_field: value_type
+    representations:
+      probability: probability
+      numeric_score: numeric_score
+      category: category
+
+temporal_rules:
+  - rule_id: score_during_index_encounter
+    field: score_time
+    no_earlier_than_parent_field: admission_time
+    no_later_than_parent_field: discharge_time
+  - rule_id: availability_not_before_score
+    earlier_field: score_time
+    later_field: available_at
+    allow_equal: true
+  - rule_id: availability_not_after_bundle_as_of
+    field: available_at
+    no_later_than_bundle_field: as_of_time
+
+identity_note: >-
+  source_model_id and source_model_version identify the hospital, vendor,
+  research, or rules-based source score. They are input lineage and are not
+  provider_id/provider_version for a platform model provider.
+

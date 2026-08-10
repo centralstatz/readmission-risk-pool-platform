@@ -20,6 +20,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md) —
   generic bundle/instance identity, domain registration, capability,
   dependency, as-of, and representation-independent handoff semantics.
+- [Initial Canonical Clinical Profile](architecture/canonical-clinical-profile.md)
+  — the first supported discharge episode, baseline risk, and episode event
+  contracts and their cross-domain conformance semantics.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -45,8 +48,8 @@ The documentation is the active product at this bootstrap stage. Begin with
 ## Specifications
 
 - [Platform Specifications](../contracts/README.md) — machine-readable
-  foundation vocabulary, canonical-bundle contract, and generic nonclinical
-  examples.
+  foundation vocabulary, canonical bundle, clinical domains/profile,
+  controlled vocabularies, and fictional examples.
 
 ## Repository guidance
 

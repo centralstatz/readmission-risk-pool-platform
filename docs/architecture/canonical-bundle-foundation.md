@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-**Status:** authoritative Phase 2.1 generic canonical handoff contract
+**Status:** authoritative generic canonical handoff contract
 
 This document follows [Platform True North](../vision/platform-true-north.md),
 the [Platform Architecture](platform-architecture.md), and the
@@ -11,11 +11,11 @@ the [Platform Architecture](platform-architecture.md), and the
 contract and examples live under
 [`contracts/canonical/`](../../contracts/canonical/canonical-bundle.yml).
 
-This defines the generic canonical handoff architecture. Readmission-specific
-canonical domain field schemas are intentionally deferred to Iteration 2.2.
-It does not select discharge, baseline, event, task, intervention, measure,
-feature, state, or estimate fields; implement a producer; or create runtime,
-provider, persistence, product, application, deployment, or observability code.
+This defines the generic canonical handoff architecture. The first
+readmission-specific instantiation is defined separately in the
+[Initial Canonical Clinical Profile](canonical-clinical-profile.md). This
+document does not implement a producer or create runtime, provider,
+persistence, product, application, deployment, or observability code.
 
 ## Handoff model
 
@@ -81,10 +81,9 @@ bundle consumer explicitly supports it. Bundle and domain versions are
 independent: changing the bundle contract does not force every domain to share
 its version, and a domain version does not rename the bundle.
 
-Iteration 2.2 will create the first actual domain specifications and explicit
-supported lines. The generic validator currently proves reference syntax and
-identity only; it does not pretend that generic example domains are clinical
-contracts.
+Iteration 2.2 created the first actual domain specifications and explicit
+supported lines without changing these generic registration semantics. Generic
+example domains remain teaching fixtures rather than clinical contracts.
 
 ## Requirement classes and status are separate
 
@@ -206,9 +205,9 @@ generic platform admission
 ```
 
 Iteration 2.1 executes generic bundle structure, declaration, dependency, and
-temporal examples. Implementation-local validation remains producer-owned;
-clinical domain rules begin in Iteration 2.2; platform admission beyond the
-handoff begins with the runtime. Rule IDs such as `canonical.domain.*`,
+temporal examples. Iteration 2.2 adds clinical domain and cross-domain rules.
+Implementation-local validation remains producer-owned; platform admission
+beyond the handoff begins with the runtime. Rule IDs such as `canonical.domain.*`,
 `canonical.bundle.*`, `canonical.dependency.*`, and `canonical.temporal.*`
 keep those categories visible in one common structured result.
 
@@ -250,9 +249,9 @@ Language-neutral source remains in `contracts/`. Executable validation remains
 temporarily in `operations/lib/` until Phase 4 characterizes the runtime
 package API. Phase 2.1 adds no dependency beyond the existing `yaml` package.
 
-## Constraints for Iteration 2.2
+## Clinical-profile instantiation
 
-The first readmission-specific domain contracts must:
+The first readmission-specific domain contracts:
 
 - use the common envelope and own independent specification versions;
 - register by logical domain ID rather than representation name;
@@ -262,6 +261,7 @@ The first readmission-specific domain contracts must:
 - return structured, layered issues; and
 - remain independent of the old seven-member R-list representation.
 
-Iteration 2.2 must still decide the first required domain set, conditional and
-optional domains, controlled vocabularies, clinical keys, and field-level
-semantics. This iteration deliberately does not resolve those decisions.
+Those decisions are resolved by
+[`platform.readmission-initial-profile@0.1.0`](canonical-clinical-profile.md):
+one required discharge root plus optional baseline and episode-event domains.
+The generic bundle remains reusable for later profiles.

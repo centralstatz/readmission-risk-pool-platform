@@ -153,3 +153,23 @@ confidence in reuse of knowledge or adapted behavior, not pre-approval to copy.
 
 Every checkpoint should update this document or record a changed classification
 in the implementation record.
+
+## Phase 2.2 field/rule review outcome
+
+The first clinical profile was designed cleanly before the Phase 2 evidence was
+re-read. The review retained the existing **Adapt** classifications; no asset
+became eligible for direct reuse and no classification changed materially.
+
+| Evidence | Adapted semantic | Rejected or deferred shape |
+|---|---|---|
+| `contracts/schemas/discharge-episode.yml` | episode/patient/index-encounter identity; admission, discharge, follow-up, readmission, and death timestamps | draft versioning, permissive extras, source `episode_status`, facility/service/disposition/team fields, and unenforced terminal rules |
+| `contracts/schemas/baseline-risk.yml` | compound episode/model/version/score-time identity and preservation of probability/score/category | provider-ambiguous model naming, advisory-only value rule, prediction/calibration fields, required source system, and inherited discharge-availability assumption |
+| `contracts/schemas/episode-event.yml` | event identity, episode foreign key, and event-versus-recorded time | subtype/status and unbounded numeric/text value fields, required source-system mechanics, and missing episode-window enforcement |
+| `contracts/vocabularies/` | versioned controlled event values | wholesale event/status lists, task/intervention concepts, and arbitrary namespaced extensions in the initial line |
+| `tests/fixtures/canonical-bundle-fixture.R` | direct source-independent handoff and typed zero-row test intent | seven mandatory R members, tibble/container shape, later runtime context, and exact old values |
+| `tests/platform/test-canonical-boundary.R` | ordering independence, foreign-key failure, and no synthetic import principles | old exact-domain set and post-canonical runtime/product coupling |
+| `engine/R/contract-validation.R` | multi-issue field/type/key validation principle | code, package dependencies, root discovery, schema API, and first-error boundary behavior |
+
+The resulting clean differences and precise field semantics are authoritative in
+[Initial Canonical Clinical Profile](canonical-clinical-profile.md) and are
+recorded in the Phase 2.2 implementation record.

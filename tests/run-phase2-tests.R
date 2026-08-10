@@ -11,6 +11,7 @@ source(file.path(repository_root, "operations", "lib", "conformance-result.R"))
 source(file.path(repository_root, "operations", "lib", "specification-validation.R"))
 source(file.path(repository_root, "operations", "lib", "foundation-context-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
+source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-specification-validation.R"))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 

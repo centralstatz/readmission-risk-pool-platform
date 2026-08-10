@@ -110,7 +110,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the current Phase 2.1 foundation milestone, run:
+For the completed Phase 2 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -139,8 +139,10 @@ clinical-domain fields while changing the foundation vocabulary.
 The generic canonical handoff uses
 `docs/architecture/canonical-bundle-foundation.md` and
 `contracts/canonical/canonical-bundle.yml`. Run its focused tests with
-`Rscript tests/run-phase2-tests.R`. Phase 2.1 permits generic bundle and
-capability assets only; readmission-specific field schemas remain deferred.
+`Rscript tests/run-phase2-tests.R`. The first clinical instantiation uses
+`docs/architecture/canonical-clinical-profile.md` and
+`contracts/canonical/profiles/readmission-initial-profile.yml`. Phase 2 is
+complete; synthetic implementation work begins only in Phase 3.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

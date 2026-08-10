@@ -1,0 +1,94 @@
+# First supported clinical profile; future canonical profiles may add domains.
+specification_kind: canonical_profile
+specification_id: platform.readmission-initial-profile
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Initial readmission canonical clinical profile
+status: active
+description: >-
+  The smallest clinical handoff establishing an episode root, optional source
+  baseline risk, and optional longitudinal episode events.
+
+bundle_specification:
+  specification_kind: canonical_bundle
+  specification_id: platform.canonical-bundle
+  specification_version: "0.1.0"
+
+domains:
+  - domain_id: discharge_episode
+    domain_specification:
+      specification_kind: canonical_domain
+      specification_id: platform.canonical-discharge-episode
+      specification_version: "0.1.0"
+    requirement_class: required
+    capability_id: platform.discharge-episode
+    row_cardinality: one_or_more
+  - domain_id: baseline_risk
+    domain_specification:
+      specification_kind: canonical_domain
+      specification_id: platform.canonical-baseline-risk
+      specification_version: "0.1.0"
+    requirement_class: optional
+    capability_id: platform.baseline-risk-input
+    row_cardinality: zero_or_more
+  - domain_id: episode_event
+    domain_specification:
+      specification_kind: canonical_domain
+      specification_id: platform.canonical-episode-event
+      specification_version: "0.1.0"
+    requirement_class: optional
+    capability_id: platform.episode-event-history
+    row_cardinality: zero_or_more
+
+capabilities:
+  - capability_id: platform.discharge-episode
+    requirement_class: required
+    domain_id: discharge_episode
+  - capability_id: platform.baseline-risk-input
+    requirement_class: optional
+    domain_id: baseline_risk
+  - capability_id: platform.episode-event-history
+    requirement_class: optional
+    domain_id: episode_event
+
+dependencies:
+  - dependency_id: baseline-risk-requires-discharge-episode
+    subject_type: domain
+    subject_id: baseline_risk
+    prerequisite_type: domain
+    prerequisite_id: discharge_episode
+  - dependency_id: episode-event-requires-discharge-episode
+    subject_type: domain
+    subject_id: episode_event
+    prerequisite_type: domain
+    prerequisite_id: discharge_episode
+  - dependency_id: baseline-risk-capability-requires-episode-capability
+    subject_type: capability
+    subject_id: platform.baseline-risk-input
+    prerequisite_type: capability
+    prerequisite_id: platform.discharge-episode
+  - dependency_id: event-capability-requires-episode-capability
+    subject_type: capability
+    subject_id: platform.episode-event-history
+    prerequisite_type: capability
+    prerequisite_id: platform.discharge-episode
+
+capability_and_cardinality_semantics:
+  available: >-
+    The implementation supplies a conforming domain instance. An optional
+    domain instance may contain zero records when the implementation supports
+    the domain but no records exist at the bundle as-of time.
+  unavailable: >-
+    The implementation supports the domain in principle but cannot supply it
+    for this handoff; no instance or fabricated records are permitted.
+  unsupported: >-
+    The implementation intentionally does not implement the domain; no
+    instance or fabricated records are permitted.
+
+deferred_domains:
+  - workflow_task
+  - intervention
+  - measure_membership
+  - feature_value
+

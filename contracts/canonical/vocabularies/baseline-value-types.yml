@@ -1,0 +1,20 @@
+specification_kind: canonical_vocabulary
+specification_id: platform.baseline-value-types
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Baseline risk value types
+status: active
+description: >-
+  Mutually exclusive representations that preserve a source baseline without
+  implying calibration or conversion between forms.
+
+values:
+  probability: A source-supplied probability bounded from zero through one.
+  numeric_score: A finite source-scale numeric score with no platform-imposed range.
+  category: A non-empty source-defined category whose meaning belongs to the source model.
+
+extension_policy: >-
+  New representations require a specification minor version and conformance
+  updates. Implementation-specific values do not extend this vocabulary.
+

@@ -140,12 +140,11 @@ A conforming handoff conceptually carries:
 
 ### Canonical domains
 
-Initial domain selection is deferred to the contracts phase. Evidence supports
-starting from discharge episodes, immutable baseline risk, longitudinal
-episode events, workflow tasks, interventions, measure membership, and
-optional model features, but the clean design must decide which are required,
-conditional, optional, or provider-requested. Derived state and estimates are
-outputs, not input domains.
+The first supported profile selects a required discharge episode root plus
+optional immutable baseline risk and optional longitudinal episode events.
+Workflow tasks, interventions, measure membership, and optional model features
+remain deferred until their owning phases provide concrete need. Derived state
+and estimates are outputs, not input domains.
 
 Durable semantics include stable episode identity, child-to-episode
 relationships, observation and terminal times, controlled vocabularies, and

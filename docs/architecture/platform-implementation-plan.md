@@ -176,6 +176,13 @@ testable.
 Depends on Phase 1 identity and compatibility vocabulary. Maintainers decide
 the first required/capability-dependent domains before completion.
 
+### Completion status
+
+Completed in Iterations 2.1 and 2.2. The generic bundle foundation and initial
+three-domain clinical profile satisfy the deliverables and exit evidence. The
+temporary conformance realization proves the public handoff but is not a
+runtime package or mandated representation. Phase 3 is the next active phase.
+
 ## Phase 3 — Synthetic reference implementation
 
 ### Objective

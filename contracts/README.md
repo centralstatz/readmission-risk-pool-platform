@@ -2,17 +2,19 @@
 
 This directory owns language-neutral, machine-readable platform
 specifications. Phase 1 established the common specification envelope and
-identity vocabulary. Phase 2.1 adds the generic canonical handoff container
-without defining readmission-specific domain fields.
+identity vocabulary. Phase 2 adds the generic canonical handoff container and
+the first readmission-specific clinical profile.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
-- `canonical/` contains the generic canonical-bundle contract and nonclinical
-  handoff examples.
+- `canonical/` contains the generic bundle, three clinical domain contracts,
+  two controlled vocabularies, the initial profile, generic examples, and a
+  source-independent fictional clinical fixture.
 
-There are no canonical clinical-domain field schemas here yet. The bundle
-contract registers independently versioned domains but does not decide their
-clinical contents. Future canonical, estimand, provider, derived-record,
+The first profile is documented in
+[Initial canonical clinical profile](../docs/architecture/canonical-clinical-profile.md).
+It is intentionally smaller than the future canonical suite. Future canonical,
+estimand, provider, derived-record,
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in
 [Specification foundation](../docs/architecture/specification-foundation.md).

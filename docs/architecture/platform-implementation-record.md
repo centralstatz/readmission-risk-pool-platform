@@ -687,3 +687,205 @@ episode identity; then author only the domains and vocabularies needed to prove
 root/child keys, dual-time availability, terminal/window semantics, and
 independent fixture conformance. Do not begin the synthetic producer until the
 approved clinical handoff passes independently.
+
+### Iteration 2.2 — First readmission-specific canonical domain contracts (2026-08-10)
+
+#### Planned objective
+
+Define the smallest clinically meaningful canonical handoff needed to represent
+a discharge episode, immutable source-provided baseline risk, and longitudinal
+post-discharge events through the Iteration 2.1 generic bundle interface. Prove
+the public boundary independently before implementing any synthetic producer
+or runtime behavior.
+
+#### Actual implementation
+
+- Approved `platform.readmission-initial-profile@0.1.0` with a required
+  `discharge_episode` root and optional `baseline_risk` and `episode_event`
+  domains, each paired with one explicit capability.
+- Added independently versioned `0.1.0` specifications for all three domains.
+- Added `platform.baseline-value-types@0.1.0` with probability, numeric score,
+  and category representations, and `platform.episode-event-types@0.1.0` with
+  six deliberately bounded longitudinal evidence values.
+- Defined closed records, requiredness/nullability, primary keys, compound
+  baseline identity, child-to-episode foreign keys, temporal roles, window and
+  terminal rules, and capability-versus-cardinality semantics.
+- Added the wholly fictional, source-independent
+  `reference.readmission-initial-profile-valid@0.1.0` fixture. Its two episodes
+  for one patient include one source baseline, delayed event availability, an
+  episode with zero events, and a readmission terminal outcome.
+- Added focused pre-runtime validation for maintained clinical specifications,
+  profile registration, records, controlled values, keys, relationships,
+  conditional baseline values, episode windows, terminal ordering, dual-time
+  rules, as-of admission, and false capability/payload claims.
+- Extended the Phase 2 suite from 18 to 38 tests with explicit multi-issue
+  failures for every requested episode, baseline, event, and cross-domain case.
+- Advanced development/checkpoint validation and human guidance from the
+  Phase 2.1 generic milestone to the completed Phase 2 generic-plus-clinical
+  boundary.
+- Added the authoritative `canonical-clinical-profile.md`, updated current
+  architecture and plan wording, resolved Phase 2 decisions, and recorded the
+  field/rule-level reconciliation outcome.
+
+#### Reference assets inspected
+
+The clean field, identity, cardinality, and temporal decisions were drafted
+before reading the required sibling evidence. All files were inspected
+read-only; no sibling dependency or modification was introduced.
+
+| Reference evidence | Prior classification | Actual field/rule decision |
+|---|---|---|
+| `contracts/schemas/discharge-episode.yml` | **Adapt** | Adapted root/lineage IDs and the five episode timestamps; rejected draft identity, permissive extras, authoritative `episode_status`, facility/service/disposition/team fields, and unenforced terminal semantics |
+| `contracts/schemas/baseline-risk.yml` | **Adapt** | Adapted compound source-score identity and the three representation concepts; renamed source identity, enforced exact-one representation, constrained score time, allowed explicitly late availability, and deferred prediction/calibration/source-system fields |
+| `contracts/schemas/episode-event.yml` | **Adapt** | Adapted event/episode IDs and dual event/recorded time; renamed availability, enforced the episode window, and rejected subtype/status plus unbounded numeric/text EAV values |
+| `contracts/vocabularies/event-types.yml` and `statuses.yml` | **Adapt** | Adapted only six relevant evidence meanings; rejected wholesale lists, source episode status, task/intervention values, and arbitrary initial extensions |
+| `tests/fixtures/canonical-bundle-fixture.R` | **Adapt** | Adapted the independent-handoff and readable-fictional-fixture principles; rejected seven mandatory members, tibble/list meaning, later runtime context, and exact values |
+| `tests/platform/test-canonical-boundary.R` | **Adapt selectively** | Adapted ordering independence, relationship failure, and no-synthetic-dependency tests; rejected exact old domain membership and downstream runtime/product coupling |
+| `engine/R/contract-validation.R` | **Adapt** | Adapted only multi-issue field/type/key validation concepts; copied no code, package dependency, root lookup, schema API, or helper name |
+
+No source text, implementation code, fixture data, schema document, controlled
+vocabulary, version, or package dependency was copied. The field/rule review
+confirmed the existing **Adapt** classifications, so the reconciliation table
+did not require reclassification; a Phase 2.2 outcome section now records the
+specific decisions.
+
+#### New material created cleanly
+
+- `contracts/canonical/domains/discharge-episode.yml`;
+- `contracts/canonical/domains/baseline-risk.yml`;
+- `contracts/canonical/domains/episode-event.yml`;
+- `contracts/canonical/vocabularies/baseline-value-types.yml`;
+- `contracts/canonical/vocabularies/episode-event-types.yml`;
+- `contracts/canonical/profiles/readmission-initial-profile.yml`;
+- `contracts/canonical/examples/readmission-initial-profile-valid.yml`;
+- `docs/architecture/canonical-clinical-profile.md`;
+- `operations/lib/canonical-clinical-validation.R`; and
+- `tests/phase2/test-canonical-clinical-profile.R`.
+
+Existing generic contracts, validators, tests, navigation, architecture/plan
+status, policies, validation operations, agent guidance, open decisions, and
+the reconciliation record were extended rather than replaced.
+
+#### Decisions
+
+1. **First domain set:** Discharge episode, baseline risk, and episode event
+   are sufficient to prove root identity, observation/terminal bounds,
+   immutable baseline preservation, longitudinal evidence, dual time, and
+   child foreign keys. Workflow tasks, interventions, measure membership, and
+   feature values remain deferred.
+2. **Root identity:** `episode_id` is the canonical episode key. `patient_id`
+   and `index_encounter_id` are implementation-provided local lineage; they do
+   not create Patient/Encounter domains or an enterprise identity model.
+3. **Episode window:** Admission is strictly before discharge, which is
+   strictly before follow-up end. Events occur from discharge through the
+   inclusive window end.
+4. **Terminal semantics:** Optional readmission/death timestamps must be after
+   discharge and within the window. Readmission cannot follow death. No source
+   `episode_status` is authoritative.
+5. **Baseline representation:** Each row declares probability, numeric score,
+   or category and populates exactly one matching value. Probabilities are
+   bounded; no calibration, normalization, or transformation occurs.
+6. **Baseline timing:** `score_time` lies within the index encounter through
+   discharge. `available_at` cannot precede the score or exceed as-of. A
+   late-arriving baseline can conform but could not influence an earlier run.
+7. **Baseline source identity:** `source_model_id` and
+   `source_model_version` identify input meaning and are deliberately distinct
+   from future platform provider identity.
+8. **Event temporal semantics:** `event_time` is occurrence and `available_at`
+   is platform availability. Availability cannot precede occurrence or exceed
+   as-of; the window rule consequently excludes future candidate events.
+9. **Event vocabulary:** Six portable evidence types are enough for the first
+   fixture. New platform values require a new minor line plus mapping and
+   conformance evidence.
+10. **Requirement and capability:** The discharge root is required; baseline
+    and events are optional. All three remain explicitly declared so
+    unavailable and unsupported states are visible.
+11. **Capability versus cardinality:** Available optional instances may have
+    zero records. Unavailable or unsupported domains have neither instance nor
+    payload. No empty instance fabricates unsupported behavior.
+12. **Cardinality and keys:** One episode has zero or more baseline records,
+    unique by episode/source/version/score-time, and zero or more events,
+    unique by event ID. Both child episode IDs must resolve.
+13. **Additional fields:** Initial records fail closed on unknown fields.
+    Source columns stay below the boundary; no speculative extension container
+    is introduced.
+14. **Compatibility:** Profile, domain, and vocabulary versions are
+    independent. Their semantic/key/requiredness/time/vocabulary/failure
+    changes move to a new pre-1.0 minor line and fail closed until supported.
+15. **Transitional implementation:** Clinical conformance remains under
+    `operations/lib/`; no Phase 4 runtime package was created.
+
+#### Surprises and deviations
+
+The sibling baseline rule documented “at least one” representation but its
+validator did not execute record rules. The clean boundary therefore made the
+discriminator and exact-one population rule executable rather than preserving
+advisory text.
+
+The old event vocabulary mixed evidence with task and intervention concepts.
+Keeping the first event vocabulary small made the existing architectural
+separation enforceable without creating those deferred domains.
+
+No scope or sequence deviation occurred. The architecture and implementation
+plan needed only current-state updates: the formerly deferred domain selection
+is now recorded, and Phase 2 is marked complete. No new Iteration 2.3 is
+justified.
+
+#### Validation evidence
+
+The completed validation matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 tests, 0 failures;
+- `Rscript tests/run-phase1-tests.R` — 14 tests, 0 failures;
+- `Rscript tests/run-phase2-tests.R` — 38 tests, 0 failures;
+- `Rscript operations/validate.R --mode development` — 30 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 40 checks, 0 issues;
+- all 21 maintained R files and all 17 maintained YAML files parsed;
+- maintained clinical specification drift and every intended invalid
+  structural/relationship/vocabulary/temporal/capability mutation failed with
+  structured issue codes;
+- repository checks found no machine-specific path, executable sibling
+  dependency, secret pattern, unlabelled patient-like fixture, synthetic
+  implementation, runtime/provider, persistence, product, application,
+  deployment, configuration, or observability scaffold; and
+- untracked-file-aware trailing-whitespace search and `git diff --check`
+  passed.
+
+Validation uses only repository-owned assets and temporary mutations. The
+sibling repository remained read-only. No commit or push was performed.
+
+#### Implications for Phase 3
+
+- The synthetic implementation must generate recognizable fictional source
+  domains and map them into exactly these profile IDs and supported versions.
+- It must declare root, baseline, and event status independently of row count;
+  optional supported event/baseline instances may validly be empty.
+- Mapping owns local patient/encounter identifiers, source-model identity,
+  controlled event translation, score availability, event availability, and
+  discarded source columns.
+- Source-local failures remain distinct from domain/cross-domain/platform
+  conformance; the producer returns both candidate bundle and structured local
+  result.
+- Generic validation may not branch on the synthetic implementation ID or
+  depend on its paths, tables, generator configuration, or source names.
+
+#### Phase 2 status
+
+**Complete.** Iteration 2.1 supplied the generic bundle, capability, identity,
+dependency, compatibility, temporal, and conformance foundation. Iteration 2.2
+supplies the selected schemas/vocabularies, profile, independent fixture,
+structural/relationship/vocabulary/temporal failure proof, and the minimal R
+realization needed to exercise the representation-neutral boundary. Every
+Phase 2 exit criterion is evidenced; another Phase 2 iteration would add scope
+without a demonstrated gap.
+
+#### Recommended next task
+
+Begin **Phase 3 — Synthetic reference implementation** with a bounded first
+iteration that defines deterministic fictional source/run identity and a
+producer result, then maps only the approved three-domain profile. Re-read the
+sibling generator, mappings, simulation configuration, and synthetic tests
+just in time after designing the clean producer interface. Do not begin
+runtime/provider work until the synthetic implementation passes the same
+independent canonical handoff.

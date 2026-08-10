@@ -1,0 +1,166 @@
+# Deterministic, wholly fictional canonical handoff; no source producer is used.
+specification_kind: canonical_clinical_fixture
+specification_id: reference.readmission-initial-profile-valid
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Valid fictional initial readmission canonical handoff
+status: experimental
+description: >-
+  Source-independent proof of the first supported clinical profile. Values are
+  fictional and nonclinical and make no clinical-validity claim.
+
+data_classification: fictional_nonclinical
+expected_conformance:
+  overall_status: pass
+  issue_codes: []
+
+bundle_instance:
+  bundle_instance_id: reference_readmission_bundle_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  profile_specification:
+    specification_kind: canonical_profile
+    specification_id: platform.readmission-initial-profile
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_reference_readmission_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-02-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.independent-canonical-fixture
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.direct-canonical-fixture
+    mapping_version: "0.1.0"
+
+  domains:
+    - domain_id: discharge_episode
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: platform.canonical-discharge-episode
+        specification_version: "0.1.0"
+      requirement_class: required
+      status: available
+      domain_instance_id: domain_discharge_episode_001
+      capability_ids:
+        - platform.discharge-episode
+    - domain_id: baseline_risk
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: platform.canonical-baseline-risk
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_baseline_risk_001
+      capability_ids:
+        - platform.baseline-risk-input
+      temporal_declaration:
+        occurrence_field: score_time
+        availability_field: available_at
+        availability_order: not_before_occurrence
+    - domain_id: episode_event
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: platform.canonical-episode-event
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_episode_event_001
+      capability_ids:
+        - platform.episode-event-history
+      temporal_declaration:
+        occurrence_field: event_time
+        availability_field: available_at
+        availability_order: not_before_occurrence
+
+  capabilities:
+    - capability_id: platform.discharge-episode
+      requirement_class: required
+      status: available
+      domain_ids:
+        - discharge_episode
+    - capability_id: platform.baseline-risk-input
+      requirement_class: optional
+      status: available
+      domain_ids:
+        - baseline_risk
+    - capability_id: platform.episode-event-history
+      requirement_class: optional
+      status: available
+      domain_ids:
+        - episode_event
+
+  dependencies:
+    - dependency_id: baseline-risk-requires-discharge-episode
+      subject_type: domain
+      subject_id: baseline_risk
+      prerequisite_type: domain
+      prerequisite_id: discharge_episode
+    - dependency_id: episode-event-requires-discharge-episode
+      subject_type: domain
+      subject_id: episode_event
+      prerequisite_type: domain
+      prerequisite_id: discharge_episode
+    - dependency_id: baseline-risk-capability-requires-episode-capability
+      subject_type: capability
+      subject_id: platform.baseline-risk-input
+      prerequisite_type: capability
+      prerequisite_id: platform.discharge-episode
+    - dependency_id: event-capability-requires-episode-capability
+      subject_type: capability
+      subject_id: platform.episode-event-history
+      prerequisite_type: capability
+      prerequisite_id: platform.discharge-episode
+
+  provenance_references:
+    - provenance_type: fixture_definition
+      provenance_id: reference_readmission_fixture_definition_001
+      relationship: constructed_directly_at_canonical_boundary
+      version_or_revision: "0.1.0"
+
+  reference_test_realization:
+    realization_kind: embedded_records
+    domain_payloads:
+      - domain_instance_id: domain_discharge_episode_001
+        records:
+          - episode_id: fictional_episode_001
+            patient_id: fictional_patient_001
+            index_encounter_id: fictional_encounter_001
+            admission_time: "2026-01-01T09:00:00Z"
+            discharge_time: "2026-01-03T12:00:00Z"
+            followup_window_end: "2026-02-02T12:00:00Z"
+            readmission_time: "2026-01-20T15:00:00Z"
+          - episode_id: fictional_episode_002
+            patient_id: fictional_patient_001
+            index_encounter_id: fictional_encounter_002
+            admission_time: "2026-02-01T08:00:00Z"
+            discharge_time: "2026-02-03T11:00:00Z"
+            followup_window_end: "2026-03-05T11:00:00Z"
+      - domain_instance_id: domain_baseline_risk_001
+        records:
+          - episode_id: fictional_episode_001
+            source_model_id: reference.local-discharge-score
+            source_model_version: "1.2.0"
+            score_time: "2026-01-03T10:00:00Z"
+            available_at: "2026-01-03T10:05:00Z"
+            value_type: probability
+            probability: 0.27
+            source_reference_id: fictional_baseline_record_001
+      - domain_instance_id: domain_episode_event_001
+        records:
+          - event_id: fictional_event_001
+            episode_id: fictional_episode_001
+            event_type: care_transition_contact
+            event_time: "2026-01-05T10:00:00Z"
+            available_at: "2026-01-05T10:05:00Z"
+            source_reference_id: fictional_event_source_001
+          - event_id: fictional_event_002
+            episode_id: fictional_episode_001
+            event_type: emergency_department_visit
+            event_time: "2026-01-12T18:00:00Z"
+            available_at: "2026-01-13T08:30:00Z"
+            source_reference_id: fictional_event_source_002
+

@@ -12,9 +12,11 @@ before looking for software that does not exist yet.
    prohibited.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — how the empty repository becomes a working platform in coherent phases.
-4. [Specification Foundation](architecture/specification-foundation.md) and
-   [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md)
-   — the common identity vocabulary and current generic handoff semantics.
+4. [Specification Foundation](architecture/specification-foundation.md),
+   [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md),
+   and [Initial Canonical Clinical Profile](architecture/canonical-clinical-profile.md)
+   — the common identity vocabulary and current generic and clinical handoff
+   semantics.
 5. [Platform Specifications](../contracts/README.md) — machine-readable
    contracts and nonclinical conformance examples.
 6. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)

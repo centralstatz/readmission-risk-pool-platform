@@ -1,0 +1,84 @@
+# Root analytical episode for the initial readmission canonical profile.
+specification_kind: canonical_domain
+specification_id: platform.canonical-discharge-episode
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Canonical discharge episode domain
+status: active
+description: >-
+  One index discharge and its bounded follow-up observation interval. Source
+  implementations own patient and encounter identifier construction.
+
+domain_id: discharge_episode
+additional_fields_policy: reject
+primary_key:
+  - episode_id
+
+fields:
+  episode_id:
+    type: string
+    required: true
+    nullable: false
+  patient_id:
+    type: string
+    required: true
+    nullable: false
+  index_encounter_id:
+    type: string
+    required: true
+    nullable: false
+  admission_time:
+    type: timestamp
+    required: true
+    nullable: false
+  discharge_time:
+    type: timestamp
+    required: true
+    nullable: false
+  followup_window_end:
+    type: timestamp
+    required: true
+    nullable: false
+  readmission_time:
+    type: timestamp
+    required: false
+    nullable: true
+  death_time:
+    type: timestamp
+    required: false
+    nullable: true
+
+temporal_rules:
+  - rule_id: admission_precedes_discharge
+    earlier_field: admission_time
+    later_field: discharge_time
+    allow_equal: false
+  - rule_id: discharge_precedes_followup_end
+    earlier_field: discharge_time
+    later_field: followup_window_end
+    allow_equal: false
+  - rule_id: readmission_within_observation_window
+    field: readmission_time
+    after_field: discharge_time
+    through_field: followup_window_end
+    after_allow_equal: false
+  - rule_id: death_within_observation_window
+    field: death_time
+    after_field: discharge_time
+    through_field: followup_window_end
+    after_allow_equal: false
+  - rule_id: readmission_not_after_death
+    earlier_field: readmission_time
+    later_field: death_time
+    allow_equal: true
+    when_both_present: true
+
+ownership:
+  patient_id: >-
+    Stable local lineage identifier supplied and resolved by the source
+    implementation; it does not create a canonical Patient domain.
+  index_encounter_id: >-
+    Source encounter lineage identifier supplied and resolved by the source
+    implementation; it does not create a canonical Encounter domain.
+
