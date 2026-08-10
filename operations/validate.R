@@ -16,6 +16,15 @@ source(file.path(repository_root, "operations", "lib", "foundation-context-valid
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-specification-validation.R"))
+for (file in c(
+  "identity-configuration.R", "generate-source.R", "source-validation.R",
+  "map-to-canonical.R", "producer.R"
+)) {
+  source(file.path(
+    repository_root, "implementations", "synthetic-reference", "R", file
+  ))
+}
+source(file.path(repository_root, "operations", "lib", "synthetic-reference-validation.R"))
 source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
 
 mode <- tryCatch(

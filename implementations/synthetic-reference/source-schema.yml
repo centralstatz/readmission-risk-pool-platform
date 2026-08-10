@@ -1,0 +1,85 @@
+# Implementation-local source schema; these names are not canonical fields.
+specification_kind: source_schema
+specification_id: reference.synthetic-health-system-source-schema
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Synthetic reference health-system source schema
+status: active
+description: >-
+  Six small relational feeds that require joins, code translation, identifier
+  construction, and temporal availability filtering before canonical mapping.
+
+data_classification: fictional_nonclinical
+additional_fields_policy: reject
+
+tables:
+  patients:
+    primary_key: patient_key
+    fields:
+      patient_key: {type: character, nullable: false}
+      fictional_birth_year: {type: integer, nullable: false}
+      fictional_region_code: {type: character, nullable: false}
+  encounters:
+    primary_key: encounter_key
+    fields:
+      encounter_key: {type: character, nullable: false}
+      patient_key: {type: character, nullable: false}
+      encounter_class: {type: character, nullable: false}
+      admitted_at: {type: timestamp, nullable: false}
+      discharged_at: {type: timestamp, nullable: false}
+  discharges:
+    primary_key: discharge_key
+    fields:
+      discharge_key: {type: character, nullable: false}
+      encounter_key: {type: character, nullable: false}
+      followup_days: {type: integer, nullable: false}
+      source_episode_label: {type: character, nullable: false}
+  risk_scores:
+    primary_key: score_key
+    fields:
+      score_key: {type: character, nullable: false}
+      discharge_key: {type: character, nullable: false}
+      score_code: {type: character, nullable: false}
+      score_version: {type: character, nullable: false}
+      assessed_at: {type: timestamp, nullable: false}
+      received_at: {type: timestamp, nullable: false}
+      score_probability: {type: numeric, nullable: false}
+      source_queue_label: {type: character, nullable: false}
+  activity_events:
+    primary_key: event_key
+    fields:
+      event_key: {type: character, nullable: false}
+      discharge_key: {type: character, nullable: false}
+      event_code: {type: character, nullable: false}
+      occurred_at: {type: timestamp, nullable: false}
+      received_at: {type: timestamp, nullable: false}
+      source_note_class: {type: character, nullable: false}
+  outcomes:
+    primary_key: outcome_key
+    fields:
+      outcome_key: {type: character, nullable: false}
+      discharge_key: {type: character, nullable: false}
+      outcome_code: {type: character, nullable: false}
+      occurred_at: {type: timestamp, nullable: false}
+      received_at: {type: timestamp, nullable: false}
+      related_encounter_key: {type: character, nullable: true}
+
+relationships:
+  - {child_table: encounters, child_field: patient_key, parent_table: patients, parent_field: patient_key}
+  - {child_table: discharges, child_field: encounter_key, parent_table: encounters, parent_field: encounter_key}
+  - {child_table: risk_scores, child_field: discharge_key, parent_table: discharges, parent_field: discharge_key}
+  - {child_table: activity_events, child_field: discharge_key, parent_table: discharges, parent_field: discharge_key}
+  - {child_table: outcomes, child_field: discharge_key, parent_table: discharges, parent_field: discharge_key}
+
+controlled_values:
+  encounter_class: [index_inpatient, readmission_inpatient]
+  score_code: [local_readmit_probability]
+  event_code:
+    - transition_call_complete
+    - ambulatory_followup
+    - emergency_visit
+    - medication_barrier
+    - other_observed
+  outcome_code: [readmission, death]
+

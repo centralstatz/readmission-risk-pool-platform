@@ -6,15 +6,14 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase 2
-  canonical implementation-boundary requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase 3
+  source-to-canonical reference implementation requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
-foundation, Phase 1 specification foundation, and Phase 2 generic and clinical
-canonical handoff; later
-phases will add stricter component-specific claims only when those components
-exist.
+foundation, Phase 1 specification foundation, Phase 2 generic and clinical
+canonical handoff, and Phase 3 fictional source implementation. Later phases
+will add stricter component-specific claims only when those components exist.
 
 ## Prerequisites
 
@@ -41,7 +40,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 2 checkpoint:
+Validate the completed Phase 3 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -63,6 +62,18 @@ Run the focused Phase 2 tests directly:
 
 ```sh
 Rscript tests/run-phase2-tests.R
+```
+
+Run the focused Phase 3 tests directly:
+
+```sh
+Rscript tests/run-phase3-tests.R
+```
+
+Run the reference source-to-canonical operation:
+
+```sh
+Rscript operations/generate-reference.R
 ```
 
 Each command exits with status `0` on success and nonzero status on failure.
@@ -92,9 +103,10 @@ Development mode composes:
 - obvious secret filenames and common token/private-key patterns;
 - visible fictional classification for patient-like committed fixtures; and
 - specification-envelope, foundation-example, generic canonical-bundle,
-  clinical domain/profile/vocabulary, and fictional clinical fixture
-  conformance; and
-- all Phase 0, Phase 1, and Phase 2 temporary-fixture tests.
+  clinical domain/profile/vocabulary, fictional clinical fixture, synthetic
+  implementation/source-schema/configuration, and reference-flow conformance;
+  and
+- all Phase 0, Phase 1, Phase 2, and Phase 3 temporary-fixture tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -103,19 +115,20 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0, Phase 1, and Phase 2 metadata, policy, operation,
-  specification, and test files;
-- presence of the approved three-domain clinical profile and absence of
-  synthetic/runtime or later-phase implementation scaffolding;
+- required Phase 0, Phase 1, Phase 2, and Phase 3 metadata, policy, operation,
+  specification, implementation, and test files;
+- presence of the approved three-domain clinical profile and the one approved
+  synthetic reference implementation, with no committed generated datasets;
+- a conforming reference-scale source-to-canonical run and completed Phase 3
+  implementation-record entry;
 - an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–2 canonical contracts. It does
+This is strict only relative to the Phase 0–3 source-to-canonical boundary. It does
 not prove:
 
 - public release or license readiness;
-- producer/source-mapping conformance;
 - runtime, provider, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
@@ -156,6 +169,9 @@ observability, provenance, metrics, or audit system.
   identity, controlled values, child episode references, episode/terminal
   windows, or capability/payload contradictions. Optional available domains
   may use zero records; unavailable/unsupported domains may not claim data.
+- **Synthetic source conformance:** Correct implementation identity/configuration,
+  source keys and relationships, local codes, temporal order, or mapping
+  translation. Source-local and canonical issues belong to different stages.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

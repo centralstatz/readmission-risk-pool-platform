@@ -1,7 +1,7 @@
 # Start here
 
-This repository is at architecture bootstrap: understand the intended product
-before looking for software that does not exist yet.
+This repository has completed its first source-to-canonical implementation;
+understand the intended product and public boundaries before extending it.
 
 ## Recommended review
 
@@ -19,17 +19,19 @@ before looking for software that does not exist yet.
    semantics.
 5. [Platform Specifications](../contracts/README.md) — machine-readable
    contracts and nonclinical conformance examples.
-6. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+6. [Synthetic Reference Implementation](architecture/synthetic-reference-implementation.md)
+   — the complete deterministic fictional producer beneath that boundary.
+7. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-7. [Open Decisions](architecture/open-decisions.md) — choices that require
+8. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-8. [Platform Implementation Record](architecture/platform-implementation-record.md)
+9. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-9. [Implementation Conventions](development/implementation-conventions.md) and
+10. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-10. [Repository Development Policies](development/repository-policies.md) for
+11. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-11. [Operations](operations/README.md) for the supported human operation and
+12. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

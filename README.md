@@ -14,15 +14,14 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 2 canonical implementation boundary complete.** The repository contains the
-common YAML specification envelope, pre-1.0 compatibility policy, foundational
-identity/time vocabulary, and a representation-independent canonical bundle
-contract plus the first clinical profile: discharge episode, optional source
-baseline risk, and optional longitudinal episode events. Structured conformance
-covers fields, keys, relationships, capabilities, controlled values, episode
-windows, terminal outcomes, and dual-time availability. No substantive
-platform runtime, synthetic generator, provider, persistence layer, product
-builder, Shiny application, deployment tooling, or CI/CD has been implemented.
+**Phase 3 synthetic reference implementation complete.** A deterministic,
+visibly fictional six-feed source implementation now validates its own source
+model, maps only information available at a declared cutoff, and produces the
+exact Phase 2 canonical clinical profile through the existing generic
+conformance boundary. Test and reference scales are reproducible from declared
+configuration; no generated data need be committed. No platform runtime,
+provider, persistence layer, product builder, Shiny application, deployment
+tooling, observability system, or CI/CD has been implemented.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -53,9 +52,11 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md),
    [Initial Canonical Clinical Profile](docs/architecture/canonical-clinical-profile.md),
    and [platform specifications](contracts/README.md) for the current handoff.
-6. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+6. Read the [Synthetic Reference Implementation](docs/architecture/synthetic-reference-implementation.md)
+   for the first source-to-canonical realization.
+7. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-7. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+8. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -71,10 +72,16 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 2 checkpoint with:
+Evaluate the completed Phase 3 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
+```
+
+Generate and validate the deterministic reference flow with:
+
+```sh
+Rscript operations/generate-reference.R
 ```
 
 ## Authority

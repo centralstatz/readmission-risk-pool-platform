@@ -214,6 +214,14 @@ Depends on Phase 2. Decide whether a small prebuilt fictional bundle is also
 distributed for immediate exploration; generation remains reproducible either
 way.
 
+### Completion status
+
+Completed in Iteration 3.1. The reference implementation owns six fictional
+source feeds, source-local conformance, deterministic mapping, two declared
+scales, and a staged producer result. It reaches the existing Phase 2 handoff
+without a synthetic branch in generic validation and writes no generated data.
+Phase 4 is the next active phase.
+
 ## Phase 4 — Minimal governed runtime and provider
 
 ### Objective

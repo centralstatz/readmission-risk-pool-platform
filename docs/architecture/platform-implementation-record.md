@@ -889,3 +889,188 @@ sibling generator, mappings, simulation configuration, and synthetic tests
 just in time after designing the clean producer interface. Do not begin
 runtime/provider work until the synthetic implementation passes the same
 independent canonical handoff.
+
+## Phase 3 — Synthetic reference implementation
+
+### Iteration 3.1 — Synthetic reference source and canonical producer (2026-08-10)
+
+#### Planned objective
+
+Build the first complete source implementation beneath the approved canonical
+boundary. Exercise source generation, source-local conformance, mapping, and
+the existing canonical admission as distinct stages without beginning runtime,
+provider, persistence, product, application, deployment, or observability work.
+
+#### Actual implementation
+
+- Added `implementations/synthetic-reference/` as the explicit local-source
+  ownership boundary, with independent implementation, mapping, generator, and
+  source-schema identities.
+- Added six recognizable source feeds: patient registry, encounters,
+  discharges, risk scores, activity events, and terminal outcomes. They are
+  relational source records, not canonical tables with new names.
+- Added deterministic base-R generation driven by a versioned configuration,
+  seed, simulation reference time, canonical as-of time, and declared scale.
+  The generator restores the caller's random-number state and uses no wall
+  clock or external input.
+- Added implementation-local schema validation that collects structural,
+  field/type/nullability, key, relationship, controlled-code, temporal,
+  probability, terminal-outcome, readmission-integrity, and fictional-ID
+  issues. Structural defects remain reportable without crashing deeper checks.
+- Added an owned mapper for exactly the approved discharge-episode,
+  baseline-risk, and episode-event profile. It translates local codes and IDs,
+  discards source-only fields, preserves occurrence and availability, and
+  excludes later-received facts at the declared cutoff.
+- Added a staged producer result with separate configuration, generation,
+  source-local, mapping, and canonical status. Later stages do not run after an
+  earlier failure; generic Phase 2 conformance remains the only canonical
+  admission authority.
+- Added test and reference configurations, the human
+  `operations/generate-reference.R` operation, focused Phase 3 tests, platform
+  validation composition, checkpoint rules, architecture/onboarding material,
+  and an operation guide.
+- Kept generated source and canonical objects in memory. No generated dataset,
+  product, manifest, or log is committed or written by the operation.
+
+#### Reference assets inspected
+
+The clean producer interface and source set were fixed before line-reviewing
+the sibling repository. The sibling remained read-only.
+
+| Evidence | Previous classification | Actual final classification and use |
+|---|---|---|
+| `implementations/synthetic-demo/R/generate-source-data.R` | Adapt | **Adapt — concepts only.** Retained deterministic staged generation, relational records, repeat episodes, delayed receipts, and outcome relationships. Rejected its broad facilities/staff/task/intervention/measure/product ecosystem, downstream coupling, dependencies, exact IDs, values, and code. |
+| `implementations/synthetic-demo/R/map-to-canonical.R` | Adapt | **Adapt — concepts only.** Retained explicit joins, derived identifiers, code translation, dual-time fields, and implementation-owned mapping provenance. Rejected seven-domain/draft shapes, leaked source fields, provider/product data, first-error validation, and all code. |
+| `implementations/synthetic-demo/config/simulation.yml` | Adapt with review | **Reference only.** It confirmed the usefulness of declared seed and reference time. The clean implementation rejected its large mixed platform configuration, unrelated controls, placeholder identities, and scale. |
+| `implementations/synthetic-demo/mappings/source-to-canonical.yml` and mapping README | Adapt | **Reference only.** They confirmed that translation ownership should be visible; no old field map, vocabulary, or text was retained. |
+| `tests/platform/test-synthetic-ecosystem.R`, canonical-boundary tests, and validation-mode tests | Adapt selectively | **Adapt — test principles only.** Retained determinism, relationship failure, future-information exclusion, boundary independence, and staged-failure intent. Rejected runtime/product coupling, fixed old paths/domains/counts, and source text. |
+
+No source code, prose, YAML structure, fixture row, identifier, or dependency
+was copied. The implementation was written cleanly against the accepted Phase
+2 contracts. The reconciliation document now records this outcome.
+
+#### New material created cleanly
+
+- `implementations/synthetic-reference/implementation.yml` and
+  `source-schema.yml`;
+- test/reference run configurations and five focused R implementation files;
+- implementation README plus architecture and human-operation guides;
+- `operations/generate-reference.R` and Phase 3 validation composition;
+- `tests/run-phase3-tests.R` and the source-to-canonical test suite; and
+- Phase 3 navigation, checkpoint, plan, decision, reconciliation, and working
+  agreement updates.
+
+#### Decisions
+
+1. **Source domains:** six source-owned feeds are enough to demonstrate local
+   relationships, repeat episodes, delayed feeds, and terminal facts without
+   pretending to model an entire health system.
+2. **Implementation identity:** `reference.synthetic-health-system@0.1.0`.
+3. **Mapping identity:** `reference.synthetic-to-readmission-canonical@0.1.0`.
+4. **Generator identity:**
+   `reference.synthetic-health-system-generator@0.1.0`.
+5. **Source schema:**
+   `reference.synthetic-health-system-source-schema@0.1.0`, visibly
+   `fictional_nonclinical`, with unknown tables/fields rejected.
+6. **Run inputs:** generator version plus complete configuration, declared
+   seed, scale, and as-of values determine the result. Wall-clock time does
+   not. The simulation and canonical cutoffs are explicit and currently must
+   match so the reference snapshot has one reviewable boundary.
+7. **Validation ownership:** source conformance is local and multi-issue;
+   mapping conformance owns translation completeness; canonical conformance is
+   generic and authoritative. Their issue results are not collapsed.
+8. **Capabilities:** discharge episode, baseline risk, and episode event are
+   all `available`. Availability means supported and supplied as a domain
+   instance, not that every episode has a baseline or event row.
+9. **Retention:** do not ship prebuilt generated inputs or bundles in Phase 3.
+   Code/configuration reproduce both scales; the small independent Phase 2
+   fixture remains the source-independent teaching asset.
+10. **Scale:** test is 4 patients/6 episodes; reference is 24 patients/36
+    episodes. The latter includes repeat patients, incomplete baseline/event
+    coverage, delayed and post-cutoff facts, readmission, death, and active
+    episodes while remaining fast and understandable.
+11. **Dependencies:** add none. Base R performs generation/mapping; the existing
+    locked `yaml` dependency reads maintained specifications/configuration, so
+    `renv.lock` is unchanged.
+12. **Composition:** the reference is a complete implementation. Silent mixing
+    of synthetic and hospital source domains remains unsupported.
+
+#### Surprises and deviations
+
+- A six-feed source was sufficient; the old broad operational ecosystem was
+  not needed to prove the approved clinical handoff.
+- Valid source history must include facts received after canonical `as_of_time`
+  to prove that mapping—not generation—owns availability filtering.
+- The small scale happened to contain no admitted terminal outcome at its
+  cutoff, so terminal/active coverage is asserted at reference scale rather
+  than forcing every semantic into every fixture.
+- Source-controlled `other_observed` is intentionally valid locally but lacks
+  a canonical translation. It provides a real mapping-failure scenario without
+  corrupting source conformance.
+- No plan or architecture dependency direction changed. The planned
+  `implementations/` boundary is now realized and Phase 3 can close in one
+  iteration.
+
+#### Validation evidence
+
+The completed validation matrix passed using repository-owned assets only:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 cases, 0 failures;
+- `Rscript tests/run-phase1-tests.R` — 14 cases, 0 failures;
+- `Rscript tests/run-phase2-tests.R` — 38 cases, 0 failures;
+- `Rscript tests/run-phase3-tests.R` — 24 focused cases, 0 failures;
+- `Rscript operations/generate-reference.R --scale test` — every stage
+  succeeded for 4 patients and 6 episodes;
+- `Rscript operations/generate-reference.R` — every stage succeeded for 24
+  patients and 36 episodes;
+- `Rscript operations/validate.R --mode development` — 35 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 50 checks, 0 issues;
+- all 30 maintained R and 21 maintained YAML files parsed; and
+- untracked-file-aware whitespace review plus `git diff --check` passed.
+
+Deterministic repeat runs serialized identically. A changed seed changed source
+values while remaining conforming. Reference-scale stable counts were 24
+patients, 42 encounters, 36 discharge episodes, 27 admitted baseline records,
+38 admitted event records, 6 readmissions, 4 deaths, 11 active episodes, and 9
+post-cutoff source facts excluded. Source mutation tests covered missing fields,
+duplicate keys, foreign keys, codes, time order, mapping-only failure, staged
+stop behavior, and distinct canonical failure.
+
+Repository checks found no machine-specific path, executable sibling
+dependency, secret pattern, unlabelled patient-like fixture, committed generated
+dataset, or runtime/provider/persistence/product/application/deployment/
+observability scaffold. The sibling repository was not modified. No commit or
+push was performed.
+
+#### Implications for Phase 4
+
+- Runtime may assume only a bundle admitted through the generic canonical
+  profile with explicit identity, capabilities, dependencies, as-of context,
+  records, and provenance references.
+- Runtime must not know the reference implementation ID, configuration scale,
+  generator, mapping, six source table names, local codes, source-only fields,
+  or generation procedure.
+- Provider and estimand design must begin from the canonical profile and
+  availability semantics. It may not reach behind the handoff or treat source
+  baseline risk as a default provider output.
+- Phase 4 can use this producer and the independent Phase 2 fixture as two
+  boundary inputs, but neither justifies persistence, historical, or product
+  assumptions.
+
+#### Phase 3 status
+
+**Complete.** Iteration 3.1 supplies every Phase 3 deliverable and exit item:
+deterministic relational fictional generation, identities, local validation,
+mapping/provenance, staged producer reporting, two scales, canonical admission,
+human operation, focused tests, onboarding documentation, generated-data
+policy, and generic independence. No Iteration 3.2 gap is evidenced.
+
+#### Recommended next task
+
+Begin **Phase 4 — Minimal governed runtime and provider** by defining one
+versioned estimand and the smallest source-independent state/eligibility
+contract before selecting or adapting provider code. Use only admitted
+canonical bundles as input, preserve dual-time filtering, and keep estimates
+separate from priority decisions. Do not introduce persistence or products
+until the runtime/provider contract and conformance scenarios are accepted.

@@ -1,0 +1,43 @@
+# Logical identities for the fictional source implementation and its producer.
+specification_kind: source_implementation
+specification_id: reference.synthetic-source-implementation
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Synthetic reference source implementation
+status: active
+description: >-
+  Deterministic fictional and nonclinical source implementation for proving
+  the approved initial readmission canonical profile.
+
+data_classification: fictional_nonclinical
+clinical_validity: none
+
+implementation_identity:
+  implementation_id: reference.synthetic-health-system
+  implementation_version: "0.1.0"
+mapping_identity:
+  mapping_id: reference.synthetic-to-readmission-canonical
+  mapping_version: "0.1.0"
+generator_identity:
+  generator_id: reference.synthetic-health-system-generator
+  generator_version: "0.1.0"
+source_schema_identity:
+  source_schema_id: reference.synthetic-health-system-source-schema
+  source_schema_version: "0.1.0"
+
+canonical_profile:
+  specification_kind: canonical_profile
+  specification_id: platform.readmission-initial-profile
+  specification_version: "0.1.0"
+
+capabilities:
+  discharge_episode: available
+  baseline_risk: available
+  episode_event: available
+
+ownership_boundary: >-
+  Everything beneath this implementation directory may understand the
+  fictional source design. Nothing above the canonical handoff may depend on
+  its source tables, codes, configuration, paths, or implementation identity.
+

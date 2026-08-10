@@ -173,3 +173,20 @@ became eligible for direct reuse and no classification changed materially.
 The resulting clean differences and precise field semantics are authoritative in
 [Initial Canonical Clinical Profile](canonical-clinical-profile.md) and are
 recorded in the Phase 2.2 implementation record.
+
+## Phase 3.1 synthetic implementation review outcome
+
+The source/producer boundary was designed before the required line review. The
+review retained the existing **Adapt** classifications for the old generator
+and mapper, using concepts only; no code, text, configuration, data, identifier,
+or package dependency was copied.
+
+| Evidence | Final use | Retained concept | Rejected or deferred shape |
+|---|---|---|---|
+| `implementations/synthetic-demo/R/generate-source-data.R` | **Adapt — concepts only** | deterministic staged generation, relational records, repeat episodes, delayed availability | broad hospital ecosystem, staff/facilities/tasks/interventions/measures/products, downstream coupling, tidyverse/targets assumptions, exact values and counts |
+| `implementations/synthetic-demo/R/map-to-canonical.R` | **Adapt — concepts only** | explicit joins, stable derived IDs, local-code translation, occurrence/availability separation, mapping provenance | old seven-domain shape, draft canonical fields, source leakage, provider/product material, and first-error source validation |
+| `implementations/synthetic-demo/config/simulation.yml` | **Reference only** | evidence that seed and reference time should be declared | one large mixed platform configuration, unrelated provider/product settings, placeholder identities, and old scale |
+| `implementations/synthetic-demo/mappings/source-to-canonical.yml` and README | **Reference only** | evidence that mappings need reviewable ownership and explanations | old domain membership, field inventory, and configuration structure |
+| `tests/platform/test-synthetic-ecosystem.R` and validation-mode tests | **Adapt — test principles only** | determinism, relationship integrity, future-information exclusion, boundary independence, and staged failures | downstream runtime/product coupling, exact old filenames and row counts, and historical structure assertions |
+
+The clean result is documented in [Synthetic Reference Implementation](synthetic-reference-implementation.md).

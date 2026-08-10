@@ -1,0 +1,23 @@
+# Small deterministic source-to-canonical test configuration.
+specification_kind: synthetic_run_configuration
+specification_id: reference.synthetic-run-test
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Synthetic reference test-scale run
+status: active
+description: Small fictional source configuration for fast conformance tests.
+
+data_classification: fictional_nonclinical
+implementation_specification:
+  specification_kind: source_implementation
+  specification_id: reference.synthetic-source-implementation
+  specification_version: "0.1.0"
+scale_id: test
+seed: 3101
+simulation_as_of_time: "2026-08-01T12:00:00Z"
+canonical_as_of_time: "2026-08-01T12:00:00Z"
+patient_count: 4
+episode_count: 6
+followup_window_days: 30
+

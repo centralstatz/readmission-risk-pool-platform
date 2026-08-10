@@ -42,10 +42,10 @@ owned, documented, and tested in this repository with no sibling dependency.
 
 Keep work within the active phase and its stated exit evidence. Do not create
 later-phase scaffolding merely to make the tree look complete. In particular,
-do not add runtime code, readmission-specific canonical domain fields, package scaffolding,
-synthetic generation, providers, persistence, products, app code, deployment,
-or CI/CD before the relevant task authorizes it. The current `renv` state owns
-only the Phase 1 YAML parser dependency.
+do not add runtime code, providers, persistence, products, app code,
+deployment, observability, or CI/CD before the relevant task authorizes it.
+Phase 3 owns the synthetic reference implementation beneath the canonical
+boundary. The current `renv` state owns only the Phase 1 YAML parser dependency.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -110,10 +110,18 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 2 checkpoint, run:
+For the completed Phase 3 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
+```
+
+Run the focused Phase 3 producer tests and the supported reference operation
+with:
+
+```sh
+Rscript tests/run-phase3-tests.R
+Rscript operations/generate-reference.R
 ```
 
 Development coherence and strict milestone readiness are different claims.
@@ -142,7 +150,10 @@ The generic canonical handoff uses
 `Rscript tests/run-phase2-tests.R`. The first clinical instantiation uses
 `docs/architecture/canonical-clinical-profile.md` and
 `contracts/canonical/profiles/readmission-initial-profile.yml`. Phase 2 is
-complete; synthetic implementation work begins only in Phase 3.
+complete. The Phase 3 implementation is documented in
+`docs/architecture/synthetic-reference-implementation.md`; it is not a generic
+runtime mode, and generic canonical code must not depend on its identity or
+source tables.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,
