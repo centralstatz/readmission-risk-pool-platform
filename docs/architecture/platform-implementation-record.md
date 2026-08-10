@@ -308,3 +308,192 @@ capability status, provenance reference, and structured conformance results;
 choose a small diff-friendly specification format through examples; and add
 format/identity tests. Do not yet define canonical clinical domains or runtime
 processing.
+
+## Phase 1 — Identity, compatibility, and contract foundation
+
+### Iteration 1.1 — Core specification and identity vocabulary (2026-08-10)
+
+#### Planned objective
+
+Establish the minimum reusable, machine-readable foundation that later
+canonical, estimand, provider, persistence, product, diagnostic,
+configuration, and deployment specifications can share. Select one format;
+define identity, compatibility, time, capability, provenance, conformance, and
+diagnostic vocabulary; prove it with readable generic examples and a small
+validator; and preserve the boundary against Phase 2 and later implementation.
+
+#### Actual implementation
+
+- Selected YAML as the only authoritative specification-authoring format and
+  defined a common envelope with kind, stable ID, meaning version, format
+  version, identity scope, title, lifecycle status, and optional description.
+- Authored one cohesive specification-foundation document, one vocabulary
+  specification, and two small nonclinical examples covering identity/run
+  context and a multi-issue conformance result.
+- Defined quoted SemVer representation and an explicit pre-1.0 support policy,
+  including fail-closed handling of unknown format and specification lines.
+- Defined one authoritative RFC 3339 `as_of_time` per run, separate from event,
+  availability, extraction, generation, and wall-clock execution times.
+- Distinguished implementation from mapping identity and run from operation
+  identity; defined capability statuses and minimal provenance references.
+- Implemented structured conformance results that collect multiple issues and
+  derive pass/fail from issue severity.
+- Defined only the shared diagnostic-event vocabulary; no logging or
+  observability mechanism was added.
+- Added focused YAML parsing, envelope, compatibility, foundation-context,
+  example, repository, and checkpoint validators under `operations/lib/`.
+- Integrated specification and Phase 1 test checks into the existing
+  development and checkpoint operation.
+- Added fourteen Phase 1 success/failure tests and retained all ten Phase 0
+  regression tests.
+- Initialized this repository's own `renv` state and locked `renv` 1.0.9 and
+  `yaml` 2.3.10 without copying sibling dependency state.
+
+#### Reference assets inspected
+
+All inspection was read-only and occurred after the clean foundation design.
+
+| Reference path | Prior classification | Final decision in this iteration |
+|---|---|---|
+| `contracts/schemas/*.yml` and `contracts/README.md` | **Adapt** for future canonical semantics | **Reference only** for YAML readability and ID/version evidence; no field, version, seven-domain assumption, schema shape, or text was copied |
+| `engine/R/contract-validation.R` | **Adapt** for a future canonical validator | **Adapt — result concept only**; collecting structured issues informed the clean result shape, but no code, project-root behavior, domain rule, or dependency pattern was copied |
+| `engine/tests/testthat/test-contracts.R` | **Reference only** | Consulted for failure categories; the base-R Phase 1 suite and fixtures were written cleanly |
+| `scripts/lib/validation-modes.R` | **Adapt** | Existing development/checkpoint separation was retained conceptually; no code or later-phase mode was copied |
+| `contracts/validation/compatibility-policy.md` | Not separately classified | **Reference only**; confirmed shortcomings of the old draft convention, while the pre-1.0 SemVer policy was designed cleanly |
+
+No reference code, schema, fixture, configuration, dependency state, or text
+was copied. The inspection did not materially change the reconciliation table,
+so that document required no classification update.
+
+#### New material created cleanly
+
+- `contracts/README.md`;
+- `contracts/foundation/foundation-vocabulary.yml`;
+- `contracts/examples/example-identity-context.yml` and
+  `example-conformance-result.yml`;
+- `docs/architecture/specification-foundation.md`;
+- `operations/lib/conformance-result.R`;
+- `operations/lib/specification-validation.R`;
+- `operations/lib/foundation-context-validation.R`;
+- `tests/phase1/test-specification-foundation.R` and
+  `tests/run-phase1-tests.R`; and
+- `.Rprofile`, `renv.lock`, `renv/activate.R`, `renv/settings.json`, and
+  `renv/.gitignore` generated for this repository's dependency state.
+
+Existing navigation, policies, validation composition, checkpoint behavior,
+and human/agent guidance were updated to own this new foundation.
+
+#### Decisions
+
+1. **Format:** YAML is concise, commentable, language-neutral, and readable in
+   review. JSON would still require a parser while making authored examples
+   noisier. Multiple authoritative encodings are not maintained.
+2. **Envelope identity:** Meaning lives in `specification_id` plus quoted
+   `specification_version`; `specification_format_version` independently
+   identifies envelope syntax. Kind, identity scope, title, and lifecycle
+   status are explicit.
+3. **Reference scope:** Reference examples use both a `reference.` namespace
+   and `identity_scope: reference`, preventing defaults from silently becoming
+   universal platform identity.
+4. **Pre-1.0 compatibility:** Patch increments are limited to nonsemantic
+   corrections or safely optional metadata. Semantic, requiredness, type, key,
+   time, controlled-value, or failure changes move to a new minor line and may
+   be incompatible. Consumers declare bounded support explicitly and fail
+   closed on unknown lines.
+5. **As-of context:** One explicit-offset RFC 3339 cutoff governs information
+   availability for one run; other domain and operational timestamps never
+   replace it.
+6. **Implementation and mapping:** Each owns a stable logical ID and version.
+   Source technology, path, and Git revision are optional evidence rather than
+   mandatory logical identity.
+7. **Run and operation:** `run_id` identifies one attempt, `operation_id`
+   identifies the stable action, and `as_of_time` identifies its information
+   cutoff. Later persistence work still owns retry, correction, duplicate, and
+   restatement semantics.
+8. **Capability status:** `available`, `unavailable`, `unsupported`, and
+   `failed_conformance` distinguish supplied behavior, contextual absence,
+   intentional non-support, and a failed claim without fabricating values.
+9. **Provenance reference:** Type, logical ID, relationship, and optional
+   version/revision provide representation-independent attribution. Git,
+   hashes, URLs, and paths remain optional evidence.
+10. **Conformance:** Results identify the candidate/specification and retain
+    rule, severity, issue code, message, and optional object/location context.
+    Errors derive failure; warnings/information alone do not. Software
+    conformance makes no clinical-validity claim.
+11. **Diagnostics:** Event time, run/operation, component/stage, severity,
+    status, safe code, and message are reserved vocabulary only. Routing,
+    sinks, redaction, verbosity, and retention remain Phase 9 work.
+12. **Ownership:** Language-neutral assets belong in `contracts/`; temporary
+    executable validation belongs in `operations/lib/` until Phase 4 can
+    justify a runtime package.
+13. **Dependency state:** The small `yaml` parser is justified by the selected
+    format. `renv` was initialized independently at the first real external
+    dependency.
+
+#### Surprises and deviations
+
+The first focused regression run exposed that generated, ignored
+`renv/library/` content was still included by the repository's own recursive
+file scanners. Both documentation and policy discovery now exclude standard
+generated `renv` directories; a clean rerun passed.
+
+The generated activation bootstrap also contained trailing spaces. They were
+normalized mechanically before the final all-file whitespace check.
+
+Within the managed execution environment, `renv` sandbox activation waited on
+an unavailable global lock. Validation was run with the documented project
+environment active and sandboxing disabled for those processes; this did not
+change the lockfile or repository policy and is not a platform runtime choice.
+
+No scope or architecture deviation occurred. The planned `contracts/`
+ownership was activated, but no canonical domain, runtime package, provider,
+persistence, product, application, deployment, or observability implementation
+was begun. The architecture and implementation plan required no adjustment.
+
+#### Validation evidence
+
+The completed validation matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 tests, 0 failures;
+- `Rscript tests/run-phase1-tests.R` — 14 tests, 0 failures;
+- `Rscript operations/validate.R --mode development` — 14 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 21 checks, 0 issues;
+- all 15 maintained R files, including the `renv` activation bootstrap, parsed
+  successfully in a clean R process;
+- all three maintained YAML specification examples parsed and conformed;
+- malformed YAML and unsupported format/version fixtures failed with
+  structured issues as expected;
+- repository policy checks found no machine-specific path, executable sibling
+  dependency, secret pattern, unlabelled patient-like fixture, or later-phase
+  scaffold; and
+- untracked-file-aware whitespace validation and `git diff --check` passed.
+
+Validation used only temporary fixtures and did not modify the sibling
+repository. No commit or push was performed.
+
+#### Implications for Phase 2
+
+- Every canonical domain and bundle specification must use the common envelope
+  and keep format version separate from its own meaning version.
+- Reference defaults must remain visibly reference-scoped and cannot become
+  universal required domains by example.
+- Phase 2 must define domain capability IDs while preserving the four status
+  meanings and safe unavailable behavior.
+- Canonical time fields must distinguish occurrence and recorded/available
+  semantics while accepting the run's one authoritative as-of cutoff.
+- Bundle and domain validation should extend the structured multi-issue result
+  instead of throwing first-error strings or implying clinical validity.
+- Implementation/mapping identity and minimal provenance references must be
+  carried without hard-coding R, SQL, dbt, Python, Git, or filesystem paths.
+- Phase 2 should design bundle representation cleanly and revisit old domain
+  semantics just in time; it must not inherit the seven-domain R-list shape.
+
+#### Recommended next task
+
+Begin a bounded **Phase 2 / Iteration 2.1 — Canonical capability and bundle
+identity foundation**: define the generic canonical bundle envelope, domain
+registration/identity, capability declaration rules, and event-versus-recorded
+time invariants using only generic nonclinical fixtures. Defer the first actual
+clinical-domain field schemas to the following iteration so bundle and
+capability semantics can be reviewed independently.

@@ -42,9 +42,10 @@ owned, documented, and tested in this repository with no sibling dependency.
 
 Keep work within the active phase and its stated exit evidence. Do not create
 later-phase scaffolding merely to make the tree look complete. In particular,
-do not add runtime code, domain contracts, `renv`, package scaffolding,
+do not add runtime code, canonical domain contracts, package scaffolding,
 synthetic generation, providers, persistence, products, app code, deployment,
-or CI/CD before the relevant task authorizes it.
+or CI/CD before the relevant task authorizes it. The current `renv` state owns
+only the Phase 1 YAML parser dependency.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -109,7 +110,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For a declared Phase 0 milestone, run:
+For the current Phase 1 foundation milestone, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -128,6 +129,12 @@ Tests should cover success and failure, identity and relationship integrity,
 temporal availability and terminal behavior, deterministic promises,
 compatibility, standardized outputs, and safe unsupported behavior as
 applicable.
+
+Machine-readable platform specifications use the common YAML envelope and
+identity vocabulary documented in
+`docs/architecture/specification-foundation.md`. Run focused specification
+tests with `Rscript tests/run-phase1-tests.R`. Do not introduce canonical
+clinical-domain fields while changing the foundation vocabulary.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

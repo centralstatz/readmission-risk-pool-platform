@@ -12,17 +12,20 @@ before looking for software that does not exist yet.
    prohibited.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — how the empty repository becomes a working platform in coherent phases.
-4. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+4. [Specification Foundation](architecture/specification-foundation.md) and
+   [Platform Specifications](../contracts/README.md) — the current common
+   envelope, identity/time vocabulary, and machine-readable examples.
+5. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-5. [Open Decisions](architecture/open-decisions.md) — choices that require
+6. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-6. [Platform Implementation Record](architecture/platform-implementation-record.md)
+7. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-7. [Implementation Conventions](development/implementation-conventions.md) and
+8. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-8. [Repository Development Policies](development/repository-policies.md) for
+9. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-9. [Operations](operations/README.md) for the supported human operation and
+10. [Operations](operations/README.md) for the supported human operation and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

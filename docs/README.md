@@ -14,6 +14,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   layers, interfaces, structure, dependencies, and prohibited dependencies.
 - [Platform Implementation Plan](architecture/platform-implementation-plan.md)
   — phased clean-build sequence and exit evidence.
+- [Specification Foundation](architecture/specification-foundation.md) — common
+  YAML envelope, compatibility, identity, time, conformance, and diagnostic
+  vocabulary.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -34,7 +37,12 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Operations Index](operations/README.md) — currently supported human
   operations.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0 test commands.
+  documentation, and Phase 0/1 test commands.
+
+## Specifications
+
+- [Platform Specifications](../contracts/README.md) — machine-readable
+  foundation vocabulary and generic nonclinical examples.
 
 ## Repository guidance
 

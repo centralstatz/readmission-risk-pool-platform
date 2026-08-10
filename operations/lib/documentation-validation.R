@@ -13,13 +13,15 @@ rrp_required_governing_documents <- function() {
     "docs/vision/platform-true-north.md",
     "docs/architecture/platform-architecture.md",
     "docs/architecture/platform-implementation-plan.md",
+    "docs/architecture/specification-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
     "docs/development/implementation-conventions.md",
     "docs/development/repository-policies.md",
     "docs/operations/README.md",
-    "docs/operations/validation.md"
+    "docs/operations/validation.md",
+    "contracts/README.md"
   )
 }
 
@@ -32,8 +34,10 @@ rrp_navigation_expectations <- function() {
       "docs/vision/platform-true-north.md",
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/specification-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
-      "docs/architecture/platform-implementation-record.md"
+      "docs/architecture/platform-implementation-record.md",
+      "contracts/README.md"
     ),
     "docs/README.md" = c(
       "README.md",
@@ -42,24 +46,28 @@ rrp_navigation_expectations <- function() {
       "docs/vision/platform-true-north.md",
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/specification-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
       "docs/development/implementation-conventions.md",
       "docs/development/repository-policies.md",
-      "docs/operations/README.md"
+      "docs/operations/README.md",
+      "contracts/README.md"
     ),
     "docs/START-HERE.md" = c(
       "AGENTS.md",
       "docs/vision/platform-true-north.md",
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/specification-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
       "docs/development/implementation-conventions.md",
       "docs/development/repository-policies.md",
-      "docs/operations/README.md"
+      "docs/operations/README.md",
+      "contracts/README.md"
     ),
     "docs/vision/platform-true-north.md" = c(
       "docs/architecture/platform-architecture.md",
@@ -74,6 +82,12 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/reference-asset-reconciliation.md"
+    ),
+    "docs/architecture/specification-foundation.md" = c(
+      "docs/vision/platform-true-north.md",
+      "docs/architecture/platform-architecture.md",
+      "docs/architecture/platform-implementation-plan.md",
+      "contracts/README.md"
     ),
     "docs/architecture/platform-implementation-record.md" = c(
       "docs/vision/platform-true-north.md",
@@ -92,7 +106,10 @@ rrp_markdown_files <- function(repository_root) {
     full.names = TRUE,
     all.files = TRUE
   )
-  files[!grepl("(^|/)[.]git/", files)]
+  excluded <- paste0(
+    "(^|/)([.]git|renv/(library|local|cellar|lock|python|sandbox|staging))/"
+  )
+  files[!grepl(excluded, files)]
 }
 
 rrp_extract_markdown_links <- function(path, repository_root) {

@@ -1,0 +1,53 @@
+# Generic, nonclinical example of shared identity and time concepts.
+specification_kind: foundation_example
+specification_id: reference.identity-context-example
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Example identity and context declaration
+status: experimental
+description: >-
+  Teaching fixture for common platform identities. It does not define a
+  canonical domain or clinically meaningful data.
+
+example:
+  as_of_context:
+    # The authoritative information cutoff for this example run.
+    as_of_time: "2026-08-09T15:00:00Z"
+    source_extracted_at: "2026-08-09T15:04:00Z"
+    generated_at: "2026-08-09T15:05:00Z"
+    executed_at: "2026-08-09T15:05:30Z"
+
+  implementation_identity:
+    implementation_id: reference.generic-source-example
+    implementation_version: "0.1.0"
+
+  mapping_identity:
+    mapping_id: reference.generic-mapping-example
+    mapping_version: "0.1.0"
+
+  run_context:
+    run_id: run_example_20260809_001
+    operation_id: validate_specifications
+    as_of_time: "2026-08-09T15:00:00Z"
+
+  capability_declaration:
+    capability_id: reference.example-capability
+    status: available
+
+  provenance_reference:
+    provenance_type: specification_source
+    provenance_id: provenance_example_001
+    relationship: authored_from
+    version_or_revision: "0.1.0"
+
+  diagnostic_envelope:
+    event_timestamp: "2026-08-09T15:05:31Z"
+    run_id: run_example_20260809_001
+    operation_id: validate_specifications
+    component: specification_validation
+    stage: envelope_validation
+    severity: info
+    status: succeeded
+    diagnostic_code: specification_valid
+    message: Example specification envelope conformed.

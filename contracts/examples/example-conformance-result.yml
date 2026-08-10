@@ -1,0 +1,33 @@
+# Generic fixture showing multiple structured conformance findings.
+specification_kind: conformance_result_example
+specification_id: reference.conformance-result-example
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Example structured conformance result
+status: experimental
+description: >-
+  Software-contract result fixture. Failure here says nothing about clinical
+  validity, calibration, safety, fairness, effectiveness, or approval.
+
+example:
+  overall_status: fail
+  candidate:
+    specification_kind: foundation_example
+    specification_id: reference.invalid-candidate-example
+    specification_version: "0.1.0"
+  evaluated_against:
+    specification_kind: specification_envelope
+    specification_id: platform.specification-envelope
+    specification_version: "1.0.0"
+  issues:
+    - rule_id: envelope.required_fields
+      severity: error
+      issue_code: missing_specification_id
+      message: Required field specification_id is missing.
+      object_path: $.specification_id
+    - rule_id: envelope.description
+      severity: warning
+      issue_code: description_recommended
+      message: A concise description would improve this specification.
+      object_path: $.description

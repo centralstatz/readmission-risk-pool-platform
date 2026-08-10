@@ -13,7 +13,13 @@ rrp_repository_files <- function(repository_root) {
     include.dirs = FALSE,
     no.. = TRUE
   )
-  excluded <- grepl("^([.]git|build|[.]cache|[.]tmp|tmp)(/|$)", files)
+  excluded <- grepl(
+    paste0(
+      "^([.]git|build|[.]cache|[.]tmp|tmp|",
+      "renv/(library|local|cellar|lock|python|sandbox|staging))(/|$)"
+    ),
+    files
+  )
   files[!excluded]
 }
 
@@ -272,7 +278,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
   )
 
   deferred_directories <- c(
-    "contracts", "implementations", "runtime", "products", "app", "deploy", "config"
+    "implementations", "runtime", "products", "app", "deploy", "config"
   )
   premature <- deferred_directories[
     dir.exists(file.path(repository_root, deferred_directories))
@@ -284,20 +290,9 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     )
   }
 
-  deferred_dependency_files <- c("renv.lock", ".Rprofile", "renv")
-  premature_dependencies <- deferred_dependency_files[
-    file.exists(file.path(repository_root, deferred_dependency_files)) |
-      dir.exists(file.path(repository_root, deferred_dependency_files))
-  ]
-  for (path in premature_dependencies) {
-    issues[[length(issues) + 1L]] <- rrp_issue(
-      "phase0_scope", "premature_dependency_state",
-      "Dependency locking is deferred because Phase 0 uses base R only.", path
-    )
-  }
   checks[[length(checks) + 1L]] <- rrp_check(
-    "phase0_scope", length(premature) + length(premature_dependencies) == 0L,
-    "no later-phase scaffolding or dependency lock"
+    "phase0_scope", length(premature) == 0L,
+    "no later-phase implementation scaffolding"
   )
 
   license_path <- file.path(repository_root, "LICENSE-STATUS.md")
@@ -330,7 +325,8 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/validate-documentation.R",
     "Rscript operations/validate.R --mode development",
     "Rscript operations/validate.R --mode checkpoint",
-    "Rscript tests/run-phase0-tests.R"
+    "Rscript tests/run-phase0-tests.R",
+    "Rscript tests/run-phase1-tests.R"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")

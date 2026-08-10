@@ -1,0 +1,48 @@
+# Common controlled values for future platform specifications.
+specification_kind: foundation_vocabulary
+specification_id: platform.foundation-vocabulary
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Platform foundation vocabulary
+status: active
+description: >-
+  Shared identity and result vocabulary used before domain-specific contracts
+  are introduced.
+
+vocabulary:
+  identity_scopes:
+    - platform
+    - reference
+    - implementation
+
+  specification_statuses:
+    - experimental
+    - active
+    - deprecated
+    - retired
+
+  capability_statuses:
+    - available
+    - unavailable
+    - unsupported
+    - failed_conformance
+
+  conformance_statuses:
+    - pass
+    - fail
+
+  check_statuses:
+    - pass
+    - fail
+    - not_applicable
+
+  severities:
+    - info
+    - warning
+    - error
+
+  diagnostic_statuses:
+    - started
+    - succeeded
+    - failed

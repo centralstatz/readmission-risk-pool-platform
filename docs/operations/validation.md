@@ -2,15 +2,16 @@
 
 ## Purpose
 
-Phase 0 validation answers two different questions:
+Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the currently declared
-  Phase 0 milestone requirements?
+  Phase 1 specification-foundation milestone requirements?
 
 Development success is not release, deployment, publication, product, contract,
-or clinical readiness. Checkpoint success is also limited to Phase 0; later
+or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
+foundation and Phase 1 specification foundation; later
 phases will add stricter component-specific claims only when those components
 exist.
 
@@ -18,7 +19,8 @@ exist.
 
 - R available through `Rscript`.
 - A local checkout of this repository.
-- No external R packages.
+- The repository's locked R environment restored with
+  `Rscript -e 'renv::restore()'`. The current external dependency is `yaml`.
 
 Run commands from the repository root. The scripts resolve the root from their
 own location, so they do not depend on a sibling repository or a
@@ -38,7 +40,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the Phase 0 milestone:
+Validate the current Phase 1 foundation checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -48,6 +50,12 @@ Run the focused Phase 0 tests directly:
 
 ```sh
 Rscript tests/run-phase0-tests.R
+```
+
+Run the focused Phase 1 tests directly:
+
+```sh
+Rscript tests/run-phase1-tests.R
 ```
 
 Each command exits with status `0` on success and nonzero status on failure.
@@ -76,7 +84,8 @@ Development mode composes:
 - portable paths in executable and configuration content;
 - obvious secret filenames and common token/private-key patterns;
 - visible fictional classification for patient-like committed fixtures; and
-- all Phase 0 temporary-fixture tests.
+- specification-envelope and foundation-example conformance; and
+- all Phase 0 and Phase 1 temporary-fixture tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -85,16 +94,18 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0 metadata, policy, operation, and test files;
-- absence of later-phase architecture directories;
-- absence of `renv` state while the repository has no external dependencies;
+- required Phase 0 and Phase 1 metadata, policy, operation, specification, and
+  test files;
+- absence of later-phase implementation and canonical-domain scaffolding;
+- an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0 contract. It does not prove:
+This is strict only relative to the Phase 0/1 foundation contract. It does not
+prove:
 
 - public release or license readiness;
-- canonical contract or implementation conformance;
+- canonical clinical-domain contract or implementation conformance;
 - runtime, provider, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
@@ -124,7 +135,10 @@ observability, provenance, metrics, or audit system.
   weaken the detector to retain sensitive material.
 - **Unlabelled patient-like fixture:** Replace it with deterministic fictional
   values and add a visible fictional, synthetic, or nonclinical classification.
-- **Premature Phase 0 content:** Remove the later-phase scaffold unless the
+- **Malformed or unsupported specification:** Correct YAML syntax, restore the
+  required envelope field, or select an explicitly supported format/specification
+  version. Do not silently coerce an unknown contract.
+- **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 
 After correction, rerun the same command. Do not use development validation to

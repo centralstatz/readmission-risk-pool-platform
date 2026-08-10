@@ -2,10 +2,10 @@
 
 ## Purpose
 
-These Phase 0 policies establish only the bookkeeping and development-safety
-rules needed before domain contracts and runtime software exist. Phase 1 will
-define compatibility and specification-version vocabulary; Phase 11 will
-establish release governance.
+These policies establish the bookkeeping and development-safety rules needed
+before domain contracts and runtime software exist. Phase 1 defines the common
+specification and pre-1.0 compatibility vocabulary; Phase 11 will establish
+release governance.
 
 ## Licensing and release status
 
@@ -28,14 +28,15 @@ Keep these concepts distinct:
 - **Platform/software version:** No supported software release exists in Phase
   0, so no platform version is declared yet. Introduce one when executable
   platform identity requires it; mature release rules belong to Phase 11.
-- **Contract/specification version:** A public contract owns its version only
-  when its implementation phase creates that contract. Phase 0 does not assign
-  versions to future canonical, estimand, provider, record, or product
-  specifications.
-- **Compatibility change:** Until Phase 1 defines pre-1.0 compatibility
-  vocabulary, record the user-visible effect and any migration consequence in
-  the implementation record. Do not infer compatibility solely from filenames
-  or Git history.
+- **Contract/specification version:** Every current or future specification
+  owns a SemVer meaning version distinct from the common format version. The
+  [Specification Foundation](../architecture/specification-foundation.md)
+  defines the envelope and pre-1.0 policy. Future domain phases own their
+  specific contract versions.
+- **Compatibility change:** Classify compatibility against explicit consumer
+  support and the Phase 1 pre-1.0 policy. Record semantic effect and migration
+  consequences in the implementation record; never infer compatibility solely
+  from filenames or Git history.
 
 Pre-1.0 work may change rapidly, but changes remain deliberate, documented, and
 tested. This convention is bookkeeping, not a promise of compatibility.
@@ -73,10 +74,11 @@ Text fixtures that appear patient-level—for example, files with fields such as
 `fictional`, `synthetic`, or `nonclinical` classification. Binary fixture
 formats require a documented sidecar policy before they may be committed.
 
-Phase 0 tests use base R and run with:
+Phase-specific tests run with:
 
 ```sh
 Rscript tests/run-phase0-tests.R
+Rscript tests/run-phase1-tests.R
 ```
 
 Later unit, conformance, integration, and end-to-end suites may use additional
@@ -84,7 +86,14 @@ structure or dependencies when their owning phase justifies them.
 
 ## Dependency state
 
-Phase 0 uses only base R. No external package dependency exists, so `renv` is
-not initialized. When executable work first introduces a justified external
-dependency, establish this repository's dependency state independently; never
-copy a lockfile from the sibling reference repository.
+Phase 1 uses the `yaml` package to read the selected language-neutral
+specification format. The repository therefore owns an independently created
+`renv.lock` and activation state; no dependency file was copied from the
+sibling reference repository. Restore the locked environment with:
+
+```sh
+Rscript -e 'renv::restore()'
+```
+
+Add a dependency only when current executable behavior uses it. Update the
+lockfile, documentation, tests, and implementation record together.

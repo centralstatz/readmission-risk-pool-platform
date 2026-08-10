@@ -3,8 +3,9 @@
 This index lists operations that exist and are supported now. It does not
 reserve names or document hypothetical future capabilities.
 
-- [Validation](validation.md) — validate maintained documentation, run Phase 0
-  tests, check repository policies, and evaluate the Phase 0 checkpoint.
+- [Validation](validation.md) — validate maintained documentation and
+  specification assets, run Phase 0/1 tests, check repository policies, and
+  evaluate the current Phase 1 foundation checkpoint.
 
 Human documentation is the authoritative operating interface. Scripts, agents,
 and automation must invoke the same callable behavior described here.

@@ -57,6 +57,43 @@ rrp_run_phase0_tests <- function(repository_root) {
   rrp_validation_result("Phase 0 tests", checks, issues)
 }
 
+rrp_run_phase1_tests <- function(repository_root) {
+  output <- tempfile("rrp-phase1-tests-", fileext = ".log")
+  on.exit(unlink(output, force = TRUE), add = TRUE)
+
+  rscript <- file.path(R.home("bin"), "Rscript")
+  test_script <- file.path(repository_root, "tests", "run-phase1-tests.R")
+  status <- system2(
+    rscript,
+    shQuote(test_script),
+    stdout = output,
+    stderr = output
+  )
+  lines <- if (file.exists(output)) readLines(output, warn = FALSE) else character()
+  passed <- identical(status, 0L)
+  result_lines <- lines[grepl("^Result:", lines)]
+
+  checks <- rrp_check(
+    "phase1_tests", passed,
+    if (passed) {
+      if (length(result_lines) > 0L) tail(result_lines, 1L) else "Phase 1 tests passed"
+    } else {
+      "Phase 1 test process failed"
+    }
+  )
+  issues <- if (passed) {
+    rrp_empty_issues()
+  } else {
+    detail <- paste(tail(lines, 12L), collapse = " | ")
+    rrp_issue(
+      "phase1_tests", "phase1_test_failure",
+      paste("Run Rscript tests/run-phase1-tests.R for details.", detail),
+      "tests/run-phase1-tests.R"
+    )
+  }
+  rrp_validation_result("Phase 1 tests", checks, issues)
+}
+
 rrp_validate_platform <- function(repository_root, mode) {
   if (!mode %in% rrp_validation_modes()) {
     stop("Unknown validation mode: ", mode, call. = FALSE)
@@ -65,16 +102,25 @@ rrp_validate_platform <- function(repository_root, mode) {
   results <- list(
     rrp_validate_documentation(repository_root),
     rrp_validate_repository_policies(repository_root),
-    rrp_run_phase0_tests(repository_root)
+    rrp_validate_specification_repository(repository_root),
+    rrp_run_phase0_tests(repository_root),
+    rrp_run_phase1_tests(repository_root)
   )
   if (identical(mode, "checkpoint")) {
-    results <- append(results, list(rrp_validate_phase0_checkpoint(repository_root)), after = 2L)
+    results <- append(
+      results,
+      list(
+        rrp_validate_phase0_checkpoint(repository_root),
+        rrp_validate_phase1_checkpoint(repository_root)
+      ),
+      after = 3L
+    )
   }
 
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Phase 0 strict checkpoint validation"
+    "Phase 1 strict checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }
