@@ -1,0 +1,64 @@
+# Generic temporal violations; no clinical event fields are implied.
+specification_kind: canonical_bundle_example
+specification_id: reference.canonical-bundle-temporal-failure
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Temporal availability failure
+status: experimental
+description: >-
+  Expected-failure fixture for impossible ordering and information unavailable
+  at the bundle cutoff.
+
+expected_conformance:
+  overall_status: fail
+  issue_codes:
+    - availability_before_occurrence
+    - information_after_as_of
+
+bundle_instance:
+  bundle_instance_id: reference_bundle_temporal_failure_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_bundle_temporal_failure_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-08-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.generic-source
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.generic-mapping
+    mapping_version: "0.1.0"
+  domains:
+    - domain_id: reference.event
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.event-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_event_temporal_001
+      temporal_declaration:
+        occurrence_field: occurred_at
+        availability_field: available_at
+        availability_order: not_before_occurrence
+  capabilities: []
+  dependencies: []
+  provenance_references:
+    - provenance_type: mapping_evidence
+      provenance_id: provenance_temporal_example_001
+      relationship: produced_by
+  reference_test_realization:
+    realization_kind: embedded_records
+    domain_payloads:
+      - domain_instance_id: domain_event_temporal_001
+        records:
+          - record_id: generic_event_bad_order_001
+            occurred_at: "2026-08-10T10:00:00Z"
+            available_at: "2026-08-10T09:59:00Z"
+          - record_id: generic_event_future_availability_001
+            occurred_at: "2026-08-10T11:00:00Z"
+            available_at: "2026-08-10T12:01:00Z"

@@ -13,19 +13,21 @@ before looking for software that does not exist yet.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — how the empty repository becomes a working platform in coherent phases.
 4. [Specification Foundation](architecture/specification-foundation.md) and
-   [Platform Specifications](../contracts/README.md) — the current common
-   envelope, identity/time vocabulary, and machine-readable examples.
-5. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+   [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md)
+   — the common identity vocabulary and current generic handoff semantics.
+5. [Platform Specifications](../contracts/README.md) — machine-readable
+   contracts and nonclinical conformance examples.
+6. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-6. [Open Decisions](architecture/open-decisions.md) — choices that require
+7. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-7. [Platform Implementation Record](architecture/platform-implementation-record.md)
+8. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-8. [Implementation Conventions](development/implementation-conventions.md) and
+9. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-9. [Repository Development Policies](development/repository-policies.md) for
+10. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-10. [Operations](operations/README.md) for the supported human operation and
+11. [Operations](operations/README.md) for the supported human operation and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

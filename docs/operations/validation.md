@@ -7,11 +7,12 @@ Current validation answers two different questions:
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the currently declared
-  Phase 1 specification-foundation milestone requirements?
+  Phase 2.1 canonical-bundle foundation milestone requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
-foundation and Phase 1 specification foundation; later
+foundation, Phase 1 specification foundation, and Phase 2.1 generic canonical
+handoff; later
 phases will add stricter component-specific claims only when those components
 exist.
 
@@ -40,7 +41,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the current Phase 1 foundation checkpoint:
+Validate the current Phase 2.1 foundation checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -56,6 +57,12 @@ Run the focused Phase 1 tests directly:
 
 ```sh
 Rscript tests/run-phase1-tests.R
+```
+
+Run the focused Phase 2 tests directly:
+
+```sh
+Rscript tests/run-phase2-tests.R
 ```
 
 Each command exits with status `0` on success and nonzero status on failure.
@@ -84,8 +91,9 @@ Development mode composes:
 - portable paths in executable and configuration content;
 - obvious secret filenames and common token/private-key patterns;
 - visible fictional classification for patient-like committed fixtures; and
-- specification-envelope and foundation-example conformance; and
-- all Phase 0 and Phase 1 temporary-fixture tests.
+- specification-envelope, foundation-example, and canonical-bundle example
+  conformance; and
+- all Phase 0, Phase 1, and Phase 2 temporary-fixture tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -94,18 +102,19 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0 and Phase 1 metadata, policy, operation, specification, and
-  test files;
-- absence of later-phase implementation and canonical-domain scaffolding;
+- required Phase 0, Phase 1, and Phase 2.1 metadata, policy, operation,
+  specification, and test files;
+- absence of readmission-specific clinical-domain schemas and later-phase
+  implementation scaffolding;
 - an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0/1 foundation contract. It does not
-prove:
+This is strict only relative to the Phase 0–2.1 foundation contracts. It does
+not prove:
 
 - public release or license readiness;
-- canonical clinical-domain contract or implementation conformance;
+- readmission-specific canonical clinical-domain or producer conformance;
 - runtime, provider, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
@@ -138,6 +147,10 @@ observability, provenance, metrics, or audit system.
 - **Malformed or unsupported specification:** Correct YAML syntax, restore the
   required envelope field, or select an explicitly supported format/specification
   version. Do not silently coerce an unknown contract.
+- **Canonical bundle conformance:** Correct bundle/instance identity,
+  requirement/status declarations, dependency references, or temporal
+  availability. Expected-failure examples must retain their declared issue
+  codes.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

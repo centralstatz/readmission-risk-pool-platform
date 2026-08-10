@@ -1,0 +1,121 @@
+# Generic public container semantics for a canonical implementation handoff.
+specification_kind: canonical_bundle
+specification_id: platform.canonical-bundle
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Canonical bundle identity and capability contract
+status: active
+description: >-
+  Representation-independent identity, registration, capability, dependency,
+  temporal, and conformance semantics. No clinical-domain fields are defined.
+
+foundation_vocabulary:
+  specification_kind: foundation_vocabulary
+  specification_id: platform.foundation-vocabulary
+  specification_version: "0.1.0"
+
+bundle_instance:
+  required_fields:
+    - bundle_instance_id
+    - bundle_specification
+    - run_context
+    - implementation_identity
+    - mapping_identity
+    - domains
+    - capabilities
+    - dependencies
+    - provenance_references
+
+domain_registration:
+  required_fields:
+    - domain_id
+    - domain_specification
+    - requirement_class
+    - status
+  instance_identity_field: domain_instance_id
+  capability_association_field: capability_ids
+  temporal_declaration_field: temporal_declaration
+
+capability_declaration:
+  required_fields:
+    - capability_id
+    - requirement_class
+    - status
+  domain_association_field: domain_ids
+
+controlled_values:
+  requirement_classes:
+    - required
+    - conditional
+    - optional
+  availability_statuses:
+    # These values are owned by the Phase 1 foundation vocabulary.
+    - available
+    - unavailable
+    - unsupported
+    - failed_conformance
+  dependency_subject_types:
+    - domain
+    - capability
+  condition_subject_types:
+    - domain
+    - capability
+  temporal_order_rules:
+    - not_before_occurrence
+    - no_order_constraint
+
+dependency_declaration:
+  required_fields:
+    - dependency_id
+    - subject_type
+    - subject_id
+    - prerequisite_type
+    - prerequisite_id
+  rule: >-
+    An available subject requires an available declared prerequisite. Initial
+    dependencies relate domain to domain or capability to capability only.
+
+conditional_requirement:
+  required_fields:
+    - subject_type
+    - subject_id
+    - required_status
+  supported_required_status: available
+  rule: >-
+    The conditional item becomes required when the declared subject has the
+    stated status. This is declarative metadata, not executable YAML.
+
+temporal_declaration:
+  required_fields:
+    - occurrence_field
+    - availability_field
+    - availability_order
+  invariant: >-
+    Information may not influence a run when its declared availability time is
+    later than the bundle as-of time. A domain may additionally prohibit
+    availability before occurrence.
+
+conformance_layers:
+  - implementation_local_source
+  - domain
+  - bundle_structure
+  - cross_domain_and_capability
+  - platform_admission
+
+conformance_failure_categories:
+  source_local_validation_failed: implementation_local_source
+  mapping_failed: implementation_local_source
+  domain_specification_failed: domain
+  bundle_structure_invalid: bundle_structure
+  dependency_failed: cross_domain_and_capability
+  capability_claim_failed: cross_domain_and_capability
+  unavailable_capability: cross_domain_and_capability
+  unsupported_capability: cross_domain_and_capability
+  conforming_bundle: platform_admission
+
+reference_test_realization:
+  status: test_only
+  description: >-
+    Examples may embed records keyed by domain_instance_id solely to exercise
+    temporal rules. This realization is not the public representation API.

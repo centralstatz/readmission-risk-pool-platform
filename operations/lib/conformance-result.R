@@ -47,11 +47,16 @@ rrp_conformance_issue <- function(
 
 rrp_candidate_identity <- function(candidate) {
   if (!is.list(candidate)) return(list())
-  list(
+  identity <- list(
     specification_kind = candidate$specification_kind %||% NULL,
     specification_id = candidate$specification_id %||% NULL,
     specification_version = candidate$specification_version %||% NULL
   )
+  if (!is.null(candidate$bundle_instance_id)) {
+    identity$bundle_instance_id <- candidate$bundle_instance_id
+    identity$bundle_specification <- candidate$bundle_specification %||% NULL
+  }
+  identity
 }
 
 rrp_conformance_result <- function(candidate, evaluated_against, issues) {

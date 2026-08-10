@@ -326,7 +326,8 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/validate.R --mode development",
     "Rscript operations/validate.R --mode checkpoint",
     "Rscript tests/run-phase0-tests.R",
-    "Rscript tests/run-phase1-tests.R"
+    "Rscript tests/run-phase1-tests.R",
+    "Rscript tests/run-phase2-tests.R"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")

@@ -1,0 +1,51 @@
+# Absence is declared; no empty table, fake row, or zero value is supplied.
+specification_kind: canonical_bundle_example
+specification_id: reference.canonical-bundle-unavailable-optional
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Valid unavailable optional capability
+status: experimental
+description: Generic example of contextual unavailability without fabrication.
+
+expected_conformance:
+  overall_status: pass
+  issue_codes: []
+
+bundle_instance:
+  bundle_instance_id: reference_bundle_unavailable_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_bundle_unavailable_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-08-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.generic-source
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.generic-mapping
+    mapping_version: "0.1.0"
+  domains:
+    - domain_id: reference.optional-feature
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.optional-feature-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: unavailable
+      capability_ids:
+        - reference.optional-feature
+  capabilities:
+    - capability_id: reference.optional-feature
+      requirement_class: optional
+      status: unavailable
+      domain_ids:
+        - reference.optional-feature
+  dependencies: []
+  provenance_references:
+    - provenance_type: implementation_evidence
+      provenance_id: provenance_unavailable_example_001
+      relationship: declared_by

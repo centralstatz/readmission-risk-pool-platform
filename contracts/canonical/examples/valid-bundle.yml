@@ -1,0 +1,116 @@
+# Generic nonclinical bundle using the test-only embedded-record realization.
+specification_kind: canonical_bundle_example
+specification_id: reference.canonical-bundle-valid
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Valid generic canonical bundle
+status: experimental
+description: >-
+  A representation-independent handoff fixture with generic entity, event,
+  and optional-feature domains.
+
+expected_conformance:
+  overall_status: pass
+  issue_codes: []
+
+bundle_instance:
+  bundle_instance_id: reference_bundle_valid_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_bundle_valid_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-08-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.generic-source
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.generic-mapping
+    mapping_version: "0.1.0"
+
+  domains:
+    - domain_id: reference.entity
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.entity-domain
+        specification_version: "0.1.0"
+      requirement_class: required
+      status: available
+      domain_instance_id: domain_entity_001
+      capability_ids:
+        - reference.entity-access
+    - domain_id: reference.event
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.event-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_event_001
+      capability_ids:
+        - reference.timeline
+      temporal_declaration:
+        occurrence_field: occurred_at
+        availability_field: available_at
+        availability_order: not_before_occurrence
+    - domain_id: reference.optional-feature
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.optional-feature-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_feature_001
+      capability_ids:
+        - reference.optional-feature
+
+  capabilities:
+    - capability_id: reference.entity-access
+      requirement_class: required
+      status: available
+      domain_ids:
+        - reference.entity
+    - capability_id: reference.timeline
+      requirement_class: optional
+      status: available
+      domain_ids:
+        - reference.event
+    - capability_id: reference.optional-feature
+      requirement_class: optional
+      status: available
+      domain_ids:
+        - reference.optional-feature
+
+  dependencies:
+    - dependency_id: reference.event-requires-entity
+      subject_type: domain
+      subject_id: reference.event
+      prerequisite_type: domain
+      prerequisite_id: reference.entity
+    - dependency_id: reference.timeline-requires-entity-access
+      subject_type: capability
+      subject_id: reference.timeline
+      prerequisite_type: capability
+      prerequisite_id: reference.entity-access
+
+  provenance_references:
+    - provenance_type: mapping_evidence
+      provenance_id: provenance_mapping_example_001
+      relationship: produced_by
+      version_or_revision: "0.1.0"
+  conformance_result_references:
+    - provenance_type: conformance_result
+      provenance_id: producer_conformance_example_001
+      relationship: producer_reported
+
+  reference_test_realization:
+    realization_kind: embedded_records
+    domain_payloads:
+      - domain_instance_id: domain_event_001
+        records:
+          - record_id: generic_event_001
+            occurred_at: "2026-08-10T09:00:00Z"
+            available_at: "2026-08-10T09:05:00Z"

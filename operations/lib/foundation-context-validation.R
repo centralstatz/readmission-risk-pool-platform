@@ -554,7 +554,7 @@ rrp_validate_phase1_checkpoint <- function(repository_root) {
   )
 
   canonical_paths <- c(
-    "contracts/schemas", "contracts/canonical", "contracts/domains"
+    "contracts/schemas", "contracts/domains"
   )
   later_directories <- c(
     "implementations", "runtime", "products", "app", "deploy", "config"

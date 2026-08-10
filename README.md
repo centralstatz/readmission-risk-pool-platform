@@ -14,13 +14,14 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 1 specification and identity foundation.** The repository contains the
-governing architecture and plan, the common YAML specification envelope,
-pre-1.0 compatibility policy, foundational identity and time vocabulary,
-generic nonclinical examples, and executable conformance checks. No canonical
-clinical-domain contract, substantive platform runtime, synthetic generator,
-provider, persistence layer, product builder, Shiny application, deployment
-tooling, or CI/CD has been implemented here yet.
+**Phase 2.1 generic canonical handoff foundation.** The repository contains the
+common YAML specification envelope, pre-1.0 compatibility policy, foundational
+identity/time vocabulary, and a representation-independent canonical bundle
+contract with domain registration, capability, dependency, and temporal
+conformance examples. No readmission-specific canonical-domain field contract,
+substantive platform runtime, synthetic generator, provider, persistence layer,
+product builder, Shiny application, deployment tooling, or CI/CD has been
+implemented here yet.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -47,11 +48,13 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 3. Read the [Implementation Plan](docs/architecture/platform-implementation-plan.md)
    for the clean-build phases.
 4. Read the [Specification Foundation](docs/architecture/specification-foundation.md)
-   and [platform specifications](contracts/README.md) for the current
-   executable contract vocabulary.
-5. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+   for the shared contract vocabulary.
+5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md)
+   and [platform specifications](contracts/README.md) for the current generic
+   handoff contract.
+6. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-6. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+7. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -67,7 +70,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the current Phase 1 foundation checkpoint with:
+Evaluate the current Phase 2.1 foundation checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

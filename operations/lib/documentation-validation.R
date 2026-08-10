@@ -14,6 +14,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/platform-architecture.md",
     "docs/architecture/platform-implementation-plan.md",
     "docs/architecture/specification-foundation.md",
+    "docs/architecture/canonical-bundle-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -35,6 +36,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
       "docs/architecture/specification-foundation.md",
+      "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -47,6 +49,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
       "docs/architecture/specification-foundation.md",
+      "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -61,6 +64,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
       "docs/architecture/specification-foundation.md",
+      "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -89,11 +93,22 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-implementation-plan.md",
       "contracts/README.md"
     ),
+    "docs/architecture/canonical-bundle-foundation.md" = c(
+      "docs/vision/platform-true-north.md",
+      "docs/architecture/platform-architecture.md",
+      "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/specification-foundation.md",
+      "contracts/canonical/canonical-bundle.yml"
+    ),
     "docs/architecture/platform-implementation-record.md" = c(
       "docs/vision/platform-true-north.md",
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
       "docs/architecture/reference-asset-reconciliation.md"
+    ),
+    "contracts/README.md" = c(
+      "docs/architecture/specification-foundation.md",
+      "docs/architecture/canonical-bundle-foundation.md"
     )
   )
 }

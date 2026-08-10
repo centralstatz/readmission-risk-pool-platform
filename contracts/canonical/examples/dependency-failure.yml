@@ -1,0 +1,58 @@
+# An available subject cannot depend on an unavailable prerequisite.
+specification_kind: canonical_bundle_example
+specification_id: reference.canonical-bundle-dependency-failure
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Missing canonical domain prerequisite
+status: experimental
+description: Generic expected-failure fixture for a declared domain dependency.
+
+expected_conformance:
+  overall_status: fail
+  issue_codes:
+    - missing_available_prerequisite
+
+bundle_instance:
+  bundle_instance_id: reference_bundle_dependency_failure_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_bundle_dependency_failure_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-08-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.generic-source
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.generic-mapping
+    mapping_version: "0.1.0"
+  domains:
+    - domain_id: reference.entity
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.entity-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: unavailable
+    - domain_id: reference.event
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.event-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: available
+      domain_instance_id: domain_event_dependency_001
+  capabilities: []
+  dependencies:
+    - dependency_id: reference.event-requires-entity
+      subject_type: domain
+      subject_id: reference.event
+      prerequisite_type: domain
+      prerequisite_id: reference.entity
+  provenance_references:
+    - provenance_type: mapping_evidence
+      provenance_id: provenance_dependency_example_001
+      relationship: produced_by

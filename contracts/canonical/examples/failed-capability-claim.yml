@@ -1,0 +1,55 @@
+# The implementation claimed the capability, but its conformance failed.
+specification_kind: canonical_bundle_example
+specification_id: reference.canonical-bundle-failed-capability
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Failed capability claim
+status: experimental
+description: Generic expected-failure fixture for a false capability claim.
+
+expected_conformance:
+  overall_status: fail
+  issue_codes:
+    - failed_domain_conformance
+    - failed_capability_conformance
+
+bundle_instance:
+  bundle_instance_id: reference_bundle_failed_capability_001
+  bundle_specification:
+    specification_kind: canonical_bundle
+    specification_id: platform.canonical-bundle
+    specification_version: "0.1.0"
+  run_context:
+    run_id: run_bundle_failed_capability_001
+    operation_id: validate_canonical_bundle
+    as_of_time: "2026-08-10T12:00:00Z"
+  implementation_identity:
+    implementation_id: reference.generic-source
+    implementation_version: "0.1.0"
+  mapping_identity:
+    mapping_id: reference.generic-mapping
+    mapping_version: "0.1.0"
+  domains:
+    - domain_id: reference.optional-feature
+      domain_specification:
+        specification_kind: canonical_domain
+        specification_id: reference.optional-feature-domain
+        specification_version: "0.1.0"
+      requirement_class: optional
+      status: failed_conformance
+      # The instance remains attributable even though its data did not conform.
+      domain_instance_id: domain_feature_failed_001
+      capability_ids:
+        - reference.optional-feature
+  capabilities:
+    - capability_id: reference.optional-feature
+      requirement_class: optional
+      status: failed_conformance
+      domain_ids:
+        - reference.optional-feature
+  dependencies: []
+  provenance_references:
+    - provenance_type: conformance_result
+      provenance_id: provenance_failed_capability_001
+      relationship: reported_by

@@ -497,3 +497,193 @@ registration/identity, capability declaration rules, and event-versus-recorded
 time invariants using only generic nonclinical fixtures. Defer the first actual
 clinical-domain field schemas to the following iteration so bundle and
 capability semantics can be reviewed independently.
+
+## Phase 2 — Canonical implementation boundary
+
+### Iteration 2.1 — Canonical capability and bundle identity foundation (2026-08-10)
+
+#### Planned objective
+
+Define the generic, representation-independent canonical handoff container
+before selecting readmission-specific domains or fields. Reuse the Phase 1
+identity, compatibility, as-of, status, provenance, conformance, and diagnostic
+vocabulary; add only bundle/instance identity, domain registration,
+requirements, dependencies, and generic temporal-availability semantics.
+
+#### Actual implementation
+
+- Added `platform.canonical-bundle@0.1.0`, a language-neutral YAML contract for
+  bundle identity, independently versioned domain registration, capabilities,
+  requirement classes, typed dependencies, temporal declarations, and layered
+  conformance.
+- Distinguished the public bundle specification from one concrete
+  `bundle_instance_id` produced for a run and authoritative as-of cutoff.
+- Reused the Phase 1 `available`, `unavailable`, `unsupported`, and
+  `failed_conformance` statuses for both domain and capability declarations.
+- Defined `required`, `conditional`, and `optional` independently of status.
+  The first conditional form references one declared domain/capability and
+  `required_status: available`; it is not an expression language.
+- Defined unique, acyclic domain-to-domain and capability-to-capability
+  dependencies. An available subject requires an available prerequisite.
+- Prohibited unavailable/unsupported domains from claiming an instance,
+  preserving absence without fake rows, empty fabricated data, or zero values.
+- Carried run/as-of, implementation, mapping, provenance, and optional producer
+  conformance-result references without requiring Git, paths, hosts, R names,
+  database schemas, or storage technology.
+- Defined domain-owned occurrence/effective and availability/recorded field
+  roles. Generic conformance rejects impossible declared ordering and
+  information unavailable at the bundle cutoff without implementing runtime
+  filtering.
+- Added six readable generic nonclinical examples: valid, optional unavailable,
+  unsupported, failed capability claim, missing prerequisite, and temporal
+  failure.
+- Implemented focused bundle, registration, condition, dependency-graph,
+  provenance, temporal, maintained-example, repository, and Phase 2.1
+  checkpoint validators under the existing transitional `operations/lib/`
+  ownership.
+- Added eighteen Phase 2 success/failure tests and integrated canonical assets
+  plus Phase 0–2 regression suites into development/checkpoint validation.
+
+#### Reference assets inspected
+
+The clean generic design was drafted first. The following sibling assets were
+then inspected read-only:
+
+| Reference path | Prior classification | Final decision and actual use |
+|---|---|---|
+| `docs/architecture/canonical-bundle-boundary.md` | **Reference only** | **Reference only**; confirmed durable representation independence, name-not-order behavior, dual-time needs, top-level as-of/capability gaps, and synthetic metadata leakage; no wording or seven-member shape was copied |
+| `contracts/schemas/*.yml` | **Adapt** for future domain semantics | **Reference only in Iteration 2.1**; supplied evidence that domains need independent versions and temporal roles, but no field, domain set, version, requiredness, schema shape, or old `0.1.0-draft` value was copied |
+| `contracts/vocabularies/*.yml` | **Adapt** for future vocabularies | **Reference only in Iteration 2.1**; confirmed versioned controlled-value value, but no clinical vocabulary was selected or copied |
+| `engine/R/contract-validation.R` | **Adapt** | **Adapt — multi-issue principle only**; retained structured collection of failures, while code, tibble dependency, project-root lookup, schema API, and helper names were not copied |
+| `tests/fixtures/canonical-bundle-fixture.R` | **Adapt** | **Adapt — independence test principle only**; clean YAML/R fixtures prove a separately constructed handoff and ordering independence without copying seven tables, rows, R-list structure, or helper code |
+| `tests/platform/test-canonical-boundary.R` | **Adapt selectively** | **Adapt — failure/independence principles only**; clean tests cover missing relationships, ordering independence, and sibling/source independence through the new public identity model |
+
+The review confirmed rather than changed the reconciliation classifications,
+so `reference-asset-reconciliation.md` required no table update. No sibling
+code, text, schema, fixture, vocabulary, configuration, or version was copied.
+
+#### New material created cleanly
+
+- `contracts/canonical/canonical-bundle.yml`;
+- six files under `contracts/canonical/examples/`;
+- `docs/architecture/canonical-bundle-foundation.md`;
+- `operations/lib/canonical-bundle-validation.R`;
+- `operations/lib/canonical-specification-validation.R`;
+- `tests/phase2/test-canonical-bundle-foundation.R`; and
+- `tests/run-phase2-tests.R`.
+
+Existing validation composition, scope checkpoints, navigation, current-status
+documentation, repository policies, open decisions, and agent guidance were
+updated for Phase 2.1.
+
+#### Decisions
+
+1. **Bundle specification versus instance:**
+   `platform.canonical-bundle@0.1.0` defines public meaning;
+   `bundle_instance_id` identifies one concrete handoff. Neither is a filename,
+   object name, or Git revision.
+2. **Domain registration:** A unique logical `domain_id` references an
+   independently versioned `canonical_domain` specification. Optional instance,
+   capability-association, and temporal declarations do not define storage.
+3. **Capability status:** The Phase 1 status vocabulary is reused exactly.
+   `failed_conformance` always fails admission; unavailable and unsupported
+   remain distinct non-fabricated absence states.
+4. **Requirement classes:** `required`, `conditional`, and `optional` describe
+   contract/profile obligation independently from implementation status.
+5. **Conditional form:** A conditional item references one declared domain or
+   capability and activates when it is available. Arbitrary Boolean rules and
+   executable YAML are deferred unless concrete evidence justifies them.
+6. **Dependencies:** The initial acyclic graph supports only domain-to-domain
+   and capability-to-capability edges. Cross-type edges and rule engines are
+   intentionally unsupported.
+7. **As-of carrier:** The bundle directly carries Phase 1 run context. Source
+   extraction, generation, and wall-clock execution cannot substitute for its
+   one authoritative cutoff.
+8. **Occurrence/availability:** A domain owns the names of its temporal roles
+   and whether availability-before-occurrence is impossible. Availability
+   after bundle as-of always fails admission.
+9. **Conformance layering:** Source-local, domain, bundle structure,
+   cross-domain/capability, and platform-admission levels share one structured
+   result while retaining level-specific rule IDs and issue codes.
+10. **Reference test realization:** Generic records may be embedded and matched
+    by `domain_instance_id` only for executable tests. This is explicitly not a
+    public bundle representation.
+11. **Compatibility:** Bundle and domain meaning versions are independent and
+    follow the Phase 1 pre-1.0 policy. The current bundle reader supports only
+    the explicit `0.1` line and fails closed on unknown lines.
+12. **Conformance-result reference:** A candidate may link producer-local
+    conformance evidence, but the platform's derived result remains the
+    admission authority and is returned beside the candidate rather than
+    trusted from it.
+13. **Dependencies:** No new software package was justified. Existing
+    `yaml`/`renv` state remains sufficient.
+14. **Transitional ownership:** Executable validation remains in
+    `operations/lib/`; no runtime package is created before Phase 4.
+
+#### Surprises and deviations
+
+The sibling characterization made the zero-row convention's ambiguity
+especially concrete: a typed empty table currently means both “member exists”
+and “no records,” but cannot distinguish optional, unavailable, unsupported,
+or failed. The clean design therefore represents status independently and
+prohibits fabricated instances for unavailable/unsupported domains.
+
+YAML parses an empty sequence into a value that required explicit normalization
+before exact expected-issue comparison. The maintained-example validator now
+normalizes empty and populated issue-code sequences consistently.
+
+No architecture or sequence deviation occurred. `contracts/canonical/` is the
+planned public specification location; executable proof remains transitional.
+No clinical-domain set or field semantics were selected.
+
+#### Validation evidence
+
+The completed validation matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 tests, 0 failures;
+- `Rscript tests/run-phase1-tests.R` — 14 tests, 0 failures;
+- `Rscript tests/run-phase2-tests.R` — 18 tests, 0 failures;
+- `Rscript operations/validate.R --mode development` — 23 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 33 checks, 0 issues;
+- all 19 maintained R files, including the `renv` activation bootstrap,
+  parsed successfully;
+- all ten maintained YAML specifications/examples parsed, with expected
+  success/failure outcomes matching exact issue-code sets;
+- malformed, unsupported-version, duplicate-registration, invalid status,
+  missing dependency, circular dependency, impossible temporal ordering, and
+  future-information fixtures failed with structured issues;
+- repository policy/scope checks found no machine path, executable sibling
+  dependency, clinical Phase 2.2 schema, synthetic implementation, runtime,
+  provider, persistence, product, app, deployment, or observability scaffold;
+  and
+- whitespace validation and `git diff --check` passed.
+
+Validation used only temporary fixtures. The sibling repository remained
+unchanged. No commit or push was performed.
+
+#### Implications for Iteration 2.2
+
+- The first domain set must be selected explicitly; the old seven-domain list
+  and typed-zero-row convention are not defaults.
+- Every actual domain owns a common-envelope identity and independent pre-1.0
+  version supported explicitly by the bundle consumer.
+- The initial profile must classify each selected domain as required,
+  conditional, or optional and associate capabilities without conflating
+  status.
+- Domain contracts must declare keys, relationships, temporal roles, and
+  controlled vocabularies while preserving the bundle's one as-of cutoff.
+- Clinical cross-domain rules should extend the layered issue taxonomy rather
+  than replace it with first-error exceptions.
+- A future R/file/table realization must adapt to logical registrations and
+  instance IDs; it cannot make its container mechanics public meaning.
+- Derived state and estimates remain outputs, not canonical input domains.
+
+#### Recommended next task
+
+Begin **Phase 2 / Iteration 2.2 — First readmission-specific canonical domain
+contracts**. First approve the smallest clinical capability profile and root
+episode identity; then author only the domains and vocabularies needed to prove
+root/child keys, dual-time availability, terminal/window semantics, and
+independent fixture conformance. Do not begin the synthetic producer until the
+approved clinical handoff passes independently.

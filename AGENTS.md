@@ -42,7 +42,7 @@ owned, documented, and tested in this repository with no sibling dependency.
 
 Keep work within the active phase and its stated exit evidence. Do not create
 later-phase scaffolding merely to make the tree look complete. In particular,
-do not add runtime code, canonical domain contracts, package scaffolding,
+do not add runtime code, readmission-specific canonical domain fields, package scaffolding,
 synthetic generation, providers, persistence, products, app code, deployment,
 or CI/CD before the relevant task authorizes it. The current `renv` state owns
 only the Phase 1 YAML parser dependency.
@@ -110,7 +110,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the current Phase 1 foundation milestone, run:
+For the current Phase 2.1 foundation milestone, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -135,6 +135,12 @@ identity vocabulary documented in
 `docs/architecture/specification-foundation.md`. Run focused specification
 tests with `Rscript tests/run-phase1-tests.R`. Do not introduce canonical
 clinical-domain fields while changing the foundation vocabulary.
+
+The generic canonical handoff uses
+`docs/architecture/canonical-bundle-foundation.md` and
+`contracts/canonical/canonical-bundle.yml`. Run its focused tests with
+`Rscript tests/run-phase2-tests.R`. Phase 2.1 permits generic bundle and
+capability assets only; readmission-specific field schemas remain deferred.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,
