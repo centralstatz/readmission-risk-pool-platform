@@ -102,10 +102,27 @@ Follow `docs/development/implementation-conventions.md`.
 
 ## Validation and documentation
 
-Run phase-appropriate validation and report exactly what ran. Development,
-generation, deployment, publication, and release checkpoints may impose
-different state requirements; never use a permissive check to bypass a strict
-operation.
+Use the exact human operations documented in
+`docs/operations/validation.md`. During intentional work, run:
+
+```sh
+Rscript operations/validate.R --mode development
+```
+
+For a declared Phase 0 milestone, run:
+
+```sh
+Rscript operations/validate.R --mode checkpoint
+```
+
+Development coherence and strict milestone readiness are different claims.
+Never use development mode to bypass checkpoint failure. Later generation,
+deployment, publication, and release checkpoints may add stronger state
+requirements only when their components exist.
+
+Do not invent alternate validation behavior in agent instructions. When
+validation changes, update callable behavior, focused tests, human operations
+documentation, this file, and the implementation record together.
 
 Tests should cover success and failure, identity and relationship integrity,
 temporal availability and terminal behavior, deterministic promises,

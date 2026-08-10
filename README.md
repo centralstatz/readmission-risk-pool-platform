@@ -14,12 +14,13 @@ runtime or test dependency.
 
 ## Current status
 
-**Architecture bootstrap only.** The repository currently contains governing
+**Phase 0 engineering foundation.** The repository contains governing
 documentation, the clean target architecture, the phased implementation plan,
-and a reconciliation of possible reference assets. No substantive platform
-runtime, synthetic generator, provider, persistence layer, product builder,
-Shiny application, deployment tooling, dependency environment, or CI/CD has
-been implemented here yet.
+repository development policies, and base-R documentation/repository
+validation with focused temporary-fixture tests. No substantive platform
+runtime, canonical contract, synthetic generator, provider, persistence layer,
+product builder, Shiny application, deployment tooling, dependency environment,
+or CI/CD has been implemented here yet.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -53,6 +54,22 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
 and the [documentation index](docs/README.md) lists all current documents.
 
+## Validate the repository
+
+The complete human procedure and claim boundaries are documented in the
+[validation operation](docs/operations/validation.md). Run in-progress checks
+with:
+
+```sh
+Rscript operations/validate.R --mode development
+```
+
+Evaluate the Phase 0 milestone with:
+
+```sh
+Rscript operations/validate.R --mode checkpoint
+```
+
 ## Authority
 
 ```text
@@ -76,5 +93,6 @@ reuse, adapt, reference, or reject.
 Follow [AGENTS.md](AGENTS.md) and the
 [implementation conventions](docs/development/implementation-conventions.md).
 Open decisions are tracked in [Open decisions](docs/architecture/open-decisions.md).
-Licensing and public contribution policy remain unresolved; do not assume a
-license grant until maintainers select and add one.
+The [current license status](LICENSE-STATUS.md) explicitly authorizes no public
+release or implied license grant; final licensing and contribution policy
+remain unresolved.

@@ -158,3 +158,153 @@ make development versus strict checkpoint intent explicit, and document the
 exact human command. Do not yet add domain contracts, `renv`, the runtime
 package, synthetic generation, providers, persistence, products, app,
 deployment, or CI/CD.
+
+## Phase 0 — Repository and engineering foundation
+
+### Iteration 0.1 — Repository foundation and validation (2026-08-09)
+
+#### Planned objective
+
+Turn the documentation bootstrap into a small, safe engineering workspace.
+Add only justified metadata, explicit license/version/privacy/fixture policy,
+a first human documentation-validation operation, distinct development and
+strict Phase 0 checkpoint claims, focused tests, and complete human guidance.
+Do not begin domain or platform runtime implementation.
+
+#### Actual implementation
+
+- Added `.gitignore` for editor/OS debris, local R state, local environment
+  files, caches, temporary paths, and the architecture-named generated `build/`
+  area without creating placeholder directories.
+- Added a minimal `.editorconfig` for UTF-8, LF endings, final newlines,
+  two-space indentation, and trailing-whitespace removal.
+- Added `LICENSE-STATUS.md` with an explicit no-public-release policy and no
+  provisional legal license text.
+- Added repository policies covering version/change bookkeeping, fictional
+  fixtures, PHI and secret exclusions, base-R tests, and dependency deferral.
+- Implemented callable base-R documentation, repository-policy, and Phase 0
+  checkpoint validators that return structured checks and actionable issues.
+- Added thin human commands for documentation-only, development, and checkpoint
+  validation.
+- Added a dependency-free Phase 0 test runner with ten temporary-fixture cases.
+- Added human operations documentation and aligned README, docs navigation, and
+  `AGENTS.md` with the exact tested commands.
+
+#### Assets reused or adapted
+
+The following sibling-repository assets were inspected read-only:
+
+| Reference path | Actual classification | Use in this iteration |
+|---|---|---|
+| `scripts/lib/validation-modes.R` | **Adapt — concepts only** | Preserved the distinction between development coherence and stronger checkpoints; no code, mode matrix, names, or old checkpoint assumptions were copied |
+| `tests/platform/test-validation-modes.R` | **Reference only** | Confirmed the value of testing claim boundaries and temporary invalid inputs; tests were written cleanly without `testthat` |
+| `scripts/validate-documentation.R` | **Reference only** | Confirmed local-link validation as useful behavior; parsing, result structure, portability checks, and navigation rules were implemented cleanly |
+| `scripts/validate-operations-docs.R` | **Adapt — principle only** | Preserved human-operation/documentation drift detection as a checkpoint check; no YAML dependency or large registry was introduced |
+| `docs/operations/operations.yml` | **Reference only** | Demonstrated a future registry pattern; one operation does not yet justify a registry |
+| `docs/operations/validation.md` | **Reference only** | Informed complete human coverage of purpose, claims, commands, failures, and recovery; clean documentation describes only current operations |
+
+No code, tests, configuration, registry, or documentation text was copied from
+the sibling repository. No direct-reuse classification was approved.
+
+#### New material created cleanly
+
+- `.editorconfig`, `.gitignore`, and `LICENSE-STATUS.md`;
+- `docs/development/repository-policies.md`;
+- `docs/operations/README.md` and `docs/operations/validation.md`;
+- `operations/lib/validation-result.R`;
+- `operations/lib/documentation-validation.R`;
+- `operations/lib/repository-validation.R`;
+- `operations/lib/platform-validation.R`;
+- `operations/validate-documentation.R` and `operations/validate.R`;
+- `tests/helpers/assertions.R`;
+- `tests/phase0/test-documentation-validation.R`; and
+- `tests/run-phase0-tests.R`.
+
+Navigation and guidance changes were made to existing README, docs index,
+START HERE, open decisions, and `AGENTS.md`.
+
+#### Decisions
+
+1. **Command structure:** Keep a focused documentation command and one aggregate
+   validation command with explicit `development` and `checkpoint` modes.
+2. **Callable design:** Validators return an `rrp_validation_result` containing
+   pass/fail, executed checks, and file/line issues. CLI files only source,
+   compose, print, and set process status.
+3. **Mode meaning:** Development allows intentional changes and checks current
+   coherence. Checkpoint adds only Phase 0 file, scope, licensing, dependency,
+   and human/agent alignment requirements. Neither claims release readiness.
+4. **Testing:** Use base R, phase-scoped `test-*.R` files, shared test helpers,
+   and temporary repository copies. An external framework is not justified for
+   ten small Phase 0 tests.
+5. **Dependencies:** Phase 0 uses only base R. No external dependency was added.
+6. **`renv`:** Deferred because there is no dependency to lock. A future phase
+   must initialize this repository's dependency state independently if needed.
+7. **Licensing:** No license was selected on the maintainer's behalf. The
+   repository explicitly authorizes no public release and makes no implied
+   license grant.
+8. **Versions and records:** Git identifies repository history, the
+   implementation record explains actual iterations, platform version waits
+   for executable identity, and contract versions begin with their owning
+   phases. Phase 1 still owns compatibility vocabulary.
+9. **Privacy and fixtures:** Patient-level committed examples must be
+   deterministic and fictional; PHI, real patient data, secrets, connections,
+   and private hospital configuration are prohibited. Automated checks catch
+   obvious cases but do not replace human review.
+10. **Operations registry:** A registry is deferred until more than one
+    operation or another concrete drift problem justifies it.
+
+#### Surprises and deviations
+
+The first strict-checkpoint run correctly failed because the license-policy
+assertion assumed a required phrase remained on one Markdown line. The policy
+itself was correct; the validator was changed to recognize ordinary whitespace
+and line wrapping. A checkpoint test now guards the intended semantic behavior.
+
+The fixture suite grew from the eight minimum cases to ten by adding explicit
+mode parsing and proof that checkpoint validation rejects later-phase
+scaffolding. This remained within Phase 0 scope.
+
+No architectural or sequencing deviation occurred. No implementation-plan
+adjustment is required.
+
+#### Validation evidence
+
+The final validation matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 tests, 0 failures;
+- `Rscript operations/validate.R --mode development` — 9 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 13 checks, 0 issues;
+- all 9 R files parsed successfully in a clean R process;
+- untracked-file-aware whitespace validation — passed for every maintained
+  tracked or untracked file;
+- `git diff --check` — passed; and
+- sibling/reference repository status — clean in a final read-only check.
+
+Validation creates only removed temporary fixtures. It found no
+machine-specific path, local-file URI, executable sibling dependency,
+sibling-targeting symlink, obvious secret, unlabelled patient-like fixture,
+later-phase scaffold, or dependency lock.
+
+#### Implications for Phase 1
+
+- Phase 1 can add identity/specification vocabulary as focused validators
+  without replacing the result/CLI structure.
+- Contract compatibility semantics remain deliberately undefined; Phase 1 must
+  own them rather than inheriting the Phase 0 checkpoint model.
+- If Phase 1 introduces an external R package, it must justify the dependency
+  and establish clean dependency management here.
+- Navigation expectations must be updated when new authoritative documents are
+  added, keeping human entry points explicit.
+- The simple secret/fixture checks are development guardrails, not privacy or
+  security certification.
+
+#### Recommended next task
+
+Begin **Phase 1 — Identity, compatibility, and contract foundation** with one
+bounded iteration: define the minimum logical vocabulary for specification
+identity/version, as-of context, implementation identity, run identity,
+capability status, provenance reference, and structured conformance results;
+choose a small diff-friendly specification format through examples; and add
+format/identity tests. Do not yet define canonical clinical domains or runtime
+processing.

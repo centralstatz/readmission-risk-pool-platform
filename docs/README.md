@@ -25,12 +25,22 @@ The documentation is the active product at this bootstrap stage. Begin with
 
 - [Implementation Conventions](development/implementation-conventions.md) —
   concise human-readable code and boundary conventions.
+- [Repository Development Policies](development/repository-policies.md) —
+  licensing status, version/change bookkeeping, privacy, fixtures, tests, and
+  dependency discipline.
+
+## Operations
+
+- [Operations Index](operations/README.md) — currently supported human
+  operations.
+- [Validation](operations/validation.md) — exact development, checkpoint,
+  documentation, and Phase 0 test commands.
 
 ## Repository guidance
 
 - [Root README](../README.md) — project identity, status, and navigation.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
-Operations, contract, user, adoption, application, and deployment guides will
-be added in the phases that create those capabilities. Documentation must not
-claim an operation exists before it has a tested human implementation.
+Contract, user, adoption, application, and deployment guides will be added in
+the phases that create those capabilities. Documentation must not claim an
+operation exists before it has a tested human implementation.

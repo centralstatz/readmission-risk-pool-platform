@@ -20,6 +20,10 @@ before looking for software that does not exist yet.
    — what has actually been done, validated, and learned.
 7. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
+8. [Repository Development Policies](development/repository-policies.md) for
+   licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
+9. [Operations](operations/README.md) for the supported human operation and
+   [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule
 

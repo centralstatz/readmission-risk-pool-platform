@@ -8,7 +8,7 @@ earlier work unless stated.
 
 | Decision | Why it matters | Needed by | Current direction |
 |---|---|---:|---|
-| Open-source license and content/asset licensing | Determines permission to distribute and reuse source/assets | Public release; preferably start in Phase 0 | Human/legal decision; no license is assumed |
+| Open-source license and content/asset licensing | Determines permission to distribute and reuse source/assets | Public release; preferably start in Phase 0 | Human/legal decision; Phase 0 explicitly authorizes no public release and supplies no license |
 | Initial schema/specification format | Affects readable and machine-validated contracts | Phase 1 | Favor a language-neutral, diff-friendly form with executable R validation |
 | Pre-1.0 compatibility policy | Determines when draft interfaces may change and how migrations are stated | Phase 1 | Version semantic changes; do not freeze incidental representation |
 | First canonical domain capability profile | Determines required, conditional, optional, and unavailable inputs | Phase 2 | Episode identity and time are foundational; exact supporting domains remain open |

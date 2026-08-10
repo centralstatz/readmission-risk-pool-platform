@@ -1,0 +1,23 @@
+#!/usr/bin/env Rscript
+
+repository_root <- normalizePath(
+  file.path(dirname(sub("^--file=", "", grep(
+    "^--file=", commandArgs(trailingOnly = FALSE), value = TRUE
+  )[[1L]])), ".."),
+  mustWork = TRUE
+)
+
+source(file.path(repository_root, "operations", "lib", "validation-result.R"))
+source(file.path(repository_root, "operations", "lib", "documentation-validation.R"))
+source(file.path(repository_root, "operations", "lib", "repository-validation.R"))
+source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
+
+mode <- tryCatch(
+  rrp_parse_validation_mode(commandArgs(trailingOnly = TRUE)),
+  error = function(condition) {
+    message(conditionMessage(condition))
+    quit(save = "no", status = 2L, runLast = FALSE)
+  }
+)
+
+rrp_exit_for_result(rrp_validate_platform(repository_root, mode))

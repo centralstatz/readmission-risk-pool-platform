@@ -1,0 +1,25 @@
+# Editor and operating-system debris
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Local R session state
+.RData
+.Rhistory
+.Ruserdata
+.Rproj.user/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local caches and temporary validation output
+.cache/
+.tmp/
+tmp/
+
+# Generated deployment builds named by the target architecture
+build/
