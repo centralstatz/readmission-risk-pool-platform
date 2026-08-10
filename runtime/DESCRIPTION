@@ -1,0 +1,14 @@
+Package: rrpruntime
+Type: Package
+Title: Implementation-Neutral Readmission Runtime
+Version: 0.1.0
+Authors@R: person("Readmission Risk Pool", "Maintainers", role = c("aut", "cre"), email = "maintainers@invalid.example")
+Author: Readmission Risk Pool Maintainers [aut, cre]
+Maintainer: Readmission Risk Pool Maintainers <maintainers@invalid.example>
+Description: Focused internal runtime primitives for admitted canonical input,
+    temporal eligibility, episode-state construction, and provider-neutral
+    estimand requests. It performs no source mapping, provider execution,
+    persistence, product construction, application work, or deployment.
+License: file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.1.0)

@@ -1,0 +1,50 @@
+# Inspectable population decision made before any estimation method runs.
+specification_kind: runtime_record
+specification_id: platform.readmission-eligibility-result
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Readmission estimand eligibility result
+status: active
+description: >-
+  One explicit decision about whether a discharge episode belongs to the first
+  estimand population at a declared runtime interval start.
+
+required_fields:
+  - eligibility_result_id
+  - eligibility_specification
+  - episode_id
+  - runtime_run_id
+  - as_of_time
+  - estimand_specification
+  - eligibility_status
+  - eligibility_reason
+  - effective_followup_end
+
+controlled_values:
+  eligibility_statuses:
+    - eligible
+    - ineligible
+  eligibility_reasons:
+    - eligible
+    - before_discharge
+    - followup_complete
+    - already_readmitted
+    - died
+    - insufficient_required_input
+    - unsupported_required_capability
+
+temporal_rules:
+  interval_start: >-
+    Discharge is inclusive and effective follow-up end is exclusive:
+    discharge_time <= as_of_time < effective_followup_end.
+  terminal_at_start: >-
+    Readmission or death at or before as_of_time makes the episode ineligible.
+    If readmission and death coincide, the readmission event is the estimand
+    event and already_readmitted is reported.
+  future_terminal: >-
+    A terminal occurrence after as_of_time cannot affect current eligibility.
+
+estimation_separation: >-
+  Ineligibility is never represented as zero risk or a missing estimate. No
+  estimand request is created for an ineligible episode.

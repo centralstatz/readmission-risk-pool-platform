@@ -1,0 +1,35 @@
+# Provider-neutral request describing what should later be estimated.
+specification_kind: runtime_request
+specification_id: platform.readmission-estimand-request
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Readmission estimand request
+status: active
+description: >-
+  One request for a governed quantity from one eligible episode state. Provider
+  identity and execution behavior belong to a later wrapper.
+
+required_fields:
+  - request_id
+  - request_specification
+  - runtime_run_id
+  - episode_id
+  - state_reference
+  - estimand_specification
+  - as_of_time
+  - target_interval_start
+  - target_interval_end
+  - interval_boundary
+  - capability_statuses
+  - input_references
+
+interval_boundary: "(start, end]"
+provider_fields_prohibited:
+  - provider_id
+  - provider_version
+  - model_id
+  - model_version
+request_rule: >-
+  Create exactly one request for each eligible state and none for ineligible or
+  terminal episodes. The request describes the quantity, not its estimator.

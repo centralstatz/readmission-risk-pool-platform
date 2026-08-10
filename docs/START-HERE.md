@@ -1,6 +1,6 @@
 # Start here
 
-This repository has completed its first source-to-canonical implementation;
+This repository has completed its first source-to-estimand-request flow;
 understand the intended product and public boundaries before extending it.
 
 ## Recommended review
@@ -21,17 +21,19 @@ understand the intended product and public boundaries before extending it.
    contracts and nonclinical conformance examples.
 6. [Synthetic Reference Implementation](architecture/synthetic-reference-implementation.md)
    — the complete deterministic fictional producer beneath that boundary.
-7. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+7. [Runtime Foundation](architecture/runtime-foundation.md) — the admitted
+   canonical-to-eligibility/state/request computation above the boundary.
+8. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-8. [Open Decisions](architecture/open-decisions.md) — choices that require
+9. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-9. [Platform Implementation Record](architecture/platform-implementation-record.md)
+10. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-10. [Implementation Conventions](development/implementation-conventions.md) and
+11. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-11. [Repository Development Policies](development/repository-policies.md) for
+12. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-12. [Operations](operations/README.md) for supported human operations and
+13. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

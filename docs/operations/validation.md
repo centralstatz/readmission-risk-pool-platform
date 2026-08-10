@@ -6,14 +6,14 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase 3
-  source-to-canonical reference implementation requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed
+  Iteration 4.1 canonical-to-estimand-request requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
-foundation, Phase 1 specification foundation, Phase 2 generic and clinical
-canonical handoff, and Phase 3 fictional source implementation. Later phases
-will add stricter component-specific claims only when those components exist.
+foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
+3 fictional source implementation, and Iteration 4.1 runtime foundation. Phase
+4 remains incomplete until provider execution and estimates exist.
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 3 checkpoint:
+Validate the completed Iteration 4.1 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -70,10 +70,23 @@ Run the focused Phase 3 tests directly:
 Rscript tests/run-phase3-tests.R
 ```
 
+Run the focused Iteration 4.1 tests directly:
+
+```sh
+Rscript tests/run-phase4-tests.R
+```
+
 Run the reference source-to-canonical operation:
 
 ```sh
 Rscript operations/generate-reference.R
+```
+
+Run admitted canonical input through eligibility, state, and request:
+
+```sh
+Rscript operations/run-reference-runtime.R --input independent
+Rscript operations/run-reference-runtime.R --input synthetic --scale test
 ```
 
 Each command exits with status `0` on success and nonzero status on failure.
@@ -104,9 +117,9 @@ Development mode composes:
 - visible fictional classification for patient-like committed fixtures; and
 - specification-envelope, foundation-example, generic canonical-bundle,
   clinical domain/profile/vocabulary, fictional clinical fixture, synthetic
-  implementation/source-schema/configuration, and reference-flow conformance;
-  and
-- all Phase 0, Phase 1, Phase 2, and Phase 3 temporary-fixture tests.
+  implementation/source-schema/configuration, runtime contract/package, and
+  both source-independent and synthetic reference-flow conformance; and
+- all Phase 0, Phase 1, Phase 2, Phase 3, and Iteration 4.1 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -115,21 +128,24 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0, Phase 1, Phase 2, and Phase 3 metadata, policy, operation,
-  specification, implementation, and test files;
+- required Phase 0 through Iteration 4.1 metadata, policy, operation,
+  specification, package, implementation, and test files;
 - presence of the approved three-domain clinical profile and the one approved
   synthetic reference implementation, with no committed generated datasets;
 - a conforming reference-scale source-to-canonical run and completed Phase 3
+  implementation-record entry;
+- the exact focused runtime package/file scope, runtime contracts, clean
+  temporary installation/loading, two admitted-input flows, and Iteration 4.1
   implementation-record entry;
 - an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–3 source-to-canonical boundary. It does
+This is strict only relative to the Phase 0–4.1 source-to-request boundary. It does
 not prove:
 
 - public release or license readiness;
-- runtime, provider, persistence, product, or application correctness;
+- provider, estimate, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or
@@ -172,6 +188,12 @@ observability, provenance, metrics, or audit system.
 - **Synthetic source conformance:** Correct implementation identity/configuration,
   source keys and relationships, local codes, temporal order, or mapping
   translation. Source-local and canonical issues belong to different stages.
+- **Runtime contract/input failure:** Restore supported runtime specifications,
+  pass only canonically admitted input through the representation adapter, and
+  keep runtime as-of equal to the bundle cutoff.
+- **Eligibility/state/request failure:** Correct interval/terminal rules,
+  availability filtering, deterministic state identity, or request linkage.
+  Never fabricate a risk or invoke a provider to hide ineligibility.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

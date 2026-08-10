@@ -260,6 +260,14 @@ Depends on Phases 1–3. Maintainers must approve the first default estimand and
 initial provider trust/registration boundary. Full non-R provider execution is
 deferred.
 
+### Completion status
+
+In progress. Iteration 4.1 created the `rrpruntime` package, normalized admitted
+input, eligibility, minimal state, the first next-day conditional-hazard
+estimand, and provider-neutral requests. Provider specification, controlled
+registration/selection, execution, estimate records, and provider conformance
+remain for Iteration 4.2; Phase 4 is not complete.
+
 ## Phase 5 — First persistent vertical slice
 
 ### Objective

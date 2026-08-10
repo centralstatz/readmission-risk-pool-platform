@@ -1,0 +1,48 @@
+# Minimal derived facts available to an estimation method at one cutoff.
+specification_kind: runtime_record
+specification_id: platform.readmission-episode-state
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Minimal readmission episode state
+status: active
+description: >-
+  Reproducible implementation-neutral facts for one eligible discharge episode
+  at one runtime as-of time. This is derived runtime output, not canonical input
+  and not a universal provider feature warehouse.
+
+required_fields:
+  - state_id
+  - state_specification
+  - episode_id
+  - runtime_run_id
+  - as_of_time
+  - bundle_instance_id
+  - canonical_run_id
+  - days_since_discharge
+  - followup_days_remaining
+  - observation_status
+  - terminal_status
+  - available_baseline_risk
+  - available_episode_events
+  - capability_statuses
+  - input_references
+
+controlled_values:
+  observation_statuses:
+    - active_followup
+  terminal_statuses:
+    - none_as_of
+
+availability_rules:
+  baseline_risk: >-
+    score_time <= as_of_time and available_at <= as_of_time
+  episode_event: >-
+    event_time <= as_of_time and available_at <= as_of_time
+
+baseline_representation: >-
+  Preserve every available canonical baseline row with source-model identity;
+  do not choose a latest row or reinterpret it as a platform estimate.
+event_representation: >-
+  Preserve available canonical event records ordered by event_time,
+  available_at, and event_id. No provider-specific feature vector is created.

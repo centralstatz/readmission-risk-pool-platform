@@ -81,6 +81,7 @@ Rscript tests/run-phase0-tests.R
 Rscript tests/run-phase1-tests.R
 Rscript tests/run-phase2-tests.R
 Rscript tests/run-phase3-tests.R
+Rscript tests/run-phase4-tests.R
 ```
 
 Later unit, conformance, integration, and end-to-end suites may use additional
@@ -99,3 +100,9 @@ Rscript -e 'renv::restore()'
 
 Add a dependency only when current executable behavior uses it. Update the
 lockfile, documentation, tests, and implementation record together.
+
+`rrpruntime` is repository-owned source installed into a temporary library by
+the supported operation, not an external dependency restored from a package
+repository. It is therefore listed in `renv`'s ignored packages. Its
+`DESCRIPTION` declares only base R; external runtime-package dependencies must
+still be added to `renv.lock` if a later iteration justifies them.

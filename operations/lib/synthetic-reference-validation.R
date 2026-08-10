@@ -120,7 +120,7 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
   )
 
   prohibited_directories <- c(
-    "runtime", "providers", "persistence", "products", "app", "deploy",
+    "providers", "persistence", "products", "app", "deploy",
     "config", "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(

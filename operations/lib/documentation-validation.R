@@ -17,6 +17,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/canonical-bundle-foundation.md",
     "docs/architecture/canonical-clinical-profile.md",
     "docs/architecture/synthetic-reference-implementation.md",
+    "docs/architecture/runtime-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -25,6 +26,7 @@ rrp_required_governing_documents <- function() {
     "docs/operations/README.md",
     "docs/operations/validation.md",
     "docs/operations/generate-reference.md",
+    "docs/operations/run-reference-runtime.md",
     "contracts/README.md"
   )
 }
@@ -42,6 +44,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/canonical-clinical-profile.md",
       "docs/architecture/synthetic-reference-implementation.md",
+      "docs/architecture/runtime-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -57,6 +60,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/canonical-clinical-profile.md",
       "docs/architecture/synthetic-reference-implementation.md",
+      "docs/architecture/runtime-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -74,6 +78,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/canonical-clinical-profile.md",
       "docs/architecture/synthetic-reference-implementation.md",
+      "docs/architecture/runtime-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -119,9 +124,12 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/canonical-clinical-profile.md",
       "docs/operations/generate-reference.md"
     ),
+    "docs/architecture/runtime-foundation.md" =
+      "docs/operations/run-reference-runtime.md",
     "docs/operations/README.md" = c(
       "docs/operations/validation.md",
-      "docs/operations/generate-reference.md"
+      "docs/operations/generate-reference.md",
+      "docs/operations/run-reference-runtime.md"
     ),
     "docs/architecture/platform-implementation-record.md" = c(
       "docs/vision/platform-true-north.md",

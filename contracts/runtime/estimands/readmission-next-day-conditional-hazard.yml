@@ -1,0 +1,65 @@
+# First provider-independent quantity owned by the platform.
+specification_kind: estimand
+specification_id: platform.readmission-next-day-conditional-hazard
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Next-day conditional readmission hazard
+status: active
+description: >-
+  Conditional probability of first canonical readmission in the next bounded
+  daily interval for an episode alive, readmission-free, and eligible at the
+  interval start, using information available through that start.
+
+quantity_type: discrete_time_conditional_hazard
+time_origin: discharge_time
+interval:
+  width_days: 1
+  start_boundary: exclusive
+  end_boundary: inclusive
+  end_rule: minimum_of_next_day_and_effective_followup_end
+followup:
+  maximum_horizon_days: 30
+  effective_end_rule: minimum_of_canonical_followup_end_and_maximum_horizon
+event:
+  event_type: first_canonical_readmission
+  occurrence_field: readmission_time
+  plannedness: not_distinguished_by_initial_canonical_profile
+  definition: >-
+    The event is the first readmission_time supplied by
+    platform.readmission-initial-profile@0.1.0. That profile does not encode a
+    planned/unplanned classification, so this estimand makes no narrower event
+    claim.
+conditioning:
+  - discharged_at_or_before_interval_start
+  - no_readmission_at_or_before_interval_start
+  - alive_at_interval_start
+  - eligible_at_interval_start
+  - information_available_through_interval_start
+terminal_behavior:
+  readmission_at_or_before_start: no_request
+  death_at_or_before_start: no_request
+  followup_complete: no_request
+  ineligible: no_request
+  death_during_interval: competing_terminal_event
+requirements:
+  required_capabilities:
+    - platform.discharge-episode
+  optional_inputs:
+    - platform.baseline-risk-input
+    - platform.episode-event-history
+output:
+  value: probability
+  minimum: 0
+  maximum: 1
+  cardinality_per_request: one
+coherence:
+  probability_bounds_required: true
+  monotonic_across_intervals_required: false
+  rationale: >-
+    Conditional daily hazard may increase or decrease as available episode
+    state changes; remaining follow-up time does not impose monotonicity.
+mathematical_definition: >-
+  P(T_readmission in (t, min(t + 1 day, W)] | T_readmission > t,
+  T_death > t, eligible at t, information available through t), where W is
+  the effective follow-up end.

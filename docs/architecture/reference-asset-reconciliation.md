@@ -190,3 +190,20 @@ or package dependency was copied.
 | `tests/platform/test-synthetic-ecosystem.R` and validation-mode tests | **Adapt — test principles only** | determinism, relationship integrity, future-information exclusion, boundary independence, and staged failures | downstream runtime/product coupling, exact old filenames and row counts, and historical structure assertions |
 
 The clean result is documented in [Synthetic Reference Implementation](synthetic-reference-implementation.md).
+
+## Phase 4.1 runtime and estimand review outcome
+
+Eligibility, state, as-of, and estimand semantics were designed before the
+required line review. No old code, schema, configuration, fixture, or package
+dependency was copied.
+
+| Evidence | Final use | Retained concept | Rejected or deferred shape |
+|---|---|---|---|
+| `engine/R/risk-provider.R` | **Adapt — concepts only** | timestamp-based eligibility, terminal timestamps instead of mutable status, and availability filtering | provider wrapper/implementation, constant provider, latest-baseline selection, old field names, tibble dependency, estimate validation, and provider execution |
+| `engine/tests/testthat/test-temporal-validity.R` and `test-risk-provider-interface.R` | **Adapt — test principles only** | exact terminal/window boundaries, future-information exclusion, reproducibility, and cardinality checks | provider outputs, exact old rows, latest baseline behavior, and testthat dependency |
+| `pipelines/functions/canonical-pipeline.R` | **Do not reuse as a unit; state section reference only** | evidence that elapsed time and deterministic state identity matter | wide provider/operations-specific state, source/profile assumptions, model, priority, products, measures, and reconstructed trajectories |
+| `contracts/schemas/episode-state-snapshot.yml` | **Reference only** | state requires episode/as-of/version identity | permissive draft schema and provider/product-oriented feature fields |
+| `contracts/schemas/risk-estimate.yml` | **Deferred/reference only** | evidence for a later standardized estimate record | no estimate exists in Iteration 4.1; old model/baseline comparison fields do not define the request |
+| `config/estimands.yml` | **Do not reuse** | showed why quantity meaning must precede provider configuration | draft remaining-window/seven-day cumulative quantities lacked governed event, terminal, competing-event, capability, and coherence semantics |
+
+The clean result is authoritative in [Runtime Foundation](runtime-foundation.md).

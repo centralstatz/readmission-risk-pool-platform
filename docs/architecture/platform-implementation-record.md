@@ -1074,3 +1074,185 @@ contract before selecting or adapting provider code. Use only admitted
 canonical bundles as input, preserve dual-time filtering, and keep estimates
 separate from priority decisions. Do not introduce persistence or products
 until the runtime/provider contract and conformance scenarios are accepted.
+
+## Phase 4 — Minimal governed runtime and provider
+
+### Iteration 4.1 — Runtime foundation, episode state, eligibility, and first estimand (2026-08-10)
+
+#### Planned objective
+
+Build the smallest implementation-neutral path from an admitted canonical
+bundle through explicit eligibility and reproducible as-of state to a versioned
+estimand request. Establish the focused internal R package, but do not create a
+provider, estimate, persistence, product, application, deployment, or
+observability implementation.
+
+#### Actual implementation
+
+- Created the valid internal `rrpruntime` R package with seven focused exports:
+  admitted-input construction/validation, injected-contract validation,
+  eligibility evaluation, state construction, request construction, and a
+  conformance predicate.
+- Added language-neutral `0.1.0` contracts for eligibility results, minimal
+  episode state, the first next-day conditional readmission-hazard estimand,
+  and provider-neutral estimand requests.
+- Kept canonical admission, current representation resolution, repository YAML
+  loading, package installation, checkpoint scanning, and CLI presentation in
+  `operations/`. A generic adapter turns an admitted bundle into a normalized
+  package input; the package never discovers repository paths or reads YAML.
+- Implemented start-inclusive/end-exclusive follow-up eligibility, terminal
+  rules at the interval start, explicit ineligibility reasons, defensive
+  baseline/event availability filtering, deterministic state/request identity,
+  all-baseline retention, and deterministically ordered event history.
+- Added a temporary-library human operation that works with both the
+  source-independent Phase 2 fixture and Phase 3 synthetic-produced bundle.
+- Added focused package/cross-component tests and composed Iteration 4.1
+  development/checkpoint validation.
+
+#### Reference assets inspected
+
+The package API, state fields, eligibility interval, as-of rule, estimand
+quantity, and request boundary were designed before the required read-only
+sibling inspection.
+
+| Evidence | Prior classification | Actual final classification and use |
+|---|---|---|
+| `engine/R/risk-provider.R` | Adapt | **Adapt — concepts only.** Retained timestamp-based eligibility, terminal timestamps instead of mutable status, and strict availability filtering. Rejected the provider wrapper, constant provider, latest-baseline shortcut, tibble dependency, old field names, estimate output, and all code. |
+| `engine/tests/testthat/test-temporal-validity.R` and `test-risk-provider-interface.R` | Adapt selectively | **Adapt — test principles only.** Retained exact terminal/window boundary, future-information, determinism, and cardinality scenarios. Rejected provider output assumptions, old fixtures, latest-baseline behavior, and testthat dependency. |
+| `pipelines/functions/canonical-pipeline.R` | Do not reuse as a unit | **Do not reuse as a unit; reference only for state questions.** Elapsed follow-up and deterministic state identity were useful evidence. Wide operational/provider features, model, priority, products, measure logic, project-root loading, and reconstructed trajectories were rejected. |
+| `contracts/schemas/episode-state-snapshot.yml` | Not separately final | **Reference only.** Confirmed episode/as-of/version identity; permissive draft and provider/product features were rejected. |
+| `contracts/schemas/risk-estimate.yml` | Adapt later | **Deferred/reference only.** Iteration 4.1 creates no estimate, and the old output cannot define an estimand request. |
+| `config/estimands.yml` | Reference only | **Do not reuse.** The remaining-window and seven-day rows lacked versioned population, event, terminal, competing-event, capability, interval, and coherence meaning. |
+
+No reference code, specification text, fixture row, configuration, dependency,
+or package structure was copied. The reconciliation document records the final
+classifications.
+
+#### New material created cleanly
+
+- four specifications under `contracts/runtime/`;
+- package metadata, README, seven R source files, and one base-R package test
+  under `runtime/`;
+- generic runtime loading/adaptation and validation helpers under
+  `operations/lib/`;
+- `operations/run-reference-runtime.R` and its complete human guide;
+- 24 focused Phase 4 tests and runner; and
+- runtime architecture, navigation, plan, decision, policy, validation,
+  reconciliation, and agent-guidance updates.
+
+#### Decisions
+
+1. **Package:** `rrpruntime@0.1.0` owns only implementation-neutral admitted
+   input, contract support, eligibility, state, and estimand requests.
+2. **Contract loading:** language-neutral YAML is explicitly loaded by
+   operations and injected. The package has no YAML dependency, project-root
+   discovery, working-directory assumption, or repository file lookup.
+3. **Canonical ownership:** full canonical admission and the current embedded
+   realization adapter remain transitional under `operations/lib/`; repository
+   scanners/checkpoints and CLI output do not belong in the package.
+4. **State:** `platform.readmission-episode-state@0.1.0`; transparent IDs are
+   deterministic from runtime run, episode, as-of, and specification version.
+   State is built only for eligible episodes.
+5. **Eligibility:** explicit `eligible`/`ineligible` status with reasons
+   `eligible`, `before_discharge`, `followup_complete`, `already_readmitted`,
+   `died`, and reserved required-input/capability failures. Discharge is
+   inclusive; effective follow-up end is exclusive. Terminal occurrence at or
+   before interval start excludes the episode, with readmission winning a tie.
+6. **As-of:** Iteration 4.1 requires runtime as-of equal to admitted bundle
+   as-of. Earlier replay is unsafe while root terminal facts lack their own
+   availability timestamps. Baseline/event rows are still defensively filtered.
+7. **Baseline:** preserve all available canonical rows, ordered by their full
+   source identity. Never select latest implicitly or turn a source score into
+   the platform estimand.
+8. **Events:** preserve available records ordered by occurrence, availability,
+   and ID; do not build provider-specific features.
+9. **Estimand:**
+   `platform.readmission-next-day-conditional-hazard@0.1.0` uses discharge as
+   origin, a 30-day maximum effective follow-up, and target interval
+   `(t, min(t + 1 day, W)]`.
+10. **Quantity/terminal/coherence:** first canonical readmission is the event;
+    eligibility conditions alive/readmission-free status at `t`; death during
+    the interval competes. Output is one probability in `[0,1]`. Conditional
+    daily hazards need not be monotone across time.
+11. **Requirements:** only `platform.discharge-episode` is required for the
+    estimand. Baseline risk and episode events remain optional inputs; future
+    provider requirements are method-owned.
+12. **Request:** `platform.readmission-estimand-request@0.1.0`; exactly one per
+    eligible state, with no provider/model/estimate identity or value.
+13. **Dependencies:** runtime uses base R only. Existing repository `yaml`
+    remains operation-owned; no `renv.lock` dependency change is required.
+    `rrpruntime` is recorded in `renv` settings as ignored repository-owned
+    source because operations install it into a temporary library rather than
+    restore it as an external package.
+
+#### Surprises and deviations
+
+- The initial canonical profile records `readmission_time` but no
+  planned/unplanned classification. The estimand therefore names first
+  canonical readmission explicitly and records plannedness as unresolved;
+  claiming an unplanned event would exceed the admitted input's meaning.
+- Strict RFC 3339 tests exposed that a permissive base-R conversion could drop
+  the time-of-day component for explicit-offset values. The package now
+  normalizes offsets and parses with an explicit format before every temporal
+  comparison.
+- Earlier runtime evaluation from a later admitted bundle was rejected for
+  this line: baseline/events carry availability, but root terminal timestamps
+  do not. Equality avoids a false replay guarantee while keeping the API small.
+- The independent fixture contains two episodes but only one eligible state at
+  its cutoff; the earlier episode is already readmitted. The synthetic test
+  scale supplies six eligible states/requests.
+- The architecture and phase sequence did not change. The plan needed only an
+  in-progress status showing that provider execution remains Iteration 4.2.
+
+#### Validation evidence
+
+The final validation matrix passed using repository-owned assets and temporary
+package libraries:
+
+- documentation, Phase 0–3 regression suites, and both Phase 3 operations;
+- `Rscript tests/run-phase4-tests.R` — 24 tests, 0 failures;
+- `Rscript operations/run-reference-runtime.R --input independent` — 2
+  eligibility results, 1 state, 1 request;
+- `Rscript operations/run-reference-runtime.R --input synthetic --scale test`
+  — 6 eligibility results, 6 states, 6 requests;
+- development and strict Iteration 4.1 checkpoint validation;
+- clean temporary package installation/loading and base-R package tests;
+- built-package `R CMD check --no-manual --no-vignettes` — status OK;
+- all maintained R/YAML parsing, dependency review, whitespace review, and
+  `git diff --check`.
+
+Development validation passed 44 checks with 0 issues. Strict Iteration 4.1
+checkpoint validation passed 63 checks with 0 issues. No generated
+state/request data were written. The sibling repository remained read-only,
+and no commit or push was performed.
+
+#### Implications for Iteration 4.2
+
+- Provider architecture may assume one validated request references one
+  eligible, versioned state and one exact estimand interval.
+- A provider may declare stronger baseline/event/state requirements, but may
+  not redefine estimand eligibility, interval, terminal, or probability
+  semantics.
+- Execution and selection wrappers own provider identity/trust; the request
+  remains provider-neutral.
+- Estimate records must reference request, state, estimand, provider, run, and
+  interval and must enforce exactly one bounded probability per successful
+  request. Failure/unsupported results remain distinct from estimates.
+- Provider code must not revisit source mapping, mutate state, add priority
+  policy, persist records, or build products.
+
+#### Phase 4 status
+
+**In progress.** Iteration 4.1 completes the runtime/state/eligibility/estimand
+request foundation, but Phase 4 exit evidence requires provider specification,
+controlled registration/selection, provider execution, standardized estimate
+records, and provider conformance. No provider placeholder was added early.
+
+#### Recommended next task
+
+Implement **Iteration 4.2 — Provider contract, controlled registry, transparent
+reference provider, and estimate record**. Start from the accepted request and
+estimand; define provider trust/selection and failure taxonomy before adding a
+deterministic visibly nonclinical provider. Prove a second tiny provider can
+register without runtime edits, and keep estimates separate from priority,
+persistence, and products.
