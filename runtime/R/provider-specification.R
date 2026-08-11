@@ -7,7 +7,7 @@ rrp_provider_contract_identities <- function() {
       "provider_contract", "platform.provider-execution-adapter", "0.1.0"
     ),
     execution_result = rrp_identity(
-      "runtime_result", "platform.provider-execution-result", "0.1.0"
+      "runtime_result", "platform.provider-execution-result", "0.2.0"
     ),
     estimate = rrp_identity(
       "runtime_record", "platform.readmission-risk-estimate", "0.1.0"

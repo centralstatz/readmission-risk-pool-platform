@@ -271,6 +271,10 @@ transparent deterministic provider and a test-only second provider satisfy
 the Phase 4 exit evidence against independent and synthetic admitted inputs.
 Phase 5 operational history is the next active phase.
 
+Iteration 5.1 subsequently advanced the package to `rrpruntime@0.3.0` and the
+execution-result contract to `0.2.0` solely to add persistence ports and retry
+lineage; the completed Phase 4 provider semantics remain intact.
+
 ## Phase 5 — First persistent vertical slice
 
 ### Objective
@@ -308,6 +312,16 @@ Depends on Phase 4 identities and records. Choose only a reference local
 storage technology; do not make it the production requirement. The first
 product subset is provisional pending the product-suite decision.
 
+### Completion status
+
+**In progress.** Iteration 5.1 defines operational truth, immutable run
+lifecycle, persisted state/request/execution/estimate families, atomic terminal
+batches, idempotency/conflict/retry/provider-transition behavior,
+invalidation/restatement, raw/valid/current reads, and backend-independent
+persistence ports. No durable adapter or product exists. Iteration 5.2 must
+select and prove the smallest local adapter against these semantics before the
+phase proceeds to products or an application.
+
 ## Phase 6 — Operational-history and product maturity
 
 ### Objective
@@ -317,8 +331,8 @@ capability-aware product interfaces.
 
 ### Deliverables
 
-- explicit duplicate, correction, invalidation, and restatement behavior;
-- transaction and backend conformance expectations;
+- migration and retention policy for the duplicate, correction, invalidation,
+  restatement, transaction, and adapter semantics established in Iteration 5.1;
 - provider/estimand/platform/state-schema transition representation;
 - retained decision and lineage records where their operational meaning
   justifies persistence;

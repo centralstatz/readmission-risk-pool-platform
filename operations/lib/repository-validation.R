@@ -331,6 +331,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript tests/run-phase3-tests.R",
     "Rscript operations/generate-reference.R",
     "Rscript tests/run-phase4-tests.R",
+    "Rscript tests/run-phase5-tests.R",
     "Rscript operations/run-reference-runtime.R"
   )
   operations_text <- if (file.exists(validation_doc)) {

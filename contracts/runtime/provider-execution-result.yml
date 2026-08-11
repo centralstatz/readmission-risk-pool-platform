@@ -1,7 +1,7 @@
 # One provider invocation outcome; failures are not estimate rows.
 specification_kind: runtime_result
 specification_id: platform.provider-execution-result
-specification_version: "0.1.0"
+specification_version: "0.2.0"
 specification_format_version: "1.0.0"
 identity_scope: platform
 title: Provider execution result
@@ -13,12 +13,15 @@ description: >-
 required_fields:
   - execution_result_id
   - execution_result_specification
+  - runtime_run_id
   - provider_execution_run_id
   - request_id
   - state_id
   - episode_id
   - estimand_specification
   - provider_reference
+  - attempt_number
+  - retry_of_execution_result_id
   - execution_status
   - failure_code
   - message
@@ -38,4 +41,7 @@ conditional_rules:
   failure: >-
     estimate_record is null and failure_code is a non-empty machine-readable
     code. A failed or unsupported execution never fabricates probability NA.
-
+  retry: >-
+    Attempt 1 has attempt_number 1 and null retry_of_execution_result_id. Each
+    later attempt references the immediately preceding result for the same
+    request and provider. A retry uses a distinct provider_execution_run_id.

@@ -82,6 +82,7 @@ Rscript tests/run-phase1-tests.R
 Rscript tests/run-phase2-tests.R
 Rscript tests/run-phase3-tests.R
 Rscript tests/run-phase4-tests.R
+Rscript tests/run-phase5-tests.R
 ```
 
 Later unit, conformance, integration, and end-to-end suites may use additional

@@ -14,16 +14,19 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 4 is complete.** The focused internal `rrpruntime` package accepts an
+**Phase 5 is in progress; Iteration 5.1 is complete.** The focused internal
+`rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
 conditional readmission-hazard estimand, resolves an exactly selected trusted
 provider, and returns structured execution results and standardized estimates.
 The shipped transparent deterministic provider proves software conformance
 against both the independent fixture and synthetic producer; it is not a
-clinically valid model. Persistence, products, Shiny, deployment,
-observability, and CI/CD remain unimplemented. Phase 5 operational history is
-next.
+clinically valid model. It now also owns backend-independent operational
+history records and append/read ports, including retry lineage, conflict,
+invalidation, restatement, and atomic terminal-batch semantics. No durable
+storage adapter exists yet. Products, Shiny, deployment, observability, and
+CI/CD remain unimplemented.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -60,9 +63,11 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    eligibility, state, and the first estimand request.
 8. Read the [Provider and Estimate Foundation](docs/architecture/provider-foundation.md)
    for provider trust, compatibility, execution, and accepted estimates.
-9. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+9. Read the [Operational History Foundation](docs/architecture/operational-history-foundation.md)
+   for run lifecycle, append semantics, invalidation, and persistence ports.
+10. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-10. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+11. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -78,7 +83,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 4 checkpoint with:
+Evaluate the completed Iteration 5.1 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

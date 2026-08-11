@@ -226,3 +226,21 @@ or dependency was copied.
 
 The clean result is authoritative in
 [Provider and Estimate Foundation](provider-foundation.md).
+
+## Phase 5.1 operational-history review outcome
+
+Operational truth, record families, run lifecycle, atomicity, retry,
+invalidation, restatement, read semantics, and the persistence port were
+designed before the required read-only review. No sibling code, schema text,
+configuration, data, identifier, or dependency was copied.
+
+| Evidence | Final use | Retained concept | Rejected or deferred shape |
+|---|---|---|---|
+| `scripts/lib/product-provenance.R`, `PRODUCT_MANIFEST.yml`, and provenance tests | **Adapt — principles only** | stable identities, coherent-set validation, input attribution, optional counts/hashes, and tamper evidence | Git/worktree policy, SHA-256 as semantic equality, fixed product set, synthetic paths, tracked-file writes, and product refresh lifecycle |
+| `docs/operations/provenance-lifecycle.md` | **Reference only** | distinct attribution roles should not be collapsed | Git A/B/C as run identity, self-referential commit cycle, publication concerns, and deployment state |
+| state/estimate sections of `pipelines/functions/canonical-pipeline.R` | **Reference only** | explicit as-of meaning and deterministic state identity | wide old state, source/profile coupling, provider/product/priority mixing, and reconstructed trajectories |
+| `app/data/` CSVs and README | **Reject as history; defer as product evidence** | logical products may later be independent of representation | tracked CSV persistence, current snapshots as history, fixed eight-product suite, and application-owned operational truth |
+| `build_risk_trajectories()` and trajectory tests | **Reject** | none beyond evidence for why retained estimates are required | rerunning current code over an old as-of grid and labelling the outputs historical |
+
+The clean result is authoritative in
+[Operational History Foundation](operational-history-foundation.md).

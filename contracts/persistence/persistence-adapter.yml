@@ -1,0 +1,52 @@
+# Logical adapter capabilities without choosing a storage technology.
+specification_kind: persistence_contract
+specification_id: platform.persistence-adapter
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operational history persistence adapter
+status: active
+description: >-
+  Backend-independent append and read behavior for operational history. The
+  contract defines semantics, not tables, files, connection settings, query
+  languages, or a storage product.
+
+required_adapter_fields:
+  - adapter_id
+  - adapter_version
+  - contract_reference
+  - capabilities
+  - methods
+
+required_capabilities:
+  atomic_completed_run_append: true
+  idempotent_identical_append: true
+  conflicting_identity_rejected: true
+  append_only_invalidation: true
+  raw_history_reads: true
+  validity_resolved_reads: true
+
+required_methods:
+  - append_run_status
+  - append_completed_run
+  - append_invalidations
+  - read_record
+  - read_run_history
+  - read_episode_estimate_history
+  - read_current_estimate
+
+append_semantics:
+  identical_identity_and_content: idempotent no-op
+  identical_identity_different_content: fail without mutation
+  completed_run: status and all member records append atomically
+  overwrite_or_delete: prohibited
+
+read_views:
+  raw: retained facts including invalidated records and invalidation records
+  valid: raw facts after the contract-defined invalidation closure
+
+current_estimate_ordering: >-
+  Among valid estimates from completed or completed_with_failures runs at or
+  before the requested cutoff, choose greatest as_of_time and then greatest
+  terminal status_time. An unresolved tie is an ambiguity error.
+

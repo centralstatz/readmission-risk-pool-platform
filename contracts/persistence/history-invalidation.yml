@@ -1,0 +1,44 @@
+# Append-only correction overlay; original operational facts remain retained.
+specification_kind: persistence_record
+specification_id: platform.history-invalidation
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operational history invalidation
+status: active
+description: >-
+  A governed assertion that a previously accepted operational record or whole
+  run must be excluded from currently-valid reads. It does not erase or mutate
+  the target and is itself immutable.
+
+required_fields:
+  - invalidation_id
+  - invalidation_specification
+  - target_record_family
+  - target_record_id
+  - target_runtime_run_id
+  - invalidated_at
+  - reason_code
+  - reason
+  - replacement_runtime_run_id
+  - provenance_references
+
+target_record_families:
+  - operational_run
+  - episode_state
+  - estimand_request
+  - provider_execution_result
+  - estimate
+
+valid_view_cascade:
+  operational_run: all records owned by the target run
+  episode_state: the state plus dependent requests, executions, and estimates
+  estimand_request: the request plus dependent executions and estimates
+  provider_execution_result: the execution plus its accepted estimate
+  estimate: only the target estimate
+
+correction_rule: >-
+  Corrections append an invalidation. A restatement, when required, is a new
+  deliberate runtime run with a new identity and provenance referencing the
+  invalidation and superseded run; no replay operation is implied.
+

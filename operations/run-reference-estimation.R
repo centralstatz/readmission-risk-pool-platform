@@ -102,7 +102,7 @@ provider <- result$provider_specification
 cat("Reference estimation: succeeded\n")
 cat("  input: ", input_kind, "\n", sep = "")
 if (identical(input_kind, "synthetic")) cat("  scale: ", scale, "\n", sep = "")
-cat("  runtime package: rrpruntime@0.2.0\n")
+cat("  runtime package: rrpruntime@0.3.0\n")
 cat("  estimand: platform.readmission-next-day-conditional-hazard@0.1.0\n")
 cat("  provider: ", provider$provider_id, "@", provider$provider_version, "\n", sep = "")
 cat("  estimate: platform.readmission-risk-estimate@0.1.0\n")
@@ -114,4 +114,3 @@ for (status in names(summary$execution_statuses)) {
   if (count > 0L) cat("  execution_", status, ": ", count, "\n", sep = "")
 }
 cat("\nNo estimates were persisted, no episodes were ranked, and no products were built.\n")
-

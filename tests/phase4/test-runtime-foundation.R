@@ -74,14 +74,14 @@ phase4_test_cases <- function(repository_root) {
       phase0_assert_true("rrpruntime" %in% loadedNamespaces())
       description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
       phase0_assert_true(identical(description[[1L, "Package"]], "rrpruntime"))
-      phase0_assert_true(identical(description[[1L, "Version"]], "0.2.0"))
+      phase0_assert_true(identical(description[[1L, "Version"]], "0.3.0"))
       phase0_assert_false("Imports" %in% colnames(description))
       operation <- readLines(
         file.path(repository_root, "operations", "run-reference-runtime.R"),
         warn = FALSE
       )
       phase0_assert_true(any(grepl(
-        "rrpruntime@0.2.0", operation, fixed = TRUE
+        "rrpruntime@0.3.0", operation, fixed = TRUE
       )))
     },
 

@@ -2,7 +2,8 @@
 
 ## Purpose
 
-This operation proves the completed Phase 4 path in a clean temporary package
+This operation proves the completed Phase 4 path using the current clean
+temporary package
 installation:
 
 ```text
@@ -64,7 +65,7 @@ history. Ordinary console output is not a provenance, audit, or metrics store.
 A successful run must report the exact provider
 `reference.transparent-readmission-hazard@0.1.0`, estimate contract
 `platform.readmission-risk-estimate@0.1.0`, and equal request and successful
-estimate counts. Run the full completed Phase 4 checkpoint separately:
+estimate counts. Run the current Iteration 5.1 checkpoint separately:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

@@ -1,0 +1,47 @@
+# Immutable lifecycle evidence for one platform runtime run.
+specification_kind: persistence_record
+specification_id: platform.operational-run-status
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operational run status
+status: active
+description: >-
+  One append-only lifecycle fact for a runtime run. A run begins with started
+  and may receive exactly one terminal status. Status records are never updated
+  in place, and invalidation is represented by a separate record.
+
+required_fields:
+  - run_status_record_id
+  - run_status_specification
+  - runtime_run_id
+  - status_sequence
+  - previous_run_status_record_id
+  - run_status
+  - status_time
+  - as_of_time
+  - bundle_instance_id
+  - canonical_run_id
+  - implementation_reference
+  - mapping_reference
+  - status_summary
+  - provenance_references
+
+run_statuses:
+  started: run identity and input context have been admitted
+  completed: an atomic terminal batch was accepted with no failed executions
+  completed_with_failures: an atomic terminal batch was accepted and records one or more failed executions
+  failed: the run ended without an accepted terminal history batch
+
+lifecycle_rules:
+  first_status: started has sequence 1 and no previous status reference
+  terminal_status: completed, completed_with_failures, and failed have sequence 2 and reference the started status record
+  immutable_context: all status records for one runtime_run_id have identical as-of, canonical, implementation, and mapping context
+  one_terminal_status: one runtime run has at most one terminal status record
+  invalidation: invalidation is an overlay and is never a lifecycle status
+
+terminal_batch_rule: >-
+  A completed or completed_with_failures status and its episode states,
+  estimand requests, provider execution results, and accepted estimates become
+  visible atomically. A started or failed status may be appended alone.
+

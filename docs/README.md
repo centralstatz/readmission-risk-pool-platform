@@ -31,6 +31,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Provider and Estimate Foundation](architecture/provider-foundation.md) —
   provider declaration, trust, registry, compatibility, execution outcomes,
   transparent reference method, and standardized estimates.
+- [Operational History Foundation](architecture/operational-history-foundation.md)
+  — persisted record families, run lifecycle, atomicity, retry, invalidation,
+  raw/valid reads, and backend-independent persistence ports.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -51,7 +54,7 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Operations Index](operations/README.md) — currently supported human
   operations.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–4 test commands.
+  documentation, and Phase 0–5 test commands.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise
@@ -62,8 +65,8 @@ The documentation is the active product at this bootstrap stage. Begin with
 ## Specifications
 
 - [Platform Specifications](../contracts/README.md) — machine-readable
-  foundation, canonical, runtime, provider, execution-result, and estimate
-  contracts.
+  foundation, canonical, runtime, provider, execution-result, estimate, and
+  operational-history contracts.
 
 ## Repository guidance
 

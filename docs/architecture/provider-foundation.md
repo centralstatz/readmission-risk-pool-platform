@@ -23,9 +23,11 @@ execution result records WHETHER one invocation conformed
 estimate records the accepted methodological RESULT
 ```
 
-This iteration does not persist estimates, establish retry or correction
-semantics, rank episodes, make decisions, recommend interventions, construct
-products, or create application behavior. Phase 5 owns operational history.
+This provider boundary does not itself persist estimates, rank episodes, make
+decisions, recommend interventions, construct products, or create application
+behavior. Iteration 5.1 now owns retry lineage and operational-history
+semantics in the
+[Operational History Foundation](operational-history-foundation.md).
 Later phases own decision policy, products, and applications.
 
 ## Contract suite
@@ -36,7 +38,7 @@ Four platform contracts and one shipped declaration establish the boundary:
 |---|---|
 | `platform.provider-specification@0.1.0` | Required declaration, compatibility dimensions, lifecycle, and trust rules |
 | `platform.provider-execution-adapter@0.1.0` | Language-neutral invocation inputs, output meaning, and prohibited behavior |
-| `platform.provider-execution-result@0.1.0` | One structured success or failure from compatibility through output validation |
+| `platform.provider-execution-result@0.2.0` | One structured success or failure with runtime-run and retry-attempt lineage from compatibility through output validation |
 | `platform.readmission-risk-estimate@0.1.0` | One accepted probability with request, state, estimand, provider, run, interval, and provenance identity |
 | `reference.transparent-readmission-hazard@0.1.0` | Fixed nonclinical method conforming to the first estimand |
 

@@ -28,6 +28,7 @@ source(file.path(repository_root, "operations", "lib", "synthetic-reference-vali
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-validation.R"))
+source(file.path(repository_root, "operations", "lib", "history-validation.R"))
 source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
 
 mode <- tryCatch(

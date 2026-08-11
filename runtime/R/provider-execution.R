@@ -68,7 +68,9 @@ rrp_raw_provider_output_issues <- function(output, request, state) {
 rrp_execution_result_id <- function(
   provider_execution_run_id,
   request,
-  provider
+  provider,
+  attempt_number,
+  retry_of_execution_result_id
 ) {
   rrp_deterministic_id(
     "provider_execution",
@@ -80,6 +82,8 @@ rrp_execution_result_id <- function(
     provider$provider_id,
     provider$provider_version,
     provider$implementation$implementation_version,
+    attempt_number,
+    rrp_null_default(retry_of_execution_result_id, "initial_attempt"),
     request$target_interval_start,
     request$target_interval_end
   )
@@ -92,6 +96,8 @@ rrp_provider_execution_result <- function(
   request,
   provider,
   execution_result_contract,
+  attempt_number,
+  retry_of_execution_result_id,
   failure_code = NULL,
   message = "",
   estimate = NULL,
@@ -104,12 +110,15 @@ rrp_provider_execution_result <- function(
       execution_result_contract$specification_id,
       execution_result_contract$specification_version
     ),
+    runtime_run_id = request$runtime_run_id,
     provider_execution_run_id = provider_execution_run_id,
     request_id = request$request_id,
     state_id = request$state_reference$state_id,
     episode_id = request$episode_id,
     estimand_specification = request$estimand_specification,
     provider_reference = rrp_provider_reference(provider),
+    attempt_number = as.integer(attempt_number),
+    retry_of_execution_result_id = retry_of_execution_result_id,
     execution_status = status,
     failure_code = failure_code,
     message = message,
@@ -128,7 +137,9 @@ execute_provider <- function(
   state,
   provider_execution_run_id,
   runtime_contracts,
-  provider_contracts
+  provider_contracts,
+  attempt_number = 1L,
+  retry_of_execution_result_id = NULL
 ) {
   rrp_assert_runtime_conforms(
     validate_provider_contracts(provider_contracts), "Provider contracts"
@@ -136,10 +147,21 @@ execute_provider <- function(
   if (!rrp_is_scalar_string(provider_execution_run_id)) {
     stop("Provider execution requires one non-empty run ID.", call. = FALSE)
   }
+  attempt_number <- as.integer(attempt_number)
+  retry_ok <- length(attempt_number) == 1L && !is.na(attempt_number) &&
+    attempt_number >= 1L && (
+      attempt_number == 1L && is.null(retry_of_execution_result_id) ||
+      attempt_number > 1L && rrp_is_scalar_string(retry_of_execution_result_id)
+    )
+  if (!retry_ok) stop(
+    "Provider attempt 1 has no retry reference; later attempts require one.",
+    call. = FALSE
+  )
   entry <- resolve_provider(registry, provider_id, provider_version)
   provider <- entry$specification
   result_id <- rrp_execution_result_id(
-    provider_execution_run_id, request, provider
+    provider_execution_run_id, request, provider, attempt_number,
+    retry_of_execution_result_id
   )
   compatibility <- validate_provider_compatibility(
     provider, request, state, runtime_contracts
@@ -153,6 +175,8 @@ execute_provider <- function(
       request,
       provider,
       provider_contracts$execution_result,
+      attempt_number,
+      retry_of_execution_result_id,
       failure_code = issues$issue_code[[1L]],
       message = paste(unique(issues$message), collapse = " "),
       issues = issues
@@ -175,6 +199,7 @@ execute_provider <- function(
     return(rrp_provider_execution_result(
       "execution_failure", result_id, provider_execution_run_id,
       request, provider, provider_contracts$execution_result,
+      attempt_number, retry_of_execution_result_id,
       failure_code = "provider_execution_error",
       message = "Provider adapter failed during execution.", issues = issues
     ))
@@ -187,6 +212,7 @@ execute_provider <- function(
     return(rrp_provider_execution_result(
       "invalid_output", result_id, provider_execution_run_id,
       request, provider, provider_contracts$execution_result,
+      attempt_number, retry_of_execution_result_id,
       failure_code = "provider_mutated_state",
       message = "Provider violated state immutability.", issues = issues
     ))
@@ -198,6 +224,7 @@ execute_provider <- function(
     return(rrp_provider_execution_result(
       "invalid_output", result_id, provider_execution_run_id,
       request, provider, provider_contracts$execution_result,
+      attempt_number, retry_of_execution_result_id,
       failure_code = output_issues$issue_code[[1L]],
       message = "Provider returned nonconforming output.", issues = output_issues
     ))
@@ -213,6 +240,7 @@ execute_provider <- function(
     return(rrp_provider_execution_result(
       "invalid_output", result_id, provider_execution_run_id,
       request, provider, provider_contracts$execution_result,
+      attempt_number, retry_of_execution_result_id,
       failure_code = estimate_conformance$issues$issue_code[[1L]],
       message = "Standardized estimate failed conformance.",
       issues = estimate_conformance$issues
@@ -221,7 +249,7 @@ execute_provider <- function(
   rrp_provider_execution_result(
     "successful_estimate", result_id, provider_execution_run_id,
     request, provider, provider_contracts$execution_result,
+    attempt_number, retry_of_execution_result_id,
     message = "One conforming estimate was produced.", estimate = estimate
   )
 }
-

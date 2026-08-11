@@ -19,6 +19,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/synthetic-reference-implementation.md",
     "docs/architecture/runtime-foundation.md",
     "docs/architecture/provider-foundation.md",
+    "docs/architecture/operational-history-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -48,6 +49,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/synthetic-reference-implementation.md",
       "docs/architecture/runtime-foundation.md",
       "docs/architecture/provider-foundation.md",
+      "docs/architecture/operational-history-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -65,6 +67,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/synthetic-reference-implementation.md",
       "docs/architecture/runtime-foundation.md",
       "docs/architecture/provider-foundation.md",
+      "docs/architecture/operational-history-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -84,6 +87,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/synthetic-reference-implementation.md",
       "docs/architecture/runtime-foundation.md",
       "docs/architecture/provider-foundation.md",
+      "docs/architecture/operational-history-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -136,6 +140,11 @@ rrp_navigation_expectations <- function() {
       "docs/operations/run-reference-estimation.md",
       "docs/operations/validation.md"
     ),
+    "docs/architecture/operational-history-foundation.md" = c(
+      "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/provider-foundation.md",
+      "contracts/README.md"
+    ),
     "docs/operations/README.md" = c(
       "docs/operations/validation.md",
       "docs/operations/generate-reference.md",
@@ -152,7 +161,8 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/specification-foundation.md",
       "docs/architecture/canonical-bundle-foundation.md",
       "docs/architecture/canonical-clinical-profile.md",
-      "docs/architecture/provider-foundation.md"
+      "docs/architecture/provider-foundation.md",
+      "docs/architecture/operational-history-foundation.md"
     )
   )
 }

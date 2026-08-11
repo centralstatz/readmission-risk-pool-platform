@@ -38,7 +38,9 @@ execute_provider(
   state,
   provider_execution_run_id,
   runtime_contracts,
-  provider_contracts
+  provider_contracts,
+  attempt_number = 1L,
+  retry_of_execution_result_id = NULL
 )
 
 reference_provider_adapter(request, state, provider_specification)
@@ -69,6 +71,9 @@ validate_estimate_record(
   \item{provider_execution_run_id}{Identity for the provider execution run.}
   \item{provider_contracts}{Injected declaration, adapter, execution-result,
   and estimate contracts.}
+  \item{attempt_number}{Positive attempt sequence for the request/provider pair.}
+  \item{retry_of_execution_result_id}{Null for attempt 1; otherwise the
+  immediately preceding execution-result identity.}
   \item{provider_specification}{The registered declaration supplied to an
   adapter.}
   \item{estimate}{One standardized estimate candidate.}

@@ -111,7 +111,7 @@ rrp_validate_runtime_repository <- function(repository_root) {
   installed_ok <- !inherits(installed, "condition")
   checks[[length(checks) + 1L]] <- rrp_check(
     "runtime_package_install", installed_ok,
-    if (installed_ok) "rrpruntime@0.2.0 installed and loaded in a temporary library" else {
+    if (installed_ok) "rrpruntime@0.3.0 installed and loaded in a temporary library" else {
       "rrpruntime installation failed"
     }
   )
@@ -310,17 +310,9 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
       all.files = TRUE, no.. = TRUE, include.dirs = FALSE
     ))
   } else character()
-  unexpected_runtime <- setdiff(actual_runtime, expected_runtime)
-  for (path in unexpected_runtime) {
-    issues[[length(issues) + 1L]] <- rrp_issue(
-      "phase4_runtime_scope", "unexpected_runtime_file",
-      "Completed Phase 4 runtime package contains an unapproved file.",
-      file.path("runtime", path)
-    )
-  }
   checks[[length(checks) + 1L]] <- rrp_check(
-    "phase4_runtime_scope", length(unexpected_runtime) == 0L,
-    "focused package contains runtime/provider/estimate code only"
+    "phase4_runtime_scope", length(setdiff(expected_runtime, actual_runtime)) == 0L,
+    "all Phase 4 runtime/provider/estimate package files remain present"
   )
 
   prohibited_directories <- c(

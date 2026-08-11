@@ -4,8 +4,8 @@ This index lists operations that exist and are supported now. It does not
 reserve names or document hypothetical future capabilities.
 
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–4 tests, check repository policies, and
-  evaluate the completed Phase 4 checkpoint.
+  specification assets, run Phase 0–5 tests, check repository policies, and
+  evaluate the completed Iteration 5.1 checkpoint.
 - [Generate Reference](generate-reference.md) — generate, source-validate, map,
   and canonically admit the deterministic fictional reference in memory.
 - [Run Reference Runtime](run-reference-runtime.md) — admit either canonical

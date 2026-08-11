@@ -63,6 +63,6 @@ the three builders return versioned eligibility, state, or request record sets.
 }
 \details{
 The package accepts only already-admitted canonical information. It does not
-discover repository files, execute providers, estimate risk, persist data, or
-construct application products.
+discover repository files, execute providers, estimate risk, choose durable
+storage, or construct application products.
 }

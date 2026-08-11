@@ -1469,3 +1469,202 @@ execution results, and accepted estimates. Choose the smallest local reference
 adapter only after idempotency, retry, correction, invalidation, and
 restatement rules are explicit. Keep products and the application downstream
 of those ports.
+
+## Phase 5 — First persistent working vertical slice
+
+### Iteration 5.1 — Operational history semantics and persistence ports
+
+#### Planned objective
+
+Define operational truth and backend-independent append/read interfaces before
+selecting a storage technology. The iteration was to stop at accepted runtime
+records → history semantics → logical ports, retain the completed Phase 4
+boundaries, and leave a concrete reference adapter, products, application,
+deployment, replay, decision policy, and observability to their authorized
+later work.
+
+#### Actual implementation
+
+- Added `platform.operational-run-status@0.1.0` with immutable `started`,
+  `completed`, `completed_with_failures`, and `failed` lifecycle facts,
+  predecessor links, exact terminal summaries, and immutable run context.
+- Selected operational run statuses, full episode-state snapshots,
+  provider-neutral estimand requests, every provider execution result, and
+  accepted estimates as the persisted terminal-batch families.
+- Deliberately deferred full canonical-bundle persistence while preserving
+  bundle, canonical run, implementation, mapping, input, and provenance
+  references in the records that were actually used.
+- Added `platform.history-invalidation@0.1.0` as an append-only overlay with
+  explicit run/state/request/execution/estimate cascade semantics. Raw records
+  remain retained; valid views apply invalidation closure.
+- Added `platform.persistence-adapter@0.1.0` with seven logical methods and six
+  required capabilities. It contains no table, file, connection, query,
+  transaction-product, or vendor assumption.
+- Advanced the internal package to `rrpruntime@0.3.0`. It constructs and
+  validates run/invalidation records, validates atomic completed-run batches
+  and adapter declarations, creates a validated port, and delegates governed
+  append and read calls.
+- Advanced `platform.provider-execution-result` from `0.1.0` to `0.2.0` because
+  retained attempts require `runtime_run_id`, `attempt_number`, and
+  `retry_of_execution_result_id`. Existing calls remain source-compatible via
+  attempt-1 defaults.
+- Added a test-only in-memory adapter outside the package. It proves the
+  semantics without creating a durable or supported storage implementation.
+- Added a focused Phase 5 runner and repository/checkpoint validation. The
+  completed Phase 4 checkpoint now verifies that its owned prerequisite files
+  remain; the Iteration 5.1 checkpoint owns the expanded exact history scope.
+
+#### Old assets used or adapted
+
+The clean design was fixed before sibling inspection. The subsequent read-only
+review covered `scripts/lib/product-provenance.R`, `app/data/PRODUCT_MANIFEST.yml`,
+`docs/operations/provenance-lifecycle.md`, the state/estimate/trajectory parts
+of `pipelines/functions/canonical-pipeline.R`, `app/data/`, and relevant
+provenance/trajectory tests.
+
+Only principles were adapted: stable identities, coherent-set validation,
+explicit input attribution, and optional count/hash tamper evidence. The old
+Git A/B/C lifecycle, tracked CSV persistence, fixed product suite, current
+commit cycles, synthetic/app paths, and trajectories rebuilt by running
+current code over historical cutoffs were rejected as operational-history
+foundations. No old code, schema text, configuration, data, identity, or
+dependency was copied.
+
+#### New clean work
+
+New clean assets include:
+
+- three contracts under `contracts/persistence/`;
+- four package modules for history specification, records, cross-record
+  conformance, and the persistence port;
+- a package manual page and current provider/runtime documentation updates;
+- a test-only in-memory adapter, seven focused conformance cases, and a Phase 5
+  runner;
+- repository and strict-checkpoint history validation; and
+- the authoritative
+  [Operational History Foundation](operational-history-foundation.md) plus
+  navigation, operation, plan, decision, reconciliation, and agent guidance.
+
+#### Decisions and rationale
+
+1. **Operational truth:** retained evidence records what one admitted runtime
+   knew, requested, attempted, accepted, and concluded; it is not source
+   history, provenance alone, diagnostics, products, replay, or research data.
+2. **Run lifecycle:** lifecycle is a two-record append sequence rather than a
+   mutable run row. Invalidation is not a lifecycle status.
+3. **State scope:** persist the complete current state contract because that is
+   exactly what a provider could inspect. Do not claim it is sufficient for a
+   future provider or state version.
+4. **Canonical bundle:** defer full bundle persistence so the runtime port does
+   not take ownership of source/handoff history. Preserve exact logical
+   references to admitted inputs.
+5. **Atomicity:** a started or failed status may append alone. A completed
+   status and every batch member become visible all-or-none.
+6. **Idempotency:** same identity and identical semantic content is a no-op.
+   Semantic equality is authoritative; a digest may be adapter evidence.
+7. **Conflict:** same identity with different content fails before mutation.
+   Overwrite and delete are not port behavior.
+8. **Retry:** later attempts explicitly reference the immediately prior attempt
+   for the same request/provider. Failure remains retained; one later success
+   may supply the one accepted estimate for that semantic key.
+9. **Provider transition:** a new provider affects future runs only. Old
+   estimates keep old provider/model identity unless separately invalidated.
+10. **Correction/invalidation:** corrections append a reasoned invalidation;
+    adapters resolve its dependency closure for valid reads.
+11. **Restatement:** recomputation is a new deliberate run and identity with
+    provenance to the invalidation and superseded run. No replay tool is
+    implied.
+12. **Reads:** exact, run, and episode-history reads expose raw or valid views.
+    Current reads use only valid estimates from completed terminal runs,
+    greatest as-of, then greatest terminal time, and fail an unresolved tie.
+13. **Adapter ownership:** the package owns semantic validation; adapters own
+    physical atomicity, durable conflict safety, validity resolution, and read
+    ordering. No technology was chosen.
+
+#### Surprises and deviations
+
+- Phase 4 had intentionally left execution-result retry lineage undefined.
+  Persistence made the absence material, so a real contract minor-line advance
+  was safer than an unversioned optional field or a persistence-only wrapper.
+- The earlier strict Phase 4 validator equated its exact package tree with all
+  future repository scope. It was narrowed to its durable prerequisite claim;
+  the new strict checkpoint now owns the authorized expansion.
+- A cohesive terminal-run append is necessarily multi-family. It is not a
+  generic `save_everything` API: its exact cross-record invariants and atomic
+  visibility are the reason it exists.
+- The implementation plan originally placed complete correction/transaction
+  semantics in Phase 6. The plan now records their initial authoritative form
+  in Iteration 5.1 and leaves migration/retention maturity to Phase 6.
+- No human persistence command was added. A command backed only by an
+  ephemeral test double would falsely imply durable supported behavior.
+
+#### Validation evidence
+
+Focused evidence completed during implementation:
+
+- `Rscript tests/run-phase5-tests.R` — 7 tests, 0 failures, covering contract
+  and adapter capabilities, coherent append/read, idempotency/conflict, retry,
+  provider transition, invalidation/restatement, and incomplete runs; and
+- `Rscript tests/run-phase4-tests.R` — 55 tests, with the one expected package
+  version assertion updated from `0.2.0` to `0.3.0`, then fully passing.
+
+The final command matrix, clean package build/check, parse, dependency, and
+whitespace results are recorded in the final validation follow-up below.
+
+#### Implications for Iteration 5.2
+
+A concrete local reference adapter must implement all seven port methods and
+affirm all six capabilities. Tests must prove atomic terminal visibility under
+injected interruption, durable idempotency and conflict rejection across
+processes, append-only invalidation closure, raw retention, provider
+transitions, unambiguous cutoff reads, and safe restart/recovery. Its human
+operation must document inputs, outputs, side effects, validation,
+backup/recovery, and troubleshooting. The selected technology is a reference
+choice, not a platform dependency.
+
+#### Phase 5 status
+
+**In progress.** Operational semantics and logical ports exist. No durable
+adapter, product, application, deployment, replay, decision policy, or
+observability implementation exists.
+
+#### Recommended next task
+
+Begin **Iteration 5.2** by evaluating the smallest local durable technology
+against `platform.persistence-adapter@0.1.0`, then implement one repository
+owned reference adapter and the first durable source-to-history run. Do not add
+products or application behavior until the adapter passes restart, conflict,
+atomicity, invalidation, and human recovery evidence.
+
+#### Final validation follow-up
+
+The complete repository-owned matrix passed after documentation and package
+review:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- `Rscript tests/run-phase0-tests.R` — 10 tests, 0 failures;
+- `Rscript tests/run-phase1-tests.R` — 14 tests, 0 failures;
+- `Rscript tests/run-phase2-tests.R` — 38 tests, 0 failures;
+- `Rscript tests/run-phase3-tests.R` — 24 tests, 0 failures;
+- `Rscript tests/run-phase4-tests.R` — 55 tests, 0 failures;
+- `Rscript tests/run-phase5-tests.R` — 7 tests, 0 failures;
+- `Rscript operations/validate.R --mode development` — 59 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 81 checks, 0 issues;
+- `Rscript operations/generate-reference.R` — reference scale succeeded with
+  24 fictional patients, 36 discharge episodes, and 38 admitted event records,
+  with no generated data written;
+- `Rscript operations/run-reference-runtime.R --input synthetic --scale test`
+  — 6 states and 6 requests using `rrpruntime@0.3.0`, with no provider,
+  estimate, or persistence;
+- `Rscript operations/run-reference-estimation.R --input synthetic --scale test`
+  — 6 successful estimates using the exact reference provider, with no
+  persistence, ranking, or products;
+- clean `R CMD build` and
+  `R CMD check --no-manual --no-vignettes` for `rrpruntime@0.3.0` — status OK;
+- all 59 maintained R files and 36 YAML files parsed;
+- `renv::status()` — no issues and no dependency or lockfile change; and
+- storage/dependency, generated-history, sibling-worktree, whitespace, and
+  `git diff --check` reviews passed.
+
+The sibling repository remained read-only. No durable data, commit, push,
+publication, deployment, or external mutation occurred.

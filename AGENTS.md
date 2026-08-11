@@ -112,7 +112,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 4 checkpoint, run:
+For the completed Iteration 5.1 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -132,6 +132,12 @@ Run the focused runtime tests and reference runtime/estimation operations with:
 Rscript tests/run-phase4-tests.R
 Rscript operations/run-reference-runtime.R --input synthetic --scale test
 Rscript operations/run-reference-estimation.R --input synthetic --scale test
+```
+
+Run the focused operational-history port tests with:
+
+```sh
+Rscript tests/run-phase5-tests.R
 ```
 
 Development coherence and strict milestone readiness are different claims.
@@ -171,8 +177,11 @@ canonical admission and must not discover repository paths or source
 implementations. The completed provider boundary uses
 `docs/architecture/provider-foundation.md`; generic code does not depend on the
 reference provider identity, and failures never become fabricated estimates.
-Phase 4 is complete. Phase 5 may add operational history but no later-phase
-policy, product, application, deployment, or observability scaffolding early.
+Phase 4 is complete. Iteration 5.1 operational history is documented in
+`docs/architecture/operational-history-foundation.md` and
+`contracts/persistence/`. It defines ports only; no durable adapter exists.
+Phase 5 remains in progress, and no product, application, deployment, replay,
+decision-policy, or observability scaffolding is authorized early.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,
