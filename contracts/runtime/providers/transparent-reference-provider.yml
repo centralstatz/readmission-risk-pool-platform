@@ -1,0 +1,96 @@
+# Shipped software-conformance provider; not clinically calibrated.
+specification_kind: provider
+specification_id: reference.transparent-readmission-hazard
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Transparent nonclinical readmission hazard provider
+status: active
+description: >-
+  Deterministic, inspectable reference method for the accepted next-day
+  conditional readmission hazard. It proves software conformance and extension
+  behavior, not clinical predictive validity.
+
+provider_id: reference.transparent-readmission-hazard
+provider_version: "0.1.0"
+implementation:
+  implementation_version: "0.1.0"
+  adapter_contract: platform.provider-execution-adapter@0.1.0
+  reference_realization: trusted_in_process_r_adapter
+model_identity:
+  separate_model_artifact: false
+  rationale: >-
+    The provider is a fixed transparent formula and has no fitted model or
+    serialized artifact. Future providers may declare a separate model.
+
+supported_estimands:
+  - specification_id: platform.readmission-next-day-conditional-hazard
+    minimum_version: "0.1.0"
+    maximum_version: "0.1.0"
+    population_scope: full_estimand_population
+    maximum_followup_days: 30
+    maximum_interval_days: 1
+supported_state:
+  specification_id: platform.readmission-episode-state
+  minimum_version: "0.1.0"
+  maximum_version: "0.1.0"
+  required_fields:
+    - state_id
+    - episode_id
+    - as_of_time
+    - days_since_discharge
+    - available_baseline_risk
+    - available_episode_events
+    - capability_statuses
+supported_outputs:
+  - output_type: probability
+    minimum: 0
+    maximum: 1
+    cardinality_per_request: one
+required_capabilities:
+  - platform.discharge-episode
+input_requirements:
+  available_baseline_risk: optional
+  available_episode_events: optional
+  missing_optional_behavior: use_zero_contribution
+  baseline_usage: mean_of_probability_typed_rows_only
+  event_usage: bounded_count_and_seven_day_recency_indicator
+
+reproducibility:
+  deterministic: true
+  wall_clock_used: false
+  random_number_generator_used: false
+uncertainty_capability: unsupported
+explanation_capability: fixed_method_summary_only
+execution_limitations:
+  - software_conformance_demonstration_only
+  - not_clinically_calibrated
+  - no_causal_interpretation
+  - no_model_fitting
+  - no_source_or_canonical_access_behind_state
+failure_behavior:
+  missing_required_input: return_structured_missing_required_input
+  unsupported_request: do_not_invoke
+  execution_error: return_structured_execution_failure
+  invalid_output: reject_without_estimate
+conformance_scenarios:
+  - no_optional_inputs
+  - baseline_only
+  - events_only
+  - baseline_and_events
+  - deterministic_repeat
+  - invalid_output_rejection
+
+method:
+  link: logistic
+  base_probability: 0.04
+  linear_predictor: >-
+    qlogis(0.04) + 0.75 * mean_available_baseline_probability +
+    0.12 * min(available_event_count, 5) +
+    0.10 * any_event_within_previous_7_days
+  baseline_absent_value: 0
+  events_absent_value: 0
+  result: plogis(linear_predictor)
+clinical_use: >-
+  This provider exists to prove software conformance and extension behavior,
+  not clinical predictive validity.

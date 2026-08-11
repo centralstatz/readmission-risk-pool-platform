@@ -1,0 +1,60 @@
+# Contract for declaring a provider before trusted executable registration.
+specification_kind: provider_contract
+specification_id: platform.provider-specification
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Governed provider specification contract
+status: active
+description: >-
+  Language-neutral declaration required before a provider adapter can enter a
+  controlled runtime registry. Executable adapters are registered through a
+  trusted code boundary and are never loaded from this document.
+
+provider_declaration:
+  required_fields:
+    - provider_id
+    - provider_version
+    - implementation
+    - model_identity
+    - supported_estimands
+    - supported_state
+    - supported_outputs
+    - required_capabilities
+    - input_requirements
+    - reproducibility
+    - uncertainty_capability
+    - explanation_capability
+    - execution_limitations
+    - failure_behavior
+    - conformance_scenarios
+  identity_rule: >-
+    provider_id and provider_version equal specification_id and
+    specification_version. Provider identity is distinct from canonical
+    source_model_id and from an optional trained model/artifact identity.
+  selectable_statuses:
+    - active
+  nonselectable_statuses:
+    - experimental
+    - deprecated
+    - retired
+
+compatibility_dimensions:
+  - estimand_id_and_version_range
+  - state_id_version_and_required_fields
+  - required_capability_status
+  - provider_specific_input_requirement
+  - target_interval_and_followup_limits
+  - probability_output_semantics
+
+trust_boundary:
+  registration: >-
+    A running platform explicitly pairs a conforming declaration with an
+    approved callable adapter. Ordinary configuration may select only an exact
+    registered provider ID and version.
+  prohibited_selection_mechanisms:
+    - arbitrary_source_file_path
+    - executable_code_in_configuration
+    - dynamic_package_installation
+    - remote_plugin_discovery
+

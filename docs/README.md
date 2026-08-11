@@ -28,6 +28,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   and canonical producer boundary.
 - [Runtime Foundation](architecture/runtime-foundation.md) — admitted input,
   eligibility, minimal episode state, and first estimand-request semantics.
+- [Provider and Estimate Foundation](architecture/provider-foundation.md) —
+  provider declaration, trust, registry, compatibility, execution outcomes,
+  transparent reference method, and standardized estimates.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -48,16 +51,18 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Operations Index](operations/README.md) — currently supported human
   operations.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–4.1 test commands.
+  documentation, and Phase 0–4 test commands.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise
   canonical admission through eligibility, state, and estimand request.
+- [Run Reference Estimation](operations/run-reference-estimation.md) — execute
+  the exact registered transparent provider and validate accepted estimates.
 
 ## Specifications
 
 - [Platform Specifications](../contracts/README.md) — machine-readable
-  foundation, canonical, runtime-state, eligibility, estimand, and request
+  foundation, canonical, runtime, provider, execution-result, and estimate
   contracts.
 
 ## Repository guidance

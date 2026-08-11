@@ -220,7 +220,7 @@ Completed in Iteration 3.1. The reference implementation owns six fictional
 source feeds, source-local conformance, deterministic mapping, two declared
 scales, and a staged producer result. It reaches the existing Phase 2 handoff
 without a synthetic branch in generic validation and writes no generated data.
-Phase 4 is the next active phase.
+Phase 4 followed and is now complete.
 
 ## Phase 4 — Minimal governed runtime and provider
 
@@ -262,11 +262,14 @@ deferred.
 
 ### Completion status
 
-In progress. Iteration 4.1 created the `rrpruntime` package, normalized admitted
-input, eligibility, minimal state, the first next-day conditional-hazard
-estimand, and provider-neutral requests. Provider specification, controlled
-registration/selection, execution, estimate records, and provider conformance
-remain for Iteration 4.2; Phase 4 is not complete.
+Completed in Iterations 4.1 and 4.2. `rrpruntime@0.2.0` now owns normalized
+admitted input, eligibility, minimal state, the first next-day
+conditional-hazard estimand and request, language-neutral provider contracts,
+controlled in-memory registration and exact selection, compatibility,
+isolated adapter execution, structured failures, and accepted estimates. The
+transparent deterministic provider and a test-only second provider satisfy
+the Phase 4 exit evidence against independent and synthetic admitted inputs.
+Phase 5 operational history is the next active phase.
 
 ## Phase 5 — First persistent vertical slice
 

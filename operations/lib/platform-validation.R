@@ -224,7 +224,7 @@ rrp_validate_platform <- function(repository_root, mode) {
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Iteration 4.1 strict checkpoint validation"
+    "Completed Phase 4 strict checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }

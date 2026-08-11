@@ -22,6 +22,7 @@ for (file in c(
   ))
 }
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
+source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 
 installed <- rrp_install_runtime_package(repository_root)

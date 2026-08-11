@@ -1,0 +1,41 @@
+# One provider invocation outcome; failures are not estimate rows.
+specification_kind: runtime_result
+specification_id: platform.provider-execution-result
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Provider execution result
+status: active
+description: >-
+  Structured outcome from compatibility evaluation, provider invocation, and
+  output conformance for one estimand request and one selected provider.
+
+required_fields:
+  - execution_result_id
+  - execution_result_specification
+  - provider_execution_run_id
+  - request_id
+  - state_id
+  - episode_id
+  - estimand_specification
+  - provider_reference
+  - execution_status
+  - failure_code
+  - message
+  - estimate_record
+
+execution_statuses:
+  successful_estimate: one conforming standardized estimate was accepted
+  unsupported: provider lifecycle or declared compatibility does not support the request
+  missing_required_input: compatible method lacks a required capability, state field, or input
+  execution_failure: provider adapter was invoked and failed internally
+  invalid_output: provider claimed success but returned nonconforming output
+
+conditional_rules:
+  successful_estimate: >-
+    estimate_record is present, failure_code is null, and exactly one estimate
+    exists for the request/provider execution.
+  failure: >-
+    estimate_record is null and failure_code is a non-empty machine-readable
+    code. A failed or unsupported execution never fabricates probability NA.
+

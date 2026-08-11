@@ -7,13 +7,13 @@ Current validation answers two different questions:
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the completed
-  Iteration 4.1 canonical-to-estimand-request requirements?
+  Phase 4 canonical-to-estimate requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
-3 fictional source implementation, and Iteration 4.1 runtime foundation. Phase
-4 remains incomplete until provider execution and estimates exist.
+3 fictional source implementation, and completed Phase 4 runtime/provider
+foundation. Phase 5 persistence and later layers do not exist yet.
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Iteration 4.1 checkpoint:
+Validate the completed Phase 4 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -70,7 +70,7 @@ Run the focused Phase 3 tests directly:
 Rscript tests/run-phase3-tests.R
 ```
 
-Run the focused Iteration 4.1 tests directly:
+Run the focused Phase 4 tests directly:
 
 ```sh
 Rscript tests/run-phase4-tests.R
@@ -87,6 +87,14 @@ Run admitted canonical input through eligibility, state, and request:
 ```sh
 Rscript operations/run-reference-runtime.R --input independent
 Rscript operations/run-reference-runtime.R --input synthetic --scale test
+```
+
+Run admitted input through the exactly selected reference provider and
+accepted estimate:
+
+```sh
+Rscript operations/run-reference-estimation.R --input independent
+Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
 Each command exits with status `0` on success and nonzero status on failure.
@@ -117,9 +125,10 @@ Development mode composes:
 - visible fictional classification for patient-like committed fixtures; and
 - specification-envelope, foundation-example, generic canonical-bundle,
   clinical domain/profile/vocabulary, fictional clinical fixture, synthetic
-  implementation/source-schema/configuration, runtime contract/package, and
-  both source-independent and synthetic reference-flow conformance; and
-- all Phase 0, Phase 1, Phase 2, Phase 3, and Iteration 4.1 tests.
+  implementation/source-schema/configuration, runtime/provider/estimate
+  contract/package, and both source-independent and synthetic reference-flow
+  conformance; and
+- all Phase 0, Phase 1, Phase 2, Phase 3, and Phase 4 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -128,24 +137,24 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0 through Iteration 4.1 metadata, policy, operation,
+- required Phase 0 through Phase 4 metadata, policy, operation,
   specification, package, implementation, and test files;
 - presence of the approved three-domain clinical profile and the one approved
   synthetic reference implementation, with no committed generated datasets;
 - a conforming reference-scale source-to-canonical run and completed Phase 3
   implementation-record entry;
-- the exact focused runtime package/file scope, runtime contracts, clean
-  temporary installation/loading, two admitted-input flows, and Iteration 4.1
-  implementation-record entry;
+- the exact focused runtime package/file scope, runtime/provider/estimate
+  contracts, clean temporary installation/loading, two admitted-input flows,
+  two provider-estimation flows, and Iteration 4.2 implementation-record entry;
 - an independently owned `renv` lockfile recording the `yaml` parser;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–4.1 source-to-request boundary. It does
+This is strict only relative to the Phase 0–4 source-to-estimate boundary. It does
 not prove:
 
 - public release or license readiness;
-- provider, estimate, persistence, product, or application correctness;
+- clinical provider validity, persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or
@@ -194,6 +203,18 @@ observability, provenance, metrics, or audit system.
 - **Eligibility/state/request failure:** Correct interval/terminal rules,
   availability filtering, deterministic state identity, or request linkage.
   Never fabricate a risk or invoke a provider to hide ineligibility.
+- **Provider declaration/selection failure:** Restore a conforming declaration,
+  trusted adapter pairing, and exact registered ID/version. Never load
+  executable code from ordinary configuration or select an implicit latest
+  provider.
+- **Provider compatibility/input failure:** Correct lifecycle, estimand/state
+  version ranges, target interval, required capability, state field, or
+  provider-specific input. Unsupported and missing-input results must not
+  invoke the adapter.
+- **Provider execution/output failure:** Preserve a structured failure with no
+  estimate; correct adapter exceptions or request/state/episode identity,
+  interval, cardinality, provenance, finite-value, and probability-bound
+  violations before retrying.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

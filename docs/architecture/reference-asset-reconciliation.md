@@ -207,3 +207,22 @@ dependency was copied.
 | `config/estimands.yml` | **Do not reuse** | showed why quantity meaning must precede provider configuration | draft remaining-window/seven-day cumulative quantities lacked governed event, terminal, competing-event, capability, and coherence semantics |
 
 The clean result is authoritative in [Runtime Foundation](runtime-foundation.md).
+
+## Phase 4.2 provider and estimate review outcome
+
+Provider declaration, trust, compatibility, execution outcomes, estimate
+identity, and the transparent method were designed before the required
+read-only review. No old code, schema text, configuration, fixture, identifier,
+or dependency was copied.
+
+| Evidence | Final use | Retained concept | Rejected or deferred shape |
+|---|---|---|---|
+| `engine/R/risk-provider.R` | **Adapt — concepts only** | explicit wrapper, as-of isolation, identifier/cardinality/probability checks | arbitrary function injection as a public trust boundary, latest-baseline selection, source/canonical inputs, tibble shape, mixed eligibility/provider behavior, old output code and fields |
+| `engine/tests/testthat/test-risk-provider-interface.R` and `test-temporal-validity.R` | **Adapt — test principles only** | determinism, bounded/cardinality failures, future-information exclusion, and terminal boundaries | old fixtures, estimands, providers, output assumptions, and testthat dependency |
+| `contracts/schemas/risk-estimate.yml` | **Adapt — concepts only** | estimate identity, provider/model version, interval, and bounded probability | permissive fields, draft identity, baseline comparison, generated time as identity, and missing request/state/run/execution-result provenance or failure separation |
+| `config/models.yml` | **Reference only** | evidence that selection and method identity require governance | string-to-function names, active flag as trust, placeholder identities, and old method assumptions |
+| `config/estimands.yml` | **Do not reuse** | none beyond prior evidence that the quantity must be governed first | unversioned remaining-window/seven-day quantities and provider-coupled meaning |
+| `docs/architecture/pluggable-model-assessment.md` | **Reference only** | controlled allowlist/registry direction and future non-R adapter concern | the old seam as supported architecture, old outputs/product coupling, and incomplete provenance assumptions |
+
+The clean result is authoritative in
+[Provider and Estimate Foundation](provider-foundation.md).

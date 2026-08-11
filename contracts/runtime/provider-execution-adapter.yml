@@ -1,0 +1,44 @@
+# Language-neutral invocation semantics realized by trusted runtime adapters.
+specification_kind: provider_contract
+specification_id: platform.provider-execution-adapter
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Provider execution adapter contract
+status: active
+description: >-
+  Semantic boundary for invoking an already registered provider. The current R
+  realization uses a callable function, but functions, services, or other
+  controlled adapters may realize the same request/state/output meaning later.
+
+inputs:
+  - accepted_provider_neutral_estimand_request
+  - matching_immutable_episode_state
+  - registered_provider_specification
+success_output:
+  cardinality: exactly_one
+  required_fields:
+    - request_id
+    - state_id
+    - episode_id
+    - estimand_specification
+    - target_interval_start
+    - target_interval_end
+    - interval_boundary
+    - output_type
+    - estimate_value
+    - provenance_references
+platform_owned_behavior:
+  - compatibility_before_invocation
+  - state_isolation
+  - universal_output_conformance
+  - estimand_specific_conformance
+  - standardized_estimate_construction
+prohibited_behavior:
+  - source_or_canonical_lookup_behind_state
+  - eligibility_recalculation
+  - request_or_state_mutation
+  - arbitrary_path_loading
+  - estimate_persistence
+  - decision_or_priority_generation
+

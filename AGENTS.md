@@ -42,11 +42,12 @@ owned, documented, and tested in this repository with no sibling dependency.
 
 Keep work within the active phase and its stated exit evidence. Do not create
 later-phase scaffolding merely to make the tree look complete. In particular,
-do not add providers, estimates, persistence, products, app code, deployment,
-observability, or CI/CD before the relevant task authorizes it. Iteration 4.1
-owns only admitted input, eligibility, state, and estimand requests inside
-`rrpruntime`. The current `renv` state owns only the Phase 1 YAML parser
-dependency.
+do not add persistence, products, app code, deployment, observability, or CI/CD
+before the relevant task authorizes it. Completed Phase 4 owns admitted input,
+eligibility, state, estimand requests, provider contracts/registry/execution,
+structured outcomes, the transparent reference provider, and accepted
+estimates inside `rrpruntime`. The current `renv` state owns only the Phase 1
+YAML parser dependency.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -111,7 +112,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Iteration 4.1 checkpoint, run:
+For the completed Phase 4 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -125,11 +126,12 @@ Rscript tests/run-phase3-tests.R
 Rscript operations/generate-reference.R
 ```
 
-Run the focused runtime tests and provider-free reference operation with:
+Run the focused runtime tests and reference runtime/estimation operations with:
 
 ```sh
 Rscript tests/run-phase4-tests.R
 Rscript operations/run-reference-runtime.R --input synthetic --scale test
+Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
 Development coherence and strict milestone readiness are different claims.
@@ -166,8 +168,11 @@ source tables.
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires
 canonical admission and must not discover repository paths or source
-implementations. Iteration 4.1 creates no provider or estimate; Phase 4 remains
-in progress.
+implementations. The completed provider boundary uses
+`docs/architecture/provider-foundation.md`; generic code does not depend on the
+reference provider identity, and failures never become fabricated estimates.
+Phase 4 is complete. Phase 5 may add operational history but no later-phase
+policy, product, application, deployment, or observability scaffolding early.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

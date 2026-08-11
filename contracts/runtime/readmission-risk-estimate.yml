@@ -1,0 +1,60 @@
+# Accepted methodological result, deliberately separate from decisions.
+specification_kind: runtime_record
+specification_id: platform.readmission-risk-estimate
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Standardized readmission risk estimate
+status: active
+description: >-
+  One accepted probability estimate for one provider-neutral estimand request
+  executed by one registered compatible provider. This record contains no
+  priority, recommendation, action, product, or persistence semantics.
+
+required_fields:
+  - estimate_id
+  - estimate_specification
+  - runtime_run_id
+  - provider_execution_run_id
+  - request_id
+  - state_reference
+  - episode_id
+  - estimand_specification
+  - provider_reference
+  - model_reference
+  - as_of_time
+  - target_interval_start
+  - target_interval_end
+  - interval_boundary
+  - output_type
+  - estimate_value
+  - provenance_references
+
+identity_rule: >-
+  Deterministic identity includes runtime run, provider execution run, request,
+  state, estimand, provider and optional model versions, and target interval.
+  It is comparison identity only; Phase 5 owns durable retry/idempotency rules.
+cardinality_rule: >-
+  Exactly one accepted estimate per successful request/provider execution.
+output:
+  output_type: probability
+  minimum: 0
+  maximum: 1
+  finite_required: true
+model_reference_rule: >-
+  Null is explicit when the provider declares no separate trained model or
+  artifact. When present, it identifies that model independently from provider
+  identity and canonical source_model_id.
+provenance_rule: >-
+  References identify the request, state, provider specification, and execution
+  result. Git, storage locations, and backend identifiers are not logical
+  estimate identity.
+prohibited_fields:
+  - priority
+  - priority_rank
+  - risk_category
+  - recommended_action
+  - intervention
+  - persistence_key
+  - storage_backend
+

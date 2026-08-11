@@ -14,13 +14,16 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 4 is in progress; Iteration 4.1 is complete.** The focused internal
-`rrpruntime` package accepts an admitted canonical input, evaluates explicit
-temporal eligibility, builds minimal availability-filtered episode state, and
-creates requests for the first versioned conditional readmission-hazard
-estimand. It works with both the independent Phase 2 fixture and Phase 3
-synthetic producer. No provider runs and no risk is estimated. Persistence,
-products, Shiny, deployment, observability, and CI/CD remain unimplemented.
+**Phase 4 is complete.** The focused internal `rrpruntime` package accepts an
+admitted canonical input, evaluates temporal eligibility, builds minimal
+availability-filtered episode state, creates requests for the first versioned
+conditional readmission-hazard estimand, resolves an exactly selected trusted
+provider, and returns structured execution results and standardized estimates.
+The shipped transparent deterministic provider proves software conformance
+against both the independent fixture and synthetic producer; it is not a
+clinically valid model. Persistence, products, Shiny, deployment,
+observability, and CI/CD remain unimplemented. Phase 5 operational history is
+next.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -55,9 +58,11 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    for the first source-to-canonical realization.
 7. Read the [Runtime Foundation](docs/architecture/runtime-foundation.md) for
    eligibility, state, and the first estimand request.
-8. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+8. Read the [Provider and Estimate Foundation](docs/architecture/provider-foundation.md)
+   for provider trust, compatibility, execution, and accepted estimates.
+9. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-9. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+10. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -73,7 +78,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Iteration 4.1 checkpoint with:
+Evaluate the completed Phase 4 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -89,6 +94,12 @@ Exercise admitted canonical input through state and request construction with:
 
 ```sh
 Rscript operations/run-reference-runtime.R --input synthetic --scale test
+```
+
+Run the complete admitted-input-to-estimate demonstration with:
+
+```sh
+Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
 ## Authority

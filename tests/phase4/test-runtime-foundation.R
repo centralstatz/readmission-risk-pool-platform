@@ -74,7 +74,15 @@ phase4_test_cases <- function(repository_root) {
       phase0_assert_true("rrpruntime" %in% loadedNamespaces())
       description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
       phase0_assert_true(identical(description[[1L, "Package"]], "rrpruntime"))
+      phase0_assert_true(identical(description[[1L, "Version"]], "0.2.0"))
       phase0_assert_false("Imports" %in% colnames(description))
+      operation <- readLines(
+        file.path(repository_root, "operations", "run-reference-runtime.R"),
+        warn = FALSE
+      )
+      phase0_assert_true(any(grepl(
+        "rrpruntime@0.2.0", operation, fixed = TRUE
+      )))
     },
 
     "runtime contracts use supported distinct identities" = function() {
@@ -404,15 +412,13 @@ phase4_test_cases <- function(repository_root) {
                            readLines, warn = FALSE))
       forbidden <- c(
         "synthetic", "reference.synthetic", "activity_events", "source-schema",
-        "getwd(", "../contracts", "canonical-pipeline", "provider"
+        "getwd(", "../contracts", "canonical-pipeline"
       )
-      # Responsibility prose may say provider, so executable R carries the strict check.
       r_files <- files[grepl("[.]R$", files)]
       r_text <- unlist(lapply(r_files, readLines, warn = FALSE))
-      phase0_assert_true(!any(vapply(forbidden[-length(forbidden)], function(value) {
+      phase0_assert_true(!any(vapply(forbidden, function(value) {
         any(grepl(value, r_text, fixed = TRUE))
       }, logical(1))))
-      phase0_assert_true(!any(grepl("provider_id", r_text, fixed = TRUE)))
     }
   )
 }

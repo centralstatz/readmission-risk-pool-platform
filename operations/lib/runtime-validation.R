@@ -1,4 +1,4 @@
-# Repository validation for Iteration 4.1 runtime contracts and package.
+# Repository validation for the completed Phase 4 runtime/provider boundary.
 
 rrp_runtime_contract_identity <- function(document) {
   list(
@@ -49,6 +49,61 @@ rrp_validate_runtime_repository <- function(repository_root) {
     }
   }
 
+  provider_contracts <- tryCatch(
+    rrp_read_provider_contracts(repository_root),
+    error = function(condition) condition
+  )
+  reference_provider <- tryCatch(
+    rrp_read_reference_provider_specification(repository_root),
+    error = function(condition) condition
+  )
+  provider_documents_ok <- !inherits(provider_contracts, "condition") &&
+    !inherits(reference_provider, "condition")
+  checks[[length(checks) + 1L]] <- rrp_check(
+    "provider_contract_documents", provider_documents_ok,
+    if (provider_documents_ok) {
+      "four provider contracts and one reference provider declaration loaded"
+    } else "provider contract documents could not be read"
+  )
+  if (!provider_documents_ok) {
+    conditions <- Filter(function(value) inherits(value, "condition"), list(
+      provider_contracts, reference_provider
+    ))
+    issues[[length(issues) + 1L]] <- rrp_issue(
+      "provider_contract_documents", "provider_contract_read_failed",
+      paste(vapply(conditions, conditionMessage, character(1)), collapse = " "),
+      "contracts/runtime"
+    )
+  } else {
+    documents <- c(provider_contracts, list(reference_provider = reference_provider))
+    paths <- c(
+      rrp_provider_contract_paths(repository_root),
+      reference_provider = file.path(
+        repository_root, "contracts", "runtime", "providers",
+        "transparent-reference-provider.yml"
+      )
+    )
+    for (name in names(documents)) {
+      relative <- rrp_repository_relative_path(repository_root, paths[[name]])
+      envelope <- rrp_validate_specification_envelope(documents[[name]], relative)
+      checks[[length(checks) + 1L]] <- rrp_check(
+        paste0("provider_specification:", name),
+        rrp_conforms(envelope),
+        paste0(
+          documents[[name]]$specification_id, "@",
+          documents[[name]]$specification_version
+        )
+      )
+      for (index in seq_len(nrow(envelope$issues))) {
+        issue <- envelope$issues[index, ]
+        issues[[length(issues) + 1L]] <- rrp_issue(
+          paste0("provider_specification:", name), issue$issue_code,
+          issue$message, relative
+        )
+      }
+    }
+  }
+
   installed <- tryCatch(
     rrp_install_runtime_package(repository_root),
     error = function(condition) condition
@@ -56,7 +111,7 @@ rrp_validate_runtime_repository <- function(repository_root) {
   installed_ok <- !inherits(installed, "condition")
   checks[[length(checks) + 1L]] <- rrp_check(
     "runtime_package_install", installed_ok,
-    if (installed_ok) "rrpruntime@0.1.0 installed and loaded in a temporary library" else {
+    if (installed_ok) "rrpruntime@0.2.0 installed and loaded in a temporary library" else {
       "rrpruntime installation failed"
     }
   )
@@ -80,6 +135,30 @@ rrp_validate_runtime_repository <- function(repository_root) {
         paste0("[", issue$rule_id, "] ", issue$message),
         "contracts/runtime"
       )
+    }
+    if (provider_documents_ok) {
+      provider_contract_result <- rrpruntime::validate_provider_contracts(
+        provider_contracts
+      )
+      provider_specification_result <- rrpruntime::validate_provider_specification(
+        reference_provider, provider_contracts$provider_specification
+      )
+      provider_ok <- rrpruntime::runtime_conforms(provider_contract_result) &&
+        rrpruntime::runtime_conforms(provider_specification_result)
+      checks[[length(checks) + 1L]] <- rrp_check(
+        "provider_contract_support", provider_ok,
+        "provider declarations, adapter semantics, results, and estimates are supported"
+      )
+      for (result in list(provider_contract_result, provider_specification_result)) {
+        for (index in seq_len(nrow(result$issues))) {
+          issue <- result$issues[index, ]
+          issues[[length(issues) + 1L]] <- rrp_issue(
+            "provider_contract_support", issue$issue_code,
+            paste0("[", issue$rule_id, "] ", issue$message),
+            "contracts/runtime"
+          )
+        }
+      }
     }
 
     independent_document <- yaml::read_yaml(file.path(
@@ -131,9 +210,45 @@ rrp_validate_runtime_repository <- function(repository_root) {
         )
       }
     }
+    if (provider_documents_ok) {
+      for (name in names(flow_results)) {
+        runtime_result <- flow_results[[name]]
+        estimation <- if (inherits(runtime_result, "rrp_runtime_operation_result")) {
+          tryCatch(
+            rrp_execute_reference_estimation(
+              runtime_result,
+              repository_root,
+              paste0("provider_validation_", name)
+            ),
+            error = function(condition) condition
+          )
+        } else runtime_result
+        ok <- inherits(estimation, "rrp_estimation_operation_result") &&
+          length(estimation$estimates) ==
+            length(runtime_result$estimand_requests$records) &&
+          all(vapply(estimation$execution_results, function(result) {
+            identical(result$execution_status, "successful_estimate")
+          }, logical(1)))
+        checks[[length(checks) + 1L]] <- rrp_check(
+          paste0("provider_flow:", name), ok,
+          if (ok) {
+            paste(length(estimation$estimates), "conforming estimates")
+          } else "reference provider flow failed"
+        )
+        if (!ok) {
+          issues[[length(issues) + 1L]] <- rrp_issue(
+            paste0("provider_flow:", name), "provider_reference_flow_failed",
+            if (inherits(estimation, "condition")) conditionMessage(estimation) else {
+              "Provider result had failures or inconsistent estimate cardinality."
+            },
+            "operations/run-reference-estimation.R"
+          )
+        }
+      }
+    }
   }
   rrp_validation_result(
-    "Runtime specification and package validation",
+    "Runtime, provider, and estimate validation",
     rrp_bind_rows(checks, rrp_empty_checks),
     rrp_bind_rows(issues, rrp_empty_issues)
   )
@@ -148,28 +263,42 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     "contracts/runtime/episode-state.yml",
     "contracts/runtime/estimands/readmission-next-day-conditional-hazard.yml",
     "contracts/runtime/estimand-request.yml",
+    "contracts/runtime/provider-specification.yml",
+    "contracts/runtime/provider-execution-adapter.yml",
+    "contracts/runtime/provider-execution-result.yml",
+    "contracts/runtime/readmission-risk-estimate.yml",
+    "contracts/runtime/providers/transparent-reference-provider.yml",
     "runtime/DESCRIPTION", "runtime/LICENSE", "runtime/NAMESPACE",
     "runtime/README.md", "runtime/R/utils.R", "runtime/R/conformance.R",
     "runtime/R/specifications.R", "runtime/R/input.R",
     "runtime/R/eligibility.R", "runtime/R/state.R",
     "runtime/R/estimand-request.R", "runtime/tests/runtime-unit.R",
+    "runtime/R/provider-specification.R", "runtime/R/provider-registry.R",
+    "runtime/R/provider-compatibility.R", "runtime/R/reference-provider.R",
+    "runtime/R/estimate.R", "runtime/R/provider-execution.R",
     "runtime/man/runtime-api.Rd",
+    "runtime/man/provider-api.Rd",
     "operations/lib/runtime-operation.R", "operations/lib/runtime-validation.R",
+    "operations/lib/provider-operation.R",
     "operations/run-reference-runtime.R",
+    "operations/run-reference-estimation.R",
     "tests/phase4/test-runtime-foundation.R", "tests/run-phase4-tests.R",
+    "tests/phase4/test-provider-foundation.R",
     "docs/architecture/runtime-foundation.md",
-    "docs/operations/run-reference-runtime.md"
+    "docs/architecture/provider-foundation.md",
+    "docs/operations/run-reference-runtime.md",
+    "docs/operations/run-reference-estimation.md"
   )
   missing <- required_files[!file.exists(file.path(repository_root, required_files))]
   for (path in missing) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_required_files", "missing_phase4_file",
-      "Required Iteration 4.1 file is missing.", path
+      "Required completed Phase 4 file is missing.", path
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_required_files", length(missing) == 0L,
-    paste(length(required_files), "required Iteration 4.1 files")
+    paste(length(required_files), "required completed Phase 4 files")
   )
 
   expected_runtime <- sub("^runtime/", "", required_files[
@@ -185,18 +314,17 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   for (path in unexpected_runtime) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_runtime_scope", "unexpected_runtime_file",
-      "Iteration 4.1 runtime package contains an unapproved file.",
+      "Completed Phase 4 runtime package contains an unapproved file.",
       file.path("runtime", path)
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_runtime_scope", length(unexpected_runtime) == 0L,
-    "focused package only; no provider, estimate, persistence, or product code"
+    "focused package contains runtime/provider/estimate code only"
   )
 
   prohibited_directories <- c(
-    "providers", "persistence", "products", "app", "deploy", "config",
-    "observability"
+    "persistence", "products", "app", "deploy", "config", "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
@@ -209,8 +337,8 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     unlist(lapply(runtime_r, readLines, warn = FALSE))
   } else character()
   prohibited_runtime <- c(
-    "provider_id", "provider_version", "risk_probability", "estimate_record",
-    "reference.synthetic", "activity_events", "source-schema"
+    "reference.synthetic", "activity_events", "source-schema",
+    "priority_rank", "recommended_action", "storage_backend"
   )
   leaked <- prohibited_runtime[vapply(prohibited_runtime, function(value) {
     any(grepl(value, runtime_text, fixed = TRUE))
@@ -218,19 +346,19 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   for (path in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_later_scope", "premature_phase4_directory",
-      "Provider or later-phase implementation content is premature.", path
+      "Persistence or later-phase implementation content is premature.", path
     )
   }
   for (value in leaked) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_later_scope", "prohibited_runtime_implementation",
-      paste0("Runtime code contains prohibited Iteration 4.1 concept: ", value, "."),
+      paste0("Runtime code contains prohibited completed-Phase-4 concept: ", value, "."),
       "runtime/R"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_later_scope", length(premature) + length(leaked) == 0L,
-    "no provider/estimate/persistence/product/app/deployment/observability implementation"
+    "no persistence/product/app/deployment/decision-policy/observability implementation"
   )
 
   record_path <- file.path(
@@ -240,23 +368,23 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     paste(rrp_read_text(record_path), collapse = "\n")
   } else ""
   heading <- paste(
-    "### Iteration 4.1 — Runtime foundation, episode state, eligibility,",
-    "and first estimand"
+    "### Iteration 4.2 — Provider contract, registry, reference provider,",
+    "and estimate records"
   )
   recorded <- grepl(heading, record_text, fixed = TRUE)
   if (!recorded) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_implementation_record", "missing_phase4_implementation_record",
-      "Implementation record must contain the Iteration 4.1 entry.",
+      "Implementation record must contain the Iteration 4.2 entry.",
       "docs/architecture/platform-implementation-record.md"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_implementation_record", recorded,
-    "Iteration 4.1 implementation evidence is recorded"
+    "Iteration 4.2 implementation evidence is recorded"
   )
   rrp_validation_result(
-    "Iteration 4.1 checkpoint validation",
+    "Completed Phase 4 checkpoint validation",
     rrp_bind_rows(checks, rrp_empty_checks),
     rrp_bind_rows(issues, rrp_empty_issues)
   )

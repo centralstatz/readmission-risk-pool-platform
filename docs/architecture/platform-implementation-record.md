@@ -1256,3 +1256,216 @@ estimand; define provider trust/selection and failure taxonomy before adding a
 deterministic visibly nonclinical provider. Prove a second tiny provider can
 register without runtime edits, and keep estimates separate from priority,
 persistence, and products.
+
+### Iteration 4.2 — Provider contract, registry, reference provider, and estimate records (2026-08-11)
+
+#### Planned objective
+
+Complete Phase 4 from the accepted provider-neutral request: define a
+language-neutral provider declaration and adapter boundary, controlled trust
+and exact selection, compatibility and failure semantics, one deterministic
+transparent nonclinical provider, and one standardized accepted estimate. Do
+not add persistence, correction/idempotency policy, decisions, rankings,
+products, application code, deployment, observability, configuration
+frameworks, or CI/CD.
+
+The declaration, registry boundary, compatibility dimensions, outcome
+taxonomy, estimate identity, model-identity rule, and reference formula were
+designed before inspecting the sibling implementation.
+
+#### Actual implementation
+
+- Advanced the focused package to `rrpruntime@0.2.0` without adding an external
+  package dependency.
+- Added four common-envelope provider/estimate contracts plus the concrete
+  `reference.transparent-readmission-hazard@0.1.0` declaration.
+- Implemented declaration conformance, exact version-range comparison, a
+  process-local in-memory registry, duplicate rejection, exact ID/version
+  resolution, compatibility evaluation, isolated adapter invocation,
+  platform-owned output validation, structured execution outcomes,
+  deterministic estimate construction, and estimate-record validation.
+- Kept YAML/path loading and the explicit pairing of a declaration with its
+  trusted callable in the operations layer. The package never discovers the
+  repository, and ordinary data configuration cannot introduce executable
+  paths or code.
+- Implemented the fixed transparent reference method and an operation that
+  runs either admitted input through runtime, provider, execution result, and
+  estimate in a temporary package library.
+- Added 31 provider/estimate tests to the 24 Iteration 4.1 tests, including a
+  second constant provider defined only in the test suite.
+- Extended development and checkpoint validation to the provider documents,
+  package surface, both admitted-input estimation flows, exact completed-Phase
+  4 file scope, and the absence of later-phase implementation.
+
+#### Reference assets inspected
+
+The sibling repository remained read-only and development-time only.
+
+| Evidence | Prior classification | Actual final classification and use |
+|---|---|---|
+| `engine/R/risk-provider.R` | Adapt | **Adapt — concepts only.** Retained an explicit wrapper boundary, as-of isolation, and identifier/cardinality/probability checks. Rejected arbitrary function injection as public trust, latest-baseline selection, direct source/canonical inputs, tibble output, mixed eligibility/provider behavior, old output fields, and all code. |
+| `engine/tests/testthat/test-risk-provider-interface.R` and `test-temporal-validity.R` | Adapt selectively | **Adapt — test principles only.** Retained determinism, bounds/cardinality failures, future-information exclusion, and terminal boundaries. Rejected old fixtures, estimands, providers, output assumptions, and testthat dependency. |
+| `contracts/schemas/risk-estimate.yml` | Adapt later | **Adapt — concepts only.** Retained distinct estimate/provider/model/version/interval identity and bounded probability. Rejected permissive draft fields, baseline comparison, generation timestamp as identity, and missing request/state/run/execution provenance and failure separation. |
+| `config/models.yml` | Reference only | **Reference only.** It exposed selection and identity governance gaps. String-to-function naming, an `active` trust flag, placeholder identities, and method assumptions were rejected. |
+| `config/estimands.yml` | Reference only | **Do not reuse.** Its unversioned quantities do not match the accepted estimand and add no reusable provider semantics. |
+| `docs/architecture/pluggable-model-assessment.md` | Reference only | **Reference only.** Controlled allowlisting/registry direction and the future non-R adapter concern were useful. The old seam, output/product coupling, and incomplete provenance assumptions were rejected. |
+
+No reference code, specification text or structure, fixture, identifier,
+configuration, data, dependency, or package layout was copied. The
+reconciliation document records the same final classifications.
+
+#### New material created cleanly
+
+- `contracts/runtime/provider-specification.yml`;
+- `contracts/runtime/provider-execution-adapter.yml`;
+- `contracts/runtime/provider-execution-result.yml`;
+- `contracts/runtime/readmission-risk-estimate.yml`;
+- `contracts/runtime/providers/transparent-reference-provider.yml`;
+- six focused provider/estimate implementation files and provider API
+  documentation under `runtime/`;
+- `operations/lib/provider-operation.R` and
+  `operations/run-reference-estimation.R`;
+- 31 focused provider/estimate tests under `tests/phase4/`;
+- provider architecture and human operation guides; and
+- coordinated navigation, plan, open-decision, validation, reconciliation,
+  package, contract, and agent-guidance updates.
+
+#### Decisions
+
+1. **Ownership:** the estimand defines the quantity, a provider declares how it
+   can produce that quantity, an execution result records whether one attempt
+   conformed, and an estimate records only an accepted methodological result.
+2. **Contracts:** `platform.provider-specification@0.1.0`,
+   `platform.provider-execution-adapter@0.1.0`,
+   `platform.provider-execution-result@0.1.0`, and
+   `platform.readmission-risk-estimate@0.1.0` form the language-neutral suite.
+3. **Trust:** executable registration requires trusted platform code to pair a
+   conforming declaration with an approved callable. YAML never contains or
+   locates executable code.
+4. **Registry:** registration is process-local and in memory. Duplicate exact
+   identities fail; selection always supplies exact provider ID and version.
+   There is no implicit default or latest provider.
+5. **Future adapters:** the callable R adapter realizes language-neutral
+   semantics. A service or non-R adapter may later realize the same boundary,
+   but this iteration does not claim external execution or define transport.
+6. **Compatibility:** lifecycle, estimand ID/version range, state ID/version and
+   required fields, capability status, provider-specific inputs, follow-up and
+   interval limits, and one bounded probability are checked before invocation.
+7. **Isolation:** the adapter receives serialized copies of only the matching
+   accepted request, immutable episode state, and registered declaration. It
+   cannot revisit source/canonical input, repeat eligibility, or mutate caller
+   state.
+8. **Outcome taxonomy:** `successful_estimate`, `unsupported`,
+   `missing_required_input`, `execution_failure`, and `invalid_output` cover
+   compatibility through conformance. Every failure carries a code/message and
+   no estimate; `NA` never represents failure.
+9. **Conformance ownership:** the platform validates identity, interval,
+   cardinality, finite numeric bounds, and provenance before constructing the
+   standardized estimate. Providers do not construct platform estimate IDs.
+10. **Estimate identity:** deterministic comparison identity includes runtime
+    run, provider execution run, request, state, estimand, provider/model,
+    and interval. Durable retry/idempotency/correction semantics remain Phase 5.
+11. **Model identity:** provider identity is distinct from a fitted
+    model/artifact and canonical `source_model_id`. The fixed reference formula
+    explicitly has no separate model artifact.
+12. **Reference method:** the linear predictor is `qlogis(0.04)` plus `0.75`
+    times the mean of available probability-typed baselines, `0.12` times the
+    available event count capped at five, and `0.10` when any available event
+    occurred in the previous seven days; absent optional inputs contribute
+    zero and `plogis` returns the probability.
+13. **Clinical maturity:** the reference provider is deterministic,
+    inspectable conformance software only. It is not fitted, calibrated,
+    clinically validated, causal, production-ready, or approved for care.
+14. **Extensibility proof:** a constant provider exists only in tests and
+    registers/runs through the public interfaces without editing generic
+    runtime code. It is not a shipped default or general estimand claim.
+15. **Later boundaries:** estimate generation remains separate from priority,
+    decision, intervention, persistence, products, and application behavior.
+
+#### Surprises and deviations
+
+- The earlier risk-provider wrapper combined useful validation ideas with an
+  unsafe public trust assumption: accepting a function directly is not enough
+  to explain who approved it. The clean design therefore separates
+  language-neutral declaration from trusted code registration.
+- The old estimate schema had useful identity hints but treated failure and
+  output too permissively. A separate execution-result record was needed so a
+  failed invocation could never look like a risk row with a missing value.
+- No fitted artifact exists for a fixed transparent formula. Requiring a fake
+  model identity would weaken rather than strengthen provenance, so the model
+  reference is explicitly optional and null here.
+- The independent admitted fixture produces one request/estimate while the
+  synthetic test scale produces six. This preserved the two-input evidence
+  without introducing a synthetic runtime mode.
+- The architecture and phase ordering did not change. Existing target
+  boundaries already anticipated estimand/provider separation; the plan needed
+  only its Phase 4 completion status.
+
+#### Validation evidence
+
+Focused evidence passed before the final repository checkpoint:
+
+- `Rscript tests/run-phase4-tests.R` — 55 tests, 0 failures;
+- `Rscript operations/run-reference-estimation.R --input independent` — 1
+  eligible episode, 1 request, 1 successful estimate;
+- `Rscript operations/run-reference-estimation.R --input synthetic --scale test`
+  — 6 eligible episodes, 6 requests, 6 successful estimates; and
+- the reference provider reports only `successful_estimate` for both supported
+  flows and writes no estimates or products.
+
+The final repository-owned validation matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- focused Phase 0–4 suites — respectively 10, 14, 38, 24, and 55 tests,
+  all passing;
+- `Rscript operations/generate-reference.R` — reference-scale producer
+  succeeded with 24 patients, 36 episodes, and 38 admitted event records and
+  wrote no generated data;
+- `Rscript operations/run-reference-runtime.R --input synthetic --scale test`
+  — 6 states and 6 requests using `rrpruntime@0.2.0`;
+- both reference-estimation commands — independent 1/1 and synthetic test
+  6/6 successful estimates, with no persistence, ranking, or products;
+- `Rscript operations/validate.R --mode development` — 53 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 72 checks, 0 issues;
+- clean source-package build and
+  `R CMD check --no-manual --no-vignettes` — status OK;
+- all 51 maintained R files and 30 maintained YAML files parsed;
+- `renv::status()` reported the restored lockfile state synchronized; and
+- dependency, later-scope, sibling-independence, whitespace, and
+  `git diff --check` reviews passed.
+
+No generated runtime/provider/estimate data were written. Restoring the
+already locked `yaml@2.3.10` package linked it from the local cache and changed
+no dependency declaration or lockfile. The sibling repository remained
+read-only, and no commit or push was performed.
+
+#### Implications for Phase 5
+
+- Persistence consumes the standardized state, request, execution-result, and
+  estimate identities; it does not invoke a provider or reinterpret an
+  estimand.
+- Phase 5 must define logical append/read ports plus retry, idempotency,
+  invalidation, correction, and restatement behavior before an estimate ID is
+  treated as an operational storage key.
+- Unsupported and failed executions may need durable operational history, but
+  remain distinct from accepted estimates.
+- Historical estimates must preserve their provider and optional model
+  identity across later provider transitions; current code must not reconstruct
+  old trajectories.
+- Storage adapters, products, and the application must not become new provider
+  selection paths.
+
+#### Phase 4 status
+
+**Complete.** Iterations 4.1 and 4.2 satisfy the minimal governed runtime and
+provider exit evidence. No persistence or later-phase implementation was
+introduced.
+
+#### Recommended next task
+
+Begin **Phase 5 — First persistent vertical slice** with logical append/read
+ports and explicit operational-history semantics for runs, state, provider
+execution results, and accepted estimates. Choose the smallest local reference
+adapter only after idempotency, retry, correction, invalidation, and
+restatement rules are explicit. Keep products and the application downstream
+of those ports.
