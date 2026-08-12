@@ -6,22 +6,24 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed
-  Iteration 5.1 canonical-to-history-port requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase 5
+  canonical-to-durable-history requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
 3 fictional source implementation, completed Phase 4 runtime/provider
-foundation, and completed Iteration 5.1 operational-history contracts and
-logical ports. A durable persistence adapter and later layers do not exist yet.
+foundation, Iteration 5.1 operational-history contracts/ports, and Iteration
+5.2 DuckDB reference adapter plus durable operation. Products and later layers
+do not exist yet.
 
 ## Prerequisites
 
 - R available through `Rscript`.
 - A local checkout of this repository.
 - The repository's locked R environment restored with
-  `Rscript -e 'renv::restore()'`. The current external dependency is `yaml`.
+  `Rscript -e 'renv::restore()'`. External dependencies are `yaml`, `DBI`, and
+  `duckdb`; the latter two belong only to the concrete adapter.
 
 Run commands from the repository root. The scripts resolve the root from their
 own location, so they do not depend on a sibling repository or a
@@ -41,7 +43,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Iteration 5.1 checkpoint:
+Validate the completed Phase 5 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -77,7 +79,7 @@ Run the focused Phase 4 tests directly:
 Rscript tests/run-phase4-tests.R
 ```
 
-Run the focused Iteration 5.1 tests directly:
+Run the focused Phase 5 tests directly:
 
 ```sh
 Rscript tests/run-phase5-tests.R
@@ -103,6 +105,16 @@ accepted estimate:
 Rscript operations/run-reference-estimation.R --input independent
 Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
+
+Run the durable fictional source-to-history path (safely repeatable):
+
+```sh
+Rscript operations/run-reference-history.R --scale test
+```
+
+The default generated database is ignored under `build/`. Inspection and
+backup commands are documented in
+[Durable Reference History](reference-history.md).
 
 Each command exits with status `0` on success and nonzero status on failure.
 Validation is read-only apart from temporary test fixtures created under the
@@ -134,7 +146,8 @@ Development mode composes:
   clinical domain/profile/vocabulary, fictional clinical fixture, synthetic
   implementation/source-schema/configuration, runtime/provider/estimate
   contract/package, both source-independent and synthetic reference-flow
-  conformance, and operational-history contract/backend-independence checks;
+  conformance, operational-history contract/backend-independence checks, and
+  concrete DuckDB adapter boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, and Phase 5 tests.
 
@@ -145,7 +158,7 @@ does not impose a clean Git worktree and does not prove a milestone is complete.
 
 Checkpoint mode runs every development check and additionally verifies:
 
-- required Phase 0 through Iteration 5.1 metadata, policy, operation,
+- required Phase 0 through Iteration 5.2 metadata, policy, operation,
   specification, package, implementation, and test files;
 - presence of the approved three-domain clinical profile and the one approved
   synthetic reference implementation, with no committed generated datasets;
@@ -154,18 +167,18 @@ Checkpoint mode runs every development check and additionally verifies:
 - the preserved Phase 4 runtime/provider/estimate package scope and contracts,
   clean temporary installation/loading, two admitted-input flows, two
   provider-estimation flows, and Iteration 4.2 implementation-record entry;
-- the exact operational-history contract/port/test scope, absence of a
-  concrete storage or later-layer implementation, and Iteration 5.1
-  implementation-record entry;
-- an independently owned `renv` lockfile recording the `yaml` parser;
+- the exact operational-history contract/port scope, conforming DuckDB adapter,
+  durable operation, absence of products/later layers, and Iterations 5.1/5.2
+  implementation-record entries;
+- an independently owned `renv` lockfile recording `yaml`, `DBI`, and `duckdb`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–5.1 source-to-history-port
+This is strict only relative to the Phase 0–5.2 source-to-durable-history
 boundary. It does not prove:
 
 - public release or license readiness;
-- clinical provider validity, durable persistence, product, or application correctness;
+- clinical provider validity, production persistence, product, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or
@@ -226,6 +239,14 @@ observability, provenance, metrics, or audit system.
   estimate; correct adapter exceptions or request/state/episode identity,
   interval, cardinality, provenance, finite-value, and probability-bound
   violations before retrying.
+- **DuckDB initialization/schema failure:** Preserve the file, verify adapter
+  and schema metadata, and select compatible code or a validated backup. No
+  destructive reinitialize or migration exists.
+- **DuckDB lock/restart failure:** Stop competing writers, close sessions, and
+  reopen through the adapter. One platform writer process is supported; an
+  incomplete started run cannot supply a current estimate.
+- **History identity conflict:** Preserve the accepted record and investigate
+  differing content. Use a new run identity only for a new intentional run.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

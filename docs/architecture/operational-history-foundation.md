@@ -2,7 +2,7 @@
 
 ## Purpose and maturity
 
-Iteration 5.1 defines operational truth before choosing storage. It adds
+Iteration 5.1 defined operational truth before choosing storage. It added
 language-neutral record contracts and backend-independent ports to
 `rrpruntime@0.3.0`; it does not add a durable adapter, database, file format,
 product, application, deployment, replay tool, decision policy, or
@@ -30,8 +30,10 @@ specific run. It is distinct from:
 - research datasets, whose analytical purpose and governance differ from live
   operational truth.
 
-These interfaces are pre-1.0. They establish semantic ownership and adapter
-conformance, not production durability or clinical fitness.
+Iteration 5.2 realizes these unchanged interfaces with the repository-owned
+[DuckDB Reference Persistence](duckdb-reference-persistence.md). The interfaces
+remain pre-1.0 and establish semantic ownership and local reference durability,
+not production or clinical fitness.
 
 ## Persisted record families
 
@@ -267,12 +269,13 @@ subsequent read-only review classified its evidence as follows:
 No old code, record, identifier, text, configuration, data, or dependency was
 copied into the implementation.
 
-## Iteration 5.2 requirement
+## Iteration 5.2 realization
 
-The next iteration should select the smallest local durable adapter only after
-evaluating it against this port. It must implement every declared method and
-capability, prove atomic terminal batches under injected failure, preserve
-same-ID conflict behavior across process restarts, resolve invalidations,
-return unambiguous current reads, and document setup, side effects, validation,
-backup/recovery, and troubleshooting. The technology is a reference choice,
-not a platform requirement.
+`reference.duckdb-persistence@0.1.0` implements every declared method and
+capability without changing this contract. It proves atomic terminal batches
+at every injected write stage, restart-safe idempotency/conflict, invalidation
+closure, deterministic reads and ambiguity failure, explicit lifecycle,
+checkpointed backup, and the first durable fictional vertical slice. DuckDB,
+DBI, SQL, tables, and database paths remain outside `rrpruntime` and the
+language-neutral contracts. The technology is a reference choice, not a
+platform requirement.

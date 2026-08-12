@@ -34,6 +34,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Operational History Foundation](architecture/operational-history-foundation.md)
   — persisted record families, run lifecycle, atomicity, retry, invalidation,
   raw/valid reads, and backend-independent persistence ports.
+- [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
+  — reference adapter identity, physical representation, transactions,
+  deterministic reads, connection lifecycle, concurrency, and recovery.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -61,6 +64,8 @@ The documentation is the active product at this bootstrap stage. Begin with
   canonical admission through eligibility, state, and estimand request.
 - [Run Reference Estimation](operations/run-reference-estimation.md) — execute
   the exact registered transparent provider and validate accepted estimates.
+- [Durable Reference History](operations/reference-history.md) — initialize,
+  run, persist, inspect, back up, and recover fictional DuckDB history.
 
 ## Specifications
 

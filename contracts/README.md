@@ -5,7 +5,9 @@ specifications. Phase 1 established the common specification envelope and
 identity vocabulary. Phase 2 added the canonical handoff and first clinical
 profile. Phase 4 added runtime records, the first estimand, governed provider
 execution, and accepted estimates. Iteration 5.1 adds operational run,
-invalidation, and persistence-adapter semantics.
+invalidation, and persistence-adapter semantics. Iteration 5.2 leaves these
+contracts unchanged while proving them through a concrete implementation
+outside this directory.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -25,6 +27,8 @@ the Phase 4 provider boundary is documented in
 [Provider and estimate foundation](../docs/architecture/provider-foundation.md),
 and operational history is documented in
 [Operational history foundation](../docs/architecture/operational-history-foundation.md).
+The non-normative DuckDB realization is documented in
+[DuckDB reference persistence](../docs/architecture/duckdb-reference-persistence.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in

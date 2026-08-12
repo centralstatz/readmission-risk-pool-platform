@@ -1668,3 +1668,230 @@ review:
 
 The sibling repository remained read-only. No durable data, commit, push,
 publication, deployment, or external mutation occurred.
+
+### Iteration 5.2 — DuckDB reference persistence adapter and durable vertical slice
+
+#### Planned objective
+
+Evaluate DuckDB against the unchanged
+`platform.persistence-adapter@0.1.0`, implement the smallest repository-owned
+durable reference adapter only if it satisfies every port method and
+capability, and prove one complete fictional synthetic source → canonical →
+runtime → provider → operational-history run. The iteration was to stop before
+products, decision policy, tasks, application, deployment, replay, and general
+observability.
+
+#### Adapter evaluation
+
+DuckDB satisfies the clean target for a local reference: the R client conforms
+to DBI; persistent single-file databases support explicit open/close and
+read-only reopen; ACID transactions provide commit/rollback; primary keys and
+parameterized lookup support identity conflict checks; and `CHECKPOINT`
+supports a controlled closed-file backup procedure. Its native concurrency
+model is suitable only with one controlled read-write process per database
+file, while separately coordinated processes may inspect read-only. That
+limitation is documented rather than generalized into the port.
+
+Alternatives were considered at the architectural level. CSV/RDS files do not
+naturally provide a multi-family atomic commit or safe concurrent/restart
+identity check. SQLite could satisfy much of the port, but DuckDB was already
+the explicitly evaluated reference candidate and supplies the required local
+transaction/reopen behavior without changing the contract. A client-server
+database would exceed this reference iteration and remains a valid substitute
+adapter when multi-process writers or production operations require it.
+
+#### Actual implementation
+
+- Added `reference.duckdb-persistence@0.1.0` under
+  `implementations/persistence/duckdb/`, with schema `0.1.0`, payload encoding
+  `r-serialize-v3-hex@0.1.0`, adapter declaration, and minimal reference path
+  configuration.
+- Added adapter metadata plus separate physical tables for operational run
+  statuses, episode states, estimand requests, provider execution results,
+  estimates, and invalidations. The database deliberately excludes the full
+  canonical bundle and all product/application records.
+- Stored queryable identity, relationship, status, and time columns alongside
+  an exact base-R serialized logical payload. This preserves nested state,
+  integer/null/class semantics, and exact semantic round-trip without adding a
+  document-encoding dependency.
+- Implemented all seven port methods and six declared capabilities, including
+  lifecycle preflight, append-only conflict checks, validity closure, raw and
+  valid reads, deterministic history order, current cutoff selection, and
+  unresolved-tie failure.
+- Implemented one transaction for terminal status plus every state, request,
+  execution, and estimate. Test-only failure injection occurs after each of
+  the five write stages and is absent from supported operation calls.
+- Added explicit non-destructive initialization, compatible reopen,
+  incompatible metadata/schema failure, adapter-owned session close, read-only
+  inspection, checkpointed no-overwrite backup, and validated backup reopen.
+- Added `run-reference-history.R`, `inspect-reference-history.R`, and
+  `backup-reference-history.R`, with authoritative human setup, side-effect,
+  rerun, inspection, recovery, concurrency, direct-SQL, and troubleshooting
+  guidance.
+- Locked `DBI@1.3.0` and `duckdb@1.2.2` for adapter/operation behavior only.
+  `rrpruntime@0.3.0` and all language-neutral contracts remain unchanged and
+  contain no vendor, SQL, database-path, or connection dependency.
+
+#### Decisions and rationale
+
+1. **Reference technology:** DuckDB is the local reference realization, not a
+   platform or production mandate.
+2. **Adapter identity:** adapter, contract, physical schema, and payload
+   encoding have separate explicit versions. Open requires exact support; no
+   migration is silently attempted.
+3. **Physical families:** the six logical history families remain separate
+   tables so identity, run, episode, estimand, provider, attempt, status, and
+   time are inspectable and indexable.
+4. **Nested state:** complete logical records use base R serialization v3
+   encoded as lowercase hexadecimal text. Exact round-trip outweighed storage
+   size and cross-language portability for this small R reference. The encoding
+   is versioned so another adapter may choose a portable representation.
+5. **Semantic equality:** decoded `identical()` content is authoritative for
+   idempotency/conflict. No digest algorithm enters the contract.
+6. **Atomicity:** the adapter preflights every identity before writes and uses
+   one transaction for the entire terminal batch. Started/failed remain
+   independent immutable transactions as the contract requires.
+7. **Ordering:** history presentation uses semantic time keys and stable ID
+   tie-breakers. Current selection uses only as-of and terminal status time and
+   fails a remaining tie rather than letting record ID choose meaning.
+8. **Invalidation:** the adapter returns the port-defined closure for all five
+   target families. Original rows always remain available raw.
+9. **Initialization:** a missing path may be initialized; a compatible path is
+   validated without change; unrelated, partial, or incompatible files fail.
+   No destructive reinitialization switch exists.
+10. **Connection ownership:** repository operations select paths and receive a
+    port/session. The raw DBI connection remains captured inside adapter state.
+11. **Concurrency:** one controlled platform writer process per database file
+    is supported. Multi-process writing is not claimed; readers coordinate and
+    use read-only sessions.
+12. **Backup/recovery:** the helper validates, checkpoints, closes, copies to a
+    new path, and validates the copy. Scheduling, retention, encryption,
+    permissions, off-host copies, and recovery objectives remain operator work.
+13. **Deterministic operation:** reference run IDs and semantic times are
+    stable per scale, so a second identical command is a real durable
+    idempotency demonstration rather than a duplicate run.
+14. **Phase boundary:** Phase 5 closes when durable operational truth and its
+    human operation are proven. Products/materialization and the minimal app
+    begin in Phase 6, preserving their downstream relationship.
+
+#### Old assets used or adapted
+
+The clean adapter and schema design preceded sibling inspection. The later
+read-only review covered `app/R/data-access.R`,
+`scripts/lib/product-provenance.R`, `app/data/PRODUCT_MANIFEST.yml`, and
+`docs/operations/provenance-lifecycle.md`.
+
+Stable identities, explicit generation-input attribution, count/hash integrity
+evidence, and validation before consumption were adapted as principles.
+Git-revision A/B/C identity, current-commit ancestry, tracked CSV persistence,
+fixed product/app paths, the eight-product manifest, and the old local-file/
+database app switch were rejected for operational history. No sibling code,
+schema text, data, configuration, identity, or dependency was copied.
+
+#### New clean work
+
+New repository-owned work comprises the adapter declaration/configuration,
+four cohesive adapter modules, two operation-composition modules, three human
+entry points, the DuckDB architecture and operations guides, eleven durable
+adapter/end-to-end cases added to the seven logical-port cases, updated strict
+checkpoint validation, dependency state, navigation, plan/architecture,
+decision/reconciliation records, and agent guidance.
+
+#### Surprises and deviations
+
+- DBI parameter binding represents SQL null with typed `NA`, not R `NULL`; the
+  physical invalidation replacement column converts only at the storage edge
+  while the serialized logical record preserves `NULL` exactly.
+- Base R serialization offered the smallest exact nested-state realization.
+  Its cross-language limitation was preferable to adding JSON plus bespoke
+  type/class restoration in this reference iteration.
+- The implementation plan originally coupled the first persistence milestone
+  to provisional products and an app. Once Iterations 5.1/5.2 supplied the
+  complete durable exit evidence, keeping Phase 5 open would blur the boundary.
+  The plan now assigns product/app deliverables to Phase 6 explicitly.
+- Current DuckDB documentation has evolved around shutdown handling; the
+  implementation uses the DBI disconnect surface compatible with the locked
+  client and tests actual close/reopen behavior rather than assuming it.
+
+#### Validation evidence
+
+Focused implementation evidence during development:
+
+- `Rscript tests/run-phase5-tests.R` — 18 tests, 0 failures: seven unchanged
+  logical-port cases plus declaration/schema/init, exact six-family restart
+  round-trip, restart idempotency/conflict, five interruption stages,
+  retry/provider transition, every invalidation target, deterministic ordering
+  and ambiguity, schema mismatch/backup, full end-to-end repeat, and boundary
+  independence;
+- `Rscript operations/run-reference-history.R --scale test --database <temp>`
+  run twice — both reported the same completed run with 2 statuses and 6
+  states, 6 requests, 6 executions, and 6 estimates after close/reopen;
+- `Rscript operations/inspect-reference-history.R ... --view raw` — reported
+  `started -> completed` and matching family counts through the port; and
+- `Rscript operations/backup-reference-history.R ...` — checkpointed, copied
+  without overwrite, reopened, and validated the backup.
+
+The complete repository validation matrix and clean-worktree-sensitive review
+are recorded in the final validation follow-up below.
+
+#### Implications for Phase 6
+
+- Product builders can now consume retained valid/current/history reads rather
+  than reconstructing past estimates or querying adapter tables.
+- Migration and retention policy must begin from recorded adapter/schema/
+  encoding identities; Iteration 5.2 supplies no automatic migration promise.
+- The initial product suite, logical product keys/freshness, materialization
+  adapter, and Shiny product-access boundary remain deliberate new work.
+- Production multi-writer, security, retention, and disaster-recovery needs may
+  justify a substitute client-server adapter without changing runtime or
+  contract semantics.
+- Direct SQL remains debugging only and cannot become the product/app API.
+
+#### Phase 5 status
+
+**Complete.** The logical port and operational semantics, durable conforming
+reference adapter, first complete source-to-history run, restart/rollback/
+invalidation evidence, and human initialization/inspection/backup/recovery
+operations are present. No gap justifies an Iteration 5.3. Phase 6 is the next
+authorized implementation phase.
+
+#### Recommended next task
+
+Begin **Phase 6 — Operational-history and product maturity** by defining the
+smallest logical product contracts and freshness/compatibility semantics over
+the existing persistence reads. Do not let products or the app query DuckDB
+tables, source systems, or providers, and address migration/retention only with
+explicit versioned evidence.
+
+#### Final validation follow-up
+
+The complete repository-owned matrix passed:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- focused Phase 0–5 suites — respectively 10, 14, 38, 24, 55, and 18 tests,
+  all passing;
+- `Rscript operations/generate-reference.R` — reference scale succeeded with
+  24 fictional patients, 36 discharge episodes, and 38 admitted events and
+  wrote no generated data;
+- `Rscript operations/run-reference-runtime.R --input synthetic --scale test`
+  — 6 states and 6 requests with no provider or persistence;
+- `Rscript operations/run-reference-estimation.R --input synthetic --scale test`
+  — 6 successful estimates with no persistence, ranking, or products;
+- the exact durable command run twice against one temporary database — both
+  returned `runtime_synthetic_history_test_001`, `completed`, 2 statuses, and
+  6 states/requests/executions/estimates after close/reopen;
+- inspection reported `started -> completed`; checkpointed backup was copied to
+  a new path and validated after reopen;
+- `Rscript operations/validate.R --mode development` — 59 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 82 checks, 0 issues;
+- clean `R CMD build` and
+  `R CMD check --no-manual --no-vignettes` for `rrpruntime@0.3.0` — status OK;
+- all 69 maintained R files and 35 maintained YAML files parsed;
+- `renv::status()` — no issues with the independently locked `yaml@2.3.10`,
+  `DBI@1.3.0`, and `duckdb@1.2.2` state; and
+- repository/sibling independence, generated-database, dependency,
+  later-scope, whitespace, and `git diff --check` reviews passed.
+
+Generated temporary databases and the package-check directory were removed.
+No database, product, application data, commit, push, publication, deployment,
+or external-repository mutation remains. The sibling repository was read-only.

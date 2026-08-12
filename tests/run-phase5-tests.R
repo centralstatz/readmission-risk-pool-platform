@@ -14,8 +14,11 @@ source(file.path(repository_root, "operations", "lib", "canonical-bundle-validat
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
+source(file.path(repository_root, "operations", "lib", "history-validation.R"))
+source(file.path(repository_root, "operations", "lib", "duckdb-persistence-operation.R"))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 source(file.path(repository_root, "tests", "helpers", "in-memory-history-adapter.R"))
+rrp_load_duckdb_persistence_adapter(repository_root)
 
 installed <- rrp_install_runtime_package(repository_root)
 on.exit(rrp_unload_runtime_package(installed), add = TRUE)
@@ -52,4 +55,3 @@ if (length(failures) > 0L) {
   quit(save = "no", status = 1L, runLast = FALSE)
 }
 cat("Result: PASS (", length(cases), " tests)\n", sep = "")
-

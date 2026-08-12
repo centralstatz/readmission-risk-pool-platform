@@ -330,7 +330,8 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   } else character()
   prohibited_runtime <- c(
     "reference.synthetic", "activity_events", "source-schema",
-    "priority_rank", "recommended_action", "storage_backend"
+    "priority_rank", "recommended_action", "storage_backend",
+    "duckdb", "DBI::", "database_path"
   )
   leaked <- prohibited_runtime[vapply(prohibited_runtime, function(value) {
     any(grepl(value, runtime_text, fixed = TRUE))
@@ -338,7 +339,7 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   for (path in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_later_scope", "premature_phase4_directory",
-      "Persistence or later-phase implementation content is premature.", path
+      "An unauthorized top-level later-phase directory is present.", path
     )
   }
   for (value in leaked) {
@@ -350,7 +351,7 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_later_scope", length(premature) + length(leaked) == 0L,
-    "no persistence/product/app/deployment/decision-policy/observability implementation"
+    "no unauthorized top-level later layer or concrete-storage leakage in runtime"
   )
 
   record_path <- file.path(

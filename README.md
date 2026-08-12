@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 5 is in progress; Iteration 5.1 is complete.** The focused internal
+**Phase 5 is complete through Iteration 5.2.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -24,9 +24,11 @@ The shipped transparent deterministic provider proves software conformance
 against both the independent fixture and synthetic producer; it is not a
 clinically valid model. It now also owns backend-independent operational
 history records and append/read ports, including retry lineage, conflict,
-invalidation, restatement, and atomic terminal-batch semantics. No durable
-storage adapter exists yet. Products, Shiny, deployment, observability, and
-CI/CD remain unimplemented.
+invalidation, restatement, and atomic terminal-batch semantics. The
+repository-owned DuckDB reference adapter now proves those semantics durably,
+and one supported fictional operation runs source through accepted estimates
+and close/reopen history reads. DuckDB is not a platform requirement.
+Products, Shiny, deployment, observability, and CI/CD remain unimplemented.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -65,9 +67,11 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    for provider trust, compatibility, execution, and accepted estimates.
 9. Read the [Operational History Foundation](docs/architecture/operational-history-foundation.md)
    for run lifecycle, append semantics, invalidation, and persistence ports.
-10. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+10. Read [DuckDB Reference Persistence](docs/architecture/duckdb-reference-persistence.md)
+   for the concrete adapter, physical tradeoffs, concurrency, and recovery.
+11. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-11. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+12. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -83,7 +87,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Iteration 5.1 checkpoint with:
+Evaluate the completed Phase 5 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -105,6 +109,12 @@ Run the complete admitted-input-to-estimate demonstration with:
 
 ```sh
 Rscript operations/run-reference-estimation.R --input synthetic --scale test
+```
+
+Run the first durable fictional vertical slice with:
+
+```sh
+Rscript operations/run-reference-history.R --scale test
 ```
 
 ## Authority

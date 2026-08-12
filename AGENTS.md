@@ -46,8 +46,9 @@ do not add persistence, products, app code, deployment, observability, or CI/CD
 before the relevant task authorizes it. Completed Phase 4 owns admitted input,
 eligibility, state, estimand requests, provider contracts/registry/execution,
 structured outcomes, the transparent reference provider, and accepted
-estimates inside `rrpruntime`. The current `renv` state owns only the Phase 1
-YAML parser dependency.
+estimates inside `rrpruntime`. The current `renv` state owns the Phase 1 YAML
+parser plus DBI and DuckDB solely for the Iteration 5.2 concrete reference
+adapter; `rrpruntime` remains base-R-only.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -112,7 +113,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Iteration 5.1 checkpoint, run:
+For the completed Phase 5 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -134,10 +135,11 @@ Rscript operations/run-reference-runtime.R --input synthetic --scale test
 Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
-Run the focused operational-history port tests with:
+Run the focused durable-history tests and reference persistence operation with:
 
 ```sh
 Rscript tests/run-phase5-tests.R
+Rscript operations/run-reference-history.R --scale test
 ```
 
 Development coherence and strict milestone readiness are different claims.
@@ -177,11 +179,13 @@ canonical admission and must not discover repository paths or source
 implementations. The completed provider boundary uses
 `docs/architecture/provider-foundation.md`; generic code does not depend on the
 reference provider identity, and failures never become fabricated estimates.
-Phase 4 is complete. Iteration 5.1 operational history is documented in
+Phase 4 is complete. Operational history is documented in
 `docs/architecture/operational-history-foundation.md` and
-`contracts/persistence/`. It defines ports only; no durable adapter exists.
-Phase 5 remains in progress, and no product, application, deployment, replay,
-decision-policy, or observability scaffolding is authorized early.
+`contracts/persistence/`. Iteration 5.2 realizes the unchanged port through
+`docs/architecture/duckdb-reference-persistence.md` and
+`implementations/persistence/duckdb/`. Phase 5 is complete. Products,
+application, deployment, replay, decision policy, and observability remain
+outside this phase and are not authorized early.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

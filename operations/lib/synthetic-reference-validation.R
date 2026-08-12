@@ -83,7 +83,9 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
     paste(length(required_files), "required Phase 3 files")
   )
 
-  implementation_root <- file.path(repository_root, "implementations")
+  implementation_root <- file.path(
+    repository_root, "implementations", "synthetic-reference"
+  )
   actual_files <- if (dir.exists(implementation_root)) {
     sort(list.files(
       implementation_root, recursive = TRUE, full.names = FALSE,
@@ -92,7 +94,7 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
   } else {
     character()
   }
-  expected_files <- sub("^implementations/", "", required_files[
+  expected_files <- sub("^implementations/synthetic-reference/", "", required_files[
     startsWith(required_files, "implementations/")
   ])
   unexpected_files <- setdiff(actual_files, expected_files)
@@ -100,11 +102,16 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase3_implementation_scope", "unexpected_implementation_file",
       "Only the approved synthetic reference implementation belongs in Phase 3.",
-      file.path("implementations", path)
+      file.path("implementations", "synthetic-reference", path)
     )
   }
-  generated_files <- actual_files[grepl(
-    "[.](csv|rds|rda|parquet|feather)$", actual_files, ignore.case = TRUE
+  all_implementation_files <- sort(list.files(
+    file.path(repository_root, "implementations"), recursive = TRUE,
+    full.names = FALSE, all.files = TRUE, include.dirs = FALSE, no.. = TRUE
+  ))
+  generated_files <- all_implementation_files[grepl(
+    "[.](csv|rds|rda|parquet|feather|duckdb|wal)$",
+    all_implementation_files, ignore.case = TRUE
   )]
   for (path in generated_files) {
     issues[[length(issues) + 1L]] <- rrp_issue(
@@ -129,12 +136,12 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
   for (path in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase3_scope", "premature_phase3_content",
-      "Runtime or later-phase implementation content is premature.", path
+      "An unauthorized top-level runtime or later-phase directory is present.", path
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase3_scope", length(premature) == 0L,
-    "no runtime/provider/persistence/product/app/deployment/observability scaffold"
+    "no unauthorized top-level runtime or later-layer directory"
   )
 
   reference <- tryCatch(

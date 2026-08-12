@@ -1,5 +1,5 @@
-# Repository validation for Iteration 5.1 operational-history semantics and
-# backend-independent ports.
+# Repository validation for Phase 5 operational-history semantics, ports, and
+# concrete DuckDB reference conformance.
 
 rrp_history_contract_paths <- function(repository_root) c(
   operational_run_status = file.path(
@@ -71,7 +71,7 @@ rrp_validate_history_repository <- function(repository_root) {
   )
   if (!no_backend_dependencies) issues[[length(issues) + 1L]] <- rrp_issue(
     "history_backend_independence", "storage_dependency_added",
-    "Iteration 5.1 must not select a concrete storage dependency.",
+    "Generic runtime must not select a concrete storage dependency.",
     "runtime/DESCRIPTION"
   )
   rrp_validation_result(
@@ -95,30 +95,42 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
     "tests/helpers/in-memory-history-adapter.R",
     "tests/phase5/test-operational-history.R", "tests/run-phase5-tests.R",
     "operations/lib/history-validation.R",
-    "docs/architecture/operational-history-foundation.md"
+    "docs/architecture/operational-history-foundation.md",
+    "implementations/persistence/duckdb/adapter.yml",
+    "implementations/persistence/duckdb/config/reference.yml",
+    "implementations/persistence/duckdb/R/foundation.R",
+    "implementations/persistence/duckdb/R/schema.R",
+    "implementations/persistence/duckdb/R/adapter.R",
+    "implementations/persistence/duckdb/R/session.R",
+    "operations/lib/duckdb-persistence-operation.R",
+    "operations/lib/reference-history-operation.R",
+    "operations/run-reference-history.R",
+    "operations/inspect-reference-history.R",
+    "operations/backup-reference-history.R",
+    "tests/phase5/test-duckdb-persistence.R",
+    "docs/architecture/duckdb-reference-persistence.md",
+    "docs/operations/reference-history.md"
   )
   missing <- required_files[!file.exists(file.path(repository_root, required_files))]
   for (path in missing) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase5_required_files", "missing_phase5_file",
-    "Required Iteration 5.1 file is missing.", path
+    "Required completed Phase 5 file is missing.", path
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase5_required_files", length(missing) == 0L,
-    paste(length(required_files), "required Iteration 5.1 files")
+    paste(length(required_files), "required Phase 5 files")
   )
-  prohibited_directories <- c(
-    "persistence", "products", "app", "deploy", "config", "observability"
-  )
+  prohibited_directories <- c("products", "app", "deploy", "config", "observability")
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
   for (path in premature) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase5_scope", "premature_phase5_content",
-    "Concrete persistence or a later product/application layer is premature.", path
+    "A product/application or later layer is premature.", path
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase5_scope", length(premature) == 0L,
-    "no concrete adapter, product, app, deployment, or observability implementation"
+    "no product, app, deployment, root configuration, or observability implementation"
   )
   record_path <- file.path(
     repository_root, "docs", "architecture", "platform-implementation-record.md"
@@ -126,21 +138,37 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
   record_text <- if (file.exists(record_path)) paste(
     rrp_read_text(record_path), collapse = "\n"
   ) else ""
-  heading <- "### Iteration 5.1 — Operational history semantics and persistence ports"
-  recorded <- grepl(heading, record_text, fixed = TRUE)
+  headings <- c(
+    "### Iteration 5.1 — Operational history semantics and persistence ports",
+    "### Iteration 5.2 — DuckDB reference persistence adapter and durable vertical slice"
+  )
+  recorded <- all(vapply(headings, grepl, logical(1), x = record_text, fixed = TRUE))
   if (!recorded) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase5_implementation_record", "missing_phase5_implementation_record",
-    "Implementation record must contain the Iteration 5.1 entry.",
+    "Implementation record must contain the Iteration 5.1 and 5.2 entries.",
     "docs/architecture/platform-implementation-record.md"
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase5_implementation_record", recorded,
-    "Iteration 5.1 implementation evidence is recorded"
+    "Iterations 5.1 and 5.2 implementation evidence is recorded"
+  )
+  lock_text <- paste(readLines(
+    file.path(repository_root, "renv.lock"), warn = FALSE
+  ), collapse = "\n")
+  dependencies_ok <- all(vapply(c('"DBI"', '"duckdb"', '"yaml"'), function(value) {
+    grepl(value, lock_text, fixed = TRUE)
+  }, logical(1)))
+  if (!dependencies_ok) issues[[length(issues) + 1L]] <- rrp_issue(
+    "phase5_dependencies", "missing_reference_adapter_dependency",
+    "renv.lock must record yaml, DBI, and duckdb.", "renv.lock"
+  )
+  checks[[length(checks) + 1L]] <- rrp_check(
+    "phase5_dependencies", dependencies_ok,
+    "adapter-only DBI and DuckDB dependencies are locked"
   )
   rrp_validation_result(
-    "Iteration 5.1 strict checkpoint validation",
+    "Completed Phase 5 strict checkpoint validation",
     rrp_bind_rows(checks, rrp_empty_checks),
     rrp_bind_rows(issues, rrp_empty_issues)
   )
 }
-

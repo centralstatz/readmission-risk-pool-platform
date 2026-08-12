@@ -90,10 +90,12 @@ structure or dependencies when their owning phase justifies them.
 
 ## Dependency state
 
-Phase 1 uses the `yaml` package to read the selected language-neutral
-specification format. The repository therefore owns an independently created
-`renv.lock` and activation state; no dependency file was copied from the
-sibling reference repository. Restore the locked environment with:
+Phase 1 uses `yaml` to read the selected language-neutral specification format.
+Iteration 5.2 adds `DBI` and `duckdb` solely for the concrete reference
+persistence adapter and its operations; `rrpruntime` remains base-R-only. The
+repository owns an independently created `renv.lock` and activation state; no
+dependency file was copied from the sibling reference repository. Restore the
+locked environment with:
 
 ```sh
 Rscript -e 'renv::restore()'

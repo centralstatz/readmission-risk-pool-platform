@@ -71,8 +71,8 @@ software conformance from clinical validity.
 | 2 | Canonical implementation boundary | Independently supplied canonical data |
 | 3 | Synthetic reference implementation | Complete conforming source producer |
 | 4 | Minimal governed runtime and provider | Valid state and estimate records |
-| 5 | First persistent vertical slice | Working products and minimal app over real operational history |
-| 6 | Operational-history and product maturity | Corrections, transitions, capability-aware views |
+| 5 | First persistent vertical slice | Durable source-to-history flow through a conforming reference adapter |
+| 6 | Operational-history and product maturity | Migration, products, and capability-aware app views |
 | 7 | Stable platform operations and adoption guides | Human-operable selection/build/run/recovery |
 | 8 | Deployment build and Connect Cloud reference | Validated target-specific realization |
 | 9 | Observability integration | Correlated, privacy-conscious operations |
@@ -279,55 +279,54 @@ lineage; the completed Phase 4 provider semantics remain intact.
 
 ### Objective
 
-Deliver the first small working product without violating history, product, or
-application boundaries.
+Deliver the first durable source-to-operational-history slice without violating
+runtime, history, product, or application boundaries.
 
 ### Deliverables
 
 - logical ports for appending and reading runs, state, and estimate records;
 - a lightweight local reference storage adapter;
-- initial idempotency and prospective-start behavior;
-- one current episode product, one trajectory/history product, and one compact
-  summary or queue, each with versioned contracts;
-- local product materialization/access adapter;
-- a minimal Shiny interface that reads only those logical products;
-- one human command sequence to generate, run, persist, build products, and
-  launch; and
+- explicit idempotency, retry, provider-transition, invalidation, restatement,
+  atomicity, raw/valid/current-read, and prospective-start behavior;
+- one human operation to generate, run, persist, close/reopen, and inspect;
+- documented initialization, connection lifecycle, backup, recovery,
+  troubleshooting, and concurrency posture; and
 - end-to-end fictional regression tests.
 
 ### Exit evidence
 
-- day `t` and `t+1` append distinct records;
-- retry behavior follows a declared idempotency key;
-- trajectories read persisted estimates rather than reconstructing historical
-  estimates under current code;
-- product rebuild leaves history unchanged;
-- the app can change storage adapters without source or provider knowledge; and
-- a new user can reach a visibly fictional working app through documented
-  commands.
+- day `t` and `t+1` plus provider A/provider B remain distinct retained facts;
+- identical reruns are no-ops and conflicts remain loud across restart;
+- an interrupted terminal batch exposes no partial members after reopen;
+- raw facts and validity-resolved reads preserve invalidation/restatement;
+- generic runtime and contracts contain no reference-storage dependency; and
+- a new user can create, rerun, inspect, and back up visibly fictional durable
+  history through documented commands.
 
 ### Dependencies and decisions
 
 Depends on Phase 4 identities and records. Choose only a reference local
-storage technology; do not make it the production requirement. The first
-product subset is provisional pending the product-suite decision.
+storage technology; do not make it the production requirement. Product and
+application scope begins in Phase 6 after durable operational truth exists.
 
 ### Completion status
 
-**In progress.** Iteration 5.1 defines operational truth, immutable run
+**Complete.** Iteration 5.1 defines operational truth, immutable run
 lifecycle, persisted state/request/execution/estimate families, atomic terminal
 batches, idempotency/conflict/retry/provider-transition behavior,
 invalidation/restatement, raw/valid/current reads, and backend-independent
-persistence ports. No durable adapter or product exists. Iteration 5.2 must
-select and prove the smallest local adapter against these semantics before the
-phase proceeds to products or an application.
+persistence ports. Iteration 5.2 adds the conforming DuckDB reference adapter,
+durable close/reopen operation, interruption/restart evidence, and documented
+backup/recovery. No product or application exists; that work now starts in
+Phase 6 rather than widening the persistence milestone after its evidence is
+complete.
 
 ## Phase 6 — Operational-history and product maturity
 
 ### Objective
 
-Complete the history semantics and evolve the first slice into stable,
-capability-aware product interfaces.
+Mature durable history and evolve it into stable, capability-aware product and
+application interfaces.
 
 ### Deliverables
 
@@ -340,8 +339,11 @@ capability-aware product interfaces.
   compatibility;
 - explicit partial/unavailable capability behavior;
 - current, trajectory, care-management, executive, and lineage products chosen
-  for the reference suite; and
-- storage adapter contract tests and migration rules.
+  for the reference suite;
+- product storage/materialization and access adapters;
+- a minimal Shiny interface that reads only logical products;
+- one human path to rebuild products and launch the fictional app; and
+- storage adapter migration rules beyond the already conforming reference.
 
 ### Exit evidence
 
@@ -349,8 +351,10 @@ capability-aware product interfaces.
 - correction/restatement never silently overwrites prior operational truth;
 - a prospectively initialized deployment works with empty prior history;
 - products rebuild consistently from authoritative records;
-- optional products can be absent without false zero values; and
-- app consumers reject or qualify incompatible/stale products safely.
+- optional products can be absent without false zero values;
+- app consumers reject or qualify incompatible/stale products safely; and
+- the app can change product storage adapters without source, provider, or
+  operational-history schema knowledge.
 
 ### Dependencies and decisions
 

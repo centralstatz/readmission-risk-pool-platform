@@ -23,3 +23,7 @@ tmp/
 
 # Generated deployment builds named by the target architecture
 build/
+
+# Generated reference persistence files at explicitly selected local paths
+*.duckdb
+*.duckdb.wal

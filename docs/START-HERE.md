@@ -1,7 +1,7 @@
 # Start here
 
-This repository has completed its first source-to-estimate flow and defined
-the operational-history ports that will retain it;
+This repository has completed its first durable source-to-history flow through
+a reference adapter conforming to the operational-history ports;
 understand the intended product and public boundaries before extending it.
 
 ## Recommended review
@@ -30,17 +30,19 @@ understand the intended product and public boundaries before extending it.
 9. [Operational History Foundation](architecture/operational-history-foundation.md)
    — run lifecycle, persisted families, retries, corrections, and logical
    persistence ports.
-10. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+10. [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
+   — the concrete local adapter, physical tradeoffs, atomicity, and recovery.
+11. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-11. [Open Decisions](architecture/open-decisions.md) — choices that require
+12. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-12. [Platform Implementation Record](architecture/platform-implementation-record.md)
+13. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-13. [Implementation Conventions](development/implementation-conventions.md) and
+14. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-14. [Repository Development Policies](development/repository-policies.md) for
+15. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-15. [Operations](operations/README.md) for supported human operations and
+16. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

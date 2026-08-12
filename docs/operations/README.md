@@ -5,13 +5,16 @@ reserve names or document hypothetical future capabilities.
 
 - [Validation](validation.md) — validate maintained documentation and
   specification assets, run Phase 0–5 tests, check repository policies, and
-  evaluate the completed Iteration 5.1 checkpoint.
+  evaluate the completed Phase 5 checkpoint.
 - [Generate Reference](generate-reference.md) — generate, source-validate, map,
   and canonically admit the deterministic fictional reference in memory.
 - [Run Reference Runtime](run-reference-runtime.md) — admit either canonical
   fixture, evaluate eligibility, build state, and create estimand requests.
 - [Run Reference Estimation](run-reference-estimation.md) — run those requests
   through the exactly selected transparent provider to accepted estimates.
+- [Durable Reference History](reference-history.md) — persist the complete
+  fictional flow through DuckDB, inspect through the port, and create a
+  checkpointed validated backup.
 
 Human documentation is the authoritative operating interface. Scripts, agents,
 and automation must invoke the same callable behavior described here.

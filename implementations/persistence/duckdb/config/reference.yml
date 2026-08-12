@@ -1,0 +1,17 @@
+# Local generated database location for the supported reference operation.
+specification_kind: persistence_adapter_configuration
+specification_id: reference.duckdb-persistence-configuration
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: DuckDB reference persistence configuration
+status: active
+description: Generated fictional operational history; never commit the database.
+
+adapter_reference:
+  specification_kind: persistence_adapter_implementation
+  specification_id: reference.duckdb-persistence
+  specification_version: "0.1.0"
+database_path: build/reference-operational-history.duckdb
+data_classification: fictional_nonclinical
+

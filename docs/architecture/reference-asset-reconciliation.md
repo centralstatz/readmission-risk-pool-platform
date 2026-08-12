@@ -128,6 +128,26 @@ confidence in reuse of knowledge or adapted behavior, not pre-approval to copy.
 - Recomputed weekly trajectories are not operational history.
 - Eight fixed CSV products are not the universal product suite.
 - The smoke Shiny app is not the application product definition.
+
+## Iteration 5.2 persistence review
+
+After the DuckDB adapter design was drafted, the read-only just-in-time review
+revisited `app/R/data-access.R`, `scripts/lib/product-provenance.R`,
+`app/data/PRODUCT_MANIFEST.yml`, and
+`docs/operations/provenance-lifecycle.md`.
+
+- Stable product-set identities, explicit generation-input attribution, row
+  counts, hashes, and validation-before-consumption remain useful principles.
+- The clean adapter owns stable record and schema identities and validates
+  metadata before open. Exact semantic payload comparison, transactions, and
+  close/reopen tests supply the integrity evidence required now; product-set
+  hashing remains deferred to products.
+- Git revisions A/B/C, current-commit ancestry, tracked CSVs, fixed product
+  paths, and eight-product manifests were rejected for operational history.
+- The old local-file/database switch was not copied. The clean persistence port
+  already exists and the future app must consume products, not this database.
+- No sibling code, schema, text, data, identity, or dependency was copied. The
+  sibling remained development-time read-only evidence.
 - Git commits A/B/C are not general run identity or persistence semantics.
 - Exact old paths and structure tests are not clean repository requirements.
 - Connect Cloud templates and manifests are not core platform files.

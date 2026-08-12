@@ -272,6 +272,12 @@ The reference adapter may be lightweight and local while exercising the same
 contract suite expected of another adapter. Production choices remain adopter
 owned.
 
+The current reference is `reference.duckdb-persistence@0.1.0`, documented in
+[DuckDB Reference Persistence](duckdb-reference-persistence.md). It uses one
+controlled writer process, explicit sessions, and a versioned physical schema.
+This realization does not add DuckDB concepts to the port or make its
+concurrency limits universal.
+
 ### Operational semantics
 
 - Run identity and idempotency keys distinguish a retry from a new run.
@@ -468,7 +474,7 @@ top-level layout, to be created just in time by implementation phases.
 | Directory | Responsibility and contents | Must not contain | Role and dependencies |
 |---|---|---|---|
 | `contracts/` | Language-neutral schemas/specifications for canonical bundles, estimands, providers, derived records, products, diagnostics, and compatibility | Executable source mappings, app views, backend logic | Public; depended on by every conforming implementation |
-| `implementations/` | Source-owned producers, mappings, and implementation conformance; includes the synthetic reference | Generic runtime, provider registry internals, app products | Public reference/example plus adopter-owned implementations; depends on contracts and implementation tooling |
+| `implementations/` | Source-owned producers/mappings and concrete reference adapters; includes synthetic source and DuckDB persistence realizations | Generic runtime, provider registry internals, app products | Public reference/example plus adopter-owned implementations; depends on contracts, logical ports, and implementation tooling |
 | `runtime/` | Internal R package for stable implementation-neutral computation and logical ports | Orchestration, source extraction, app rendering, deployment, Git/publication | Internal platform component with public-ish APIs; depends on contracts and minimal R libraries |
 | `products/` | Product specifications, builders, suite composition, and product storage ports/adapters | Historical authority, source queries, UI rendering | Public logical interface; depends on contracts, runtime records, and persistence reads |
 | `app/` | Supplied Shiny application and product-access boundary | Source mappings, provider code, persistence backend queries, hosting adapters | Replaceable public reference app; depends only on product interfaces and app configuration |

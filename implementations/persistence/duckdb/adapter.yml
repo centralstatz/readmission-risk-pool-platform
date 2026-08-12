@@ -1,0 +1,29 @@
+# Reference realization of the backend-independent operational-history port.
+specification_kind: persistence_adapter_implementation
+specification_id: reference.duckdb-persistence
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: DuckDB operational-history persistence adapter
+status: active
+description: >-
+  Repository-owned local reference adapter for the platform persistence
+  contract. DuckDB and the physical schema are implementation details, not
+  requirements imposed on other conforming adapters.
+
+contract_reference:
+  specification_kind: persistence_contract
+  specification_id: platform.persistence-adapter
+  specification_version: "0.1.0"
+schema_version: "0.1.0"
+payload_encoding: r-serialize-v3-hex@0.1.0
+data_classification: fictional_nonclinical_reference_only
+capabilities:
+  atomic_completed_run_append: true
+  idempotent_identical_append: true
+  conflicting_identity_rejected: true
+  append_only_invalidation: true
+  raw_history_reads: true
+  validity_resolved_reads: true
+writer_posture: one controlled platform writer process per database file
+
