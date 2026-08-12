@@ -1,0 +1,58 @@
+# Application-facing facts about completed history runs, not telemetry.
+specification_kind: logical_product
+specification_id: platform.operational-run-summary
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operational run summary
+status: active
+description: >-
+  One compact summary for each selected valid completed operational run,
+  preserving terminal outcome, persisted member counts, provider/estimand
+  identities, source implementation/mapping, and run provenance.
+
+grain: one valid terminal operational run
+row_identity:
+  - runtime_run_id
+required_upstream_record_families:
+  - operational_run
+  - episode_state
+  - estimand_request
+  - provider_execution_result
+  - accepted_estimate
+
+fields:
+  product_row_id: {type: string, required: true, meaning: deterministic logical row identity}
+  runtime_run_id: {type: string, required: true}
+  run_as_of_time: {type: timestamp, required: true}
+  terminal_status_time: {type: timestamp, required: true}
+  terminal_status: {type: string, required: true, accepted_values: [completed, completed_with_failures]}
+  episode_state_count: {type: nonnegative_integer, required: true}
+  estimand_request_count: {type: nonnegative_integer, required: true}
+  provider_execution_result_count: {type: nonnegative_integer, required: true}
+  successful_estimate_count: {type: nonnegative_integer, required: true}
+  failed_execution_count: {type: nonnegative_integer, required: true}
+  provider_references: {type: provider_references, required: true}
+  estimand_specifications: {type: specification_references, required: true}
+  implementation_reference: {type: implementation_reference, required: true}
+  mapping_reference: {type: mapping_reference, required: true}
+  provenance_references: {type: provenance_references, required: true}
+
+ordering:
+  - run_as_of_time
+  - terminal_status_time
+  - runtime_run_id
+
+freshness: >-
+  Row run_as_of_time remains the run information cutoff. Product generation
+  time is set-level metadata and is never substituted for that cutoff.
+availability: >-
+  An available zero-row result is permitted only for a supported normalized
+  history selection with no selected runs. The initial core-set operation
+  requires at least one valid completed source run, so that context fails
+  before product construction.
+summary_rule: >-
+  Counts are derived from validity-resolved persisted record families and must
+  equal the persisted terminal summary. Failed executions remain counted and
+  completed_with_failures remains visible.
+

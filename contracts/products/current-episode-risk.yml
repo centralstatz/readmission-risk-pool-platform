@@ -1,0 +1,63 @@
+# Current valid accepted risk, without a prioritization or decision policy.
+specification_kind: logical_product
+specification_id: platform.current-episode-risk
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Current episode risk
+status: active
+description: >-
+  One current valid accepted estimate per episode and estimand represented at
+  the selected cutoff. The persistence port owns current-selection semantics;
+  the builder does not rerun eligibility or invoke a provider.
+
+grain: one current valid accepted estimate per episode and estimand
+row_identity:
+  - episode_id
+  - estimand_id
+  - estimand_version
+required_upstream_record_families:
+  - operational_run
+  - episode_state
+  - accepted_estimate
+
+fields:
+  product_row_id: {type: string, required: true, meaning: deterministic logical row identity}
+  episode_id: {type: string, required: true, meaning: episode represented by the accepted estimate}
+  estimate_id: {type: string, required: true, meaning: accepted estimate identity}
+  estimate_value: {type: probability, required: true, meaning: accepted probability with no priority interpretation}
+  output_type: {type: string, required: true, accepted_values: [probability]}
+  estimand_id: {type: string, required: true}
+  estimand_version: {type: semantic_version, required: true}
+  provider_id: {type: string, required: true}
+  provider_version: {type: semantic_version, required: true}
+  model_reference: {type: model_reference_or_null, required: true}
+  target_interval_start: {type: timestamp, required: true}
+  target_interval_end: {type: timestamp, required: true}
+  interval_boundary: {type: string, required: true}
+  state_id: {type: string, required: true}
+  state_as_of_time: {type: timestamp, required: true}
+  source_runtime_run_id: {type: string, required: true}
+
+optional_fields:
+  patient_lineage_id: >-
+    May be added only when a compatible persisted state owns that consumer
+    meaning; the initial state does not expose one.
+
+ordering:
+  - episode_id
+  - estimand_id
+  - estimand_version
+
+freshness: >-
+  Metadata distinguishes the source cutoff, greatest represented valid run
+  as-of, latest represented valid run, and product generation time.
+availability: >-
+  An available zero-row product means no selected episode/estimand has a
+  current valid accepted estimate. Unavailable and failed builds are not empty
+  products.
+prohibited_semantics:
+  - priority
+  - risk_category
+  - recommended_action
+  - eligibility_recomputation

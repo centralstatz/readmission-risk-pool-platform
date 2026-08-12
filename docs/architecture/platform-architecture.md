@@ -309,6 +309,15 @@ logical identity, keys, schema/version, required upstream capabilities,
 freshness/as-of meaning, lineage, compatibility, and partial/unavailable
 behavior.
 
+Iteration 6.1 resolves the first deliberately narrow suite through
+[`platform.initial-risk-product-set@0.1.0`](../../contracts/products/initial-risk-product-set.yml):
+current valid episode/estimand risk, persisted accepted-estimate history, and
+valid terminal operational-run summaries. The exact grains, coherent-set
+identity, freshness, compatibility, failure behavior, builders, conformance,
+and in-memory access seam are authoritative in
+[Logical Product Foundation](logical-product-foundation.md). Physical
+materialization and the supplied application remain later Phase 6 work.
+
 ### Storage independence
 
 Product readers and writers interact with logical products, not CSV-specific

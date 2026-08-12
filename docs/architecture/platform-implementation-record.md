@@ -1895,3 +1895,205 @@ The complete repository-owned matrix passed:
 Generated temporary databases and the package-check directory were removed.
 No database, product, application data, commit, push, publication, deployment,
 or external-repository mutation remains. The sibling repository was read-only.
+
+## Phase 6 — Operational-history and product maturity
+
+### Iteration 6.1 — Logical product contracts and product-building boundary
+
+#### Planned objective
+
+Define and implement the smallest useful, versioned logical product layer over
+the completed Phase 5 persistence reads. The iteration was to stop at valid
+history → backend-neutral builders → conforming logical products → logical
+access, with no physical product store, application, priority/decision policy,
+source/provider invocation, replay, deployment, or observability behavior.
+
+#### Actual implementation
+
+- Added four language-neutral contracts under `contracts/products/`: one
+  product-set contract and current-risk, persisted-risk-history, and terminal
+  operational-run-summary products.
+- Added a base-R `products/` boundary owning deterministic product/set/row
+  identity, explicit freshness, compatibility checks, structured build
+  results, multi-issue conformance, coherent set construction, and an in-memory
+  logical access realization.
+- Builders accept an `rrpruntime` persistence port or normalized records
+  already returned by it. Port composition uses only valid run/current reads;
+  it never receives a DBI connection, SQL table, repository path, source
+  implementation, provider callable, or Shiny object.
+- Added one read-only human operation that opens existing reference DuckDB
+  history through the persistence port, selects explicit valid completed run
+  IDs, builds/conforms the complete set, reports identity/freshness/status/
+  counts, and discards all product objects on exit.
+- Added focused Phase 6 tests and repository validation for product contracts,
+  architecture, required files, current/history/run semantics, failure and
+  empty behavior, conformance, access, and backend equivalence.
+
+#### Product suite
+
+1. `platform.current-episode-risk@0.1.0` has one row per episode + estimand
+   ID/version with a current valid accepted estimate at the selected cutoff.
+2. `platform.episode-risk-history@0.1.0` has one row per valid persisted
+   accepted estimate and retains provider/estimand/run/restatement attribution.
+3. `platform.operational-run-summary@0.1.0` has one row per selected valid
+   terminal run, including completed-with-failures and exact persisted counts.
+4. `platform.initial-risk-product-set@0.1.0` makes all three required core
+   members. There is no partial-success initial set.
+
+#### Decisions
+
+1. **Product IDs/versions:** all initial interfaces are platform-owned active
+   `0.1.0` specifications using the common YAML envelope.
+2. **Product grains:** current uses episode/estimand, history uses estimate ID,
+   and run summary uses runtime run ID. Each record also receives a
+   deterministic product-row ID scoped to the set.
+3. **Product-set identity:** the set includes exact set/member/builder versions,
+   sorted source run IDs, and explicit cutoff. Paths, files, adapters, hashes,
+   Git revisions, and wall-clock generation time are not logical identity.
+4. **Freshness:** source cutoff, greatest represented run as-of, latest
+   represented valid run, and generation time are separate fields.
+5. **Compatibility:** supported upstream pre-1.0 minor lines are run `0.1`,
+   state `0.1`, request `0.1`, execution result `0.2`, estimate `0.1`, and the
+   initial estimand `0.1`. Storage-adapter changes are irrelevant when logical
+   records are unchanged.
+6. **Current semantics:** use persistence `read_current_estimate()` over the
+   caller-declared closed source-run scope. Do not rerun eligibility.
+7. **History semantics:** use validity-resolved accepted estimates only. Do not
+   recompute trajectories; preserve provider transitions and restatement
+   provenance.
+8. **Failure/availability:** a valid supported zero-row product is `available`.
+   Source read, compatibility, builder, conformance, or coherence failure
+   fails the whole required set and exposes no consumable product collection.
+9. **Backend independence:** generic product files are base R plus exported
+   logical runtime reads and contain no DuckDB, DBI, SQL, source, provider,
+   or application dependency.
+10. **Access boundary:** exact `list_products`, `read_product`, and
+    `read_product_metadata` needs are realized in memory; physical adapters are
+    deferred.
+11. **Retention/rebuild:** operational history remains operator-owned truth;
+    product materializations may be shorter-lived and deletable without
+    deleting history. Rebuild from retained compatible records is projection,
+    not replay.
+12. **Dependencies:** no package or lockfile dependency was added.
+
+#### Reference assets inspected
+
+After the clean suite and interfaces were designed, the required read-only
+review covered the sibling's `app/data/`, product manifest, data-access code,
+pipeline product/trajectory functions, provenance helper, and platform tests.
+Coherent set identity, source attribution, deterministic order/count checks,
+validation before consumption, and logical access were adapted as principles.
+
+The fixed eight products, tracked CSV/materialization, Git/checksum/path
+identity, reconstructed trajectories, synthetic metadata, priority/queue,
+executive/measure/geography semantics, hard-coded paths, and app field
+assumptions were rejected or deferred. No sibling code, specification,
+identifier, data, configuration, or dependency was copied.
+
+#### New material created cleanly
+
+New work consists of four product contracts; four focused product modules; a
+product operation composition module and command; architecture and human
+operation guides; ten focused tests; product repository validation; updated
+navigation, architecture, plan, decisions, reconciliation, agent guidance,
+and this implementation record. All product identities and field meanings are
+new repository-owned interfaces derived from current retained records.
+
+#### Surprises/deviations
+
+- The completed persistence port intentionally has no backend-wide run-list
+  query. Rather than widen a stable Phase 5 boundary or inspect DuckDB tables,
+  Iteration 6.1 requires explicit source run IDs. The reference command derives
+  the deterministic scale run ID and permits repeated `--run-id`; broader run
+  catalog/selection remains future operations/product-access work.
+- A product build can legitimately succeed with zero current/history rows when
+  a completed-with-failures run accepted no estimate. Treating that as failure
+  would collapse availability and row cardinality.
+- Source closure must be explicit: if the port's current read selects an
+  estimate outside supplied run IDs, the build fails rather than mixing an
+  undeclared newer history into the set.
+- The Phase 6 plan was clarified as Iteration 6.1 logical products followed by
+  Iteration 6.2 physical access plus minimal app. The phase sequence and Phase 6
+  exit evidence did not change.
+
+#### Validation evidence
+
+Focused development evidence:
+
+- `Rscript tests/run-phase6-tests.R` — 10 tests, 0 failures, covering contract
+  suite/boundaries, current selection and deterministic identity, provider
+  transition, invalidation/restatement, completed-with-failures/counts,
+  available zero-row products, multi-issue conformance, logical access,
+  in-memory/DuckDB exact equivalence, and structured read failure; and
+- product construction through both the test persistence adapter and a
+  temporary DuckDB adapter used the same builder and produced identical
+  logical product-set metadata and rows.
+
+The complete Phase 0–6, operation, parse, dependency, whitespace, and
+checkpoint results are recorded in the final validation follow-up below.
+
+#### Implications for Iteration 6.2
+
+- Select one replaceable physical product adapter without changing the logical
+  contracts or builder outputs.
+- Validate set identity, member versions, freshness, availability, and
+  coherence before any application view reads a product.
+- Build the smallest fictional capability-aware app exclusively over logical
+  product access; it must not read persistence/source tables or invoke runtime
+  or providers.
+- Do not add priority/queue/decision products until their separate governed
+  semantics exist. Remaining history migration/retention maturity also
+  requires deliberate scope.
+
+#### Phase 6 status
+
+**In progress.** The logical product and access boundary is complete for the
+first suite. Physical materialization/access, the minimal application, and
+remaining Phase 6 history/product maturity are not implemented.
+
+#### Recommended next task
+
+Begin **Iteration 6.2 — Physical product access and minimal application** by
+selecting the smallest replaceable fictional product materialization adapter,
+proving stale/incompatible/coherence rejection through the logical access
+contract, and adding only the minimal Shiny consumer required to exercise the
+three products. Keep decision policy, deployment, replay, and observability out
+of scope.
+
+#### Final validation follow-up
+
+The complete repository-owned matrix passed on the final implementation:
+
+- `Rscript operations/validate-documentation.R` — 4 checks, 0 issues;
+- focused Phase 0–6 suites — respectively 10, 14, 38, 24, 55, 18, and
+  10 tests, all passing;
+- `Rscript operations/validate.R --mode development` — 70 checks, 0 issues;
+- `Rscript operations/validate.R --mode checkpoint` — 93 checks, 0 issues;
+- a fresh temporary `run-reference-history.R --scale test` produced one
+  completed durable run with 6 states, requests, executions, and estimates;
+- `build-reference-products.R` over that database reported the exact three
+  products with 6 current rows, 6 persisted-history rows, and 1 run-summary
+  row, then exited without writing a product file/table;
+- in-memory and temporary DuckDB histories produced identical logical set
+  metadata and rows under a fixed generation time;
+- all 78 maintained R files and 39 YAML files parsed;
+- `renv::status()` reported no issues and no dependency/lockfile change; its
+  attempted repository-index refresh was unavailable in the restricted
+  network environment and did not affect the consistency result;
+- clean `R CMD build` and `R CMD check --no-manual --no-vignettes` for
+  unchanged `rrpruntime@0.3.0` — status OK;
+- `git diff --check`, generated-database/package-artifact checks, forbidden
+  product dependency scans, native-pipe review, and repository status/diff
+  review passed.
+
+The restricted execution environment's renv global sandbox lock probe stalled
+inside filesystem metadata inspection, so validation commands were invoked
+with sandbox activation disabled for this session. The repository's own renv
+project/library, snapshot dependency discovery, lockfile, and `renv::status()`
+remained active and consistent. This is an execution-environment workaround,
+not a documented platform operation or repository change.
+
+Temporary databases, package archives, and check directories were removed.
+No product materialization, application data, commit, push, publication,
+deployment, or external mutation occurred. The sibling repository remained
+read-only.

@@ -1,0 +1,83 @@
+# Required logical products for the first history-backed consumer boundary.
+specification_kind: product_set_contract
+specification_id: platform.initial-risk-product-set
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Initial readmission risk product set
+status: active
+description: >-
+  One coherent build of current accepted episode risk, retained accepted risk
+  history, and operational run summaries. All three products are required;
+  this contract does not authorize partial success, decision policy, or a
+  physical materialization format.
+
+builder:
+  builder_id: platform.logical-risk-product-builder
+  builder_version: "0.1.0"
+
+required_products:
+  current_episode_risk:
+    specification_kind: logical_product
+    specification_id: platform.current-episode-risk
+    specification_version: "0.1.0"
+  episode_risk_history:
+    specification_kind: logical_product
+    specification_id: platform.episode-risk-history
+    specification_version: "0.1.0"
+  operational_run_summary:
+    specification_kind: logical_product
+    specification_id: platform.operational-run-summary
+    specification_version: "0.1.0"
+
+supported_upstream_specifications:
+  operational_run:
+    specification_kind: persistence_record
+    specification_id: platform.operational-run-status
+    supported_specification_version: "0.1.0"
+  episode_state:
+    specification_kind: runtime_record
+    specification_id: platform.readmission-episode-state
+    supported_specification_version: "0.1.0"
+  estimand_request:
+    specification_kind: runtime_request
+    specification_id: platform.readmission-estimand-request
+    supported_specification_version: "0.1.0"
+  provider_execution_result:
+    specification_kind: runtime_result
+    specification_id: platform.provider-execution-result
+    supported_specification_version: "0.2.0"
+  accepted_estimate:
+    specification_kind: runtime_record
+    specification_id: platform.readmission-risk-estimate
+    supported_specification_version: "0.1.0"
+  estimand:
+    specification_kind: estimand
+    specification_id: platform.readmission-next-day-conditional-hazard
+    supported_specification_version: "0.1.0"
+
+identity_rule: >-
+  Product-set identity is deterministic from this contract, the builder
+  identity/version, sorted valid source runtime-run identities, the explicit
+  source cutoff, and exact product specification identities. Generation wall
+  time, paths, storage adapters, files, and content hashes are excluded.
+
+coherence_rules:
+  source_view: valid
+  source_runs: >-
+    Every declared source run must have one valid completed or
+    completed_with_failures terminal status and together form the complete
+    history scope selected by the caller at the cutoff.
+  common_metadata: >-
+    Every product has the same product_set_id, source cutoff, source as-of,
+    latest represented source run, sorted source-run references, and generated
+    time.
+  core_policy: all required products succeed and conform or the set fails
+
+availability_semantics:
+  available: supported product built and conformed; zero rows remain available
+  unavailable: supported product cannot be supplied for the selected context
+  unsupported: product is not implemented by the selected suite/version
+  failed_conformance: claimed product failed contract conformance
+  build_failure: an unsuccessful core set exposes no successful product collection
+

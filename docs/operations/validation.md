@@ -7,15 +7,17 @@ Current validation answers two different questions:
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the completed Phase 5
-  canonical-to-durable-history requirements?
+  canonical-to-durable-history requirements while remaining coherent with the
+  in-progress Iteration 6.1 logical product boundary?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
 3 fictional source implementation, completed Phase 4 runtime/provider
-foundation, Iteration 5.1 operational-history contracts/ports, and Iteration
-5.2 DuckDB reference adapter plus durable operation. Products and later layers
-do not exist yet.
+foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
+DuckDB reference adapter plus durable operation, and the Iteration 6.1 logical
+product contracts/builders/conformance/access operation. Physical product
+storage, application, and later layers do not exist yet.
 
 ## Prerequisites
 
@@ -85,6 +87,12 @@ Run the focused Phase 5 tests directly:
 Rscript tests/run-phase5-tests.R
 ```
 
+Run the focused Phase 6 logical-product tests directly:
+
+```sh
+Rscript tests/run-phase6-tests.R
+```
+
 Run the reference source-to-canonical operation:
 
 ```sh
@@ -110,6 +118,12 @@ Run the durable fictional source-to-history path (safely repeatable):
 
 ```sh
 Rscript operations/run-reference-history.R --scale test
+```
+
+Build, conform, and inspect the logical product set from that history in memory:
+
+```sh
+Rscript operations/build-reference-products.R --scale test
 ```
 
 The default generated database is ignored under `build/`. Inspection and
@@ -146,10 +160,12 @@ Development mode composes:
   clinical domain/profile/vocabulary, fictional clinical fixture, synthetic
   implementation/source-schema/configuration, runtime/provider/estimate
   contract/package, both source-independent and synthetic reference-flow
-  conformance, operational-history contract/backend-independence checks, and
-  concrete DuckDB adapter boundary checks;
+  conformance, operational-history contract/backend-independence checks,
+  concrete DuckDB adapter boundary checks, and logical-product
+  contract/builder/conformance/access boundary checks;
   and
-- all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, and Phase 5 tests.
+- all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
+  Iteration 6.1 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -168,17 +184,20 @@ Checkpoint mode runs every development check and additionally verifies:
   clean temporary installation/loading, two admitted-input flows, two
   provider-estimation flows, and Iteration 4.2 implementation-record entry;
 - the exact operational-history contract/port scope, conforming DuckDB adapter,
-  durable operation, absence of products/later layers, and Iterations 5.1/5.2
-  implementation-record entries;
+  durable operation, absence of application/later layers, and Iterations
+  5.1/5.2 implementation-record entries;
+- the Iteration 6.1 three-product core contracts, backend-neutral builder and
+  access scope, human operation, focused tests, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, and `duckdb`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
 This is strict only relative to the Phase 0–5.2 source-to-durable-history
-boundary. It does not prove:
+boundary plus Iteration 6.1 logical product coherence. It does not prove:
 
 - public release or license readiness;
-- clinical provider validity, production persistence, product, or application correctness;
+- clinical provider validity, production persistence, physical product
+  materialization, or application correctness;
 - deployment-artifact or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or
@@ -247,6 +266,12 @@ observability, provenance, metrics, or audit system.
   incomplete started run cannot supply a current estimate.
 - **History identity conflict:** Preserve the accepted record and investigate
   differing content. Use a new run identity only for a new intentional run.
+- **Logical product source/compatibility failure:** Preserve history, inspect
+  the selected valid run scope and exact supported record/estimand versions,
+  and do not reinterpret failure as a zero-row product.
+- **Logical product conformance/coherence failure:** Correct all structured
+  field/key/order/freshness/upstream/set issues before consumption. Do not
+  expose a partial core set or query DuckDB directly.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

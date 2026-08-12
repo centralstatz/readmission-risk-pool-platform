@@ -49,6 +49,9 @@ structured outcomes, the transparent reference provider, and accepted
 estimates inside `rrpruntime`. The current `renv` state owns the Phase 1 YAML
 parser plus DBI and DuckDB solely for the Iteration 5.2 concrete reference
 adapter; `rrpruntime` remains base-R-only.
+Completed Iteration 6.1 owns the three-product logical core set,
+backend-neutral builders/conformance, and in-memory access boundary under
+`products/`; it adds no dependency and selects no physical product format.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -142,6 +145,13 @@ Rscript tests/run-phase5-tests.R
 Rscript operations/run-reference-history.R --scale test
 ```
 
+Run the focused logical-product tests and build/inspection operation with:
+
+```sh
+Rscript tests/run-phase6-tests.R
+Rscript operations/build-reference-products.R --scale test
+```
+
 Development coherence and strict milestone readiness are different claims.
 Never use development mode to bypass checkpoint failure. Later generation,
 deployment, publication, and release checkpoints may add stronger state
@@ -183,9 +193,12 @@ Phase 4 is complete. Operational history is documented in
 `docs/architecture/operational-history-foundation.md` and
 `contracts/persistence/`. Iteration 5.2 realizes the unchanged port through
 `docs/architecture/duckdb-reference-persistence.md` and
-`implementations/persistence/duckdb/`. Phase 5 is complete. Products,
-application, deployment, replay, decision policy, and observability remain
-outside this phase and are not authorized early.
+`implementations/persistence/duckdb/`. Phase 5 is complete. Product
+materialization, application, deployment, replay, decision policy, and
+observability remain outside Iteration 6.1 and are not authorized early. The first logical product
+boundary is documented in `docs/architecture/logical-product-foundation.md`
+and `contracts/products/`; physical materialization, app code, and later
+capabilities remain unauthorized until their next task.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

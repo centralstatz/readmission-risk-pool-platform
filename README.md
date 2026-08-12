@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 5 is complete through Iteration 5.2.** The focused internal
+**Phase 5 is complete and Phase 6 is in progress through Iteration 6.1.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -27,8 +27,12 @@ history records and append/read ports, including retry lineage, conflict,
 invalidation, restatement, and atomic terminal-batch semantics. The
 repository-owned DuckDB reference adapter now proves those semantics durably,
 and one supported fictional operation runs source through accepted estimates
-and close/reopen history reads. DuckDB is not a platform requirement.
-Products, Shiny, deployment, observability, and CI/CD remain unimplemented.
+and close/reopen history reads. DuckDB is not a platform requirement. Three
+versioned logical products now build as one coherent in-memory set exclusively
+from persistence-port reads, with explicit identity, freshness, compatibility,
+availability/failure, conformance, and a future application access seam.
+Physical product storage, Shiny, deployment, observability, and CI/CD remain
+unimplemented.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -69,9 +73,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    for run lifecycle, append semantics, invalidation, and persistence ports.
 10. Read [DuckDB Reference Persistence](docs/architecture/duckdb-reference-persistence.md)
    for the concrete adapter, physical tradeoffs, concurrency, and recovery.
-11. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+11. Read [Logical Product Foundation](docs/architecture/logical-product-foundation.md)
+   for the first suite, product-set/freshness semantics, builders, conformance,
+   and logical access boundary.
+12. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-12. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+13. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -115,6 +122,12 @@ Run the first durable fictional vertical slice with:
 
 ```sh
 Rscript operations/run-reference-history.R --scale test
+```
+
+Build and inspect the first logical product set from that history with:
+
+```sh
+Rscript operations/build-reference-products.R --scale test
 ```
 
 ## Authority

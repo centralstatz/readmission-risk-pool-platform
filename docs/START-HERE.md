@@ -1,8 +1,8 @@
 # Start here
 
-This repository has completed its first durable source-to-history flow through
-a reference adapter conforming to the operational-history ports;
-understand the intended product and public boundaries before extending it.
+This repository has completed its first durable source-to-history flow and its
+first backend-neutral logical product boundary. Understand the intended public
+and physical-materialization boundaries before extending it.
 
 ## Recommended review
 
@@ -32,17 +32,20 @@ understand the intended product and public boundaries before extending it.
    persistence ports.
 10. [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
    — the concrete local adapter, physical tradeoffs, atomicity, and recovery.
-11. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+11. [Logical Product Foundation](architecture/logical-product-foundation.md) —
+   first suite, identity/freshness, compatibility/failure behavior, builders,
+   conformance, and future application access.
+12. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-12. [Open Decisions](architecture/open-decisions.md) — choices that require
+13. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-13. [Platform Implementation Record](architecture/platform-implementation-record.md)
+14. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-14. [Implementation Conventions](development/implementation-conventions.md) and
+15. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-15. [Repository Development Policies](development/repository-policies.md) for
+16. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-16. [Operations](operations/README.md) for supported human operations and
+17. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

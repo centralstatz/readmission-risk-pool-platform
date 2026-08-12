@@ -37,6 +37,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
   — reference adapter identity, physical representation, transactions,
   deterministic reads, connection lifecycle, concurrency, and recovery.
+- [Logical Product Foundation](architecture/logical-product-foundation.md) —
+  first product suite, grains/keys, set identity, freshness, compatibility,
+  failure semantics, builders, conformance, and logical access boundary.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -57,7 +60,7 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Operations Index](operations/README.md) — currently supported human
   operations.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–5 test commands.
+  documentation, and Phase 0–6 test commands.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise
@@ -66,12 +69,15 @@ The documentation is the active product at this bootstrap stage. Begin with
   the exact registered transparent provider and validate accepted estimates.
 - [Durable Reference History](operations/reference-history.md) — initialize,
   run, persist, inspect, back up, and recover fictional DuckDB history.
+- [Build Logical Products](operations/logical-products.md) — build and inspect
+  the coherent logical suite from valid persisted history without materializing
+  it.
 
 ## Specifications
 
 - [Platform Specifications](../contracts/README.md) — machine-readable
-  foundation, canonical, runtime, provider, execution-result, estimate, and
-  operational-history contracts.
+  foundation, canonical, runtime, provider, execution-result, estimate,
+  operational-history, and logical-product contracts.
 
 ## Repository guidance
 

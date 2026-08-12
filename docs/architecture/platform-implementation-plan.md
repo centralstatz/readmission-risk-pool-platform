@@ -362,6 +362,22 @@ Depends on the Phase 5 slice. Resolve persistence semantics and the default
 product suite before freezing their first supported versions. Production
 database choice remains deployment-owned.
 
+### Iteration sequence and current status
+
+- **Iteration 6.1 — logical product contracts and product-building boundary:**
+  complete. It defines the required three-product core suite, coherent set and
+  freshness identity, compatibility/availability/failure semantics,
+  backend-neutral builders, independent conformance, logical access, and one
+  in-memory human build/inspection path over existing durable history.
+- **Iteration 6.2 — physical product access and minimal application:** next.
+  Select one replaceable reference materialization/access adapter and add only
+  the smallest capability-aware app consuming that boundary.
+
+Phase 6 remains in progress. Remaining migration/retention maturity, retained
+decision/lineage choices, and broader optional products are not implied by the
+Iteration 6.1 checkpoint. This split clarifies execution inside the existing
+phase and does not change the phase sequence.
+
 ## Phase 7 — Stable platform operations and adoption guides
 
 ### Objective

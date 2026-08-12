@@ -277,9 +277,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     paste(length(required_files), "required Phase 0 files")
   )
 
-  deferred_directories <- c(
-    "products", "app", "deploy", "config"
-  )
+  deferred_directories <- c("app", "deploy", "config")
   premature <- deferred_directories[
     dir.exists(file.path(repository_root, deferred_directories))
   ]
@@ -332,8 +330,10 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/generate-reference.R",
     "Rscript tests/run-phase4-tests.R",
     "Rscript tests/run-phase5-tests.R",
+    "Rscript tests/run-phase6-tests.R",
     "Rscript operations/run-reference-runtime.R",
-    "Rscript operations/run-reference-history.R --scale test"
+    "Rscript operations/run-reference-history.R --scale test",
+    "Rscript operations/build-reference-products.R --scale test"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")
@@ -350,7 +350,11 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     function(command) grepl(command, operations_text, fixed = TRUE),
     logical(1)
   )]
-  agent_commands <- c(operation_commands[2:3], tail(operation_commands, 1L))
+  agent_commands <- c(
+    operation_commands[2:3],
+    "Rscript tests/run-phase6-tests.R",
+    "Rscript operations/build-reference-products.R --scale test"
+  )
   agent_missing <- agent_commands[!vapply(
     agent_commands,
     function(command) grepl(command, agents_text, fixed = TRUE),

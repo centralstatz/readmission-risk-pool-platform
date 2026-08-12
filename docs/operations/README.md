@@ -4,8 +4,8 @@ This index lists operations that exist and are supported now. It does not
 reserve names or document hypothetical future capabilities.
 
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–5 tests, check repository policies, and
-  evaluate the completed Phase 5 checkpoint.
+  specification assets, run Phase 0–6 tests, check repository policies, and
+  evaluate the completed Phase 5 checkpoint plus Iteration 6.1 coherence.
 - [Generate Reference](generate-reference.md) — generate, source-validate, map,
   and canonically admit the deterministic fictional reference in memory.
 - [Run Reference Runtime](run-reference-runtime.md) — admit either canonical
@@ -15,6 +15,9 @@ reserve names or document hypothetical future capabilities.
 - [Durable Reference History](reference-history.md) — persist the complete
   fictional flow through DuckDB, inspect through the port, and create a
   checkpointed validated backup.
+- [Build Logical Products](logical-products.md) — read existing fictional
+  history through the port, build/conform the first logical product set, and
+  inspect identities, freshness, availability, and counts in memory.
 
 Human documentation is the authoritative operating interface. Scripts, agents,
 and automation must invoke the same callable behavior described here.

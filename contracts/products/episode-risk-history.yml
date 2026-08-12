@@ -1,0 +1,60 @@
+# Retained valid accepted estimates; never a recomputed pseudo-trajectory.
+specification_kind: logical_product
+specification_id: platform.episode-risk-history
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Episode risk history
+status: active
+description: >-
+  Valid persisted accepted estimates across selected operational runs. Provider
+  and estimand transitions remain attributable and invalidated estimates are
+  absent. No historical value is reconstructed by rerunning current code.
+
+grain: one valid persisted accepted estimate
+row_identity:
+  - estimate_id
+required_upstream_record_families:
+  - operational_run
+  - episode_state
+  - accepted_estimate
+
+fields:
+  product_row_id: {type: string, required: true, meaning: deterministic logical row identity}
+  episode_id: {type: string, required: true}
+  estimate_id: {type: string, required: true}
+  estimate_value: {type: probability, required: true}
+  output_type: {type: string, required: true, accepted_values: [probability]}
+  estimand_id: {type: string, required: true}
+  estimand_version: {type: semantic_version, required: true}
+  provider_id: {type: string, required: true}
+  provider_version: {type: semantic_version, required: true}
+  model_reference: {type: model_reference_or_null, required: true}
+  estimate_as_of_time: {type: timestamp, required: true}
+  target_interval_start: {type: timestamp, required: true}
+  target_interval_end: {type: timestamp, required: true}
+  interval_boundary: {type: string, required: true}
+  state_id: {type: string, required: true}
+  source_runtime_run_id: {type: string, required: true}
+  validity_status: {type: string, required: true, accepted_values: [valid]}
+  source_run_provenance_references: {type: provenance_references, required: true}
+
+ordering:
+  - episode_id
+  - estimand_id
+  - estimand_version
+  - estimate_as_of_time
+  - source_runtime_run_id
+  - estimate_id
+
+freshness: >-
+  Each row keeps its original estimate as-of time. Product metadata separately
+  states the selected cutoff, latest source run, source as-of, and generation
+  time.
+availability: >-
+  An available zero-row product means no valid accepted estimates occur in the
+  selected compatible history. It never means the build failed.
+history_rule: >-
+  Only validity-resolved persistence reads may supply rows. Restatements are
+  their newly attributed run/estimate records and may retain restatement or
+  supersession references in source_run_provenance_references.

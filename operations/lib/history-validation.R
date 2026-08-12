@@ -120,17 +120,17 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
     "phase5_required_files", length(missing) == 0L,
     paste(length(required_files), "required Phase 5 files")
   )
-  prohibited_directories <- c("products", "app", "deploy", "config", "observability")
+  prohibited_directories <- c("app", "deploy", "config", "observability")
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
   for (path in premature) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase5_scope", "premature_phase5_content",
-    "A product/application or later layer is premature.", path
+    "An application or later layer is premature.", path
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase5_scope", length(premature) == 0L,
-    "no product, app, deployment, root configuration, or observability implementation"
+    "no app, deployment, root configuration, or observability implementation"
   )
   record_path <- file.path(
     repository_root, "docs", "architecture", "platform-implementation-record.md"

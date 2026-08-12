@@ -174,6 +174,27 @@ revisited `app/R/data-access.R`, `scripts/lib/product-provenance.R`,
 Every checkpoint should update this document or record a changed classification
 in the implementation record.
 
+## Iteration 6.1 logical-product review outcome
+
+The three-product suite, grains/keys, set/freshness identity, compatibility,
+failure policy, builder boundary, conformance, and logical access need were
+designed before the required read-only review of `app/data/`,
+`PRODUCT_MANIFEST.yml`, `app/R/data-access.R`, the old pipeline functions,
+product provenance helper, and product/platform tests.
+
+| Evidence | Final use | Retained principle | Rejected or deferred shape |
+|---|---|---|---|
+| `PRODUCT_MANIFEST.yml` and provenance helper/tests | **Adapt — principles only** | coherent-set identity, explicit source attribution, deterministic counts/order, validation before consumption | fixed eight members, Git/checksum/path identity, tracked files, generation commit lifecycle |
+| `app/R/data-access.R` | **Adapt — concept only** | app depends on logical product IDs through a replaceable access seam | deployment config/path resolution, CSV/RDS switch, exact eight mandatory products, app-owned backend errors |
+| `episodes_current.csv` and `risk_estimates.csv` | **Reference only** | current episode and accepted-risk views are useful consumer grains | synthetic/source columns, priority/workflow fields, old placeholder/model/estimand semantics, CSV headers as contracts |
+| `risk_trajectories.csv` and `build_risk_trajectories()` | **Reject for history** | none beyond confirming consumer interest in time series | recomputation of historical-looking values with current code/provider |
+| `build_application_products()` and ecosystem tests | **Reference only** | relational coherence and stable row-set checks | mixed canonical/state/provider/product/priority responsibilities and exact old suite/count assumptions |
+| queue, executive, measure, geography products | **Defer** | evidence of later consumer needs | unapproved decision, workflow, measure, executive, and local-domain semantics |
+
+No sibling code, specification text, product ID, schema, data, configuration,
+or dependency was copied. Iteration 6.1 owns new clean product contracts and
+base-R builders; the sibling remains development-time evidence only.
+
 ## Phase 2.2 field/rule review outcome
 
 The first clinical profile was designed cleanly before the Phase 2 evidence was

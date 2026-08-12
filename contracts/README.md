@@ -7,7 +7,8 @@ profile. Phase 4 added runtime records, the first estimand, governed provider
 execution, and accepted estimates. Iteration 5.1 adds operational run,
 invalidation, and persistence-adapter semantics. Iteration 5.2 leaves these
 contracts unchanged while proving them through a concrete implementation
-outside this directory.
+outside this directory. Iteration 6.1 adds the first three logical products and
+their coherent product-set contract.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -20,6 +21,9 @@ outside this directory.
 - `persistence/` contains backend-independent operational run, invalidation,
   and adapter capability contracts. It contains no connection or storage
   configuration.
+- `products/` contains the current-risk, persisted-risk-history, operational
+  run-summary, and required core-set contracts. It contains no file, database,
+  application, or materialization format.
 
 The first profile is documented in
 [Initial canonical clinical profile](../docs/architecture/canonical-clinical-profile.md),
@@ -29,6 +33,8 @@ and operational history is documented in
 [Operational history foundation](../docs/architecture/operational-history-foundation.md).
 The non-normative DuckDB realization is documented in
 [DuckDB reference persistence](../docs/architecture/duckdb-reference-persistence.md).
+The first history-backed consumer boundary is documented in
+[Logical product foundation](../docs/architecture/logical-product-foundation.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in
