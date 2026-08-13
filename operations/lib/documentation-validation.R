@@ -21,6 +21,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/provider-foundation.md",
     "docs/architecture/operational-history-foundation.md",
     "docs/architecture/logical-product-foundation.md",
+    "docs/architecture/application-artifact-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -33,6 +34,7 @@ rrp_required_governing_documents <- function() {
     "docs/operations/run-reference-estimation.md",
     "docs/operations/reference-history.md",
     "docs/operations/logical-products.md",
+    "docs/operations/application-artifacts.md",
     "contracts/README.md"
   )
 }
@@ -54,6 +56,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/provider-foundation.md",
       "docs/architecture/operational-history-foundation.md",
       "docs/architecture/logical-product-foundation.md",
+      "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -73,6 +76,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/provider-foundation.md",
       "docs/architecture/operational-history-foundation.md",
       "docs/architecture/logical-product-foundation.md",
+      "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -94,6 +98,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/provider-foundation.md",
       "docs/architecture/operational-history-foundation.md",
       "docs/architecture/logical-product-foundation.md",
+      "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -157,13 +162,24 @@ rrp_navigation_expectations <- function() {
       "contracts/products/initial-risk-product-set.yml",
       "docs/operations/logical-products.md"
     ),
+    "docs/architecture/application-artifact-foundation.md" = c(
+      "docs/architecture/platform-architecture.md",
+      "docs/architecture/platform-implementation-plan.md",
+      "contracts/deployment/application-artifact.yml",
+      "docs/operations/application-artifacts.md"
+    ),
     "docs/operations/README.md" = c(
       "docs/operations/validation.md",
       "docs/operations/generate-reference.md",
       "docs/operations/run-reference-runtime.md",
       "docs/operations/run-reference-estimation.md",
       "docs/operations/reference-history.md",
-      "docs/operations/logical-products.md"
+      "docs/operations/logical-products.md",
+      "docs/operations/application-artifacts.md"
+    ),
+    "docs/operations/application-artifacts.md" = c(
+      "docs/architecture/application-artifact-foundation.md",
+      "docs/operations/validation.md"
     ),
     "docs/architecture/platform-implementation-record.md" = c(
       "docs/vision/platform-true-north.md",
@@ -177,7 +193,8 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/canonical-clinical-profile.md",
       "docs/architecture/provider-foundation.md",
       "docs/architecture/operational-history-foundation.md",
-      "docs/architecture/logical-product-foundation.md"
+      "docs/architecture/logical-product-foundation.md",
+      "docs/architecture/application-artifact-foundation.md"
     )
   )
 }

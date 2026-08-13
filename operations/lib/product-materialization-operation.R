@@ -25,7 +25,7 @@ rrp_load_yaml_product_adapter <- function(repository_root) {
   directory <- file.path(
     repository_root, "implementations", "products", "yaml", "R"
   )
-  for (file in c("foundation.R", "validation.R", "adapter.R")) {
+  for (file in c("foundation.R", "validation.R", "adapter.R", "access.R")) {
     sys.source(file.path(directory, file), envir = parent.frame())
   }
   invisible(TRUE)

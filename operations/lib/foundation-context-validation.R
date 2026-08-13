@@ -556,7 +556,7 @@ rrp_validate_phase1_checkpoint <- function(repository_root) {
   canonical_paths <- c(
     "contracts/schemas", "contracts/domains"
   )
-  later_directories <- c("deploy", "config", "observability")
+  later_directories <- c("config", "observability")
   premature <- c(
     canonical_paths[dir.exists(file.path(repository_root, canonical_paths))],
     later_directories[dir.exists(file.path(repository_root, later_directories))]

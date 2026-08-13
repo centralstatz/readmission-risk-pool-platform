@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 7 is complete through Iteration 7.1.** The focused internal
+**Phase 8 is in progress through completed Iteration 8.1.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -32,9 +32,12 @@ versioned logical products build as one coherent set exclusively
 from persistence-port reads, with explicit identity, freshness, compatibility,
 availability/failure, and conformance. A replaceable YAML bundle adapter now
 publishes complete sets atomically and validates them before logical access;
-the minimal Shiny app consumes only that access boundary. Deployment,
-observability, scheduling, priority policy, replay, and CI/CD remain
-unimplemented.
+the minimal Shiny app consumes only that access boundary. A target-neutral
+closed application artifact now packages only the app, read-only product
+access/validation, its contracts/declarations, and one current coherent
+product bundle; it validates and constructs Shiny from an isolated copy.
+Connect Cloud realization/publication, observability, scheduling, priority
+policy, replay, and CI/CD remain unimplemented.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -90,9 +93,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 13. Read the [Local Reference Platform Operator Manual](docs/operations/operator-manual.md)
    and [Progressive Implementation Guide](docs/adoption/progressive-implementation.md)
    for the human workflow and replaceable reference composition.
-14. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+14. Read [Target-Neutral Application Artifact](docs/architecture/application-artifact-foundation.md)
+   and [Application Artifact Operations](docs/operations/application-artifacts.md)
+   for the reduced runtime boundary and exact build/validation commands.
+15. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-15. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+16. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -108,7 +114,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 7 checkpoint with:
+Evaluate the completed Iteration 8.1 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -154,6 +160,13 @@ Materialize the coherent set and validate or launch the product-only app with:
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 Rscript operations/launch-reference-app.R
+```
+
+Build and independently validate the reduced target-neutral artifact with:
+
+```sh
+Rscript operations/build-application-artifact.R
+Rscript operations/validate-application-artifact.R
 ```
 
 ## Authority

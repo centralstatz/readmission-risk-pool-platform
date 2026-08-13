@@ -85,6 +85,7 @@ Rscript tests/run-phase4-tests.R
 Rscript tests/run-phase5-tests.R
 Rscript tests/run-phase6-tests.R
 Rscript tests/run-phase7-tests.R
+Rscript tests/run-phase8-tests.R
 ```
 
 Later unit, conformance, integration, and end-to-end suites may use additional
@@ -95,8 +96,10 @@ structure or dependencies when their owning phase justifies them.
 Phase 1 uses `yaml` to read the selected language-neutral specification format.
 Iteration 5.2 adds `DBI` and `duckdb` solely for the concrete reference
 persistence adapter and its operations. Iteration 6.2 adds app-owned `shiny`;
-the materializer reuses `yaml`, and `rrpruntime` remains base-R-only. The
-repository owns an independently created `renv.lock` and activation state; no
+the materializer reuses `yaml`, and `rrpruntime` remains base-R-only. Iteration
+8.1 declares only exact direct artifact runtime roots `shiny` and `yaml`; it
+does not copy the broader project lock or a developer library. The repository
+owns an independently created `renv.lock` and activation state; no
 dependency file was copied from the sibling reference repository. Restore the
 locked environment with:
 

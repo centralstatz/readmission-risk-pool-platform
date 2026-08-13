@@ -1,0 +1,76 @@
+# Target-neutral contract for a reduced product-only application runtime unit.
+specification_kind: application_artifact_contract
+specification_id: platform.reduced-application-artifact
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Reduced application artifact
+status: active
+description: >-
+  A closed, validated, target-neutral runtime unit containing one application,
+  one coherent materialized product set, only the code and contracts needed to
+  open those products and construct the application, and an explicit runtime
+  dependency declaration. It is not a deployment or publication identity.
+
+required_manifest_fields:
+  - artifact_specification
+  - artifact_instance_id
+  - artifact_build_id
+  - application_reference
+  - source_product_set
+  - freshness
+  - runtime_requirements
+  - required_runtime_files
+  - required_product_members
+  - inventory
+  - integrity
+  - build_provenance
+  - compatibility
+  - validation_evidence
+
+identity_semantics:
+  artifact_instance_id: >-
+    Deterministic from the artifact contract, application identity, source
+    product-set identity, and checksums of every runtime payload file.
+  artifact_build_id: >-
+    Deterministic from the artifact instance identity and declared build time.
+  excluded: >-
+    Operational run, deployment, publication, Git revision, output path, and
+    hosting-target identities remain distinct and are not artifact identity.
+
+closed_inventory: true
+integrity:
+  algorithm: md5
+  purpose: accidental corruption detection, not authenticity or security
+  manifest_checksum_file: ARTIFACT.md5
+
+required_root_files:
+  - ARTIFACT.yml
+  - ARTIFACT.md5
+  - app.R
+  - validate-artifact.R
+
+required_product_members:
+  - PRODUCT_SET.yml
+  - current-episode-risk.yml
+  - episode-risk-history.yml
+  - operational-run-summary.yml
+
+runtime_dependency_policy:
+  declaration_file: config/runtime-dependencies.yml
+  direct_packages_only: true
+  target_realization_owns_installation: true
+  developer_project_library_is_not_an_artifact: true
+
+validation_requirements:
+  - exact closed inventory and member checksums
+  - safe relative paths and no symbolic links
+  - supported artifact application product and adapter identities
+  - coherent materialized product set and truthful freshness
+  - required runtime dependency declaration and installed compatibility
+  - successful application initialization and Shiny construction
+  - no source provider persistence history test documentation or target content
+
+publication_semantics: >-
+  Construction ends at a local validated artifact. A deployment target may
+  realize it later through a separate contract and publication operation.

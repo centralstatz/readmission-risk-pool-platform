@@ -5,10 +5,10 @@ reserve names or document hypothetical future capabilities.
 
 - [Local Reference Platform Operator Manual](operator-manual.md) — restore,
   initialize, doctor, run once, inspect history, materialize products, validate,
-  and launch through the stable public operator surface.
+  launch, and build/validate a reduced artifact through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–7 tests, check repository policies, and
-  evaluate the completed Phase 7 checkpoint.
+  specification assets, run Phase 0–8 tests, check repository policies, and
+  evaluate the completed Iteration 8.1 checkpoint.
 - [Generate Reference](generate-reference.md) — generate, source-validate, map,
   and canonically admit the deterministic fictional reference in memory.
 - [Run Reference Runtime](run-reference-runtime.md) — admit either canonical
@@ -21,6 +21,8 @@ reserve names or document hypothetical future capabilities.
 - [Build, Materialize, and Launch Products](logical-products.md) — read
   fictional history, build/conform the logical set, optionally publish the YAML
   bundle, validate product access, and launch the product-only app.
+- [Application Artifacts](application-artifacts.md) — build the closed
+  target-neutral product-only runtime unit and validate it independently.
 
 Human documentation is the authoritative operating interface. Scripts, agents,
 and automation must invoke the same callable behavior described here.

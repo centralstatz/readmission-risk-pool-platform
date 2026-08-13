@@ -235,6 +235,25 @@ or dependency was copied. The clean registry and guides are repository-owned;
 deployment/publication and the old tracked-product lifecycle remain deferred or
 rejected for Phase 7.
 
+## Iteration 8.1 reduced-artifact review outcome
+
+The generic artifact contract, exact product-only runtime layout, dependency
+declaration, identities, build model, and independent validation requirements
+were designed before the read-only review of the sibling Connect bundle,
+builder, validator, templates, publication helper/profile, and deployment
+tests.
+
+| Evidence | Final use | Retained principle | Rejected or deferred shape |
+|---|---|---|---|
+| `deploy/connect-cloud/bundle.yml` and builder | **Adapt — principles only** | explicit file allowlist, staged build, exact inventory, checksums, validate before promotion | Connect identity, `rsconnect`, clean Git checkpoints, tracked CSV products, broad engine/schema/config copies |
+| Connect artifact validator and portability test | **Adapt — principles only** | reject extras/secrets/unsafe paths; copy artifact and initialize in a clean process | target `manifest.json`, eight products, nested engine load, Git provenance as identity |
+| generated root `app.R` adapter | **Reference only** | a host root can delegate to authoritative app runtime | target adapter as the generic artifact entry point |
+| deployment publication helper/profile/tests | **Defer** | destination ownership, staging, rollback, dry-run, commit/push safeguards may inform later work | companion repository, Git mutation, and publication in Iteration 8.1 |
+| fully generated destination policy | **Defer/reject as generic** | possible Connect-specific ownership choice | universal artifact or deployment ownership rule |
+
+No sibling code, prose, YAML, identifier, dependency metadata, product,
+template, or configuration was copied. The sibling remained unchanged.
+
 ## Phase 2.2 field/rule review outcome
 
 The first clinical profile was designed cleanly before the Phase 2 evidence was

@@ -23,6 +23,7 @@ rrp_validate_product_repository <- function(repository_root) {
     "implementations/products/yaml/R/foundation.R",
     "implementations/products/yaml/R/validation.R",
     "implementations/products/yaml/R/adapter.R",
+    "implementations/products/yaml/R/access.R",
     "app/app.R",
     "app/R/app-init.R",
     "app/R/view-models.R",
@@ -153,7 +154,7 @@ rrp_validate_product_repository <- function(repository_root) {
     "application depends only on injected logical product access and Shiny"
   )
 
-  prohibited_directories <- c("deploy", "observability")
+  prohibited_directories <- "observability"
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root,
     prohibited_directories
@@ -165,7 +166,7 @@ rrp_validate_product_repository <- function(repository_root) {
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "product_iteration_scope", length(premature) == 0L,
-    "no deployment or observability implementation"
+    "no still-unauthorized observability implementation"
   )
 
   record_text <- paste(rrp_read_text(file.path(

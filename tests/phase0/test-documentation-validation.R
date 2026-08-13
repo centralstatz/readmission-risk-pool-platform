@@ -109,11 +109,13 @@ phase0_test_cases <- function(repository_root) {
       # Evaluate the original Phase 0 claim against a bootstrap-shaped copy;
       # later completed implementation directories are not retroactively a
       # Phase 0 failure in the live repository.
-      for (directory in c("app", "contracts", "implementations", "products", "runtime")) {
+      for (directory in c(
+        "app", "contracts", "deploy", "implementations", "products", "runtime"
+      )) {
         unlink(file.path(fixture, directory), recursive = TRUE, force = TRUE)
       }
       phase0_assert_true(rrp_validate_phase0_checkpoint(fixture)$passed)
-      dir.create(file.path(fixture, "deploy"))
+      dir.create(file.path(fixture, "config"))
       result <- rrp_validate_phase0_checkpoint(fixture)
       phase0_assert_false(result$passed)
       phase0_assert_issue(result, "premature_architecture_directory")

@@ -1,0 +1,36 @@
+# Versioned identity and compatibility declaration for the supplied app.
+specification_kind: application
+specification_id: reference.readmission-risk-application
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Readmission Risk Pool fictional reference application
+status: active
+description: >-
+  Minimal product-only Shiny consumer for the fictional reference platform.
+  It accepts one validated logical product-access instance and has no source,
+  provider, persistence, operational-history, or hosting-target dependency.
+
+entry_point: app.R
+runtime: R
+framework: shiny
+required_product_set:
+  specification_kind: product_set_contract
+  specification_id: platform.initial-risk-product-set
+  specification_version: "0.1.0"
+required_products:
+  - specification_kind: logical_product
+    specification_id: platform.current-episode-risk
+    specification_version: "0.1.0"
+  - specification_kind: logical_product
+    specification_id: platform.episode-risk-history
+    specification_version: "0.1.0"
+  - specification_kind: logical_product
+    specification_id: platform.operational-run-summary
+    specification_version: "0.1.0"
+direct_runtime_packages:
+  - package: shiny
+    version: "1.10.0"
+  - package: yaml
+    version: "2.3.10"
+data_classification: fictional_nonclinical_reference_only

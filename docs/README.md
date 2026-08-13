@@ -44,6 +44,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   — YAML bundle adapter, atomic replacement, integrity, access, and freshness.
 - [Minimal Product-Only Application](architecture/reference-application.md) —
   injected product access, Shiny views, empty states, and safe failure.
+- [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
+  — reduced runtime characterization, contract/layout, identity, integrity,
+  dependency, build, validation, and publication boundaries.
 - [Progressive Implementation](adoption/progressive-implementation.md) —
   reference composition and source/provider/persistence/product/app replacement.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
@@ -69,7 +72,7 @@ The documentation is the active product at this bootstrap stage. Begin with
   initialize, doctor, run, inspect, materialize, validate, launch, repeat, and
   troubleshoot without AI.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–7 test commands.
+  documentation, and Phase 0–8 test commands.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise
@@ -81,6 +84,8 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Build, Materialize, and Launch Products](operations/logical-products.md) —
   build/inspect in memory or publish atomically, validate access, and launch
   the fictional app.
+- [Build and Validate Application Artifacts](operations/application-artifacts.md)
+  — construct the local target-neutral artifact and prove isolated startup.
 
 ## Specifications
 
@@ -93,6 +98,6 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Root README](../README.md) — project identity, status, and navigation.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
-Further contract, user, application, and deployment guides will be added in
+Further target-specific deployment, publication, and release guides will be added in
 the phases that create those capabilities. Documentation must not claim an
 operation exists before it has a tested human implementation.

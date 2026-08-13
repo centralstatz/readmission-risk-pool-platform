@@ -1,0 +1,17 @@
+# Direct dependencies of the completed reduced artifact, not build dependencies.
+declaration_kind: application_runtime_dependencies
+declaration_version: "0.1.0"
+r:
+  minimum_version: "4.1.0"
+packages:
+  shiny:
+    version: "1.10.0"
+    source: CRAN
+    role: application framework
+  yaml:
+    version: "2.3.10"
+    source: CRAN
+    role: product and artifact metadata reader
+installation: >-
+  A target realization must install these exact direct versions and resolve
+  their transitive dependencies without relying on a developer project library.

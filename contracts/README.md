@@ -10,7 +10,8 @@ contracts unchanged while proving them through a concrete implementation
 outside this directory. Iteration 6.1 adds the first three logical products and
 their coherent product-set contract. Iteration 6.2 adds the storage-neutral
 product-materialization adapter contract; its YAML realization stays under
-`implementations/`.
+`implementations/`. Iteration 8.1 adds the target-neutral reduced application
+artifact contract.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -26,6 +27,8 @@ product-materialization adapter contract; its YAML realization stays under
 - `products/` contains the current-risk, persisted-risk-history, operational
   run-summary, required core-set, and storage-neutral materialization-adapter
   contracts. It selects no file, database, or application implementation.
+- `deployment/` currently contains only the reduced application-artifact
+  contract. It does not select Connect Cloud, a container, Git, or publication.
 
 The first profile is documented in
 [Initial canonical clinical profile](../docs/architecture/canonical-clinical-profile.md),
@@ -39,6 +42,8 @@ The first history-backed consumer boundary is documented in
 [Logical product foundation](../docs/architecture/logical-product-foundation.md).
 The physical reference is documented in
 [Reference product materialization](../docs/architecture/reference-product-materialization.md).
+The target-neutral runtime unit is documented in
+[Application artifact foundation](../docs/architecture/application-artifact-foundation.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in

@@ -53,8 +53,12 @@ three-product logical core set, backend-neutral builders/conformance, YAML
 reference materialization/access adapter, and minimal product-only Shiny app.
 The app owns Shiny; the adapter reuses YAML. Completed Phase 7 owns the stable
 human initialize/doctor/run/inspect/materialize/validate/launch surface,
-operation classification/registry, and progressive-adoption guide. Deployment
-and later layers remain unauthorized.
+operation classification/registry, and progressive-adoption guide. Iteration
+8.1 now owns the target-neutral reduced application-artifact contract,
+closed runtime allowlist, local builder/current pointer, standalone validator,
+and isolated product-only startup proof. Connect/other target realization,
+publication, companion repositories, containers, and later layers remain
+unauthorized.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -114,6 +118,10 @@ validate the reference app
     → Rscript operations/launch-reference-app.R --validate-only
 launch the reference app
     → Rscript operations/launch-reference-app.R
+build the application artifact
+    → Rscript operations/build-application-artifact.R
+validate the application artifact
+    → Rscript operations/validate-application-artifact.R
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -149,7 +157,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 7 checkpoint, run:
+For the completed Iteration 8.1 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -185,6 +193,14 @@ Rscript tests/run-phase6-tests.R
 Rscript operations/build-reference-products.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
+```
+
+Run the focused application-artifact tests and human operations with:
+
+```sh
+Rscript tests/run-phase8-tests.R
+Rscript operations/build-application-artifact.R
+Rscript operations/validate-application-artifact.R
 ```
 
 Run the focused human-operation tests and stable reference workflow with:
@@ -248,7 +264,10 @@ in `docs/architecture/reference-product-materialization.md`, and the app in
 `docs/operations/operator-manual.md`, `docs/adoption/progressive-implementation.md`,
 and `operations/operations.yml`. Deployment, replay, decision
 policy, scheduling, observability, and later capabilities remain unauthorized
-until their phases.
+until their phases. Iteration 8.1 is documented in
+`docs/architecture/application-artifact-foundation.md` and
+`contracts/deployment/application-artifact.yml`; it authorizes only a local
+target-neutral artifact, not a target realization or publication.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

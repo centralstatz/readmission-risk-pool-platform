@@ -388,10 +388,18 @@ is external: the platform owns run behavior and the operator owns cadence.
 
 ## Deployment layer
 
+Iteration 8.1 makes deployment a two-boundary transformation. The first is a
+target-neutral reduced application artifact containing only the product-only
+app, read-only product access/validation, required contracts/declarations, and
+one coherent materialized product set. The second, still target-owned, turns
+that validated artifact into a Connect Cloud, container, or other realization.
+
 A deployment target implements a build contract:
 
 ```text
-platform release + selected configuration + approved products/runtime
+validated app + coherent products + runtime dependency declaration
+        ↓
+target-neutral closed application artifact
         ↓
 target builder
         ↓

@@ -40,6 +40,13 @@ rrp_load_yaml_product_adapter(repository_root)
 source(file.path(repository_root, "operations", "lib", "product-validation.R"))
 source(file.path(repository_root, "operations", "lib", "operator-operation.R"))
 source(file.path(repository_root, "operations", "lib", "operator-validation.R"))
+source(file.path(
+  repository_root, "operations", "lib", "application-artifact-operation.R"
+))
+rrp_load_application_artifact_contract_runtime(repository_root)
+source(file.path(
+  repository_root, "operations", "lib", "application-artifact-validation.R"
+))
 source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
 
 mode <- tryCatch(

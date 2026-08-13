@@ -54,6 +54,18 @@ operations:
     mutation: long_running_read_only_process
     classification: public
     documentation: docs/operations/operator-manual.md
+  - operation_id: platform.build-application-artifact
+    command: Rscript operations/build-application-artifact.R
+    purpose: Build and atomically expose one reduced target-neutral application artifact.
+    mutation: immutable_local_artifact_and_current_pointer
+    classification: public
+    documentation: docs/operations/application-artifacts.md
+  - operation_id: platform.validate-application-artifact
+    command: Rscript operations/validate-application-artifact.R
+    purpose: Validate a completed artifact and construct its app in an isolated process.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/application-artifacts.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

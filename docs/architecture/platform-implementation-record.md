@@ -2428,3 +2428,180 @@ Begin **Phase 8 — Deployment build and Connect Cloud reference** by defining a
 target-neutral reduced application artifact contract before inspecting/adapting
 old target-specific builders. Keep artifact construction separate from
 publication and require explicit authority for external repository mutation.
+
+## Phase 8 — Deployment build and Connect Cloud reference
+
+### Iteration 8.1 — Target-neutral reduced application artifact
+
+#### Planned objective
+
+Define and implement the smallest versioned, target-neutral runtime unit for
+the existing product-only Shiny application. Build it only from an already
+validated materialized product set, validate it independently from an isolated
+copy, and leave Connect Cloud realization/publication, Git destinations,
+containers, credentials, and external mutation for later work.
+
+#### Runtime-needs characterization
+
+The app needs its three modules and Shiny factory; read-only YAML product
+foundation/conformance/validation/access; the materialization, product-set, and
+three product contracts plus application/adapter declarations; one coherent
+current YAML bundle; and direct R/Shiny/YAML requirements. Canonical/source
+generation, `rrpruntime`, provider execution, DuckDB/history, product builders
+and writers, platform operations, tests, docs, `renv`, Git, and target files are
+monorepo/build concerns and unnecessary at app runtime. Host/port, process
+management, package installation, access control, secrets, and hosting policy
+remain externally supplied.
+
+#### Actual implementation
+
+- Added `platform.reduced-application-artifact@0.1.0` and the versioned
+  `reference.readmission-risk-application@0.1.0` declaration.
+- Split read-only YAML access from materialization without changing adapter,
+  product, or app semantics.
+- Added a maintained standalone artifact loader/validator and target-neutral
+  Shiny entry point.
+- Added public build and validate operations, registry entries, operator
+  guidance, and exact agent mappings.
+- Added a closed source-to-artifact allowlist, staged build, immutable artifact
+  directories, an atomic current pointer, and isolated vanilla-process
+  validation.
+- Added eleven focused success/failure tests and integrated Iteration 8.1 into
+  development/checkpoint validation.
+
+#### Artifact contract and exact contents
+
+The completed artifact contains 27 regular files: `ARTIFACT.yml`,
+`ARTIFACT.md5`, root app/validator entry points, nine R runtime/read-only access
+modules, seven embedded contract/application documents, two runtime/adapter
+declarations, and five files comprising the current YAML product bundle. The
+manifest declares exact runtime and product member allowlists plus 25 payload
+checksums. Unexpected files and all symbolic links fail.
+
+#### Dependency decision
+
+`config/runtime-dependencies.yml` declares only R >= 4.1.0,
+`shiny@1.10.0`, and `yaml@2.3.10` as exact direct runtime roots. The full
+project `renv.lock` was not copied because DBI, DuckDB, build/test, and
+development dependencies are not permanent application requirements. No
+developer library is bundled. A later target realization must install the
+declared roots and resolve their transitive closure through its supported
+mechanism.
+
+#### Identity and integrity semantics
+
+Artifact specification, instance, build, operational run, product set,
+deployment, and publication identities remain separate. Instance identity is
+deterministic from artifact/application versions, product-set ID, and all
+payload paths/checksums. Build identity adds declared build time. Git revision
+and output path are excluded. `ARTIFACT.md5` covers the manifest and manifest
+MD5 entries cover every payload; MD5 is accidental-corruption evidence, not
+authenticity or signing.
+
+#### Build and validation operations
+
+`Rscript operations/build-application-artifact.R` validates source products
+and app construction, stages only approved regular files, writes manifest and
+integrity metadata, validates staged content, atomically promotes an immutable
+build, validates again, and replaces only the local current pointer. It never
+creates history/products. Exact build/content retry is idempotent; a new build
+time retains a new build with the same instance identity when content is
+unchanged; an identity/content conflict fails.
+
+`Rscript operations/validate-application-artifact.R` resolves an artifact store
+or immutable directory and invokes the artifact's own validator in a vanilla R
+subprocess with the artifact as working directory and only the installed
+package library external. It validates inventory, paths, links, checksums,
+declarations, product integrity/coherence/freshness, dependencies, app
+initialization, and Shiny construction.
+
+#### Sibling evidence inspected and classifications
+
+The clean boundary preceded read-only inspection of the sibling Connect bundle
+specification/builder/validator/templates, deployment tests, and publication
+helper/profile/tests. Explicit allowlisting, staging, checksum/exclusion
+validation, validate-before-promotion, and isolated-copy initialization were
+**adapted as principles only**. The generated root adapter was **reference
+only**. Destination ownership, staging/rollback, dry-run, and commit/push safety
+were **deferred**. Connect identity, `rsconnect`, Git checkpoint/provenance
+requirements, tracked products, broad engine/schema copying, companion
+repository mutation, and fully-generated ownership as generic artifact meaning
+were rejected or deferred. No sibling asset was copied and the sibling was not
+modified.
+
+#### Surprises and deviations
+
+- The current app's clean injection boundary made a substantially smaller
+  artifact possible than the old deployment bundle.
+- The existing YAML adapter combined writer and reader functions in one file;
+  separating read-only access was required to honor the reduced boundary but
+  did not change its public contract.
+- The broader project lock is honest for platform development but dishonest as
+  a permanent app dependency declaration, so a small direct-runtime document
+  is the artifact contract while target-specific restoration remains later.
+- Build time belongs to a build occurrence, not the logical artifact instance;
+  distinct IDs preserve both stability and attributable replacement.
+- No architecture direction changed. Architecture and plan were clarified to
+  make the target-neutral artifact an explicit stage before target realization.
+
+#### Validation evidence
+
+The focused Phase 8 suite passed eleven cases covering valid construction,
+closed inventory, stable instance/build identity, exact retry/new-build
+semantics, product-set identity/integrity, unexpected content, corruption,
+missing app/product files, compatibility failure after valid resealing,
+escaping symlinks, isolated vanilla-process startup, and absence of
+DuckDB/history/source/provider machinery. A temporary human smoke flow ran
+platform → materialize products → build artifact → standalone validation and
+constructed the product-only Shiny app successfully. Full aggregate evidence
+is recorded in the final follow-up below.
+
+#### Implications for Connect Cloud realization
+
+A later Connect builder can consume the validated artifact and add only
+target-required packaging/configuration. It must not reach back into source,
+runtime/provider, history, or product-building code; redefine dependency or
+product meaning; or combine realization with publication. Destination
+ownership and external mutation still require explicit maintainer decisions
+and authority.
+
+#### Architecture and plan effect
+
+The dependency direction is unchanged. The deployment section now makes its
+previous implicit two-stage boundary explicit, and the plan marks Iteration
+8.1 complete while keeping Phase 8 in progress until a target realization and
+its separate publication boundary are implemented.
+
+#### Phase 8 status
+
+**In progress.** Iteration 8.1 is complete: the target-neutral artifact
+contract, builder, standalone validator, and isolated runtime proof exist.
+Connect Cloud realization/validation and any publication operation do not.
+
+#### Recommended next task
+
+Begin **Phase 8 / Iteration 8.2 — Connect Cloud realization from the validated
+artifact**. Define a target profile and local realization/validation adapter
+that consumes only `platform.reduced-application-artifact@0.1.0`. Keep external
+publication, companion-repository mutation, commit, and push out of that task
+unless separately and explicitly authorized.
+
+#### Final validation follow-up
+
+After reconciling maintained navigation and the expanded operation registry,
+the final validation matrix passed:
+
+- `Rscript operations/validate.R --mode development`: **PASS**, 87 checks and
+  zero issues, including Phase 0–8 focused suites;
+- `Rscript operations/validate.R --mode checkpoint`: **PASS**, 136 checks and
+  zero issues for the completed Iteration 8.1 checkpoint; and
+- the focused suites reported 10, 14, 38, 24, 55, 18, 17, 8, and 11 passing
+  tests for Phases 0 through 8 respectively.
+
+The local machine had long-lived unrelated R processes holding the `renv`
+sandbox lock, so the final aggregate commands were invoked with
+`RENV_CONFIG_SANDBOX_ENABLED=FALSE`. This changes only `renv` activation's
+process-isolation mechanism; it does not bypass dependency restoration,
+checkpoint requirements, repository checks, or any test. The normal commands
+remain the documented and supported human interface. The expected implicit
+snapshot dependency-discovery note remained informational.

@@ -117,7 +117,8 @@ rrp_validate_operator_repository <- function(repository_root) {
       "platform.validate-development", "platform.validate-checkpoint",
       "reference.run-platform", "reference.inspect-history",
       "reference.materialize-products", "reference.validate-app",
-      "reference.launch-app"
+      "reference.launch-app", "platform.build-application-artifact",
+      "platform.validate-application-artifact"
     )
     missing_public <- setdiff(expected_public, public_ids)
     for (id in missing_public) issues[[length(issues) + 1L]] <- rrp_issue(
@@ -135,7 +136,9 @@ rrp_validate_operator_repository <- function(repository_root) {
     "Rscript operations/doctor.R",
     "Rscript operations/run-platform.R --profile reference --scale test",
     "Rscript operations/build-reference-products.R --scale test --materialize",
-    "Rscript operations/launch-reference-app.R --validate-only"
+    "Rscript operations/launch-reference-app.R --validate-only",
+    "Rscript operations/build-application-artifact.R",
+    "Rscript operations/validate-application-artifact.R"
   )
   agent_aligned <- all(vapply(agent_commands, grepl, logical(1), x = agent_text, fixed = TRUE))
   if (!agent_aligned) issues[[length(issues) + 1L]] <- rrp_issue(
@@ -147,7 +150,7 @@ rrp_validate_operator_repository <- function(repository_root) {
     "agent shorthand maps to documented human commands"
   )
 
-  prohibited <- c("deploy", "observability", "scheduler", "scheduling")
+  prohibited <- c("observability", "scheduler", "scheduling")
   implemented <- prohibited[dir.exists(file.path(repository_root, prohibited))]
   for (path in implemented) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase7_scope", "premature_later_phase_directory",
@@ -155,7 +158,7 @@ rrp_validate_operator_repository <- function(repository_root) {
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase7_scope", length(implemented) == 0L,
-    "no deployment, scheduler, or observability implementation"
+    "no still-unauthorized scheduler or observability implementation"
   )
 
   record_text <- paste(rrp_read_text(file.path(

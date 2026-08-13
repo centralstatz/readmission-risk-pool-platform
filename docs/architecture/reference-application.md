@@ -41,3 +41,8 @@ remain future work.
 
 Phase 7 keeps app validation and launch as distinct read-only human operations.
 Neither operation runs the platform, opens DuckDB, or rebuilds products.
+
+Iteration 8.1 packages the unchanged app behind
+`platform.reduced-application-artifact@0.1.0`. The artifact supplies validated
+read-only YAML product access before injection; the application modules remain
+unaware of YAML, artifact paths, deployment targets, and hosting configuration.

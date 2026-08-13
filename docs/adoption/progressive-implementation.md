@@ -16,7 +16,8 @@ contract and conformance boundary as the reference peer.
 | 1 | Hospital source mapping + reference provider + DuckDB + reference products/app |
 | 2 | Hospital source + conforming hospital provider + DuckDB + reference products/app |
 | 3 | Hospital source/provider + conforming hospital persistence + reference products/app |
-| 4 | Customize conforming products, app, and future deployment as concrete needs require |
+| 4 | Build the target-neutral reduced app artifact; customize conforming products/app as needed |
+| 5 | Realize that validated artifact for an approved deployment target when supported |
 
 Source, provider, persistence, product materialization, application, and later
 deployment can change independently. A working combination must remain
@@ -74,8 +75,10 @@ tables, invoke providers, or reinterpret canonical meaning.
 ## Automation and deployment
 
 Scheduling remains outside the platform. External approved automation invokes
-the same documented operations used by humans. Deployment is also future work:
-eventually a reduced validated application artifact will be realized for a
-specific target, without changing upstream semantics. No Phase 7 adoption path
-assumes Git cloning is the permanent distribution mechanism or that Connect
-Cloud is the only deployment target.
+the same documented operations used by humans. Iteration 8.1 now supplies a
+reduced validated application artifact after product materialization; a future
+target realizes that same boundary without changing upstream semantics. The
+artifact does not assume Git acquisition, Connect Cloud, a companion
+repository, or a container. Target-specific realization/publication remains
+unsupported and must not be folded into source, provider, persistence, product,
+or app replacement.

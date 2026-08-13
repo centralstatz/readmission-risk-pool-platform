@@ -120,7 +120,7 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
     "phase5_required_files", length(missing) == 0L,
     paste(length(required_files), "required Phase 5 files")
   )
-  prohibited_directories <- c("deploy", "config", "observability")
+  prohibited_directories <- c("config", "observability")
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
@@ -130,7 +130,7 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase5_scope", length(premature) == 0L,
-    "no deployment, root configuration, or observability implementation"
+    "no still-unauthorized root configuration or observability implementation"
   )
   record_path <- file.path(
     repository_root, "docs", "architecture", "platform-implementation-record.md"

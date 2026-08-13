@@ -324,7 +324,6 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
   prohibited_directories <- c(
     "contracts/schemas",
     "contracts/domains",
-    "deploy",
     "config",
     "observability"
   )

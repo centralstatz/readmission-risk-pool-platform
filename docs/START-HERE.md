@@ -41,17 +41,20 @@ extending it.
 13. [Local Reference Platform Operator Manual](operations/operator-manual.md)
    and [Progressive Implementation](adoption/progressive-implementation.md) —
    operate the reference composition and understand each replacement boundary.
-14. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+14. [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
+   and [Application Artifact Operations](operations/application-artifacts.md) —
+   understand the closed runtime unit before any target realization.
+15. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-15. [Open Decisions](architecture/open-decisions.md) — choices that require
+16. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-16. [Platform Implementation Record](architecture/platform-implementation-record.md)
+17. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-17. [Implementation Conventions](development/implementation-conventions.md) and
+18. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-18. [Repository Development Policies](development/repository-policies.md) for
+19. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-19. [Operations](operations/README.md) for supported human operations and
+20. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -277,7 +277,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     paste(length(required_files), "required Phase 0 files")
   )
 
-  deferred_directories <- c("deploy", "config", "observability")
+  deferred_directories <- c("config", "observability")
   premature <- deferred_directories[
     dir.exists(file.path(repository_root, deferred_directories))
   ]
@@ -290,7 +290,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
 
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase0_scope", length(premature) == 0L,
-    "no still-unauthorized deployment, configuration, or observability scaffolding"
+    "no still-unauthorized configuration or observability scaffolding"
   )
 
   license_path <- file.path(repository_root, "LICENSE-STATUS.md")
@@ -331,11 +331,15 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript tests/run-phase4-tests.R",
     "Rscript tests/run-phase5-tests.R",
     "Rscript tests/run-phase6-tests.R",
+    "Rscript tests/run-phase7-tests.R",
+    "Rscript tests/run-phase8-tests.R",
     "Rscript operations/run-reference-runtime.R",
     "Rscript operations/run-reference-history.R --scale test",
     "Rscript operations/build-reference-products.R --scale test",
     "Rscript operations/build-reference-products.R --scale test --materialize",
-    "Rscript operations/launch-reference-app.R --validate-only"
+    "Rscript operations/launch-reference-app.R --validate-only",
+    "Rscript operations/build-application-artifact.R",
+    "Rscript operations/validate-application-artifact.R"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")
@@ -355,7 +359,11 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
   agent_commands <- c(
     operation_commands[2:3],
     "Rscript tests/run-phase6-tests.R",
-    "Rscript operations/build-reference-products.R --scale test"
+    "Rscript tests/run-phase7-tests.R",
+    "Rscript tests/run-phase8-tests.R",
+    "Rscript operations/build-reference-products.R --scale test",
+    "Rscript operations/build-application-artifact.R",
+    "Rscript operations/validate-application-artifact.R"
   )
   agent_missing <- agent_commands[!vapply(
     agent_commands,

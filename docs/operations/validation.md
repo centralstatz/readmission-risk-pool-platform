@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase 7
-  human-operation and adoption requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed
+  Iteration 8.1 reduced-artifact requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -17,7 +17,7 @@ foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
 DuckDB reference adapter plus durable operation, Iteration 6.1 logical
 products, Iteration 6.2 physical product access plus minimal app, and Iteration
 7.1 stable initialize/doctor/run/materialize/launch operations plus adoption
-guidance.
+guidance, and Iteration 8.1 target-neutral artifact construction/validation.
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 7 checkpoint:
+Validate the completed Iteration 8.1 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -100,6 +100,12 @@ Run the focused Phase 7 doctor/workflow/operation-documentation tests directly:
 Rscript tests/run-phase7-tests.R
 ```
 
+Run the focused Phase 8 artifact build/validation tests directly:
+
+```sh
+Rscript tests/run-phase8-tests.R
+```
+
 Run the reference source-to-canonical operation:
 
 ```sh
@@ -146,6 +152,13 @@ Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 ```
 
+Build and independently validate the reduced application artifact:
+
+```sh
+Rscript operations/build-application-artifact.R
+Rscript operations/validate-application-artifact.R
+```
+
 The default generated database is ignored under `build/`. Inspection and
 backup commands are documented in
 [Durable Reference History](reference-history.md).
@@ -183,10 +196,11 @@ Development mode composes:
   conformance, operational-history contract/backend-independence checks,
   concrete DuckDB adapter boundary checks, logical-product
   contract/builder/conformance/access checks, YAML materialization/integrity,
-  and product-only application boundary checks;
+  product-only application boundary checks, and the target-neutral artifact
+  contract/source allowlist/dependency/boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6 and Phase 7 tests.
+  Phase 6, Phase 7, and Phase 8 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -211,18 +225,22 @@ Checkpoint mode runs every development check and additionally verifies:
 - the Phase 7 operation registry, initialization, read-only doctor, stable
   one-run entry point, operation classification/documentation, fresh-state and
   repeat-workflow evidence, adoption guide, and human/agent alignment;
+- the Iteration 8.1 artifact contract/application declaration, exact closed
+  runtime allowlist, build/validation operations, direct dependency
+  declaration, isolated app proof, focused tests, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with its required transitive packages;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
 This is strict only relative to the completed Phase 0–7 fictional
-source-to-human-operated-application boundary. It does not prove:
+source-to-human-operated-application boundary plus Iteration 8.1's local
+target-neutral artifact. It does not prove:
 
 - public release or license readiness;
 - clinical provider validity, production persistence/materialization, or final
   application UX;
-- deployment-artifact or publication safety;
+- Connect/other-target realization or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or
 - clinical validity or production approval.
@@ -296,6 +314,10 @@ observability, provenance, metrics, or audit system.
 - **Logical product conformance/coherence failure:** Correct all structured
   field/key/order/freshness/upstream/set issues before consumption. Do not
   expose a partial core set or query DuckDB directly.
+- **Application artifact failure:** Preserve source products, reject unexpected
+  files/symlinks or altered checksums, restore exact R/Shiny/YAML requirements,
+  and rebuild the complete artifact. Do not add DuckDB/source/provider code or
+  edit generated metadata to force acceptance.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 

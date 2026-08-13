@@ -459,6 +459,23 @@ Depends on a stable application/product runtime and Phase 7 operations. Resolve
 deployment ownership and publication destination before publication support.
 Do not add other infrastructure without a concrete target.
 
+### Iteration sequence and current status
+
+- **Iteration 8.1 — target-neutral reduced application artifact:** complete.
+  `platform.reduced-application-artifact@0.1.0` defines a closed product-only
+  runtime unit, deterministic instance/build identities, direct dependency
+  declaration, staged immutable build/current-pointer model, standalone
+  validation, and isolated Shiny construction. It contains no DuckDB, source,
+  provider, operational-history, Git, or target-specific runtime behavior.
+- **Connect Cloud realization and publication:** not implemented. A later
+  bounded iteration may consume the target-neutral artifact, define a Connect
+  target profile/adapter, and keep local realization separate from explicitly
+  authorized external publication.
+
+**Phase 8 is in progress.** The generic artifact boundary is proven; the
+planned first target realization, its safety validation, and any publication
+operation remain outstanding.
+
 ## Phase 9 — Observability integration
 
 ### Objective
