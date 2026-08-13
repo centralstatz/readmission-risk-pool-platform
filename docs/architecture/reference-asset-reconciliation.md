@@ -344,3 +344,21 @@ configuration, data, identifier, or dependency was copied.
 
 The clean result is authoritative in
 [Operational History Foundation](operational-history-foundation.md).
+
+## Iteration 8.2 Connect Cloud realization review outcome
+
+The target contract, complete local-repository layout, dependency mechanism,
+realization identity, staged/uncommitted Git boundary, and destination rules
+were designed before the required read-only sibling review.
+
+| Evidence | Final use | Retained principle | Rejected or deferred shape |
+|---|---|---|---|
+| `deploy/connect-cloud/bundle.yml` and builder | **Adapt — principles only** | explicit allowlist, isolated staging, checksums, validation before promotion | broad engine/schema/config/product copying, tracked products, source/profile assumptions |
+| artifact validator and deployment tests | **Adapt — principles only** | exact inventory, path/symlink/secret exclusions, independent copied-repository validation | Git revision as provenance identity, old product suite, core clean-commit gate |
+| generated root adapter and README | **Reference only** | target root may delegate to an authoritative packaged app; generated output needs a handoff warning | old nested engine/app paths and manually maintained companion assumptions |
+| publication helper and profiles | **Reject/defer outside boundary** | ownership marker and conservative replacement informed local generation | commit, remote, push, hard-coded destination/profile, publication coupled to build |
+| tracked companion repository workflow | **Reject** | generated output should be reproducible and disposable | generated repository as second source of truth or required tracked products |
+
+No sibling code, prose, YAML, product, identifier, configuration, or dependency
+metadata was copied. The sibling worktree remained unchanged. The clean result
+is authoritative in [Connect Cloud Git Realization](connect-cloud-realization.md).

@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 8 is in progress through completed Iteration 8.1.** The focused internal
+**Phase 8 is complete through Iteration 8.2.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -35,9 +35,12 @@ publishes complete sets atomically and validates them before logical access;
 the minimal Shiny app consumes only that access boundary. A target-neutral
 closed application artifact now packages only the app, read-only product
 access/validation, its contracts/declarations, and one current coherent
-product bundle; it validates and constructs Shiny from an isolated copy.
-Connect Cloud realization/publication, observability, scheduling, priority
-policy, replay, and CI/CD remain unimplemented.
+product bundle; it validates and constructs Shiny from an isolated copy. The
+first target realization now generates a separate, standalone, staged-but-
+uncommitted local Git repository for Connect Cloud and validates it without the
+platform source. Remote publication/deployment, OCI/container realization,
+observability, scheduling, priority policy, replay, and CI/CD remain
+unimplemented.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -96,9 +99,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 14. Read [Target-Neutral Application Artifact](docs/architecture/application-artifact-foundation.md)
    and [Application Artifact Operations](docs/operations/application-artifacts.md)
    for the reduced runtime boundary and exact build/validation commands.
-15. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+15. Read [Connect Cloud Git Realization](docs/architecture/connect-cloud-realization.md)
+   and [Connect Cloud Deployment Operations](docs/operations/connect-cloud-deployment.md)
+   for the complete local Git target and external-publication boundary.
+16. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-16. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+17. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -114,7 +120,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Iteration 8.1 checkpoint with:
+Evaluate the completed Phase 8 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -167,6 +173,14 @@ Build and independently validate the reduced target-neutral artifact with:
 ```sh
 Rscript operations/build-application-artifact.R
 Rscript operations/validate-application-artifact.R
+```
+
+Generate and independently validate a local Connect Cloud deployment
+repository, stopping before external publication:
+
+```sh
+Rscript operations/build-connect-cloud-deployment.R --destination PATH
+Rscript operations/validate-connect-cloud-deployment.R --destination PATH
 ```
 
 ## Authority

@@ -1,0 +1,95 @@
+# Target-specific realization of the target-neutral reduced application artifact.
+specification_kind: deployment_realization
+specification_id: platform.connect-cloud-git-realization
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Posit Connect Cloud Git-backed Shiny realization
+status: active
+description: >-
+  A generated, standalone, local Git repository that preserves one validated
+  reduced application artifact and adds only the files required to present its
+  Shiny application to Posit Connect Cloud. It is not a remote repository,
+  publication, or deployed Connect content identity.
+
+target:
+  target_id: posit.connect-cloud
+  delivery_model: git_backed_repository
+  content_type: shiny_r
+  primary_file: app.R
+  dependency_file: manifest.json
+  dependency_file_location: primary_file_directory
+
+compatible_artifact:
+  specification_kind: application_artifact_contract
+  specification_id: platform.reduced-application-artifact
+  specification_version: "0.1.0"
+  application_id: reference.readmission-risk-application
+  application_version: "0.1.0"
+
+required_generated_root_files:
+  - app.R
+  - manifest.json
+  - manifest.md5
+  - renv.lock
+  - CONNECT-REALIZATION.yml
+  - CONNECT-REALIZATION.md5
+  - validate-connect-cloud.R
+  - README.md
+
+required_generated_members:
+  - R/connect-cloud-validation.R
+  - contracts/connect-cloud-realization.yml
+  - artifact/ARTIFACT.yml
+  - artifact/ARTIFACT.md5
+  - artifact/app.R
+  - artifact/validate-artifact.R
+
+dependency_realization:
+  mechanism: rsconnect_manifest_json
+  generator_package: rsconnect
+  generator_version: "1.3.1"
+  reduced_artifact_direct_roots_are_authoritative: true
+  generator_input: deployment_specific_pruned_renv_lock
+  renv_lock_is_not_consumed_by_connect_cloud: true
+  package_installation_occurs_on_target: true
+
+repository_semantics:
+  ownership: fully_generated_disposable_output
+  initialized_with_git: true
+  initial_branch: main
+  generated_files_staged: true
+  generated_commit: false
+  configured_remote: false
+  manual_edits_supported: false
+
+validation_requirements:
+  - exact safe manifest-backed inventory and no symbolic links
+  - unchanged independently valid reduced application artifact
+  - supported target artifact and application compatibility
+  - manifest package closure contains exact direct runtime roots
+  - root app entry point constructs the embedded Shiny application
+  - no platform source runtime provider persistence or product writer machinery
+  - no credentials secrets remote Git configuration or generated commit
+
+external_responsibilities:
+  - choose and create an appropriate remote repository
+  - commit with an operator-controlled Git identity
+  - configure a remote and push
+  - authorize Connect Cloud GitHub access and select repository branch and app.R
+  - configure sharing security privacy networking and production governance
+
+non_claims:
+  - no remote repository was created or mutated
+  - no Connect Cloud API was called and no content was deployed
+  - no credential security compliance clinical or production fitness claim
+  - no OCI or container realization is defined
+
+requirements_evidence:
+  verified_on: "2026-08-13"
+  source: official Posit Connect Cloud documentation
+  findings:
+    - R Git-backed content requires manifest.json
+    - manifest.json must be colocated with the primary Shiny app.R
+    - Connect Cloud uses manifest.json rather than renv to establish R packages
+    - Connect Cloud selects the Git repository branch and primary file externally

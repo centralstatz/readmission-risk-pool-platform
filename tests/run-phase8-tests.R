@@ -20,7 +20,7 @@ for (file in c(
   "runtime-operation.R", "provider-operation.R", "duckdb-persistence-operation.R",
   "reference-history-operation.R", "product-operation.R",
   "product-materialization-operation.R", "operator-operation.R",
-  "application-artifact-operation.R"
+  "application-artifact-operation.R", "connect-cloud-operation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 rrp_load_duckdb_persistence_adapter(repository_root)
@@ -28,6 +28,7 @@ rrp_load_product_layer(repository_root)
 rrp_load_yaml_product_adapter(repository_root)
 rrp_load_reference_app(repository_root)
 rrp_load_application_artifact_contract_runtime(repository_root)
+rrp_load_connect_cloud_runtime(repository_root)
 
 installed <- rrp_install_runtime_package(repository_root)
 on.exit(rrp_unload_runtime_package(installed), add = TRUE)

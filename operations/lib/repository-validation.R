@@ -339,7 +339,9 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/build-reference-products.R --scale test --materialize",
     "Rscript operations/launch-reference-app.R --validate-only",
     "Rscript operations/build-application-artifact.R",
-    "Rscript operations/validate-application-artifact.R"
+    "Rscript operations/validate-application-artifact.R",
+    "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")
@@ -363,7 +365,9 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript tests/run-phase8-tests.R",
     "Rscript operations/build-reference-products.R --scale test",
     "Rscript operations/build-application-artifact.R",
-    "Rscript operations/validate-application-artifact.R"
+    "Rscript operations/validate-application-artifact.R",
+    "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
   )
   agent_missing <- agent_commands[!vapply(
     agent_commands,

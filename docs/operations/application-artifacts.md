@@ -107,6 +107,8 @@ that are not implemented here.
 
 ## Current boundary
 
-The next step is intentionally future work: realize this validated artifact for
-Connect Cloud or another target, then publish only through a separately
-authorized operation. No current command deploys or publishes it.
+The supported next step is the separate
+[Connect Cloud deployment repository](connect-cloud-deployment.md) operation.
+It consumes this artifact without changing its inventory. No current command
+publishes a remote or deploys to Connect; future peer targets may consume the
+same artifact independently.

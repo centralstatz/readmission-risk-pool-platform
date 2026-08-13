@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed
-  Iteration 8.1 reduced-artifact requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase
+  8 reduced-artifact and Connect-realization requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -17,7 +17,8 @@ foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
 DuckDB reference adapter plus durable operation, Iteration 6.1 logical
 products, Iteration 6.2 physical product access plus minimal app, and Iteration
 7.1 stable initialize/doctor/run/materialize/launch operations plus adoption
-guidance, and Iteration 8.1 target-neutral artifact construction/validation.
+guidance, Iteration 8.1 target-neutral artifact construction/validation, and
+Iteration 8.2 Connect Cloud standalone local Git realization/validation.
 
 ## Prerequisites
 
@@ -25,8 +26,9 @@ guidance, and Iteration 8.1 target-neutral artifact construction/validation.
 - A local checkout of this repository.
 - The repository's locked R environment restored with
   `Rscript -e 'renv::restore()'`. Direct external dependencies are `yaml`,
-  `DBI`, `duckdb`, and app-owned `shiny`; DBI/DuckDB belong only to their
-  concrete adapter, while Shiny and its transitive packages belong to the app.
+  `DBI`, `duckdb`, app-owned `shiny`, and build-only `rsconnect`; DBI/DuckDB
+  belong only to their concrete adapter, Shiny to the app, and rsconnect only
+  to Connect manifest generation.
 
 Run commands from the repository root. The scripts resolve the root from their
 own location, so they do not depend on a sibling repository or a
@@ -46,7 +48,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Iteration 8.1 checkpoint:
+Validate the completed Phase 8 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -100,7 +102,7 @@ Run the focused Phase 7 doctor/workflow/operation-documentation tests directly:
 Rscript tests/run-phase7-tests.R
 ```
 
-Run the focused Phase 8 artifact build/validation tests directly:
+Run the focused Phase 8 artifact and Connect-realization tests directly:
 
 ```sh
 Rscript tests/run-phase8-tests.R
@@ -159,6 +161,13 @@ Rscript operations/build-application-artifact.R
 Rscript operations/validate-application-artifact.R
 ```
 
+Generate and independently validate a standalone local Connect repository:
+
+```sh
+Rscript operations/build-connect-cloud-deployment.R --destination PATH
+Rscript operations/validate-connect-cloud-deployment.R --destination PATH
+```
+
 The default generated database is ignored under `build/`. Inspection and
 backup commands are documented in
 [Durable Reference History](reference-history.md).
@@ -196,8 +205,9 @@ Development mode composes:
   conformance, operational-history contract/backend-independence checks,
   concrete DuckDB adapter boundary checks, logical-product
   contract/builder/conformance/access checks, YAML materialization/integrity,
-  product-only application boundary checks, and the target-neutral artifact
-  contract/source allowlist/dependency/boundary checks;
+  product-only application boundary checks, target-neutral artifact
+  contract/source allowlist/dependency/boundary checks, and Connect target
+  contract/allowlist/dependency/Git/publication-boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
   Phase 6, Phase 7, and Phase 8 tests.
@@ -228,19 +238,22 @@ Checkpoint mode runs every development check and additionally verifies:
 - the Iteration 8.1 artifact contract/application declaration, exact closed
   runtime allowlist, build/validation operations, direct dependency
   declaration, isolated app proof, focused tests, and implementation record;
+- the Iteration 8.2 Connect contract, exact generated inventory, source-artifact
+  relationship, pruned dependency closure and target manifest, remote-free
+  staged/uncommitted Git state, destination safety, isolated validation, human
+  operations, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
-  `shiny` with its required transitive packages;
+  `shiny` with required transitive packages plus build-only `rsconnect`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the completed Phase 0–7 fictional
-source-to-human-operated-application boundary plus Iteration 8.1's local
-target-neutral artifact. It does not prove:
+This is strict only relative to the completed Phase 0–8 fictional
+source-to-local-deployable-repository boundary. It does not prove:
 
 - public release or license readiness;
 - clinical provider validity, production persistence/materialization, or final
   application UX;
-- Connect/other-target realization or publication safety;
+- remote Git publication, Connect service deployment, or another target;
 - security or privacy certification;
 - absence of all PHI or secrets; or
 - clinical validity or production approval.

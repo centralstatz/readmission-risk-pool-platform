@@ -441,8 +441,8 @@ realization.
 - independent artifact validation from a clean copy/session;
 - artifact and product/run provenance linkage;
 - Connect Cloud target builder and validation;
-- separate, conservative publication operation with explicit destination
-  ownership, staging, dry-run, and opt-in external mutations; and
+- conservative local-repository generation with explicit destination
+  ownership, staging, validation, and no external mutations; and
 - human deployment and recovery guides.
 
 ### Exit evidence
@@ -455,9 +455,10 @@ realization.
 
 ### Dependencies and decisions
 
-Depends on a stable application/product runtime and Phase 7 operations. Resolve
-deployment ownership and publication destination before publication support.
-Do not add other infrastructure without a concrete target.
+Depends on a stable application/product runtime and Phase 7 operations.
+Deployment ownership is now resolved for the generated local repository;
+remote and service destinations remain operator-owned external choices. Do not
+add other infrastructure without a concrete target.
 
 ### Iteration sequence and current status
 
@@ -467,14 +468,17 @@ Do not add other infrastructure without a concrete target.
   declaration, staged immutable build/current-pointer model, standalone
   validation, and isolated Shiny construction. It contains no DuckDB, source,
   provider, operational-history, Git, or target-specific runtime behavior.
-- **Connect Cloud realization and publication:** not implemented. A later
-  bounded iteration may consume the target-neutral artifact, define a Connect
-  target profile/adapter, and keep local realization separate from explicitly
-  authorized external publication.
+- **Iteration 8.2 — Connect Cloud local Git realization:** complete.
+  `platform.connect-cloud-git-realization@0.1.0` consumes an independently
+  valid artifact, produces an exact standalone Git repository with target
+  manifest/dependency metadata and root adapter, validates from generated
+  content, stages without committing, and refuses unsafe destinations. Remote
+  creation, commit, push, and Connect deployment are explicitly external.
 
-**Phase 8 is in progress.** The generic artifact boundary is proven; the
-planned first target realization, its safety validation, and any publication
-operation remain outstanding.
+**Phase 8 is complete.** The platform owns generated deployable artifacts; the
+operator owns where they are published or deployed. No publication helper is
+needed to close this phase. A future OCI/container realization may consume the
+same target-neutral artifact as a peer target when concretely authorized.
 
 ## Phase 9 — Observability integration
 

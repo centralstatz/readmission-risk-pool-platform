@@ -47,6 +47,13 @@ rrp_load_application_artifact_contract_runtime(repository_root)
 source(file.path(
   repository_root, "operations", "lib", "application-artifact-validation.R"
 ))
+source(file.path(
+  repository_root, "operations", "lib", "connect-cloud-operation.R"
+))
+rrp_load_connect_cloud_runtime(repository_root)
+source(file.path(
+  repository_root, "operations", "lib", "connect-cloud-validation.R"
+))
 source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
 
 mode <- tryCatch(

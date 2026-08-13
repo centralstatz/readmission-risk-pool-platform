@@ -44,17 +44,20 @@ extending it.
 14. [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
    and [Application Artifact Operations](operations/application-artifacts.md) —
    understand the closed runtime unit before any target realization.
-15. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+15. [Connect Cloud Git Realization](architecture/connect-cloud-realization.md)
+   and [Connect Cloud Deployment Operations](operations/connect-cloud-deployment.md)
+   — understand the generated local repository and external publication stop.
+16. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-16. [Open Decisions](architecture/open-decisions.md) — choices that require
+17. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-17. [Platform Implementation Record](architecture/platform-implementation-record.md)
+18. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-18. [Implementation Conventions](development/implementation-conventions.md) and
+19. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-19. [Repository Development Policies](development/repository-policies.md) for
+20. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-20. [Operations](operations/README.md) for supported human operations and
+21. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -53,12 +53,13 @@ three-product logical core set, backend-neutral builders/conformance, YAML
 reference materialization/access adapter, and minimal product-only Shiny app.
 The app owns Shiny; the adapter reuses YAML. Completed Phase 7 owns the stable
 human initialize/doctor/run/inspect/materialize/validate/launch surface,
-operation classification/registry, and progressive-adoption guide. Iteration
-8.1 now owns the target-neutral reduced application-artifact contract,
-closed runtime allowlist, local builder/current pointer, standalone validator,
-and isolated product-only startup proof. Connect/other target realization,
-publication, companion repositories, containers, and later layers remain
-unauthorized.
+operation classification/registry, and progressive-adoption guide. Completed
+Phase 8 owns the target-neutral reduced application-artifact contract and the
+`platform.connect-cloud-git-realization@0.1.0` local Git realization. It may
+generate and independently validate an explicitly chosen, outside-repository,
+remote-free deployment repository. Remote creation, commit, push, Connect
+deployment, OCI/container realization, and later layers remain outside the
+implemented platform boundary.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -122,6 +123,10 @@ build the application artifact
     → Rscript operations/build-application-artifact.R
 validate the application artifact
     → Rscript operations/validate-application-artifact.R
+generate a Connect Cloud deployment repository
+    → Rscript operations/build-connect-cloud-deployment.R --destination PATH
+validate a Connect Cloud deployment repository
+    → Rscript operations/validate-connect-cloud-deployment.R --destination PATH
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -157,7 +162,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Iteration 8.1 checkpoint, run:
+For the completed Phase 8 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -195,12 +200,15 @@ Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 ```
 
-Run the focused application-artifact tests and human operations with:
+Run the focused deployment-artifact/realization tests and human operations
+with:
 
 ```sh
 Rscript tests/run-phase8-tests.R
 Rscript operations/build-application-artifact.R
 Rscript operations/validate-application-artifact.R
+Rscript operations/build-connect-cloud-deployment.R --destination PATH
+Rscript operations/validate-connect-cloud-deployment.R --destination PATH
 ```
 
 Run the focused human-operation tests and stable reference workflow with:
@@ -262,12 +270,14 @@ through the logical boundary in
 in `docs/architecture/reference-product-materialization.md`, and the app in
 `docs/architecture/reference-application.md`. Phase 7 is complete through
 `docs/operations/operator-manual.md`, `docs/adoption/progressive-implementation.md`,
-and `operations/operations.yml`. Deployment, replay, decision
-policy, scheduling, observability, and later capabilities remain unauthorized
-until their phases. Iteration 8.1 is documented in
+and `operations/operations.yml`. Replay, decision policy, scheduling,
+observability, and later capabilities remain unauthorized until their phases.
+The target-neutral deployment boundary is documented in
 `docs/architecture/application-artifact-foundation.md` and
-`contracts/deployment/application-artifact.yml`; it authorizes only a local
-target-neutral artifact, not a target realization or publication.
+`contracts/deployment/application-artifact.yml`; the completed Connect target
+is documented in `docs/architecture/connect-cloud-realization.md` and
+`contracts/deployment/connect-cloud-realization.yml`. Neither authorizes remote
+publication or deployment.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

@@ -118,7 +118,9 @@ rrp_validate_operator_repository <- function(repository_root) {
       "reference.run-platform", "reference.inspect-history",
       "reference.materialize-products", "reference.validate-app",
       "reference.launch-app", "platform.build-application-artifact",
-      "platform.validate-application-artifact"
+      "platform.validate-application-artifact",
+      "platform.build-connect-cloud-deployment",
+      "platform.validate-connect-cloud-deployment"
     )
     missing_public <- setdiff(expected_public, public_ids)
     for (id in missing_public) issues[[length(issues) + 1L]] <- rrp_issue(
@@ -138,7 +140,9 @@ rrp_validate_operator_repository <- function(repository_root) {
     "Rscript operations/build-reference-products.R --scale test --materialize",
     "Rscript operations/launch-reference-app.R --validate-only",
     "Rscript operations/build-application-artifact.R",
-    "Rscript operations/validate-application-artifact.R"
+    "Rscript operations/validate-application-artifact.R",
+    "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
   )
   agent_aligned <- all(vapply(agent_commands, grepl, logical(1), x = agent_text, fixed = TRUE))
   if (!agent_aligned) issues[[length(issues) + 1L]] <- rrp_issue(

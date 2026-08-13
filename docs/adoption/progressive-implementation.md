@@ -75,10 +75,10 @@ tables, invoke providers, or reinterpret canonical meaning.
 ## Automation and deployment
 
 Scheduling remains outside the platform. External approved automation invokes
-the same documented operations used by humans. Iteration 8.1 now supplies a
-reduced validated application artifact after product materialization; a future
-target realizes that same boundary without changing upstream semantics. The
-artifact does not assume Git acquisition, Connect Cloud, a companion
-repository, or a container. Target-specific realization/publication remains
-unsupported and must not be folded into source, provider, persistence, product,
-or app replacement.
+the same documented operations used by humans. Iteration 8.1 supplies a
+reduced validated application artifact after product materialization;
+Iteration 8.2 proves a Connect Cloud local Git realization without changing
+upstream semantics. The artifact itself assumes neither Git, Connect Cloud,
+nor a container. A future OCI/container target may consume it as a peer.
+Remote publication/deployment remains operator controlled and must not be
+folded into source, provider, persistence, product, or app replacement.

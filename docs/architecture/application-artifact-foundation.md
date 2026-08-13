@@ -15,7 +15,7 @@ closed target-neutral artifact build
         ↓
 standalone artifact validation and Shiny construction
         ↓
-future target-specific realization and separate publication
+peer target-specific realizations and operator-controlled publication
 ```
 
 The implementation is pre-1.0, fictional/nonclinical deployment architecture.
@@ -148,13 +148,16 @@ declaration into its supported reproducible installation mechanism and resolve
 transitive dependencies. Iteration 8.1 validates against the installed package
 environment but does not design a container or Connect manifest.
 
-## Publication boundary
+## Target boundary
 
-The builder creates only local ignored files. There is no Connect profile,
-`rsconnect` manifest, container, companion repository, Git mutation, credential,
-commit, push, or external publication. A target builder may consume this
-artifact in a later iteration but must keep artifact construction, target
-realization, and publication as separate identities and operations.
+The artifact builder creates only local ignored files. It has no Connect
+profile, target manifest, container, companion repository, Git mutation,
+credential, commit, push, or external publication. Iteration 8.2 now consumes
+the unchanged artifact through the separate
+[Connect Cloud realization](connect-cloud-realization.md). Future targets,
+especially an OCI/container realization, must remain peer consumers and keep
+artifact construction, target realization, and publication as separate
+identities.
 
 ## Reference evidence classification
 

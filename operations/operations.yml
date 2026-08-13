@@ -20,7 +20,7 @@ operations:
     documentation: docs/operations/validation.md
   - operation_id: platform.validate-checkpoint
     command: Rscript operations/validate.R --mode checkpoint
-    purpose: Check the completed Phase 7 milestone.
+    purpose: Check the completed Phase 8 milestone.
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/validation.md
@@ -66,6 +66,18 @@ operations:
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/application-artifacts.md
+  - operation_id: platform.build-connect-cloud-deployment
+    command: Rscript operations/build-connect-cloud-deployment.R --destination PATH
+    purpose: Generate a validated standalone local Git repository for Connect Cloud.
+    mutation: create_or_replace_owned_local_generated_repository
+    classification: public
+    documentation: docs/operations/connect-cloud-deployment.md
+  - operation_id: platform.validate-connect-cloud-deployment
+    command: Rscript operations/validate-connect-cloud-deployment.R --destination PATH
+    purpose: Independently validate one generated Connect Cloud deployment repository.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/connect-cloud-deployment.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

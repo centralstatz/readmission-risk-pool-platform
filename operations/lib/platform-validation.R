@@ -309,6 +309,7 @@ rrp_validate_platform <- function(repository_root, mode) {
     rrp_validate_product_repository(repository_root),
     rrp_validate_operator_repository(repository_root),
     rrp_validate_application_artifact_repository(repository_root),
+    rrp_validate_connect_cloud_repository(repository_root),
     rrp_run_phase0_tests(repository_root),
     rrp_run_phase1_tests(repository_root),
     rrp_run_phase2_tests(repository_root),
@@ -340,7 +341,7 @@ rrp_validate_platform <- function(repository_root, mode) {
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Completed Iteration 8.1 strict checkpoint validation"
+    "Completed Phase 8 deployment-build checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }

@@ -109,20 +109,21 @@ rrp_validate_application_artifact_repository <- function(repository_root) {
     paste0("Artifact runtime references prohibited upstream/target behavior: ", value),
     "deploy/application-artifact"
   )
-  target_entries <- setdiff(list.files(file.path(repository_root, "deploy")),
-    "application-artifact"
+  target_entries <- setdiff(
+    list.files(file.path(repository_root, "deploy")),
+    c("application-artifact", "connect-cloud")
   )
   if (length(target_entries) > 0L) for (entry in target_entries) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase8_scope", "premature_deployment_target",
-      "Iteration 8.1 authorizes only the target-neutral artifact boundary.",
+      "Only completed Phase 8 artifact and Connect target implementations are authorized.",
       file.path("deploy", entry)
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "application_artifact_boundary",
     length(leaked) + length(target_entries) == 0L,
-    "no upstream runtime, Connect, Git, publication, or target implementation"
+    "no upstream runtime or unauthorized deployment target implementation"
   )
 
   record <- paste(rrp_read_text(file.path(

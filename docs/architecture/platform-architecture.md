@@ -370,8 +370,7 @@ The expected operation families are:
 - select an implementation or provider;
 - build/materialize products;
 - launch an application;
-- build and validate a deployment;
-- publish a realization; and
+- build and validate a local deployment realization;
 - upgrade or migrate compatible state.
 
 Names are provisional until implemented. Human commands, schedulers, agents,
@@ -388,11 +387,11 @@ is external: the platform owns run behavior and the operator owns cadence.
 
 ## Deployment layer
 
-Iteration 8.1 makes deployment a two-boundary transformation. The first is a
+Phase 8 makes deployment a two-boundary transformation. The first is a
 target-neutral reduced application artifact containing only the product-only
 app, read-only product access/validation, required contracts/declarations, and
-one coherent materialized product set. The second, still target-owned, turns
-that validated artifact into a Connect Cloud, container, or other realization.
+one coherent materialized product set. The second, target-owned, turns that
+validated artifact into a Connect Cloud, container, or other realization.
 
 A deployment target implements a build contract:
 
@@ -405,16 +404,20 @@ target builder
         ↓
 allowlisted artifact + provenance + target validation
         ↓
-target-specific realization and explicit publication
+local target-specific realization
+        ↓
+operator-controlled publication/deployment
 ```
 
-Artifact building and external publication are separate operations. Generated
-realizations have explicit ownership. Destructive replacement, Git commits,
-and pushes require target-specific safety controls and explicit authority.
+Artifact realization and external publication are separate responsibilities.
+The platform stops after an independently valid local deployable output.
+Generated realizations have explicit ownership; external Git commits, remotes,
+pushes, service credentials, and deployment remain operator controlled.
 
-Connect Cloud is the reference target, not a condition in the application or
-runtime. A second target should be added as a peer adapter only when concrete
-requirements exist.
+Iteration 8.2 realizes Connect Cloud as a generated, remote-free local Git
+repository with staged but uncommitted files. Connect remains a reference
+target, not a condition in the application or runtime. A second target should
+be added as a peer adapter only when concrete requirements exist.
 
 ## Observability layer
 
@@ -507,7 +510,7 @@ top-level layout, to be created just in time by implementation phases.
 | `products/` | Product specifications, builders, suite composition, and product storage ports/adapters | Historical authority, source queries, UI rendering | Public logical interface; depends on contracts, runtime records, and persistence reads |
 | `app/` | Supplied Shiny application and product-access boundary | Source mappings, provider code, persistence backend queries, hosting adapters | Replaceable public reference app; depends only on product interfaces and app configuration |
 | `operations/` | Callable operation implementations, human entry points, operation registry, and recovery contracts | Unique domain algorithms or hidden agent procedures | Public control surface; orchestrates components through their APIs |
-| `deploy/` | Target builders, target validation, profiles/templates, and publication adapters | Canonical or model semantics, authoritative app source | Public reference targets and optional adapters; depends on stable artifact/operation interfaces |
+| `deploy/` | Target adapters, declarations, and standalone validation payloads used by deployment builders | Canonical or model semantics, authoritative app source, external publication credentials | Public reference targets; depends on stable artifact/operation interfaces |
 | `config/` | Versioned platform defaults, reference selections, examples, and configuration schemas where not contract-owned | Secrets, executable code, private hospital values | Public/default and local override boundary; interpreted by operations/components |
 | `tests/` | Cross-component, conformance, fixture, architecture, and end-to-end tests | Production runtime data or private source material | Public evidence; depends on public interfaces and explicit fixtures |
 | `docs/` | Vision, architecture, implementation record, developer, adoption, operations, and user documentation | Undocumented executable procedures | Public human authority; describes all supported interfaces |

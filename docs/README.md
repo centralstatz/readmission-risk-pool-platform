@@ -47,6 +47,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
   — reduced runtime characterization, contract/layout, identity, integrity,
   dependency, build, validation, and publication boundaries.
+- [Connect Cloud Git Realization](architecture/connect-cloud-realization.md) —
+  target requirements, local repository contract, dependency and Git choices,
+  safe regeneration, standalone validation, and publication boundary.
 - [Progressive Implementation](adoption/progressive-implementation.md) —
   reference composition and source/provider/persistence/product/app replacement.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
@@ -86,6 +89,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   the fictional app.
 - [Build and Validate Application Artifacts](operations/application-artifacts.md)
   — construct the local target-neutral artifact and prove isolated startup.
+- [Generate and Validate a Connect Cloud Repository](operations/connect-cloud-deployment.md)
+  — create the standalone local Git deployment output and stop before remote
+  publication.
 
 ## Specifications
 
@@ -98,6 +104,7 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Root README](../README.md) — project identity, status, and navigation.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
-Further target-specific deployment, publication, and release guides will be added in
-the phases that create those capabilities. Documentation must not claim an
-operation exists before it has a tested human implementation.
+Further target-specific realization and release guides will be added in the
+phases that create those capabilities. External publication remains operator
+controlled. Documentation must not claim an operation exists before it has a
+tested human implementation.

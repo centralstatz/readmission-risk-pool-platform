@@ -2605,3 +2605,198 @@ process-isolation mechanism; it does not bypass dependency restoration,
 checkpoint requirements, repository checks, or any test. The normal commands
 remain the documented and supported human interface. The expected implicit
 snapshot dependency-discovery note remained informational.
+
+### Iteration 8.2 — Connect Cloud realization from the validated artifact
+
+#### Planned objective
+
+Consume only one successfully validated
+`platform.reduced-application-artifact@0.1.0` and generate a complete,
+standalone local Git repository suitable for operator-controlled Posit Connect
+Cloud publication. Stop before commit, remote configuration/creation, push,
+credentials, service APIs, or deployment. Keep the artifact target-neutral so
+a later OCI/container realization can consume the same boundary as a peer.
+
+#### Connect requirements and target contract
+
+Current maintained Posit documentation was checked on 2026-08-13 before the
+target shape was implemented. R content requires a `manifest.json` colocated
+with the primary app; Connect uses the manifest to select R/install packages
+rather than using `renv`; the documented Shiny flow uses a Git repository with
+`app.R`; and repository, branch, and primary-file selection occur in Connect.
+These requirements are recorded with official evidence links in
+`docs/architecture/connect-cloud-realization.md`.
+
+Added `platform.connect-cloud-git-realization@0.1.0`. It declares Connect Cloud
+Git-backed Shiny as the target, compatibility with the exact artifact and app
+versions, required target files, dependency realization, root entry point,
+independent validation, source-artifact/provenance relationship, generated
+repository semantics, external responsibilities, and explicit non-claims. It
+does not redefine application, product, estimand, provider, persistence, or
+runtime meaning.
+
+#### Actual implementation
+
+- Added an explicit-destination public builder and validator, operation
+  registry entries, agent mappings, and human generation/recovery guide.
+- Preserved the complete 27-file artifact byte-for-byte beneath `artifact/`
+  and added only ten target-owned files: root app, Connect and checksum
+  manifests, pruned lock, realization and checksum manifests, standalone
+  validator/runtime, target contract, and README.
+- Added a target-root adapter that delegates solely to the embedded artifact,
+  plus a standalone validator requiring no authoritative-platform source.
+- Added staged validation-before-promotion, ownership-aware idempotence and
+  replacement, failure cleanup/rollback behavior, Git initialization/staging,
+  and conservative refusal of unsafe destinations.
+- Added eleven Connect cases to the existing eleven artifact cases and integrated
+  target repository validation into development and the Phase 8 checkpoint.
+
+#### Local repository and Git decision
+
+The destination is explicit, outside the authoritative repository, and absent
+from realization identity. The builder creates it. The generated repository is
+initialized on `main` and all 37 generated regular files are staged, but no
+commit, remote, credential, or repository-local author identity is created.
+This is the clean boundary immediately before external publication: committing
+would otherwise require inventing or altering operator identity. Git commit,
+remote, publication, and Connect content identities remain separate from the
+realization and artifact IDs.
+
+#### Dependency realization decision
+
+The artifact's direct runtime roots remain exactly `shiny@1.10.0` and
+`yaml@2.3.10`. The builder traverses only their transitive requirements in the
+platform lock, excludes DBI/DuckDB/runtime/build packages, retains the pruned
+deployment-specific `renv.lock` as generator evidence, and uses build-only
+`rsconnect@1.3.1` to generate Connect-required `manifest.json`. Connect
+consumes the latter rather than the lock. Copying the platform-wide lock or a
+developer library was rejected.
+
+#### Destination ownership and regeneration
+
+Generation validates the source independently, stages beside the destination,
+validates content and isolated Shiny construction, initializes/stages Git,
+validates Git state, and only then promotes. A nonexistent destination is
+created. An identical owned realization is a no-touch idempotent result. A
+changed artifact/target may replace only an independently valid, unmodified,
+uncommitted, remote-free generated repository. Unrelated, modified, corrupt,
+committed, remotely configured, symlinked, or otherwise ambiguous destinations
+fail closed. Pre-promotion failure leaves the destination unchanged and
+removes staging; failed replacement promotion attempts rollback. Generated
+repositories are disposable outputs, not supported manual-edit branches.
+
+#### Sibling assets inspected and classifications
+
+The clean contract, identity, layout, dependency, Git, and destination design
+preceded read-only inspection of the sibling Connect bundle declaration,
+builder/validator, deployment tests, root adapter/templates, and publication
+helper. Explicit allowlisting, isolated staging, checksum/inventory checks,
+validate-before-promotion, destination ownership markers, and conservative
+replacement were **adapted as principles only**. The old root adapter and
+handoff README were **reference only**. Broad engine/schema/product copying,
+tracked generated products, Git revision as run/product identity, hard-coded
+companion paths, core clean-commit assumptions, and build-coupled commit/push
+were **rejected**. Publication helper/remotes/push and profile-specific
+assumptions were **deferred or rejected for this boundary**. No sibling code,
+text, YAML, product, identifier, configuration, or dependency metadata was
+copied, and the sibling was not modified.
+
+#### New material created cleanly
+
+New clean work comprises the realization contract, five maintained target
+payload sources, build and independent-validation entry points, build and
+repository validation libraries, eleven focused cases, architecture/operations
+guides, and coordinated plan/decision/registry/navigation/checkpoint/agent
+updates. Upstream source, canonical, runtime, provider, history, product, and
+application contracts remain unchanged; target code did not enter their
+boundaries.
+
+#### Surprises and deviations
+
+- Connect Cloud requires `manifest.json` and currently ignores `renv` for
+  environment setup, so the lock is deliberately generator input rather than
+  the deployed installation mechanism.
+- Direct `rsconnect` discovery from the active project/library lacked enough
+  reproducible source metadata. Pruning the authoritative lock before
+  `writeManifest()` produced an exact auditable runtime closure without
+  platform-only packages.
+- Staged-but-uncommitted is safer and more honest than the older plan's implied
+  local commit because the platform neither owns nor invents operator identity.
+- The older plan's separate publication-operation deliverable conflicted with
+  the clarified boundary. Architecture and plan now state that the platform
+  generates deployable artifacts and the operator decides where to publish or
+  deploy them.
+- The managed environment again needed renv sandbox-lock disabling for nested
+  validation only; documented commands and dependency semantics are unchanged.
+
+#### Validation evidence
+
+The focused Phase 8 suite passed all 22 artifact/realization cases. Connect
+coverage proves exact inventory and dependencies, copied-repository standalone
+validation and Shiny construction, staged/uncommitted/remote-free Git state,
+idempotence, unrelated and modified destination refusal, corrupt artifact
+failure before mutation, safe owned replacement after artifact change,
+manifest/extra/symlink rejection, source-artifact immutability, and absence of
+platform-only machinery. Final aggregate, dependency, package, parsing,
+generated-state, sibling-read-only, and whitespace evidence is recorded after
+the completed validation run below.
+
+#### Implications for future targets and publication
+
+The nested artifact remains unchanged and target-neutral; an OCI/container
+realization can add its own runtime/dependency layer as a peer without knowing
+Connect layout or Git semantics. This iteration intentionally specifies no OCI
+endpoint. External publication guidance identifies operator responsibilities
+but implements no remote, commit, push, credentials, GitHub App, Connect API,
+or deployment procedure. Production use remains subject to adopter-owned
+privacy, security, access, networking, retention, and governance controls.
+
+#### Architecture, plan, and Phase 8 status
+
+The upstream dependency direction did not change. The architecture and plan
+were changed only to make the implemented local-realization/operator-
+publication boundary authoritative and remove publication machinery from
+platform responsibility. The ownership open decision is resolved.
+
+**Phase 8 is complete.** Both the target-neutral artifact boundary and the
+first target-specific independently valid local realization are proven.
+External publication is correctly outside platform implementation; adding a
+helper merely to satisfy older wording would violate the clarified boundary.
+
+#### Recommended next task
+
+Begin **Phase 9 / Iteration 9.1** with the smallest privacy-conscious structured
+run-context/event contract and console rendering boundary for existing stable
+operations. Do not add deployment sinks, scheduling, audit, metrics, or
+patient-level diagnostics before their owning requirements are concrete.
+
+#### Final validation follow-up
+
+After dependency and documentation reconciliation, the complete matrix passed:
+
+- `Rscript tests/run-phase8-tests.R`: **PASS**, 22 cases;
+- `Rscript operations/validate-documentation.R`: **PASS**, 4 checks and zero
+  issues;
+- `Rscript operations/validate.R --mode development`: **PASS**, 93 checks and
+  zero issues, including all Phase 0–8 suites;
+- `Rscript operations/validate.R --mode checkpoint`: **PASS**, 148 checks and
+  zero issues for completed Phase 8;
+- focused suites reported 10, 14, 38, 24, 55, 18, 17, 8, and 22 passing tests
+  for Phases 0 through 8;
+- `renv::status()` reported no issues after recording `rsconnect@1.3.1` and its
+  seven previously installed transitive dependencies;
+- `rrpruntime@0.3.0` built and passed `R CMD check` with `Status: OK`;
+- the public artifact build/validation and Connect build/validation commands
+  succeeded; the generated target independently proved 37 staged files on
+  uncommitted `main`, no remote, exact dependency/inventory integrity, and
+  isolated Shiny construction; and
+- maintained R/YAML parsing, forbidden-boundary scans, source/sibling status,
+  generated-state cleanup, and `git diff --check` passed.
+
+Aggregate commands used `RENV_CONFIG_SANDBOX_ENABLED=FALSE` only because the
+managed environment cannot use renv's global sandbox process lock reliably.
+The project library and lockfile remained active and checkpoint behavior was
+not bypassed. Network-unavailable repository-index warnings during dependency
+status/package check were nonfatal because the complete locked installed state
+was present. The informational implicit-snapshot dependency-discovery timing
+note remains a performance observation rather than an integrity failure.
