@@ -92,7 +92,8 @@ structure or dependencies when their owning phase justifies them.
 
 Phase 1 uses `yaml` to read the selected language-neutral specification format.
 Iteration 5.2 adds `DBI` and `duckdb` solely for the concrete reference
-persistence adapter and its operations; `rrpruntime` remains base-R-only. The
+persistence adapter and its operations. Iteration 6.2 adds app-owned `shiny`;
+the materializer reuses `yaml`, and `rrpruntime` remains base-R-only. The
 repository owns an independently created `renv.lock` and activation state; no
 dependency file was copied from the sibling reference repository. Restore the
 locked environment with:

@@ -9,7 +9,7 @@ machine-readable suite begins at
 [`platform.initial-risk-product-set@0.1.0`](../../contracts/products/initial-risk-product-set.yml),
 and its supported command is documented in
 [Build and inspect reference logical products](../operations/logical-products.md).
-It stops at:
+Its logical responsibility stops at:
 
 ```text
 valid operational-history reads
@@ -22,10 +22,12 @@ logical in-memory access boundary
 ```
 
 The product layer is rebuildable consumer projection, not historical
-authority. This iteration does not create a physical product store, file
-format, Shiny application, product database, priority/decision policy, replay,
-deployment, or observability behavior. The contracts and implementation are
-pre-1.0 software interfaces and make no clinical-validity or production claim.
+authority. Iteration 6.2 realizes the unchanged seam through the replaceable
+[YAML reference materialization](reference-product-materialization.md) and
+[minimal product-only application](reference-application.md). Priority/decision
+policy, replay, deployment, and observability remain absent. The contracts and
+implementation are pre-1.0 software interfaces and make no clinical-validity
+or production claim.
 
 ## Initial core suite
 
@@ -202,8 +204,8 @@ read_product_metadata(product_id, product_version, product_set_id)
 ```
 
 It accepts only a successful complete product build, returns copies, and
-requires exact product/set identity. It is not a physical product adapter. A
-future app must depend on this logical shape or a conforming replacement, not
+requires exact product/set identity. It is not a physical product adapter. The
+supplied app depends on this logical shape through a conforming replacement, not
 on builders, persistence ports, DuckDB, source data, or providers.
 
 ## Migration and retention implications
@@ -222,8 +224,9 @@ on builders, persistence ports, DuckDB, source data, or providers.
   replay. If required compatible history has been removed, the product is
   unavailable or the build fails; it is not reconstructed from current code.
 
-Iteration 6.1 documents these rules but implements no production retention,
-migration, or physical materialization automation.
+The YAML reference implements safe replacement and retains prior immutable
+bundles, but no production retention duration, cleanup automation, or history
+migration is implied.
 
 ## Reference evidence classification
 
@@ -238,10 +241,8 @@ priority/queue fields, executive/measure/geography products, and app-specific
 field assumptions were rejected or deferred. No sibling code, specification,
 identifier, data, or configuration was copied.
 
-## Next boundary
+## Realized downstream boundary
 
-Iteration 6.2 may choose one physical reference product adapter and a minimal
-capability-aware application that consumes only logical product access. It
-must preserve the contracts here, validate stale/incompatible sets before app
-consumption, and keep physical storage replaceable. Decision products and
-remaining history migration/retention work require separate approval.
+Iteration 6.2 adds a YAML bundle adapter and minimal Shiny consumer without
+changing these contracts or builders. Decision products and broader history
+migration/retention work require separate evidence and approval.

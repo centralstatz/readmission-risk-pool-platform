@@ -48,10 +48,11 @@ eligibility, state, estimand requests, provider contracts/registry/execution,
 structured outcomes, the transparent reference provider, and accepted
 estimates inside `rrpruntime`. The current `renv` state owns the Phase 1 YAML
 parser plus DBI and DuckDB solely for the Iteration 5.2 concrete reference
-adapter; `rrpruntime` remains base-R-only.
-Completed Iteration 6.1 owns the three-product logical core set,
-backend-neutral builders/conformance, and in-memory access boundary under
-`products/`; it adds no dependency and selects no physical product format.
+adapter; `rrpruntime` remains base-R-only. Completed Phase 6 owns the
+three-product logical core set, backend-neutral builders/conformance, YAML
+reference materialization/access adapter, and minimal product-only Shiny app.
+The app owns Shiny; the adapter reuses YAML. Deployment and later layers remain
+unauthorized.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -116,7 +117,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 5 checkpoint, run:
+For the completed Phase 6 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -145,11 +146,13 @@ Rscript tests/run-phase5-tests.R
 Rscript operations/run-reference-history.R --scale test
 ```
 
-Run the focused logical-product tests and build/inspection operation with:
+Run the focused product/materialization/app tests and operations with:
 
 ```sh
 Rscript tests/run-phase6-tests.R
 Rscript operations/build-reference-products.R --scale test
+Rscript operations/build-reference-products.R --scale test --materialize
+Rscript operations/launch-reference-app.R --validate-only
 ```
 
 Development coherence and strict milestone readiness are different claims.
@@ -193,12 +196,13 @@ Phase 4 is complete. Operational history is documented in
 `docs/architecture/operational-history-foundation.md` and
 `contracts/persistence/`. Iteration 5.2 realizes the unchanged port through
 `docs/architecture/duckdb-reference-persistence.md` and
-`implementations/persistence/duckdb/`. Phase 5 is complete. Product
-materialization, application, deployment, replay, decision policy, and
-observability remain outside Iteration 6.1 and are not authorized early. The first logical product
-boundary is documented in `docs/architecture/logical-product-foundation.md`
-and `contracts/products/`; physical materialization, app code, and later
-capabilities remain unauthorized until their next task.
+`implementations/persistence/duckdb/`. Phase 5 is complete. Phase 6 is complete
+through the logical boundary in
+`docs/architecture/logical-product-foundation.md`, the reference materializer
+in `docs/architecture/reference-product-materialization.md`, and the app in
+`docs/architecture/reference-application.md`. Deployment, replay, decision
+policy, scheduling, observability, and later capabilities remain unauthorized
+until their phases.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

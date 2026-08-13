@@ -277,7 +277,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     paste(length(required_files), "required Phase 0 files")
   )
 
-  deferred_directories <- c("app", "deploy", "config")
+  deferred_directories <- c("deploy", "config", "observability")
   premature <- deferred_directories[
     dir.exists(file.path(repository_root, deferred_directories))
   ]
@@ -290,7 +290,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
 
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase0_scope", length(premature) == 0L,
-    "no later-phase implementation scaffolding"
+    "no still-unauthorized deployment, configuration, or observability scaffolding"
   )
 
   license_path <- file.path(repository_root, "LICENSE-STATUS.md")
@@ -333,7 +333,9 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript tests/run-phase6-tests.R",
     "Rscript operations/run-reference-runtime.R",
     "Rscript operations/run-reference-history.R --scale test",
-    "Rscript operations/build-reference-products.R --scale test"
+    "Rscript operations/build-reference-products.R --scale test",
+    "Rscript operations/build-reference-products.R --scale test --materialize",
+    "Rscript operations/launch-reference-app.R --validate-only"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")

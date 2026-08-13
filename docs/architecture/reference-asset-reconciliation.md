@@ -195,6 +195,26 @@ No sibling code, specification text, product ID, schema, data, configuration,
 or dependency was copied. Iteration 6.1 owns new clean product contracts and
 base-R builders; the sibling remains development-time evidence only.
 
+## Iteration 6.2 materialization/application review outcome
+
+The YAML layout, atomic pointer model, whole-set access validation, injected
+app boundary, and three minimal views were designed before the required
+read-only review of `app/app.R`, `app/R/data-access.R`, `app/R/app-init.R`,
+`app/data/PRODUCT_MANIFEST.yml`, the missing root `manifest.json`, and
+`deploy/connect-cloud/`.
+
+| Evidence | Final use | Retained principle | Rejected or deferred shape |
+|---|---|---|---|
+| `app/R/data-access.R` and `app/R/app-init.R` | **Adapt — concept only** | central startup through a replaceable product-access seam | local path/config lookup, CSV/RDS switch, database-mode branch, engine loading, and eight fixed products |
+| `app/app.R` | **Reference only** | deployment-neutral authoritative app can remain below a later root adapter | executive/current-only old UI, product assumptions, root discovery, and engine dependency |
+| `app/data/PRODUCT_MANIFEST.yml` | **Adapt — principles only** | complete member inventory, row counts, physical hashes, and validation before consumption | tracked generated products, Git/branch identity, eight-product suite, generation-input digest matrix, and CSV as logical shape |
+| missing root `manifest.json` | **Reference only** | confirmed dependency manifests belong to deployment artifacts rather than app semantics | adding a root deployment manifest during Phase 6 |
+| `deploy/connect-cloud/` | **Defer to Phase 8** | generated adapter and inclusion allowlist may inform a later approved deployment target | Connect packaging, provenance, publication, tracked checkpoints, and generated repository workflow |
+
+No sibling code, YAML, UI, product data, dependency metadata, deployment
+template, or identifier was copied. Shiny was selected from current app need,
+not inherited dependency state. The sibling worktree remained unchanged.
+
 ## Phase 2.2 field/rule review outcome
 
 The first clinical profile was designed cleanly before the Phase 2 evidence was

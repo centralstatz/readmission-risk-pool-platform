@@ -6,15 +6,18 @@ repository_root <- normalizePath(file.path(dirname(script_path), ".."), mustWork
 for (file in c(
   "validation-result.R", "conformance-result.R", "specification-validation.R",
   "history-validation.R", "runtime-operation.R", "duckdb-persistence-operation.R",
-  "product-operation.R"
+  "product-operation.R", "product-materialization-operation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 rrp_load_duckdb_persistence_adapter(repository_root)
 rrp_load_product_layer(repository_root)
+rrp_load_yaml_product_adapter(repository_root)
 
 arguments <- commandArgs(trailingOnly = TRUE)
 database_path <- NULL
 scale <- "test"
 source_run_ids <- character()
+materialize <- FALSE
+product_store <- file.path(repository_root, "build", "reference-products")
 while (length(arguments) > 0L) {
   if (length(arguments) >= 2L && identical(arguments[[1L]], "--database")) {
     database_path <- arguments[[2L]]
@@ -25,10 +28,17 @@ while (length(arguments) > 0L) {
   } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--run-id")) {
     source_run_ids <- c(source_run_ids, arguments[[2L]])
     arguments <- arguments[-c(1L, 2L)]
+  } else if (identical(arguments[[1L]], "--materialize")) {
+    materialize <- TRUE
+    arguments <- arguments[-1L]
+  } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--products")) {
+    product_store <- arguments[[2L]]
+    arguments <- arguments[-c(1L, 2L)]
   } else {
     message(paste(
       "Usage: Rscript operations/build-reference-products.R",
-      "[--database PATH] [--scale test|reference] [--run-id ID ...]"
+      "[--database PATH] [--scale test|reference] [--run-id ID ...]",
+      "[--materialize] [--products PATH]"
     ))
     quit(save = "no", status = 2L, runLast = FALSE)
   }
@@ -46,6 +56,9 @@ if (is.null(database_path)) {
 if (length(source_run_ids) == 0L) source_run_ids <- paste0(
   "runtime_synthetic_history_", scale, "_001"
 )
+if (!grepl("^(/|[A-Za-z]:[/\\\\])", product_store)) {
+  product_store <- file.path(repository_root, product_store)
+}
 
 installed <- tryCatch(
   rrp_install_runtime_package(repository_root),
@@ -85,4 +98,19 @@ for (name in names(summary$products)) {
     sep = ""
   )
 }
-cat("\nProducts were conformed and inspected in memory; no product files or tables were written.\n")
+if (materialize) {
+  materialization <- tryCatch(
+    rrp_materialize_reference_products(result, repository_root, product_store),
+    error = function(condition) {
+      message("Reference product materialization failed: ", conditionMessage(condition))
+      NULL
+    }
+  )
+  if (is.null(materialization)) quit(save = "no", status = 1L, runLast = FALSE)
+  cat("  materialization_adapter: reference.yaml-product-bundle@0.1.0\n")
+  cat("  materialization_id: ", materialization$materialization_id, "\n", sep = "")
+  cat("  product_store: ", materialization$store_path, "\n", sep = "")
+  cat("  publication: complete current set replaced atomically\n")
+} else cat(
+  "\nProducts were conformed and inspected in memory; no product files or tables were written.\n"
+)

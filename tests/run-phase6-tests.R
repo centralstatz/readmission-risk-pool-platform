@@ -17,10 +17,15 @@ source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "history-validation.R"))
 source(file.path(repository_root, "operations", "lib", "duckdb-persistence-operation.R"))
 source(file.path(repository_root, "operations", "lib", "product-operation.R"))
+source(file.path(
+  repository_root, "operations", "lib", "product-materialization-operation.R"
+))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 source(file.path(repository_root, "tests", "helpers", "in-memory-history-adapter.R"))
 rrp_load_duckdb_persistence_adapter(repository_root)
 rrp_load_product_layer(repository_root)
+rrp_load_yaml_product_adapter(repository_root)
+rrp_load_reference_app(repository_root)
 
 installed <- rrp_install_runtime_package(repository_root)
 on.exit(rrp_unload_runtime_package(installed), add = TRUE)

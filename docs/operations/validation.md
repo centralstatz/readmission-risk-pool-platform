@@ -6,26 +6,25 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase 5
-  canonical-to-durable-history requirements while remaining coherent with the
-  in-progress Iteration 6.1 logical product boundary?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase 6
+  source-to-materialized-products-and-application requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
 3 fictional source implementation, completed Phase 4 runtime/provider
 foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
-DuckDB reference adapter plus durable operation, and the Iteration 6.1 logical
-product contracts/builders/conformance/access operation. Physical product
-storage, application, and later layers do not exist yet.
+DuckDB reference adapter plus durable operation, Iteration 6.1 logical
+products, and Iteration 6.2 physical product access plus minimal app.
 
 ## Prerequisites
 
 - R available through `Rscript`.
 - A local checkout of this repository.
 - The repository's locked R environment restored with
-  `Rscript -e 'renv::restore()'`. External dependencies are `yaml`, `DBI`, and
-  `duckdb`; the latter two belong only to the concrete adapter.
+  `Rscript -e 'renv::restore()'`. Direct external dependencies are `yaml`,
+  `DBI`, `duckdb`, and app-owned `shiny`; DBI/DuckDB belong only to their
+  concrete adapter, while Shiny and its transitive packages belong to the app.
 
 Run commands from the repository root. The scripts resolve the root from their
 own location, so they do not depend on a sibling repository or a
@@ -45,7 +44,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 5 checkpoint:
+Validate the completed Phase 6 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -87,7 +86,7 @@ Run the focused Phase 5 tests directly:
 Rscript tests/run-phase5-tests.R
 ```
 
-Run the focused Phase 6 logical-product tests directly:
+Run the focused Phase 6 product/materialization/app tests directly:
 
 ```sh
 Rscript tests/run-phase6-tests.R
@@ -126,6 +125,13 @@ Build, conform, and inspect the logical product set from that history in memory:
 Rscript operations/build-reference-products.R --scale test
 ```
 
+Materialize and validate application startup:
+
+```sh
+Rscript operations/build-reference-products.R --scale test --materialize
+Rscript operations/launch-reference-app.R --validate-only
+```
+
 The default generated database is ignored under `build/`. Inspection and
 backup commands are documented in
 [Durable Reference History](reference-history.md).
@@ -161,11 +167,12 @@ Development mode composes:
   implementation/source-schema/configuration, runtime/provider/estimate
   contract/package, both source-independent and synthetic reference-flow
   conformance, operational-history contract/backend-independence checks,
-  concrete DuckDB adapter boundary checks, and logical-product
-  contract/builder/conformance/access boundary checks;
+  concrete DuckDB adapter boundary checks, logical-product
+  contract/builder/conformance/access checks, YAML materialization/integrity,
+  and product-only application boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Iteration 6.1 tests.
+  Phase 6 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -184,20 +191,20 @@ Checkpoint mode runs every development check and additionally verifies:
   clean temporary installation/loading, two admitted-input flows, two
   provider-estimation flows, and Iteration 4.2 implementation-record entry;
 - the exact operational-history contract/port scope, conforming DuckDB adapter,
-  durable operation, absence of application/later layers, and Iterations
-  5.1/5.2 implementation-record entries;
-- the Iteration 6.1 three-product core contracts, backend-neutral builder and
-  access scope, human operation, focused tests, and implementation record;
-- an independently owned `renv` lockfile recording `yaml`, `DBI`, and `duckdb`;
+  durable operation, and Iterations 5.1/5.2 implementation-record entries;
+- the Phase 6 three-product core, backend-neutral builder, YAML adapter,
+  product-only app, human operations, focused tests, and implementation record;
+- an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
+  `shiny` with its required transitive packages;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the Phase 0–5.2 source-to-durable-history
-boundary plus Iteration 6.1 logical product coherence. It does not prove:
+This is strict only relative to the completed Phase 0–6 fictional
+source-to-application boundary. It does not prove:
 
 - public release or license readiness;
-- clinical provider validity, production persistence, physical product
-  materialization, or application correctness;
+- clinical provider validity, production persistence/materialization, or final
+  application UX;
 - deployment-artifact or publication safety;
 - security or privacy certification;
 - absence of all PHI or secrets; or

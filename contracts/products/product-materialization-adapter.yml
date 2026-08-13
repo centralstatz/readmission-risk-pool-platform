@@ -1,0 +1,52 @@
+# Logical contract for replaceable physical product materializations.
+specification_kind: product_materialization_contract
+specification_id: platform.product-materialization-adapter
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Product materialization and access adapter
+status: active
+description: >-
+  Language-neutral behavior for publishing and reading one coherent logical
+  product set. The contract does not select files, tables, object storage,
+  checksums, or an application framework.
+
+required_adapter_fields:
+  - adapter_id
+  - adapter_version
+  - contract_reference
+  - supported_product_set
+  - format_reference
+  - capabilities
+  - methods
+
+required_capabilities:
+  complete_set_staging: true
+  atomic_current_set_publication: true
+  immutable_published_bundles: true
+  whole_set_validation_before_access: true
+  physical_integrity_evidence: true
+  explicit_freshness_facts: true
+
+required_methods:
+  - materialize_product_set
+  - open_product_access
+  - list_products
+  - read_product
+  - read_product_metadata
+
+publication_semantics:
+  visible_unit: one complete coherent product set
+  replacement: atomically replace the current-set reference after validation
+  partial_visibility: prohibited
+  logical_identity: unchanged by physical format, path, checksum, or publication time
+
+validation_categories:
+  integrity: physical files and declared checksums agree
+  compatibility: adapter, format, set, and member versions are supported
+  coherence: every required member conforms and shares one product-set identity
+  freshness: source cutoff, source as-of, latest source run, generation, and publication facts
+
+freshness_semantics: >-
+  Adapters expose facts and do not invent a staleness threshold. Old but intact,
+  compatible, coherent products remain readable with truthful timestamps.

@@ -1,0 +1,46 @@
+# Portable local reference realization of the product materialization contract.
+specification_kind: product_materialization_adapter_implementation
+specification_id: reference.yaml-product-bundle
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: YAML product bundle materialization adapter
+status: active
+description: >-
+  Repository-owned local reference adapter using a YAML manifest and one YAML
+  member document per logical product. It is a replaceable reference choice,
+  not a storage requirement for other implementations.
+
+adapter_id: reference.yaml-product-bundle
+adapter_version: "0.1.0"
+contract_reference:
+  specification_kind: product_materialization_contract
+  specification_id: platform.product-materialization-adapter
+  specification_version: "0.1.0"
+supported_product_set:
+  specification_kind: product_set_contract
+  specification_id: platform.initial-risk-product-set
+  specification_version: "0.1.0"
+format_reference:
+  format_id: yaml-product-bundle
+  format_version: "0.1.0"
+  yaml_specification: "1.2"
+integrity:
+  algorithm: md5
+  purpose: accidental corruption detection, not security or authenticity
+capabilities:
+  complete_set_staging: true
+  atomic_current_set_publication: true
+  immutable_published_bundles: true
+  whole_set_validation_before_access: true
+  physical_integrity_evidence: true
+  explicit_freshness_facts: true
+methods:
+  - materialize_product_set
+  - open_product_access
+  - list_products
+  - read_product
+  - read_product_metadata
+publication_model: immutable bundle directory plus same-filesystem atomic CURRENT.yml replacement
+retention_model: previous immutable bundles retained until separate operator-governed cleanup
+data_classification: fictional_nonclinical_reference_only

@@ -65,7 +65,7 @@ history. Ordinary console output is not a provenance, audit, or metrics store.
 A successful run must report the exact provider
 `reference.transparent-readmission-hazard@0.1.0`, estimate contract
 `platform.readmission-risk-estimate@0.1.0`, and equal request and successful
-estimate counts. Run the current completed Phase 5 checkpoint separately:
+estimate counts. Run the current completed Phase 6 checkpoint separately:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

@@ -272,7 +272,8 @@ rrp_validate_platform <- function(repository_root, mode) {
         rrp_validate_phase2_checkpoint(repository_root),
         rrp_validate_phase3_checkpoint(repository_root),
         rrp_validate_phase4_checkpoint(repository_root),
-        rrp_validate_phase5_checkpoint(repository_root)
+        rrp_validate_phase5_checkpoint(repository_root),
+        rrp_validate_phase6_checkpoint(repository_root)
       ),
       after = 4L
     )
@@ -281,7 +282,7 @@ rrp_validate_platform <- function(repository_root, mode) {
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Completed Phase 5 plus Iteration 6.1 strict checkpoint validation"
+    "Completed Phase 6 strict checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }

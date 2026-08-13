@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 5 is complete and Phase 6 is in progress through Iteration 6.1.** The focused internal
+**Phase 6 is complete through Iteration 6.2.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -28,10 +28,12 @@ invalidation, restatement, and atomic terminal-batch semantics. The
 repository-owned DuckDB reference adapter now proves those semantics durably,
 and one supported fictional operation runs source through accepted estimates
 and close/reopen history reads. DuckDB is not a platform requirement. Three
-versioned logical products now build as one coherent in-memory set exclusively
+versioned logical products build as one coherent set exclusively
 from persistence-port reads, with explicit identity, freshness, compatibility,
-availability/failure, conformance, and a future application access seam.
-Physical product storage, Shiny, deployment, observability, and CI/CD remain
+availability/failure, and conformance. A replaceable YAML bundle adapter now
+publishes complete sets atomically and validates them before logical access;
+the minimal Shiny app consumes only that access boundary. Deployment,
+observability, scheduling, priority policy, replay, and CI/CD remain
 unimplemented.
 
 The platform is not clinically validated, production-ready, or approved for
@@ -76,9 +78,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 11. Read [Logical Product Foundation](docs/architecture/logical-product-foundation.md)
    for the first suite, product-set/freshness semantics, builders, conformance,
    and logical access boundary.
-12. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+12. Read [Reference Product Materialization](docs/architecture/reference-product-materialization.md)
+   and [Minimal Product-Only Application](docs/architecture/reference-application.md)
+   for physical publication/access and the supplied Shiny boundary.
+13. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-13. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+14. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -94,7 +99,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 5 checkpoint with:
+Evaluate the completed Phase 6 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -128,6 +133,14 @@ Build and inspect the first logical product set from that history with:
 
 ```sh
 Rscript operations/build-reference-products.R --scale test
+```
+
+Materialize the coherent set and validate or launch the product-only app with:
+
+```sh
+Rscript operations/build-reference-products.R --scale test --materialize
+Rscript operations/launch-reference-app.R --validate-only
+Rscript operations/launch-reference-app.R
 ```
 
 ## Authority

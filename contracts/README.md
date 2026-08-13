@@ -8,7 +8,9 @@ execution, and accepted estimates. Iteration 5.1 adds operational run,
 invalidation, and persistence-adapter semantics. Iteration 5.2 leaves these
 contracts unchanged while proving them through a concrete implementation
 outside this directory. Iteration 6.1 adds the first three logical products and
-their coherent product-set contract.
+their coherent product-set contract. Iteration 6.2 adds the storage-neutral
+product-materialization adapter contract; its YAML realization stays under
+`implementations/`.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -22,8 +24,8 @@ their coherent product-set contract.
   and adapter capability contracts. It contains no connection or storage
   configuration.
 - `products/` contains the current-risk, persisted-risk-history, operational
-  run-summary, and required core-set contracts. It contains no file, database,
-  application, or materialization format.
+  run-summary, required core-set, and storage-neutral materialization-adapter
+  contracts. It selects no file, database, or application implementation.
 
 The first profile is documented in
 [Initial canonical clinical profile](../docs/architecture/canonical-clinical-profile.md),
@@ -35,6 +37,8 @@ The non-normative DuckDB realization is documented in
 [DuckDB reference persistence](../docs/architecture/duckdb-reference-persistence.md).
 The first history-backed consumer boundary is documented in
 [Logical product foundation](../docs/architecture/logical-product-foundation.md).
+The physical reference is documented in
+[Reference product materialization](../docs/architecture/reference-product-materialization.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in

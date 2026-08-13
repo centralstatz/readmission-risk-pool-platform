@@ -315,8 +315,10 @@ current valid episode/estimand risk, persisted accepted-estimate history, and
 valid terminal operational-run summaries. The exact grains, coherent-set
 identity, freshness, compatibility, failure behavior, builders, conformance,
 and in-memory access seam are authoritative in
-[Logical Product Foundation](logical-product-foundation.md). Physical
-materialization and the supplied application remain later Phase 6 work.
+[Logical Product Foundation](logical-product-foundation.md). Iteration 6.2
+realizes the seam with a replaceable
+[YAML reference materialization](reference-product-materialization.md) and the
+[minimal product-only Shiny application](reference-application.md).
 
 ### Storage independence
 
@@ -336,8 +338,9 @@ without changing product builders or application modules.
 ## Application layer
 
 The supplied Shiny application consumes product contracts through a product
-access service. It may render current status, history, summaries, care
-management, lineage, and capability-aware experiences.
+access service. Its initial reference renders current risk, actual retained
+risk history, run status, and freshness only; later apps may add separately
+contracted products.
 
 It is insulated from:
 

@@ -107,7 +107,7 @@ phase0_test_cases <- function(repository_root) {
       fixture <- phase0_copy_repository_fixture(repository_root)
       on.exit(unlink(fixture, recursive = TRUE, force = TRUE), add = TRUE)
       phase0_assert_true(rrp_validate_phase0_checkpoint(fixture)$passed)
-      dir.create(file.path(fixture, "app"))
+      dir.create(file.path(fixture, "deploy"))
       result <- rrp_validate_phase0_checkpoint(fixture)
       phase0_assert_false(result$passed)
       phase0_assert_issue(result, "premature_architecture_directory")

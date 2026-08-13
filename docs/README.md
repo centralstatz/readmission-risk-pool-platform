@@ -40,6 +40,10 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Logical Product Foundation](architecture/logical-product-foundation.md) —
   first product suite, grains/keys, set identity, freshness, compatibility,
   failure semantics, builders, conformance, and logical access boundary.
+- [Reference Product Materialization](architecture/reference-product-materialization.md)
+  — YAML bundle adapter, atomic replacement, integrity, access, and freshness.
+- [Minimal Product-Only Application](architecture/reference-application.md) —
+  injected product access, Shiny views, empty states, and safe failure.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -69,9 +73,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   the exact registered transparent provider and validate accepted estimates.
 - [Durable Reference History](operations/reference-history.md) — initialize,
   run, persist, inspect, back up, and recover fictional DuckDB history.
-- [Build Logical Products](operations/logical-products.md) — build and inspect
-  the coherent logical suite from valid persisted history without materializing
-  it.
+- [Build, Materialize, and Launch Products](operations/logical-products.md) —
+  build/inspect in memory or publish atomically, validate access, and launch
+  the fictional app.
 
 ## Specifications
 

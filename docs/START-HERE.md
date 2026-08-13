@@ -1,8 +1,8 @@
 # Start here
 
-This repository has completed its first durable source-to-history flow and its
-first backend-neutral logical product boundary. Understand the intended public
-and physical-materialization boundaries before extending it.
+This repository has completed its first durable source-to-history-to-product-
+application flow. Understand its logical and physical boundaries before
+extending it.
 
 ## Recommended review
 
@@ -34,18 +34,21 @@ and physical-materialization boundaries before extending it.
    — the concrete local adapter, physical tradeoffs, atomicity, and recovery.
 11. [Logical Product Foundation](architecture/logical-product-foundation.md) —
    first suite, identity/freshness, compatibility/failure behavior, builders,
-   conformance, and future application access.
-12. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+   conformance, and application access.
+12. [Reference Product Materialization](architecture/reference-product-materialization.md)
+   and [Minimal Product-Only Application](architecture/reference-application.md)
+   — atomic physical access and the supplied consumer boundary.
+13. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-13. [Open Decisions](architecture/open-decisions.md) — choices that require
+14. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-14. [Platform Implementation Record](architecture/platform-implementation-record.md)
+15. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-15. [Implementation Conventions](development/implementation-conventions.md) and
+16. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-16. [Repository Development Policies](development/repository-policies.md) for
+17. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-17. [Operations](operations/README.md) for supported human operations and
+18. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

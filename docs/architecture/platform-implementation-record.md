@@ -2097,3 +2097,143 @@ Temporary databases, package archives, and check directories were removed.
 No product materialization, application data, commit, push, publication,
 deployment, or external mutation occurred. The sibling repository remained
 read-only.
+
+### Iteration 6.2 — Reference product materialization and minimal product-only application
+
+#### Planned objective
+
+Realize the logical products through one replaceable physical adapter, validate
+one coherent set before access, and provide the smallest useful Shiny consumer
+through that access alone. Prove history → materialize → launch without adding
+deployment, scheduling, priority/decision policy, replay, or observability.
+
+#### Materialization decision
+
+`reference.yaml-product-bundle@0.1.0` implements
+`platform.product-materialization-adapter@0.1.0`. CSV was rejected because the
+contracts contain nested model, provider, estimand, implementation, mapping,
+and provenance references; it would need another bespoke encoding. YAML is an
+already-owned, inspectable, language-neutral dependency and remains a
+replaceable reference rather than a platform requirement.
+
+#### Actual implementation
+
+- Added the materialization contract/declaration and YAML staging, hashing,
+  validation, publication, and access modules.
+- Added immutable set directories with three member documents and
+  `PRODUCT_SET.yml`, selected by atomically replaced `CURRENT.yml`.
+- Extended product build with opt-in `--materialize`/`--products`, preserving
+  the in-memory default.
+- Added product-only app initialization, presentation view models, three-view
+  Shiny factory, injection-only entry, and independent launch/validate command.
+- Added architecture/operations documentation, dependency state, repository
+  validation, and focused materialization/application tests.
+
+#### Decisions
+
+1. Adapter is `reference.yaml-product-bundle@0.1.0`; physical format is one
+   YAML manifest plus one YAML document per logical product.
+2. Complete-set staging and immutable-directory promotion precede atomic
+   same-filesystem `CURRENT.yml` replacement; partial sets are never visible.
+3. Previous bundles remain for inspection/recovery until separately governed
+   cleanup. Identical writes are idempotent; conflicts fail.
+4. Integrity uses exact inventory, non-linked paths, YAML readability, and MD5
+   manifest/member checks. MD5 detects accidental corruption, not authenticity.
+5. Physical open validates integrity, compatibility, and coherence before
+   returning list/read/metadata access; failures return issues and no access.
+6. Freshness exposes cutoff, source as-of, latest run, generation, and
+   publication. No universal stale threshold exists; old valid sets load.
+7. Available zero-row products render explicit empty messages.
+8. `shiny@1.10.0` is the only direct app dependency; standard Shiny and base
+   graphics are sufficient.
+9. Launch validates then starts, never regenerates, and can be repeated.
+10. Generated databases/bundles remain ignored and uncommitted. Scheduling is
+    external; missed runs create no points and same-day runs remain distinct.
+
+#### Reference assets inspected
+
+After clean design, sibling `app/app.R`, `app/R/data-access.R`,
+`app/R/app-init.R`, `app/data/PRODUCT_MANIFEST.yml`, absent root
+`manifest.json`, and `deploy/connect-cloud/` were inspected read-only. Central
+access initialization, complete-manifest validation, counts/hashes,
+deployment-neutral app ownership, and a later generated adapter were adapted
+as principles or retained as later evidence. The eight-product suite,
+CSV/RDS/path config, database switch, engine loading, tracked product
+checkpoint, priority products, and Connect publication were rejected/deferred.
+No code, text, data, configuration, identifier, or dependency metadata was
+copied.
+
+#### New material created cleanly
+
+New clean work comprises the contract/declaration, three adapter modules, two
+architecture guides, four app modules, operation composition and launcher,
+extended build flags, focused tests, dependency/validation updates, human and
+agent guidance, and evidence records.
+
+#### Surprises/deviations
+
+- The suite is not flat: nested references make CSV less simple than YAML.
+- YAML preserves contract semantics but may normalize an integral R scalar's
+  storage type; logical integer validation, identities, and values are stable.
+- Sandboxed R startup could not create renv's user-cache lock, so development
+  used vanilla startup until supported commands were rerun with required
+  filesystem permission. Repository behavior did not change.
+- The specified evidence closes Phase 6; no Iteration 6.3 polish is justified.
+
+#### Validation evidence
+
+Focused Phase 6 development passed 17 cases: ten unchanged logical cases plus
+adapter declaration, YAML/in-memory equivalence, atomic replacement/retention,
+corruption/incompatibility, old-valid freshness, zero-row/safe-failure Shiny
+initialization, and irregular/multiple same-day observations. Full matrix and
+manual lifecycle evidence is recorded in the final follow-up below.
+
+#### Implications for Phase 7
+
+Phase 7 can assume tested human commands for history, build, atomic
+materialization, product validation, and local app startup. It may consolidate
+callable results and adoption guidance without moving business logic into a
+CLI/agent or selecting deployment/scheduling.
+
+#### Phase 6 status
+
+**Complete.** Logical products/builders, rebuildable durable materialization,
+whole-set access validation, minimal Shiny consumption, factual freshness,
+irregular/same-day history, safe empty/failure behavior, and the source-to-app
+path are demonstrated without backend leakage.
+
+#### Recommended next task
+
+Begin **Phase 7 — Stable platform operations and adoption guides** by
+inventorying callable operation surfaces and defining the smallest human
+initialize/doctor/run/materialize/launch workflow. Do not add a CLI, scheduler,
+deployment, or release machinery until that design shows a concrete need.
+
+#### Final validation follow-up
+
+The completed implementation passed the full required matrix:
+
+- documentation — 4 checks, 0 issues;
+- focused Phase 0–6 suites — 10, 14, 38, 24, 55, 18, and 17 tests,
+  respectively, all passing;
+- development validation — 73 checks, 0 issues;
+- completed Phase 6 checkpoint — 109 checks, 0 issues, including an explicit
+  Phase 6 product/materialization/application checkpoint component;
+- fresh temporary history → materialization → app initialization — completed
+  with 6 states, 6 requests, 6 executions, 6 estimates, product rows 6/6/1,
+  atomic publication, and successful `--validate-only` Shiny construction;
+- 89 maintained R files and 41 YAML files parsed with zero failures;
+- `renv::status()` — no issues, with `shiny@1.10.0` and its transitive
+  dependencies locked/restored; and
+- clean `R CMD build` and `R CMD check --no-manual --no-vignettes` for the
+  unchanged base-R-only `rrpruntime@0.3.0` — status OK;
+- app/product forbidden-dependency scans, generated-data check, sibling
+  worktree check, native-pipe scan, whitespace, and `git diff --check` passed.
+
+The aggregate validation used `RENV_CONFIG_SANDBOX_ENABLED=FALSE` only because
+the managed execution environment cannot coordinate renv's user-cache lock
+across its nested R processes. The documented commands, repository project
+library, lockfile, and test semantics were unchanged. Temporary lifecycle
+state was created under `/private/tmp` and removed. No generated product or
+database was added to the repository, and no commit, push, deployment,
+publication, scheduling, or external mutation occurred.

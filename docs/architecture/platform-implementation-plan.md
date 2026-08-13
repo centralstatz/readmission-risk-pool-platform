@@ -369,14 +369,17 @@ database choice remains deployment-owned.
   freshness identity, compatibility/availability/failure semantics,
   backend-neutral builders, independent conformance, logical access, and one
   in-memory human build/inspection path over existing durable history.
-- **Iteration 6.2 — physical product access and minimal application:** next.
-  Select one replaceable reference materialization/access adapter and add only
-  the smallest capability-aware app consuming that boundary.
+- **Iteration 6.2 — physical product access and minimal application:**
+  complete. It adds the replaceable YAML bundle adapter, atomic coherent-set
+  publication, whole-set access validation, factual freshness, and a minimal
+  Shiny app consuming only injected product access.
 
-Phase 6 remains in progress. Remaining migration/retention maturity, retained
-decision/lineage choices, and broader optional products are not implied by the
-Iteration 6.1 checkpoint. This split clarifies execution inside the existing
-phase and does not change the phase sequence.
+**Phase 6 is complete.** The deliberately narrow reference suite now proves
+logical contracts/builders, durable rebuildable materialization, replaceable
+access, integrity/compatibility/coherence/freshness, irregular and same-day
+history, and the source-to-app human path. Broader optional products, final UX,
+and production retention/migration policy require future concrete needs rather
+than an Iteration 6.3 for polish.
 
 ## Phase 7 — Stable platform operations and adoption guides
 

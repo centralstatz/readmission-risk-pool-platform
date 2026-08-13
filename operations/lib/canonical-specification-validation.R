@@ -324,9 +324,9 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
   prohibited_directories <- c(
     "contracts/schemas",
     "contracts/domains",
-    "app",
     "deploy",
-    "config"
+    "config",
+    "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories

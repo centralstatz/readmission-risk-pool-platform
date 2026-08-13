@@ -1,72 +1,86 @@
-# Build and inspect reference logical products
+# Build, materialize, inspect, and launch reference products
 
-## Purpose
+## Purpose and prerequisites
 
-This read-only operation opens existing fictional DuckDB operational history
-through the logical persistence port, selects explicit valid completed run
-history, builds the required in-memory logical product set, validates every
-product and set coherence, and prints identities, freshness, availability, and
-row counts. It writes no product file or table and does not invoke a source,
-runtime eligibility, provider, decision policy, application, or deployment.
+These human operations read fictional DuckDB history through the logical
+persistence port, build the required product set, optionally publish a complete
+YAML bundle, validate/open that bundle through product access, and launch the
+minimal Shiny app. They do not alter history, invoke a source/provider during
+product build, apply priority policy, schedule work, or deploy anything.
 
-Restore the locked environment and run commands from the repository root:
+Restore the locked environment from the repository root:
 
 ```sh
 Rscript -e 'renv::restore()'
 ```
 
-## Build after durable history
-
-Create the deterministic fictional history first:
+## Complete manual sequence
 
 ```sh
 Rscript operations/run-reference-history.R --scale test
+Rscript operations/build-reference-products.R --scale test --materialize
+Rscript operations/launch-reference-app.R --validate-only
+Rscript operations/launch-reference-app.R
 ```
 
-Then build and inspect the three logical products in memory:
+The first command creates or idempotently confirms deterministic fictional
+history. The second builds, conforms, stages, validates, and atomically
+publishes all three products. The third proves clean product access and app
+initialization without starting a server. The fourth launches from the already
+materialized set and can be repeated without rerunning the pipeline. Stop the
+foreground Shiny process with Ctrl-C.
+
+## Paths and source scope
+
+The default run is `runtime_synthetic_history_test_001`. Use explicit paths
+when needed:
 
 ```sh
-Rscript operations/build-reference-products.R --scale test
-```
-
-The default database is the ignored path configured by the DuckDB reference
-adapter. The default selected run is
-`runtime_synthetic_history_test_001`. Choose a database and one or more exact
-run IDs explicitly when required:
-
-```sh
+Rscript operations/run-reference-history.R \
+  --scale test \
+  --database build/my-fictional-history.duckdb
 Rscript operations/build-reference-products.R \
   --database build/my-fictional-history.duckdb \
-  --run-id runtime_synthetic_history_test_001
+  --run-id runtime_synthetic_history_test_001 \
+  --materialize \
+  --products build/my-reference-products
+Rscript operations/launch-reference-app.R \
+  --products build/my-reference-products \
+  --validate-only
 ```
 
-Repeat `--run-id` to build a coherent transition/history set. The command
-sorts/deduplicates the supplied IDs, requires every one to be currently valid
-and terminally completed, derives the cutoff from their greatest run as-of,
-and lets the product builder identify the unique latest represented run by
-as-of then terminal status time. The selected IDs must be the complete intended
-history scope at that cutoff. A current estimate outside the supplied scope is
-a coherence failure.
+Repeat `--run-id` for a coherent history set. IDs are sorted/deduplicated and
+each must be currently valid and terminally completed. The caller supplies the
+complete intended source scope. The operation does not discover or silently
+combine other runs. Without `--materialize`, the build command prints logical
+identity/freshness/counts and discards the in-memory objects.
 
-## Output and side effects
+## Side effects and publication
 
-Success prints:
+History generation has the append/idempotency effects documented in
+[Durable Reference History](reference-history.md). Materialization creates the
+selected product store, writes a staging bundle, promotes an immutable set
+directory, and atomically replaces `CURRENT.yml`. The previous bundle remains
+retained. Failed build never publishes; failed pointer replacement leaves the
+previous set visible. App validation and launch are read-only.
 
-- deterministic product-set and build IDs;
-- selected source cutoff and source as-of;
-- latest represented valid runtime run;
-- product generation time; and
-- each product ID/version, availability, and row count.
+Generated databases and products are ignored operational state under `build/`,
+not source, and must not be committed. No cleanup command exists yet; review
+non-current bundles and recovery needs before manual deletion.
 
-The logical objects and access boundary exist only in process memory and are
-discarded on exit. The operation opens the database read-only, closes it, and
-does not modify history. Ordinary console output contains aggregate identities
-and counts for visibly fictional reference data; it is not logging,
-observability, provenance storage, or audit.
+## Cadence, freshness, and history
+
+Commands run only when invoked. Scheduling is external. A missed run yields no
+row for that interval and is not backfilled by product construction. Multiple
+runs on one day retain distinct run IDs and actual estimate-as-of timestamps;
+the app plots points without interpolation or daily aggregation.
+
+Old products are not automatically rejected. Integrity, compatibility, and
+coherence must pass, after which access and the app show cutoff, source as-of,
+latest run, generation, and publication facts. A deployment may later add an
+explicit staleness policy without changing the bundle.
 
 ## Validation
-
-Run:
 
 ```sh
 Rscript tests/run-phase6-tests.R
@@ -74,30 +88,26 @@ Rscript operations/validate.R --mode development
 Rscript operations/validate.R --mode checkpoint
 ```
 
-The focused suite proves the same logical results through the in-memory test
-adapter and a temporary DuckDB database, plus current/history/run-summary,
-provider-transition, invalidation/restatement, failure/zero-row, conformance,
-freshness, deterministic identity, and access-boundary behavior.
+The suite covers in-memory/DuckDB logical equivalence, YAML round-trip access,
+replacement, corruption/incompatibility, old-valid freshness, zero rows, safe
+app failure, provider transitions, missed days, and multiple same-day runs.
 
 ## Recovery and troubleshooting
 
-- **Database missing or incompatible:** create history with the documented
-  Phase 5 operation or select a compatible validated database. Do not
-  initialize or migrate it through the product command.
-- **Selected run unavailable:** inspect the run through the history port. An
-  invalidated, incomplete, failed, missing, or ambiguous run cannot be treated
-  as a completed valid product source.
-- **Current estimate outside selected scope:** supply the complete intended
-  valid run set at the cutoff. Do not allow the builder to combine undeclared
-  history silently.
-- **Unsupported upstream version:** use a product builder declaring that exact
-  compatible line or deliberately version the product contracts and tests.
-- **Product conformance failure:** preserve the source history, inspect all
-  structured issues, and correct the builder/contract mismatch. Do not publish
-  partial products or substitute empty rows.
-- **Zero risk rows:** check the run summary. A valid
-  `completed_with_failures` run can legitimately yield available zero-row risk
-  products; this is not equivalent to a failed build.
+- **History missing/incompatible:** create or select it with the Phase 5
+  operation. Product operations never initialize or migrate history.
+- **Selected run invalid/incomplete:** inspect through the history operation;
+  do not publish it as completed input.
+- **Build/conformance failure:** preserve history and correct the source-scope
+  or contract mismatch. No partial set is published.
+- **Integrity failure:** rebuild from authoritative history. Do not edit member
+  files or checksums in place.
+- **Compatibility failure:** use matching versions or an explicit migration;
+  never relabel a manifest.
+- **Old but valid products:** review displayed facts and local policy. Age is
+  not corruption.
+- **Zero risk rows:** review run status. An available empty product is valid.
+- **App startup failure:** run `--validate-only` and act on its structured
+  validation result.
 
-No recovery step deletes or rewrites operational history. Physical product
-materialization/recovery begins only when Iteration 6.2 selects an adapter.
+No recovery step deletes or rewrites operational history.
