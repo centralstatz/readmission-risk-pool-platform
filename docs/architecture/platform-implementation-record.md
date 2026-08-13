@@ -2237,3 +2237,194 @@ library, lockfile, and test semantics were unchanged. Temporary lifecycle
 state was created under `/private/tmp` and removed. No generated product or
 database was added to the repository, and no commit, push, deployment,
 publication, scheduling, or external mutation occurred.
+
+## Phase 7 — Stable platform operations and adoption guides
+
+### Iteration 7.1 — Human initialization, doctor, workflow, and adoption guidance
+
+#### Planned objective
+
+Turn the separately proven Phase 0–6 operations into a small stable human
+operating model: restore dependencies, initialize local state, run read-only
+doctor, execute one reference platform refresh, inspect operational history,
+materialize products, validate the app payload, and launch the product-only app.
+Keep AI optional and preserve lower-level debugging operations while excluding
+scheduling, deployment, release, replay, decision policy, and observability.
+
+#### Actual implementation
+
+- Added `platform.initialize-local`, which verifies the installed environment
+  and creates only an ignored writable local build root.
+- Added `platform.doctor`, a read-only preflight with pass/warning/failure
+  results and lifecycle status for environment, history, latest run, products,
+  product source as-of, and app readiness.
+- Added `reference.run-platform`, the one public source → canonical → runtime →
+  estimand/provider → durable history command. It reuses the tested Phase 3–5
+  composition and never materializes products or starts the app.
+- Made history inspection usable with public defaults while retaining its
+  explicit database/run/view form.
+- Kept product materialization and app validation/launch as separate Phase 6
+  commands and standardized their human console operation/status/next-action
+  output without changing product or app semantics.
+- Added a small declarative registry for stable/advanced/development operation
+  classification and documentation drift checks. It contains no executable
+  business logic or command router.
+- Added the procedural operator manual and progressive-implementation guide,
+  including component composition, cadence versus estimand horizon, missed and
+  same-day runs, troubleshooting, external scheduling, and replacement duties.
+- Added focused Phase 7 tests plus development/checkpoint integration for fresh
+  state, doctor failures, end-to-end state transitions, idempotency, distinct
+  same-day runs, downstream-only materialization/app behavior, documentation,
+  and agent alignment.
+
+#### Public operation surface
+
+Nine public IDs are registered: local initialize, doctor, development
+validation, checkpoint validation, reference platform run, history inspection,
+product materialization, app validation, and app launch. Source generation,
+runtime-only, estimation-only, lower-level history, in-memory product build,
+history backup, documentation validation, and phase suites remain advanced or
+development operations for diagnosis and maintenance.
+
+#### Initialization decision
+
+`renv::restore()` remains an explicit prerequisite because it may access package
+repositories and change the project library. Initialization does not hide that
+mutation, initialize DuckDB, create fake history/products, launch Shiny, or
+touch maintained source. It only makes the ignored local state root explicit
+and repeatable.
+
+#### Doctor behavior
+
+Doctor checks R, locked direct dependencies, required reference files/config,
+temporary runtime package install/load, writable output parents, DuckDB
+adapter/schema compatibility and lifecycle, complete YAML product access, and
+Shiny readiness. Fresh absence of history/products is a warning and exits zero;
+missing dependencies, incompatible history, corrupt product bundles, or runtime
+load failure block operation and name a recovery action. Temporary probes and
+package libraries are removed.
+
+Doctor intentionally does not use Git cleanliness as readiness. Git is only the
+current development acquisition path, and repository/checkpoint validation
+already owns maintained/generated-state policy independently of operator
+preflight.
+
+#### Reference workflow and operation classification
+
+The authoritative manual sequence is initialize → doctor → run platform →
+inspect history → materialize products → validate app → launch app. No combined
+workflow wrapper was added: the seven short commands clearly expose different
+mutation boundaries, and a wrapper would add little evidence. A new run may
+accept explicit run/as-of identity; the preserved deterministic default remains
+idempotent for teaching and regression.
+
+#### Scheduling, missed-run, and same-day semantics
+
+The canonical wording is: the platform owns what a run does; the operator owns
+when runs occur. External schedulers may invoke the same commands but none is
+implemented or required. A missed run creates no estimate and is never
+backfilled with future facts. Multiple same-day runs and overlapping one-day
+estimand target intervals remain separately identified retained observations.
+Product rebuild and app launch create no operational history.
+
+#### Progressive implementation guidance
+
+The reference source/profile/estimand/provider/DuckDB/product-set/YAML/Shiny
+composition is documented as one coherent out-of-box realization, not generic
+dependencies. An adopter may replace source mapping, provider, persistence,
+materialization/app, and future deployment independently in any coherent order.
+The guides describe each component's ownership and explicitly add no hospital
+SQL, second persistence adapter, provider method, or customization framework.
+
+#### Agent/human alignment and operations-registry decision
+
+`AGENTS.md` now requires the operator manual first, exact operation invocation,
+reporting of the human command used, aligned docs/registry/tests, no implicit
+scheduling, and no unsolicited hospital-source changes. Ambiguous “refresh app”
+language is rejected in favor of distinct platform run, product refresh, and
+app launch intents. The operation count now justifies a minimal YAML registry
+for drift metadata, but not a CLI framework, interactive menu, or executable
+orchestrator.
+
+#### Reference assets inspected
+
+Sibling operation guides/registry, scripts, START-HERE, and agent guidance were
+inspected read-only after the clean design. Stable IDs, exact command/doc
+linkage, task-oriented recovery coverage, and agent-to-human operation mapping
+were adapted as principles. The old full catalog, `targets` pipeline, Git
+A/B/C/tracked-product refresh rules, deployment/publication operations, and
+agent-only checkpoint procedures were rejected or deferred. No sibling code,
+text, YAML, configuration, identifier, or dependency was copied.
+
+#### New material created cleanly
+
+New clean work includes three public scripts, two operation-library modules,
+the operations registry, Phase 7 test runner/suite, operator manual, progressive
+implementation guide, adapter lifecycle status helper, and coordinated
+validation/navigation/architecture/plan/decision/agent/record updates. Existing
+runtime, provider, persistence, product, and app contracts remain unchanged.
+
+#### Surprises and deviations
+
+- The existing deterministic Phase 5 run identity remains important for
+  idempotency teaching, while an operator-owned run/as-of override was needed
+  to prove actual repeated observations and multiple same-day runs.
+- The persistence port intentionally has no global run catalog. Doctor's latest
+  lifecycle summary therefore stays in the concrete reference adapter and does
+  not widen the generic port.
+- The managed execution environment again required disabling only renv's
+  global sandbox lock for validation subprocesses; project lockfile semantics
+  and documented human commands did not change.
+- No architecture dependency changed. The plan/architecture were updated only
+  to record the now-stable operation control surface and Phase 7 completion.
+
+#### Validation evidence
+
+The completed repository-owned matrix passed:
+
+- documentation validation — 4 checks, 0 issues;
+- focused Phase 0–7 suites — 10, 14, 38, 24, 55, 18, 17, and 8 tests,
+  respectively, all passing;
+- development validation — 80 checks, 0 issues;
+- completed Phase 7 checkpoint — 123 checks, 0 issues;
+- fresh doctor — environment ready with expected nonfatal absent history,
+  product, and app-data warnings;
+- temporary initialize → doctor → platform run → history inspection → product
+  materialization → app validation → second same-day run → product rebuild;
+  two terminal runs and 12 retained estimate points remained distinct, while
+  product/app-only actions left operational history unchanged;
+- missing dependency, incompatible DuckDB, corrupt current product bundle,
+  exact retry idempotency, and no missed-run backfill all failed or warned with
+  the intended actionable semantics;
+- all maintained R and YAML parsed, `renv::status()` reported synchronized
+  dependency state, `rrpruntime@0.3.0` built/checked cleanly, and whitespace plus
+  `git diff --check` passed.
+
+The aggregate R commands used `RENV_CONFIG_SANDBOX_ENABLED=FALSE` only because
+the managed execution environment cannot coordinate renv's user-cache sandbox
+lock across nested processes. The project library, lockfile, documented human
+commands, and platform semantics were unchanged. Temporary state was removed;
+no generated database/product, commit, push, deployment, publication,
+scheduling, or external mutation remains.
+
+#### Implications for deployment phase
+
+Deployment can now assume a stable human build/materialize/app-validation
+workflow, but no deployment packaging/publication exists yet. Phase 8 may build
+a reduced validated application artifact and realize it for Connect Cloud or
+another target without redefining upstream operations or app semantics.
+
+#### Phase 7 status
+
+**Complete.** Stable human entry points, fresh-install/doctor semantics,
+operator/adoption/troubleshooting guidance, operation classification and drift
+validation, human/agent alignment, and full reference lifecycle evidence are
+present. Upgrade and release behavior remain in later planned phases rather
+than forcing an unnecessary Iteration 7.2.
+
+#### Recommended next task
+
+Begin **Phase 8 — Deployment build and Connect Cloud reference** by defining a
+target-neutral reduced application artifact contract before inspecting/adapting
+old target-specific builders. Keep artifact construction separate from
+publication and require explicit authority for external repository mutation.

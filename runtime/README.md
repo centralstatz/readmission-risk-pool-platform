@@ -31,3 +31,7 @@ application code, deployment, Git behavior, or observability. The test-only
 in-memory adapter is not package code or a supported operation. An accepted
 estimate is a methodological result; it becomes operational history only when
 accepted in an atomic terminal run batch.
+
+Phase 7's `run-platform.R` operation composes this package through its existing
+interfaces. Human operator wrappers do not add runtime business logic, and
+scheduling remains external.

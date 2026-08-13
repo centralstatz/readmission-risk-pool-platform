@@ -38,17 +38,20 @@ extending it.
 12. [Reference Product Materialization](architecture/reference-product-materialization.md)
    and [Minimal Product-Only Application](architecture/reference-application.md)
    — atomic physical access and the supplied consumer boundary.
-13. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+13. [Local Reference Platform Operator Manual](operations/operator-manual.md)
+   and [Progressive Implementation](adoption/progressive-implementation.md) —
+   operate the reference composition and understand each replacement boundary.
+14. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-14. [Open Decisions](architecture/open-decisions.md) — choices that require
+15. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-15. [Platform Implementation Record](architecture/platform-implementation-record.md)
+16. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-16. [Implementation Conventions](development/implementation-conventions.md) and
+17. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-17. [Repository Development Policies](development/repository-policies.md) for
+18. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-18. [Operations](operations/README.md) for supported human operations and
+19. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -1,0 +1,98 @@
+registry_version: 1
+operations:
+  - operation_id: platform.initialize-local
+    command: Rscript operations/initialize-platform.R
+    purpose: Prepare the ignored local build root after dependencies are restored.
+    mutation: local_directory_only
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: platform.doctor
+    command: Rscript operations/doctor.R
+    purpose: Report whether the local reference workflow can run and its lifecycle state.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: platform.validate-development
+    command: Rscript operations/validate.R --mode development
+    purpose: Check current repository coherence during development.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-checkpoint
+    command: Rscript operations/validate.R --mode checkpoint
+    purpose: Check the completed Phase 7 milestone.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/validation.md
+  - operation_id: reference.run-platform
+    command: Rscript operations/run-platform.R --profile reference --scale test
+    purpose: Execute one source-to-estimate cycle and persist operational history.
+    mutation: append_or_idempotent_history
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: reference.inspect-history
+    command: Rscript operations/inspect-reference-history.R --scale test
+    purpose: Inspect one retained run through the logical persistence port.
+    mutation: read_only
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: reference.materialize-products
+    command: Rscript operations/build-reference-products.R --scale test --materialize
+    purpose: Rebuild and atomically publish products from selected retained history.
+    mutation: replace_current_product_pointer
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: reference.validate-app
+    command: Rscript operations/launch-reference-app.R --validate-only
+    purpose: Validate the current product bundle and construct the app without a server.
+    mutation: read_only
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: reference.launch-app
+    command: Rscript operations/launch-reference-app.R
+    purpose: Launch the local product-only Shiny app from the current valid bundle.
+    mutation: long_running_read_only_process
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: platform.validate-documentation
+    command: Rscript operations/validate-documentation.R
+    purpose: Validate maintained documentation and local links.
+    mutation: read_only
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: reference.generate-source
+    command: Rscript operations/generate-reference.R --scale test
+    purpose: Debug source generation, mapping, and canonical admission in memory.
+    mutation: in_memory_only
+    classification: advanced
+    documentation: docs/operations/generate-reference.md
+  - operation_id: reference.run-runtime
+    command: Rscript operations/run-reference-runtime.R --input synthetic --scale test
+    purpose: Debug admitted input through eligibility, state, and requests.
+    mutation: in_memory_only
+    classification: advanced
+    documentation: docs/operations/run-reference-runtime.md
+  - operation_id: reference.run-estimation
+    command: Rscript operations/run-reference-estimation.R --input synthetic --scale test
+    purpose: Debug provider execution and accepted estimates without persistence.
+    mutation: in_memory_only
+    classification: advanced
+    documentation: docs/operations/run-reference-estimation.md
+  - operation_id: reference.run-history-lower-level
+    command: Rscript operations/run-reference-history.R --scale test
+    purpose: Debug the lower-level deterministic durable history composition.
+    mutation: append_or_idempotent_history
+    classification: advanced
+    documentation: docs/operations/reference-history.md
+  - operation_id: reference.build-products-in-memory
+    command: Rscript operations/build-reference-products.R --scale test
+    purpose: Debug logical product construction without physical publication.
+    mutation: in_memory_only
+    classification: advanced
+    documentation: docs/operations/logical-products.md
+  - operation_id: reference.backup-history
+    command: Rscript operations/backup-reference-history.R --database build/reference-operational-history.duckdb --backup build/backups/reference-operational-history-001.duckdb
+    purpose: Create a validated no-overwrite checkpointed reference-history backup.
+    mutation: new_backup_file
+    classification: advanced
+    documentation: docs/operations/reference-history.md

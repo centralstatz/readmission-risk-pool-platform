@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 6 is complete through Iteration 6.2.** The focused internal
+**Phase 7 is complete through Iteration 7.1.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -35,6 +35,12 @@ publishes complete sets atomically and validates them before logical access;
 the minimal Shiny app consumes only that access boundary. Deployment,
 observability, scheduling, priority policy, replay, and CI/CD remain
 unimplemented.
+
+The stable human operator surface now provides explicit initialization,
+read-only doctor/preflight, one reference platform run, history inspection,
+product materialization, app validation, and app launch. Fresh local state is
+healthy with warnings rather than fabricated history. Scheduling remains
+external, and reference components are documented as independently replaceable.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
@@ -81,9 +87,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 12. Read [Reference Product Materialization](docs/architecture/reference-product-materialization.md)
    and [Minimal Product-Only Application](docs/architecture/reference-application.md)
    for physical publication/access and the supplied Shiny boundary.
-13. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+13. Read the [Local Reference Platform Operator Manual](docs/operations/operator-manual.md)
+   and [Progressive Implementation Guide](docs/adoption/progressive-implementation.md)
+   for the human workflow and replaceable reference composition.
+14. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-14. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+15. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -99,7 +108,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 6 checkpoint with:
+Evaluate the completed Phase 7 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -123,10 +132,14 @@ Run the complete admitted-input-to-estimate demonstration with:
 Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
-Run the first durable fictional vertical slice with:
+Initialize, preflight, and run the first durable fictional vertical slice with:
 
 ```sh
-Rscript operations/run-reference-history.R --scale test
+Rscript -e 'renv::restore()'
+Rscript operations/initialize-platform.R
+Rscript operations/doctor.R
+Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/inspect-reference-history.R --scale test
 ```
 
 Build and inspect the first logical product set from that history with:

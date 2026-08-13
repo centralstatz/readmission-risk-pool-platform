@@ -17,7 +17,7 @@ Rscript -e 'renv::restore()'
 ## Complete manual sequence
 
 ```sh
-Rscript operations/run-reference-history.R --scale test
+Rscript operations/run-platform.R --profile reference --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 Rscript operations/launch-reference-app.R
@@ -74,6 +74,10 @@ Commands run only when invoked. Scheduling is external. A missed run yields no
 row for that interval and is not backfilled by product construction. Multiple
 runs on one day retain distinct run IDs and actual estimate-as-of timestamps;
 the app plots points without interpolation or daily aggregation.
+
+Platform run, product refresh, and app launch are distinct. This product
+operation never invokes runtime/provider code or creates history, and app
+validation/launch never rebuilds products.
 
 Old products are not automatically rejected. Integrity, compatibility, and
 coherence must pass, after which access and the app show cutoff, source as-of,

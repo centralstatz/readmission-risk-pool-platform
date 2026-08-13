@@ -78,3 +78,6 @@ days create no synthetic observations, and multiple same-day runs remain
 distinct timestamps and run IDs. Bundles and DuckDB files are generated state
 under `build/` and are not committed. Scheduling, cleanup, retention duration,
 authentication, deployment, and production storage remain outside this adapter.
+Phase 7 exposes materialization as a separate public product refresh downstream
+of the platform run; this adapter still never creates an estimate or modifies
+operational history.

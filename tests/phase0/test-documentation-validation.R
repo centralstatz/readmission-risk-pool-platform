@@ -106,6 +106,12 @@ phase0_test_cases <- function(repository_root) {
     "checkpoint rejects later-phase scaffolding" = function() {
       fixture <- phase0_copy_repository_fixture(repository_root)
       on.exit(unlink(fixture, recursive = TRUE, force = TRUE), add = TRUE)
+      # Evaluate the original Phase 0 claim against a bootstrap-shaped copy;
+      # later completed implementation directories are not retroactively a
+      # Phase 0 failure in the live repository.
+      for (directory in c("app", "contracts", "implementations", "products", "runtime")) {
+        unlink(file.path(fixture, directory), recursive = TRUE, force = TRUE)
+      }
       phase0_assert_true(rrp_validate_phase0_checkpoint(fixture)$passed)
       dir.create(file.path(fixture, "deploy"))
       result <- rrp_validate_phase0_checkpoint(fixture)

@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase 6
-  source-to-materialized-products-and-application requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed Phase 7
+  human-operation and adoption requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -15,7 +15,9 @@ foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
 3 fictional source implementation, completed Phase 4 runtime/provider
 foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
 DuckDB reference adapter plus durable operation, Iteration 6.1 logical
-products, and Iteration 6.2 physical product access plus minimal app.
+products, Iteration 6.2 physical product access plus minimal app, and Iteration
+7.1 stable initialize/doctor/run/materialize/launch operations plus adoption
+guidance.
 
 ## Prerequisites
 
@@ -44,7 +46,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 6 checkpoint:
+Validate the completed Phase 7 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -92,6 +94,12 @@ Run the focused Phase 6 product/materialization/app tests directly:
 Rscript tests/run-phase6-tests.R
 ```
 
+Run the focused Phase 7 doctor/workflow/operation-documentation tests directly:
+
+```sh
+Rscript tests/run-phase7-tests.R
+```
+
 Run the reference source-to-canonical operation:
 
 ```sh
@@ -114,6 +122,12 @@ Rscript operations/run-reference-estimation.R --input synthetic --scale test
 ```
 
 Run the durable fictional source-to-history path (safely repeatable):
+
+```sh
+Rscript operations/run-platform.R --profile reference --scale test
+```
+
+Run the lower-level deterministic history composition for debugging:
 
 ```sh
 Rscript operations/run-reference-history.R --scale test
@@ -172,7 +186,7 @@ Development mode composes:
   and product-only application boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6 tests.
+  Phase 6 and Phase 7 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -194,13 +208,16 @@ Checkpoint mode runs every development check and additionally verifies:
   durable operation, and Iterations 5.1/5.2 implementation-record entries;
 - the Phase 6 three-product core, backend-neutral builder, YAML adapter,
   product-only app, human operations, focused tests, and implementation record;
+- the Phase 7 operation registry, initialization, read-only doctor, stable
+  one-run entry point, operation classification/documentation, fresh-state and
+  repeat-workflow evidence, adoption guide, and human/agent alignment;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with its required transitive packages;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the completed Phase 0–6 fictional
-source-to-application boundary. It does not prove:
+This is strict only relative to the completed Phase 0–7 fictional
+source-to-human-operated-application boundary. It does not prove:
 
 - public release or license readiness;
 - clinical provider validity, production persistence/materialization, or final

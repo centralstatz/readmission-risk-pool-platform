@@ -14,3 +14,5 @@ physical product format.
 Iteration 6.1 keeps this generic layer in memory. Iteration 6.2 realizes its
 unchanged access shape through `implementations/products/yaml/` and injects
 that access into `app/`. Physical code and Shiny remain outside this directory.
+Phase 7 keeps product refresh a distinct human operation downstream of a
+platform run; rebuilding products never creates estimates or history.

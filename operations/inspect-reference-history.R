@@ -13,6 +13,7 @@ arguments <- commandArgs(trailingOnly = TRUE)
 database_path <- NULL
 runtime_run_id <- NULL
 view <- "valid"
+scale <- "test"
 while (length(arguments) > 0L) {
   if (length(arguments) >= 2L && identical(arguments[[1L]], "--database")) {
     database_path <- arguments[[2L]]
@@ -23,18 +24,29 @@ while (length(arguments) > 0L) {
   } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--view")) {
     view <- arguments[[2L]]
     arguments <- arguments[-c(1L, 2L)]
+  } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--scale")) {
+    scale <- arguments[[2L]]
+    arguments <- arguments[-c(1L, 2L)]
   } else {
     message(paste(
       "Usage: Rscript operations/inspect-reference-history.R",
-      "--database PATH --run-id ID [--view valid|raw]"
+      "[--database PATH] [--scale test|reference] [--run-id ID]",
+      "[--view valid|raw]"
     ))
     quit(save = "no", status = 2L, runLast = FALSE)
   }
 }
-if (is.null(database_path) || is.null(runtime_run_id) || !view %in% c("valid", "raw")) {
-  message("Database, run ID, and a valid/raw view are required.")
+if (!scale %in% c("test", "reference") || !view %in% c("valid", "raw")) {
+  message("Scale must be test/reference and view must be valid/raw.")
   quit(save = "no", status = 2L, runLast = FALSE)
 }
+if (is.null(database_path)) {
+  configuration <- rrp_read_duckdb_configuration(repository_root)
+  database_path <- file.path(repository_root, configuration$database_path)
+}
+if (is.null(runtime_run_id)) runtime_run_id <- paste0(
+  "runtime_synthetic_history_", scale, "_001"
+)
 if (!grepl("^(/|[A-Za-z]:[/\\\\])", database_path)) {
   database_path <- file.path(repository_root, database_path)
 }
@@ -46,7 +58,8 @@ on.exit(rrp_close_duckdb_persistence(session), add = TRUE)
 history <- rrpruntime::read_run_history(
   rrp_duckdb_persistence_port(session), runtime_run_id, view
 )
-cat("Reference history inspection\n")
+cat("Operation: reference.inspect-history\n")
+cat("Status: succeeded\n")
 cat("  data_classification: fictional_nonclinical\n")
 cat("  runtime_run_id: ", runtime_run_id, "\n", sep = "")
 cat("  view: ", view, "\n", sep = "")
@@ -56,4 +69,4 @@ if (length(history$operational_run) > 0L) cat(
     history$operational_run, `[[`, character(1), "run_status"
   ), collapse = " -> "), "\n", sep = ""
 )
-
+cat("Next: materialize products or inspect another retained run.\n")

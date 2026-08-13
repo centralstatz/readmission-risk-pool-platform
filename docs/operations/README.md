@@ -3,9 +3,12 @@
 This index lists operations that exist and are supported now. It does not
 reserve names or document hypothetical future capabilities.
 
+- [Local Reference Platform Operator Manual](operator-manual.md) — restore,
+  initialize, doctor, run once, inspect history, materialize products, validate,
+  and launch through the stable public operator surface.
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–6 tests, check repository policies, and
-  evaluate the completed Phase 6 checkpoint.
+  specification assets, run Phase 0–7 tests, check repository policies, and
+  evaluate the completed Phase 7 checkpoint.
 - [Generate Reference](generate-reference.md) — generate, source-validate, map,
   and canonically admit the deterministic fictional reference in memory.
 - [Run Reference Runtime](run-reference-runtime.md) — admit either canonical
@@ -21,3 +24,6 @@ reserve names or document hypothetical future capabilities.
 
 Human documentation is the authoritative operating interface. Scripts, agents,
 and automation must invoke the same callable behavior described here.
+The lightweight [`operations/operations.yml`](../../operations/operations.yml)
+registry checks IDs, commands, mutation levels, classifications, and document
+links; it contains no executable workflow logic.

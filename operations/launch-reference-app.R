@@ -59,7 +59,8 @@ if (!identical(initialized$overall_status, "succeeded")) {
   message("Reference app initialization failed: ", initialized$message)
   quit(save = "no", status = 1L, runLast = FALSE)
 }
-cat("Reference application products: validated\n")
+cat("Operation: reference.launch-app\n")
+cat("Status: ", if (validate_only) "validated" else "launching", "\n", sep = "")
 cat("  data_classification: fictional_nonclinical\n")
 cat("  product_set_id: ", initialized$products[[1L]]$product_set_id, "\n", sep = "")
 cat("  source_as_of_time: ", initialized$freshness$source_as_of_time, "\n", sep = "")
@@ -68,5 +69,8 @@ cat("  latest_source_runtime_run_id: ",
   initialized$freshness$latest_source_runtime_run_id, "\n", sep = ""
 )
 application <- rrp_create_reference_app(opened$access)
-if (validate_only) quit(save = "no", status = 0L, runLast = FALSE)
+if (validate_only) {
+  cat("Next: Rscript operations/launch-reference-app.R\n")
+  quit(save = "no", status = 0L, runLast = FALSE)
+}
 shiny::runApp(application, host = host, port = port, launch.browser = interactive())

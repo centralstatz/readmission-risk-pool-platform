@@ -18,6 +18,15 @@ Run commands from the repository root.
 
 ## Generate and persist
 
+Ordinary operators should use the stable one-run entry point:
+
+```sh
+Rscript operations/run-platform.R --profile reference --scale test
+```
+
+The lower-level deterministic history command remains supported for debugging
+and idempotency evidence.
+
 Use the default ignored database at
 `build/reference-operational-history.duckdb`:
 
@@ -52,7 +61,13 @@ commit a database or WAL.
 
 ## Inspect through the port
 
-The inspection command requires the database and run identity:
+Inspect the default test run with:
+
+```sh
+Rscript operations/inspect-reference-history.R --scale test
+```
+
+The explicit form selects a database and run identity:
 
 ```sh
 Rscript operations/inspect-reference-history.R \
@@ -87,6 +102,12 @@ Stop the platform writer, then create a new backup path:
 Rscript operations/backup-reference-history.R \
   --database build/reference-operational-history.duckdb \
   --backup build/backups/reference-operational-history-001.duckdb
+```
+
+The registry's exact default backup command is:
+
+```sh
+Rscript operations/backup-reference-history.R --database build/reference-operational-history.duckdb --backup build/backups/reference-operational-history-001.duckdb
 ```
 
 The operation validates and checkpoints the source, closes it, refuses an

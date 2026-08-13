@@ -17,6 +17,39 @@ rrp_duckdb_open_session_internal <- function(
   session$database_path <- database_path
   session$read_only <- read_only
   session$port <- port
+  session$lifecycle <- function() {
+    rrp_duckdb_assert_open(state)
+    rows <- DBI::dbGetQuery(
+      state$connection,
+      "SELECT payload_hex FROM operational_run_statuses"
+    )
+    statuses <- lapply(rows$payload_hex, rrp_duckdb_decode_record)
+    terminal <- Filter(function(value) value$run_status %in% c(
+      "completed", "completed_with_failures"
+    ), statuses)
+    latest <- NULL
+    if (length(terminal) > 0L) {
+      order_index <- order(
+        vapply(terminal, function(value) {
+          rrp_duckdb_time_number(value$as_of_time)
+        }, numeric(1)),
+        vapply(terminal, function(value) {
+          rrp_duckdb_time_number(value$status_time)
+        }, numeric(1)),
+        vapply(terminal, `[[`, character(1), "runtime_run_id"),
+        method = "radix"
+      )
+      latest <- terminal[[tail(order_index, 1L)]]$runtime_run_id
+    }
+    list(
+      initialized = TRUE,
+      run_count = length(unique(vapply(
+        statuses, `[[`, character(1), "runtime_run_id"
+      ))),
+      terminal_run_count = length(terminal),
+      latest_runtime_run_id = latest
+    )
+  }
   session$close <- function() {
     if (isTRUE(state$open)) {
       rrp_duckdb_disconnect(state$connection)
@@ -48,6 +81,15 @@ rrp_duckdb_persistence_port <- function(session) {
     "A DuckDB persistence session is required.", call. = FALSE
   )
   session$port
+}
+
+# Reference-operator lifecycle inspection. This is adapter-specific status
+# evidence; it does not widen the backend-neutral persistence port.
+rrp_duckdb_history_lifecycle <- function(session) {
+  if (!inherits(session, "rrp_duckdb_persistence_session")) stop(
+    "A DuckDB persistence session is required.", call. = FALSE
+  )
+  session$lifecycle()
 }
 
 # Test-only constructor keeps injected transaction failures out of the
@@ -91,4 +133,3 @@ rrp_backup_duckdb_history <- function(database_path, backup_path) {
   valid <- TRUE
   invisible(list(source = database_path, backup = backup_path))
 }
-

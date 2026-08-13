@@ -215,6 +215,26 @@ No sibling code, YAML, UI, product data, dependency metadata, deployment
 template, or identifier was copied. Shiny was selected from current app need,
 not inherited dependency state. The sibling worktree remained unchanged.
 
+## Iteration 7.1 operations/adoption review outcome
+
+The clean public workflow, initialization/doctor semantics, operation classes,
+cadence rules, and progressive-replacement guidance were designed before the
+required read-only review of sibling `docs/operations/`, `operations.yml`,
+`AGENTS.md`, `scripts/`, and `docs/START-HERE.md`.
+
+| Evidence | Final use | Retained principle | Rejected or deferred shape |
+|---|---|---|---|
+| `docs/operations/operations.yml` and drift validator | **Adapt — structure/principle only** | Stable operation IDs linked to exact human commands, docs, and validation | Old catalog, deployment/publication/product-document actions, registry as orchestration |
+| `docs/operations/` guides | **Reference only** | Task-oriented purpose, prerequisites, effects, recovery, and troubleshooting | Git A/B/C checkpoints, tracked products, old paths, deployment restrictions |
+| `AGENTS.md` shorthand | **Adapt — principle only** | Agents invoke documented operations and report explicit mutation checkpoints | Old synthetic-product refresh/publish semantics and agent-specific sequences |
+| `scripts/bootstrap.R`, `run-pipeline.R`, and app launcher | **Reference only** | Visible dependency setup and thin entry points | `targets` pipeline, hidden combined refresh, old product/app contracts |
+| `docs/START-HERE.md` | **Reference only** | A procedural whole-platform reading route helps adoption | Old component inventory, release/deployment/product-document sections |
+
+No sibling code, prose, command, identifier, YAML entry, configuration, data,
+or dependency was copied. The clean registry and guides are repository-owned;
+deployment/publication and the old tracked-product lifecycle remain deferred or
+rejected for Phase 7.
+
 ## Phase 2.2 field/rule review outcome
 
 The first clinical profile was designed cleanly before the Phase 2 evidence was

@@ -44,6 +44,8 @@ The documentation is the active product at this bootstrap stage. Begin with
   — YAML bundle adapter, atomic replacement, integrity, access, and freshness.
 - [Minimal Product-Only Application](architecture/reference-application.md) —
   injected product access, Shiny views, empty states, and safe failure.
+- [Progressive Implementation](adoption/progressive-implementation.md) —
+  reference composition and source/provider/persistence/product/app replacement.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
@@ -63,8 +65,11 @@ The documentation is the active product at this bootstrap stage. Begin with
 
 - [Operations Index](operations/README.md) — currently supported human
   operations.
+- [Local Reference Platform Operator Manual](operations/operator-manual.md) —
+  initialize, doctor, run, inspect, materialize, validate, launch, repeat, and
+  troubleshoot without AI.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–6 test commands.
+  documentation, and Phase 0–7 test commands.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise
@@ -88,6 +93,6 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Root README](../README.md) — project identity, status, and navigation.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
-Contract, user, adoption, application, and deployment guides will be added in
+Further contract, user, application, and deployment guides will be added in
 the phases that create those capabilities. Documentation must not claim an
 operation exists before it has a tested human implementation.

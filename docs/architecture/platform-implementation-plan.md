@@ -415,6 +415,18 @@ Thin human wrappers begin earlier, but stable extraction depends on Phases 2–6
 Decide whether a CLI or package control surface adds evidence-based value only
 after operation APIs stabilize.
 
+### Completion status
+
+**Complete in Iteration 7.1.** The stable Rscript surface now owns explicit
+local initialization, warning-tolerant read-only doctor, one reference
+source-to-history run, history inspection, downstream product materialization,
+and product-only app validation/launch. A small declarative registry protects
+command/documentation/agent drift; the operator manual and progressive-
+implementation guide cover cadence, missed/same-day runs, troubleshooting, and
+independent source/provider/persistence/product/app replacement. No CLI
+framework or convenience workflow wrapper was justified. Scheduling,
+deployment, release, upgrade, publishing, and observability remain later work.
+
 ## Phase 8 — Deployment build and Connect Cloud reference
 
 ### Objective

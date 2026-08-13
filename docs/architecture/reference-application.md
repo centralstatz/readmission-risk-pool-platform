@@ -38,3 +38,6 @@ starting when physical integrity, compatibility, or coherence fails.
 This is a fictional, nonclinical reference interface. Final UX, access control,
 deployment packaging, priority policy, scheduling, replay, and observability
 remain future work.
+
+Phase 7 keeps app validation and launch as distinct read-only human operations.
+Neither operation runs the platform, opens DuckDB, or rebuilds products.

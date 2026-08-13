@@ -51,8 +51,10 @@ parser plus DBI and DuckDB solely for the Iteration 5.2 concrete reference
 adapter; `rrpruntime` remains base-R-only. Completed Phase 6 owns the
 three-product logical core set, backend-neutral builders/conformance, YAML
 reference materialization/access adapter, and minimal product-only Shiny app.
-The app owns Shiny; the adapter reuses YAML. Deployment and later layers remain
-unauthorized.
+The app owns Shiny; the adapter reuses YAML. Completed Phase 7 owns the stable
+human initialize/doctor/run/inspect/materialize/validate/launch surface,
+operation classification/registry, and progressive-adoption guide. Deployment
+and later layers remain unauthorized.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -89,6 +91,36 @@ invent hidden procedures, unique business logic, secret recovery steps, or an
 AI-only interface. If guidance and an executable operation disagree, treat it
 as a defect and reconcile them.
 
+Read `docs/operations/operator-manual.md` before platform operation. Invoke its
+exact commands instead of recreating multi-stage sequences ad hoc, report the
+human operation invoked, keep documentation/registry/tests aligned when an
+operation changes, and never introduce scheduling implicitly. Do not modify a
+hospital/source implementation unless the user explicitly asks.
+
+Stable intent mappings are:
+
+```text
+initialize the local platform
+    → Rscript operations/initialize-platform.R
+run doctor
+    → Rscript operations/doctor.R
+run the reference platform once
+    → Rscript operations/run-platform.R --profile reference --scale test
+inspect reference history
+    → Rscript operations/inspect-reference-history.R --scale test
+materialize reference products
+    → Rscript operations/build-reference-products.R --scale test --materialize
+validate the reference app
+    → Rscript operations/launch-reference-app.R --validate-only
+launch the reference app
+    → Rscript operations/launch-reference-app.R
+```
+
+Keep platform run, product refresh, and app launch distinct. “Refresh the local
+reference app” is ambiguous: determine whether the user wants a new estimation
+run, only a product rebuild from retained history, or only app launch/reload.
+Never schedule any of them automatically.
+
 Do not commit, publish, deploy, push, or mutate an external repository unless
 the user explicitly requests it and the relevant operation's safety checks are
 available.
@@ -117,7 +149,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 6 checkpoint, run:
+For the completed Phase 7 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -151,6 +183,18 @@ Run the focused product/materialization/app tests and operations with:
 ```sh
 Rscript tests/run-phase6-tests.R
 Rscript operations/build-reference-products.R --scale test
+Rscript operations/build-reference-products.R --scale test --materialize
+Rscript operations/launch-reference-app.R --validate-only
+```
+
+Run the focused human-operation tests and stable reference workflow with:
+
+```sh
+Rscript tests/run-phase7-tests.R
+Rscript operations/initialize-platform.R
+Rscript operations/doctor.R
+Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/inspect-reference-history.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 ```
@@ -200,7 +244,9 @@ Phase 4 is complete. Operational history is documented in
 through the logical boundary in
 `docs/architecture/logical-product-foundation.md`, the reference materializer
 in `docs/architecture/reference-product-materialization.md`, and the app in
-`docs/architecture/reference-application.md`. Deployment, replay, decision
+`docs/architecture/reference-application.md`. Phase 7 is complete through
+`docs/operations/operator-manual.md`, `docs/adoption/progressive-implementation.md`,
+and `operations/operations.yml`. Deployment, replay, decision
 policy, scheduling, observability, and later capabilities remain unauthorized
 until their phases.
 

@@ -378,6 +378,14 @@ Names are provisional until implemented. Human commands, schedulers, agents,
 and any optional client invoke the same operation implementation. Operations
 may orchestrate all layers but do not absorb their domain logic.
 
+Phase 7 stabilizes the local reference operator surface as initialize, doctor,
+validate, one platform run, history inspection, product materialization, app
+validation, and app launch. A lightweight registry records their IDs, commands,
+mutation levels, classifications, and human guides; it is not an execution
+router. The platform run creates operational history, product refresh projects
+retained history, and app launch consumes the current product set. Scheduling
+is external: the platform owns run behavior and the operator owns cadence.
+
 ## Deployment layer
 
 A deployment target implements a build contract:

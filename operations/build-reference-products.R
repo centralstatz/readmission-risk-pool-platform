@@ -82,7 +82,8 @@ result <- tryCatch(
 if (is.null(result)) quit(save = "no", status = 1L, runLast = FALSE)
 
 summary <- rrp_reference_product_summary(result)
-cat("Reference logical products: succeeded\n")
+cat("Operation: reference.build-products\n")
+cat("Status: succeeded\n")
 cat("  data_classification: fictional_nonclinical\n")
 cat("  product_set_id: ", summary$product_set_id, "\n", sep = "")
 cat("  product_build_id: ", summary$product_build_id, "\n", sep = "")
@@ -114,3 +115,8 @@ if (materialize) {
 } else cat(
   "\nProducts were conformed and inspected in memory; no product files or tables were written.\n"
 )
+cat(if (materialize) {
+  "Next: Rscript operations/launch-reference-app.R --validate-only\n"
+} else {
+  "Next: rerun with --materialize to publish the current product bundle.\n"
+})

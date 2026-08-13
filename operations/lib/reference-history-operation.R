@@ -1,10 +1,34 @@
 # Human-callable composition of the existing synthetic, runtime, provider, and
 # persistence interfaces. No history semantics are implemented here.
 
-rrp_reference_history_identities <- function(scale) list(
-  runtime_run_id = paste0("runtime_synthetic_history_", scale, "_001"),
-  provider_execution_run_id = paste0("provider_synthetic_history_", scale, "_001")
-)
+rrp_reference_history_identities <- function(scale, runtime_run_id = NULL) {
+  default_identity <- is.null(runtime_run_id)
+  runtime_run_id <- runtime_run_id %||% paste0("runtime_synthetic_history_", scale, "_001")
+  list(
+    runtime_run_id = runtime_run_id,
+    provider_execution_run_id = if (default_identity) {
+      paste0("provider_synthetic_history_", scale, "_001")
+    } else {
+      paste0("provider_execution_", runtime_run_id)
+    }
+  )
+}
+
+rrp_reference_history_configuration <- function(
+  repository_root,
+  scale,
+  as_of_time = NULL
+) {
+  configuration <- rrp_read_synthetic_configuration(repository_root, scale)
+  if (is.null(as_of_time)) return(configuration)
+  if (!rrp_is_rfc3339_timestamp(as_of_time)) stop(
+    "Reference run as-of time must be an explicit-offset RFC 3339 timestamp.",
+    call. = FALSE
+  )
+  configuration$simulation_as_of_time <- as_of_time
+  configuration$canonical_as_of_time <- as_of_time
+  configuration
+}
 
 rrp_reference_history_status <- function(
   run_id, status, status_time, bundle, produced, history_contracts,
@@ -26,9 +50,20 @@ rrp_reference_history_status <- function(
   )
 }
 
-rrp_run_reference_history <- function(repository_root, scale, database_path) {
-  identities <- rrp_reference_history_identities(scale)
-  produced <- rrp_run_synthetic_reference(repository_root, scale)
+rrp_run_reference_history <- function(
+  repository_root,
+  scale,
+  database_path,
+  runtime_run_id = NULL,
+  as_of_time = NULL
+) {
+  identities <- rrp_reference_history_identities(scale, runtime_run_id)
+  configuration <- rrp_reference_history_configuration(
+    repository_root, scale, as_of_time
+  )
+  produced <- rrp_run_synthetic_reference(
+    repository_root, scale, configuration
+  )
   if (!identical(produced$overall_status, "succeeded")) stop(
     "Synthetic canonical production failed; history run was not started.",
     call. = FALSE
@@ -112,4 +147,3 @@ rrp_run_reference_history <- function(repository_root, scale, database_path) {
     )
   )
 }
-

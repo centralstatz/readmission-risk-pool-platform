@@ -179,10 +179,18 @@ rrp_produce_synthetic_from_source <- function(
   result
 }
 
-rrp_run_synthetic_reference <- function(repository_root, scale = "reference") {
+rrp_run_synthetic_reference <- function(
+  repository_root,
+  scale = "reference",
+  configuration = NULL
+) {
   implementation <- rrp_read_synthetic_implementation_specification(repository_root)
   source_schema <- rrp_read_synthetic_source_schema(repository_root)
-  config <- rrp_read_synthetic_configuration(repository_root, scale)
+  config <- if (is.null(configuration)) {
+    rrp_read_synthetic_configuration(repository_root, scale)
+  } else {
+    configuration
+  }
   config_result <- rrp_validate_synthetic_configuration(
     config, implementation, paste0("config/", scale, ".yml")
   )
