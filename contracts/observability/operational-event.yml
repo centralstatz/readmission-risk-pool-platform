@@ -1,0 +1,58 @@
+# Structured diagnostic event emitted during one operation attempt.
+specification_kind: operational_event_contract
+specification_id: platform.operational-diagnostic-event
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operational diagnostic event
+status: active
+description: >-
+  A portable, implementation-neutral diagnostic event. Events support bounded
+  operational understanding; they are not analytical history, metrics,
+  provenance, validation results, or an audit record.
+
+required_fields:
+  - event_specification
+  - event_id
+  - operation_run_id
+  - emitted_at
+  - component
+  - stage
+  - severity
+  - lifecycle
+  - code
+  - message
+  - related_identities
+  - details
+
+optional_fields:
+  - duration_ms
+  - error_classification
+  - recovery_hint
+
+severities:
+  - debug
+  - info
+  - warning
+  - error
+
+lifecycle_events:
+  - operation_started
+  - stage_started
+  - stage_completed
+  - operation_completed
+  - operation_completed_with_warnings
+  - operation_failed
+
+privacy_policy:
+  permitted: aggregate counts and safe contract, provider, product, artifact, and deployment identities
+  prohibited: >-
+    Patient, encounter, episode, ZIP or location values, clinical events,
+    features, risk values, raw records, SQL, credentials, connection strings,
+    environment dumps, and arbitrary nested payloads.
+  enforcement: unsafe keys and non-scalar or nested detail values are rejected
+
+routing_semantics: >-
+  A callable sink consumes validated event objects. The reference console sink
+  renders without persistence; deployment environments own any later routing
+  and retention policy.

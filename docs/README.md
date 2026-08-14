@@ -50,6 +50,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Connect Cloud Git Realization](architecture/connect-cloud-realization.md) —
   target requirements, local repository contract, dependency and Git choices,
   safe regeneration, standalone validation, and publication boundary.
+- [Observability Foundation](architecture/observability-foundation.md) —
+  operation-run correlation, structured events, privacy rules, callable sinks,
+  console rendering, and separation from history/metrics/audit.
 - [Progressive Implementation](adoption/progressive-implementation.md) —
   reference composition and source/provider/persistence/product/app replacement.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
@@ -75,7 +78,10 @@ The documentation is the active product at this bootstrap stage. Begin with
   initialize, doctor, run, inspect, materialize, validate, launch, repeat, and
   troubleshoot without AI.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–8 test commands.
+  documentation, and Phase 0–9 test commands.
+- [Operational Diagnostics](operations/observability-and-diagnostics.md) —
+  interpret structured console events, privacy limits, failure recovery, and
+  focused validation.
 - [Generate Reference](operations/generate-reference.md) — run the complete
   fictional source-to-canonical producer without writing generated data.
 - [Run Reference Runtime](operations/run-reference-runtime.md) — exercise

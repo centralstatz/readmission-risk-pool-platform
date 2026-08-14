@@ -13,6 +13,9 @@ product-materialization adapter contract; its YAML realization stays under
 `implementations/`. Iteration 8.1 adds the target-neutral reduced application
 artifact contract; Iteration 8.2 adds its first target-specific local Git
 realization contract.
+Iteration 9.1 adds distinct operation-run context and operational diagnostic
+event contracts; it adds no history, metric, audit, routing, or retention
+contract.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -31,6 +34,9 @@ realization contract.
 - `deployment/` contains the target-neutral reduced application-artifact
   contract and the Connect Cloud local Git realization. Neither defines a
   remote, publication identity, service credential, or container target.
+- `observability/` contains the operation-attempt correlation context and
+  privacy-conscious structured diagnostic event contracts. It contains no
+  patient payload, sink configuration, or retention policy.
 
 The first profile is documented in
 [Initial canonical clinical profile](../docs/architecture/canonical-clinical-profile.md),
@@ -48,6 +54,8 @@ The target-neutral runtime unit is documented in
 [Application artifact foundation](../docs/architecture/application-artifact-foundation.md).
 The first target realization is documented in
 [Connect Cloud Git realization](../docs/architecture/connect-cloud-realization.md).
+The diagnostic boundary is documented in
+[Observability foundation](../docs/architecture/observability-foundation.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in

@@ -293,6 +293,33 @@ rrp_run_phase8_tests <- function(repository_root) {
   rrp_validation_result("Phase 8 tests", checks, issues)
 }
 
+rrp_run_phase9_tests <- function(repository_root) {
+  output <- tempfile("rrp-phase9-tests-", fileext = ".log")
+  on.exit(unlink(output, force = TRUE), add = TRUE)
+  status <- system2(
+    file.path(R.home("bin"), "Rscript"),
+    shQuote(file.path(repository_root, "tests", "run-phase9-tests.R")),
+    stdout = output, stderr = output
+  )
+  lines <- if (file.exists(output)) readLines(output, warn = FALSE) else character()
+  passed <- identical(status, 0L)
+  result_lines <- lines[grepl("^Result:", lines)]
+  checks <- rrp_check(
+    "phase9_tests", passed,
+    if (passed && length(result_lines) > 0L) tail(result_lines, 1L) else {
+      if (passed) "Phase 9 tests passed" else "Phase 9 test process failed"
+    }
+  )
+  issues <- if (passed) rrp_empty_issues() else rrp_issue(
+    "phase9_tests", "phase9_test_failure",
+    paste(
+      "Run Rscript tests/run-phase9-tests.R for details.",
+      paste(tail(lines, 12L), collapse = " | ")
+    ), "tests/run-phase9-tests.R"
+  )
+  rrp_validation_result("Phase 9 tests", checks, issues)
+}
+
 rrp_validate_platform <- function(repository_root, mode) {
   if (!mode %in% rrp_validation_modes()) {
     stop("Unknown validation mode: ", mode, call. = FALSE)
@@ -310,6 +337,7 @@ rrp_validate_platform <- function(repository_root, mode) {
     rrp_validate_operator_repository(repository_root),
     rrp_validate_application_artifact_repository(repository_root),
     rrp_validate_connect_cloud_repository(repository_root),
+    rrp_validate_observability_repository(repository_root),
     rrp_run_phase0_tests(repository_root),
     rrp_run_phase1_tests(repository_root),
     rrp_run_phase2_tests(repository_root),
@@ -318,7 +346,8 @@ rrp_validate_platform <- function(repository_root, mode) {
     rrp_run_phase5_tests(repository_root),
     rrp_run_phase6_tests(repository_root),
     rrp_run_phase7_tests(repository_root),
-    rrp_run_phase8_tests(repository_root)
+    rrp_run_phase8_tests(repository_root),
+    rrp_run_phase9_tests(repository_root)
   )
   if (identical(mode, "checkpoint")) {
     results <- append(
@@ -332,7 +361,8 @@ rrp_validate_platform <- function(repository_root, mode) {
         rrp_validate_phase5_checkpoint(repository_root),
         rrp_validate_phase6_checkpoint(repository_root),
         rrp_validate_phase7_checkpoint(repository_root),
-        rrp_validate_phase8_checkpoint(repository_root)
+        rrp_validate_phase8_checkpoint(repository_root),
+        rrp_validate_phase9_checkpoint(repository_root)
       ),
       after = 4L
     )
@@ -341,7 +371,7 @@ rrp_validate_platform <- function(repository_root, mode) {
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Completed Phase 8 deployment-build checkpoint validation"
+    "Completed Phase 9 observability checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }

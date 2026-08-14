@@ -7,7 +7,7 @@ Current validation answers two different questions:
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the completed Phase
-  8 reduced-artifact and Connect-realization requirements?
+  9 structured operational-diagnostic requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -17,8 +17,10 @@ foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
 DuckDB reference adapter plus durable operation, Iteration 6.1 logical
 products, Iteration 6.2 physical product access plus minimal app, and Iteration
 7.1 stable initialize/doctor/run/materialize/launch operations plus adoption
-guidance, Iteration 8.1 target-neutral artifact construction/validation, and
-Iteration 8.2 Connect Cloud standalone local Git realization/validation.
+guidance, Iteration 8.1 target-neutral artifact construction/validation,
+Iteration 8.2 Connect Cloud standalone local Git realization/validation, and
+Iteration 9.1 operation-run context, privacy guardrails, callable sink, console
+renderer, and bounded stable-operation integration.
 
 ## Prerequisites
 
@@ -48,7 +50,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 8 checkpoint:
+Validate the completed Phase 9 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -106,6 +108,12 @@ Run the focused Phase 8 artifact and Connect-realization tests directly:
 
 ```sh
 Rscript tests/run-phase8-tests.R
+```
+
+Run the focused Phase 9 observability tests directly:
+
+```sh
+Rscript tests/run-phase9-tests.R
 ```
 
 Run the reference source-to-canonical operation:
@@ -210,7 +218,7 @@ Development mode composes:
   contract/allowlist/dependency/Git/publication-boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6, Phase 7, and Phase 8 tests.
+  Phase 6, Phase 7, Phase 8, and Phase 9 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -242,12 +250,16 @@ Checkpoint mode runs every development check and additionally verifies:
   relationship, pruned dependency closure and target manifest, remote-free
   staged/uncommitted Git state, destination safety, isolated validation, human
   operations, and implementation record;
+- the Iteration 9.1 operation-context/event contracts, privacy-safe shallow
+  details, lifecycle/correlation rules, callable sink, non-retained console
+  renderer, bounded stable-operation integration, focused tests, and
+  implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with required transitive packages plus build-only `rsconnect`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the completed Phase 0–8 fictional
+This is strict only relative to the completed Phase 0–9 fictional
 source-to-local-deployable-repository boundary. It does not prove:
 
 - public release or license readiness;
@@ -263,8 +275,9 @@ source-to-local-deployable-repository boundary. It does not prove:
 Each operation reports a scope, the checks executed, `PASS` or `FAIL`, and
 actionable issues with file and line context where available. Callable
 functions under `operations/lib/` produce those results; command-line scripts
-only compose, print, and return process status. Console output is not an
-observability, provenance, metrics, or audit system.
+only compose, print, and return process status. Validation results remain
+distinct from operational diagnostic events. Console events are bounded
+observability output, not retained logs, provenance, metrics, or audit.
 
 ## Common failures and recovery
 

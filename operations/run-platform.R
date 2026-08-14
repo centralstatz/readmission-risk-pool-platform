@@ -5,6 +5,7 @@ script_path <- normalizePath(sub("^--file=", "", file_argument[[1L]]), mustWork 
 repository_root <- normalizePath(file.path(dirname(script_path), ".."), mustWork = TRUE)
 
 for (file in c(
+  "observability-operation.R",
   "validation-result.R", "documentation-validation.R", "repository-validation.R",
   "conformance-result.R", "specification-validation.R",
   "foundation-context-validation.R", "canonical-bundle-validation.R",
@@ -86,16 +87,29 @@ installed <- tryCatch(
   }
 )
 on.exit(rrp_unload_runtime_package(installed), add = TRUE)
+emitter <- rrp_start_operation_observability(
+  "reference.run-platform",
+  list(profile = profile, scale = scale, data_classification = "fictional_nonclinical")
+)
 result <- tryCatch(
   rrp_run_reference_history(
-    repository_root, scale, database_path, runtime_run_id, as_of_time
+    repository_root, scale, database_path, runtime_run_id, as_of_time, emitter
   ),
   error = function(condition) {
+    rrp_fail_operation_observability(
+      emitter, "run.failed", "Reference platform operation failed.",
+      "Review the operation error and doctor output, then retry the run."
+    )
     message("Reference platform run failed: ", conditionMessage(condition))
     NULL
   }
 )
 if (is.null(result)) quit(save = "no", status = 1L, runLast = FALSE)
+rrp_complete_operation_observability(
+  emitter,
+  related_identities = list(analytical_runtime_run_id = result$runtime_run_id),
+  details = list(run_status = result$run_status)
+)
 
 cat("Operation: reference.run-platform\n")
 cat("Status: succeeded\n")

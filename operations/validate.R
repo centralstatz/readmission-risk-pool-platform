@@ -54,6 +54,8 @@ rrp_load_connect_cloud_runtime(repository_root)
 source(file.path(
   repository_root, "operations", "lib", "connect-cloud-validation.R"
 ))
+source(file.path(repository_root, "operations", "lib", "observability-operation.R"))
+source(file.path(repository_root, "operations", "lib", "observability-validation.R"))
 source(file.path(repository_root, "operations", "lib", "platform-validation.R"))
 
 mode <- tryCatch(

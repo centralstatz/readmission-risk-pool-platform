@@ -1,0 +1,35 @@
+# Correlation context for one invocation of a stable human operation.
+specification_kind: operation_run_context_contract
+specification_id: platform.operation-run-context
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Operation run context
+status: active
+description: >-
+  A privacy-conscious correlation context for one attempted platform operation.
+  It is distinct from analytical runtime-run, product, artifact, deployment,
+  validation, provenance, metric, and audit identities.
+
+required_fields:
+  - context_specification
+  - operation_run_id
+  - operation_id
+  - attempt
+  - started_at
+  - component_reference
+  - safe_context
+
+identity_semantics:
+  operation_run_id: unique correlation identity for one operation attempt
+  operation_id: stable identity of the human-callable operation
+  excluded: >-
+    Patient, encounter, episode, analytical result, product, artifact, and
+    deployment identities never become operation-run identity.
+
+safe_context_policy:
+  shape: named shallow scalar mapping
+  prohibited: >-
+    Patient-level or raw clinical values, credentials, connection strings,
+    SQL, environment dumps, file paths, and arbitrary payloads.
+

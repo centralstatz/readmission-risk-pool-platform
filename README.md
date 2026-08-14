@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 8 is complete through Iteration 8.2.** The focused internal
+**Phase 9 is complete through Iteration 9.1.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -39,8 +39,12 @@ product bundle; it validates and constructs Shiny from an isolated copy. The
 first target realization now generates a separate, standalone, staged-but-
 uncommitted local Git repository for Connect Cloud and validates it without the
 platform source. Remote publication/deployment, OCI/container realization,
-observability, scheduling, priority policy, replay, and CI/CD remain
-unimplemented.
+retained/external observability routing, metrics, audit, scheduling, priority
+policy, replay, and CI/CD remain unimplemented. A versioned operation-run
+context and structured privacy-conscious event contract now trace bounded
+doctor, reference-run, product, artifact, and Connect-realization stages
+through a non-retained console sink without changing analytical results or
+history.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -102,9 +106,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 15. Read [Connect Cloud Git Realization](docs/architecture/connect-cloud-realization.md)
    and [Connect Cloud Deployment Operations](docs/operations/connect-cloud-deployment.md)
    for the complete local Git target and external-publication boundary.
-16. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+16. Read [Observability Foundation](docs/architecture/observability-foundation.md)
+   and [Operational Diagnostics](docs/operations/observability-and-diagnostics.md)
+   for operation correlation, privacy rules, console rendering, and non-goals.
+17. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-17. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+18. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -120,7 +127,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 8 checkpoint with:
+Evaluate the completed Phase 9 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

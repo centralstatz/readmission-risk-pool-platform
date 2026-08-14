@@ -42,7 +42,7 @@ owned, documented, and tested in this repository with no sibling dependency.
 
 Keep work within the active phase and its stated exit evidence. Do not create
 later-phase scaffolding merely to make the tree look complete. In particular,
-do not add persistence, products, app code, deployment, observability, or CI/CD
+do not add persistence, products, app code, deployment, or CI/CD
 before the relevant task authorizes it. Completed Phase 4 owns admitted input,
 eligibility, state, estimand requests, provider contracts/registry/execution,
 structured outcomes, the transparent reference provider, and accepted
@@ -60,6 +60,12 @@ generate and independently validate an explicitly chosen, outside-repository,
 remote-free deployment repository. Remote creation, commit, push, Connect
 deployment, OCI/container realization, and later layers remain outside the
 implemented platform boundary.
+Completed Phase 9 owns the distinct operation-run context and structured
+diagnostic-event contracts, base-R in-memory emitter/callable sink, safe
+shallow context rules, non-retained console renderer, and bounded integration
+with doctor, reference run, product materialization, artifact build, and
+Connect realization. Retained/external sinks, routing, retention, metrics,
+alerts, tracing protocols, audit, and scheduling remain outside this slice.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -95,6 +101,13 @@ Agents invoke the same tested operations as people and automation. Do not
 invent hidden procedures, unique business logic, secret recovery steps, or an
 AI-only interface. If guidance and an executable operation disagree, treat it
 as a defect and reconcile them.
+
+Interpret structured operation events only as privacy-conscious diagnostics.
+Do not request or expose patient-level context to diagnose a routine operation;
+preserve safe human recovery hints, and update the observability contract,
+privacy tests, console guidance, and affected operation together when event
+behavior changes. Agents are consumers of the same interface, never an
+observability dependency.
 
 Read `docs/operations/operator-manual.md` before platform operation. Invoke its
 exact commands instead of recreating multi-stage sequences ad hoc, report the
@@ -162,7 +175,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 8 checkpoint, run:
+For the completed Phase 9 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -209,6 +222,12 @@ Rscript operations/build-application-artifact.R
 Rscript operations/validate-application-artifact.R
 Rscript operations/build-connect-cloud-deployment.R --destination PATH
 Rscript operations/validate-connect-cloud-deployment.R --destination PATH
+```
+
+Run the focused observability contract/privacy/lifecycle tests with:
+
+```sh
+Rscript tests/run-phase9-tests.R
 ```
 
 Run the focused human-operation tests and stable reference workflow with:
@@ -270,14 +289,19 @@ through the logical boundary in
 in `docs/architecture/reference-product-materialization.md`, and the app in
 `docs/architecture/reference-application.md`. Phase 7 is complete through
 `docs/operations/operator-manual.md`, `docs/adoption/progressive-implementation.md`,
-and `operations/operations.yml`. Replay, decision policy, scheduling,
-observability, and later capabilities remain unauthorized until their phases.
+and `operations/operations.yml`. Replay, decision policy, scheduling, and later
+capabilities remain unauthorized until their phases.
 The target-neutral deployment boundary is documented in
 `docs/architecture/application-artifact-foundation.md` and
 `contracts/deployment/application-artifact.yml`; the completed Connect target
 is documented in `docs/architecture/connect-cloud-realization.md` and
 `contracts/deployment/connect-cloud-realization.yml`. Neither authorizes remote
 publication or deployment.
+The bounded diagnostic boundary uses
+`docs/architecture/observability-foundation.md` and
+`contracts/observability/`. Operation-run identity is never analytical
+runtime-run identity; events are not history, validation, provenance, metrics,
+or audit, and no default sink persists them.
 
 Update versions, tests, examples/configuration, human documentation, and the
 implementation record together when changing a contract, estimand, provider,

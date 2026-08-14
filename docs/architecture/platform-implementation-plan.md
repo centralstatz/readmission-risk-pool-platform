@@ -512,6 +512,20 @@ diagnostics.
 The event vocabulary begins in Phase 1; integration waits for stable operations
 and history. Deployments choose sinks and retention.
 
+### Implemented checkpoint
+
+Iteration 9.1 implements `platform.operation-run-context@0.1.0` and
+`platform.operational-diagnostic-event@0.1.0`, an in-memory base-R emitter,
+callable sink interface, privacy-safe shallow details, and a non-retained
+console renderer. Doctor, reference run, product materialization, artifact
+build, and Connect realization use the common boundary. Analytical history,
+provenance, validation, metrics, audit, and deployment-owned routing/retention
+remain separate.
+
+**Phase 9 is complete for the bounded local diagnostic foundation.** External
+observability services, retained sinks, metrics, alerts, and audit remain
+future deployment/governance work rather than missing core exit evidence.
+
 ## Phase 10 — Adapter independence
 
 ### Objective

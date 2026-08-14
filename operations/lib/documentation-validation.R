@@ -23,6 +23,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/logical-product-foundation.md",
     "docs/architecture/application-artifact-foundation.md",
     "docs/architecture/connect-cloud-realization.md",
+    "docs/architecture/observability-foundation.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -37,6 +38,7 @@ rrp_required_governing_documents <- function() {
     "docs/operations/logical-products.md",
     "docs/operations/application-artifacts.md",
     "docs/operations/connect-cloud-deployment.md",
+    "docs/operations/observability-and-diagnostics.md",
     "contracts/README.md"
   )
 }
@@ -60,6 +62,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/logical-product-foundation.md",
       "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/connect-cloud-realization.md",
+      "docs/architecture/observability-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -81,6 +84,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/logical-product-foundation.md",
       "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/connect-cloud-realization.md",
+      "docs/architecture/observability-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -104,6 +108,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/logical-product-foundation.md",
       "docs/architecture/application-artifact-foundation.md",
       "docs/architecture/connect-cloud-realization.md",
+      "docs/architecture/observability-foundation.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -179,6 +184,13 @@ rrp_navigation_expectations <- function() {
       "contracts/deployment/connect-cloud-realization.yml",
       "docs/operations/connect-cloud-deployment.md"
     ),
+    "docs/architecture/observability-foundation.md" = c(
+      "docs/architecture/platform-architecture.md",
+      "docs/architecture/platform-implementation-plan.md",
+      "contracts/observability/operation-run-context.yml",
+      "contracts/observability/operational-event.yml",
+      "docs/operations/observability-and-diagnostics.md"
+    ),
     "docs/operations/README.md" = c(
       "docs/operations/validation.md",
       "docs/operations/generate-reference.md",
@@ -187,7 +199,8 @@ rrp_navigation_expectations <- function() {
       "docs/operations/reference-history.md",
       "docs/operations/logical-products.md",
       "docs/operations/application-artifacts.md",
-      "docs/operations/connect-cloud-deployment.md"
+      "docs/operations/connect-cloud-deployment.md",
+      "docs/operations/observability-and-diagnostics.md"
     ),
     "docs/operations/application-artifacts.md" = c(
       "docs/architecture/application-artifact-foundation.md",
@@ -195,6 +208,10 @@ rrp_navigation_expectations <- function() {
     ),
     "docs/operations/connect-cloud-deployment.md" =
       "docs/architecture/connect-cloud-realization.md",
+    "docs/operations/observability-and-diagnostics.md" = c(
+      "docs/architecture/observability-foundation.md",
+      "docs/operations/validation.md"
+    ),
     "docs/architecture/platform-implementation-record.md" = c(
       "docs/vision/platform-true-north.md",
       "docs/architecture/platform-architecture.md",
@@ -209,7 +226,8 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/operational-history-foundation.md",
       "docs/architecture/logical-product-foundation.md",
       "docs/architecture/application-artifact-foundation.md",
-      "docs/architecture/connect-cloud-realization.md"
+      "docs/architecture/connect-cloud-realization.md",
+      "docs/architecture/observability-foundation.md"
     )
   )
 }

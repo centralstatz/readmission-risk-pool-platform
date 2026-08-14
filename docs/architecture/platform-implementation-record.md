@@ -2800,3 +2800,199 @@ not bypassed. Network-unavailable repository-index warnings during dependency
 status/package check were nonfatal because the complete locked installed state
 was present. The informational implicit-snapshot dependency-discovery timing
 note remains a performance observation rather than an integrity failure.
+
+## Phase 9 — Observability
+
+### Iteration 9.1 — Structured run context, operational events, and privacy-conscious console diagnostics
+
+#### Planned objective
+
+Add the smallest implementation-neutral, privacy-conscious diagnostic boundary
+around existing stable operations: a distinct operation-run context, a
+versioned structured event, a callable sink, and a human console renderer.
+Trace bounded lifecycle/stage progress without changing analytical history,
+domain results, deterministic identities, validation semantics, or deployment
+behavior. Do not add a vendor, retained log, metrics, audit, alerting,
+scheduling, or patient-level diagnostic.
+
+#### Actual work
+
+- Added `platform.operation-run-context@0.1.0` and
+  `platform.operational-diagnostic-event@0.1.0` language-neutral contracts.
+- Added a base-R operations-layer context/emitter with sequential event IDs,
+  explicit-offset timestamps, controlled lifecycle/severity/component/stage
+  vocabulary, terminal duration, in-memory event access, and terminal-state
+  enforcement.
+- Added a callable sink boundary and non-retained console reference sink. Its
+  normal, quiet, and debug renderer thresholds are adapter concerns; quiet
+  retains warnings/errors.
+- Added strict shallow scalar safe-context and related-identity allowlists,
+  explicit aggregate-count keys, bounded single-line text, and rejection of
+  patient-level identifiers/values, clinical/risk/features, raw/nested
+  payloads, SQL, paths, connection/credential/environment content, and common
+  secret forms.
+- Instrumented doctor, stable reference run, logical product build/
+  materialization, application-artifact build, and Connect realization through
+  the common boundary. The run emits aggregate source/canonical-production,
+  runtime, provider, and persistence boundaries with safe non-patient
+  correlation identities.
+- Preserved every existing command, operation registry identity, domain return
+  object, process exit status, analytical-history record, and artifact/
+  realization input. Observability remains optional at the composed reference
+  history function boundary.
+- Added focused contract, privacy, lifecycle, correlation, rendering,
+  persistence-boundary, terminal, and RNG-independence tests plus repository
+  and checkpoint integration.
+
+#### Old assets used or adapted
+
+The clean contract and operations boundary were designed first from True North,
+the architecture, the Phase 9 plan, and current stable operation results. The
+sibling repository was then reviewed only as read-only historical evidence for
+logging/console patterns. No file, dependency, log schema, configuration, or
+runtime behavior was copied or required. The clean implementation owns all new
+contracts, code, tests, and documentation locally.
+
+The sibling architecture assessment/refactoring-plan observations were
+classified **reference only**: they confirmed that old output was fragmented
+and that stable operations were the appropriate future hooks. The old scripts'
+ad hoc `message()` stage/publication summaries were classified **rejected as a
+contract**; their labels, Git/provenance coupling, paths, and publication
+behavior were not reused. The sibling privacy cautions were consistent with
+True North but added no clean executable asset. Sibling status was unchanged
+before and after review.
+
+#### Decisions and rationale
+
+- Ownership stays under `operations/lib/`, not `rrpruntime`: console/routing is
+  orchestration concern and must not become a base runtime dependency.
+- Operation-run identity is unique per attempt and separate from analytical
+  runtime-run identity. Related identities correlate without redefining
+  products, artifacts, deployments, provenance, or validation.
+- The emitter stores validated objects before invoking a callable sink. This
+  keeps structured semantics independent of presentation and permits a future
+  deployment-owned sink without domain-code changes.
+- The only default sink is the process console. The repository creates no log
+  file/table, declares no retention, and makes no audit claim.
+- Unsafe mappings fail closed rather than silently serialize or partially
+  redact arbitrary payloads. The allowlist is intentionally narrow and its
+  automated enforcement is not certification.
+- Context identity generation uses filesystem entropy and MD5 only as a local
+  uniqueness mechanism and does not consume R's RNG. MD5 here is not security
+  or authenticity evidence.
+- Runtime stage events are emitted at actual composed boundaries. Provider
+  exceptions receive a stable safe category in structured diagnostics; raw
+  local error detail remains outside the event contract.
+
+#### Surprises, deviations, and reconciliation
+
+An initial command-wrapper sketch announced every reference-run stage before
+the composed operation executed. Smoke evidence showed that this ordering was
+technically correlated but operationally misleading. The final design moved
+source/runtime/provider/persistence emission into the composition function via
+an optional emitter so starts and completions align with real boundaries while
+old callers remain unchanged.
+
+The required temporary human workflow then exposed three diagnostic-only
+integration defects that focused contract tests could not see: local-time
+parsing inflated `Z`-timestamp durations, `source_run_count` was absent from
+the narrow aggregate allowlist, and product deterministic identities contain
+safe `|`-delimited components that the initial related-ID syntax rejected.
+Exact offset normalization, one explicit aggregate key, and a bounded expanded
+non-path identity alphabet fixed those issues. The same workflow also rejected
+post-hoc artifact/Connect validation completion events with no start; validation
+status now truthfully remains detail on the enclosing atomic build stage.
+
+The requested word “redaction” was narrowed deliberately: structured details
+reject prohibited/unknown keys and nested values rather than pretending an
+arbitrary-object scrubber is safe. Console identity truncation is presentation
+only; retained in-memory event objects preserve exact allowed identities.
+
+#### Privacy and safety assessment
+
+There is no per-patient emission. Aggregate counts and explicit provider,
+runtime-run, product, artifact, materialization, and realization identities are
+the only domain relationships admitted. Event text rejects common secret
+assignments/private keys and raw exceptions are not copied automatically.
+Generated diagnostics are ephemeral unless the invoking environment redirects
+them, in which case that environment owns access and retention. These are
+defense-in-depth controls, not a claim that arbitrary future messages or sinks
+are privacy certified.
+
+#### Validation evidence
+
+The focused Phase 9 suite covers contract identity/version/common-envelope
+conformance, explicit timestamp/offset normalization
+and distinct context identity, ordered/correlated lifecycle, unique event IDs,
+safe aggregate detail, prohibited keys/nesting/text/related identities, quiet
+error visibility, event preservation independent of rendering, terminal
+enforcement, sink-failure isolation, no persistent sink, and no RNG perturbation.
+A real doctor run and
+a temporary, explicitly identified reference platform run produced correlated
+safe console lifecycles; the latter persisted the unchanged analytical record
+families and completed normally. Full Phase 0–9, public-operation, package,
+dependency, documentation, hygiene, sibling, and checkpoint results are added
+after final validation below.
+
+#### Architecture, plan, and Phase 9 status
+
+The dependency spine did not change. Architecture now records the concrete
+operations-owned callable sink and distinct context/event semantics. The Phase
+9 plan and open decision record the bounded local realization as complete;
+deployment-owned routing/retention remains unresolved by design rather than a
+core gap.
+
+**Phase 9 is complete for Iteration 9.1.** The current stable workflow is
+traceable through a safe portable interface and console renderer without
+claiming retained observability, metrics, audit, or production monitoring.
+
+#### Implications and recommended next task
+
+A later deployment may consume the same validated events through a separately
+owned sink and explicit privacy/retention policy. Metrics should derive from a
+separate metric contract, not by treating diagnostic text as a time-series
+schema. Audit requirements need governed subjects, actions, access, integrity,
+and retention of their own.
+
+Proceed to Phase 10 only after choosing concrete adapter-independence evidence
+with real value. Do not add a vendor sink, trace protocol, metrics backend,
+audit store, or scheduler merely because the event interface now exists.
+
+#### Final validation follow-up
+
+The complete final matrix passed:
+
+- `Rscript operations/validate-documentation.R`: **PASS**, 4 checks and zero
+  issues;
+- `Rscript operations/validate.R --mode development`: **PASS**, 99 checks and
+  zero issues; the later strict checkpoint reran its full development subset
+  after final diagnostic fixes;
+- `Rscript operations/validate.R --mode checkpoint`: **PASS**, 159 checks and
+  zero issues for completed Phase 9;
+- focused suites reported 10, 14, 38, 24, 55, 18, 17, 8, 22, and 16 passing
+  tests for Phases 0 through 9;
+- the temporary human workflow initialized, ran doctor, persisted one normal
+  six-episode fictional run, materialized the three-product set, rebuilt the
+  artifact idempotently with the same identity, and generated a validated
+  staged/uncommitted/remote-free Connect repository under `/tmp`;
+- console inspection showed one operation-run correlation per command,
+  aggregate stage events, bounded long-identity rendering, accurate duration,
+  safe codes/recovery, and no patient-level values, secrets, environment dump,
+  or raw payload;
+- neither the repository nor the temporary workflow acquired a diagnostic
+  `.log`, `.trace`, or `.ndjson` file; operational history contained only the
+  normal platform-run records;
+- all 72 maintained R files and 39 YAML files parsed;
+- `renv::status()` reported no issues, with only offline repository-index
+  warnings;
+- `rrpruntime@0.3.0` built and passed `R CMD check --no-manual` with
+  `Status: OK`;
+- the sibling worktree remained unchanged, the clean repository had no
+  generated tracked artifact, and `git diff --check` passed.
+
+The exact human operations used `RENV_CONFIG_SANDBOX_ENABLED=FALSE` because the
+managed environment blocked on renv's global sandbox lock. This did not alter
+the project library, lockfile, command arguments, or checkpoint semantics. The
+repeated implicit-snapshot dependency-discovery note remains a performance
+observation rather than an integrity failure. No commit, push, remote,
+publication, or deployment occurred.

@@ -1,6 +1,11 @@
 # Human-callable composition of the existing synthetic, runtime, provider, and
 # persistence interfaces. No history semantics are implemented here.
 
+rrp_reference_history_emit <- function(event_emitter, ...) {
+  if (is.null(event_emitter)) return(invisible(NULL))
+  rrp_emit_operational_event(event_emitter, ...)
+}
+
 rrp_reference_history_identities <- function(scale, runtime_run_id = NULL) {
   default_identity <- is.null(runtime_run_id)
   runtime_run_id <- runtime_run_id %||% paste0("runtime_synthetic_history_", scale, "_001")
@@ -55,11 +60,17 @@ rrp_run_reference_history <- function(
   scale,
   database_path,
   runtime_run_id = NULL,
-  as_of_time = NULL
+  as_of_time = NULL,
+  event_emitter = NULL
 ) {
   identities <- rrp_reference_history_identities(scale, runtime_run_id)
   configuration <- rrp_reference_history_configuration(
     repository_root, scale, as_of_time
+  )
+  rrp_reference_history_emit(
+    event_emitter, "source_implementation", "source_generation", "info",
+    "stage_started", "run.source_generation_started",
+    "Reference canonical production started."
   )
   produced <- rrp_run_synthetic_reference(
     repository_root, scale, configuration
@@ -68,11 +79,41 @@ rrp_run_reference_history <- function(
     "Synthetic canonical production failed; history run was not started.",
     call. = FALSE
   )
+  rrp_reference_history_emit(
+    event_emitter, "source_implementation", "source_generation", "info",
+    "stage_completed", "run.source_generation_completed",
+    "Reference source generation, validation, mapping, and conformance completed.",
+    details = list(
+      patient_count = produced$summary$patients,
+      encounter_count = produced$summary$encounters,
+      episode_count = produced$summary$discharge_episodes,
+      status = produced$overall_status
+    )
+  )
   bundle <- produced$candidate_bundle
+  rrp_reference_history_emit(
+    event_emitter, "runtime", "runtime_preparation", "info", "stage_started",
+    "run.runtime_started", "Runtime admission and estimand preparation started."
+  )
   runtime_result <- rrp_run_runtime_from_bundle(
     bundle, repository_root, identities$runtime_run_id
   )
+  rrp_reference_history_emit(
+    event_emitter, "runtime", "runtime_preparation", "info", "stage_completed",
+    "run.runtime_completed", "Runtime admission and estimand preparation completed.",
+    related_identities = list(analytical_runtime_run_id = identities$runtime_run_id),
+    details = list(
+      episode_count = length(runtime_result$states$records),
+      request_count = length(runtime_result$estimand_requests$records),
+      status = "succeeded"
+    )
+  )
   history_contracts <- rrp_read_history_contracts(repository_root)
+  rrp_reference_history_emit(
+    event_emitter, "persistence", "persistence", "info", "stage_started",
+    "run.persistence_started", "Operational history persistence started.",
+    related_identities = list(analytical_runtime_run_id = identities$runtime_run_id)
+  )
   rrp_initialize_duckdb_history(database_path)
   session <- rrp_open_duckdb_persistence(database_path, history_contracts)
   on.exit(rrp_close_duckdb_persistence(session), add = TRUE)
@@ -84,11 +125,26 @@ rrp_run_reference_history <- function(
   )
   rrpruntime::append_run_status(port, started)
 
+  rrp_reference_history_emit(
+    event_emitter, "provider_execution", "provider_execution", "info",
+    "stage_started", "run.provider_execution_started",
+    "Provider execution started.",
+    related_identities = list(analytical_runtime_run_id = identities$runtime_run_id),
+    details = list(request_count = length(runtime_result$estimand_requests$records))
+  )
   estimation <- tryCatch(
     rrp_execute_reference_estimation(
       runtime_result, repository_root, identities$provider_execution_run_id
     ),
     error = function(condition) {
+      rrp_reference_history_emit(
+        event_emitter, "provider_execution", "provider_execution", "error",
+        "stage_completed", "run.provider_execution_failed",
+        "Provider execution did not complete successfully.",
+        related_identities = list(
+          analytical_runtime_run_id = identities$runtime_run_id
+        ), details = list(failure_category = "provider_execution_failure")
+      )
       failed <- rrp_reference_history_status(
         identities$runtime_run_id, "failed", status_time, bundle, produced,
         history_contracts, previous = started$run_status_record_id,
@@ -104,6 +160,21 @@ rrp_run_reference_history <- function(
   terminal_status <- if (failed_count == 0L) "completed" else {
     "completed_with_failures"
   }
+  rrp_reference_history_emit(
+    event_emitter, "provider_execution", "provider_execution",
+    if (failed_count == 0L) "info" else "warning", "stage_completed",
+    "run.provider_execution_completed", "Provider execution completed.",
+    related_identities = list(
+      analytical_runtime_run_id = identities$runtime_run_id,
+      provider_id = "reference.transparent-readmission-hazard",
+      provider_version = "0.1.0"
+    ), details = list(
+      request_count = length(runtime_result$estimand_requests$records),
+      successful_count = length(estimation$estimates),
+      failure_count = as.integer(failed_count),
+      status = if (failed_count == 0L) "succeeded" else "completed_with_failures"
+    )
+  )
   terminal_summary <- list(
     episode_state_count = length(runtime_result$states$records),
     estimand_request_count = length(runtime_result$estimand_requests$records),
@@ -130,6 +201,15 @@ rrp_run_reference_history <- function(
   reopened_port <- rrp_duckdb_persistence_port(reopened)
   durable <- rrpruntime::read_run_history(
     reopened_port, identities$runtime_run_id, "valid"
+  )
+  rrp_reference_history_emit(
+    event_emitter, "persistence", "persistence", "info", "stage_completed",
+    "run.persistence_completed", "Operational history persistence completed.",
+    related_identities = list(analytical_runtime_run_id = identities$runtime_run_id),
+    details = list(
+      run_status = terminal_status,
+      persisted_count = sum(vapply(durable, length, integer(1)))
+    )
   )
   list(
     database_path = normalizePath(database_path, winslash = "/", mustWork = TRUE),

@@ -422,16 +422,33 @@ be added as a peer adapter only when concrete requirements exist.
 ## Observability layer
 
 Observability is cross-cutting but accessed through a stable, small interface.
-A run context propagates run and operation identity. Structured diagnostic
-events conceptually carry timestamp, operation, stage/component, severity,
-status, relevant version identities, duration, safe error class/code, and an
-actionable message.
+A versioned operation-run context propagates one operation-attempt identity;
+it remains distinct from analytical runtime-run identity. Versioned structured
+events carry explicit-offset timestamp, operation correlation, controlled
+stage/component, severity, lifecycle, relevant non-patient identities,
+duration, safe code, and actionable message.
 
-Platform code emits safe events; deployments own routing, verbosity, retention,
-and approved sinks. No default event contains PHI, patient-level clinical
-values, secrets, connection strings, or raw records. Diagnostics remain
+The operations layer owns a base-R emitter and callable sink boundary. The
+reference console sink retains nothing and supports normal, quiet, and debug
+rendering while never hiding terminal errors. Deployments own any later
+routing, retention, and approved sinks. No default event contains PHI,
+patient-level clinical values or identities, secrets, connection strings, raw
+records, SQL, paths, or arbitrary nested payloads. Diagnostics remain
 distinct from provenance, validation reports, operational metrics, and audit
 records even when a run ID links them.
+
+The concrete contract, privacy allowlist/rejection rules, lifecycle, and
+implemented operation scope are defined in
+[Observability Foundation](observability-foundation.md).
+
+```text
+                         observability port
+                        ↗    ↑    ↑    ↖
+source → canonical → runtime → history → products → app/deployment
+```
+
+Safe stage events point outward to the port. No stage reads diagnostics as an
+input, so this cross-cutting capability does not change the dependency spine.
 
 ## Configuration architecture
 
