@@ -8,14 +8,10 @@ for (file in c(
   "validation-result.R", "documentation-validation.R", "repository-validation.R",
   "conformance-result.R", "specification-validation.R",
   "foundation-context-validation.R", "canonical-bundle-validation.R",
-  "canonical-clinical-validation.R", "history-validation.R"
+  "canonical-clinical-validation.R", "canonical-producer-operation.R",
+  "history-validation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
-for (file in c(
-  "identity-configuration.R", "generate-source.R", "source-validation.R",
-  "map-to-canonical.R", "producer.R"
-)) source(file.path(
-  repository_root, "implementations", "synthetic-reference", "R", file
-))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "duckdb-persistence-operation.R"))
@@ -80,4 +76,3 @@ cat("  database: ", result$database_path, "\n", sep = "")
 for (name in names(result$counts)) cat("  ", name, ": ", result$counts[[name]], "\n", sep = "")
 cat("\nThe database was closed, reopened read-only, and read through the persistence port.\n")
 cat("No products, priorities, tasks, application data, or deployments were created.\n")
-

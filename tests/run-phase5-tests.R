@@ -12,6 +12,8 @@ source(file.path(repository_root, "operations", "lib", "specification-validation
 source(file.path(repository_root, "operations", "lib", "foundation-context-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
+source(file.path(repository_root, "operations", "lib", "canonical-producer-operation.R"))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "history-validation.R"))

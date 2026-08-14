@@ -102,7 +102,9 @@ rrp_validate_safe_diagnostic_mapping <- function(value, label = "details") {
 rrp_observability_related_identity_keys <- function() c(
   "analytical_runtime_run_id", "product_set_id", "product_build_id",
   "artifact_instance_id", "artifact_build_id", "deployment_realization_id",
-  "materialization_id", "provider_id", "provider_version"
+  "materialization_id", "provider_id", "provider_version", "producer_id",
+  "producer_version", "implementation_id", "implementation_version",
+  "mapping_id", "mapping_version", "producer_execution_id"
 )
 
 rrp_validate_related_identities <- function(value) {
@@ -181,14 +183,16 @@ rrp_new_operation_context <- function(
 
 rrp_observability_components <- function() c(
   "operations", "environment", "source_implementation", "canonical_mapping",
-  "canonical_validation", "runtime", "provider_execution", "persistence",
+  "canonical_validation", "canonical_boundary", "runtime",
+  "provider_execution", "persistence",
   "product_build", "product_materialization", "application_artifact",
   "connect_realization", "app_validation"
 )
 
 rrp_observability_stages <- function() c(
   "operation", "preflight", "source_generation", "source_validation",
-  "canonical_mapping", "canonical_validation", "runtime_preparation",
+  "canonical_mapping", "canonical_validation", "producer_resolution",
+  "producer_execution", "canonical_admission", "runtime_preparation",
   "provider_execution", "persistence", "product_build",
   "product_materialization", "artifact_build", "artifact_validation",
   "connect_realization", "connect_validation", "app_validation"

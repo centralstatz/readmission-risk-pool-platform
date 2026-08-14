@@ -109,6 +109,16 @@ implementation conformance report. It may expose component-level validation
 while being developed, but generic execution begins only after the active
 bundle satisfies its declared cross-domain and capability requirements.
 
+Iteration 10.1 realizes this control boundary through
+[`platform.canonical-producer@0.1.0`](../../contracts/canonical/canonical-producer.yml).
+A language-neutral declaration is explicitly paired with a trusted callable in
+installation composition; exact installation configuration selects one
+registered producer; generic execution validates its structured result and
+admits the candidate bundle. Declaration, registration, selection, execution,
+and admission remain distinct. The shipped synthetic implementation is the
+first peer on this seam, not a branch in the stable operation. See
+[Canonical Producer Foundation](canonical-producer-foundation.md).
+
 ### Constraints
 
 - Source names, vendor concepts, credentials, and connection details do not
@@ -460,6 +470,14 @@ Configuration is versioned, validated before use, scoped by owner, and
 separates platform defaults, reference-instance values, adopter-local values,
 and secrets. Secrets and environment-owned connection details never belong in
 committed general configuration.
+
+The initial installation-level realization is
+`config/platform-instance.yml`. It selects exactly one canonical producer ID
+and version for one health-system context. Trusted maintained composition code,
+not YAML, associates declarations with callables. Producer-owned source
+configuration and environment-owned secrets remain below that seam; final
+packaging of adopter-owned executable code remains open pending independent
+Iteration 10.2 evidence.
 
 ## Dependency direction
 

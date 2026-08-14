@@ -53,15 +53,17 @@ lifecycle vocabulary is:
    `operation_failed` terminal event.
 
 An emitter refuses events after a terminal event. The reference run reports
-bounded source/canonical production, runtime preparation, provider execution,
-and persistence stages. Product, artifact, Connect-realization, and doctor
+bounded producer resolution/execution, canonical admission, runtime
+preparation, provider execution, and persistence stages. Product, artifact,
+Connect-realization, configured-producer conformance, and doctor
 operations report their own meaningful boundaries. Events are aggregate: no
 event is emitted per patient, encounter, episode, feature, or estimate.
 
 ## Privacy policy
 
-Default diagnostics permit stable contract/provider/product/artifact/
-realization relationships and an explicit allowlist of aggregate counts.
+Default diagnostics permit stable producer/implementation/mapping/contract/
+provider/product/artifact/realization relationships and an explicit allowlist
+of aggregate counts.
 They reject:
 
 - patient, encounter, or episode identities;
@@ -100,8 +102,9 @@ belong to that deployment realization and remain unimplemented.
 
 ## Correlation without conflation
 
-`related_identities` may link an event to a runtime run, product set/build,
-materialization, artifact instance/build, provider, or deployment realization.
+`related_identities` may link an event to a producer/implementation/mapping,
+runtime run, product set/build, materialization, artifact instance/build,
+provider, or deployment realization.
 Those identities retain their own semantics. An event does not validate them,
 become their provenance, or enter operational history. Validation results also
 remain their existing structured return values; console diagnostic lines do
@@ -114,7 +117,7 @@ analytical, product, artifact, and deployment identity inputs.
 
 ## Implemented scope and non-goals
 
-The common boundary is used by doctor, the stable reference run, logical
+The common boundary is used by doctor, configured-producer conformance, the stable reference run, logical
 product build/materialization, application-artifact build, and Connect Cloud
 local-realization build. This is enough to trace the current human workflow
 without claiming universal component instrumentation.

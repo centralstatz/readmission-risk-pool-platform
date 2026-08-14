@@ -72,7 +72,8 @@ rrp_validate_observability_repository <- function(repository_root) {
   )
 
   scripts <- c(
-    "operations/doctor.R", "operations/run-platform.R",
+    "operations/doctor.R", "operations/validate-producer.R",
+    "operations/run-platform.R",
     "operations/build-reference-products.R",
     "operations/build-application-artifact.R",
     "operations/build-connect-cloud-deployment.R"

@@ -2996,3 +2996,177 @@ the project library, lockfile, command arguments, or checkpoint semantics. The
 repeated implicit-snapshot dependency-discovery note remains a performance
 observation rather than an integrity failure. No commit, push, remote,
 publication, or deployment occurred.
+
+## Phase 10 — Adapter independence
+
+### Iteration 10.1 — Generic canonical-producer interface and adopter handoff foundation
+
+#### Planned objective
+
+Define the supported seam through which one configured health-system source
+implementation supplies canonical data to one platform installation. Separate
+declaration, trusted registration, installation selection, execution, and
+admission; migrate the shipped synthetic implementation and stable run to that
+seam; establish reusable conformance and safe diagnostics. Do not build the
+independent adopter producer, multi-hospital semantics, dynamic loading, or
+Phase 11 distribution machinery.
+
+#### Pre-existing gap
+
+The canonical handoff was already representation-neutral and validated, but
+the adopter handoff was not executable. `run-platform.R` directly sourced five
+synthetic files, and history composition called
+`rrp_run_synthetic_reference()` by name. The Phase 3 result exposed source
+objects and admitted canonical data inside reference-specific composition.
+`--profile reference` was a per-run named gate rather than installation
+composition.
+
+#### Actual implementation
+
+- Added `platform.canonical-producer@0.1.0` and
+  `platform.canonical-producer-result@0.1.0` language-neutral semantics.
+- Added declaration validation, a process-local trusted callable registry,
+  duplicate rejection, exact resolution, generic execution, result validation,
+  handoff identity/profile/capability/as-of checks, canonical admission,
+  failure short-circuiting, and deterministic conformance.
+- Added `reference.synthetic-canonical-producer@0.1.0`, adapting the existing
+  source generation, local validation, and mapping behind a callable that
+  removes source representation. Generic execution now owns admission.
+- Added `config/platform-instance.yml` for exact single-producer selection and
+  `operations/compositions/installed-producers.R` for the explicit trust
+  association. YAML names no executable code.
+- Refactored stable and lower-level synthetic-input operations onto the seam.
+  Removed `--profile reference`; shipped `--scale` remains producer-owned
+  reference configuration, not hospital selection.
+- Added the public in-memory `platform.validate-producer` operation, registry
+  entry, human procedure, agent mapping, focused Phase 10.1 suite, and
+  repository/checkpoint validation.
+- Extended existing safe diagnostics with producer/implementation/mapping/
+  execution identities and resolution/execution/admission stages, with no
+  persistent sink or source values.
+
+#### Contract, result, trust, and selection decisions
+
+Producer identity selects a trusted executable peer. Implementation identity
+attributes the health-system/source context, while mapping identity attributes
+interpretation; these remain distinct from canonical run/bundle, runtime run,
+provider, persistence, product, operation-run, artifact, and deployment
+identities. Declarations state exact profiles, explicit capabilities,
+determinism, single-producer execution, configuration ownership, and prohibited
+partial/fabricated output.
+
+The callable returns producer-owned stage evidence and a candidate only after
+local success. Generic execution validates the callable response, declaration
+agreement, and existing canonical profile. The final result reports producer
+configuration, source-local validation, mapping, and admission separately.
+Any failure yields no bundle and prevents downstream execution.
+
+The established provider trust discipline was adapted as an architectural
+pattern: declarative data cannot execute code; maintained composition pairs a
+declaration and callable; exact ID/version selection resolves only a registered
+peer. Dynamic loading, arbitrary paths/packages, `eval(parse())`, remote code,
+directory discovery, multi-producer execution, and hospital switching are
+unsupported.
+
+One versioned installation configuration selects one producer for one health-
+system context. Source extraction configuration and secrets remain producer/
+environment-owned below the seam. Final physical packaging of adopter code
+remains open because this iteration provides no evidence favoring an in-tree
+directory, private package, or companion repository.
+
+#### Reference migration and downstream independence
+
+Generator, source-schema, mapping, deterministic output, profile, identities,
+and provenance behavior were preserved. Stable platform execution no longer
+imports or invokes those pieces; it resolves the installed producer and passes
+only the admitted bundle and existing provenance downstream. DuckDB continues
+to store platform-created history independently of source technology. Runtime,
+provider, history contracts, products, Shiny, artifacts, and Connect semantics
+did not change.
+
+#### Assets used, adapted, rejected, and new work
+
+No additional sibling inspection was useful after clean design; Phase 3 had
+already recorded the relevant old evidence. Existing clean Phase 3 behavior was
+adapted behind the seam, and the clean Phase 4 registry informed the trust
+pattern without moving producer logic into `rrpruntime`. Mixed pipelines,
+string-to-function configuration, named source branching, executable YAML, and
+automatic discovery were rejected. All new contract, code, configuration,
+tests, operations, and documentation are repository-owned.
+
+#### Surprises and deviations
+
+- The producer seam belongs in operations/composition because it is pre-
+  runtime orchestration; `rrpruntime` remains post-canonical and unchanged.
+- A public producer-conformance operation was justified because humans and
+  agents need the same proof before changing installation selection.
+- The Phase 3 private result remains for focused implementation tests, but its
+  generic adapter requests no internal admission; operational handoff uses the
+  generic admission exclusively.
+- Extending existing diagnostic allowlists/stages was sufficient; no new event
+  contract, sink, configuration framework, or dependency was needed.
+
+#### Validation evidence
+
+The completed validation matrix reported:
+
+- `Rscript --vanilla tests/run-phase10-tests.R`: **PASS**, 15 focused cases;
+- `Rscript operations/validate-producer.R`: **PASS** for the exactly selected
+  and registered producer;
+- `Rscript operations/validate.R --mode development`: **PASS**, 113 checks and
+  zero issues;
+- `Rscript operations/validate.R --mode checkpoint`: **PASS**, 174 checks and
+  zero issues for the Iteration 10.1 checkpoint;
+- focused suites reported 10, 14, 38, 24, 55, 18, 17, 8, 22, 16, and 15
+  passing tests for Phases 0 through 10;
+- `Rscript operations/validate-documentation.R`: **PASS**, 4 checks and zero
+  issues;
+- a temporary generic run resolved and executed the configured producer,
+  admitted six fictional episodes, executed the runtime/provider path, and
+  persisted six states, requests, results, and accepted estimates;
+- that retained history materialized and validated the unchanged three-product
+  set and product-only Shiny app, built and validated an application artifact,
+  then generated and independently validated a staged, uncommitted,
+  remote-free Connect Cloud repository under `/tmp`;
+- the unchanged Phase 3 suite passed all 24 cases, preserving reference
+  generation, mapping, identity, determinism, and provenance behavior;
+- `rrpruntime@0.3.0` built and passed `R CMD check --no-manual` with
+  `Status: OK`;
+- `renv::status()` reported no issues after offline repository-index warnings;
+- all maintained R and YAML files parsed, the sibling worktree remained
+  unchanged, no generated deployment state entered the clean repository, and
+  `git diff --check` passed.
+
+The exact renv-mediated operations used
+`RENV_CONFIG_SANDBOX_ENABLED=FALSE` because the managed environment blocked
+the global renv sandbox lock. Dependency discovery took about 30 seconds for
+implicit snapshots; this remains a performance note, not an integrity failure.
+No commit, push, remote, publication, or deployment occurred.
+
+#### Architecture and plan effect
+
+Architecture now records the concrete pre-runtime producer trust/selection
+boundary and installation configuration. The Phase 10 plan is split:
+Iteration 10.1 establishes the seam; Iteration 10.2 independently proves it.
+No canonical clinical or downstream platform contract changed.
+
+#### Implications for Iteration 10.2
+
+Iteration 10.2 must independently build a materially different, realistic,
+fully fictional adopter-side producer; avoid copying synthetic source shape;
+register/select it through the same mechanism; pass the unchanged conformance
+suite; and prove unchanged downstream behavior with isolated temporary state.
+That evidence may inform adopter-code packaging, without multi-hospital
+execution or named generic branches.
+
+#### Phase 10 status
+
+**IN PROGRESS.** Iteration 10.1 establishes and exercises the seam with the
+shipped reference peer. Phase 10 is not complete until independent adopter-side
+conformance proves it is not reference-shaped.
+
+#### Recommended next task
+
+Proceed to **Phase 10 / Iteration 10.2 — Independent adopter-side producer
+conformance proof**. Do not begin Phase 11 distribution, add a second normal
+reference health system, or settle extension packaging first.

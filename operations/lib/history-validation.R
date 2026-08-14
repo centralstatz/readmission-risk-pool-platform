@@ -120,10 +120,14 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
     "phase5_required_files", length(missing) == 0L,
     paste(length(required_files), "required Phase 5 files")
   )
-  prohibited_directories <- c("config", "observability")
+  prohibited_directories <- c("observability")
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   for (path in premature) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase5_scope", "premature_phase5_content",
     "A still-unauthorized later layer is premature.", path

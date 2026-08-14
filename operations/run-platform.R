@@ -9,13 +9,11 @@ for (file in c(
   "validation-result.R", "documentation-validation.R", "repository-validation.R",
   "conformance-result.R", "specification-validation.R",
   "foundation-context-validation.R", "canonical-bundle-validation.R",
-  "canonical-clinical-validation.R", "history-validation.R"
+  "canonical-clinical-validation.R", "canonical-producer-operation.R",
+  "history-validation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
-for (file in c(
-  "identity-configuration.R", "generate-source.R", "source-validation.R",
-  "map-to-canonical.R", "producer.R"
-)) source(file.path(
-  repository_root, "implementations", "synthetic-reference", "R", file
+source(file.path(
+  repository_root, "operations", "compositions", "installed-producers.R"
 ))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
@@ -24,16 +22,12 @@ rrp_load_duckdb_persistence_adapter(repository_root)
 source(file.path(repository_root, "operations", "lib", "reference-history-operation.R"))
 
 arguments <- commandArgs(trailingOnly = TRUE)
-profile <- NULL
 scale <- "test"
 database_path <- NULL
 runtime_run_id <- NULL
 as_of_time <- NULL
 while (length(arguments) > 0L) {
-  if (length(arguments) >= 2L && identical(arguments[[1L]], "--profile")) {
-    profile <- arguments[[2L]]
-    arguments <- arguments[-c(1L, 2L)]
-  } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--scale")) {
+  if (length(arguments) >= 2L && identical(arguments[[1L]], "--scale")) {
     scale <- arguments[[2L]]
     arguments <- arguments[-c(1L, 2L)]
   } else if (length(arguments) >= 2L && identical(arguments[[1L]], "--database")) {
@@ -47,16 +41,12 @@ while (length(arguments) > 0L) {
     arguments <- arguments[-c(1L, 2L)]
   } else {
     message(paste(
-      "Usage: Rscript operations/run-platform.R --profile reference",
+      "Usage: Rscript operations/run-platform.R",
       "[--scale test|reference] [--database PATH] [--run-id ID]",
       "[--as-of RFC3339]"
     ))
     quit(save = "no", status = 2L, runLast = FALSE)
   }
-}
-if (!identical(profile, "reference")) {
-  message("The only supported profile is `reference`; select it explicitly.")
-  quit(save = "no", status = 2L, runLast = FALSE)
 }
 if (!scale %in% c("test", "reference")) {
   message("Scale must be test or reference.")
@@ -88,8 +78,8 @@ installed <- tryCatch(
 )
 on.exit(rrp_unload_runtime_package(installed), add = TRUE)
 emitter <- rrp_start_operation_observability(
-  "reference.run-platform",
-  list(profile = profile, scale = scale, data_classification = "fictional_nonclinical")
+  "platform.run",
+  list(scale = scale, data_classification = "fictional_nonclinical")
 )
 result <- tryCatch(
   rrp_run_reference_history(
@@ -111,11 +101,12 @@ rrp_complete_operation_observability(
   details = list(run_status = result$run_status)
 )
 
-cat("Operation: reference.run-platform\n")
+cat("Operation: platform.run\n")
 cat("Status: succeeded\n")
 cat("  data_classification: fictional_nonclinical\n")
-cat("  profile: reference\n")
 cat("  scale: ", scale, "\n", sep = "")
+cat("  producer: ", result$producer_reference$producer_id, "@",
+    result$producer_reference$producer_version, "\n", sep = "")
 cat("  runtime_run_id: ", result$runtime_run_id, "\n", sep = "")
 cat("  run_status: ", result$run_status, "\n", sep = "")
 cat("  operational_history: ", result$database_path, "\n", sep = "")

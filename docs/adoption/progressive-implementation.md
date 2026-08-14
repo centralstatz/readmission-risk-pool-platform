@@ -25,6 +25,27 @@ identity-, compatibility-, capability-, and temporally coherent; progressive
 replacement does not authorize silent mixtures or named exceptions in generic
 code.
 
+## Concrete source-adoption sequence
+
+1. Obtain the platform and restore the supported environment.
+2. Run the shipped synthetic reference implementation unchanged.
+3. Confirm source → canonical → estimation → history → products → app →
+   deployment-artifact plumbing.
+4. Develop an adopter-owned callable and declaration satisfying
+   `platform.canonical-producer@0.1.0`.
+5. Register it explicitly in trusted installation composition and run
+   `Rscript operations/validate-producer.R` using an approved fictional or
+   controlled conformance scenario.
+6. Change the exact single selection in `config/platform-instance.yml` only
+   after conformance.
+7. Continue to use the unchanged runtime/provider, persistence, products, app,
+   and deployment operations.
+
+Iteration 10.1 implements Steps 1–3 and supplies the interface, trust,
+selection, and conformance machinery required by Steps 4–6. Iteration 10.2
+must prove those steps with a materially different fictional adopter producer.
+Turnkey hospital onboarding is therefore not yet claimed.
+
 ## Source responsibility
 
 The local source implementation owns hospital/EHR meaning: extraction, joins,
@@ -34,9 +55,13 @@ views, R, Python, or an approved service. Its public obligation is a conforming
 approved canonical bundle/profile. Replacing source mapping must not require
 changes to generic runtime, provider, persistence, products, or app logic.
 
-No hospital SQL or second source adapter is supplied in Phase 7. Work with real
-data also requires approved privacy, security, governance, and clinical-use
-controls beyond software conformance.
+The generic producer declaration, trusted callable registry, installation
+selection, result, admission, and conformance surface are implemented. A
+hospital-owned producer must keep extraction/configuration/secrets beneath its
+callable boundary; YAML cannot load its code. Final physical packaging of that
+code remains open until Iteration 10.2/Phase 11 evidence. Work with real data
+also requires approved privacy, security, governance, and clinical-use controls
+beyond software conformance.
 
 ## Provider responsibility
 

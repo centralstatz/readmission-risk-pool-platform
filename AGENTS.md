@@ -66,6 +66,12 @@ shallow context rules, non-retained console renderer, and bounded integration
 with doctor, reference run, product materialization, artifact build, and
 Connect realization. Retained/external sinks, routing, retention, metrics,
 alerts, tracing protocols, audit, and scheduling remain outside this slice.
+Completed Iteration 10.1 owns `platform.canonical-producer@0.1.0`, the generic
+structured producer result/admission boundary, explicit trusted callable
+registration, exact single installation selection, reusable producer
+conformance, and the migrated synthetic reference peer. Phase 10 remains in
+progress until an independently developed adopter-side producer proves the
+same seam in Iteration 10.2. Final adopter-code packaging remains open.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -122,8 +128,10 @@ initialize the local platform
     → Rscript operations/initialize-platform.R
 run doctor
     → Rscript operations/doctor.R
+validate the configured producer
+    → Rscript operations/validate-producer.R
 run the reference platform once
-    → Rscript operations/run-platform.R --profile reference --scale test
+    → Rscript operations/run-platform.R --scale test
 inspect reference history
     → Rscript operations/inspect-reference-history.R --scale test
 materialize reference products
@@ -175,7 +183,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 9 checkpoint, run:
+For the completed Iteration 10.1 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -230,13 +238,21 @@ Run the focused observability contract/privacy/lifecycle tests with:
 Rscript tests/run-phase9-tests.R
 ```
 
+Run the focused canonical-producer tests and configured producer conformance
+operation with:
+
+```sh
+Rscript tests/run-phase10-tests.R
+Rscript operations/validate-producer.R
+```
+
 Run the focused human-operation tests and stable reference workflow with:
 
 ```sh
 Rscript tests/run-phase7-tests.R
 Rscript operations/initialize-platform.R
 Rscript operations/doctor.R
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 Rscript operations/inspect-reference-history.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
@@ -272,6 +288,15 @@ complete. The Phase 3 implementation is documented in
 `docs/architecture/synthetic-reference-implementation.md`; it is not a generic
 runtime mode, and generic canonical code must not depend on its identity or
 source tables.
+
+The generic adopter/source composition seam uses
+`docs/architecture/canonical-producer-foundation.md` and
+`contracts/canonical/canonical-producer.yml`. One installation selects one
+exact producer in `config/platform-instance.yml`; trusted maintained code, not
+YAML, registers its callable. Generic execution admits the structured result
+before runtime. Do not add dynamic loading, hospital selectors, multiple active
+producers, source configuration or secrets above this boundary, or the
+independent Iteration 10.2 producer early.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires

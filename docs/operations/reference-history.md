@@ -21,7 +21,7 @@ Run commands from the repository root.
 Ordinary operators should use the stable one-run entry point:
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 ```
 
 The lower-level deterministic history command remains supported for debugging

@@ -556,6 +556,23 @@ Depends on stable contracts and operations. Choose the adapter that provides
 the strongest real evidence; do not build speculative abstractions merely to
 complete the phase number.
 
+### Iteration sequence and current status
+
+- **Iteration 10.1 — generic canonical-producer interface and adopter handoff
+  foundation:** complete. It defines
+  `platform.canonical-producer@0.1.0`, structured success/failure results,
+  trusted process-local registration, exact installation-level selection,
+  reusable conformance, privacy-safe producer diagnostics, and migrates the
+  shipped synthetic producer plus stable run onto the seam.
+- **Iteration 10.2 — independent adopter-side producer conformance proof:**
+  next. It must build a materially different fictional producer independently,
+  pass the same suite, select it through the same mechanism, and prove the
+  unchanged downstream stack using isolated temporary state.
+
+**Phase 10 remains in progress.** Iteration 10.1 establishes the interface but
+does not independently prove adopter implementation or settle its final
+packaging/distribution mechanism.
+
 ## Phase 11 — Distribution and open-source governance
 
 ### Objective

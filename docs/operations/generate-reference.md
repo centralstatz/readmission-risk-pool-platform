@@ -8,8 +8,10 @@ This operation answers one bounded question:
 > canonical bundle conforming to `platform.readmission-initial-profile@0.1.0`?
 
 It runs configuration validation, fictional source generation, source-local
-conformance, source-to-canonical mapping, and existing canonical conformance in
-that order. It does not run a provider, construct state, persist records, build
+conformance, source-to-canonical mapping, generic producer-result validation,
+and existing canonical admission in that order through the same installed
+producer seam used by the stable platform run. It does not run a provider,
+construct state, persist records, build
 products, launch an application, or deploy anything.
 
 ## Prerequisites
@@ -73,6 +75,7 @@ the implementation mapper, or public contract usage where canonical
 conformance identifies an issue. Do not weaken generic validation or add a
 synthetic identity branch to make the reference pass.
 
-Run `Rscript tests/run-phase3-tests.R` for focused failure scenarios, then run
+Run `Rscript tests/run-phase3-tests.R` for implementation-focused failure
+scenarios and `Rscript operations/validate-producer.R` for reusable producer
+conformance, then run
 the repository validation documented in [Validation](validation.md).
-

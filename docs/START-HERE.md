@@ -22,45 +22,48 @@ extending it.
    contracts and nonclinical conformance examples.
 6. [Synthetic Reference Implementation](architecture/synthetic-reference-implementation.md)
    — the complete deterministic fictional producer beneath that boundary.
-7. [Runtime Foundation](architecture/runtime-foundation.md) — the admitted
+7. [Canonical Producer Foundation](architecture/canonical-producer-foundation.md)
+   — the declaration, trust, installation selection, generic execution,
+   admission, conformance, and adopter handoff above source implementations.
+8. [Runtime Foundation](architecture/runtime-foundation.md) — the admitted
    canonical-to-eligibility/state/request computation above the boundary.
-8. [Provider and Estimate Foundation](architecture/provider-foundation.md) —
+9. [Provider and Estimate Foundation](architecture/provider-foundation.md) —
    provider trust, exact selection, compatibility, execution, and accepted
    estimate semantics.
-9. [Operational History Foundation](architecture/operational-history-foundation.md)
+10. [Operational History Foundation](architecture/operational-history-foundation.md)
    — run lifecycle, persisted families, retries, corrections, and logical
    persistence ports.
-10. [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
+11. [DuckDB Reference Persistence](architecture/duckdb-reference-persistence.md)
    — the concrete local adapter, physical tradeoffs, atomicity, and recovery.
-11. [Logical Product Foundation](architecture/logical-product-foundation.md) —
+12. [Logical Product Foundation](architecture/logical-product-foundation.md) —
    first suite, identity/freshness, compatibility/failure behavior, builders,
    conformance, and application access.
-12. [Reference Product Materialization](architecture/reference-product-materialization.md)
+13. [Reference Product Materialization](architecture/reference-product-materialization.md)
    and [Minimal Product-Only Application](architecture/reference-application.md)
    — atomic physical access and the supplied consumer boundary.
-13. [Local Reference Platform Operator Manual](operations/operator-manual.md)
+14. [Local Reference Platform Operator Manual](operations/operator-manual.md)
    and [Progressive Implementation](adoption/progressive-implementation.md) —
    operate the reference composition and understand each replacement boundary.
-14. [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
+15. [Target-Neutral Application Artifact](architecture/application-artifact-foundation.md)
    and [Application Artifact Operations](operations/application-artifacts.md) —
    understand the closed runtime unit before any target realization.
-15. [Connect Cloud Git Realization](architecture/connect-cloud-realization.md)
+16. [Connect Cloud Git Realization](architecture/connect-cloud-realization.md)
    and [Connect Cloud Deployment Operations](operations/connect-cloud-deployment.md)
    — understand the generated local repository and external publication stop.
-16. [Observability Foundation](architecture/observability-foundation.md) and
+17. [Observability Foundation](architecture/observability-foundation.md) and
    [Operational Diagnostics](operations/observability-and-diagnostics.md) —
    understand correlation, privacy guardrails, console events, and non-goals.
-17. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
+18. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
-18. [Open Decisions](architecture/open-decisions.md) — choices that require
+19. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-19. [Platform Implementation Record](architecture/platform-implementation-record.md)
+20. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-20. [Implementation Conventions](development/implementation-conventions.md) and
+21. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-21. [Repository Development Policies](development/repository-policies.md) for
+22. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-22. [Operations](operations/README.md) for supported human operations and
+23. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

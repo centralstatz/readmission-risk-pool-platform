@@ -16,6 +16,7 @@ source(file.path(repository_root, "operations", "lib", "foundation-context-valid
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-specification-validation.R"))
+source(file.path(repository_root, "operations", "lib", "canonical-producer-operation.R"))
 for (file in c(
   "identity-configuration.R", "generate-source.R", "source-validation.R",
   "map-to-canonical.R", "producer.R"
@@ -25,6 +26,8 @@ for (file in c(
   ))
 }
 source(file.path(repository_root, "operations", "lib", "synthetic-reference-validation.R"))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
+source(file.path(repository_root, "operations", "lib", "canonical-producer-validation.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-validation.R"))

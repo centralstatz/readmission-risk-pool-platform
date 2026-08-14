@@ -1,0 +1,19 @@
+specification_kind: platform_instance_configuration
+specification_id: reference.local-platform-instance
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Shipped local reference platform instance
+status: active
+description: >-
+  Installation-level composition for one fictional health-system context.
+  Replace this exact producer selection only after trusted registration and
+  producer conformance are established.
+
+selected_canonical_producer:
+  producer_id: reference.synthetic-canonical-producer
+  producer_version: "0.1.0"
+producer_configuration_owner: producer_implementation
+health_system_scope: one
+multi_tenant: false
+

@@ -143,7 +143,7 @@ rrp_doctor_history_check <- function(repository_root, database_path) {
     check = rrp_operator_result_row(
       "operational_history", "lifecycle", "warning",
       "Operational history is absent; this is expected before the first run.",
-      "Run Rscript operations/run-platform.R --profile reference --scale test."
+      "Run Rscript operations/run-platform.R --scale test."
     ),
     state = list(status = "absent", latest_runtime_run_id = NULL)
   ))

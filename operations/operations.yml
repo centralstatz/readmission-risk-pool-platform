@@ -24,9 +24,15 @@ operations:
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/validation.md
-  - operation_id: reference.run-platform
-    command: Rscript operations/run-platform.R --profile reference --scale test
-    purpose: Execute one source-to-estimate cycle and persist operational history.
+  - operation_id: platform.validate-producer
+    command: Rscript operations/validate-producer.R
+    purpose: Validate the exactly selected trusted canonical producer and its handoff.
+    mutation: in_memory_only
+    classification: public
+    documentation: docs/operations/operator-manual.md
+  - operation_id: platform.run
+    command: Rscript operations/run-platform.R --scale test
+    purpose: Invoke the installed canonical producer and persist one source-to-estimate cycle.
     mutation: append_or_idempotent_history
     classification: public
     documentation: docs/operations/operator-manual.md

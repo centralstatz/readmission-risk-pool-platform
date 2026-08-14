@@ -97,6 +97,9 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
   expected_files <- sub("^implementations/synthetic-reference/", "", required_files[
     startsWith(required_files, "implementations/")
   ])
+  if (rrp_phase10_configuration_authorized(repository_root)) expected_files <- c(
+    expected_files, "producer.yml", "R/canonical-producer-adapter.R"
+  )
   unexpected_files <- setdiff(actual_files, expected_files)
   for (path in unexpected_files) {
     issues[[length(issues) + 1L]] <- rrp_issue(
@@ -128,11 +131,15 @@ rrp_validate_phase3_checkpoint <- function(repository_root) {
 
   prohibited_directories <- c(
     "providers", "persistence",
-    "config", "observability"
+    "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   for (path in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase3_scope", "premature_phase3_content",

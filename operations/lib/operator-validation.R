@@ -115,7 +115,7 @@ rrp_validate_operator_repository <- function(repository_root) {
     expected_public <- c(
       "platform.initialize-local", "platform.doctor",
       "platform.validate-development", "platform.validate-checkpoint",
-      "reference.run-platform", "reference.inspect-history",
+      "platform.validate-producer", "platform.run", "reference.inspect-history",
       "reference.materialize-products", "reference.validate-app",
       "reference.launch-app", "platform.build-application-artifact",
       "platform.validate-application-artifact",
@@ -136,7 +136,8 @@ rrp_validate_operator_repository <- function(repository_root) {
   agent_text <- paste(rrp_read_text(file.path(repository_root, "AGENTS.md")), collapse = "\n")
   agent_commands <- c(
     "Rscript operations/doctor.R",
-    "Rscript operations/run-platform.R --profile reference --scale test",
+    "Rscript operations/validate-producer.R",
+    "Rscript operations/run-platform.R --scale test",
     "Rscript operations/build-reference-products.R --scale test --materialize",
     "Rscript operations/launch-reference-app.R --validate-only",
     "Rscript operations/build-application-artifact.R",

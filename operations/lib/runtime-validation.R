@@ -316,11 +316,15 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   )
 
   prohibited_directories <- c(
-    "persistence", "config", "observability"
+    "persistence", "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   runtime_r <- list.files(
     file.path(repository_root, "runtime", "R"), pattern = "[.]R$",
     full.names = TRUE

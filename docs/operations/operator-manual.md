@@ -10,7 +10,7 @@ development acquisition path, not a permanent distribution contract.
 The supported journey is:
 
 ```text
-restore dependencies → initialize → doctor → run platform → inspect history
+restore dependencies → initialize → doctor → validate producer → run platform → inspect history
                      → materialize products → validate app
                      → build artifact → validate artifact
                      → generate/validate local Connect repository
@@ -38,6 +38,7 @@ The out-of-box path deliberately composes replaceable implementations:
 
 | Responsibility | Shipped reference |
 |---|---|
+| Canonical producer | `reference.synthetic-canonical-producer@0.1.0` |
 | Source implementation | `reference.synthetic-health-system@0.1.0` |
 | Canonical profile | `platform.readmission-initial-profile@0.1.0` |
 | Estimand | `platform.readmission-next-day-conditional-hazard@0.1.0` |
@@ -50,6 +51,13 @@ The out-of-box path deliberately composes replaceable implementations:
 Together they form a coherent reference realization, not generic-platform
 dependencies. The [progressive implementation guide](../adoption/progressive-implementation.md)
 explains replacement boundaries.
+
+The producer is selected once for this installation in
+`config/platform-instance.yml`, not chosen interactively on every run. Trusted
+code in `operations/compositions/installed-producers.R` pairs its declaration
+with the shipped callable. Configuration cannot execute arbitrary code. See
+[Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
+before changing either boundary.
 
 ## Installation prerequisites
 
@@ -148,10 +156,25 @@ Agent convenience: “run doctor” maps exactly to
 
 ## Run one operational cycle
 
+Before the first run—or after changing producer declaration, registration, or
+selection—validate the configured producer without invoking downstream runtime:
+
+```sh
+Rscript operations/validate-producer.R
+```
+
+Success reports the exact producer/profile and structured conformance status.
+The operation generates only in-memory fictional data, writes no source or
+canonical data, creates no history, and invokes no provider. Failure preserves
+structured issues and exits nonzero; correct declaration, trusted
+registration, source-local/mapping behavior, or selection as indicated, then
+retry. Software conformance is not clinical validation or approval for real
+data.
+
 The authoritative operator-facing reference run is:
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 ```
 
 It composes synthetic source generation/read, source validation, canonical
@@ -165,7 +188,7 @@ content are an idempotent no-op; a conflict fails loudly. An intentional new
 observation must have its own run identity and as-of context, for example:
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test --run-id runtime_reference_manual_20260802T120000Z --as-of 2026-08-02T12:00:00Z
+Rscript operations/run-platform.R --scale test --run-id runtime_reference_manual_20260802T120000Z --as-of 2026-08-02T12:00:00Z
 ```
 
 Both `--run-id` and `--as-of` should be supplied deliberately for a new run;
@@ -173,8 +196,11 @@ when only `--as-of` is supplied, the reference operation derives a transparent
 run ID. `--database PATH` selects another local store. Success reports the
 operation/status, run ID, terminal status, family counts, and database path.
 
-Agent convenience: “run the reference platform once” maps to the exact default
-command above. An agent must report the human operation it invoked.
+Producer choice comes from installation configuration. `--scale` is only
+shipped reference-producer configuration and is not a hospital selector.
+Agent convenience: “validate the configured producer” and “run the reference
+platform once” map to the exact commands above. An agent must report the human
+operation it invoked.
 
 ## Inspect operational history
 
@@ -330,7 +356,7 @@ IDs, exact commands, purpose, mutation level, documentation, and classification.
 It is drift metadata, not executable orchestration or business logic.
 
 Public onboarding operations are initialize, doctor, development/checkpoint
-validation, one platform run, history inspection, product materialization,
+validation, configured-producer validation, one platform run, history inspection, product materialization,
 app validation/launch, artifact build/validation, and Connect repository
 generation/validation. Advanced/debug operations preserve individual stages:
 
@@ -357,6 +383,9 @@ hidden logic or launch a long-running app implicitly.
 ## Troubleshooting
 
 - **Dependency unavailable:** run `Rscript -e 'renv::restore()'`, then doctor.
+- **Producer unknown/incompatible:** verify the exact installation selection,
+  conforming declaration, and explicit trusted registration; never add an
+  executable path to YAML.
 - **Fresh state warnings:** run the next operation; do not treat absence as
   corruption.
 - **DuckDB incompatible/locked:** preserve it, stop the writer, and use

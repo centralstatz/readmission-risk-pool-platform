@@ -12,7 +12,7 @@ It ends with a complete local Git repository. It does not publish or deploy.
 - build a valid current reduced application artifact.
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/build-application-artifact.R
 Rscript operations/validate-application-artifact.R

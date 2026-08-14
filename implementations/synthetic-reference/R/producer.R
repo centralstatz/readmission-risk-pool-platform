@@ -75,7 +75,8 @@ rrp_produce_synthetic_from_source <- function(
   source_schema,
   repository_root,
   configuration_conformance = NULL,
-  location = NA_character_
+  location = NA_character_,
+  perform_canonical_admission = TRUE
 ) {
   stages <- c(
     configuration = "succeeded",
@@ -150,15 +151,21 @@ rrp_produce_synthetic_from_source <- function(
     return(result)
   }
 
-  canonical_result <- rrp_validate_clinical_bundle_instance(
-    mapping$candidate_bundle, repository_root, location
-  )
+  canonical_result <- if (isTRUE(perform_canonical_admission)) {
+    rrp_validate_clinical_bundle_instance(
+      mapping$candidate_bundle, repository_root, location
+    )
+  } else {
+    NULL
+  }
   stages[["canonical_conformance"]] <- if (rrp_conforms(canonical_result)) {
     "succeeded"
+  } else if (is.null(canonical_result)) {
+    "not_run"
   } else {
     "failed"
   }
-  success <- rrp_conforms(canonical_result)
+  success <- is.null(canonical_result) || rrp_conforms(canonical_result)
   result <- structure(list(
     overall_status = if (success) "succeeded" else "failed",
     stage_statuses = stages,
@@ -182,7 +189,8 @@ rrp_produce_synthetic_from_source <- function(
 rrp_run_synthetic_reference <- function(
   repository_root,
   scale = "reference",
-  configuration = NULL
+  configuration = NULL,
+  perform_canonical_admission = TRUE
 ) {
   implementation <- rrp_read_synthetic_implementation_specification(repository_root)
   source_schema <- rrp_read_synthetic_source_schema(repository_root)
@@ -265,7 +273,8 @@ rrp_run_synthetic_reference <- function(
     source_schema,
     repository_root,
     config_result,
-    paste0("synthetic:", scale)
+    paste0("synthetic:", scale),
+    perform_canonical_admission
   )
 }
 

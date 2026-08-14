@@ -1,0 +1,79 @@
+# Public declaration and trusted-callable semantics for source-to-canonical producers.
+specification_kind: canonical_producer_contract
+specification_id: platform.canonical-producer
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Canonical producer contract
+status: active
+description: >-
+  Language-neutral responsibilities for one implementation that supplies a
+  conforming canonical bundle to one configured platform installation.
+
+producer_declaration:
+  required_fields:
+    - producer_id
+    - producer_version
+    - implementation_identity
+    - mapping_identity
+    - supported_canonical_profiles
+    - capabilities
+    - execution
+    - configuration_ownership
+    - failure_behavior
+  selectable_statuses:
+    - active
+  adapter_contract: platform.canonical-producer-adapter@0.1.0
+
+producer_result:
+  specification:
+    specification_kind: canonical_producer_result
+    specification_id: platform.canonical-producer-result
+    specification_version: "0.1.0"
+  required_fields:
+    - overall_status
+    - producer_reference
+    - implementation_identity
+    - mapping_identity
+    - producer_execution_id
+    - canonical_profile
+    - canonical_as_of_time
+    - capabilities
+    - stage_statuses
+    - conformance_results
+    - provenance_references
+    - canonical_bundle
+  statuses:
+    - succeeded
+    - failed
+  stage_statuses:
+    - not_run
+    - succeeded
+    - failed
+  stages:
+    - producer_configuration
+    - source_local_validation
+    - mapping
+    - canonical_admission
+  success_rule: >-
+    A successful result contains exactly one admitted canonical bundle. Its
+    profile, as-of context, implementation identity, mapping identity, and
+    capabilities agree with the declaration and result metadata.
+  failure_rule: >-
+    A failed result contains no canonical bundle. A failed stage prevents all
+    later stages from succeeding, and invalid or partial output is never
+    coerced into admitted canonical input.
+
+trust_boundary:
+  rule: >-
+    Declarative configuration selects an exact producer ID and version.
+    Trusted platform composition explicitly associates that conforming
+    declaration with a callable adapter. YAML never names executable paths,
+    functions, packages, or remote code.
+
+configuration_boundary:
+  rule: >-
+    Producer-owned source configuration and secrets remain below this
+    boundary. Platform selection contains producer identity only; canonical
+    contracts contain no connection details or credentials.
+

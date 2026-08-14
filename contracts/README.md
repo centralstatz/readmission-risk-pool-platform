@@ -16,12 +16,16 @@ realization contract.
 Iteration 9.1 adds distinct operation-run context and operational diagnostic
 event contracts; it adds no history, metric, audit, routing, or retention
 contract.
+Iteration 10.1 adds `platform.canonical-producer@0.1.0` declaration, trusted
+callable, result, failure, and configuration-ownership semantics without
+changing canonical clinical meaning.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
 - `canonical/` contains the generic bundle, three clinical domain contracts,
   two controlled vocabularies, the initial profile, generic examples, and a
-  source-independent fictional clinical fixture.
+  source-independent fictional clinical fixture, and the generic canonical-
+  producer contract.
 - `runtime/` contains eligibility, minimal episode-state, first estimand,
   provider-neutral request, provider declaration/adapter/result, accepted
   estimate, and the shipped reference-provider specifications.
@@ -56,6 +60,8 @@ The first target realization is documented in
 [Connect Cloud Git realization](../docs/architecture/connect-cloud-realization.md).
 The diagnostic boundary is documented in
 [Observability foundation](../docs/architecture/observability-foundation.md).
+The source composition seam is documented in
+[Canonical producer foundation](../docs/architecture/canonical-producer-foundation.md).
 The profile is intentionally smaller than the future canonical suite. Future
 product, diagnostic, configuration, and deployment specifications must use the
 common envelope defined in

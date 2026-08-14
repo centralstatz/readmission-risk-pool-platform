@@ -27,7 +27,8 @@ Diagnostics are currently emitted by the unchanged human commands:
 
 ```sh
 Rscript operations/doctor.R
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/validate-producer.R
+Rscript operations/run-platform.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/build-application-artifact.R
 Rscript operations/build-connect-cloud-deployment.R --destination PATH
@@ -70,7 +71,7 @@ Run the focused contract/privacy/lifecycle/renderer suite:
 Rscript tests/run-phase9-tests.R
 ```
 
-Run complete development or completed Phase 9 checkpoint validation:
+Run complete development or completed Iteration 10.1 checkpoint validation:
 
 ```sh
 Rscript operations/validate.R --mode development

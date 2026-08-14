@@ -362,3 +362,27 @@ were designed before the required read-only sibling review.
 No sibling code, prose, YAML, product, identifier, configuration, or dependency
 metadata was copied. The sibling worktree remained unchanged. The clean result
 is authoritative in [Connect Cloud Git Realization](connect-cloud-realization.md).
+
+## Iteration 10.1 canonical-producer review outcome
+
+The current clean canonical, synthetic-producer, provider-registry,
+operation-composition, observability, and adoption boundaries supplied all
+evidence required to design the producer seam. No additional sibling review was
+useful: the Phase 3 reconciliation had already classified the old generator and
+mapping concepts and rejected its mixed source/platform configuration and
+pipeline orchestration.
+
+- The existing clean Phase 3 staged producer was **adapted locally** behind a
+  generic callable result; generation, validation, mapping, deterministic
+  identities, and source provenance remain owned by this repository.
+- The clean Phase 4 provider registry was **adapted as an architectural
+  pattern**, not copied: declaration, trusted callable registration, exact
+  selection, and execution are distinct, while the producer seam remains in
+  the pre-runtime operations layer.
+- The old mixed pipeline, string-to-function configuration, source-directory
+  discovery, and reference-profile selection were **rejected**.
+- No sibling code, prose, fixture, identifier, configuration, or dependency was
+  copied or required. The sibling remained read-only evidence only.
+
+The clean result is authoritative in
+[Canonical Producer Foundation](canonical-producer-foundation.md).

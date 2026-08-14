@@ -1,5 +1,6 @@
-# Human-callable composition of the existing synthetic, runtime, provider, and
-# persistence interfaces. No history semantics are implemented here.
+# Human-callable composition from an already resolved canonical producer result
+# through the existing runtime, provider, and persistence interfaces. No source
+# interpretation or history semantics are implemented here.
 
 rrp_reference_history_emit <- function(event_emitter, ...) {
   if (is.null(event_emitter)) return(invisible(NULL))
@@ -61,36 +62,19 @@ rrp_run_reference_history <- function(
   database_path,
   runtime_run_id = NULL,
   as_of_time = NULL,
-  event_emitter = NULL
+  event_emitter = NULL,
+  producer_result = NULL
 ) {
   identities <- rrp_reference_history_identities(scale, runtime_run_id)
-  configuration <- rrp_reference_history_configuration(
-    repository_root, scale, as_of_time
-  )
-  rrp_reference_history_emit(
-    event_emitter, "source_implementation", "source_generation", "info",
-    "stage_started", "run.source_generation_started",
-    "Reference canonical production started."
-  )
-  produced <- rrp_run_synthetic_reference(
-    repository_root, scale, configuration
+  produced <- producer_result %||% rrp_run_installed_canonical_producer(
+    repository_root, scale, as_of_time,
+    paste0("producer_execution_", identities$runtime_run_id), event_emitter
   )
   if (!identical(produced$overall_status, "succeeded")) stop(
-    "Synthetic canonical production failed; history run was not started.",
+    "Configured canonical production failed; history run was not started.",
     call. = FALSE
   )
-  rrp_reference_history_emit(
-    event_emitter, "source_implementation", "source_generation", "info",
-    "stage_completed", "run.source_generation_completed",
-    "Reference source generation, validation, mapping, and conformance completed.",
-    details = list(
-      patient_count = produced$summary$patients,
-      encounter_count = produced$summary$encounters,
-      episode_count = produced$summary$discharge_episodes,
-      status = produced$overall_status
-    )
-  )
-  bundle <- produced$candidate_bundle
+  bundle <- produced$canonical_bundle
   rrp_reference_history_emit(
     event_emitter, "runtime", "runtime_preparation", "info", "stage_started",
     "run.runtime_started", "Runtime admission and estimand preparation started."
@@ -215,6 +199,8 @@ rrp_run_reference_history <- function(
     database_path = normalizePath(database_path, winslash = "/", mustWork = TRUE),
     runtime_run_id = identities$runtime_run_id,
     provider_execution_run_id = identities$provider_execution_run_id,
+    producer_reference = produced$producer_reference,
+    producer_execution_id = produced$producer_execution_id,
     adapter = rrp_duckdb_identity(),
     run_status = terminal_status,
     counts = list(

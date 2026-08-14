@@ -62,6 +62,22 @@ rrp_allowed_sibling_reference_documents <- function() {
   )
 }
 
+rrp_phase10_configuration_authorized <- function(repository_root) {
+  configuration_root <- file.path(repository_root, "config")
+  if (!dir.exists(configuration_root)) return(FALSE)
+  files <- sort(list.files(
+    configuration_root, recursive = TRUE, all.files = TRUE,
+    include.dirs = FALSE, no.. = TRUE
+  ))
+  identical(files, "platform-instance.yml") &&
+    file.exists(file.path(
+      repository_root, "contracts", "canonical", "canonical-producer.yml"
+    )) &&
+    file.exists(file.path(
+      repository_root, "operations", "compositions", "installed-producers.R"
+    ))
+}
+
 rrp_sensitive_filename <- function(path) {
   name <- basename(path)
   lower <- tolower(name)
@@ -277,10 +293,14 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     paste(length(required_files), "required Phase 0 files")
   )
 
-  deferred_directories <- c("config", "observability")
+  deferred_directories <- c("observability")
   premature <- deferred_directories[
     dir.exists(file.path(repository_root, deferred_directories))
   ]
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   for (directory in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase0_scope", "premature_architecture_directory",

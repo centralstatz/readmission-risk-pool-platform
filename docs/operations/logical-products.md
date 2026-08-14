@@ -17,7 +17,7 @@ Rscript -e 'renv::restore()'
 ## Complete manual sequence
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 Rscript operations/launch-reference-app.R

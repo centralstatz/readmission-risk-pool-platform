@@ -556,11 +556,15 @@ rrp_validate_phase1_checkpoint <- function(repository_root) {
   canonical_paths <- c(
     "contracts/schemas", "contracts/domains"
   )
-  later_directories <- c("config", "observability")
+  later_directories <- c("observability")
   premature <- c(
     canonical_paths[dir.exists(file.path(repository_root, canonical_paths))],
     later_directories[dir.exists(file.path(repository_root, later_directories))]
   )
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   for (path in premature) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase1_scope", "premature_phase1_content",

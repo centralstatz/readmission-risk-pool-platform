@@ -12,14 +12,8 @@ source(file.path(repository_root, "operations", "lib", "specification-validation
 source(file.path(repository_root, "operations", "lib", "foundation-context-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
-for (file in c(
-  "identity-configuration.R", "generate-source.R", "source-validation.R",
-  "map-to-canonical.R", "producer.R"
-)) {
-  source(file.path(
-    repository_root, "implementations", "synthetic-reference", "R", file
-  ))
-}
+source(file.path(repository_root, "operations", "lib", "canonical-producer-operation.R"))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 
 arguments <- commandArgs(trailingOnly = TRUE)
@@ -63,12 +57,12 @@ if (identical(input_kind, "independent")) {
   bundle <- document$bundle_instance
   runtime_run_id <- "runtime_independent_fixture_001"
 } else {
-  produced <- rrp_run_synthetic_reference(repository_root, scale)
+  produced <- rrp_run_installed_canonical_producer(repository_root, scale)
   if (!identical(produced$overall_status, "succeeded")) {
     message("Synthetic canonical production failed; runtime was not invoked.")
     quit(save = "no", status = 1L, runLast = FALSE)
   }
-  bundle <- produced$candidate_bundle
+  bundle <- produced$canonical_bundle
   runtime_run_id <- paste0("runtime_synthetic_", scale, "_001")
 }
 

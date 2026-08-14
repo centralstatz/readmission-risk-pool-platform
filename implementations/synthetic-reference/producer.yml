@@ -1,0 +1,42 @@
+specification_kind: canonical_producer
+specification_id: reference.synthetic-canonical-producer
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: reference
+title: Synthetic reference canonical producer
+status: active
+description: >-
+  Trusted fictional and nonclinical producer for the shipped reference
+  platform instance.
+
+producer_id: reference.synthetic-canonical-producer
+producer_version: "0.1.0"
+implementation_identity:
+  implementation_id: reference.synthetic-health-system
+  implementation_version: "0.1.0"
+mapping_identity:
+  mapping_id: reference.synthetic-to-readmission-canonical
+  mapping_version: "0.1.0"
+supported_canonical_profiles:
+  - specification_kind: canonical_profile
+    specification_id: platform.readmission-initial-profile
+    minimum_version: "0.1.0"
+    maximum_version: "0.1.0"
+capabilities:
+  platform.discharge-episode: available
+  platform.baseline-risk-input: available
+  platform.episode-event-history: available
+execution:
+  adapter_contract: platform.canonical-producer-adapter@0.1.0
+  deterministic: true
+  simultaneous_execution: unsupported
+configuration_ownership:
+  owner: producer_implementation
+  secrets_in_declaration: prohibited
+  source_details_cross_canonical_boundary: prohibited
+failure_behavior:
+  partial_canonical_bundle: prohibited
+  continue_after_failed_stage: prohibited
+  fabricated_canonical_input: prohibited
+clinical_use: fictional_nonclinical_only
+

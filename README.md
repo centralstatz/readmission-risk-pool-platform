@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 9 is complete through Iteration 9.1.** The focused internal
+**Phase 10 is in progress; Iteration 10.1 is complete.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -44,7 +44,13 @@ policy, replay, and CI/CD remain unimplemented. A versioned operation-run
 context and structured privacy-conscious event contract now trace bounded
 doctor, reference-run, product, artifact, and Connect-realization stages
 through a non-retained console sink without changing analytical results or
-history.
+history. The shipped synthetic source is now registered and selected as
+`reference.synthetic-canonical-producer@0.1.0` through the generic
+`platform.canonical-producer@0.1.0` seam. Installation configuration selects
+one exact trusted producer; generic execution validates its structured result
+and canonical admission before unchanged downstream runtime. The independent
+adopter-side producer proof remains Iteration 10.2, so turnkey hospital
+onboarding and final extension packaging are not yet claimed.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -109,9 +115,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 16. Read [Observability Foundation](docs/architecture/observability-foundation.md)
    and [Operational Diagnostics](docs/operations/observability-and-diagnostics.md)
    for operation correlation, privacy rules, console rendering, and non-goals.
-17. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
+17. Read [Canonical Producer Foundation](docs/architecture/canonical-producer-foundation.md)
+   for declaration, trusted registration, installation selection, execution,
+   admission, and adopter ownership.
+18. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-18. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+19. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -127,7 +136,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 9 checkpoint with:
+Evaluate the completed Iteration 10.1 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -157,7 +166,8 @@ Initialize, preflight, and run the first durable fictional vertical slice with:
 Rscript -e 'renv::restore()'
 Rscript operations/initialize-platform.R
 Rscript operations/doctor.R
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/validate-producer.R
+Rscript operations/run-platform.R --scale test
 Rscript operations/inspect-reference-history.R --scale test
 ```
 

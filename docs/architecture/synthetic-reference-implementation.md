@@ -21,12 +21,16 @@ deterministic source-to-canonical mapping
         ↓
 candidate platform.readmission-initial-profile@0.1.0 bundle
         ↓
+platform.canonical-producer@0.1.0 adapter/result
+        ↓
 existing generic canonical admission
 ```
 
-The producer result retains configuration, generation, source-local, mapping,
-and canonical stage status separately. A failure stops before later stages.
-Producer-local conformance does not replace generic admission authority.
+The implementation-private result retains configuration, generation,
+source-local, and mapping status separately. Its trusted adapter removes source
+representation and returns the generic candidate result. Generic producer
+execution alone exposes a successful bundle after canonical admission. A
+failure stops before later stages and returns no canonical output.
 
 ## Identity
 
@@ -83,11 +87,14 @@ as public compatibility promises.
 ## Replacement boundary
 
 A hospital implementation replaces source extraction, source schema/rules,
-configuration, mapping, and producer provenance. It must target supported
-public contracts and pass the same admission. Generic validation, future
-runtime/provider behavior, products, application, and deployment remain
-unchanged and must never inspect this implementation's identity or source
-tables.
+configuration, mapping, and producer provenance. It supplies a declaration and
+trusted callable conforming to
+[`platform.canonical-producer@0.1.0`](../../contracts/canonical/canonical-producer.yml),
+passes reusable producer conformance, and becomes the exact single installation
+selection. Generic validation, runtime/provider behavior, persistence,
+products, application, and deployment remain unchanged and must never inspect
+this implementation's identity or source tables. The independent adopter proof
+and final packaging remain Iteration 10.2/later work.
 
 The executable human procedure is
 [Generate and validate the synthetic reference](../operations/generate-reference.md).

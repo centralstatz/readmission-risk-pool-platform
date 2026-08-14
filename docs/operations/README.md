@@ -8,8 +8,11 @@ reserve names or document hypothetical future capabilities.
   launch, build/validate a reduced artifact, and generate a local Connect
   deployment repository through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–9 tests, check repository policies, and
-  evaluate the completed Phase 9 checkpoint.
+  specification assets, run Phase 0–10 tests, check repository policies, and
+  evaluate the Iteration 10.1 checkpoint.
+- [Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
+  — validate the configured producer, understand trusted registration and
+  exact installation selection, and prepare for an adopter-owned producer.
 - [Operational Diagnostics](observability-and-diagnostics.md) — understand the
   bounded structured console lifecycle, privacy guardrails, correlation, and
   recovery without mistaking it for retained logs or audit.

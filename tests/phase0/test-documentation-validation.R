@@ -110,7 +110,7 @@ phase0_test_cases <- function(repository_root) {
       # later completed implementation directories are not retroactively a
       # Phase 0 failure in the live repository.
       for (directory in c(
-        "app", "contracts", "deploy", "implementations", "products", "runtime"
+        "app", "config", "contracts", "deploy", "implementations", "products", "runtime"
       )) {
         unlink(file.path(fixture, directory), recursive = TRUE, force = TRUE)
       }

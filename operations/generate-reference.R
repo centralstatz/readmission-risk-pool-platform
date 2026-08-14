@@ -12,19 +12,8 @@ source(file.path(repository_root, "operations", "lib", "specification-validation
 source(file.path(repository_root, "operations", "lib", "foundation-context-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-bundle-validation.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-clinical-validation.R"))
-
-implementation_root <- file.path(
-  repository_root, "implementations", "synthetic-reference", "R"
-)
-for (file in c(
-  "identity-configuration.R",
-  "generate-source.R",
-  "source-validation.R",
-  "map-to-canonical.R",
-  "producer.R"
-)) {
-  source(file.path(implementation_root, file))
-}
+source(file.path(repository_root, "operations", "lib", "canonical-producer-operation.R"))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 
 arguments <- commandArgs(trailingOnly = TRUE)
 if (length(arguments) == 0L) {
@@ -39,7 +28,7 @@ if (length(arguments) == 0L) {
 }
 
 result <- tryCatch(
-  rrp_run_synthetic_reference(repository_root, scale),
+  rrp_run_installed_canonical_producer(repository_root, scale),
   error = function(condition) {
     message("Synthetic reference operation failed: ", conditionMessage(condition))
     NULL
@@ -50,12 +39,8 @@ if (is.null(result)) {
 }
 print(result)
 if (!identical(result$overall_status, "succeeded")) {
-  for (name in c(
-    "configuration_conformance", "generation_conformance",
-    "source_local_conformance",
-    "mapping_conformance", "canonical_conformance"
-  )) {
-    conformance <- result[[name]]
+  for (name in names(result$conformance_results)) {
+    conformance <- result$conformance_results[[name]]
     if (!is.null(conformance) && nrow(conformance$issues) > 0L) {
       cat("\n", name, " issues:\n", sep = "")
       print(conformance$issues, row.names = FALSE)

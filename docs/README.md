@@ -26,6 +26,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Synthetic Reference Implementation](architecture/synthetic-reference-implementation.md)
   — deterministic fictional source feeds, source-local validation, mapping,
   and canonical producer boundary.
+- [Canonical Producer Foundation](architecture/canonical-producer-foundation.md)
+  — generic declaration/result, trusted callable registration, exact
+  installation selection, admission, conformance, and adopter handoff.
 - [Runtime Foundation](architecture/runtime-foundation.md) — admitted input,
   eligibility, minimal episode state, and first estimand-request semantics.
 - [Provider and Estimate Foundation](architecture/provider-foundation.md) —
@@ -78,7 +81,7 @@ The documentation is the active product at this bootstrap stage. Begin with
   initialize, doctor, run, inspect, materialize, validate, launch, repeat, and
   troubleshoot without AI.
 - [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–9 test commands.
+  documentation, and Phase 0–10 test commands.
 - [Operational Diagnostics](operations/observability-and-diagnostics.md) —
   interpret structured console events, privacy limits, failure recovery, and
   focused validation.

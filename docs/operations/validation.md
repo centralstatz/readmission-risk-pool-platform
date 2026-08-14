@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed Phase
-  9 structured operational-diagnostic requirements?
+- **Strict checkpoint:** Does the repository also satisfy the completed
+  Iteration 10.1 canonical-producer seam requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -20,7 +20,9 @@ products, Iteration 6.2 physical product access plus minimal app, and Iteration
 guidance, Iteration 8.1 target-neutral artifact construction/validation,
 Iteration 8.2 Connect Cloud standalone local Git realization/validation, and
 Iteration 9.1 operation-run context, privacy guardrails, callable sink, console
-renderer, and bounded stable-operation integration.
+renderer, and bounded stable-operation integration, plus Iteration 10.1
+canonical-producer declaration/trust/selection/result/admission/conformance and
+shipped producer migration.
 
 ## Prerequisites
 
@@ -50,7 +52,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 9 checkpoint:
+Validate the completed Iteration 10.1 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -116,6 +118,18 @@ Run the focused Phase 9 observability tests directly:
 Rscript tests/run-phase9-tests.R
 ```
 
+Run the focused Phase 10.1 canonical-producer tests directly:
+
+```sh
+Rscript tests/run-phase10-tests.R
+```
+
+Validate the installed canonical producer without downstream execution:
+
+```sh
+Rscript operations/validate-producer.R
+```
+
 Run the reference source-to-canonical operation:
 
 ```sh
@@ -140,7 +154,7 @@ Rscript operations/run-reference-estimation.R --input synthetic --scale test
 Run the durable fictional source-to-history path (safely repeatable):
 
 ```sh
-Rscript operations/run-platform.R --profile reference --scale test
+Rscript operations/run-platform.R --scale test
 ```
 
 Run the lower-level deterministic history composition for debugging:
@@ -215,10 +229,11 @@ Development mode composes:
   contract/builder/conformance/access checks, YAML materialization/integrity,
   product-only application boundary checks, target-neutral artifact
   contract/source allowlist/dependency/boundary checks, and Connect target
-  contract/allowlist/dependency/Git/publication-boundary checks;
+  contract/allowlist/dependency/Git/publication-boundary checks, and canonical-
+  producer declaration/selection/trust/result/admission/boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6, Phase 7, Phase 8, and Phase 9 tests.
+  Phase 6, Phase 7, Phase 8, Phase 9, and Phase 10.1 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -254,17 +269,23 @@ Checkpoint mode runs every development check and additionally verifies:
   details, lifecycle/correlation rules, callable sink, non-retained console
   renderer, bounded stable-operation integration, focused tests, and
   implementation record;
+- the Iteration 10.1 canonical-producer contract/result, conforming shipped
+  declaration, trusted callable registration, exact installation selection,
+  reusable conformance, generic stable-run invocation, safe producer-stage
+  diagnostics, boundary scans, focused tests, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with required transitive packages plus build-only `rsconnect`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to the completed Phase 0–9 fictional
+This is strict only relative to completed Iteration 10.1 and the fictional
 source-to-local-deployable-repository boundary. It does not prove:
 
 - public release or license readiness;
 - clinical provider validity, production persistence/materialization, or final
   application UX;
+- independent adopter-producer conformance, turnkey hospital onboarding, or a
+  final extension packaging/distribution model;
 - remote Git publication, Connect service deployment, or another target;
 - security or privacy certification;
 - absence of all PHI or secrets; or

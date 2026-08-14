@@ -8,7 +8,8 @@ for (file in c(
   "validation-result.R", "documentation-validation.R", "repository-validation.R",
   "conformance-result.R", "specification-validation.R",
   "foundation-context-validation.R", "canonical-bundle-validation.R",
-  "canonical-clinical-validation.R", "history-validation.R"
+  "canonical-clinical-validation.R", "canonical-producer-operation.R",
+  "history-validation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 for (file in c(
   "identity-configuration.R", "generate-source.R", "source-validation.R",
@@ -16,6 +17,7 @@ for (file in c(
 )) source(file.path(
   repository_root, "implementations", "synthetic-reference", "R", file
 ))
+source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 for (file in c(
   "runtime-operation.R", "provider-operation.R", "duckdb-persistence-operation.R",
   "reference-history-operation.R", "product-operation.R",

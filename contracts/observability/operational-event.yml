@@ -45,7 +45,9 @@ lifecycle_events:
   - operation_failed
 
 privacy_policy:
-  permitted: aggregate counts and safe contract, provider, product, artifact, and deployment identities
+  permitted: >-
+    Aggregate counts and safe producer, implementation, mapping, contract,
+    provider, product, artifact, and deployment identities.
   prohibited: >-
     Patient, encounter, episode, ZIP or location values, clinical events,
     features, risk values, raw records, SQL, credentials, connection strings,

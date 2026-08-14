@@ -209,6 +209,12 @@ rrp_validate_canonical_specification_repository <- function(repository_root) {
           rrp_validate_clinical_fixture_document(
             document, repository_root, relative
           )
+      } else if (identical(
+        document$specification_kind, "canonical_producer_contract"
+      )) {
+        # Iteration 10.1 owns semantic validation; the canonical repository
+        # validator still enforces the common envelope and identity uniqueness.
+        results[[length(results) + 1L]] <- rrp_canonical_result(document, list())
       } else {
         issue <- rrp_canonical_issue(
           "canonical.specification.kind",
@@ -321,15 +327,23 @@ rrp_validate_phase2_checkpoint <- function(repository_root) {
     required_files, "contracts/canonical/"
   )]
   unexpected <- setdiff(actual_canonical_files, expected_canonical_files)
+  if (rrp_phase10_configuration_authorized(repository_root)) {
+    unexpected <- setdiff(
+      unexpected, "contracts/canonical/canonical-producer.yml"
+    )
+  }
   prohibited_directories <- c(
     "contracts/schemas",
     "contracts/domains",
-    "config",
     "observability"
   )
   premature <- prohibited_directories[dir.exists(file.path(
     repository_root, prohibited_directories
   ))]
+  if (dir.exists(file.path(repository_root, "config")) &&
+      !rrp_phase10_configuration_authorized(repository_root)) {
+    premature <- c(premature, "config")
+  }
   for (path in c(unexpected, premature)) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase2_scope",
