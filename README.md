@@ -14,10 +14,13 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 10 is complete and Phase 11 is in progress.** Iteration 11.1 now
-provides a maintained distribution and first-release decision assessment; its
-recommendations are not accepted decisions, do not install a license, and do
-not authorize release. The focused internal
+**Phase 10 is complete and Phase 11 is in progress.** Iteration 11.1 provides
+the retained first-release decision assessment. Iteration 11.2 baselines the
+maintainer's release/governance direction and selects a separately versioned
+hospital implementation kit whose future official distribution will carry one
+exact verified platform release for a private hospital project. This is
+architecture only: no kit, embedded archive, license, release, tag, or
+publication has been created. The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -127,9 +130,12 @@ Connect Cloud will be the reference deployment target, not a core dependency.
 18. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
 19. Read the [Distribution and First-Release Assessment](docs/architecture/distribution-release-assessment.md)
-   for ranked Phase 11 options, maintainer decisions, deliberate deferrals, and
-   remaining release gaps; it is decision support rather than authority.
-20. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+   for the evidence and ranked Phase 11 options that preceded maintainer
+   decisions.
+20. Read [Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md)
+   for the authoritative three-level ownership, managed platform archive,
+   environment, trusted composition, lifecycle, and next-proof decision.
+21. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -234,6 +240,8 @@ Follow [AGENTS.md](AGENTS.md) and the
 Open decisions are tracked in [Open decisions](docs/architecture/open-decisions.md).
 Phase 11 decision support is in the
 [distribution and first-release assessment](docs/architecture/distribution-release-assessment.md).
+Accepted hospital-facing composition architecture is in
+[Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md).
 The [current license status](LICENSE-STATUS.md) explicitly authorizes no public
-release or implied license grant; final licensing and contribution policy
-remain unresolved.
+release or implied license grant; final license review and policy-file
+implementation remain incomplete.

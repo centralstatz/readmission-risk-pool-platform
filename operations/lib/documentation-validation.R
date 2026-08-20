@@ -25,6 +25,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/connect-cloud-realization.md",
     "docs/architecture/observability-foundation.md",
     "docs/architecture/distribution-release-assessment.md",
+    "docs/architecture/hospital-implementation-distribution-assessment.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -65,6 +66,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/connect-cloud-realization.md",
       "docs/architecture/observability-foundation.md",
       "docs/architecture/distribution-release-assessment.md",
+      "docs/architecture/hospital-implementation-distribution-assessment.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -88,6 +90,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/connect-cloud-realization.md",
       "docs/architecture/observability-foundation.md",
       "docs/architecture/distribution-release-assessment.md",
+      "docs/architecture/hospital-implementation-distribution-assessment.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -113,6 +116,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/connect-cloud-realization.md",
       "docs/architecture/observability-foundation.md",
       "docs/architecture/distribution-release-assessment.md",
+      "docs/architecture/hospital-implementation-distribution-assessment.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -200,7 +204,17 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/platform-architecture.md",
       "docs/architecture/platform-implementation-plan.md",
       "docs/architecture/platform-implementation-record.md",
-      "docs/architecture/open-decisions.md"
+      "docs/architecture/open-decisions.md",
+      "docs/architecture/hospital-implementation-distribution-assessment.md"
+    ),
+    "docs/architecture/hospital-implementation-distribution-assessment.md" = c(
+      "docs/vision/platform-true-north.md",
+      "docs/architecture/platform-architecture.md",
+      "docs/architecture/platform-implementation-plan.md",
+      "docs/architecture/platform-implementation-record.md",
+      "docs/architecture/canonical-producer-foundation.md",
+      "docs/architecture/distribution-release-assessment.md",
+      "docs/operations/operator-manual.md"
     ),
     "docs/operations/README.md" = c(
       "docs/operations/validation.md",

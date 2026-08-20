@@ -59,15 +59,19 @@ extending it.
 19. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
 20. [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
-   — Phase 11 recommendations, tradeoffs, human decisions, deliberate
-   deferrals, and release gaps; recommendations are not yet accepted.
-21. [Platform Implementation Record](architecture/platform-implementation-record.md)
+   — the Phase 11.1 options, evidence, deliberate deferrals, and release gaps
+   that preceded maintainer decisions.
+21. [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
+   — the accepted three-level model, managed embedded platform release,
+   top-level environment, trusted composition, operations, lifecycle, and
+   smallest next proof.
+22. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-22. [Implementation Conventions](development/implementation-conventions.md) and
+23. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-23. [Repository Development Policies](development/repository-policies.md) for
+24. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-24. [Operations](operations/README.md) for supported human operations and
+25. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -3649,3 +3649,281 @@ Obtain explicit maintainer answers to the seven decisions in the assessment.
 Then scope Iteration 11.2 from those answers; do not install the recommended
 license, companion model, support matrix, governance terms, or release identity
 merely because this assessment ranks them first.
+
+### Iteration 11.2 — Hospital-facing distribution and managed platform composition assessment
+
+#### Objective and scope boundary
+
+Determine whether a separately versioned generic hospital-facing distribution
+should carry an exact immutable platform release as a managed dependency, and
+specify ownership, environment, operation, producer-trust, lifecycle, upgrade,
+maintenance, security, and deployment behavior precisely enough for a bounded
+implementation proof. Baseline the maintainer decisions made after Iteration
+11.1 without reopening them absent contradictory repository evidence.
+
+This was architecture and decision baselining only. It did not create a
+hospital-facing repository or release, embed or generate a platform archive,
+install a license, tag or publish `v0.1.0`, add CI/release automation, implement
+download/update/package/container behavior, or change platform contracts and
+runtime behavior.
+
+#### Evidence inspected
+
+The assessment read and reconciled:
+
+- Platform True North, architecture, implementation plan, open decisions,
+  reference-asset reconciliation, the complete implementation record, and
+  agent guidance;
+- the Iteration 11.1 distribution/release assessment and its dependency,
+  environment, acquisition, license, governance, integrity, and adopter-
+  packaging evidence;
+- the operator manual, operation registry, initialization and doctor entry
+  points, repository-root/path behavior, `renv` activation/settings/lock
+  ownership, and current generated-state conventions;
+- platform-instance configuration, installed producer composition, producer
+  validation/execution APIs, stable platform run, and the Phase 10 independent
+  adopter composition/proof;
+- operational-history, product/materialization, Shiny, target-neutral artifact,
+  Connect realization, observability, and progressive adoption boundaries; and
+- the actual repository tree and separation between repository-scale platform
+  operation and the internal `rrpruntime` package.
+
+The sibling repository was not inspected. The open question concerns physical
+composition of interfaces already proven in the clean repository; old source
+layout could not supply authoritative evidence and was not relevant. No sibling
+asset, code, prose, configuration, identity, or dependency was used.
+
+#### Maintainer decisions baselined
+
+The iteration records these accepted directions:
+
+1. first platform release `v0.1.0`;
+2. the validated whole repository source tree as the `v0.1.0` platform release
+   unit, without making that a permanent requirement for all future releases;
+3. GitHub as public source/release authority with immutable tags, GitHub
+   Releases, and archive acquisition;
+4. a shipped platform `renv.lock` and `renv::restore()` as the standard
+   declared environment construction path, without requiring Docker;
+5. the existing explicit trusted producer composition, with no executable
+   YAML, path/function loading, discovery, or multi-hospital switching;
+6. secrets external to committed platform and adopter source;
+7. Connect Cloud as reference/tutorial realization only, external publication
+   operator-owned, the reduced artifact still target-neutral, and OCI deferred
+   as a future peer;
+8. CentralStatz Statistical & Data Sciences LLC as project steward/release
+   publisher and Alex Zajichek as initial maintainer;
+9. Apache-2.0 direction after final dependency/asset/license compatibility
+   review, with MIT fallback for a genuine unresolved incompatibility;
+10. lightweight contribution guidance, DCO, no CLA, and no copyright
+    assignment;
+11. best-effort open-source support without SLA or response/resolution
+    guarantee, GitHub issues, and optional separate CentralStatz services;
+12. normal open-source security governance and operator responsibility for
+    deployment, credentials, access, PHI, and local configuration; and
+13. normal Git/GitHub release integrity without speculative custom signing,
+    SBOM, attestation, or supply-chain infrastructure.
+
+The exact tested R/OS matrix remains an evidence question rather than a broad
+support promise. The license remains uninstalled pending the final review, and
+publication remains unauthorized.
+
+#### Alternatives considered
+
+Six serious physical models were compared for adopter usability,
+reproducibility, provenance, upgrades, hospital-code separation, offline
+installation, Git burden, security/trust, `renv`, stable operations, Phase 10
+composition, future releases/OCI, CentralStatz maintenance, and refactoring:
+
+1. direct hospital customization/fork of the platform;
+2. side-by-side exact platform and private companion repositories;
+3. Git submodule/subtree composition;
+4. managed embedded immutable platform release archive;
+5. explicit exact-version platform download during bootstrap; and
+6. conversion of the repository-scale platform into an R package.
+
+The managed embedded archive ranks first. Side-by-side composition is the
+strongest advanced/fallback option. Explicit retrieval could later populate
+the same managed boundary but is weaker for restricted/offline institutions.
+A controlled fork remains a fallback, submodule/subtree makes Git mechanics an
+operator burden, and full-package conversion requires unjustified major
+refactoring.
+
+#### Selected recommendation
+
+The three-level model is accepted with a refined physical design:
+
+- **Level 1:** the independently versioned and released Readmission Risk Pool
+  Platform;
+- **Level 2:** a separately versioned **Readmission Risk Pool Hospital
+  Implementation Kit**, not another platform; and
+- **Level 3:** one hospital's private implementation project created from the
+  kit.
+
+An official kit release physically carries exactly one official platform
+release archive with identity, version, compatibility, inventory, byte size,
+and SHA-256 metadata. Initialization verifies safe paths/content and extracts
+it to staged, ignored, versioned managed local state, validates the extracted
+platform, and promotes it only when complete. Modifications remain possible
+because the source is open, but they are detectable and outside the normal
+supported workflow. No silent network retrieval is part of initialization.
+
+The kit uses a partly maintained, partly generated model. Its source project
+maintains hospital-facing wrappers, scaffold, ownership metadata, environment
+baseline, and guidance. Release construction injects the exact Level-1 archive.
+No platform logic is manually copied or synchronized in Level 2.
+
+#### Environment decision
+
+The private top-level project owns the only active `renv` environment and
+authoritative complete lock. The managed platform retains its unchanged lock
+for release provenance and independent Level-1 use, but hospital operations do
+not activate or restore a nested platform project. The kit baseline is derived
+from the exact platform lock plus kit dependencies; the hospital deliberately
+adds producer dependencies to its private top-level lock without silently
+changing platform package versions.
+
+A future upgrade builds and restores a candidate environment separately. A
+dependency conflict fails before platform selection changes. No dependency
+merger or alternate package manager was implemented or authorized.
+
+#### Operation and producer composition decision
+
+The kit will expose thin top-level scripts for initialize, doctor, fictional
+acceptance, implementation/producer validation, run, history inspection,
+product materialization, app validation/launch, artifact build/validation, and
+supported target realization. These wrappers delegate to Level-1 callable
+operations; they do not copy domain logic or turn the operation registry into
+an execution framework.
+
+The smallest necessary Level-1 addition is a callable operation-composition
+seam accepting an already constructed trusted registry/selection and explicit
+state paths. It must never accept a configuration-supplied executable path,
+function, package, URL, or expression. Existing Level-1 scripts will use the
+same functions with the shipped composition.
+
+The private project owns one complete top-level `config/platform-instance.yml`,
+one producer declaration, source/mapping/callable implementation, producer-
+owned nonsecret configuration, and fixed reviewed composition code. The
+composition explicitly sources a maintained file list and registers exactly
+one callable; YAML only selects its exact ID/version. The embedded platform
+configuration remains unchanged for isolated synthetic acceptance. Normal
+hospital execution uses the top-level selection and separate hospital state.
+
+Producer conformance is an explicit gate before normal operation. Every normal
+run still validates declaration, registration, selection, structured result,
+and canonical admission. Whether the first implementation reruns the complete
+controlled scenario per operation or uses a bounded non-PHI conformance receipt
+remains evidence for the proof.
+
+#### Lifecycle and upgrade decision
+
+The intended lifecycle is one kit acquisition, one top-level environment
+restore, verified managed-platform initialization, isolated fictional reference
+acceptance, hospital implementation, producer conformance, exact selection,
+normal unchanged downstream operation, target-neutral artifact construction,
+and operator-selected realization/publication.
+
+An upgrade stages a new platform and candidate R library beside the current
+installation, preserves adopter-owned files and operational history, reruns
+reference acceptance, producer conformance, checkpoint, and applicable state/
+product/artifact compatibility, and switches only with explicit operator
+acceptance. Incompatibility leaves the prior installation usable and reports
+manual changes without silently editing hospital code. No updater or migration
+tool was implemented.
+
+#### Deployment, security, and privacy effects
+
+The kit ends upstream of the unchanged target-neutral reduced application
+artifact. Connect remains a reference peer and future OCI/container realization
+can consume the same artifact. Installation composition does not bake Connect
+into source, producer, runtime, products, or application behavior.
+
+Public platform/kit releases contain no PHI, credentials, connections, private
+mappings, or hospital configuration. The private hospital project owns those
+implementation details under local policy while secrets remain external.
+Archive verification, safe extraction, fixed trusted composition, isolated
+fictional state, allowlisted artifacts, and privacy-safe diagnostics are
+required boundaries; checksums are integrity evidence, not signing or a
+sandbox.
+
+#### Rejected and deferred work
+
+Rejected as the primary model: permanent hospital fork, ad hoc two-root paths,
+Git submodule/subtree, executable configuration, directory/plugin discovery,
+and full-platform R-package conversion.
+
+Deferred: online retrieval, automatic updater, package-based producer
+distribution, final repository/path names, OCI realization, multiple active
+platform versions, generic plugin ecosystem, dependency solver, exact
+ownership merge tool, formal migration framework, final R/OS matrix, license
+installation, and all release/publication automation.
+
+#### Unresolved questions
+
+The architecture document records ten bounded questions for implementation
+evidence: final kit/repository and path names, kit manifest identity/version,
+platform archive provenance form, minimal callable Level-1 operation API,
+wrapper filenames/surface, top-level lock construction/conflict checks,
+conformance receipt versus per-run conformance, ownership-manifest upgrade
+behavior, tested R/OS matrix, and final Apache-2.0 compatibility review.
+
+#### Architecture and plan effects
+
+Added the authoritative hospital-distribution document and summarized its
+Level-1/2/3, archive, environment, operation, and trust boundaries in Platform
+Architecture. Updated the Phase 11 plan to mark Iterations 11.1 and 11.2
+complete as assessment/architecture, name the managed composition proof as
+11.3, and leave later kit/release work explicit. Updated open decisions,
+progressive adoption, the operator manual, navigation, README status, and agent
+guidance. Reclassified the 11.1 assessment as historical decision support where
+superseded.
+
+No machine-readable contract, runtime code, operation command, operation
+registry entry, configuration, dependency, lockfile, application, artifact,
+target realization, or generated state changed.
+
+#### Reference assets and clean work
+
+No sibling review or asset use occurred because clean Phase 8–10 interfaces and
+actual operations supplied the relevant evidence. The managed distribution
+architecture, alternatives analysis, environment/operation ownership,
+composition flow, lifecycle, and implementation sequence are new clean work.
+
+#### Validation evidence
+
+The final validation matrix reported:
+
+- `Rscript --vanilla operations/validate-documentation.R`: PASS (4 checks,
+  0 issues), covering 37 required governing documents, 259 repository-local
+  links, 25 maintained navigation sources, and portable document paths;
+- `Rscript --vanilla tests/run-phase8-tests.R`: PASS (22 tests);
+- `Rscript --vanilla tests/run-phase9-tests.R`: PASS (16 tests);
+- `Rscript --vanilla tests/run-phase10-tests.R`: PASS (26 tests);
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript operations/validate.R --mode
+  development`: PASS (124 checks, 0 issues);
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript operations/validate.R --mode
+  checkpoint`: PASS (185 checks, 0 issues), including Phase 0 through Phase 10
+  focused suites and final documentation counts; and
+- `git diff --check`: PASS.
+
+The full operations emitted only expected informational renv dependency-
+discovery timing notes. Final scans found no generated DuckDB database, product
+bundle, deployment repository, release archive, hospital implementation, or
+log state. The sibling worktree remained untouched. No dependency, lockfile,
+contract, operation command, or configuration changed. No commit, tag, remote,
+push, release, publication, or deployment was performed.
+
+#### Phase 11 status
+
+**IN PROGRESS.** Iteration 11.2 resolves the hospital-facing composition
+architecture and baselines accepted maintainer direction. It does not implement
+the kit or close the license, environment, governance-file, release-candidate,
+or publication evidence required to complete Phase 11.
+
+#### Recommended next task
+
+Implement **Iteration 11.3 — managed composition proof** exactly as scoped in
+the hospital-distribution architecture: a minimal callable Level-1 operation
+seam plus a temporary external-tree, integrity-checked platform archive and
+fictional adopter composition proof. Do not create or publish the production
+kit repository or release in that iteration.

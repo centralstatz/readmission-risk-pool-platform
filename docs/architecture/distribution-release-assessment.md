@@ -2,8 +2,8 @@
 
 ## Status and authority
 
-**Status:** Iteration 11.1 decision support; recommendations are not accepted
-architecture or release authorization
+**Status:** retained Iteration 11.1 decision support; superseded where the
+maintainer baselined decisions in Iteration 11.2
 
 **Assessment date:** 2026-08-20
 
@@ -18,11 +18,33 @@ for a small maintainer footprint, healthcare adoption realities, and the goal
 of reaching a hard foundational release cutoff before adding more product
 capability.
 
-Nothing here selects a license, grants permission, changes ownership, promises
-support, authorizes publication, or changes platform behavior. Maintainer and,
-where appropriate, legal review must turn recommendations into decisions before
-Iteration 11.2 implements them. This is technical and governance decision
-support, not legal advice.
+This remains the assessment evidence that preceded maintainer decisions. It is
+not itself a license grant or release authorization. Iteration 11.2 baselines
+the accepted direction and selects the physical hospital-facing composition in
+[Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
+That later document governs wherever this assessment describes a choice as
+unresolved. Apache-2.0 installation still awaits final compatibility review,
+the tested environment matrix still awaits evidence, and no release is
+authorized. This is technical and governance decision support, not legal
+advice.
+
+## Iteration 11.2 resolution update
+
+The maintainer accepted `v0.1.0`, the whole repository as the first platform
+release unit, GitHub source/release authority, the shipped platform lock and
+`renv::restore()`, explicit trusted producer composition, external secrets,
+target-neutral deployment with Connect as reference only, CentralStatz
+stewardship with Alex Zajichek as initial maintainer, Apache-2.0 subject to a
+final compatibility review with MIT fallback, DCO without CLA/assignment,
+best-effort support without SLA, standard security governance, and ordinary
+Git/GitHub release integrity.
+
+The prior generic “private companion” recommendation is refined into a
+separately versioned hospital implementation kit. Its official release embeds
+one exact platform release archive and creates a private hospital project with
+one top-level R environment and fixed trusted composition. See the authoritative
+decision linked above for alternatives, ownership, lifecycle, and the bounded
+next proof.
 
 ## Executive recommendation
 
@@ -65,15 +87,14 @@ versions. The first platform release should be `0.1.0`, not `1.0.0`, because
 the foundational path is coherent while external adoption, upgrades, and the
 support matrix remain unproven.
 
-The most important unresolved implementation question is physical composition
-of private adopter code. Phase 10 proves the semantic seam, but the current
-normal installation still wires the shipped producer inside the core tree. The
-recommended initial production model is a private companion implementation
-project pinned to one exact platform release and explicitly composed with it.
-Iteration 11.2 would need to make that narrow model human-operable and
-conformance-tested without automatic discovery or executable YAML. Until that
-exists, a hospital fork is possible but should not be advertised as the
-preferred upgrade path.
+At the 11.1 checkpoint, the most important unresolved implementation question
+was physical composition of private adopter code. Phase 10 proved the semantic
+seam, but the normal installation wired the shipped producer inside the core
+tree. This assessment recommended a private companion pinned to one exact
+platform release. Iteration 11.2 has since refined that recommendation into the
+managed hospital implementation kit linked above; its bounded proof remains
+future work. A hospital fork should not be advertised as the preferred upgrade
+path.
 
 ## Current platform evidence
 
@@ -209,12 +230,12 @@ Disadvantages and cautions:
 - a license does not settle trademark, branding, copyright ownership, data,
   or third-party asset rights.
 
-Operationally, Iteration 11.2 would replace `LICENSE-STATUS.md` with the
-approved license/notice arrangement, update package metadata, and produce an
-asset/dependency inventory. This choice is difficult to revoke for already
-released versions but future versions can be relicensed only with all required
-rights-holder permissions. It strongly matches True North's open, replaceable,
-commercially usable core.
+The 11.1 assessment expected a later implementation iteration to replace
+`LICENSE-STATUS.md` with the approved license/notice arrangement, update
+package metadata, and produce an asset/dependency inventory. Iteration 11.2 did
+not install the license; final compatibility review still precedes that work.
+The choice is difficult to revoke for already released versions, while future
+versions can be relicensed only with all required rights-holder permissions.
 
 #### 2. Strong alternative — MIT
 
@@ -427,10 +448,10 @@ every package source.
 
 Do not require an exact R patch version as a permanent platform semantic.
 Recommend one supported R minor line and validate the release against a named
-patch. For the first release, the best current target is R 4.6.x, validated at
-the then-current patch (4.6.1 at assessment time). Iteration 11.2 must test and,
-if accepted, deliberately refresh the existing R 4.4.1 lock rather than merely
-editing its version field.
+patch. At the 11.1 checkpoint, the best candidate was R 4.6.x, validated at the
+then-current patch (4.6.1 at assessment time). The actual release iteration
+must test and, if accepted, deliberately refresh the existing R 4.4.1 lock
+rather than merely editing its version field.
 
 An adopter who already has R may use it only if it falls within the supported
 line. Project initialization must continue to avoid modifying system libraries;
@@ -507,12 +528,13 @@ needed to receive the known declaration/callable/selection. Ordinary YAML must
 remain non-executable. One composed installation still represents one health
 system and one selected producer.
 
-This recommendation is medium confidence because Iteration 10.2 proved a
+This recommendation was medium confidence because Iteration 10.2 proved a
 separately owned tree inside tests, not a physically separate repository.
-Iteration 11.2 must validate a temporary companion-style composition before the
-model becomes supported. If that narrow proof exposes disproportionate
-complexity, a controlled private fork is the strongest initial fallback and
-must be documented with an upstream-merge/conformance procedure.
+Iteration 11.2 selected the refined managed-kit architecture; Iteration 11.3
+must validate a temporary external-tree composition before the model becomes
+supported. If that narrow proof exposes disproportionate complexity, a
+controlled private fork remains the strongest fallback and must be documented
+with an upstream-merge/conformance procedure.
 
 A private R package is a good later evolution when multiple installations,
 release reuse, or internal package repositories justify it. A package should
@@ -830,10 +852,12 @@ This model preserves a small open core, one-health-system context, component
 substitution, human operability, private adopter ownership, and deployment
 choice without requiring centralized SaaS or CentralStatz services.
 
-## Maintainer decisions required before implementation
+## Maintainer decisions requested by Iteration 11.1
 
-The following choices involve ownership, values, support capacity, or product
-positioning and should not be silently made by an implementation agent.
+The following choices were unresolved at the Iteration 11.1 checkpoint. The
+resolution update near the start of this document and the later hospital-
+distribution architecture now record the accepted direction; the original
+questions are retained as decision provenance.
 
 ### Decision 1 — Copyright holder, steward, and brand owner
 
@@ -989,7 +1013,7 @@ Controlled private core fork; private R package for mature R organizations.
 
 A small composition interface, conformance operation against external-owned
 code, configuration precedence, example layout, and upgrade documentation in
-Iteration 11.2.
+the later managed-composition implementation.
 
 **What remains reversible**
 
@@ -1122,7 +1146,11 @@ targets, or later foundation governance.
 The absence of these enhancements does not prevent a complete foundational
 platform release.
 
-## Recommended remaining Phase 11 structure
+## Phase 11 sequence proposed by Iteration 11.1
+
+This sequence was the 11.1 recommendation before maintainer decisions and the
+managed hospital-distribution assessment. The current authoritative sequence
+is in the [implementation plan](platform-implementation-plan.md).
 
 ### Iteration 11.1 — Distribution and release decision assessment
 
@@ -1190,9 +1218,11 @@ generic practice conflicts with implemented boundaries.
 | [Posit Connect Cloud: new publish](https://docs.posit.co/connect-cloud/user/publish/01-new.html) | GitHub repository/branch/file selection, sharing, and republish controls |
 | [Open Container Initiative](https://opencontainers.org/) | Vendor-neutral image/runtime/distribution architecture |
 
-## Open questions
+## Open questions at the Iteration 11.1 checkpoint
 
-These questions remain intentionally unanswered until the maintainer responds:
+These questions record what remained unanswered when the assessment was
+written. Most are resolved by the Iteration 11.2 update; exact environment
+evidence, final license review, and implementation details remain open.
 
 1. Who legally owns the existing work and will serve as initial release
    publisher, security contact, conduct contact, and maintainer?

@@ -75,12 +75,18 @@ The two isolated compositions prove unchanged runtime/provider, DuckDB,
 products/app, and artifact behavior. The fixture is evidence, not a second
 shipped health system or permanent packaging model; final adopter-code
 packaging remains open for Phase 11.
-Iteration 11.1 owns only the non-authoritative decision assessment in
-`docs/architecture/distribution-release-assessment.md`. Its ranked license,
-release, packaging, environment, governance, security, support, and integrity
-recommendations are not maintainer decisions or authorization to implement or
-publish them. Phase 11 remains in progress pending explicit maintainer choices;
-the current no-release license status remains authoritative.
+Iteration 11.1 owns the retained decision assessment in
+`docs/architecture/distribution-release-assessment.md`. Iteration 11.2
+baselines the maintainer's release/governance direction and authoritatively
+selects the three-level managed composition in
+`docs/architecture/hospital-implementation-distribution-assessment.md`: the
+independently released platform, a separately versioned Readmission Risk Pool
+Hospital Implementation Kit whose official bundle carries one exact verified
+platform archive, and one hospital's private implementation project. The kit
+owns thin wrappers, fixed trusted composition, and one top-level R environment;
+it never copies platform logic. This architecture is not implemented. Phase 11
+remains in progress; the current no-release license status remains
+authoritative pending final compatibility review and later release work.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -101,6 +107,8 @@ the architecture or plan explicitly if evidence changes them.
 - The app consumes products and does not query sources or invoke providers.
 - Deployment targets package stable runtime interfaces and do not alter
   upstream semantics.
+- Hospital-facing distribution composes an exact managed platform release; it
+  does not fork, duplicate, dynamically discover, or redefine platform logic.
 - Observability, provenance, validation, metrics, and audit remain distinct.
 - One deployment represents one health system.
 - Optional advanced methods never become mandatory core dependencies.
@@ -307,6 +315,17 @@ before runtime. The independent adopter evidence is isolated under
 `tests/phase10/fixtures/adopter-producer/` and never enters the normal installed
 registry. Do not add dynamic loading, hospital selectors, multiple active
 producers, or source configuration or secrets above this boundary.
+
+The selected future physical composition is governed by
+`docs/architecture/hospital-implementation-distribution-assessment.md`.
+Level 2 is a hospital implementation kit, not another platform. Its official
+release embeds one exact verified Level-1 archive; a private Level-3 project
+owns adopter code, one complete platform-instance selection, fixed reviewed
+composition, and the only active top-level `renv` environment. The embedded
+lock remains provenance, and isolated synthetic acceptance remains separate
+from hospital state. Until Iteration 11.3 implements the bounded proof, do not
+create kit paths, wrappers, manifests, archives, repositories, downloads, or
+upgrade behavior merely because the architecture describes them.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires

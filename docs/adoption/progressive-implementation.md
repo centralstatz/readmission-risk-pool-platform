@@ -72,6 +72,41 @@ rows and proves delayed source facts remain excluded until available. Run
 normal operators continue to use the shipped configuration and
 `Rscript operations/validate-producer.R`.
 
+## Selected future hospital acquisition model
+
+Iteration 11.2 selects a three-level ownership model for implementation after
+the current platform release process exists:
+
+```text
+independently released RRP Platform
+        ↓ exact verified archive
+generic RRP Hospital Implementation Kit
+        ↓ private project created by one hospital
+hospital-owned implementation and configuration
+```
+
+The official kit distribution will carry one exact platform release archive so
+restricted/offline initialization does not require GitHub. It will verify and
+extract that archive into ignored managed state. The private project will own
+one top-level `renv` environment, adopter code/configuration, and thin
+hospital-facing wrappers. The embedded platform will retain its own lockfile
+for provenance but will not activate a competing nested project.
+
+Trusted fixed code in the private project will explicitly register exactly one
+adopter callable. A complete top-level `platform-instance` document will select
+it; YAML will not name executable paths or functions. Isolated synthetic
+reference acceptance will continue to use the embedded platform's unchanged
+shipped composition and separate fictional state. Normal hospital operations
+will use the top-level selection and hospital state, preserving the one-health-
+system rule.
+
+This model is authoritative architecture but not yet an available distribution
+or operation. Until its bounded proof and later kit implementation exist, use
+the current repository operations for the fictional reference and Phase 10
+tests for adopter-seam evidence. Do not invent a hospital wrapper, managed path,
+or download procedure. See
+[Hospital-Facing Implementation Distribution](../architecture/hospital-implementation-distribution-assessment.md).
+
 ## Source responsibility
 
 The local source implementation owns hospital/EHR meaning: extraction, joins,
@@ -84,13 +119,15 @@ changes to generic runtime, provider, persistence, products, or app logic.
 The generic producer declaration, trusted callable registry, installation
 selection, result, admission, and conformance surface are implemented. A
 hospital-owned producer must keep extraction/configuration/secrets beneath its
-callable boundary; YAML cannot load its code. Final physical packaging of that
-code remains open for Phase 11 distribution decisions. The proof shows that an
-explicit test-owned directory can supply declaration, callable, configuration,
-and selection without core changes; it does not establish core-repository forks,
-packages, plugins, or companion repositories as the supported production
-answer. Work with real data also requires approved privacy, security,
-governance, and clinical-use controls beyond software conformance.
+callable boundary; YAML cannot load its code. Physical packaging is now
+resolved architecturally as the private implementation area of the separately
+versioned hospital implementation kit, using fixed maintained composition over
+an exact managed platform release. That composition is not implemented yet.
+The proof shows that an explicit test-owned directory can supply declaration,
+callable, configuration, and selection without core changes; it does not make
+the fixture a scaffold or authorize plugins/dynamic loading. Work with real
+data also requires approved privacy, security, governance, and clinical-use
+controls beyond software conformance.
 
 ## Provider responsibility
 

@@ -437,6 +437,60 @@ repository with staged but uncommitted files. Connect remains a reference
 target, not a condition in the application or runtime. A second target should
 be added as a peer adapter only when concrete requirements exist.
 
+## Hospital-facing distribution and installation composition
+
+The independently released platform remains Level 1. A separately versioned
+**Readmission Risk Pool Hospital Implementation Kit** is the selected Level-2
+hospital-facing project, and one hospital's private implementation is Level 3.
+The kit is not a second platform: it owns onboarding, physical composition,
+top-level environment and operation wrappers, while all generic semantics and
+implementations remain owned by this repository.
+
+An official kit release carries one exact immutable platform release archive
+with identity, compatibility, inventory, and SHA-256 metadata. Initialization
+verifies and safely extracts it into ignored versioned managed state. The
+managed source remains inspectable; integrity checks make local modifications
+detectable and outside the normal supported workflow rather than attempting to
+make the platform a security boundary.
+
+```text
+public platform release (Level 1)
+        ↓ exact archive injected into kit release
+generic hospital implementation kit (Level 2)
+        ↓ private project created from the kit
+hospital implementation and configuration (Level 3)
+```
+
+The kit development source maintains no copied platform logic. Its release is
+partly maintained and partly generated: maintained wrappers, scaffolding, and
+guidance are combined with the exact released platform artifact during release
+construction. The official initial distribution is offline-capable and does
+not silently download or execute a platform release during initialization.
+
+One top-level hospital project owns the active `renv` environment. The embedded
+platform retains its lockfile unchanged for provenance and independent use,
+but nested project activation/restoration is not part of hospital operation.
+Hospital producer dependencies enter the top-level private lock deliberately
+and may not silently alter the embedded platform dependency baseline.
+
+Trusted fixed code in the private project composes exactly one adopter
+declaration and callable; a complete top-level platform-instance document
+selects it. Configuration never names executable paths or functions. Thin
+Level-2 wrappers delegate to callable Level-1 operations with an already
+constructed registry/selection and explicit state paths. They do not copy
+domain logic or turn the operation registry into a CLI router.
+
+The embedded platform's shipped configuration remains unchanged for isolated
+fictional reference acceptance. Normal hospital execution uses the separate
+top-level selection and state. Both flows preserve the one-health-system rule;
+reference acceptance is a segregated installation self-test, not runtime
+multi-hospital switching.
+
+The complete ownership, environment, trust, lifecycle, upgrade, alternatives,
+and maintenance decision is authoritative in
+[Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
+Its managed composition is not yet implemented.
+
 ## Observability layer
 
 Observability is cross-cutting but accessed through a stable, small interface.
@@ -486,9 +540,11 @@ not YAML, associates declarations with callables. Producer-owned source
 configuration and environment-owned secrets remain below that seam. The
 Iteration 10.2 test-owned composition proves that declaration, callable,
 producer-local configuration, and alternate exact selection can be supplied
-without changing the default installation. Final physical packaging of
-adopter-owned executable code remains a Phase 11/distribution decision; the
-test-fixture layout is not a mandated extension layout.
+without changing the default installation. Iteration 11.2 selects a separately
+versioned hospital implementation kit carrying an exact managed platform
+release. The private hospital project supplies one complete platform-instance
+document and fixed trusted composition code above the managed platform; the
+test-fixture layout remains evidence rather than the mandated physical layout.
 
 ## Dependency direction
 

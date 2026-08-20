@@ -609,6 +609,39 @@ Legal and brand decisions can begin earlier. Formal public release depends on
 stabilized contracts and operations. The role of `readmit` and extension
 repository strategy are decided from demonstrated needs.
 
+### Iteration sequence and current status
+
+- **Iteration 11.1 — distribution and first-release decision assessment:**
+  complete. It ranked license, release, environment, adopter packaging,
+  governance, security, support, integrity, and compatibility choices without
+  adopting or implementing them.
+- **Iteration 11.2 — hospital-facing distribution and managed composition
+  assessment:** complete as architecture. The maintainer baselined `v0.1.0`,
+  whole-tree first release, GitHub authority, `renv::restore()`, explicit
+  producer trust, external secrets, target-neutral deployment, CentralStatz
+  stewardship, conditional Apache-2.0 direction, DCO contribution governance,
+  best-effort support, normal security governance, and ordinary release
+  integrity. The selected physical model is a separately versioned hospital
+  implementation kit whose official distribution embeds one exact verified
+  platform archive and creates one private hospital project with a single
+  top-level R environment. See
+  [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
+- **Iteration 11.3 — managed composition proof:** next. Add only the minimal
+  callable Level-1 operation seam, draft managed-release/ownership metadata,
+  and a temporary external-tree proof of archive integrity, isolated reference
+  acceptance, explicit adopter composition, conformance, downstream execution,
+  artifact construction, and fail-closed drift. Do not create or publish the
+  production kit repository in this proof.
+- **Later Phase 11 release work:** after the proof, create the maintained kit
+  project and release construction, complete license/environment/governance
+  evidence, assemble platform and kit release candidates, and perform clean
+  acquisition validation. Publication of `v0.1.0` still requires explicit
+  maintainer authorization.
+
+**Phase 11 remains in progress.** Iteration 11.2 establishes architecture only;
+no license, distribution, release artifact, repository, tag, CI matrix, or
+publication has been implemented.
+
 ## Cross-phase rules
 
 Every meaningful iteration must:

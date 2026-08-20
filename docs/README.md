@@ -62,8 +62,12 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
-  — non-authoritative Phase 11 decision support for licensing, packaging,
-  governance, environment support, release gaps, and maintainer choices.
+  — retained Phase 11.1 evidence for licensing, packaging, governance,
+  environment support, release gaps, and maintainer choices.
+- [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
+  — authoritative Phase 11.2 decision for the three ownership levels, embedded
+  platform release, top-level environment, trusted composition, operations,
+  lifecycle, upgrades, and bounded implementation proof.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and
