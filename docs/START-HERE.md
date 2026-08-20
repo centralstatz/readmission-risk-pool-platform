@@ -24,7 +24,8 @@ extending it.
    — the complete deterministic fictional producer beneath that boundary.
 7. [Canonical Producer Foundation](architecture/canonical-producer-foundation.md)
    — the declaration, trust, installation selection, generic execution,
-   admission, conformance, and adopter handoff above source implementations.
+   admission, conformance, and two-producer substitution evidence above source
+   implementations.
 8. [Runtime Foundation](architecture/runtime-foundation.md) — the admitted
    canonical-to-eligibility/state/request computation above the boundary.
 9. [Provider and Estimate Foundation](architecture/provider-foundation.md) —

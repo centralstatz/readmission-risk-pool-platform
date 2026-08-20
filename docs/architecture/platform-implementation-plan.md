@@ -565,13 +565,17 @@ complete the phase number.
   reusable conformance, privacy-safe producer diagnostics, and migrates the
   shipped synthetic producer plus stable run onto the seam.
 - **Iteration 10.2 — independent adopter-side producer conformance proof:**
-  next. It must build a materially different fictional producer independently,
-  pass the same suite, select it through the same mechanism, and prove the
-  unchanged downstream stack using isolated temporary state.
+  complete. A test-only denormalized export/activity-feed producer owns local
+  validation, mapping, identities, configuration, dual-time filtering, and an
+  unsupported baseline capability. It passes the unchanged shared producer
+  conformance path and reaches the unchanged runtime/provider, isolated DuckDB,
+  products, Shiny app, and reduced artifact.
 
-**Phase 10 remains in progress.** Iteration 10.1 establishes the interface but
-does not independently prove adopter implementation or settle its final
-packaging/distribution mechanism.
+**Phase 10 is complete.** The shipped reference and materially different
+adopter fixture are substitutable peers through the same seam, missing
+capability is explicit, and generic downstream code has no named source branch.
+Final physical packaging/distribution of adopter-owned code remains Phase 11
+work rather than missing adapter-independence evidence.
 
 ## Phase 11 — Distribution and open-source governance
 

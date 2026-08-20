@@ -71,7 +71,7 @@ Run the focused contract/privacy/lifecycle/renderer suite:
 Rscript tests/run-phase9-tests.R
 ```
 
-Run complete development or completed Iteration 10.1 checkpoint validation:
+Run complete development or completed Phase 10 checkpoint validation:
 
 ```sh
 Rscript operations/validate.R --mode development

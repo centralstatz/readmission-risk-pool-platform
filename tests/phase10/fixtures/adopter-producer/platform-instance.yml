@@ -1,0 +1,17 @@
+specification_kind: platform_instance_configuration
+specification_id: conformance.adopter-fixture-platform-instance
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: implementation
+title: Isolated adopter-producer conformance installation
+status: active
+description: >-
+  Test-only one-context installation selection. It is never the repository
+  default and never coexists with the shipped producer in this composition.
+
+selected_canonical_producer:
+  producer_id: conformance.adopter-extract-canonical-producer
+  producer_version: "0.1.0"
+producer_configuration_owner: producer_implementation
+health_system_scope: one
+multi_tenant: false

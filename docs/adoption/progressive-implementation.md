@@ -41,10 +41,36 @@ code.
 7. Continue to use the unchanged runtime/provider, persistence, products, app,
    and deployment operations.
 
-Iteration 10.1 implements Steps 1–3 and supplies the interface, trust,
-selection, and conformance machinery required by Steps 4–6. Iteration 10.2
-must prove those steps with a materially different fictional adopter producer.
-Turnkey hospital onboarding is therefore not yet claimed.
+Phase 10 now demonstrates all seven technical steps with two isolated
+compositions. The shipped synthetic producer remains the default. A test-only
+adopter fixture supplies a denormalized case extract and separate activity
+feed, validates local composite IDs/codes/times, maps through the same producer
+contract, and reaches the unchanged downstream stack. The fixture proves the
+handoff; it is not a hospital integration to copy literally and does not make
+onboarding turnkey.
+
+The demonstrated adopter-owned flow is:
+
+```text
+local source representation
+        ↓
+adopter-owned structure, relationship, vocabulary, and temporal validation
+        ↓
+adopter-owned identifier normalization, code translation, and mapping
+        ↓
+platform.canonical-producer@0.1.0 structured result
+        ↓
+platform-owned canonical admission
+        ↓
+unchanged runtime → provider → history → products → app/artifact
+```
+
+The fixture is deliberately under `tests/phase10/fixtures/`, not the shipped
+implementation tree. It declares baseline input unsupported without fabricating
+rows and proves delayed source facts remain excluded until available. Run
+`Rscript tests/run-phase10-tests.R` to inspect the complete fictional evidence;
+normal operators continue to use the shipped configuration and
+`Rscript operations/validate-producer.R`.
 
 ## Source responsibility
 
@@ -59,9 +85,12 @@ The generic producer declaration, trusted callable registry, installation
 selection, result, admission, and conformance surface are implemented. A
 hospital-owned producer must keep extraction/configuration/secrets beneath its
 callable boundary; YAML cannot load its code. Final physical packaging of that
-code remains open until Iteration 10.2/Phase 11 evidence. Work with real data
-also requires approved privacy, security, governance, and clinical-use controls
-beyond software conformance.
+code remains open for Phase 11 distribution decisions. The proof shows that an
+explicit test-owned directory can supply declaration, callable, configuration,
+and selection without core changes; it does not establish core-repository forks,
+packages, plugins, or companion repositories as the supported production
+answer. Work with real data also requires approved privacy, security,
+governance, and clinical-use controls beyond software conformance.
 
 ## Provider responsibility
 

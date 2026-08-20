@@ -7,7 +7,7 @@ Current validation answers two different questions:
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
 - **Strict checkpoint:** Does the repository also satisfy the completed
-  Iteration 10.1 canonical-producer seam requirements?
+  Phase 10 producer-substitution requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -20,9 +20,9 @@ products, Iteration 6.2 physical product access plus minimal app, and Iteration
 guidance, Iteration 8.1 target-neutral artifact construction/validation,
 Iteration 8.2 Connect Cloud standalone local Git realization/validation, and
 Iteration 9.1 operation-run context, privacy guardrails, callable sink, console
-renderer, and bounded stable-operation integration, plus Iteration 10.1
-canonical-producer declaration/trust/selection/result/admission/conformance and
-shipped producer migration.
+renderer, and bounded stable-operation integration, plus the completed Phase
+10 canonical-producer declaration/trust/selection/result/admission/conformance,
+shipped producer migration, and independent adopter-side substitution proof.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Iteration 10.1 checkpoint:
+Validate the completed Phase 10 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -118,7 +118,7 @@ Run the focused Phase 9 observability tests directly:
 Rscript tests/run-phase9-tests.R
 ```
 
-Run the focused Phase 10.1 canonical-producer tests directly:
+Run the focused Phase 10 canonical-producer and independent substitution tests:
 
 ```sh
 Rscript tests/run-phase10-tests.R
@@ -233,7 +233,7 @@ Development mode composes:
   producer declaration/selection/trust/result/admission/boundary checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6, Phase 7, Phase 8, Phase 9, and Phase 10.1 tests.
+  Phase 6, Phase 7, Phase 8, Phase 9, and Phase 10 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
@@ -273,12 +273,16 @@ Checkpoint mode runs every development check and additionally verifies:
   declaration, trusted callable registration, exact installation selection,
   reusable conformance, generic stable-run invocation, safe producer-stage
   diagnostics, boundary scans, focused tests, and implementation record;
+- the Iteration 10.2 materially different test-only adopter source, independent
+  identities, source-local validation/mapping, delayed availability,
+  unsupported capability, same-seam conformance, isolated DuckDB/product/app/
+  artifact proof, negative downstream scans, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with required transitive packages plus build-only `rsconnect`;
 - the explicit non-release license status; and
 - agreement between human validation commands and agent guidance.
 
-This is strict only relative to completed Iteration 10.1 and the fictional
+This is strict only relative to completed Phase 10 and the fictional
 source-to-local-deployable-repository boundary. It does not prove:
 
 - public release or license readiness;

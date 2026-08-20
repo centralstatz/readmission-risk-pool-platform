@@ -66,12 +66,15 @@ shallow context rules, non-retained console renderer, and bounded integration
 with doctor, reference run, product materialization, artifact build, and
 Connect realization. Retained/external sinks, routing, retention, metrics,
 alerts, tracing protocols, audit, and scheduling remain outside this slice.
-Completed Iteration 10.1 owns `platform.canonical-producer@0.1.0`, the generic
+Completed Phase 10 owns `platform.canonical-producer@0.1.0`, the generic
 structured producer result/admission boundary, explicit trusted callable
 registration, exact single installation selection, reusable producer
-conformance, and the migrated synthetic reference peer. Phase 10 remains in
-progress until an independently developed adopter-side producer proves the
-same seam in Iteration 10.2. Final adopter-code packaging remains open.
+conformance, the migrated synthetic reference peer, and an independently
+developed test-only adopter producer using a materially different source shape.
+The two isolated compositions prove unchanged runtime/provider, DuckDB,
+products/app, and artifact behavior. The fixture is evidence, not a second
+shipped health system or permanent packaging model; final adopter-code
+packaging remains open for Phase 11.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -183,7 +186,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Iteration 10.1 checkpoint, run:
+For the completed Phase 10 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -294,9 +297,10 @@ The generic adopter/source composition seam uses
 `contracts/canonical/canonical-producer.yml`. One installation selects one
 exact producer in `config/platform-instance.yml`; trusted maintained code, not
 YAML, registers its callable. Generic execution admits the structured result
-before runtime. Do not add dynamic loading, hospital selectors, multiple active
-producers, source configuration or secrets above this boundary, or the
-independent Iteration 10.2 producer early.
+before runtime. The independent adopter evidence is isolated under
+`tests/phase10/fixtures/adopter-producer/` and never enters the normal installed
+registry. Do not add dynamic loading, hospital selectors, multiple active
+producers, or source configuration or secrets above this boundary.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires

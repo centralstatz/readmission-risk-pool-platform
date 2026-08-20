@@ -1,0 +1,20 @@
+specification_kind: adopter_conformance_source_configuration
+specification_id: conformance.adopter-extract-scenario
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: implementation
+title: Fictional adopter extract conformance scenario
+status: active
+description: >-
+  Producer-owned deterministic source scenario. No connection, credential,
+  path, or private organization value is present.
+
+scenario_id: fictional_export_case_v1
+canonical_as_of_time: "2026-08-10T17:00:00Z"
+source_timezone: fictional_fixed_offsets
+data_classification: fictional_nonclinical
+clinical_validity: none
+source_schema_reference:
+  specification_kind: source_schema
+  specification_id: conformance.fictional-export-source-schema
+  specification_version: "0.1.0"

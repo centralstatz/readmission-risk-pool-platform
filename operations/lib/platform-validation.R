@@ -401,7 +401,7 @@ rrp_validate_platform <- function(repository_root, mode) {
   scope <- if (identical(mode, "development")) {
     "Development validation"
   } else {
-    "Iteration 10.1 canonical-producer checkpoint validation"
+    "Phase 10 canonical-producer checkpoint validation"
   }
   rrp_combine_validation_results(scope, results)
 }

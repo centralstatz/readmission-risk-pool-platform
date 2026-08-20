@@ -3170,3 +3170,269 @@ conformance proves it is not reference-shaped.
 Proceed to **Phase 10 / Iteration 10.2 — Independent adopter-side producer
 conformance proof**. Do not begin Phase 11 distribution, add a second normal
 reference health system, or settle extension packaging first.
+
+### Iteration 10.2 — Independent adopter-side producer conformance proof
+
+#### Planned objective
+
+Attack the Iteration 10.1 producer seam from outside the shipped reference
+shape. Build one materially different, deterministic, fully fictional adopter-
+owned source implementation; register and select it alone through the exact
+existing mechanism; run the unchanged shared conformance machinery; and prove
+the same runtime/provider, isolated DuckDB, products, Shiny app, and reduced
+artifact. Do not create a second shipped health system, multi-producer runtime,
+dynamic loading, or Phase 11 packaging.
+
+#### Fixture classification and location
+
+The new material lives under `tests/phase10/fixtures/adopter-producer/`. It is
+developer-facing conformance evidence, not the normal reference experience,
+not a supported hospital profile, and not a scaffold to copy literally. The
+default `config/platform-instance.yml` and installed composition remain
+unchanged and register/select only
+`reference.synthetic-canonical-producer@0.1.0`.
+
+The isolated test composition supplies its own declaration, producer-local
+source configuration, trusted callable association, and one exact platform-
+instance selection. It registers only the adopter producer. Thus the proof
+models replacement in another installation rather than coexistence or an
+operator-facing hospital switch.
+
+#### Materially different source representation
+
+The source consists of two implementation-owned objects:
+
+- `case_extract`, one denormalized discharge export containing a composite
+  local case reference, opaque subject/stay tokens, local-offset admission,
+  discharge, follow-up, extraction, and terminal times, and a local closure
+  vocabulary; and
+- `activity_feed`, a separately loaded longitudinal feed joined on the local
+  case reference, with its own fact identity, local activity vocabulary,
+  occurrence/load times, and finalization state.
+
+It does not reproduce or rename the reference producer's patients,
+encounters, discharges, risk scores, activity events, or outcomes. Mapping
+requires a join, composite/local identifier normalization, local code
+translation, explicit UTC normalization, terminal interpretation, and
+availability filtering. All values are small, manually reviewable, fictional,
+nonclinical, and unrelated to a vendor or real organization.
+
+#### Independent identities
+
+The proof uses independent, path-free logical identities:
+
+- producer: `conformance.adopter-extract-canonical-producer@0.1.0`;
+- implementation: `conformance.fictional-export-source@0.1.0`;
+- source schema: `conformance.fictional-export-source-schema@0.1.0`; and
+- mapping: `conformance.fictional-export-to-readmission-canonical@0.1.0`.
+
+Producer execution identity remains invocation-owned. These identities remain
+distinct from canonical bundle/run, runtime run, estimand/provider,
+persistence, product, operation-run, artifact, and deployment identities.
+
+#### Source-local validation and mapping
+
+The adopter callable validates its own configuration and exact source schema,
+then accumulates source-local issues for required/unknown objects and fields,
+types/nullability, primary keys, case/feed relationships, controlled local
+vocabularies, parseable timestamps, admission/discharge/follow-up ordering,
+extract availability, terminal-state coherence, terminal windows, activity
+windows, and occurrence/load ordering. Generic canonical validation knows none
+of these raw fields.
+
+Malformed source fails `source_local_validation`, leaves mapping and canonical
+admission `not_run`, returns multiple structured issues, and exposes no
+candidate or admitted bundle. Successful mapping targets the unchanged
+`platform.readmission-initial-profile@0.1.0`: normalized discharge episodes
+and translated episode events are available, while baseline risk is honestly
+`unsupported` with no instance or fabricated rows.
+
+#### Dual-time and capability evidence
+
+One emergency-feed fact occurs before the normal canonical as-of but loads
+after it. The early handoff excludes that fact and reports one aggregate future
+source record excluded. A later as-of admits the same fact with its normalized
+occurrence and availability times. Both bundles pass unchanged canonical
+admission. This independently demonstrates that availability semantics belong
+to the platform contract rather than the synthetic implementation.
+
+The reference transparent provider requires only discharge capability and
+declares baseline/events optional. It therefore executes successfully when the
+adopter bundle declares baseline unsupported, using no fabricated input. No
+generic runtime or provider code changed.
+
+#### Same-seam trust, selection, execution, and conformance
+
+The fixture uses `rrp_register_canonical_producer()`, exact
+`rrp_resolve_canonical_producer()` selection,
+`rrp_execute_canonical_producer()`, the generic structured result validator,
+existing clinical admission, and
+`rrp_conform_registered_canonical_producer()` without an adopter exception.
+The shared conformance function passes for both the shipped reference and
+adopter producer. Platform-instance configuration validation was factored into
+a callable used by both default and test-owned configuration readers; its
+one-context semantics did not change.
+
+#### Isolated persistence and unchanged downstream proof
+
+Two temporary compositions use separate DuckDB files:
+
+- Composition A resolves the default shipped producer and reaches retained
+  reference runtime/provider results, the three-product set, YAML
+  materialization, and Shiny initialization.
+- Composition B resolves only the adopter producer and reaches the same
+  runtime, conditional-hazard estimand, transparent provider, unchanged DuckDB
+  adapter, three-product contracts/builders, YAML adapter, and Shiny
+  initialization, then builds and independently validates the same reduced
+  application artifact.
+
+The adopter artifact contains product-only application content. It contains no
+fixture source objects/fields, producer declaration, source schema, validation,
+mapping, source configuration, DuckDB history, or credentials. Numerical
+estimates need not equal the reference composition; logical interface and
+component compatibility are the proof.
+
+#### Observability and negative architecture evidence
+
+The adopter execution emits the existing producer resolution, execution, and
+canonical-admission lifecycle using the unchanged diagnostic contract. Events
+contain allowed producer/implementation/mapping/execution identities and
+aggregate counts only. Tests reject raw object/field names, fictional record
+values, paths, source payloads, and patient/episode identities in diagnostics.
+No sink persists them.
+
+Focused scans cover runtime, products, app, deployment, persistence, and
+observability contracts for both synthetic and adopter raw names. Generic code
+contains no adopter producer identity, filesystem location, local object,
+field, vocabulary, hospital selector, or multi-tenant branch. The trusted test
+composition is the only code allowed to know the fixture location.
+
+#### Cross-combination matrix
+
+| Source producer | Canonical profile | Runtime / estimand / provider | Persistence | Products / app |
+|---|---|---|---|---|
+| Shipped synthetic reference | Existing initial profile | Unchanged reference stack | DuckDB, isolated state A | Unchanged YAML products and Shiny app |
+| Adopter conformance fixture | Same existing profile | Same unchanged reference stack | Same DuckDB adapter, isolated state B | Same products/app and reduced artifact |
+
+This is component substitution between isolated one-context installations, not
+concurrent multi-hospital operation.
+
+#### Adopter packaging and scaffold findings
+
+The proof shows the semantic handoff and explicit trusted installation
+composition are sufficient when adopter-owned declaration, callable, source
+configuration, and selection are supplied from a separate test-owned tree. It
+does not establish that production hospitals should fork the core, place code
+under `implementations/<hospital>`, use a private companion repository, ship an
+R package, or use plugins. Those remain Phase 11/distribution decisions informed
+by security, upgrade, acquisition, and support requirements.
+
+Repeated structure is not yet stable enough to justify a committed scaffold.
+The fixture contains source-shape-specific validation and mapping, while the
+stable reusable skeleton is already the producer declaration, callable result,
+explicit registration/selection, and conformance API. A future scaffold should
+follow a supported packaging decision rather than copy fixture internals.
+
+#### Assets used, adapted, rejected, and new work
+
+No sibling inspection was useful or performed. The proof was designed from the
+clean producer and canonical obligations specifically to avoid inherited
+synthetic shape. Existing clean producer execution/conformance and all
+downstream components were reused unchanged. The platform-instance validator
+was extracted from the existing reader so both installation configurations use
+one rule. All adopter schema/data/code/configuration/tests/documentation were
+created cleanly in this repository.
+
+Synthetic-shape renaming, second reference profile, second normal installed
+producer, mixed history, source-aware persistence/products/app, executable
+YAML, auto-discovery, plugins, persistent logs, and a packaging scaffold were
+rejected.
+
+#### Surprises and deviations
+
+- The existing shared conformance function needed no adopter exception or
+  contract change.
+- The transparent provider already handled an unsupported optional baseline
+  capability correctly, so no runtime/provider accommodation was necessary.
+- `rrp_run_reference_history()` already accepts a resolved producer result;
+  despite its historical reference name, the executable composition required
+  no alternate run path.
+- A test-owned explicit composition answered the packaging question far enough
+  for this phase without creating public dynamic extension machinery.
+- Connect realization was unnecessary to establish source replacement because
+  the independently validated reduced artifact already proves the source code
+  stops upstream of deployment packaging.
+
+#### Validation evidence
+
+The completed evidence was:
+
+- `Rscript --vanilla tests/run-phase10-tests.R` passed all 26 focused cases,
+  including the unchanged shared conformance function for both producers,
+  malformed-source short circuiting, dual-time behavior, safe lifecycle
+  diagnostics, the two isolated downstream compositions, adopter artifact
+  validation, and source-specific negative scans that include generic
+  canonical code and every downstream layer;
+- the two compositions used different temporary DuckDB files and independently
+  reached the unchanged runtime, estimand, provider, persistence adapter,
+  products, YAML materialization, and app; the adopter composition additionally
+  built and validated the reduced artifact;
+- `Rscript operations/validate-documentation.R` passed 4 checks with 0 issues;
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript operations/validate.R --mode
+  development` passed 124 checks with 0 issues;
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript operations/validate.R --mode
+  checkpoint` passed 185 checks with 0 issues, including Phase 0–10 suites of
+  10, 14, 38, 24, 55, 18, 17, 8, 22, 16, and 26 tests respectively;
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript
+  operations/validate-producer.R` passed the normal installed
+  `reference.synthetic-canonical-producer@0.1.0`, confirming the stable human
+  operation and default selection remained unchanged;
+- `rrpruntime@0.3.0` built and passed `R CMD check --no-manual` with
+  `Status: OK`;
+- `renv::status()` reported no issues after expected offline repository-index
+  warnings;
+- all 130 maintained R files and 55 YAML files parsed successfully;
+- `git diff --check` passed, the sibling worktree remained unchanged, and no
+  generated database, archive, or log entered the repository.
+
+The renv-mediated operations used `RENV_CONFIG_SANDBOX_ENABLED=FALSE` because
+the managed environment blocks the global renv sandbox lock. Implicit snapshot
+dependency discovery remained slow (approximately 26–44 seconds) but was only
+an advisory performance note. No commit, push, remote creation, publication,
+or deployment occurred.
+
+#### Original Phase 10 exit-criteria assessment
+
+- **No named branch:** replacement uses no named hospital, source, storage, or
+  target conditional in generic code.
+- **Reference remains a peer:** the unchanged shipped declaration, default
+  selection, conformance, stable workflow, and downstream composition pass.
+- **Missing capability is explicit:** baseline risk is unsupported, has no
+  domain instance, and downstream behavior remains valid.
+- **Unrelated components do not change:** runtime package, estimand, provider,
+  persistence contract/adapter, product contracts/builders/materializer, app,
+  artifact contract/builder, and deployment target are unchanged.
+
+The independent evidence satisfies the original objective: a reference
+component can be replaced through architecture rather than a named exception.
+No Iteration 10.3 gap remains.
+
+#### Architecture and plan effect
+
+Architecture and plan now record the independent substitution proof and close
+Phase 10. Canonical producer, canonical clinical, runtime, provider,
+persistence, product, app, artifact, and observability contract versions remain
+unchanged. Final adopter-code distribution remains open for Phase 11.
+
+#### Phase 10 status
+
+**COMPLETE.** Iteration 10.1 established the seam; Iteration 10.2 independently
+proved it with a materially different adopter-owned source and unchanged
+downstream platform.
+
+#### Recommended next task
+
+Proceed to **Phase 11 — Distribution and open-source governance**, beginning
+with explicit maintainer decisions for licensing, supported acquisition and
+release forms, extension packaging, support/security policy, and the tested
+R/OS matrix. Do not infer those decisions from the test-fixture layout.

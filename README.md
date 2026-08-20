@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 10 is in progress; Iteration 10.1 is complete.** The focused internal
+**Phase 10 is complete.** The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -48,9 +48,12 @@ history. The shipped synthetic source is now registered and selected as
 `reference.synthetic-canonical-producer@0.1.0` through the generic
 `platform.canonical-producer@0.1.0` seam. Installation configuration selects
 one exact trusted producer; generic execution validates its structured result
-and canonical admission before unchanged downstream runtime. The independent
-adopter-side producer proof remains Iteration 10.2, so turnkey hospital
-onboarding and final extension packaging are not yet claimed.
+and canonical admission before unchanged downstream runtime. A materially
+different test-only adopter producer now passes the same seam and shared
+conformance machinery, then reaches unchanged isolated DuckDB history,
+products, Shiny app, and reduced artifact. This closes adapter independence;
+turnkey hospital onboarding, real-data authorization, and final extension
+packaging are not yet claimed.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -136,7 +139,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Iteration 10.1 checkpoint with:
+Evaluate the completed Phase 10 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint

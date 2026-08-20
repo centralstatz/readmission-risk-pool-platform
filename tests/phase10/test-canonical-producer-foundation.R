@@ -23,7 +23,7 @@ phase10_execute <- function(repository_root, registry = NULL, id = NULL, version
   )
 }
 
-phase10_test_cases <- function(repository_root) {
+phase10_test_cases <- function(repository_root, suite_root = NULL) {
   list(
     "canonical producer contract and shipped declaration conform" = function() {
       composition <- phase10_cached(repository_root)

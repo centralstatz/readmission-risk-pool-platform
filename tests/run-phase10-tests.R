@@ -5,13 +5,36 @@ test_script <- normalizePath(sub("^--file=", "", file_argument[[1L]]), mustWork 
 repository_root <- normalizePath(file.path(dirname(test_script), ".."), mustWork = TRUE)
 
 for (file in c(
-  "validation-result.R", "documentation-validation.R", "repository-validation.R",
+  "observability-operation.R", "validation-result.R", "documentation-validation.R",
+  "repository-validation.R",
   "conformance-result.R", "specification-validation.R",
   "foundation-context-validation.R", "canonical-bundle-validation.R",
-  "canonical-clinical-validation.R", "canonical-producer-operation.R"
+  "canonical-clinical-validation.R", "canonical-producer-operation.R",
+  "history-validation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
+source(file.path(
+  repository_root, "tests", "phase10", "fixtures", "adopter-producer", "R",
+  "composition.R"
+))
+rrp_source_adopter_fixture_implementation(repository_root)
+for (file in c(
+  "runtime-operation.R", "provider-operation.R", "duckdb-persistence-operation.R",
+  "reference-history-operation.R", "product-operation.R",
+  "product-materialization-operation.R", "application-artifact-operation.R"
+)) source(file.path(repository_root, "operations", "lib", file))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
+rrp_load_duckdb_persistence_adapter(repository_root)
+rrp_load_product_layer(repository_root)
+rrp_load_yaml_product_adapter(repository_root)
+rrp_load_reference_app(repository_root)
+rrp_load_application_artifact_contract_runtime(repository_root)
+
+installed <- rrp_install_runtime_package(repository_root)
+on.exit(rrp_unload_runtime_package(installed), add = TRUE)
+suite_root <- tempfile("rrp-phase10-tests-")
+dir.create(suite_root)
+on.exit(unlink(suite_root, recursive = TRUE, force = TRUE), add = TRUE)
 
 test_files <- sort(list.files(
   file.path(repository_root, "tests", "phase10"),
@@ -23,7 +46,7 @@ cases <- list()
 for (test_file in test_files) {
   environment <- new.env(parent = globalenv())
   sys.source(test_file, envir = environment)
-  cases <- c(cases, environment$phase10_test_cases(repository_root))
+  cases <- c(cases, environment$phase10_test_cases(repository_root, suite_root))
 }
 failures <- list()
 for (name in names(cases)) {
@@ -38,4 +61,3 @@ if (length(failures) > 0L) {
   quit(save = "no", status = 1L, runLast = FALSE)
 }
 cat("Result: PASS (", length(cases), " tests)\n", sep = "")
-

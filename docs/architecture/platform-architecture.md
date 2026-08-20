@@ -119,6 +119,14 @@ and admission remain distinct. The shipped synthetic implementation is the
 first peer on this seam, not a branch in the stable operation. See
 [Canonical Producer Foundation](canonical-producer-foundation.md).
 
+Iteration 10.2 independently proves replacement with a test-only fictional
+adopter producer whose denormalized export, local identifiers/vocabularies,
+timestamp normalization, source validation, and mapping differ materially from
+the shipped source. It passes the same registration, selection, execution,
+admission, and conformance mechanism and reaches the unchanged downstream
+stack in isolated state. This is substitution evidence, not a second installed
+health system or a normal multi-producer composition.
+
 ### Constraints
 
 - Source names, vendor concepts, credentials, and connection details do not
@@ -475,9 +483,12 @@ The initial installation-level realization is
 `config/platform-instance.yml`. It selects exactly one canonical producer ID
 and version for one health-system context. Trusted maintained composition code,
 not YAML, associates declarations with callables. Producer-owned source
-configuration and environment-owned secrets remain below that seam; final
-packaging of adopter-owned executable code remains open pending independent
-Iteration 10.2 evidence.
+configuration and environment-owned secrets remain below that seam. The
+Iteration 10.2 test-owned composition proves that declaration, callable,
+producer-local configuration, and alternate exact selection can be supplied
+without changing the default installation. Final physical packaging of
+adopter-owned executable code remains a Phase 11/distribution decision; the
+test-fixture layout is not a mandated extension layout.
 
 ## Dependency direction
 

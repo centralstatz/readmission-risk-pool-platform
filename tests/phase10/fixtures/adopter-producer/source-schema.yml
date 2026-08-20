@@ -1,0 +1,48 @@
+specification_kind: source_schema
+specification_id: conformance.fictional-export-source-schema
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: implementation
+title: Fictional adopter denormalized export source schema
+status: active
+description: >-
+  Test-only source shape with local composite identifiers, denormalized
+  discharge facts, local status vocabularies, and a separate activity feed.
+
+data_classification: fictional_nonclinical
+additional_fields_policy: reject
+
+objects:
+  case_extract:
+    primary_key: case_ref
+    fields:
+      case_ref: {type: character, nullable: false}
+      subject_token: {type: character, nullable: false}
+      stay_ref: {type: character, nullable: false}
+      arrived_local: {type: local_timestamp, nullable: false}
+      departed_local: {type: local_timestamp, nullable: false}
+      watch_through_local: {type: local_timestamp, nullable: false}
+      extract_loaded_local: {type: local_timestamp, nullable: false}
+      closure_code: {type: character, nullable: false}
+      terminal_local: {type: local_timestamp, nullable: true}
+      terminal_loaded_local: {type: local_timestamp, nullable: true}
+  activity_feed:
+    primary_key: fact_ref
+    fields:
+      fact_ref: {type: character, nullable: false}
+      case_ref: {type: character, nullable: false}
+      fact_code: {type: character, nullable: false}
+      happened_local: {type: local_timestamp, nullable: false}
+      loaded_local: {type: local_timestamp, nullable: false}
+      feed_state: {type: character, nullable: false}
+
+relationships:
+  - child_object: activity_feed
+    child_field: case_ref
+    parent_object: case_extract
+    parent_field: case_ref
+
+controlled_values:
+  closure_code: [OPEN, RETURNED, DIED]
+  fact_code: [CALL_OK, CLINIC_SEEN, ED_SEEN, MED_ACCESS_FLAG, RETURN_NOTICE, DEATH_ALERT]
+  feed_state: [FINAL]

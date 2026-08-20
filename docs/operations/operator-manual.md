@@ -171,6 +171,20 @@ registration, source-local/mapping behavior, or selection as indicated, then
 retry. Software conformance is not clinical validation or approval for real
 data.
 
+The independent adopter-side proof is intentionally not another public
+operator profile. Developers implementing a producer can run:
+
+```sh
+Rscript tests/run-phase10-tests.R
+```
+
+That focused suite validates both the configured shipped producer and a
+test-only materially different adopter fixture through the same declaration,
+trusted registration, exact selection, execution, admission, and conformance
+machinery. It uses isolated temporary history/products/artifacts and cleans
+them afterward. Do not edit the default platform-instance selection merely to
+run this proof, and do not copy the fictional fixture as a real source mapping.
+
 The authoritative operator-facing reference run is:
 
 ```sh

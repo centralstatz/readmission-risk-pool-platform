@@ -11,6 +11,17 @@ rrp_validate_canonical_producer_repository <- function(repository_root) {
     "operations/validate-producer.R",
     "tests/run-phase10-tests.R",
     "tests/phase10/test-canonical-producer-foundation.R",
+    "tests/phase10/test-independent-adopter-producer.R",
+    "tests/phase10/fixtures/adopter-producer/README.md",
+    "tests/phase10/fixtures/adopter-producer/producer.yml",
+    "tests/phase10/fixtures/adopter-producer/platform-instance.yml",
+    "tests/phase10/fixtures/adopter-producer/source-configuration.yml",
+    "tests/phase10/fixtures/adopter-producer/source-schema.yml",
+    "tests/phase10/fixtures/adopter-producer/R/foundation.R",
+    "tests/phase10/fixtures/adopter-producer/R/source-validation.R",
+    "tests/phase10/fixtures/adopter-producer/R/mapping.R",
+    "tests/phase10/fixtures/adopter-producer/R/adapter.R",
+    "tests/phase10/fixtures/adopter-producer/R/composition.R",
     "docs/architecture/canonical-producer-foundation.md"
   )
   present <- file.exists(file.path(repository_root, required))
@@ -71,16 +82,19 @@ rrp_validate_phase10_checkpoint <- function(repository_root) {
   evidence <- grepl(
     "Iteration 10.1 — Generic canonical-producer interface and adopter handoff foundation",
     text, fixed = TRUE
+  ) && grepl(
+    "Iteration 10.2 — Independent adopter-side producer conformance proof",
+    text, fixed = TRUE
   ) && grepl("Phase 10 status", text, fixed = TRUE) &&
-    grepl("IN PROGRESS", text, fixed = TRUE)
+    grepl("**COMPLETE.**", text, fixed = TRUE)
   checks <- rrp_check(
     "phase10_iteration_checkpoint", evidence,
-    "Iteration 10.1 is recorded while Phase 10 remains in progress"
+    "Iterations 10.1 and 10.2 are recorded and Phase 10 is complete"
   )
   issues <- if (evidence) rrp_empty_issues() else rrp_issue(
     "phase10_checkpoint", "missing_phase10_iteration_record",
-    "Implementation record must close Iteration 10.1 without marking Phase 10 complete.",
+    "Implementation record must record Iteration 10.2 evidence and close Phase 10.",
     "docs/architecture/platform-implementation-record.md"
   )
-  rrp_validation_result("Phase 10.1 checkpoint", checks, issues)
+  rrp_validation_result("Phase 10 checkpoint", checks, issues)
 }

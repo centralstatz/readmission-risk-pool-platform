@@ -28,7 +28,8 @@ The documentation is the active product at this bootstrap stage. Begin with
   and canonical producer boundary.
 - [Canonical Producer Foundation](architecture/canonical-producer-foundation.md)
   — generic declaration/result, trusted callable registration, exact
-  installation selection, admission, conformance, and adopter handoff.
+  installation selection, admission, conformance, and the independent
+  adopter-source substitution proof.
 - [Runtime Foundation](architecture/runtime-foundation.md) — admitted input,
   eligibility, minimal episode state, and first estimand-request semantics.
 - [Provider and Estimate Foundation](architecture/provider-foundation.md) —

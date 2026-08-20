@@ -9,10 +9,10 @@ reserve names or document hypothetical future capabilities.
   deployment repository through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
   specification assets, run Phase 0–10 tests, check repository policies, and
-  evaluate the Iteration 10.1 checkpoint.
+  evaluate the completed Phase 10 checkpoint.
 - [Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
   — validate the configured producer, understand trusted registration and
-  exact installation selection, and prepare for an adopter-owned producer.
+  exact installation selection, and review the independent adopter proof.
 - [Operational Diagnostics](observability-and-diagnostics.md) — understand the
   bounded structured console lifecycle, privacy guardrails, correlation, and
   recovery without mistaking it for retained logs or audit.

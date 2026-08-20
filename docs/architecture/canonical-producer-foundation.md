@@ -2,12 +2,12 @@
 
 ## Status and scope
 
-**Status:** authoritative Iteration 10.1 producer seam; Phase 10 remains in progress
+**Status:** authoritative completed Phase 10 producer seam and substitution proof
 
 This document defines the supported seam through which one configured source
-implementation supplies canonical data to one platform installation. It does
-not prove an independently developed hospital-like producer; Iteration 10.2
-owns that proof.
+implementation supplies canonical data to one platform installation. Iteration
+10.2 proves the seam independently with a materially different fictional
+adopter-side producer while preserving the shipped reference default.
 
 ## Five distinct responsibilities
 
@@ -73,9 +73,14 @@ A future adopter producer must provide a conforming declaration and callable,
 be explicitly registered in trusted installation composition, pass the same
 conformance suite, and then become the single selected producer. Automatic
 directory discovery, dynamic plugins, remote loading, and arbitrary YAML code
-execution are unsupported. Final packaging of adopter-owned code—inside an
-installed source tree, a private package, or a companion repository—remains an
-open Phase 10/11 decision because Iteration 10.1 does not need to choose it.
+execution are unsupported.
+
+The independent proof supplies declaration, source configuration, callable,
+and installation selection from a test-owned conformance directory. That is
+evidence that explicit installation composition is sufficient; it is not a
+decision that production adopter code belongs in the public core or that the
+test layout is a scaffold. An installed private tree, private package, or
+companion repository remain possible Phase 11/distribution choices.
 
 ## Shipped reference peer
 
@@ -122,11 +127,32 @@ execution, and admission. Allowed identities and aggregate counts exclude
 source rows, patient/episode identifiers, SQL, paths, credentials, connection
 strings, and raw configuration. The console retains nothing by default.
 
-## Iteration boundary
+## Independent substitution evidence
 
-Iteration 10.1 establishes the seam and moves the shipped producer onto it.
-Iteration 10.2 must independently implement a materially different fictional
-adopter producer, register/select it through the same mechanism, pass the same
-suite, and prove unchanged downstream behavior. Until then, turnkey hospital
-onboarding and the final extension-distribution model are not complete.
+The test-only `conformance.adopter-extract-canonical-producer@0.1.0` uses a
+denormalized discharge export and separate longitudinal activity feed, local
+composite identifiers, local status/event vocabularies, timestamp
+normalization, joins, and availability filtering. It declares baseline risk
+unsupported and supplies no fabricated baseline rows. Its identities and raw
+fields differ from the synthetic implementation.
 
+Two isolated compositions prove substitution:
+
+| Source producer | Canonical profile | Runtime / provider | Persistence | Products / app |
+|---|---|---|---|---|
+| Shipped synthetic reference | `platform.readmission-initial-profile@0.1.0` | Existing runtime, estimand, and transparent provider | Existing DuckDB adapter | Existing three products and Shiny app |
+| Adopter conformance fixture | Same | Same | Same adapter, separate temporary state | Same products/app plus reduced artifact |
+
+Both pass `rrp_conform_registered_canonical_producer()` unchanged. The adopter
+proof also demonstrates source-local multi-issue failure, short-circuiting,
+dual-time exclusion and later admission, safe lifecycle diagnostics, exact
+single selection, and no source content in the reduced artifact. The fixture
+lives under `tests/phase10/fixtures/` and is not available in the normal
+installed registry.
+
+## Phase boundary
+
+Phase 10 is complete: a reference component was replaced without a named
+source, storage, provider, product, app, or target branch in generic code. This
+is software-interface evidence, not turnkey hospital onboarding, real-data
+authorization, clinical validation, or a final extension-distribution model.

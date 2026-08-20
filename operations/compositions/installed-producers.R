@@ -11,6 +11,24 @@ rrp_source_synthetic_reference_implementation <- function(repository_root) {
   invisible(NULL)
 }
 
+rrp_validate_platform_instance_configuration <- function(configuration) {
+  selection <- configuration$selected_canonical_producer
+  valid <- identical(configuration$specification_kind, "platform_instance_configuration") &&
+    rrp_is_identifier(configuration$specification_id) &&
+    rrp_is_semver(configuration$specification_version) &&
+    identical(configuration$producer_configuration_owner, "producer_implementation") &&
+    identical(configuration$health_system_scope, "one") &&
+    identical(configuration$multi_tenant, FALSE) &&
+    rrp_is_identifier(selection$producer_id) &&
+    rrp_is_semver(selection$producer_version) &&
+    identical(sort(names(selection)), c("producer_id", "producer_version"))
+  if (!valid) stop(
+    "Platform-instance configuration must select one exact producer for one health system.",
+    call. = FALSE
+  )
+  invisible(configuration)
+}
+
 rrp_read_platform_instance_configuration <- function(repository_root) {
   parsed <- rrp_parse_yaml_specification(file.path(
     repository_root, "config", "platform-instance.yml"
@@ -19,18 +37,8 @@ rrp_read_platform_instance_configuration <- function(repository_root) {
     "Could not read platform-instance configuration: ", parsed$error,
     call. = FALSE
   )
-  configuration <- parsed$document
-  selection <- configuration$selected_canonical_producer
-  valid <- identical(configuration$specification_kind, "platform_instance_configuration") &&
-    identical(configuration$health_system_scope, "one") &&
-    identical(configuration$multi_tenant, FALSE) &&
-    rrp_is_identifier(selection$producer_id) &&
-    rrp_is_semver(selection$producer_version)
-  if (!valid) stop(
-    "Platform-instance configuration must select one exact producer for one health system.",
-    call. = FALSE
-  )
-  configuration
+  rrp_validate_platform_instance_configuration(parsed$document)
+  parsed$document
 }
 
 rrp_installed_canonical_producer_composition <- function(repository_root) {
@@ -77,4 +85,3 @@ rrp_run_installed_canonical_producer <- function(
     event_emitter
   )
 }
-
