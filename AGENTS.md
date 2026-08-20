@@ -75,6 +75,12 @@ The two isolated compositions prove unchanged runtime/provider, DuckDB,
 products/app, and artifact behavior. The fixture is evidence, not a second
 shipped health system or permanent packaging model; final adopter-code
 packaging remains open for Phase 11.
+Iteration 11.1 owns only the non-authoritative decision assessment in
+`docs/architecture/distribution-release-assessment.md`. Its ranked license,
+release, packaging, environment, governance, security, support, and integrity
+recommendations are not maintainer decisions or authorization to implement or
+publish them. Phase 11 remains in progress pending explicit maintainer choices;
+the current no-release license status remains authoritative.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned

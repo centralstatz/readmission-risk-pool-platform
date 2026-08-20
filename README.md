@@ -14,7 +14,10 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 10 is complete.** The focused internal
+**Phase 10 is complete and Phase 11 is in progress.** Iteration 11.1 now
+provides a maintained distribution and first-release decision assessment; its
+recommendations are not accepted decisions, do not install a license, and do
+not authorize release. The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -123,7 +126,10 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    admission, and adopter ownership.
 18. Read [Reference Asset Reconciliation](docs/architecture/reference-asset-reconciliation.md)
    before considering material from the sibling repository.
-19. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
+19. Read the [Distribution and First-Release Assessment](docs/architecture/distribution-release-assessment.md)
+   for ranked Phase 11 options, maintainer decisions, deliberate deferrals, and
+   remaining release gaps; it is decision support rather than authority.
+20. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
 The [documentation start page](docs/START-HERE.md) provides an ordered review,
@@ -226,6 +232,8 @@ reuse, adapt, reference, or reject.
 Follow [AGENTS.md](AGENTS.md) and the
 [implementation conventions](docs/development/implementation-conventions.md).
 Open decisions are tracked in [Open decisions](docs/architecture/open-decisions.md).
+Phase 11 decision support is in the
+[distribution and first-release assessment](docs/architecture/distribution-release-assessment.md).
 The [current license status](LICENSE-STATUS.md) explicitly authorizes no public
 release or implied license grant; final licensing and contribution policy
 remain unresolved.

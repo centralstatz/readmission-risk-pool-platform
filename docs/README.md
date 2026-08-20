@@ -61,6 +61,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   reference composition and source/provider/persistence/product/app replacement.
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
+- [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
+  — non-authoritative Phase 11 decision support for licensing, packaging,
+  governance, environment support, release gaps, and maintainer choices.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and

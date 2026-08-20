@@ -3436,3 +3436,216 @@ Proceed to **Phase 11 — Distribution and open-source governance**, beginning
 with explicit maintainer decisions for licensing, supported acquisition and
 release forms, extension packaging, support/security policy, and the tested
 R/OS matrix. Do not infer those decisions from the test-fixture layout.
+
+## Phase 11 — Distribution and open-source governance
+
+### Iteration 11.1 — Distribution and release decision assessment
+
+#### Objective and authority boundary
+
+Identify the smallest coherent set of maintainer decisions required before the
+first supported packaged platform release, compare serious options against the
+implemented Phase 0–10 architecture, recommend a consistent model, distinguish
+release blockers from deferrable enhancements, and propose the remaining Phase
+11 work. This iteration is assessment only. Recommendations are not accepted
+architecture decisions, a license grant, support promise, release
+authorization, or implementation of release machinery.
+
+#### Repository evidence reviewed
+
+The assessment reviewed True North, architecture, plan, open decisions, the
+complete Phase 10 record, canonical producer and adopter handoff, reduced
+artifact and observability foundations, progressive adoption, operator and
+artifact/Connect procedures, the operation registry, installation selection,
+producer/deployment contracts, reference implementations, repository layout,
+license placeholder, package metadata, `renv.lock`, direct artifact
+dependencies, README/navigation, and agent guidance.
+
+The decisive current-state evidence was:
+
+- the full source tree is a platform of contracts, operations, an internal
+  package, adapters, products, app, and deployment builders rather than one R
+  package;
+- the locked project environment and smaller reduced-artifact dependency
+  declaration serve different purposes;
+- all generated clinical-like data, history, products, artifacts, and target
+  repositories are reproducible ignored state rather than source release
+  payload;
+- Phase 10 proves source substitution and explicit trusted composition, but
+  normal production packaging of private adopter code remains unimplemented;
+- one installation still means one health system and one exact selected
+  producer;
+- Connect generation intentionally stops before commit, remote, push, sharing,
+  or deployment; and
+- no license, public release, CI support matrix, upgrade, security-reporting,
+  contribution, or support policy currently exists.
+
+The sibling repository was not inspected because this decision assessment is
+governed by the clean repository's current release surfaces and by current
+external license/tool/service behavior. Sibling evidence was **not relevant**;
+no sibling asset, idea, code, prose, or configuration was used.
+
+#### External evidence reviewed
+
+Current primary documentation was consulted on 2026-08-20 from OSI, Apache,
+GNU, SPDX, Semantic Versioning, GitHub, the Linux Foundation DCO guidance,
+renv, the R Project, Posit Connect Cloud, and the Open Container Initiative.
+It informed:
+
+- MIT, Apache-2.0, and GPL rights/obligations plus Apache/GPL compatibility
+  caution;
+- tag-backed GitHub releases, automatic archive limitations, signed tags,
+  immutable releases, security advisories, contribution/community files, and
+  `CITATION.cff`;
+- lockfile restore behavior and renv's explicit inability to provide R, OS,
+  compiler, or system-library reproducibility;
+- current R 4.6.1 availability versus this repository's R 4.4.1 lock;
+- Connect Cloud's Git/branch/primary-file/`manifest.json` publication model;
+  and
+- OCI as the vendor-neutral future image/runtime/distribution concept.
+
+Each source, access date, and informed decision is recorded in
+`docs/architecture/distribution-release-assessment.md`. Generic practice was
+not allowed to override repository-specific boundaries.
+
+#### Decision areas and recommendations
+
+The assessment consolidated the requested questions into twelve material
+areas rather than dozens of minor choices:
+
+1. license, ownership, attribution, assets, stewardship, and brand;
+2. acquisition, whole-platform release form, and GitHub's role;
+3. platform versioning and independently versioned component relationships;
+4. R/renv and tested-versus-supported OS policy;
+5. physical adopter producer packaging;
+6. private configuration, secret ownership, and trusted loading;
+7. Connect/OCI roles and generated-deployment ownership;
+8. contribution governance;
+9. security disclosure and support;
+10. release integrity and source provenance;
+11. release documentation and citation; and
+12. early compatibility, upgrades, and migration limits.
+
+The recommended coherent model, pending maintainer approval, is a
+CentralStatz-stewarded public GitHub project; Apache-2.0 repository-authored
+content after legal/dependency/asset review; whole-tree immutable `v0.1.0`
+source release with signed tag, attached archive, checksum, and exact release
+inventory; archive or exact-tag clone; one supported current R minor line plus
+committed `renv.lock`; a private adopter companion implementation pinned to
+the platform release and loaded only by explicit trusted composition;
+environment-owned secrets; best-effort community support plus separately
+available professional services; Connect as a fictional/reference realization;
+operator-owned publication; and future OCI as a peer consumer of the unchanged
+reduced artifact.
+
+The assessment ranks MIT as the strong lower-burden license alternative and a
+controlled hospital fork as the strongest adopter-packaging fallback. It does
+not conclude that Apache-2.0 dependency compatibility, CentralStatz ownership,
+the companion repository mechanism, the R/OS matrix, or any support capacity
+is already approved or proven.
+
+#### Maintainer choices still required
+
+Seven grouped decisions require explicit human approval before Iteration 11.2:
+
+1. actual copyright holder, steward/release publisher, maintainers, and brand
+   owner;
+2. software/documentation/asset license treatment after appropriate review;
+3. first platform version and `0.x` compatibility promise;
+4. GitHub and clone/archive roles in authoritative acquisition;
+5. companion versus fork/package/local physical adopter implementation model;
+6. supportable R/OS/CI matrix; and
+7. contribution, security-reporting, conduct, support, and optional services
+   posture.
+
+Each is stated as a question with recommendation, alternatives, commitment,
+and reversibility in the assessment. No choice was silently resolved in True
+North, architecture, plan, or open decisions.
+
+#### Decisions deliberately deferred
+
+The assessment explicitly defers the exact OCI/Docker implementation, plugin
+ecosystem, mandatory private R-package extensions, full-platform R package,
+general installer, multiple R release lines/broad Linux support, formal paid
+support/SLA, CLA/foundation governance, custom SBOM/attestation infrastructure,
+speculative migrations, rendered website/manual stack, and any multi-hospital
+or centralized-SaaS model. It names evidence that would justify revisiting each
+and confirms that current boundaries preserve the useful options.
+
+#### First-release readiness
+
+Release blockers are human legal/ownership decisions; release identity and
+compatibility approval; an approved, externally supplied adopter composition
+proof; an evidence-backed R/OS matrix; license/contribution/security/support/
+compatibility policy files; clean archive and exact-tag acquisition validation;
+and exact release metadata/integrity. Citation metadata, issue/PR templates,
+system-dependency guidance, a complete fictional companion walkthrough, and a
+manual release checklist are recommended before release. OCI, installers,
+richer tutorials/site output, wider matrices, package extensions, formal
+migrations, and new platform capabilities are post-release enhancements rather
+than blockers.
+
+#### Recommended remaining Phase 11 structure
+
+- **Iteration 11.2 — accepted distribution and governance foundation:** after
+  maintainer decisions, install the approved license/policies/version metadata,
+  prove the approved adopter packaging model, establish the environment matrix
+  and required CI, and assemble an unpublished release candidate.
+- **Iteration 11.3 — release-candidate validation and first packaged version:**
+  validate clone/archive acquisition and the supported lifecycle in clean
+  claimed environments, verify release metadata/integrity, and present the
+  exact candidate for explicit human authorization. Publish `v0.1.0` only when
+  authorized; no deployment occurs.
+
+#### Files created and changed
+
+Created `docs/architecture/distribution-release-assessment.md`. Updated the
+root README, documentation index, and START HERE only to expose the assessment
+and accurately state that Phase 11 is in progress. Updated agent guidance to
+preserve the non-authoritative boundary, and made documentation validation
+require the new maintained assessment and its governing links. Appended this
+implementation record. No contract, operation, dependency, lockfile, runtime,
+provider, persistence, product, app, artifact, or target behavior changed.
+
+#### Validation evidence
+
+The final validation matrix reported:
+
+- `Rscript --vanilla operations/validate-documentation.R`: PASS (4 checks,
+  0 issues), covering 36 required documents, 242 repository-local links, 24
+  maintained navigation sources, and portable document paths;
+- `Rscript --vanilla tests/run-phase0-tests.R`: PASS (10 tests);
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript operations/validate.R --mode
+  checkpoint`: PASS (185 checks, 0 issues), including the final documentation
+  counts and Phase 0 through Phase 10 suites;
+- `Rscript --vanilla tests/run-phase8-tests.R`: PASS (22 tests), and
+  `Rscript --vanilla tests/run-phase9-tests.R`: PASS (16 tests), rerun after a
+  concurrent development-validation attempt encountered transient package
+  metadata access failures while stale orphaned R workers were being removed;
+- `renv::status()`: no issues found and the project is consistent, after
+  expected offline repository-index warnings and dependency-discovery timing;
+- parse checks: 130 maintained R files and 55 maintained YAML files parsed;
+- `git diff --check`: PASS; and
+- sibling status and scans for generated DuckDB, archive, and log state were
+  clean.
+
+The first final-tree development-mode attempt reported 122 of 124 checks as
+passing; only Phase 8 and Phase 9 subprocesses failed during the transient
+package-library contention described above. Both suites then passed in
+isolation, and the final checkpoint reran the complete development matrix plus
+checkpoint checks successfully. No contract or dependency changed to obtain
+the pass. No commit, tag, push, release, publication, or deployment was
+performed.
+
+#### Phase 11 status
+
+**IN PROGRESS.** Iteration 11.1 is complete as decision support only. Phase 11
+cannot implement or publish a release until the maintainer accepts or replaces
+the required recommendations.
+
+#### Recommended next task
+
+Obtain explicit maintainer answers to the seven decisions in the assessment.
+Then scope Iteration 11.2 from those answers; do not install the recommended
+license, companion model, support matrix, governance terms, or release identity
+merely because this assessment ranks them first.

@@ -58,13 +58,16 @@ extending it.
    — which old assets appear useful and why none controls the design.
 19. [Open Decisions](architecture/open-decisions.md) — choices that require
    maintainers at phase-appropriate checkpoints.
-20. [Platform Implementation Record](architecture/platform-implementation-record.md)
+20. [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
+   — Phase 11 recommendations, tradeoffs, human decisions, deliberate
+   deferrals, and release gaps; recommendations are not yet accepted.
+21. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-21. [Implementation Conventions](development/implementation-conventions.md) and
+22. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-22. [Repository Development Policies](development/repository-policies.md) for
+23. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-23. [Operations](operations/README.md) for supported human operations and
+24. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule
