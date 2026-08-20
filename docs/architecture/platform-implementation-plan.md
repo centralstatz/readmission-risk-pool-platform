@@ -616,31 +616,41 @@ repository strategy are decided from demonstrated needs.
   governance, security, support, integrity, and compatibility choices without
   adopting or implementing them.
 - **Iteration 11.2 — hospital-facing distribution and managed composition
-  assessment:** complete as architecture. The maintainer baselined `v0.1.0`,
+  assessment:** complete as historical architecture evidence. The maintainer
+  baselined `v0.1.0`,
   whole-tree first release, GitHub authority, `renv::restore()`, explicit
   producer trust, external secrets, target-neutral deployment, CentralStatz
   stewardship, conditional Apache-2.0 direction, DCO contribution governance,
   best-effort support, normal security governance, and ordinary release
-  integrity. The selected physical model is a separately versioned hospital
-  implementation kit whose official distribution embeds one exact verified
-  platform archive and creates one private hospital project with a single
-  top-level R environment. See
+  integrity. Its exact embedded Platform, one active R environment, producer
+  trust, thin operations, fictional acceptance, and deployment-neutrality
+  conclusions remain accepted. Iteration 11.3 supersedes its separately
+  maintained kit and formal three-level interpretation. See
   [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
-- **Iteration 11.3 — managed composition proof:** next. Add only the minimal
-  callable Level-1 operation seam, draft managed-release/ownership metadata,
-  and a temporary external-tree proof of archive integrity, isolated reference
-  acceptance, explicit adopter composition, conformance, downstream execution,
-  artifact construction, and fail-closed drift. Do not create or publish the
-  production kit repository in this proof.
-- **Later Phase 11 release work:** after the proof, create the maintained kit
-  project and release construction, complete license/environment/governance
-  evidence, assemble platform and kit release candidates, and perform clean
-  acquisition validation. Publication of `v0.1.0` still requires explicit
-  maintainer authorization.
+- **Iteration 11.3 — generated hospital-facing distribution architecture
+  revision:** complete as architecture. One authoritative maintained repository
+  will generate two independently versioned products: the Platform release and
+  the Readmission Risk Pool Hospital Implementation release. The latter embeds
+  one exact verified Platform archive; recipient modifications are outside the
+  CentralStatz release architecture. No second maintained project or formal
+  third release layer exists.
+- **Iteration 11.4 — generated distribution build and validation proof:** next.
+  Add the minimal maintained hospital-facing source, artifact builder,
+  ownership/inventory metadata, and independent validator in this repository.
+  Prove exact embedded-archive integrity, one top-level environment, isolated
+  reference acceptance, explicit adopter composition and conformance,
+  downstream execution, artifact construction, and fail-closed drift. Do not
+  add the later standalone Git realization, release, or publication.
+- **Later Phase 11 realization and release work:** add a separate operation that
+  turns only a validated generated artifact into a remote-free staged Git
+  repository. Then complete license/environment/governance evidence, assemble
+  release candidates, and perform clean acquisition validation. Publication of
+  `v0.1.0` still requires explicit maintainer authorization.
 
-**Phase 11 remains in progress.** Iteration 11.2 establishes architecture only;
-no license, distribution, release artifact, repository, tag, CI matrix, or
-publication has been implemented.
+**Phase 11 remains in progress.** Iteration 11.3 establishes the corrected
+architecture only; no builder, generated distribution, standalone realization,
+license, release artifact, repository, tag, CI matrix, or publication has been
+implemented.
 
 ## Cross-phase rules
 

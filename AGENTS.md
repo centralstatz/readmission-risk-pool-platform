@@ -77,16 +77,18 @@ shipped health system or permanent packaging model; final adopter-code
 packaging remains open for Phase 11.
 Iteration 11.1 owns the retained decision assessment in
 `docs/architecture/distribution-release-assessment.md`. Iteration 11.2
-baselines the maintainer's release/governance direction and authoritatively
-selects the three-level managed composition in
-`docs/architecture/hospital-implementation-distribution-assessment.md`: the
-independently released platform, a separately versioned Readmission Risk Pool
-Hospital Implementation Kit whose official bundle carries one exact verified
-platform archive, and one hospital's private implementation project. The kit
-owns thin wrappers, fixed trusted composition, and one top-level R environment;
-it never copies platform logic. This architecture is not implemented. Phase 11
-remains in progress; the current no-release license status remains
-authoritative pending final compatibility review and later release work.
+baselines the maintainer's release/governance direction; its separately
+maintained kit and formal three-level interpretation are historical evidence.
+Iteration 11.3 authoritatively revises
+`docs/architecture/hospital-implementation-distribution-assessment.md`: this one
+maintained repository will produce the independently versioned Platform and
+generated Readmission Risk Pool Hospital Implementation releases. The latter
+carries one exact verified Platform archive, thin wrappers, fixed trusted
+composition, and one top-level R environment. Recipient modifications are
+outside the CentralStatz release architecture. No builder, generated artifact,
+or standalone Git realization exists yet. Phase 11 remains in progress; the
+current no-release license status remains authoritative pending final
+compatibility review and later release work.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -318,14 +320,16 @@ producers, or source configuration or secrets above this boundary.
 
 The selected future physical composition is governed by
 `docs/architecture/hospital-implementation-distribution-assessment.md`.
-Level 2 is a hospital implementation kit, not another platform. Its official
-release embeds one exact verified Level-1 archive; a private Level-3 project
-owns adopter code, one complete platform-instance selection, fixed reviewed
-composition, and the only active top-level `renv` environment. The embedded
-lock remains provenance, and isolated synthetic acceptance remains separate
-from hospital state. Until Iteration 11.3 implements the bounded proof, do not
-create kit paths, wrappers, manifests, archives, repositories, downloads, or
-upgrade behavior merely because the architecture describes them.
+Maintained hospital-facing source remains in this repository and will generate
+an independently versioned distribution embedding one exact verified Platform
+archive. Generated templates own one complete platform-instance selection,
+fixed reviewed composition, and the only active top-level `renv` environment;
+the embedded lock remains provenance, and isolated synthetic acceptance remains
+separate from adopter state. There is no separately maintained CentralStatz
+project or formal third release layer. Until Iteration 11.4 implements the
+bounded artifact proof, do not create distribution paths, wrappers, manifests,
+archives, repositories, downloads, or upgrade behavior merely because the
+architecture describes them.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires

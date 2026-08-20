@@ -439,57 +439,61 @@ be added as a peer adapter only when concrete requirements exist.
 
 ## Hospital-facing distribution and installation composition
 
-The independently released platform remains Level 1. A separately versioned
-**Readmission Risk Pool Hospital Implementation Kit** is the selected Level-2
-hospital-facing project, and one hospital's private implementation is Level 3.
-The kit is not a second platform: it owns onboarding, physical composition,
-top-level environment and operation wrappers, while all generic semantics and
-implementations remain owned by this repository.
-
-An official kit release carries one exact immutable platform release archive
-with identity, compatibility, inventory, and SHA-256 metadata. Initialization
-verifies and safely extracts it into ignored versioned managed state. The
-managed source remains inspectable; integrity checks make local modifications
-detectable and outside the normal supported workflow rather than attempting to
-make the platform a security boundary.
+CentralStatz maintains this one authoritative source repository and derives two
+independently versioned release products from it: the reusable Platform release
+and a generated **Readmission Risk Pool Hospital Implementation** release. The
+hospital-facing release is not a second maintained source project or another
+platform. A recipient's later customization is outside the CentralStatz release
+architecture rather than a formal third release layer.
 
 ```text
-public platform release (Level 1)
-        ↓ exact archive injected into kit release
-generic hospital implementation kit (Level 2)
-        ↓ private project created from the kit
-hospital implementation and configuration (Level 3)
+readmission-risk-pool-platform
+        ├── Platform release
+        └── generated Hospital Implementation distribution
+                ↓ optional later standalone Git realization
+                ↓ recipient acquisition/customization
 ```
 
-The kit development source maintains no copied platform logic. Its release is
-partly maintained and partly generated: maintained wrappers, scaffolding, and
-guidance are combined with the exact released platform artifact during release
-construction. The official initial distribution is offline-capable and does
-not silently download or execute a platform release during initialization.
+Hospital-facing wrapper, scaffold, documentation, builder, validator, and
+metadata source are maintained in this repository. A builder will combine
+those inputs with one exact Platform release archive under ignored local build
+state and independently validate the generated distribution. No Platform logic
+or hospital-facing source is manually synchronized in a second CentralStatz
+repository. A later Git realization may consume only that validated artifact
+and create a remote-free staged standalone repository without becoming source
+authority.
 
-One top-level hospital project owns the active `renv` environment. The embedded
-platform retains its lockfile unchanged for provenance and independent use,
-but nested project activation/restoration is not part of hospital operation.
-Hospital producer dependencies enter the top-level private lock deliberately
-and may not silently alter the embedded platform dependency baseline.
+The generated distribution carries the exact Platform identity, version,
+archive, payload digest, compatibility, environment provenance, builder
+identity, and generated inventory. Initialization may safely extract and
+validate the archive into managed local state. The source stays inspectable;
+integrity reports whether it matches CentralStatz's validated release baseline
+and does not prevent recipient modification.
 
-Trusted fixed code in the private project composes exactly one adopter
-declaration and callable; a complete top-level platform-instance document
-selects it. Configuration never names executable paths or functions. Thin
-Level-2 wrappers delegate to callable Level-1 operations with an already
-constructed registry/selection and explicit state paths. They do not copy
-domain logic or turn the operation registry into a CLI router.
+The generated Hospital Implementation root owns one active `renv` environment
+and deterministic baseline lock derived from the exact Platform lock plus only
+maintained wrapper dependencies. The embedded Platform retains its lock for
+provenance, while nested activation is not routine operation. Recipient-added
+dependencies and modifications fall outside the exact released baseline.
+
+Generated templates provide the supported place for a producer declaration,
+callable implementation, fixed trusted composition, exact platform-instance
+selection, and conformance operation. Configuration never names executable
+paths or functions. Thin top-level wrappers delegate to callable Platform
+operations with an already constructed registry/selection and explicit state
+paths; they copy no domain logic and do not make the operation registry a CLI
+router.
 
 The embedded platform's shipped configuration remains unchanged for isolated
-fictional reference acceptance. Normal hospital execution uses the separate
-top-level selection and state. Both flows preserve the one-health-system rule;
-reference acceptance is a segregated installation self-test, not runtime
-multi-hospital switching.
+fictional reference acceptance. A fictional adopter example proves the
+generated composition scaffold while normal adopter execution remains blocked
+until a recipient supplies conforming code. This preserves one-health-system
+scope and is not runtime multi-hospital switching.
 
 The complete ownership, environment, trust, lifecycle, upgrade, alternatives,
 and maintenance decision is authoritative in
 [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
-Its managed composition is not yet implemented.
+Its builder and generated products are not yet implemented.
 
 ## Observability layer
 
@@ -540,11 +544,12 @@ not YAML, associates declarations with callables. Producer-owned source
 configuration and environment-owned secrets remain below that seam. The
 Iteration 10.2 test-owned composition proves that declaration, callable,
 producer-local configuration, and alternate exact selection can be supplied
-without changing the default installation. Iteration 11.2 selects a separately
-versioned hospital implementation kit carrying an exact managed platform
-release. The private hospital project supplies one complete platform-instance
-document and fixed trusted composition code above the managed platform; the
-test-fixture layout remains evidence rather than the mandated physical layout.
+without changing the default installation. Iteration 11.3 selects a generated,
+independently versioned Hospital Implementation distribution carrying one exact
+Platform release. Maintained templates in this repository supply the supported
+place for one complete platform-instance document and fixed trusted composition
+code above that embedded release; the test-fixture layout remains evidence
+rather than the mandated physical layout.
 
 ## Dependency direction
 
@@ -613,6 +618,7 @@ top-level layout, to be created just in time by implementation phases.
 | `app/` | Supplied Shiny application and product-access boundary | Source mappings, provider code, persistence backend queries, hosting adapters | Replaceable public reference app; depends only on product interfaces and app configuration |
 | `operations/` | Callable operation implementations, human entry points, operation registry, and recovery contracts | Unique domain algorithms or hidden agent procedures | Public control surface; orchestrates components through their APIs |
 | `deploy/` | Target adapters, declarations, and standalone validation payloads used by deployment builders | Canonical or model semantics, authoritative app source, external publication credentials | Public reference targets; depends on stable artifact/operation interfaces |
+| `distribution/` | Future maintained templates, wrappers, documentation, metadata, and construction inputs for generated adopter-facing distributions | Generated release trees, recipient-private configuration, secrets, or copied platform logic | Public release-construction source; a later builder consumes an exact validated Platform release |
 | `config/` | Versioned platform defaults, reference selections, examples, and configuration schemas where not contract-owned | Secrets, executable code, private hospital values | Public/default and local override boundary; interpreted by operations/components |
 | `tests/` | Cross-component, conformance, fixture, architecture, and end-to-end tests | Production runtime data or private source material | Public evidence; depends on public interfaces and explicit fixtures |
 | `docs/` | Vision, architecture, implementation record, developer, adoption, operations, and user documentation | Undocumented executable procedures | Public human authority; describes all supported interfaces |

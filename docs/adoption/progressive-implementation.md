@@ -74,37 +74,40 @@ normal operators continue to use the shipped configuration and
 
 ## Selected future hospital acquisition model
 
-Iteration 11.2 selects a three-level ownership model for implementation after
-the current platform release process exists:
+Iteration 11.3 selects one authoritative CentralStatz source repository that
+will produce two independently versioned releases after the Platform release
+process exists:
 
 ```text
-independently released RRP Platform
-        ↓ exact verified archive
-generic RRP Hospital Implementation Kit
-        ↓ private project created by one hospital
-hospital-owned implementation and configuration
+readmission-risk-pool-platform
+        ├── independently released RRP Platform
+        └── generated RRP Hospital Implementation distribution
+                └── embeds one exact verified Platform archive
 ```
 
-The official kit distribution will carry one exact platform release archive so
-restricted/offline initialization does not require GitHub. It will verify and
-extract that archive into ignored managed state. The private project will own
-one top-level `renv` environment, adopter code/configuration, and thin
-hospital-facing wrappers. The embedded platform will retain its own lockfile
-for provenance but will not activate a competing nested project.
+Hospital-facing templates, wrappers, documentation, builder logic, and
+validation source will be maintained here, not in a second CentralStatz
+project. The generated distribution will carry one exact Platform release
+archive so restricted/offline initialization does not require GitHub. It will
+verify and extract that archive into ignored managed state. Its root will own
+one active `renv` environment; the embedded Platform lock remains provenance
+and does not activate a competing nested project.
 
-Trusted fixed code in the private project will explicitly register exactly one
+Generated trusted fixed composition will explicitly register exactly one
 adopter callable. A complete top-level `platform-instance` document will select
 it; YAML will not name executable paths or functions. Isolated synthetic
-reference acceptance will continue to use the embedded platform's unchanged
+reference acceptance will continue to use the embedded Platform's unchanged
 shipped composition and separate fictional state. Normal hospital operations
-will use the top-level selection and hospital state, preserving the one-health-
-system rule.
+will use the generated top-level selection and separate state, preserving the
+one-health-system rule.
 
 This model is authoritative architecture but not yet an available distribution
-or operation. Until its bounded proof and later kit implementation exist, use
-the current repository operations for the fictional reference and Phase 10
-tests for adopter-seam evidence. Do not invent a hospital wrapper, managed path,
-or download procedure. See
+or operation. CentralStatz's release boundary ends at the generated, validated
+Hospital Implementation release; recipient modifications after acquisition are
+not a formal third release layer. Until the generated-artifact proof and later
+standalone Git realization exist, use the current repository operations for the
+fictional reference and Phase 10 tests for adopter-seam evidence. Do not invent
+a hospital wrapper, managed path, or download procedure. See
 [Hospital-Facing Implementation Distribution](../architecture/hospital-implementation-distribution-assessment.md).
 
 ## Source responsibility
@@ -120,9 +123,10 @@ The generic producer declaration, trusted callable registry, installation
 selection, result, admission, and conformance surface are implemented. A
 hospital-owned producer must keep extraction/configuration/secrets beneath its
 callable boundary; YAML cannot load its code. Physical packaging is now
-resolved architecturally as the private implementation area of the separately
-versioned hospital implementation kit, using fixed maintained composition over
-an exact managed platform release. That composition is not implemented yet.
+resolved architecturally as generated templates and fixed maintained
+composition from this repository over one exact embedded Platform release.
+That distribution is independently versioned but is not a separately
+maintained source project, and it is not implemented yet.
 The proof shows that an explicit test-owned directory can supply declaration,
 callable, configuration, and selection without core changes; it does not make
 the fixture a scaffold or authorize plugins/dynamic loading. Work with real

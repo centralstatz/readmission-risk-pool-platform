@@ -65,9 +65,10 @@ The documentation is the active product at this bootstrap stage. Begin with
   — retained Phase 11.1 evidence for licensing, packaging, governance,
   environment support, release gaps, and maintainer choices.
 - [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
-  — authoritative Phase 11.2 decision for the three ownership levels, embedded
-  platform release, top-level environment, trusted composition, operations,
-  lifecycle, upgrades, and bounded implementation proof.
+  — authoritative Iteration 11.3 decision for one maintained repository, two
+  independently versioned release products, the exact embedded Platform
+  release, top-level environment, trusted composition, lifecycle, and bounded
+  generated-artifact proof.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and

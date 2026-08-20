@@ -1,865 +1,828 @@
-# Hospital-facing implementation distribution architecture
+# Generated hospital-facing implementation distribution architecture
 
 ## Status and authority
 
-**Status:** authoritative Iteration 11.2 architecture decision; implementation
+**Status:** authoritative Iteration 11.3 architecture revision; implementation
 pending
 
 **Decision date:** 2026-08-20
 
-This document decides how a hospital-facing implementation project should
-compose with an immutable, independently versioned Readmission Risk Pool
-Platform release. It is governed by [Platform True North](../vision/platform-true-north.md),
-the [platform architecture](platform-architecture.md), and the
-[implementation plan](platform-implementation-plan.md). Actual work remains
-recorded in the [implementation record](platform-implementation-record.md).
-This document resolves the
-physical adopter-packaging question left by the completed
-[canonical producer foundation](canonical-producer-foundation.md) and refines
-the recommendation in the earlier
-[distribution and release assessment](distribution-release-assessment.md).
+This document defines how CentralStatz can maintain one authoritative source
+repository while releasing both the reusable Readmission Risk Pool Platform and
+an independently versioned hospital-facing implementation distribution. It is
+governed by [Platform True North](../vision/platform-true-north.md), the
+[platform architecture](platform-architecture.md), and the
+[implementation plan](platform-implementation-plan.md). Actual work remains in
+the [implementation record](platform-implementation-record.md).
 
-The decision is architectural, not implemented behavior. No hospital-facing
-repository, distribution bundle, platform archive, release, tag, updater,
-download operation, or release automation exists yet. The current repository
-and its [operator manual](../operations/operator-manual.md) remain the only
-implemented human surface.
+This revision supersedes the selected **three-level / separately maintained
+hospital-kit project** interpretation recorded by Iteration 11.2. The 11.2
+record remains historical evidence: its embedded exact-platform, one active R
+environment, explicit producer trust, thin operations, fictional acceptance,
+and deployment-neutrality conclusions remain useful. Its second maintained
+CentralStatz project and formal third hospital-private layer do not.
+
+The retained [Distribution and First-Release Assessment](distribution-release-assessment.md)
+remains the Iteration 11.1 evidence behind accepted release/governance choices.
+The [Canonical Producer Foundation](canonical-producer-foundation.md) remains
+authoritative for the trusted adopter/source composition seam.
+
+No hospital distribution builder, maintained payload directory, generated
+artifact, standalone repository, release, archive, tag, license, CI, or
+publication is implemented by this planning iteration. The current
+[operator manual](../operations/operator-manual.md) remains the only supported
+human operation surface.
 
 ## Decision summary
 
-Adopt the three-level model with one refinement to the leading proposal:
-
-1. the existing **Readmission Risk Pool Platform** remains independently
-   versioned, released, usable, and testable;
-2. a separately versioned **Readmission Risk Pool Hospital Implementation
-   Kit** becomes the supported generic hospital-facing project; and
-3. each hospital creates and owns one private implementation project from that
-   kit.
-
-An official hospital-kit release should physically carry one exact official
-platform release archive plus identity, compatibility, inventory, and SHA-256
-integrity metadata. Initialization should verify and safely extract that
-archive into ignored, versioned, managed local state. The embedded platform is
-inspectable open-source software, not a security boundary. Its integrity and
-ownership boundary makes modification detectable and keeps editing it outside
-the supported hospital workflow.
-
-The kit's development source should not manually maintain a copied platform
-tree or normally commit a changing extracted platform directory. The platform
-archive is injected when an official kit release bundle is assembled. This is
-a **partly maintained, partly generated** distribution:
+CentralStatz maintains exactly one authoritative source repository:
 
 ```text
-maintained hospital-kit scaffold + exact released platform archive
-                         ↓ release construction
-one hospital-facing distribution bundle
-                         ↓ hospital initialization
-editable private implementation + verified managed platform installation
+readmission-risk-pool-platform
+        ├── platform source, contracts, runtime, products, app, operations
+        ├── reference implementations and deployment builders
+        ├── maintained hospital-facing templates/wrappers/docs
+        ├── hospital-distribution builder and validator source
+        └── all tests and release metadata logic
 ```
 
-The official first path is embedded and offline-capable. Silent network
-retrieval is not part of initialization. An explicit exact-version download
-may be added later as a development or space-saving convenience, but it must
-populate and validate the same managed-release boundary and must never become
-an implicit download-and-execute path.
-
-## Problem statement
-
-Phase 10 proves that a materially different adopter producer can satisfy the
-same declaration, explicit trusted registration, exact selection, execution,
-canonical admission, and conformance mechanism as the shipped synthetic
-producer. It then reaches unchanged runtime, provider, history, products,
-application, and deployment-artifact behavior.
-
-What Phase 10 deliberately does not decide is how independently owned hospital
-code and an immutable public platform release should coexist on disk and at
-operation time. Requiring a hospital to edit or permanently fork the platform
-would blur ownership, make upstream upgrades expensive, and turn platform
-source layout into an adopter integration interface. Requiring two repositories
-and ad hoc local paths would expose Git and composition mechanics to routine
-operators. Arbitrary executable paths in configuration would weaken the trust
-boundary established in Phase 10.
-
-The chosen design must therefore provide:
-
-- one understandable hospital project;
-- a byte-identifiable platform dependency;
-- editable hospital-owned source and configuration outside that dependency;
-- explicit trusted executable composition without executable configuration;
-- one operator-owned R environment;
-- thin human operations over existing platform logic;
-- isolated fictional acceptance before real-data work;
-- deliberate, reversible platform upgrades; and
-- the existing target-neutral deployment path.
-
-## Current architecture facts
-
-The decision follows these implemented facts rather than an abstract packaging
-preference:
-
-- the platform is a repository-scale system of contracts, operations, an
-  internal R package, adapters, products, application code, deployment
-  builders, tests, and documentation; it is not one installable R package;
-- every platform script currently derives its repository root from its own
-  maintained location;
-- `renv.lock` describes the complete platform development and operation
-  environment, while the reduced application artifact owns a smaller direct
-  runtime dependency declaration;
-- `config/platform-instance.yml` selects exactly one producer for one health
-  system, and maintained R code—not YAML—registers its callable;
-- the stable public scripts currently source the shipped composition directly,
-  so an external project cannot yet substitute its trusted composition through
-  those scripts without a small callable-operation seam;
-- the lower-level history composition already accepts an admitted producer
-  result, and the producer registry/conformance APIs already accept separately
-  constructed declarations, callables, registries, selections, and invocation
-  data;
-- the Phase 10 adopter proof supplies all source-specific code and configuration
-  outside the normal installed registry and reaches the unchanged downstream
-  stack;
-- operational history and product state are local generated state, not source
-  release content;
-- the product-only reduced application artifact is independent of sources,
-  producers, history implementation, and deployment target; and
-- Connect Cloud is one target realization after the reduced artifact, not an
-  installation or producer-composition mechanism.
-
-These facts mean managed composition needs a small operation/composition
-boundary, not changes to canonical, runtime, provider, persistence, product,
-application, or deployment contracts.
-
-## Accepted Phase 11 decisions
-
-The maintainer has baselined the following direction. This table is
-authoritative for subsequent Phase 11 work unless concrete repository evidence
-shows a contradiction or the maintainer explicitly changes it.
-
-| Area | Accepted direction | Remaining evidence, not a reopened choice |
-|---|---|---|
-| First platform release | `v0.1.0`, representing the complete foundational system | Assemble and validate the candidate before publication |
-| Platform release unit | Validated whole repository source tree for `v0.1.0` | Future releases may use a narrower generated bundle if the development tree later warrants it |
-| Public authority | GitHub source repository, immutable Git tags, GitHub Releases, and downloadable source/release archives | No release is created in 11.2 |
-| R dependency construction | Platform `renv.lock` ships; `renv::restore()` is the standard declared restoration mechanism | Exact tested R/OS evidence remains required before release claims |
-| Producer trust | Explicit maintained callable registration and one exact installation selection | Level-2 physical composition must preserve it |
-| Secrets | External to committed platform and hospital-kit source | Operators choose approved environment/secret infrastructure |
-| Deployment | Connect Cloud remains a fictional/reference realization; publication is operator-owned; future OCI is a peer target | Connect is not endorsed for hospital PHI hosting by this decision |
-| Stewardship | CentralStatz Statistical & Data Sciences LLC is project steward/release publisher; Alex Zajichek is initial maintainer | Ordinary factual release metadata only; no broader IP representation |
-| License direction | Apache-2.0 after final repository dependency/asset/license review; MIT is the fallback for a genuine unresolved incompatibility | No license is installed in 11.2 |
-| Contributions | Lightweight guidance, DCO sign-off for external code, no CLA, no copyright assignment | Policy files remain future implementation work |
-| Support | Best-effort open-source maintenance, no SLA or guaranteed response/resolution; optional CentralStatz services are separate | Use tested-environment language backed by evidence |
-| Security | `SECURITY.md`, private vulnerability reporting where available, and explicit operator responsibility | No security-operations platform is implied |
-| Release integrity | Normal Git/GitHub integrity, repository validation, exact inventory, and checksums | Do not add bespoke signing/SBOM/attestation machinery without need |
-
-## Terminology and three ownership levels
-
-### Level 1 — Readmission Risk Pool Platform
-
-This repository and its released source tree. It owns all generic contracts,
-computation, reference implementations, operations, products, application,
-deployment boundaries, conformance, observability, tests, and generic
-documentation. It remains independently runnable with its fictional reference
-composition.
-
-Level 1 is versioned as the platform. Its first release is `v0.1.0`. Component
-contracts and implementations retain independent versions recorded in release
-metadata; they are not forced to match the platform version.
-
-### Level 2 — Readmission Risk Pool Hospital Implementation Kit
-
-Use **hospital implementation kit** as the durable concept. “Distribution” is
-appropriate for the packaged release object, “scaffold” describes only one of
-its parts, and “adopter project” describes the resulting private project.
-“SDK” suggests a library/API product and “second platform” incorrectly implies
-ownership of generic platform semantics.
-
-The kit is a separate, generic, independently versioned project maintained by
-CentralStatz. A kit version declares exactly which platform release it carries;
-version numbers do not match by invariant. For example, kit `v0.2.1` may carry
-platform `v0.1.0`.
-
-The kit owns:
-
-- hospital-facing directory ownership and edit guidance;
-- a small top-level operation surface;
-- explicit trusted installation-composition scaffolding;
-- adopter configuration templates without secrets;
-- onboarding, reference-acceptance, conformance, and upgrade guidance;
-- one top-level R environment for the composed project;
-- managed-platform release metadata and integrity checks; and
-- release construction that injects an exact platform archive.
-
-It does not own copies of platform domain logic, contracts, providers,
-persistence behavior, products, application behavior, or deployment builders.
-
-No final GitHub repository name is selected here. The repository name should
-make “RRP,” “hospital,” and “implementation” discoverable and should avoid
-calling the kit another platform. Naming can be finalized with the first
-maintained project in a later iteration.
-
-### Level 3 — one hospital's private implementation project
-
-A hospital creates one private project from a kit release. That project owns:
-
-- extraction and local joins;
-- local identifiers, vocabularies, and status/code translation;
-- source validation and canonical mapping;
-- mapping and implementation provenance;
-- producer declaration and callable implementation;
-- nonsecret local configuration and external secret references;
-- institution-specific operational documentation;
-- approved local dependency additions; and
-- local history, products, artifacts, and deployment destinations.
-
-The hospital normally edits only explicitly adopter-owned paths. It does not
-normally edit the managed platform, kit wrappers, or generated ownership
-metadata. One private project represents one health-system installation; it is
-not a multi-hospital selector.
-
-## Three-level fit with Phases 0–10
-
-The model matches the existing architecture:
+That repository produces two independently versioned release products:
 
 ```text
-Level 3 hospital source and mapping
-        ↓ fixed trusted Level-2 composition
-platform.canonical-producer@0.1.0
-        ↓ canonical admission in managed Level 1
-unchanged runtime → provider → history → products → app
-        ↓
-target-neutral reduced application artifact
-        ↓
-Connect reference realization or future OCI peer
+authoritative maintained repository
+        ├── validated Platform release
+        │       e.g. RRP Platform v0.1.0
+        │
+        └── generated Hospital Implementation release
+                e.g. RRP Hospital Implementation v0.1.0
+                declares/includes one exact Platform release
 ```
 
-Level 3 owns precisely the source interpretation already assigned to local
-implementations. Level 2 owns orchestration and physical composition, which
-belongs above the semantic handoff. Level 1 remains unaware of hospital names,
-source shapes, repository locations, and secrets. The existing downstream
-stack remains unchanged.
+The hospital-facing product is a **generated downstream distribution**, not a
+second manually edited CentralStatz repository. Hospital-facing templates,
+wrappers, documentation, builder logic, and validation source live in this
+repository. A builder stages an immutable distribution artifact under ignored
+`build/` state, injects one exact Platform release archive, and independently
+validates the result. A later separate realization may turn only that validated
+artifact into a standalone remote-free Git repository.
 
-The model also retains the shipped synthetic producer in Level 1. A hospital
-can prove the platform and environment before its own producer exists, and
-CentralStatz can regression-test Level 1 independently from the kit or any
-hospital project.
+CentralStatz's formal release architecture ends at the generated, validated,
+versioned hospital-facing release. A recipient may modify the acquired source
+under the applicable license. Such changes are recipient activity, not a third
+CentralStatz release layer. Validation may report that modified content differs
+from the released baseline; it does not prevent modification.
 
-## Composition alternatives
+## Architectural correction from Iteration 11.2
 
-### Trade-off matrix: adopter and distribution concerns
+### Superseded interpretation
 
-| Option | Adopter usability | Reproducibility / provenance | Upgrade and hospital-code separation | Offline/internal acquisition | Git burden |
-|---|---|---|---|---|---|
-| Direct platform fork | One tree initially, but platform and hospital ownership blur immediately | Commit records state, but upstream release identity and local changes become intertwined | Merge-heavy; local code and platform edits are difficult to distinguish | Strong after clone/archive transfer | High ongoing fork/upstream management |
-| Side-by-side platform plus private companion | Clear ownership for experienced developers | Strong when both exact versions and paths are recorded | Good separation and independent histories; path coordination remains operator-owned | Strong if both repositories are transferred | Medium-high; two acquisitions and two repositories |
-| Git submodule or subtree | One outer checkout conceptually | Exact submodule commit is strong; subtree provenance needs discipline | Submodule upgrades are explicit; subtree merges copy history/content | Usable after a complete recursive transfer | High for many hospital teams; submodule state is easy to misunderstand |
-| Managed embedded release archive | One hospital-facing acquisition and operation root | Exact archive identity/checksum plus platform manifest | Strong ownership boundary; versioned installs permit staged replacement | Strong; archive is already present | Low for routine operators |
-| Explicit bootstrap/download | Small kit source and exact remote release reference | Strong if version/checksum validation is mandatory | Similar to embedded after retrieval | Weak as the default in restricted environments | Low after acquisition, but network/repository availability becomes setup risk |
-| Full platform R package | Familiar R installation for package users | Package repository/version provenance can be strong | Hospital code can remain separate | Depends on internal package repository/cache | Low at runtime, high platform refactoring cost |
+Iteration 11.2 modeled:
 
-### Trade-off matrix: architectural fit
+```text
+Level 1 Platform
+        ↓
+separately maintained Level 2 Hospital Implementation Kit project
+        ↓
+Level 3 hospital private implementation project
+```
 
-| Option | Trust and `renv` fit | Existing operations | Future releases / OCI | CentralStatz burden | Refactoring required |
-|---|---|---|---|---|---|
-| Direct platform fork | Explicit code registration remains possible; one lock is simple | Existing scripts work after local edits, but the fork becomes the operation authority | OCI remains possible; upstream adoption becomes merge policy | Repeated fork support and conflict diagnosis | None initially, high long-term divergence |
-| Side-by-side companion | Can preserve explicit composition and one chosen top-level environment | Current scripts cannot accept external composition directly; wrappers need a callable seam | Good platform independence and OCI neutrality | Support two-root/path/Git setup | Small operation seam |
-| Submodule/subtree | Explicit composition remains possible; environment can be top-level | Same callable seam is needed | Technically compatible | Submodule/subtree education and failure recovery | Small operation seam plus Git-specific policy |
-| Managed embedded release | Best fit for a single top-level environment and fixed trusted composition | Thin wrappers plus a small callable seam; no domain duplication | Exact platform replacement and target-neutral artifacts remain clean | Build/integrity tooling, but no copied logic maintenance | Small operation seam and managed-install initialization |
-| Explicit download | Same after successful verified retrieval | Same as embedded | Same as embedded | Network/retry/cache/support behavior adds burden | Embedded seam plus retrieval behavior |
-| Full platform R package | `renv` integration is conventional, but nonpackage assets and operations need another home | Would require redesigning the repository-scale operation surface | OCI possible, but package becomes an accidental release boundary | Package publishing and split-asset coordination | Major unjustified refactor |
+That model correctly separated generic platform logic from adopter-facing
+composition, but it over-modeled two things:
 
-### Ranked recommendation
+- CentralStatz does not need a second source repository to maintain wrappers,
+  templates, and documentation that can be generated from this repository.
+- A hospital's private customization is real use of the release, not a third
+  CentralStatz product or formal release layer.
 
-1. **Managed embedded immutable platform archive** — selected official
-   hospital-facing distribution model.
-2. **Side-by-side exact platform plus private companion** — credible advanced
-   developer/fallback composition and useful implementation evidence, but not
-   the default hospital operator experience.
-3. **Explicit exact-version retrieval** — possible later convenience that must
-   resolve into the same verified managed install; not the default.
-4. **Controlled hospital fork** — temporary recovery/fallback model, not the
-   supported long-term path.
-5. **Git submodule/subtree** — technically viable but rejected as the primary
-   hospital interface because Git mechanics become operational requirements.
-6. **Full-platform R package** — rejected for the initial architecture because
-   it would require major refactoring and obscure repository-scale boundaries.
+### Selected interpretation
 
-The selected model is not a custom package manager. It handles one declared
-platform artifact with no version solving, dependency registry, transitive
-platform resolution, plugin discovery, or arbitrary package execution.
+```text
+ONE maintained CentralStatz source repository
+        ↓                         ↓
+Platform release          generated Hospital Implementation release
+                                  ↓
+                          recipient acquisition/customization
+                          outside CentralStatz release architecture
+```
 
-## What embedded means
+This follows the repository's established pattern: authoritative maintained
+source produces independently validated downstream products. Logical product
+bundles, reduced application artifacts, and Connect Git realizations already
+demonstrate staging, exact inventory, provenance, independent validation, and
+separation from authoritative source. The hospital distribution applies those
+principles to adoption packaging without treating deployment and distribution
+as the same artifact.
 
-### Canonical release form
+## Accepted Phase 11 decisions retained
 
-An official kit release bundle physically contains:
+This correction does not reopen the maintainer direction baselined in
+Iterations 11.1 and 11.2:
 
-- maintained kit scaffold, documentation, and wrappers;
-- one exact official platform release archive;
-- platform identity and exact platform version;
-- release payload identity and source-release provenance;
-- archive filename, byte size, and SHA-256 digest;
-- a compatibility declaration between the kit and platform release;
-- an ownership inventory distinguishing maintained, adopter-owned, generated,
-  and managed paths; and
-- the kit's top-level environment baseline and restoration guidance.
+| Area | Accepted direction |
+|---|---|
+| First Platform release | `v0.1.0`, representing the complete foundational system |
+| Platform `v0.1.0` release unit | Validated whole repository source tree; future releases may later justify a narrower generated unit |
+| Public authority | GitHub source repository, immutable tags, GitHub Releases, and downloadable archives |
+| R dependency declaration | Platform `renv.lock` ships; `renv::restore()` is the standard declared restoration mechanism |
+| Producer trust | Fixed maintained executable composition plus exact declarative selection; no executable YAML, discovery, or arbitrary loading |
+| Secrets | No secrets or credentials in CentralStatz releases |
+| Deployment | Connect remains a fictional/reference realization; external publication is operator-owned; future OCI is a peer target |
+| Stewardship | CentralStatz Statistical & Data Sciences LLC is steward/release publisher; Alex Zajichek is initial maintainer |
+| License direction | Apache-2.0 after final dependency/asset/license review; MIT fallback for a genuine unresolved incompatibility |
+| Contributions | Lightweight guidance and DCO; no CLA or copyright assignment |
+| Support | Best effort, no SLA or guaranteed response/resolution; optional CentralStatz services are separate |
+| Security | Normal open-source security policy/private reporting; recipient owns local deployment and data security |
+| Integrity | Ordinary Git/GitHub release integrity, exact inventory, and checksums; no speculative bespoke supply-chain system |
+| Migration | No automatic/general migration framework before real version-transition evidence |
 
-The exact archive filename, directory names, and manifest identifier are left
-to the implementation proof. Their semantics are not open: one kit release
-must carry exactly one declared platform release, and the archive bytes must
-match the declared digest.
+The exact tested R/OS matrix and final license compatibility review remain
+release evidence, not reasons to change this packaging architecture.
 
-### Managed installation behavior
+## Terminology
 
-Initialization should:
+### Authoritative maintained repository
 
-1. validate the kit's own required inventory;
-2. validate the platform archive's identity, size, and SHA-256 digest before
-   extraction;
-3. reject symbolic links, unsafe archive paths, traversal, undeclared payloads,
-   and identity mismatches;
-4. extract into a staged version-specific managed directory;
-5. validate the extracted platform using platform-owned validation;
-6. promote only a complete valid managed installation; and
-7. update an installation-local current-platform reference only after
-   successful validation.
+Use **authoritative platform repository** for
+`readmission-risk-pool-platform`. It is the only CentralStatz source repository
+in this architecture. “Monorepo” is not required as product terminology; the
+important property is one maintained authority.
 
-The managed area is ignored local state and supports multiple versioned
-platform installations during a future staged upgrade. Its precise name is an
-implementation choice; `.rrp/platform/<version>/` is illustrative, not a
-contract.
+### Platform release
 
-Manual changes to extracted platform files must be detectable by inventory and
-checksum validation. Validation should fail with recovery that preserves the
-modified tree for review and reinstalls from the known archive into a new or
-clean managed location. It should never silently repair or overwrite unknown
-changes.
+**Readmission Risk Pool Platform** is the reusable source release. It remains
+independently runnable and testable with the synthetic reference. The first
+release is `v0.1.0`.
 
-This is an ownership/integrity boundary, not a sandbox. Users may inspect,
-copy, or modify open-source code. A modified managed tree simply becomes an
-unsupported local platform derivative until separately identified and
-validated.
+### Hospital-facing release
 
-### Retrieval policy
+Use **Readmission Risk Pool Hospital Implementation** as the durable concept.
+It communicates that the product is the normal starting point for a local
+hospital implementation and contains/uses the Platform without calling itself
+another platform.
 
-The official initial kit should not require GitHub or any network at
-initialization time. A hospital can transfer the one kit release bundle and
-its own R/package installation sources through approved internal channels.
+Use these related terms precisely:
 
-If later evidence supports an online bootstrap, it must be explicit, name one
-exact release and checksum, obtain operator consent before network access, and
-validate before extraction or execution. It may not silently choose “latest,”
-execute downloaded code before verification, or create a second installation
-model.
+- **Hospital Implementation source** — maintained templates, wrappers,
+  documentation, builder inputs, and validation source inside this repository;
+- **Hospital Implementation distribution artifact** — immutable generated
+  output built and validated under ignored local state;
+- **Hospital Implementation standalone Git realization** — optional later
+  generated repository produced only from the validated artifact; and
+- **Hospital Implementation release** — a published version of the validated
+  generated product after explicit authorization.
+
+“Kit” is no longer preferred because it suggests an independently maintained
+starter project and does not emphasize generated release identity. “Edition”
+suggests a separate product tier, “SDK” suggests a library/API, and “starter”
+understates the supported end-to-end implementation surface. A final GitHub
+release/repository name can remain an implementation detail.
+
+## Source and release ownership
+
+### Maintained inside the authoritative repository
+
+The future maintained hospital-facing source should live under a dedicated
+conceptual ownership area such as `distribution/hospital/`. This is the
+preferred location because the content defines a source distribution, not a
+deployment target (`deploy/`) or documentation-only adoption guide
+(`docs/adoption/`). The exact directory is authorized only when the builder
+proof begins.
+
+That area should own maintained inputs such as:
+
+- hospital-facing root README/onboarding source;
+- implementation and producer declaration templates;
+- callable implementation scaffold;
+- fixed trusted composition scaffold;
+- platform-instance and nonsecret configuration templates;
+- top-level operation wrapper source;
+- top-level environment baseline additions, if any;
+- generated-release inventory/compatibility metadata templates; and
+- standalone validation source required in the downstream artifact.
+
+Repository operations/lib code should own builder and validator behavior when
+implemented, and a future `contracts/distribution/` location may own the
+language-neutral hospital-distribution manifest. Tests remain under the normal
+repository test structure. No directory is created in Iteration 11.3.
+
+### Generated only
+
+The following are outputs, never separately maintained source:
+
+- completed Hospital Implementation distribution trees;
+- copied/injected exact Platform release archives;
+- completed distribution manifests and checksums;
+- generated top-level lockfiles derived for a particular release;
+- immutable hospital-distribution builds/current pointers;
+- standalone generated Git repositories; and
+- release archives or publication metadata.
+
+Generated outputs belong under ignored `build/` state or an explicitly chosen
+outside-repository destination. They are validated from their own contents and
+can be regenerated from maintained source plus the declared Platform release.
+
+### Recipient activity outside the release boundary
+
+After acquisition, a recipient may edit, restructure, version-control, or not
+version-control the distributed source as permitted by the license. It may add
+local SQL, EHR/warehouse integration, mappings, configuration, documentation,
+dependencies, or modifications to the bundled Platform.
+
+Those actions are not a CentralStatz release layer. CentralStatz may document a
+recommended baseline and later provide migration guidance, but the initial
+architecture does not govern private repository structure, promise preservation
+of arbitrary changes, or prevent modifications.
+
+```text
+validated release assumptions ≠ restrictions on recipient behavior
+```
+
+## Two release products and their relationship
+
+### Independent versions
+
+Platform and Hospital Implementation versions are independent semantic
+identities. Equal first-release numbers may be convenient but are not an
+invariant:
+
+```text
+Hospital Implementation v0.3.1 includes Platform v0.2.0
+```
+
+For the first supported line, each Hospital Implementation release should carry
+exactly one Platform release version rather than a range. Exact inclusion is
+clearer for provenance, offline use, environment construction, and failure
+diagnosis. A future compatibility range may be introduced only after repeated
+release evidence shows that one generated distribution can safely accept
+multiple Platform versions.
+
+### Conceptual release graph
+
+```text
+authoritative source revision
+        ↓
+validated Platform release candidate
+        ↓ explicit authorization
+Platform v0.1.0 tag/release/archive
+        ↓ exact archive + digest
+Hospital Implementation builder@version
+        ↓
+immutable Hospital Implementation distribution build
+        ↓ independent validation
+Hospital Implementation release candidate@version
+        ↓ optional standalone Git realization
+        ↓ explicit authorization
+Hospital Implementation release/publication
+```
+
+The hospital-facing build cannot silently package `main`, an arbitrary working
+tree, “latest,” or an unvalidated directory. A release build consumes an exact
+Platform release artifact. The bounded implementation proof may use a clearly
+identified test-only Platform release candidate archive because no public
+release exists yet; that evidence must not be described as `v0.1.0`.
+
+### Required Hospital Implementation metadata
+
+A generated distribution records at least:
+
+- its own specification identity and semantic version;
+- deterministic distribution instance identity;
+- build identity and declared build time, kept separate from instance identity;
+- included Platform identity and exact version;
+- Platform archive filename, payload identity, byte size, and SHA-256 digest;
+- Platform compatibility declaration;
+- hospital-distribution builder identity/version;
+- complete generated file inventory and checksums;
+- top-level R/environment declaration and source lock provenance;
+- maintained-input provenance sufficient to reproduce the build;
+- fictional/nonclinical classification of shipped examples; and
+- validation status and explicit nonclaims.
+
+These identities remain separate from Git commit, local path, operational
+runtime run, producer execution, history, product-set, reduced artifact,
+Connect realization, publication, and deployment identities. Git revisions may
+be additional release provenance without becoming universal semantic identity.
+
+## Embedded exact Platform release
+
+### Accepted physical model
+
+The generated Hospital Implementation distribution physically contains:
+
+```text
+hospital implementation distribution
+├── hospital-facing scaffold, wrappers, and documentation
+├── distribution identity / compatibility / inventory metadata
+├── top-level environment declaration and lockfile
+└── exact Platform release archive + digest metadata
+```
+
+Initialization may verify and safely extract the Platform archive into
+versioned managed local state. The exact local path remains an implementation
+detail. The distribution must not require a separate Platform acquisition or
+network access for its normal initial workflow.
+
+### Integrity and inspectability
+
+The builder and validator should verify the Platform release identity,
+inventory, archive size, and SHA-256 digest. Extraction should reject unsafe
+paths, traversal, and symbolic links, stage before promotion, and validate the
+extracted Platform before use.
+
+The managed copy remains inspectable open-source source. Integrity validation
+describes whether it still matches the released baseline; it is not a sandbox,
+license restriction, or enforcement against recipient modification. A changed
+copy may be reported as different from CentralStatz's validated release
+assumptions without preventing the recipient from maintaining its derivative.
+
+### No implicit retrieval
+
+The initial official distribution embeds the archive and performs no silent
+download. Any future retrieval mode must be explicit, exact-version,
+operator-authorized, and checksum-verified before extraction/execution. It must
+resolve into the same managed payload semantics and must never select “latest.”
+
+## Generated artifact and standalone repository flow
+
+Distribution artifact construction and Git realization are separate
+boundaries, as application artifact construction and Connect realization are
+separate today:
+
+```text
+authoritative maintained source + exact Platform release archive
+        ↓ hospital-distribution builder
+ignored immutable distribution build
+        ↓ artifact-owned independent validator
+validated Hospital Implementation distribution artifact
+        ↓ later Git realization builder --destination PATH
+standalone remote-free generated Git repository
+        ↓ repository-owned independent validator
+STOP: optional commit/remote/push/publication requires authorization
+```
+
+### Distribution artifact
+
+The first builder should stage under an ignored hospital-distribution store,
+validate before promotion, retain immutable builds, and update a current pointer
+only after success. Exact path and pointer names follow the implementation
+proof. The artifact should:
+
+- contain only an allowlisted generated inventory;
+- include the exact Platform archive unchanged;
+- contain no Platform development working-tree dependency;
+- carry no generated hospital history/products/deployments;
+- validate from its own files plus an externally installed R package library;
+- construct its hospital-facing operation environment without sibling paths;
+- detect missing, extra, modified, linked, or incompatible members; and
+- remain a distribution object, not a deployment realization.
+
+### Standalone Git realization
+
+A later builder may consume only a valid distribution artifact and create a
+standalone Git repository at an explicit outside-repository destination. It
+should follow the mature safe concepts used by the Connect realization:
+
+- complete generated ownership and exact inventory;
+- independently valid copied content;
+- default branch initialized deliberately;
+- generated files staged but uncommitted;
+- no remote, credentials, author identity, push, or publication;
+- idempotent regeneration only for unchanged owned output;
+- refusal to overwrite unrelated, committed, remote-configured, or modified
+  destinations; and
+- validation that requires no authoritative source repository.
+
+That generated repository is a release realization, not a second CentralStatz
+source project. Maintained changes always originate here and are regenerated.
 
 ## R environment ownership
 
-### One active project
+### One active hospital-facing project
 
-The top-level private hospital project owns the one active `renv` project and
-authoritative runtime lockfile. From the hospital operator's perspective,
-running:
+The 11.2 conclusion remains sound under the generated model: the generated
+Hospital Implementation root owns one active `renv` project and one
+authoritative baseline lockfile for CentralStatz's released configuration.
 
-```sh
-Rscript -e 'renv::restore()'
+The intended operator experience is:
+
+```text
+Hospital Implementation root
+        ↓ Rscript -e 'renv::restore()'
+one active project library
+        ↓ top-level wrappers
+managed Platform code
 ```
 
-from the project root restores the composed installation environment. Routine
-operations must start from that root or otherwise activate that same library.
-They must not activate a nested managed-platform project.
+The embedded Platform archive retains the Platform's own lockfile unchanged for
+release provenance and independent Platform use. Routine hospital-facing
+operations do not activate or restore a nested Platform project.
 
-The extracted platform retains its original `renv.lock`, `.Rprofile`, and
-`renv` infrastructure unchanged for provenance and independent Level-1 use.
-Those files are inactive when top-level kit operations call managed platform
-code. The kit must not run nested `renv::restore()` operations into competing
-libraries.
+### Generated baseline lock
 
-### Constructing the top-level lock
+For a Hospital Implementation release, the builder deterministically starts
+from the exact included Platform release lock and adds only dependencies used
+by maintained hospital-facing wrapper/scaffold behavior. The initial design
+should keep those additions at zero or minimal. It must reject incompatible
+version requirements rather than silently upgrade/downgrade Platform packages.
 
-For an official kit release, the top-level baseline lock should be derived
-from the exact embedded platform release lock and then add only dependencies
-used by maintained kit behavior. A private hospital project adds producer-owned
-dependencies to its own top-level lock through deliberate `renv` actions and
-validation; it never edits the embedded platform lock.
+The generated manifest records the Platform lock digest, maintained dependency
+additions, resulting top-level lock digest, declared R line, and validation
+environment. Independent release validation restores or checks the top-level
+lock in each environment that CentralStatz claims as tested and runs the
+fictional baseline.
 
-The initial conservative rule should preserve the exact versions required by
-the embedded platform. Adding a hospital dependency must not silently upgrade
-or downgrade a platform dependency. If an adopter dependency cannot coexist,
-environment construction fails and the conflict is resolved explicitly before
-the producer is selected or run.
+This is deterministic release construction, not a general dependency solver.
+The implementation may use explicit, bounded lock transformation and exact
+checks for the maintained dependency set. It must not attempt to solve arbitrary
+recipient dependency conflicts.
 
-This policy yields three related but noncompeting records:
+### Recipient-added dependencies
 
-- the platform lock: immutable release provenance and independent Level-1
-  reproducibility;
-- the kit baseline lock: exact platform closure plus kit dependencies; and
-- the private project lock: the hospital-approved complete environment,
-  including producer dependencies.
-
-Only the last is active in the hospital project. Dependency-union and conflict
-checking require implementation evidence in the next iteration; no generic
-lockfile merger is authorized by this assessment.
-
-### Upgrade environment semantics
-
-A proposed platform upgrade creates a candidate top-level lock from the new
-platform baseline plus the hospital's declared producer dependencies. It is
-restored and validated in a separate candidate library. The current library
-and platform selection remain active until the reference workflow, producer
-conformance, and platform checkpoint pass. Dependency conflicts fail before
-selection changes and never rewrite hospital code.
-
-## Operation ownership
-
-### Responsibility split
-
-| Concern | Level 1 platform owns | Level 2 kit owns | Level 3 hospital owns |
-|---|---|---|---|
-| Domain behavior | Canonical admission, runtime/provider, history, products, app, artifact, target realizations | None | Source interpretation and producer callable only |
-| Human surface | Stable callable operation behavior and direct Level-1 reference scripts | Thin top-level wrappers, project paths, composition, acceptance ordering | Invocation cadence and approved local procedures |
-| Configuration | Generic validation and shipped reference defaults | Ownership/precedence and nonsecret templates | One exact local selection and producer configuration |
-| Diagnostics | Structured event and callable sink contracts | Propagation and top-level recovery wording | Approved routing/retention if later implemented |
-| State | Logical history/product/artifact semantics | Managed-platform install state and default project locations | Operational data, backups, retention, access, deployment destinations |
-
-### Hospital-facing operation surface
-
-The kit should expose a small explicit set of scripts corresponding to these
-intents:
-
-- initialize the hospital project and managed platform;
-- run hospital-project doctor/preflight;
-- run isolated fictional reference acceptance;
-- validate the hospital implementation/producer;
-- run one platform cycle;
-- inspect operational history;
-- materialize products;
-- validate or launch the application;
-- build or validate the target-neutral artifact; and
-- build or validate an available target realization.
-
-Final filenames should follow the implementation proof. They should be thin
-scripts, not a CLI framework or generic router. The existing platform operation
-registry may supply checked IDs, commands, classifications, and documentation
-links, but must not become reflective execution.
-
-### Delegation rules
-
-Level 1 should expose callable operation entry points that accept explicit,
-already trusted installation composition and explicit state paths. Existing
-Level-1 scripts should call those same functions with the shipped reference
-composition. Level-2 wrappers should call the functions with the kit-owned
-composition. This prevents wrappers from copying script bodies or domain
-logic.
-
-The smallest required Level-1 change is an operation-composition seam, not an
-extension loader. It accepts R objects/callables constructed by maintained
-trusted code in the active project; it never accepts a configuration-supplied
-file path, function name, package name, URL, or expression.
-
-Wrappers must preserve platform result semantics, return nonzero when the
-delegated operation fails, and pass through structured diagnostics without
-turning them into retained history or audit. A top-level operation-run context
-may correlate kit preparation and delegated platform stages, but analytical
-runtime-run identity remains separate.
-
-Adopter-specific preparation before delegation is limited to validating the
-managed platform, top-level environment, platform-instance configuration,
-producer declaration, trusted registration, producer-owned nonsecret
-configuration shape, and required external secret presence without exposing
-values. Source extraction, joins, and mapping remain inside the callable.
+After acquisition, a hospital may add producer or local dependencies and update
+its lockfile. Those additions are outside the exact CentralStatz release
+environment guarantee. The documentation may recommend deliberate `renv`
+snapshot/restore and conformance testing, but the release architecture does not
+promise that arbitrary packages coexist or preserve the baseline lock.
 
 ## Producer trust and composition
 
-### Recommended private project layout
+### Shipped supported pattern
 
-The following is a conceptual ownership layout, not an implemented or final
-filename contract:
+The generated Hospital Implementation provides maintained templates for:
 
-```text
-hospital-project/
-├── implementation/                 # hospital edits
-│   ├── producer.yml                # declarative producer identity/capability
-│   ├── R/                          # extraction, validation, mapping, adapter
-│   └── README.md                   # local meaning and provenance
-├── config/                         # hospital edits; no secrets
-│   ├── platform-instance.yml       # one exact producer selection
-│   └── producer.yml                # producer-owned nonsecret configuration
-├── composition/                    # reviewed trusted code; hospital maintains
-│   └── installed-producer.R        # explicit fixed registration
-├── operations/                     # kit-maintained thin wrappers
-├── platform-release/               # kit-managed exact archive + metadata
-├── renv.lock                       # hospital-project authoritative lock
-└── managed-local-state/            # ignored; name to be finalized
-```
+- a producer declaration;
+- callable extraction/source-validation/mapping/adapter implementation;
+- fixed trusted composition code;
+- one exact platform-instance selection document;
+- nonsecret producer configuration; and
+- a producer conformance operation.
 
-The public kit should provide templates and explanations, not real hospital
-values. The private project replaces the templates with institution-owned
-code. No PHI, credentials, connection strings, or private mappings enter the
-public kit or Level-1 release.
+The template establishes a clear editable location, but no real hospital code,
+source names, mappings, configuration, credentials, or connection information
+is present in the CentralStatz release.
 
 ### Explicit trust flow
 
 ```text
-fixed maintained Level-2/3 composition code
-        ├── sources a reviewed fixed list of adopter implementation files
-        ├── reads the adopter producer declaration
-        ├── constructs the callable with producer-owned configuration
-        └── registers exactly that declaration/callable
+fixed maintained composition scaffold
+        ├── sources an explicit reviewed implementation file list
+        ├── reads one declarative producer specification
+        ├── constructs one callable
+        └── registers the declaration/callable in code
                                   ↓
-top-level config/platform-instance.yml selects exact ID@version
+platform-instance YAML selects exact producer ID@version
                                   ↓
-platform validates declaration + registry + selection
+Platform validates registration + selection + producer result
                                   ↓
-producer conformance and canonical admission
+canonical admission
                                   ↓
-unchanged downstream operation
+unchanged runtime → history → products → app/artifact
 ```
 
-The source-file list is literal maintained code in the private project. It is
-not discovered by scanning directories and is not supplied by YAML. Modifying
-that composition is an explicit code review event, exactly like modifying any
-other trusted executable source.
+YAML does not name functions, executable file paths, packages, expressions, or
+URLs. There is no directory scan, plugin discovery, remote loading, or
+multi-hospital switching. A recipient changes trusted composition by editing
+reviewable executable source, not by turning data configuration into code.
 
-### Platform-instance ownership
+### Generated baseline validation
 
-The hospital project supplies one complete top-level
-`config/platform-instance.yml`; it is not an overlay onto or mutation of the
-embedded platform file. Level-1 configuration validation should accept the
-explicit document supplied by the calling composition instead of discovering
-it from the platform root. The embedded file remains immutable and continues
-to select the synthetic producer for Level-1 independent use and reference
-acceptance.
+CentralStatz can validate the release without a real hospital producer:
 
-Normal hospital operations receive only the top-level selection and the
-registry constructed by trusted composition. Generic platform code remains
-unaware of hospital names and paths. Multi-producer registration is unnecessary
-for the initial kit; the private composition should register exactly the one
-selected hospital producer.
+- isolated reference acceptance uses the embedded Platform's unchanged shipped
+  synthetic producer and separate fictional generated state;
+- a shipped fictional adopter example or conformance fixture proves that the
+  generated composition scaffold can register and run a materially different
+  producer; and
+- the empty/local producer template is validated structurally and remains
+  blocked for normal adopter execution until a recipient supplies and selects
+  conforming code.
 
-### Conformance gate
+Reference acceptance and adopter selection are distinct operation intents, not
+two active hospital contexts in one installation. Generic Platform code remains
+unaware of hospital names and source layout.
 
-The kit must provide an explicit producer-conformance operation using an
-approved fictional or controlled producer-owned scenario before normal local
-execution. Initialization does not imply conformance. Doctor should report
-whether the exact selected producer/platform/environment combination has been
-validated when a safe non-PHI receipt mechanism is implemented.
+## Hospital-facing operation surface
 
-Normal execution must always repeat declaration, registration, selection,
-result, and canonical-admission validation. It may additionally require a
-current conformance receipt keyed to platform, producer, implementation,
-mapping, and relevant configuration identities. The next proof should choose
-the smallest fail-closed mechanism and must not persist source rows or secrets
-in such a receipt.
+The generated distribution exposes a small top-level script surface for these
+intents:
 
-## Initial installation lifecycle
+- initialize the distribution and managed Platform;
+- run hospital-facing doctor/preflight;
+- run isolated fictional reference acceptance;
+- validate the configured producer;
+- run one Platform cycle;
+- inspect operational history;
+- materialize products;
+- validate or launch the product-only application;
+- build or validate the reduced application artifact; and
+- build or validate an available deployment realization.
 
-### 1. Acquisition
+Exact filenames remain for the implementation proof. The wrappers hide
+unnecessary managed Platform paths from routine adopters while keeping all
+source inspectable.
 
-The hospital obtains one official kit distribution through an approved
-transfer. It verifies the kit release integrity according to its release
-instructions. Git is optional for the operator; a hospital development team
-may place the resulting private project under its own approved private version
-control.
+Wrappers delegate to callable Platform operation behavior and provide only
+distribution-root discovery, managed Platform validation, explicit
+composition, top-level state paths, and hospital-facing recovery wording. They
+do not copy canonical, runtime, provider, persistence, product, application,
+artifact, or target logic. The existing operation registry may inform a checked
+mapping but does not become a reflective CLI framework.
 
-### 2. Environment restoration
+The smallest necessary upstream change remains a callable operation-composition
+seam that accepts an already constructed trusted registry/selection and
+explicit state paths. It must not accept a path/function supplied by
+configuration. Existing Platform scripts should call the same functions with
+the shipped reference composition.
 
-The operator installs the tested R line and restores the one top-level lockfile
-from the project root. Restricted environments may use approved internal R
-package repositories or preprovisioned caches; the kit does not bundle package
-binaries or promise an offline CRAN mirror.
+Exit codes, structured results, and privacy-safe diagnostic lifecycle propagate
+through wrappers. Operation-run identity remains distinct from analytical
+runtime-run identity. No wrapper may retain diagnostics by default or turn them
+into audit/history.
 
-### 3. Initialization
+## Hospital-facing acquisition and baseline workflow
 
-The kit initializer validates and extracts the exact embedded platform into
-managed local state. It creates no operational history, products, artifact,
-deployment, credentials, or real-data connection. Repetition is idempotent for
-identical valid state and fails closed on drift.
+The validated CentralStatz release baseline is:
 
-### 4. Reference acceptance
+1. obtain one Hospital Implementation release;
+2. verify its documented release integrity;
+3. restore the top-level declared R environment;
+4. initialize and validate/extract the embedded exact Platform release;
+5. run hospital-facing doctor;
+6. run isolated fictional reference acceptance;
+7. inspect the maintained producer/composition scaffold;
+8. validate the shipped fictional adopter conformance example;
+9. demonstrate the unchanged history/products/app path;
+10. build and validate the target-neutral reduced application artifact; and
+11. optionally exercise a supported reference target realization, stopping
+    before external publication.
 
-A top-level acceptance operation invokes the embedded platform's shipped
-synthetic composition in isolated fictional state. It runs doctor and the
-supported reference lifecycle through at least products/app and, for release
-acceptance, the target-neutral artifact. The hospital need not know or type
-the managed platform path.
+After that baseline, the recipient may implement local source mapping and
+composition using the documented pattern. CentralStatz validates the shipped
+baseline and interfaces, not an unknown recipient's future data, code,
+dependencies, clinical validity, security approval, or production operation.
 
-Reference acceptance never uses the hospital's producer selection or real
-state. Its generated history/products/artifacts live in a separate acceptance
-area and cannot be mistaken for hospital operational state.
-
-### 5. Local implementation
-
-The hospital edits only adopter-owned implementation, configuration, and local
-documentation. Secrets stay in approved external facilities. Source-specific
-tests use fictional, deidentified, or otherwise approved controlled data under
-local policy and never enter the public repositories.
-
-### 6. Producer conformance and selection
-
-The reviewed composition registers the hospital callable. The complete
-top-level platform-instance document selects its exact producer ID/version.
-The kit validates conformance before normal execution and fails without a
-canonical bundle if any stage fails.
-
-### 7. Normal execution
-
-Top-level wrappers delegate to Level-1 operations with explicit local state
-paths and the trusted composition. The existing downstream runtime, provider,
-history, product, app, artifact, and diagnostic semantics do not change.
-
-### 8. Deployment
-
-After products are materialized, the hospital builds the existing
-target-neutral reduced application artifact. A separately chosen target
-realization consumes it. Connect Cloud remains available for fictional
-reference/tutorial use; real-data publication requires operator-owned target,
-privacy, security, access-control, network, and governance decisions.
-
-## Upgrade lifecycle
-
-A kit version declares exactly one carried platform release. A later kit
-release may update only kit guidance/wrappers, or may carry a newer platform
-release. Upgrade is a staged validation, never an in-place overwrite or silent
-merge.
-
-Conceptually:
-
-1. acquire and verify the new kit release;
-2. compare kit, platform, contract, operation, and environment compatibility
-   declarations before changing current state;
-3. preserve and back up hospital operational history and the current private
-   project according to local policy;
-4. stage the new platform archive beside the current managed version;
-5. construct and restore a candidate top-level R library from the new platform
-   baseline plus hospital producer dependencies;
-6. run the new platform's isolated fictional reference acceptance;
-7. run the unchanged hospital producer code through declaration, registry,
-   selection, conformance, and canonical admission against the candidate;
-8. run platform checkpoint and applicable history/product/artifact
-   compatibility checks against safe test or copied state;
-9. report every incompatibility and required manual change without editing
-   hospital code; and
-10. switch the managed platform and environment selection only after explicit
-    operator acceptance.
-
-An incompatible candidate leaves the prior platform, environment, and hospital
-source unchanged and usable. Product bundles and deployment realizations are
-rebuildable; operational history is preserved and never silently migrated or
-discarded. A future migration operation must be designed only when an actual
-version transition requires it.
-
-The kit's ownership inventory should distinguish:
-
-- replaceable kit-maintained files;
-- immutable managed platform payload;
-- adopter-owned files that an upgrade may never overwrite;
-- generated local state; and
-- local files whose modification requires manual reconciliation.
-
-No updater or merge mechanism is implemented in 11.2.
-
-## Maintaining Level 1 and Level 2
-
-Use a partly maintained, partly generated model:
-
-### Maintained in the platform repository
-
-- generic semantic and operation interfaces;
-- the independent synthetic reference;
-- platform validation and release inventory;
-- the minimal callable composition seam needed by trusted external shells; and
-- conformance tests proving an external composition does not alter downstream
-  behavior.
-
-### Maintained in the hospital-kit project
-
-- hospital-facing wrappers and their operation registry;
-- implementation/configuration templates;
-- ownership and compatibility declarations;
-- onboarding, acceptance, conformance, and upgrade guidance;
-- top-level environment baseline construction; and
-- kit release assembly/validation behavior.
-
-### Generated only for a kit release
-
-- the exact platform archive copied from an official Level-1 release;
-- its pinned identity/checksum in the completed kit manifest;
-- the distributable combined bundle; and
-- any derived release inventory.
-
-No Level-1 R source, contract, operation script, app file, or deployment builder
-is manually copied into Level 2. A platform fix is made and released in Level
-1, then a kit release deliberately updates its one declared platform artifact.
-A kit-only documentation or wrapper fix can release without changing the
-platform version.
-
-CentralStatz therefore maintains two intentional products but only one copy of
-platform logic. Cross-project validation checks the declared platform artifact
-and operation interface rather than synchronizing duplicate files.
-
-## Security and privacy boundaries
-
-The architecture establishes these boundaries without claiming a complete
-security system:
-
-- the platform release and generic kit are public and contain no PHI, private
-  mappings, credentials, connection strings, or hospital secrets;
-- the hospital project is private and governed by the hospital;
-- the embedded archive is checksum-verified before extraction and the managed
-  tree is integrity-validated before use;
-- archive extraction rejects links and path traversal;
-- configuration cannot name executable files, functions, packages, URLs, or
-  expressions;
-- only fixed reviewed composition code registers the callable;
-- initialization performs no silent network retrieval or execution of
-  unverified bytes;
-- secrets remain external and diagnostics report presence/status only, never
-  values;
-- fictional acceptance state is isolated from hospital operational state;
-- generated deployment artifacts contain only their declared allowlist and no
-  source implementation or secrets; and
-- operators remain responsible for infrastructure, identity/access, network,
-  credentials, PHI handling, backups, retention, incident response, clinical
-  validation, and production authorization.
-
-Checksums establish accidental-corruption and exact-payload evidence; they are
-not code signing, malware analysis, sandboxing, or a claim that modified open
-source cannot execute.
-
-## Deployment neutrality
-
-Hospital implementation packaging and application deployment remain separate:
-
-```text
-private hospital producer
-        ↓
-canonical admission → runtime → history → products
-        ↓
-target-neutral reduced application artifact
-        ├── Connect Cloud reference realization
-        └── future OCI/container realization
-```
-
-The kit may wrap artifact and realization operations, but it neither changes
-the artifact nor adds Connect concepts to source composition. The managed
-platform release carries whichever peer target realizations that exact release
-supports. External publication always remains separately authorized and
-operator-owned.
+The hospital does not normally acquire Platform separately, coordinate sibling
+repositories, understand submodules, wire local paths, edit inside the managed
+Platform tree, or keep a Platform fork merely to start local source work.
 
 ## Synthetic reference acceptance
 
-The synthetic reference remains a Level-1 component and must not be copied or
-reimplemented in the kit. The kit exposes it through one top-level acceptance
-operation that:
+The synthetic reference remains authored and maintained only once in the
+Platform source. The Hospital Implementation release exposes it through a
+top-level acceptance wrapper that:
 
-- uses the managed platform's unchanged shipped composition;
-- uses isolated fictional generated state;
-- delegates to platform-owned operations and validation;
-- reports the platform and kit versions tested;
-- propagates platform exit status and safe diagnostics; and
+- verifies the embedded Platform payload;
+- invokes the Platform's unchanged shipped composition and operations;
+- uses isolated fictional/nonclinical state;
+- reports Hospital Implementation and included Platform identities;
+- reaches products/application and the reduced artifact for release evidence;
+- propagates Platform exit status and safe diagnostics; and
 - stops before external publication.
 
-Passing acceptance proves that acquisition, extraction, environment,
-platform, products, app, and artifact can operate together. It does not prove
-the hospital producer, real data, clinical validity, security approval, or
-production readiness.
+The wrapper does not copy the generator or mapping and does not make synthetic
+identity a generic runtime mode. Acceptance proves the released environment and
+composition baseline, not real-data integration or clinical/production fitness.
 
-## Unresolved implementation questions
+## Deployment neutrality
 
-These questions remain for evidence in the implementation proof and do not
-reopen the selected architecture:
+Hospital distribution remains upstream of deployment:
 
-1. the final project/repository name and exact managed/archive/state paths;
-2. the initial kit version and identity of its physical manifest;
-3. whether the platform archive is a maintainer-attached release asset or a
-   content-verified archive derived from the exact tag;
-4. the smallest callable Level-1 operation API that avoids wrapper duplication;
-5. exact top-level wrapper filenames and which advanced Level-1 operations are
-   intentionally not exposed;
-6. how the candidate top-level lock is constructed and checked without
-   inventing a general dependency solver;
-7. whether a bounded non-PHI conformance receipt is necessary or conformance
-   should execute on each normal run in the initial implementation;
-8. exact ownership-manifest behavior for future kit upgrades;
-9. the tested R minor line and OS matrix supported by release evidence; and
-10. completion of the Apache-2.0 dependency/asset/license review.
+```text
+generated Hospital Implementation release
+        ↓ explicit producer composition
+canonical admission → runtime → history → products
+        ↓
+target-neutral reduced application artifact
+        ├── Connect reference realization
+        └── future OCI/container peer realization
+```
 
-An online retrieval mode, automatic updater, package-based producer, OCI
-realization, multiple platform versions active in one run, and generic plugin
-discovery remain deliberately deferred.
+The hospital-facing builder packages Platform source and wrappers; it does not
+alter the reduced artifact. Hospital-facing operations delegate to the same
+artifact builder/validator. Connect concepts do not enter producer composition,
+environment ownership, or distribution identity. External publication remains
+separately authorized and recipient/operator-owned.
 
-## Recommended Iteration 11.3 — managed composition proof
+## CentralStatz release validation and responsibility boundary
 
-The smallest next implementation increment should prove the physical seam
-without creating or publishing the real hospital-kit repository.
+### CentralStatz validates
+
+Before a Hospital Implementation release candidate is authorized, evidence
+must establish:
+
+- generation from maintained source in this repository;
+- exact Hospital Implementation identity/version and generated inventory;
+- exact included Platform release identity/version/archive/digest;
+- compatible Platform and Hospital Implementation declarations;
+- no unexpected or linked files and safe archive paths;
+- no PHI, real patient data, credentials, connection strings, hospital-specific
+  mappings, private source configuration/code, real operational history,
+  products, deployment state, or repositories/remotes;
+- coherent top-level baseline lock and claimed tested environments;
+- independent validation without the authoritative working tree;
+- isolated synthetic reference acceptance;
+- fictional adopter producer conformance through explicit trusted composition;
+- unchanged history/products/app/reduced-artifact behavior;
+- exact failure on tamper, missing content, incompatibility, or unsafe paths;
+  and
+- complete human acquisition, operation, limitation, and recovery guidance.
+
+### CentralStatz responsibility ends
+
+The release boundary ends at the distributed validated product and its factual
+documentation. CentralStatz does not validate or promise:
+
+- recipient modifications after acquisition;
+- arbitrary added packages or dependency combinations;
+- local extraction queries, mappings, data, credentials, infrastructure, or
+  deployments;
+- private Git/repository organization;
+- automatic reconciliation with later releases;
+- clinical validity, security approval, compliance, production readiness, or
+  support beyond the stated best-effort policy; or
+- preservation of a recipient's arbitrary changes during future upgrades.
+
+Documentation can give good-practice guidance, but those responsibilities do
+not become CentralStatz packaging architecture.
+
+## Security and privacy scope
+
+The distribution builder/validator owns release-content exclusions only. Both
+CentralStatz release products contain no PHI, real patient records, credentials,
+connection strings, hospital-specific mappings, private source configuration,
+hospital source code, operational history, real products, or hospital
+deployment state.
+
+Archive and inventory checks provide exact release provenance and corruption
+detection. They are not code signing, malware analysis, access control, a
+sandbox, or enforcement against a recipient. After acquisition, data handling,
+secrets, infrastructure, access, backups, monitoring, incident response, and
+deployment security are recipient-owned.
+
+No encryption system, secret store, enterprise identity, signing service,
+SBOM, attestation system, or security operations platform is required by this
+architecture.
+
+## Release evolution and recipient-local migration
+
+### CentralStatz release evolution
+
+CentralStatz updates maintained hospital-facing source in this repository and
+generates a new Hospital Implementation release. A new release may change:
+
+- wrappers or documentation;
+- templates/composition scaffold;
+- generated distribution contract/inventory;
+- top-level baseline environment;
+- included exact Platform release; and
+- compatibility declarations.
+
+Those changes receive their own Hospital Implementation version. They do not
+require matching the Platform version.
+
+### Recipient-local migration
+
+A recipient who customized an older distribution decides how to adopt a later
+release. For the first release, CentralStatz does not promise an updater,
+automatic merge, or preservation of arbitrary recipient changes. Release notes
+should state compatibility impact and may provide manual guidance.
+
+> Future versions may provide migration guidance, but recipients who modify
+> distributed files are responsible for reconciling those local changes.
+
+Formal migration tooling remains deferred until a real version transition and
+adopter evidence establish the required semantics. Operational history remains
+governed by its own compatibility and backup rules; this distribution decision
+does not authorize silent history migration or deletion.
+
+## Alternatives and consequences
+
+### Selected — one repository, generated Hospital Implementation release
+
+This is the best fit because it preserves one authoritative source, one copy of
+Platform logic, independently versioned release products, offline acquisition,
+explicit trust, and independent validation. It adds a bounded distribution
+builder/validator but no synchronization between source repositories.
+
+### Rejected — separately maintained CentralStatz kit repository
+
+It could work technically, but creates a second source authority, release-input
+synchronization, duplicate wrapper/documentation maintenance, and avoidable Git
+coordination. A generated standalone repository can provide the same acquisition
+shape without becoming maintained source.
+
+### Rejected — formal third CentralStatz hospital-private layer
+
+Hospitals will customize releases, but their private work is outside the
+CentralStatz release graph. Modeling it as a third product overstates governance
+and complicates upgrades/security without changing the shipped artifact.
+
+### Retained fallback/evidence options
+
+Direct Platform acquisition remains independently supported. Controlled forks,
+side-by-side development compositions, or private packages may be recipient
+choices. Git submodules, executable configuration, directory/plugin discovery,
+implicit downloads, and full-Platform package conversion are not the supported
+hospital-facing baseline.
+
+## Unresolved implementation details
+
+The following remain for implementation evidence without reopening the selected
+architecture:
+
+1. exact maintained source path, with `distribution/hospital/` preferred;
+2. Hospital Implementation first version and machine identity;
+3. exact artifact store/current-pointer and standalone-repository layouts;
+4. Platform release archive format and provenance used before/publication;
+5. minimal callable Platform operation API needed by wrappers;
+6. exact wrapper filenames and public/advanced operation subset;
+7. bounded top-level lock generation and conflict validation;
+8. whether the generated baseline ships a complete fictional adopter example
+   or a test-only fixture plus editable scaffold;
+9. immutable distribution/build/Git-realization identity fields;
+10. exact tested R/OS matrix;
+11. final Apache-2.0 compatibility review and policy files; and
+12. final GitHub publication form for the generated Hospital Implementation
+    release.
+
+Online retrieval, automatic upgrade/merge, recipient dependency solving,
+dynamic plugins, OCI realization, broad migration infrastructure, and remote
+publication automation remain deliberately deferred.
+
+## Recommended Iteration 11.4 — generated distribution build/validation proof
+
+Iteration 11.4 should implement the smallest in-repository proof of the
+generated Hospital Implementation artifact. It should not create or publish a
+permanent external repository or release.
 
 ### Scope
 
-1. Extract the current stable producer validation and run orchestration into
-   small callable Level-1 operation functions that accept an already
-   constructed trusted composition and explicit state paths. Preserve the
-   existing scripts by making them call those functions with the shipped
-   composition.
-2. Define a narrow draft managed-platform release descriptor and ownership
-   inventory sufficient for one exact archive, SHA-256 validation, compatible
-   platform identity/version, and managed/adopter/generated path classes.
-3. In tests only, construct a temporary hospital-project tree outside the
-   platform source, create a temporary archive from an allowlisted current
-   platform candidate, verify it, and extract it into temporary managed state.
-   Retain no archive or extracted tree in the repository.
-4. Put a materially different fictional adopter producer in the temporary
-   top-level implementation area. Use fixed trusted composition code and a
-   complete top-level platform-instance document; do not load a code path from
-   YAML.
-5. Prove one top-level environment can run isolated synthetic reference
-   acceptance, adopter producer conformance, one adopter-backed history run,
-   products/app construction, and the unchanged target-neutral artifact.
-6. Test archive tampering, managed-tree modification, unsafe extraction,
-   unknown selection, failed conformance, dependency incompatibility, state
-   separation, nonzero exit propagation, and absence of source/secrets from
-   artifacts and diagnostics.
-7. Document the exact proposed hospital-kit tree and human operations based on
-   evidence from the proof.
+1. Add a focused maintained hospital-distribution source area inside this
+   repository, preferably `distribution/hospital/`, containing only the
+   scaffold, wrappers, docs, and metadata templates needed by the proof.
+2. Define a versioned hospital-distribution contract/manifest with separate
+   distribution instance/build identity, exact included Platform candidate
+   identity/version/archive/digest, compatibility, environment provenance,
+   inventory, validation, fictional classification, and nonclaims.
+3. Add a builder that stages an immutable distribution under ignored `build/`
+   state and injects an exact allowlisted Platform release-candidate archive.
+   Because `v0.1.0` is not released, identify the input as a test release
+   candidate and do not manufacture a release/tag claim.
+4. Add an artifact-owned standalone validator that verifies exact inventory,
+   checksums, safe paths, no symlinks, embedded archive identity/integrity,
+   top-level environment coherence, content exclusions, and independence from
+   the authoritative working tree.
+5. Extract the current stable operations into the smallest callable Platform
+   seam required for thin generated wrappers; keep existing Platform scripts
+   invoking the same functions with the shipped composition.
+6. Generate one top-level baseline lock deterministically from the Platform
+   candidate lock plus only explicit maintained wrapper dependencies; reject
+   conflicts and do not build a general solver.
+7. Prove isolated synthetic reference acceptance from a copied distribution
+   and prove the Phase 10 materially different fictional producer through the
+   generated explicit composition scaffold and unchanged downstream history,
+   products, app, and reduced artifact.
+8. Test tampered/missing/extra archives and files, unsafe extraction, modified
+   managed content, incompatible identities/dependencies, unknown producer,
+   failed conformance, exit/diagnostic propagation, and absence of sensitive or
+   generated operational content.
+9. Update human documentation, operation registry, validation, and agent
+   mappings only for operations actually implemented by the proof.
+10. Leave every built distribution, extracted Platform, database, product,
+    artifact, and temporary adopter state ignored and removed after tests.
 
 ### Explicit exclusions
 
-Iteration 11.3 should not create the production hospital-kit repository,
-publish a bundle, install a license, tag `v0.1.0`, implement network download,
-build an updater, add OCI, add dynamic loading, or claim a release-ready R/OS
-matrix. Those belong only after the composition proof validates the seam and
-the remaining license/environment evidence is complete.
+Do not implement the standalone Git realization, external destination
+replacement, remote/commit/push/publication, actual `v0.1.0` release, final
+license, CI matrix, online download, updater, dependency solver, OCI, dynamic
+plugins, or recipient migration tooling in Iteration 11.4.
 
 ### Exit evidence
 
-The proof succeeds when an isolated temporary hospital project operates an
-exact integrity-checked managed platform through thin wrappers, substitutes
-its explicitly trusted fictional adopter producer, reaches unchanged
-downstream behavior, and fails safely on drift or incompatibility without
-editing platform or adopter source. That evidence can then justify creating
-the separately maintained hospital-kit project in a later bounded iteration.
+An independently copied generated distribution validates and runs the complete
+fictional baseline through the reduced artifact without the authoritative source
+tree; the fictional adopter producer substitutes through explicit trusted
+composition; tamper/incompatibility fails safely; and no generated artifact is
+maintained or published.
 
-## Consequences
+## Later bounded increments
 
-### Benefits
+### Standalone Hospital Implementation Git realization
 
-- hospitals receive one understandable starting distribution;
-- public platform and private hospital code retain clear ownership;
-- restricted/offline onboarding does not require GitHub at initialization;
-- platform upgrades are exact, staged, and reversible rather than permanent
-  fork merges;
-- the Phase 10 trust boundary remains explicit;
-- one top-level R environment avoids nested-project ambiguity;
-- Level 1 and Level 2 can version and release independently; and
-- deployment remains target-neutral.
+Consume only a validated distribution artifact, create an exact remote-free
+standalone Git repository at an explicit destination, stage generated files,
+validate independently, and stop before commit/remote/push/publication.
 
-### Costs
+### Release/governance candidate
 
-- CentralStatz must maintain a second project and a validated kit-release
-  construction step;
-- the platform needs a small callable operation/composition seam;
-- the kit must own archive extraction, integrity, path ownership, and
-  top-level environment validation;
-- platform and hospital dependency conflicts require explicit resolution; and
-- upgrades need staged validation and cannot be promised as automatic.
+Complete final license/governance/security/support files, establish the tested
+R/OS matrix, validate Platform and Hospital Implementation candidates, produce
+candidate archives/checksums/manifests, and request explicit maintainer
+authorization.
 
-These costs are bounded and arise from real ownership/offline requirements.
-They are smaller than supporting permanent forks, two-repository ad hoc paths,
-or a full-platform package conversion.
+### Publication
+
+Publish Platform and Hospital Implementation releases only after explicit
+authorization. Publication is not deployment, and no hospital-specific state is
+part of either release.

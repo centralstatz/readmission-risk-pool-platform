@@ -62,9 +62,9 @@ extending it.
    — the Phase 11.1 options, evidence, deliberate deferrals, and release gaps
    that preceded maintainer decisions.
 21. [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
-   — the accepted three-level model, managed embedded platform release,
-   top-level environment, trusted composition, operations, lifecycle, and
-   smallest next proof.
+   — the authoritative one-repository/two-release-product model, exact embedded
+   Platform release, top-level environment, trusted composition, operations,
+   lifecycle, and smallest next proof.
 22. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
 23. [Implementation Conventions](development/implementation-conventions.md) and

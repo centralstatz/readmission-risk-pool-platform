@@ -16,11 +16,14 @@ runtime or test dependency.
 
 **Phase 10 is complete and Phase 11 is in progress.** Iteration 11.1 provides
 the retained first-release decision assessment. Iteration 11.2 baselines the
-maintainer's release/governance direction and selects a separately versioned
-hospital implementation kit whose future official distribution will carry one
-exact verified platform release for a private hospital project. This is
-architecture only: no kit, embedded archive, license, release, tag, or
-publication has been created. The focused internal
+maintainer's release/governance direction. Iteration 11.3 revises the physical
+distribution architecture: this is the only maintained CentralStatz source
+repository, and it will generate an independently versioned Readmission Risk
+Pool Hospital Implementation release containing one exact verified Platform
+release. Recipient modifications are outside the CentralStatz release
+architecture. This is architecture only: no distribution builder, embedded
+archive, standalone realization, license, release, tag, or publication has
+been created. The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -133,8 +136,9 @@ Connect Cloud will be the reference deployment target, not a core dependency.
    for the evidence and ranked Phase 11 options that preceded maintainer
    decisions.
 20. Read [Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md)
-   for the authoritative three-level ownership, managed platform archive,
-   environment, trusted composition, lifecycle, and next-proof decision.
+   for the authoritative one-repository/two-release-product ownership,
+   embedded Platform archive, environment, trusted composition, lifecycle,
+   and next-proof decision.
 21. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 

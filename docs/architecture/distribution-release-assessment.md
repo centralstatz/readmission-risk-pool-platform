@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** retained Iteration 11.1 decision support; superseded where the
-maintainer baselined decisions in Iteration 11.2
+maintainer baselined decisions in Iteration 11.2 or revised physical
+distribution architecture in Iteration 11.3
 
 **Assessment date:** 2026-08-20
 
@@ -20,7 +21,8 @@ capability.
 
 This remains the assessment evidence that preceded maintainer decisions. It is
 not itself a license grant or release authorization. Iteration 11.2 baselines
-the accepted direction and selects the physical hospital-facing composition in
+the accepted release/governance direction, and Iteration 11.3 selects the
+revised physical hospital-facing composition in
 [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
 That later document governs wherever this assessment describes a choice as
 unresolved. Apache-2.0 installation still awaits final compatibility review,
@@ -28,7 +30,7 @@ the tested environment matrix still awaits evidence, and no release is
 authorized. This is technical and governance decision support, not legal
 advice.
 
-## Iteration 11.2 resolution update
+## Iterations 11.2 and 11.3 resolution update
 
 The maintainer accepted `v0.1.0`, the whole repository as the first platform
 release unit, GitHub source/release authority, the shipped platform lock and
@@ -39,12 +41,15 @@ final compatibility review with MIT fallback, DCO without CLA/assignment,
 best-effort support without SLA, standard security governance, and ordinary
 Git/GitHub release integrity.
 
-The prior generic “private companion” recommendation is refined into a
-separately versioned hospital implementation kit. Its official release embeds
-one exact platform release archive and creates a private hospital project with
-one top-level R environment and fixed trusted composition. See the authoritative
-decision linked above for alternatives, ownership, lifecycle, and the bounded
-next proof.
+Iteration 11.3 corrects the earlier separate-kit maintenance model. CentralStatz
+maintains this repository only and generates two independently versioned
+products from it: the Platform release and a Readmission Risk Pool Hospital
+Implementation release. The latter embeds one exact Platform release archive,
+one top-level R environment, and fixed trusted composition. A later standalone
+Git realization consumes the validated artifact; recipient modifications are
+outside the CentralStatz release architecture. See the authoritative decision
+linked above for alternatives, ownership, lifecycle, and the bounded next
+proof.
 
 ## Executive recommendation
 
@@ -91,10 +96,10 @@ At the 11.1 checkpoint, the most important unresolved implementation question
 was physical composition of private adopter code. Phase 10 proved the semantic
 seam, but the normal installation wired the shipped producer inside the core
 tree. This assessment recommended a private companion pinned to one exact
-platform release. Iteration 11.2 has since refined that recommendation into the
-managed hospital implementation kit linked above; its bounded proof remains
-future work. A hospital fork should not be advertised as the preferred upgrade
-path.
+platform release. Iteration 11.3 has since replaced that recommendation with
+the generated Hospital Implementation distribution linked above; its
+builder/validator proof remains future work. A hospital fork should not be
+advertised as the preferred CentralStatz release or upgrade path.
 
 ## Current platform evidence
 
@@ -528,13 +533,13 @@ needed to receive the known declaration/callable/selection. Ordinary YAML must
 remain non-executable. One composed installation still represents one health
 system and one selected producer.
 
-This recommendation was medium confidence because Iteration 10.2 proved a
-separately owned tree inside tests, not a physically separate repository.
-Iteration 11.2 selected the refined managed-kit architecture; Iteration 11.3
-must validate a temporary external-tree composition before the model becomes
-supported. If that narrow proof exposes disproportionate complexity, a
-controlled private fork remains the strongest fallback and must be documented
-with an upstream-merge/conformance procedure.
+This was an Iteration 11.1 recommendation based on a separately owned test tree,
+not a physically separate repository. Iteration 11.3 rejected a separately
+maintained CentralStatz companion in favor of generated distribution source in
+this repository. Iteration 11.4 must prove the generated artifact and its
+independent validator before the model becomes supported. Recipient-local
+modification remains permitted activity, but it is not a third CentralStatz
+release layer.
 
 A private R package is a good later evolution when multiple installations,
 release reuse, or internal package repositories justify it. A package should
@@ -1149,7 +1154,7 @@ platform release.
 ## Phase 11 sequence proposed by Iteration 11.1
 
 This sequence was the 11.1 recommendation before maintainer decisions and the
-managed hospital-distribution assessment. The current authoritative sequence
+generated hospital-distribution revision. The current authoritative sequence
 is in the [implementation plan](platform-implementation-plan.md).
 
 ### Iteration 11.1 — Distribution and release decision assessment

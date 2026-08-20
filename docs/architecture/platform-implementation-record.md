@@ -3927,3 +3927,270 @@ the hospital-distribution architecture: a minimal callable Level-1 operation
 seam plus a temporary external-tree, integrity-checked platform archive and
 fictional adopter composition proof. Do not create or publish the production
 kit repository or release in that iteration.
+
+### Iteration 11.3 — Generated hospital-facing distribution architecture revision
+
+#### Objective and scope boundary
+
+Correct the Iteration 11.2 physical-maintenance model so CentralStatz maintains
+only `readmission-risk-pool-platform` while producing two independently
+versioned release products: the reusable Platform release and a generated
+Readmission Risk Pool Hospital Implementation release. Remove a recipient's
+post-download customization from the formal CentralStatz release architecture,
+retain the sound embedded-release/environment/trust conclusions, and define the
+smallest next implementation proof.
+
+This was planning and documentation only. It did not add hospital-distribution
+source, builder/validator code, a contract, a generated tree, a standalone Git
+realization, a release archive, license, CI, release automation, Docker/OCI,
+tag, commit, remote, push, publication, or deployment. It did not change
+runtime behavior, dependencies, lockfiles, contracts, configuration, or the
+operation registry.
+
+#### Evidence inspected
+
+The revision reconciled:
+
+- True North, Platform Architecture, the implementation plan, open decisions,
+  the full historical implementation record, and current agent guidance;
+- both the retained Iteration 11.1 release assessment and the authoritative
+  Iteration 11.2 hospital-facing composition assessment;
+- Phase 10 producer declaration, trusted registry/selection, conformance, and
+  independent adopter evidence;
+- current one-root `renv` ownership and dependency restoration behavior;
+- the stable human operation surface and progressive-adoption guidance;
+- the target-neutral reduced application artifact and generated Connect Git
+  realization, whose artifact-then-realization separation provides useful
+  architectural precedent; and
+- the repository's actual generated-state, release, and publication boundaries.
+
+The sibling repository was not inspected. This correction concerns ownership
+of future generated releases from the clean repository; old implementation
+evidence was neither necessary nor authoritative. No sibling asset was used.
+
+#### Architectural correction
+
+Iteration 11.2 remains historical evidence of what was decided at that time.
+Its selected physical interpretation was:
+
+```text
+Level 1 Platform
+        ↓
+separately maintained Level 2 Hospital Implementation Kit
+        ↓
+Level 3 hospital-private implementation project
+```
+
+Iteration 11.3 supersedes only that maintenance/layering interpretation with:
+
+```text
+one authoritative maintained repository
+        ├── independently versioned Platform release
+        └── independently versioned generated Hospital Implementation release
+                ↓ optional later standalone Git realization
+                ↓ recipient acquisition and unrestricted licensed customization
+```
+
+There is no second manually maintained CentralStatz source project. There is no
+formal third CentralStatz product or release layer. Recipient modification is
+real adopter activity outside the release boundary, not something CentralStatz
+must model, merge, preserve, or technically prevent.
+
+#### Decisions retained from Iterations 11.1 and 11.2
+
+The revision found no incompatibility with the accepted first Platform release
+identity `v0.1.0`, whole-tree initial release unit, GitHub source/tag/release
+authority, shipped lock and `renv::restore()`, explicit trusted producer
+composition, CentralStatz stewardship, conditional Apache-2.0 direction with
+MIT fallback, DCO/no CLA, best-effort support/no SLA, normal security and
+release-integrity governance, Connect as reference only, external deployment
+ownership, OCI as a future peer, and no speculative migration framework.
+
+The strongest Iteration 11.2 physical conclusion is also retained: an official
+Hospital Implementation distribution carries one exact Platform release
+archive with Platform identity/version, archive identity, SHA-256 integrity,
+compatibility, and inventory/provenance. Initialization may extract that source
+into managed local state. Integrity validation describes whether the local copy
+still matches the released baseline; it is not a security boundary and does
+not prevent recipient modification.
+
+#### Selected maintenance and terminology model
+
+The durable product concept is **Readmission Risk Pool Hospital
+Implementation**. “Distribution” describes the generated release form; “kit”
+is no longer the primary noun because it suggested a separately maintained
+project. Final repository/archive filenames remain an implementation detail.
+
+All hospital-facing templates, wrappers, documentation source, metadata logic,
+builder/validator source, conformance evidence, and tests belong in this
+authoritative repository. The preferred future conceptual ownership area is
+`distribution/hospital/`, with exact layout deferred to implementation. The
+directory was not created. Generated trees under ignored `build/` state and
+standalone Git realizations are outputs, never maintained source.
+
+#### Release graph and identities
+
+Platform and Hospital Implementation are independent release products and do
+not need matching versions. Each Hospital Implementation release declares its
+own identity/version plus the included exact Platform identity/version/archive
+digest, compatibility, builder identity/version, direct environment metadata,
+and generated inventory. These identities remain distinct from runtime runs,
+product sets, application artifacts, target realizations, and incidental Git
+commit identities.
+
+The first implementation may choose equal version numbers for convenience,
+but equality is not a compatibility rule. A later Hospital Implementation
+release may carry the same Platform with wrapper/documentation changes, or a
+newer exact Platform release with explicit compatibility evidence.
+
+#### Generated artifact and later Git realization
+
+The selected construction boundary has two separate future stages:
+
+```text
+authoritative repository
+        ↓ build immutable Hospital Implementation artifact
+        ↓ independently validate artifact
+        ↓ later realize artifact at an explicit destination
+        ↓ independently validate remote-free staged Git repository
+        ↓ optional separately authorized publication
+```
+
+Iteration 11.4 should implement only the artifact and its independent
+validator. A later operation may consume only a validated artifact to create a
+self-contained, remote-free, staged-but-uncommitted Git repository. Neither
+generated output becomes source authority, and no operation may silently add a
+remote, commit, push, or publish.
+
+#### Environment ownership
+
+The generated Hospital Implementation root owns the one routinely active
+`renv` environment. Its deterministic baseline lock is derived from the exact
+Platform lock plus only maintained wrapper dependencies and is validated as a
+coherent whole. The embedded Platform lock remains release provenance; routine
+use does not activate a nested project. Recipient-added dependencies are
+permitted but fall outside CentralStatz's exact released-baseline guarantee.
+No dependency solver or arbitrary environment merge is introduced.
+
+#### Producer composition and operations
+
+The generated baseline preserves `platform.canonical-producer@0.1.0`:
+declaration and callable scaffolds are separate, trusted maintained R code
+performs explicit registration, one complete platform-instance document makes
+one exact selection, and conformance validates the result before canonical
+admission. YAML never names executable code, generic Platform code never knows
+hospital names, and plugin/path/function discovery remains prohibited.
+
+Generated thin operations will conceptually cover initialization, doctor,
+fictional reference acceptance, producer validation, platform execution,
+history inspection, product materialization, app validation/launch, reduced
+artifact build/validation, and target realization build/validation. They must
+delegate to callable Platform behavior and contain no copied domain logic.
+Exact wrapper filenames remain Iteration 11.4 implementation detail.
+
+The embedded Platform's shipped fictional reference configuration remains
+unchanged and runs in isolated state. A separate fictional adopter example
+will prove the generated scaffold, while normal adopter execution fails clearly
+until conforming producer code is supplied. The same unchanged downstream
+runtime, history, products, app, reduced target-neutral artifact, and deployment
+realizations remain reachable.
+
+#### Validation responsibility and release boundary
+
+CentralStatz validates that its generated distribution is reproducible and
+self-contained; embeds exactly the declared Platform archive; has matching
+identity, digest, inventory, compatibility, and environment metadata; exposes
+the documented wrappers and trust seam; passes isolated fictional reference and
+adopter conformance evidence; reaches unchanged downstream behavior; contains
+no development-only working-tree assumptions; and contains no PHI, real patient
+data, credentials, connection strings, hospital mappings/source configuration,
+private hospital code, operational history, products from real data, or
+hospital-specific deployment state.
+
+CentralStatz's architecture responsibility ends at that generated, validated,
+versioned release and any separately authorized publication of it. Recipients
+may edit, restructure, privately version, or replace distributed content under
+the applicable license. Such changes may no longer match validated release
+assumptions. Future guidance may help reconciliation, but automatic migration
+or preservation of arbitrary recipient changes is not promised for `v0.1.0`.
+
+#### Alternatives and consequences
+
+Rejected as the maintained model: a second CentralStatz kit repository, manual
+source synchronization, a formal CentralStatz-governed hospital-private layer,
+separate normal acquisition of Platform and kit, submodules, executable YAML,
+automatic plugins, and a full Platform fork as the recommended baseline.
+
+Deferred: exact generated layout and wrapper filenames, formal manifest schema,
+lock derivation mechanics, conformance receipt form, immutable build naming,
+standalone Git realization, migration tools, package-based extensions, tested
+R/OS matrix, final license installation, release candidates, and publication.
+
+The simplification reduces maintenance and upgrade promises without weakening
+the Phase 10 trust boundary, one-health-system scope, inspectability, offline
+acquisition, or deployment neutrality. It requires no upstream contract or
+runtime redesign.
+
+#### Architecture, plan, and guidance effects
+
+Replaced the selected model in the authoritative hospital-distribution
+architecture and summarized it in Platform Architecture. Updated the Phase 11
+sequence, open-decision register, progressive-adoption guide, operator-manual
+future-state note, README/status, documentation navigation, and `AGENTS.md`.
+The retained Iteration 11.1 assessment now points to the 11.3 correction while
+remaining historical decision evidence. The Iteration 11.2 record above is
+unchanged and this entry appends the correction explicitly.
+
+No machine-readable specification, dependency, lockfile, runtime source,
+operation, registry, configuration, application, artifact, deployment target,
+license, or generated state changed.
+
+#### Validation evidence
+
+The final validation matrix reported:
+
+- `Rscript --vanilla operations/validate-documentation.R`: PASS (4 checks,
+  0 issues), covering 37 required governing documents, 259 repository-local
+  links, 25 maintained navigation sources, and portable document paths;
+- `Rscript --vanilla tests/run-phase8-tests.R`: PASS (22 tests);
+- `Rscript --vanilla tests/run-phase9-tests.R`: PASS (16 tests);
+- `Rscript --vanilla tests/run-phase10-tests.R`: PASS (26 tests);
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript --vanilla
+  operations/validate.R --mode development`: PASS (124 checks, 0 issues);
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript --vanilla
+  operations/validate.R --mode checkpoint`: PASS (185 checks, 0 issues),
+  including Phase 0 through Phase 10 suites;
+- independent parse validation: PASS for 131 maintained R files and 55
+  maintained YAML files;
+- `RENV_CONFIG_SANDBOX_ENABLED=FALSE Rscript --vanilla -e
+  'renv::status()'`: exit 0, “No issues found — the project is in a consistent
+  state”; restricted-network CRAN index lookup warnings and the expected
+  dependency-discovery timing note did not change that local consistency
+  result; and
+- `git diff --check`: PASS.
+
+The ignored `build/` directory remained empty. Final scans found no generated
+Hospital Implementation tree, release archive, deployment repository, nested
+Git repository, DuckDB database, product bundle, or log. The only matching
+archive below the repository was the expected installed `renv` package-cache
+source tarball, not release state. The sibling worktree remained clean and was
+not modified. No dependency, lockfile, contract, executable operation, or
+configuration changed. No commit, tag, remote, push, release, publication, or
+deployment was performed.
+
+#### Phase 11 status
+
+**IN PROGRESS.** Iteration 11.3 establishes corrected architecture only. No
+hospital-distribution builder, generated release, standalone repository,
+license, release candidate, tag, CI, publication, or deployment exists.
+
+#### Recommended next task
+
+Implement **Iteration 11.4 — generated Hospital Implementation distribution
+build/validation proof**. Add the smallest maintained hospital-facing inputs,
+versioned manifest, immutable ignored artifact builder, deterministic top-level
+environment baseline, thin wrappers, explicit producer composition, synthetic
+reference and fictional adopter proof, and independent artifact validator in
+this repository. Prove unchanged history/products/app/reduced-artifact behavior
+and fail-closed identity/digest/inventory drift. Do not add the standalone Git
+realization, final release/governance candidate, publication, push, or deploy.
