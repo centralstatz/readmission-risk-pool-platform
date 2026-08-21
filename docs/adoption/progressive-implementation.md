@@ -72,11 +72,11 @@ rows and proves delayed source facts remain excluded until available. Run
 normal operators continue to use the shipped configuration and
 `Rscript operations/validate-producer.R`.
 
-## Selected future hospital acquisition model
+## Selected hospital acquisition model and implemented proof
 
 Iteration 11.3 selects one authoritative CentralStatz source repository that
 will produce two independently versioned releases after the Platform release
-process exists:
+process exists. Iteration 11.4 implements its proof-only generated form:
 
 ```text
 readmission-risk-pool-platform
@@ -86,29 +86,30 @@ readmission-risk-pool-platform
 ```
 
 Hospital-facing templates, wrappers, documentation, builder logic, and
-validation source will be maintained here, not in a second CentralStatz
-project. The generated distribution will carry one exact Platform release
-archive so restricted/offline initialization does not require GitHub. It will
-verify and extract that archive into ignored managed state. Its root will own
+validation source are maintained here, not in a second CentralStatz project.
+The proof distribution carries one exact Platform candidate
+archive so restricted/offline initialization does not require GitHub. It
+verifies and extracts that archive into ignored managed state. Its root owns
 one active `renv` environment; the embedded Platform lock remains provenance
 and does not activate a competing nested project.
 
-Generated trusted fixed composition will explicitly register exactly one
-adopter callable. A complete top-level `platform-instance` document will select
-it; YAML will not name executable paths or functions. Isolated synthetic
-reference acceptance will continue to use the embedded Platform's unchanged
-shipped composition and separate fictional state. Normal hospital operations
-will use the generated top-level selection and separate state, preserving the
+Generated trusted fixed composition explicitly registers exactly one adopter
+callable. A complete top-level `platform-instance` document selects it; YAML
+does not name executable paths or functions. Isolated synthetic reference
+acceptance uses the embedded Platform's unchanged shipped composition and
+separate fictional state. Normal hospital operations use the generated
+top-level selection and separate state, preserving the
 one-health-system rule.
 
-This model is authoritative architecture but not yet an available distribution
-or operation. CentralStatz's release boundary ends at the generated, validated
+The build and validation proof is now an available local operation, not a
+public release. CentralStatz's release boundary ends at the generated, validated
 Hospital Implementation release; recipient modifications after acquisition are
-not a formal third release layer. Until the generated-artifact proof and later
-standalone Git realization exist, use the current repository operations for the
-fictional reference and Phase 10 tests for adopter-seam evidence. Do not invent
-a hospital wrapper, managed path, or download procedure. See
-[Hospital-Facing Implementation Distribution](../architecture/hospital-implementation-distribution-assessment.md).
+not a formal third release layer. Build with
+`Rscript operations/build-hospital-distribution.R`; in a copied artifact,
+`implementation/` is the first recipient-owned editing surface and deliberately
+fails until its callable conforms. The separate `examples/fictional-adopter/`
+tree proves the pattern without defining a required source shape. See
+[Hospital Implementation Distribution Operations](../operations/hospital-implementation-distribution.md).
 
 ## Source responsibility
 

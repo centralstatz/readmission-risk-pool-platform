@@ -455,7 +455,7 @@ readmission-risk-pool-platform
 ```
 
 Hospital-facing wrapper, scaffold, documentation, builder, validator, and
-metadata source are maintained in this repository. A builder will combine
+metadata source are maintained in this repository. The Iteration 11.4 builder combines
 those inputs with one exact Platform release archive under ignored local build
 state and independently validate the generated distribution. No Platform logic
 or hospital-facing source is manually synchronized in a second CentralStatz
@@ -493,7 +493,9 @@ scope and is not runtime multi-hospital switching.
 The complete ownership, environment, trust, lifecycle, upgrade, alternatives,
 and maintenance decision is authoritative in
 [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
-Its builder and generated products are not yet implemented.
+Iteration 11.4 implements and tests the proof-only builder and generated
+artifact under ignored local state. Standalone Git realization and publication
+remain later stages.
 
 ## Observability layer
 

@@ -68,7 +68,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   — authoritative Iteration 11.3 decision for one maintained repository, two
   independently versioned release products, the exact embedded Platform
   release, top-level environment, trusted composition, lifecycle, and bounded
-  generated-artifact proof.
+  generated-artifact proof implemented in Iteration 11.4.
+- [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
+  — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and

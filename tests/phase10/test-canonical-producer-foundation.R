@@ -199,8 +199,15 @@ phase10_test_cases <- function(repository_root, suite_root = NULL) {
       text <- paste(readLines(
         file.path(repository_root, "operations", "run-platform.R"), warn = FALSE
       ), collapse = "\n")
-      phase0_assert_true(grepl("rrp_run_reference_history", text, fixed = TRUE))
+      phase0_assert_true(grepl("rrp_run_selected_platform_cycle", text, fixed = TRUE))
       phase0_assert_true(!grepl("synthetic-reference|rrp_run_synthetic|generate-source|map-to-canonical", text))
+      cycle <- paste(readLines(file.path(
+        repository_root, "operations", "lib", "platform-cycle-operation.R"
+      ), warn = FALSE), collapse = "\n")
+      phase0_assert_true(grepl("rrp_run_reference_history", cycle, fixed = TRUE))
+      phase0_assert_true(!grepl(
+        "synthetic-reference|rrp_run_synthetic|generate-source|map-to-canonical", cycle
+      ))
       history <- paste(readLines(file.path(
         repository_root, "operations", "lib", "reference-history-operation.R"
       ), warn = FALSE), collapse = "\n")

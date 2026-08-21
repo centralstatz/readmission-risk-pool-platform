@@ -2,8 +2,8 @@
 
 ## Status and authority
 
-**Status:** authoritative Iteration 11.3 architecture revision; implementation
-pending
+**Status:** authoritative Iteration 11.3 architecture with the Iteration 11.4
+generated build/validation proof implemented
 
 **Decision date:** 2026-08-20
 
@@ -27,11 +27,15 @@ remains the Iteration 11.1 evidence behind accepted release/governance choices.
 The [Canonical Producer Foundation](canonical-producer-foundation.md) remains
 authoritative for the trusted adopter/source composition seam.
 
-No hospital distribution builder, maintained payload directory, generated
-artifact, standalone repository, release, archive, tag, license, CI, or
-publication is implemented by this planning iteration. The current
-[operator manual](../operations/operator-manual.md) remains the only supported
-human operation surface.
+Iteration 11.4 implements maintained source in `distribution/hospital/`, the
+versioned distribution contract, a proof-only embedded Platform candidate,
+build/validation operations, safe managed extraction, and independent copied
+acceptance. Generated evidence remains ignored and is removed after validation.
+No standalone repository, public release/archive, tag, license grant, CI, or
+publication is implemented. See the
+[Hospital Implementation distribution operation](../operations/hospital-implementation-distribution.md).
+The general [operator manual](../operations/operator-manual.md) remains
+authoritative for direct Platform operation.
 
 ## Decision summary
 
@@ -181,9 +185,8 @@ release/repository name can remain an implementation detail.
 
 ### Maintained inside the authoritative repository
 
-The future maintained hospital-facing source should live under a dedicated
-conceptual ownership area such as `distribution/hospital/`. This is the
-preferred location because the content defines a source distribution, not a
+Maintained hospital-facing source lives under `distribution/hospital/`. This is
+the selected location because the content defines a source distribution, not a
 deployment target (`deploy/`) or documentation-only adoption guide
 (`docs/adoption/`). The exact directory is authorized only when the builder
 proof begins.
@@ -200,10 +203,10 @@ That area should own maintained inputs such as:
 - generated-release inventory/compatibility metadata templates; and
 - standalone validation source required in the downstream artifact.
 
-Repository operations/lib code should own builder and validator behavior when
-implemented, and a future `contracts/distribution/` location may own the
-language-neutral hospital-distribution manifest. Tests remain under the normal
-repository test structure. No directory is created in Iteration 11.3.
+Repository `operations/lib` code owns builder behavior, the artifact owns its
+standalone validator runtime, and `contracts/distribution/` owns the
+language-neutral hospital-distribution contract. Tests remain under the normal
+repository test structure.
 
 ### Generated only
 
@@ -725,35 +728,51 @@ choices. Git submodules, executable configuration, directory/plugin discovery,
 implicit downloads, and full-Platform package conversion are not the supported
 hospital-facing baseline.
 
-## Unresolved implementation details
+## Iteration 11.4 implementation evidence
 
-The following remain for implementation evidence without reopening the selected
-architecture:
+The proof resolves the previously open construction details as follows:
 
-1. exact maintained source path, with `distribution/hospital/` preferred;
-2. Hospital Implementation first version and machine identity;
-3. exact artifact store/current-pointer and standalone-repository layouts;
-4. Platform release archive format and provenance used before/publication;
-5. minimal callable Platform operation API needed by wrappers;
-6. exact wrapper filenames and public/advanced operation subset;
-7. bounded top-level lock generation and conflict validation;
-8. whether the generated baseline ships a complete fictional adopter example
-   or a test-only fixture plus editable scaffold;
-9. immutable distribution/build/Git-realization identity fields;
-10. exact tested R/OS matrix;
-11. final Apache-2.0 compatibility review and policy files; and
-12. final GitHub publication form for the generated Hospital Implementation
-    release.
+1. `distribution/hospital/` is the maintained source boundary and
+   `platform.hospital-implementation-distribution@0.1.0` is the contract.
+2. The proof identity is
+   `readmission-risk-pool-hospital-implementation@0.0.0-proof.11.4`; it is not
+   a public release.
+3. immutable builds and the atomic current pointer live under
+   `build/hospital-implementation-distributions/`; standalone Git layout is
+   intentionally still deferred.
+4. the embedded candidate is deterministic regular-file USTAR source with an
+   internal closed inventory and version `0.0.0-proof.11.4`, not `v0.1.0`.
+5. `rrp_validate_selected_canonical_producer()` and
+   `rrp_run_selected_platform_cycle()` are the smallest new callable seam;
+   existing scripts and generated composition call the same behavior.
+6. generated wrappers own only root/state selection, initialization,
+   delegation, and recovery wording.
+7. the top-level lock exactly equals the candidate Platform lock with zero
+   maintained additions; nonzero additions fail this bounded proof.
+8. option C is selected: an editable fail-closed scaffold plus a complete,
+   separate fictional adopter example reused from the Phase 10 evidence.
+9. logical distribution, build-occurrence, Platform-candidate, runtime,
+   product, artifact, Git, and publication identities remain distinct.
+
+Independent tests copy the distribution outside the repository, validate and
+initialize it, run synthetic acceptance and the adopter-backed cycle through
+unchanged DuckDB/products/app/reduced-artifact behavior, and cover the required
+tamper, incompatibility, trust, state-isolation, and hidden-dependency cases.
+Generated proof state is temporary or ignored and is removed after validation.
+
+The exact tested R/OS release matrix, final Apache-2.0 compatibility review and
+policy files, standalone Git realization, final candidate manifests, and
+publication form remain release-hardening work.
 
 Online retrieval, automatic upgrade/merge, recipient dependency solving,
 dynamic plugins, OCI realization, broad migration infrastructure, and remote
 publication automation remain deliberately deferred.
 
-## Recommended Iteration 11.4 — generated distribution build/validation proof
+## Implemented Iteration 11.4 — generated distribution build/validation proof
 
-Iteration 11.4 should implement the smallest in-repository proof of the
-generated Hospital Implementation artifact. It should not create or publish a
-permanent external repository or release.
+Iteration 11.4 implements the smallest in-repository proof of the generated
+Hospital Implementation artifact. It creates or publishes no permanent
+external repository or release.
 
 ### Scope
 

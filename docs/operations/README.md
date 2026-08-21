@@ -8,8 +8,11 @@ reserve names or document hypothetical future capabilities.
   launch, build/validate a reduced artifact, and generate a local Connect
   deployment repository through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–10 tests, check repository policies, and
-  evaluate the completed Phase 10 checkpoint.
+  specification assets, run Phase 0–11 tests, check repository policies, and
+  evaluate the Iteration 11.4 checkpoint.
+- [Hospital Implementation Distribution](hospital-implementation-distribution.md)
+  — generate and independently validate the proof-only adopter-facing source
+  distribution, then initialize and exercise an external copied artifact.
 - [Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
   — validate the configured producer, understand trusted registration and
   exact installation selection, and review the independent adopter proof.

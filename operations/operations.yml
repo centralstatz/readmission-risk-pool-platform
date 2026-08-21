@@ -84,6 +84,18 @@ operations:
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/connect-cloud-deployment.md
+  - operation_id: platform.build-hospital-distribution
+    command: Rscript operations/build-hospital-distribution.R
+    purpose: Build and atomically expose one proof-only Hospital Implementation distribution.
+    mutation: immutable_local_artifact_and_current_pointer
+    classification: public
+    documentation: docs/operations/hospital-implementation-distribution.md
+  - operation_id: platform.validate-hospital-distribution
+    command: Rscript operations/validate-hospital-distribution.R
+    purpose: Independently validate the current generated Hospital Implementation distribution.
+    mutation: read_only_with_removed_temporary_checks
+    classification: public
+    documentation: docs/operations/hospital-implementation-distribution.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

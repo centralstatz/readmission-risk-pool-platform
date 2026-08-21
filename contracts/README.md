@@ -19,6 +19,8 @@ contract.
 Iteration 10.1 adds `platform.canonical-producer@0.1.0` declaration, trusted
 callable, result, failure, and configuration-ownership semantics without
 changing canonical clinical meaning.
+Iteration 11.4 adds the generated Hospital Implementation distribution
+contract without changing Platform runtime or clinical semantics.
 
 - `foundation/` contains the common vocabulary specification.
 - `examples/` contains small, nonclinical teaching and validation fixtures.
@@ -38,6 +40,9 @@ changing canonical clinical meaning.
 - `deployment/` contains the target-neutral reduced application-artifact
   contract and the Connect Cloud local Git realization. Neither defines a
   remote, publication identity, service credential, or container target.
+- `distribution/` contains the generated Hospital Implementation artifact
+  contract, including exact embedded Platform candidate, closed inventory,
+  top-level environment, and trusted-composition boundaries.
 - `observability/` contains the operation-attempt correlation context and
   privacy-conscious structured diagnostic event contracts. It contains no
   patient payload, sink configuration, or retention policy.

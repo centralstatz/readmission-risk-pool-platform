@@ -266,7 +266,7 @@ rrp_markdown_files <- function(repository_root) {
     all.files = TRUE
   )
   excluded <- paste0(
-    "(^|/)([.]git|renv/(library|local|cellar|lock|python|sandbox|staging))/"
+    "(^|/)([.]git|build|renv/(library|local|cellar|lock|python|sandbox|staging))/"
   )
   files[!grepl(excluded, files)]
 }

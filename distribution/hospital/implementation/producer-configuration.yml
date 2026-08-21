@@ -1,0 +1,12 @@
+specification_kind: producer_configuration
+specification_id: implementation.local-producer-configuration
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: implementation
+title: Nonsecret local producer configuration scaffold
+status: experimental
+description: >-
+  Replace this nonsecret scaffold with implementation-owned configuration.
+  Connections and credentials remain environment-owned and are never committed.
+configuration_status: not_implemented
+data_classification: no_patient_data

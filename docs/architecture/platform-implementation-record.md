@@ -4194,3 +4194,290 @@ reference and fictional adopter proof, and independent artifact validator in
 this repository. Prove unchanged history/products/app/reduced-artifact behavior
 and fail-closed identity/digest/inventory drift. Do not add the standalone Git
 realization, final release/governance candidate, publication, push, or deploy.
+
+### Iteration 11.4 — Generated Hospital Implementation distribution build/validation proof
+
+#### Planned objective and scope boundary
+
+Prove the Iteration 11.3 one-repository/two-release-product architecture by
+generating a complete, self-validating Readmission Risk Pool Hospital
+Implementation artifact under ignored local state. The proof had to embed one
+exact unpublished Platform candidate, own one top-level R environment, expose
+thin human operations and the Phase 10 explicit producer trust seam, and run
+both synthetic reference acceptance and a materially different fictional
+adopter workflow from an external copied tree through unchanged history,
+products, app, and reduced artifact.
+
+The iteration explicitly stopped before standalone Hospital Git realization,
+commit, remote, push, public archive/release, `v0.1.0` tag, license installation,
+release CI, OCI/container work, online retrieval, updater/migration machinery,
+publication, or deployment.
+
+#### Maintained source area and distribution contract
+
+Added `distribution/hospital/` as the sole maintained Hospital Implementation
+source area inside this authoritative repository. It owns only generated-root
+README/onboarding source, a standalone distribution runtime/validator, thin
+wrapper source, an editable producer/trusted-composition/configuration
+scaffold, and a separate fictional adopter example composition. It contains no
+copy of Platform runtime, provider, persistence, product, Shiny, or deployment
+logic.
+
+Added `platform.hospital-implementation-distribution@0.1.0` under
+`contracts/distribution/`. The generated manifest separates Hospital release,
+logical distribution instance, build occurrence/time, embedded Platform
+candidate, runtime run, product, reduced artifact, Git, and publication
+identities. It declares a closed inventory with member sizes/SHA-256, exact
+candidate filename/size/digest/identity/version, compatibility, builder and
+environment provenance, fictional/nonclinical classification, passed
+validator identity, and explicit nonclaims.
+
+The proof Hospital identity is
+`readmission-risk-pool-hospital-implementation@0.0.0-proof.11.4`. It is not a
+public release and carries no license grant.
+
+#### Platform release-candidate construction
+
+The builder constructs an allowlisted deterministic regular-file USTAR archive
+from current Platform source required by the recipient workflow. It excludes
+development tests, unrelated architecture documentation, Hospital builder
+source, repository-wide validation entry points, generated state, Git, caches,
+and local libraries. The archive contains its own
+`PLATFORM-CANDIDATE.yml`, exact internal inventory and SHA-256 values, lock
+digest, compatibility declaration, and deterministic
+`platform_release_candidate::...` identity.
+
+The candidate version is `0.0.0-proof.11.4` with status
+`proof_only_not_published_not_v0.1.0`. It is not a fabricated Platform
+`v0.1.0`, Git tag, release, or latest lookup. The Hospital builder copies the
+completed archive unchanged and performs no network retrieval.
+
+#### Builder, immutable identity, and integrity
+
+Added the human operations:
+
+```text
+Rscript operations/build-hospital-distribution.R
+Rscript operations/validate-hospital-distribution.R
+```
+
+The builder validates the contract envelope and maintained source allowlist,
+stages exact regular files, constructs and validates the Platform candidate,
+generates the closed Hospital manifest/checksum, independently validates the
+staging tree, atomically promotes an immutable build, validates the promoted
+tree, and atomically replaces `CURRENT.yml` only after success. The default
+store is `build/hospital-implementation-distributions/`.
+
+Distribution instance identity is deterministic from logical release,
+candidate, environment, and exact payload content. Build identity additionally
+includes declared build time. Rebuilding identical logical inputs at another
+path/time preserves instance identity; the occurrence identity changes only
+with time. Repeating the same build is idempotent, and conflicting content at
+an immutable destination fails without replacement.
+
+#### One top-level environment and safe Platform extraction
+
+Iteration 11.4 has zero maintained wrapper dependencies. The generated
+top-level `renv.lock` is therefore byte-for-byte the exact Platform candidate
+lock, with both digests recorded. A bounded conflict check rejects any declared
+addition; no general solver, silent upgrade, or downgrade exists. The generated
+root is the one active project. Delegated Platform processes run with
+`Rscript --vanilla` and the already active library, so the extracted Platform's
+retained lock remains provenance and does not activate a nested project.
+
+The artifact-owned initializer first validates the closed Hospital tree and
+archive. Its pure-R USTAR reader checks header checksum, safe relative names,
+regular-file type, duplicates, size, and digest; traversal, absolute paths,
+backslashes, links, special members, malformed headers, and undeclared content
+fail closed. Extraction stages under `.rrp/platform/`, verifies the exact
+candidate tree, runs Platform-owned doctor against staged source, and promotes
+only after success to `.rrp/platform/<candidate-digest>/`. Identical state is
+idempotent. Modified managed source is preserved and rejected with actionable
+drift guidance rather than silently repaired.
+
+#### Callable Platform seam and thin wrappers
+
+Added only two reusable upstream functions:
+`rrp_validate_selected_canonical_producer()` and
+`rrp_run_selected_platform_cycle()`. They accept an already trusted registry,
+exact selection, invocation, explicit database/run configuration, and optional
+event emitter, then reuse existing producer admission and history behavior.
+The established `operations/validate-producer.R` and
+`operations/run-platform.R` now call that same seam with the unchanged shipped
+composition.
+
+Generated wrappers own distribution-root discovery, managed candidate
+validation, explicit state paths, reviewed composition construction,
+delegation, exit status, and Hospital-specific recovery text. Platform scripts
+continue to own canonical, runtime/estimand/provider, DuckDB, products, Shiny,
+reduced artifact, and diagnostic behavior. No generic CLI framework,
+reflective registry execution, executable YAML, package/function/path discovery,
+or copied Platform operation/domain logic was added.
+
+#### Producer scaffold, example decision, and trust
+
+The editable `implementation/` baseline contains one declaration, one exact
+platform-instance selection, one nonsecret producer-owned configuration, one
+callable scaffold, and one fixed composition file. The callable deliberately
+returns a failed structured producer result until a recipient implements
+source-local validation and canonical mapping. Normal validation therefore
+fails clearly before runtime rather than fabricating data.
+
+Implementation evidence selected option C: ship the empty editable scaffold
+and a clearly separate complete fictional adopter example. This ranks highest
+for onboarding and post-release seam verification while avoiding the claim
+that the example's denormalized `case_extract`/`activity_feed` shape is required.
+The example reuses the Phase 10 test-owned fictional source/mapping assets as
+allowlisted build inputs and adds Hospital-specific fixed composition. It is
+not a second supported reference implementation.
+
+The trust model is unchanged: declarations and selections are data; reviewed
+code explicitly registers one callable; selection names one exact ID/version;
+YAML cannot name executable paths, functions, packages, URLs, or plugins.
+
+#### Synthetic acceptance and external fictional adopter proof
+
+The generated `operations/run-reference-acceptance.R` delegates entirely to
+the embedded Platform's unchanged shipped synthetic composition. From an
+external copy it initializes, runs doctor and one Platform cycle, writes
+isolated DuckDB history, builds/materializes the unchanged logical products,
+constructs the product-only Shiny app, and builds/validates the unchanged
+target-neutral reduced artifact. It stops before target realization or
+publication.
+
+The separate fictional-adopter proof uses the generated trust/composition
+pattern, shared producer conformance/admission, and the smallest callable
+Platform cycle seam. It reaches the same unchanged runtime/estimand/provider,
+DuckDB, products, app, and reduced artifact from materially different source
+evidence. Reference state uses `build/reference/`; adopter state uses
+`build/fictional-adopter/`. Tests prove both complete and remain isolated.
+
+#### Independent validation, tamper evidence, and exclusions
+
+The generated artifact owns `validate-distribution.R` plus a standalone
+runtime. It validates without Git or the authoritative tree: manifest checksum,
+closed file inventory, member size/digest, symlink prohibition, exact one
+candidate archive, safe internal archive inventory, candidate identity/version,
+compatibility, lock provenance, top-level environment, required operations and
+trust scaffolding, fictional status, and prohibited generated/sensitive-shaped
+content.
+
+The 36-case focused suite proves valid contract/source/candidate/build,
+deterministic and immutable identities, digest verification, safe/idempotent
+extraction, one top-level environment, no nested activation, shared callable
+seam, thin delegates, true external-copy operation, both full workflows,
+isolated DuckDB/product/artifact state, and a clear fail-closed scaffold. It
+also covers missing/changed/wrong/extra archives, wrong SHA/candidate identity,
+traversal, archive link, missing/extra Hospital members, manifest change,
+managed drift, incompatible declaration, lock conflict, unknown producer,
+declaration/callable identity mismatch, failed conformance, delegated nonzero
+status, prohibited content, and hidden machine/authoritative/sibling paths.
+
+The generated baseline contains no `.git`, authoritative tests, architecture
+scratch, DuckDB history, products, target realization, credentials, secrets,
+real source/mappings/data, PHI, caches, developer library, or absolute local
+path. Generated distributions, managed candidates, history, products, and
+artifacts are ignored or temporary and are removed after final validation.
+
+#### Decisions, surprises, deviations, and reference assets
+
+The proof confirmed that no new Platform domain or contract redesign was
+needed; the callable seam was limited to composition. A deterministic pure-R
+USTAR implementation was chosen so safe member inspection/extraction does not
+trust an external tar extractor or accept links/special entries. Existing
+Platform operation scripts load a small set of general validation helpers even
+when running; those helper sources remain in the candidate so the unchanged
+scripts stay operable, while repository-wide validation entry points and tests
+remain excluded.
+
+The local managed `renv` sandbox lock in this execution environment required
+`RENV_CONFIG_SANDBOX_ENABLED=FALSE` for repository-root validation commands;
+generated delegated processes already use `--vanilla` and the active library.
+This is an execution-environment workaround, not a generated contract or
+dependency change. Added `.renvignore` with only `build/` so generated proof,
+history, product, and deployment state cannot inflate implicit dependency
+discovery or appear to introduce release dependencies; generated roots carry
+the same rule.
+
+No sibling repository was inspected or modified. The only adapted evidence was
+the clean repository's own Phase 10 materially different fictional producer
+fixture. Existing Phase 8 atomic build/current-pointer and independent
+validation patterns informed the clean design; no old asset was copied. All
+contract, builder/runtime, archive logic, wrappers, scaffold, documentation,
+tests, and validation code are new clean work owned here.
+
+#### Validation evidence
+
+The final validation matrix reported:
+
+- `Rscript operations/validate-documentation.R`: PASS (4 checks, 0 issues),
+  covering 37 required documents, 263 local links, 25 navigation sources, and
+  portable paths;
+- `Rscript tests/run-phase11-tests.R`: PASS (36 tests), including complete
+  external-copy synthetic and fictional-adopter workflows and tamper cases;
+- `Rscript tests/run-phase0-tests.R`: PASS (10 tests),
+  `Rscript tests/run-phase7-tests.R`: PASS (8 tests), and
+  `Rscript tests/run-phase10-tests.R`: PASS (26 tests) after updating the
+  repository-policy, public-operation-count, and shared-cycle expectations;
+- `Rscript operations/build-hospital-distribution.R --built-at
+  2026-08-20T18:30:00Z`: succeeded with one unpublished candidate and immutable
+  distribution; `Rscript operations/validate-hospital-distribution.R`:
+  succeeded with 38 closed inventory members and passed temporary extracted
+  Platform doctor validation;
+- development validation: PASS (150 checks, 0 issues), including every Phase
+  0–11 suite;
+- checkpoint validation: PASS (212 checks, 0 issues), including every completed
+  phase checkpoint and the Iteration 11.4 repository/record evidence;
+- clean `rrpruntime@0.3.0` source build and
+  `R CMD check --no-manual --no-vignettes`: `Status: OK`; restricted-network
+  package-index warnings did not affect local package checks;
+- independent parse validation: PASS for 154 maintained R files and 59
+  maintained YAML files;
+- `renv::status()`: exit 0, “No issues found -- the project is in a consistent
+  state”; expected restricted-network index warnings and the known implicit
+  dependency-discovery timing note were nonfatal;
+- `git diff --check`: PASS; and
+- final hygiene scans found no generated Hospital distribution, Platform
+  candidate archive, managed extraction, DuckDB history, product/artifact
+  bundle, deployment repository, nested Git repository, or retained log.
+
+Because the managed execution sandbox's `renv` sandbox lock made ordinary
+profile activation repeatedly rescan, the final composed development,
+checkpoint, and tightened Hospital build/validation commands used
+`R_PROFILE_USER=/dev/null` and the exact locked project library. The same
+documented operation scripts and validation modes ran unchanged. The Hospital
+operations were also exercised earlier with normal project activation plus the
+already documented `RENV_CONFIG_SANDBOX_ENABLED=FALSE` local workaround. No
+network access, dependency restoration, lockfile update, or release action
+occurred.
+
+#### Architecture, plan, operations, and documentation effects
+
+Updated Platform Architecture, the Phase 11 implementation sequence, Hospital
+distribution assessment, open decisions, progressive adoption, root status,
+documentation navigation, operator/validation guidance, operation registry,
+and `AGENTS.md`. Added repository/checkpoint validation for the actual source,
+contract, ignore, thin-delegation, operation-registration, record, and focused
+test boundaries. No dependency or lockfile changed.
+
+#### Phase 11 status
+
+**IN PROGRESS.** Iteration 11.4 closes the foundational generated-artifact
+proof. Phase 11 still lacks standalone Hospital Git realization, final
+license/dependency/asset compatibility review and license installation,
+contribution/security/support/DCO policies, tested release R/OS evidence, final
+Platform and Hospital release candidates/manifests, clean acquisition evidence,
+maintainer authorization, tags, GitHub releases, and publication.
+
+#### Recommended next task
+
+Use two bounded remaining increments. First implement a **standalone Hospital
+Implementation Git realization** that consumes only an independently validated
+distribution, produces an exact remote-free staged repository at an explicit
+outside-repository destination, validates it, and stops before commit/remote/
+push. Then implement one **release-candidate and governance hardening**
+iteration covering final license review/installation, policies, tested R/OS
+matrix, both product candidates and clean-acquisition evidence, followed by a
+separately authorized publication action. This grouping keeps realization
+mechanics distinct from legal/release authorization without introducing
+another architecture phase.

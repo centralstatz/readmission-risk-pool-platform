@@ -20,6 +20,7 @@ source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "duckdb-persistence-operation.R"))
 rrp_load_duckdb_persistence_adapter(repository_root)
 source(file.path(repository_root, "operations", "lib", "reference-history-operation.R"))
+source(file.path(repository_root, "operations", "lib", "platform-cycle-operation.R"))
 
 arguments <- commandArgs(trailingOnly = TRUE)
 scale <- "test"
@@ -82,9 +83,25 @@ emitter <- rrp_start_operation_observability(
   list(scale = scale, data_classification = "fictional_nonclinical")
 )
 result <- tryCatch(
-  rrp_run_reference_history(
-    repository_root, scale, database_path, runtime_run_id, as_of_time, emitter
-  ),
+  {
+    composition <- rrp_installed_canonical_producer_composition(repository_root)
+    selected_run_id <- runtime_run_id %||%
+      paste0("runtime_synthetic_history_", scale, "_001")
+    rrp_run_selected_platform_cycle(
+      repository_root = repository_root,
+      registry = composition$registry,
+      selection = composition$selection,
+      producer_invocation = list(
+        producer_execution_id = paste0("producer_execution_", selected_run_id),
+        canonical_as_of_time = as_of_time,
+        producer_configuration = list(scale = scale)
+      ),
+      database_path = database_path,
+      runtime_run_id = selected_run_id,
+      run_label = scale,
+      event_emitter = emitter
+    )
+  },
   error = function(condition) {
     rrp_fail_operation_observability(
       emitter, "run.failed", "Reference platform operation failed.",

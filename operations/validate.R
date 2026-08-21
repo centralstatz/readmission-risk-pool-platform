@@ -28,6 +28,13 @@ for (file in c(
 source(file.path(repository_root, "operations", "lib", "synthetic-reference-validation.R"))
 source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 source(file.path(repository_root, "operations", "lib", "canonical-producer-validation.R"))
+source(file.path(
+  repository_root, "operations", "lib", "hospital-distribution-operation.R"
+))
+rrp_load_hospital_distribution_runtime(repository_root, .GlobalEnv)
+source(file.path(
+  repository_root, "operations", "lib", "hospital-distribution-validation.R"
+))
 source(file.path(repository_root, "operations", "lib", "runtime-operation.R"))
 source(file.path(repository_root, "operations", "lib", "provider-operation.R"))
 source(file.path(repository_root, "operations", "lib", "runtime-validation.R"))

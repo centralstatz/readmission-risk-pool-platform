@@ -18,12 +18,14 @@ runtime or test dependency.
 the retained first-release decision assessment. Iteration 11.2 baselines the
 maintainer's release/governance direction. Iteration 11.3 revises the physical
 distribution architecture: this is the only maintained CentralStatz source
-repository, and it will generate an independently versioned Readmission Risk
+repository, and it generates an independently versioned Readmission Risk
 Pool Hospital Implementation release containing one exact verified Platform
 release. Recipient modifications are outside the CentralStatz release
-architecture. This is architecture only: no distribution builder, embedded
-archive, standalone realization, license, release, tag, or publication has
-been created. The focused internal
+architecture. Iteration 11.4 proves the generated artifact, exact unpublished
+Platform candidate, independent validator, safe extraction, and external-copy
+synthetic/adopter workflows under ignored local state. No standalone Git
+realization, license, release, tag, remote, or publication has been created.
+The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
@@ -155,10 +157,17 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the completed Phase 10 checkpoint with:
+Evaluate the Iteration 11.4 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
+```
+
+Build and independently validate the proof-only Hospital Implementation with:
+
+```sh
+Rscript operations/build-hospital-distribution.R
+Rscript operations/validate-hospital-distribution.R
 ```
 
 Generate and validate the deterministic reference flow with:

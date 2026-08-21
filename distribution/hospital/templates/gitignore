@@ -1,0 +1,16 @@
+.RData
+.Rhistory
+.Ruserdata
+.Rproj.user/
+.env
+.env.*
+!.env.example
+renv/library/
+renv/local/
+renv/cellar/
+renv/staging/
+.rrp/
+build/
+*.duckdb
+*.duckdb.wal
+*.log

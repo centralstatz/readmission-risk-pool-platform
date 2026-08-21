@@ -1,0 +1,16 @@
+specification_kind: platform_instance_configuration
+specification_id: implementation.local-platform-instance
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: implementation
+title: Local Hospital Implementation selection scaffold
+status: experimental
+description: >-
+  Selects exactly one trusted locally maintained producer. It contains no
+  executable path, function, package, URL, connection, or secret.
+selected_canonical_producer:
+  producer_id: implementation.local-canonical-producer
+  producer_version: "0.1.0"
+producer_configuration_owner: producer_implementation
+health_system_scope: one
+multi_tenant: false

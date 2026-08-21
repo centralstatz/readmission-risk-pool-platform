@@ -8,7 +8,7 @@ for (file in c(
   "observability-operation.R", "validation-result.R", "conformance-result.R",
   "specification-validation.R", "foundation-context-validation.R",
   "canonical-bundle-validation.R", "canonical-clinical-validation.R",
-  "canonical-producer-operation.R"
+  "canonical-producer-operation.R", "platform-cycle-operation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 source(file.path(
   repository_root, "operations", "compositions", "installed-producers.R"
@@ -49,9 +49,8 @@ invocation <- list(
   canonical_as_of_time = NULL,
   producer_configuration = list(scale = scale)
 )
-result <- rrp_conform_registered_canonical_producer(
-  composition$registry, selection$producer_id, selection$producer_version,
-  invocation, repository_root
+result <- rrp_validate_selected_canonical_producer(
+  repository_root, composition$registry, selection, invocation
 )
 if (!rrp_conforms(result)) {
   rrp_fail_operation_observability(
@@ -76,4 +75,3 @@ cat("  canonical_profile: platform.readmission-initial-profile@0.1.0\n")
 cat("  conformance: pass\n")
 cat("  data_classification: fictional_nonclinical\n")
 cat("No source or canonical data were written and no downstream runtime was invoked.\n")
-

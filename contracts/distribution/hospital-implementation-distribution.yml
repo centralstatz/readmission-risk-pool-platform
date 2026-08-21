@@ -1,0 +1,90 @@
+# Generated adopter-facing source distribution contract.
+specification_kind: hospital_implementation_distribution_contract
+specification_id: platform.hospital-implementation-distribution
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Readmission Risk Pool Hospital Implementation distribution
+status: active
+description: >-
+  A closed generated adopter-facing source distribution that contains one
+  exact validated Platform release artifact, one active top-level R
+  environment, explicit trusted producer composition scaffolding, thin human
+  operations, and standalone validation. It is not a deployment, publication,
+  hospital-private repository, or second maintained CentralStatz source tree.
+
+required_manifest_fields:
+  - distribution_specification
+  - hospital_implementation
+  - distribution_instance_id
+  - distribution_build_id
+  - built_at
+  - platform_candidate
+  - compatibility
+  - builder
+  - environment
+  - required_files
+  - inventory
+  - integrity
+  - validation_evidence
+  - data_classification
+  - validation_status
+  - nonclaims
+
+identity_semantics:
+  distribution_instance_id: >-
+    Deterministic from this contract, Hospital Implementation identity/version,
+    exact Platform candidate identity/archive digest, top-level environment,
+    and every generated payload member checksum. Output path, Git location,
+    build occurrence, runtime runs, products, deployment, and publication are
+    excluded.
+  distribution_build_id: >-
+    Deterministic from the distribution instance identity and declared build
+    time. Repeated logical inputs retain one instance identity while separate
+    build occurrences may have different build identities.
+
+platform_candidate:
+  release_status: proof_only_not_published
+  exact_archive_required: true
+  archive_count: 1
+  integrity_algorithm: sha256
+  offline_after_acquisition: true
+  latest_lookup: prohibited
+  public_release_claim: prohibited
+
+closed_inventory: true
+integrity:
+  algorithm: sha256
+  manifest_checksum_file: HOSPITAL-DISTRIBUTION.sha256
+  purpose: release_payload_integrity_and_provenance_not_recipient_restriction
+
+environment:
+  active_project: hospital_implementation_root
+  baseline: exact_platform_lock_plus_explicit_maintained_additions
+  nested_platform_activation: prohibited_for_normal_operations
+  general_dependency_solver: prohibited
+
+producer_trust:
+  declaration_is_data: true
+  trusted_callable_registration_is_code: true
+  exact_single_selection: true
+  executable_yaml: prohibited
+  discovery_or_dynamic_plugins: prohibited
+
+validation_requirements:
+  - exact closed generated inventory and SHA-256 member checksums
+  - safe relative paths and no symbolic links
+  - exactly one declared Platform candidate archive
+  - safe archive inventory with no traversal absolute paths links or duplicates
+  - exact Platform candidate identity version size digest and lock provenance
+  - one coherent top-level R lock with no nested activation during operations
+  - thin wrappers and explicit trusted producer composition scaffold
+  - fictional synthetic acceptance and independent adopter conformance evidence
+  - no authoritative working-tree sibling Git network or machine-path dependency
+  - no PHI credentials private mappings operational state products or deployments
+
+release_boundary: >-
+  CentralStatz construction ends at a validated generated Hospital
+  Implementation release product. Recipient modifications permitted by the
+  eventual license may differ from the validated baseline and are not another
+  CentralStatz release layer.

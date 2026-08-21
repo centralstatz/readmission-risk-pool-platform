@@ -85,8 +85,14 @@ maintained repository will produce the independently versioned Platform and
 generated Readmission Risk Pool Hospital Implementation releases. The latter
 carries one exact verified Platform archive, thin wrappers, fixed trusted
 composition, and one top-level R environment. Recipient modifications are
-outside the CentralStatz release architecture. No builder, generated artifact,
-or standalone Git realization exists yet. Phase 11 remains in progress; the
+outside the CentralStatz release architecture. Iteration 11.4 implements the
+proof-only generated artifact under ignored `build/`: versioned contract,
+exact unpublished Platform candidate archive, closed inventory/SHA-256, one
+top-level lock, safe managed extraction, callable cycle seam, thin wrappers,
+editable fail-closed scaffold, separate fictional adopter example, standalone
+validation, and external-copy workflows through unchanged history/products/app/
+reduced artifact. It creates no standalone Git realization, license, release,
+tag, remote, publication, or deployment. Phase 11 remains in progress; the
 current no-release license status remains authoritative pending final
 compatibility review and later release work.
 
@@ -167,6 +173,10 @@ generate a Connect Cloud deployment repository
     → Rscript operations/build-connect-cloud-deployment.R --destination PATH
 validate a Connect Cloud deployment repository
     → Rscript operations/validate-connect-cloud-deployment.R --destination PATH
+build the Hospital Implementation distribution
+    → Rscript operations/build-hospital-distribution.R
+validate the Hospital Implementation distribution
+    → Rscript operations/validate-hospital-distribution.R
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -202,10 +212,19 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the completed Phase 10 checkpoint, run:
+For the Iteration 11.4 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
+```
+
+Run the focused Hospital distribution tests and supported build/validation
+operations with:
+
+```sh
+Rscript tests/run-phase11-tests.R
+Rscript operations/build-hospital-distribution.R
+Rscript operations/validate-hospital-distribution.R
 ```
 
 Run the focused Phase 3 producer tests and the supported reference operation

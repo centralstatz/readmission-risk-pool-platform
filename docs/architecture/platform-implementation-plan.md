@@ -634,23 +634,26 @@ repository strategy are decided from demonstrated needs.
   one exact verified Platform archive; recipient modifications are outside the
   CentralStatz release architecture. No second maintained project or formal
   third release layer exists.
-- **Iteration 11.4 — generated distribution build and validation proof:** next.
-  Add the minimal maintained hospital-facing source, artifact builder,
+- **Iteration 11.4 — generated distribution build and validation proof:**
+  complete. Added the minimal maintained hospital-facing source, artifact builder,
   ownership/inventory metadata, and independent validator in this repository.
   Prove exact embedded-archive integrity, one top-level environment, isolated
   reference acceptance, explicit adopter composition and conformance,
   downstream execution, artifact construction, and fail-closed drift. Do not
-  add the later standalone Git realization, release, or publication.
+  add the later standalone Git realization, release, or publication. The proof
+  uses option C: a deliberately failing editable scaffold plus one clearly
+  separate complete fictional adopter example.
 - **Later Phase 11 realization and release work:** add a separate operation that
   turns only a validated generated artifact into a remote-free staged Git
   repository. Then complete license/environment/governance evidence, assemble
   release candidates, and perform clean acquisition validation. Publication of
   `v0.1.0` still requires explicit maintainer authorization.
 
-**Phase 11 remains in progress.** Iteration 11.3 establishes the corrected
-architecture only; no builder, generated distribution, standalone realization,
-license, release artifact, repository, tag, CI matrix, or publication has been
-implemented.
+**Phase 11 remains in progress.** Iteration 11.4 proves the generated
+distribution, independent validation, safe managed extraction, external copied
+execution, synthetic acceptance, and adopter substitution. No standalone Git
+realization, final license, public release artifact, tag, CI matrix, remote, or
+publication has been implemented.
 
 ## Cross-phase rules
 

@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the completed
-  Phase 10 producer-substitution requirements?
+- **Strict checkpoint:** Does the repository also satisfy the Iteration 11.4
+  generated Hospital Implementation proof requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -22,7 +22,10 @@ Iteration 8.2 Connect Cloud standalone local Git realization/validation, and
 Iteration 9.1 operation-run context, privacy guardrails, callable sink, console
 renderer, and bounded stable-operation integration, plus the completed Phase
 10 canonical-producer declaration/trust/selection/result/admission/conformance,
-shipped producer migration, and independent adopter-side substitution proof.
+shipped producer migration, and independent adopter-side substitution proof,
+plus the Iteration 11.4 generated Hospital distribution contract, exact
+Platform candidate, one top-level environment, callable operation seam,
+independent validator, external-copy acceptance, and tamper evidence.
 
 ## Prerequisites
 
@@ -52,7 +55,7 @@ Validate the current in-progress repository:
 Rscript operations/validate.R --mode development
 ```
 
-Validate the completed Phase 10 checkpoint:
+Validate the Iteration 11.4 checkpoint:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -122,6 +125,19 @@ Run the focused Phase 10 canonical-producer and independent substitution tests:
 
 ```sh
 Rscript tests/run-phase10-tests.R
+```
+
+Run the focused Phase 11 Hospital distribution and external-copy tests:
+
+```sh
+Rscript tests/run-phase11-tests.R
+```
+
+Build and independently validate the proof-only Hospital Implementation:
+
+```sh
+Rscript operations/build-hospital-distribution.R
+Rscript operations/validate-hospital-distribution.R
 ```
 
 Validate the installed canonical producer without downstream execution:
@@ -230,10 +246,12 @@ Development mode composes:
   product-only application boundary checks, target-neutral artifact
   contract/source allowlist/dependency/boundary checks, and Connect target
   contract/allowlist/dependency/Git/publication-boundary checks, and canonical-
-  producer declaration/selection/trust/result/admission/boundary checks;
+  producer declaration/selection/trust/result/admission/boundary checks, and
+  Hospital distribution contract/source-ownership/thin-wrapper/build-boundary
+  checks;
   and
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
-  Phase 6, Phase 7, Phase 8, Phase 9, and Phase 10 tests.
+  Phase 6, Phase 7, Phase 8, Phase 9, Phase 10, and Phase 11 tests.
 
 Intentional source and documentation changes are allowed. Development mode
 does not impose a clean Git worktree and does not prove a milestone is complete.
