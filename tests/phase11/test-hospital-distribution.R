@@ -113,6 +113,68 @@ phase11_distribution_proof <- local({
   }
 })
 
+phase11_copy_git_tree <- function(source, destination) {
+  dir.create(destination, recursive = TRUE, showWarnings = FALSE)
+  children <- list.files(
+    source, all.files = TRUE, no.. = TRUE, full.names = TRUE
+  )
+  copied <- file.copy(
+    children, destination, recursive = TRUE, copy.mode = TRUE, copy.date = TRUE
+  )
+  if (!all(copied)) stop("Could not copy temporary Git realization.", call. = FALSE)
+  destination
+}
+
+phase11_git_issue <- function(result, code) phase0_assert_true(
+  code %in% result$issues$issue_code,
+  paste0("Expected `", code, "`; found: ",
+         paste(result$issues$issue_code, collapse = ", "))
+)
+
+phase11_git_stage <- function(root) {
+  result <- rrp_hospital_git_run(root, c("add", "--all"))
+  phase0_assert_true(identical(result$status, 0L))
+  invisible(root)
+}
+
+phase11_write_git_manifest_checksum <- function(root, manifest) {
+  path <- file.path(root, "HOSPITAL-GIT-REALIZATION.yml")
+  rrp_hospital_write_yaml(manifest, path)
+  writeLines(
+    rrp_hospital_sha256_file(path),
+    file.path(root, "HOSPITAL-GIT-REALIZATION.sha256"), useBytes = TRUE
+  )
+  phase11_git_stage(root)
+}
+
+phase11_git_proof <- local({
+  cached <- NULL
+  function(repository_root, suite_root) {
+    if (!is.null(cached)) return(cached)
+    distribution <- phase11_distribution_proof(repository_root, suite_root)$primary
+    first_destination <- file.path(suite_root, "git-realization-a")
+    second_destination <- file.path(suite_root, "alternate-name")
+    first <- rrp_build_hospital_git_realization(
+      repository_root, distribution$distribution_path, first_destination,
+      "2026-08-20T17:00:00Z"
+    )
+    repeated <- rrp_build_hospital_git_realization(
+      repository_root, distribution$distribution_path, first_destination,
+      "2026-08-20T17:01:00Z"
+    )
+    alternate <- rrp_build_hospital_git_realization(
+      repository_root, distribution$distribution_path, second_destination,
+      "2026-08-20T17:02:00Z"
+    )
+    cached <<- list(
+      distribution = distribution, first = first, repeated = repeated,
+      alternate = alternate, first_destination = first_destination,
+      second_destination = second_destination
+    )
+    cached
+  }
+})
+
 phase11_test_cases <- function(repository_root, suite_root) list(
   "Hospital distribution contract has a valid exact envelope" = function() {
     parsed <- rrp_parse_yaml_specification(file.path(
@@ -587,5 +649,387 @@ phase11_test_cases <- function(repository_root, suite_root) list(
       paste0("..", "/readmission-risk-pool"), joined, fixed = TRUE
     ))
     phase0_assert_false(grepl(paste0("/", "Users", "/"), joined, fixed = TRUE))
+  },
+
+  "Hospital Git realization contract has a valid exact envelope" = function() {
+    parsed <- rrp_parse_yaml_specification(file.path(
+      repository_root, "contracts", "distribution",
+      "hospital-implementation-git-realization.yml"
+    ))
+    phase0_assert_true(is.null(parsed$parse_error))
+    phase0_assert_true(rrp_conforms(rrp_validate_specification_envelope(parsed$document)))
+    phase0_assert_true(identical(
+      parsed$document[c("specification_kind", "specification_id", "specification_version")],
+      rrp_hospital_git_specification()
+    ))
+  },
+
+  "validated distribution realizes as staged uncommitted remote-free main" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    result <- rrp_validate_hospital_git_realization(
+      proof$first_destination, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase0_assert_true(identical(result$overall_status, "pass"))
+    phase0_assert_true(identical(
+      result$manifest$repository_semantics$initial_branch, "main"
+    ))
+    phase0_assert_true(identical(
+      result$manifest$source_distribution$distribution_build_id,
+      proof$distribution$distribution_build_id
+    ))
+    phase0_assert_true(identical(
+      rrp_hospital_git_run(proof$first_destination, "remote")$output,
+      character()
+    ))
+    phase0_assert_true(rrp_hospital_git_run(
+      proof$first_destination, c("rev-parse", "--verify", "HEAD")
+    )$status != 0L)
+  },
+
+  "Git realization is independently valid and preserves artifact validation" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    standalone <- rrp_validate_completed_hospital_git_realization(
+      proof$first_destination
+    )
+    distribution <- phase11_process(
+      proof$first_destination, "validate-distribution.R"
+    )
+    phase0_assert_true(identical(standalone$overall_status, "pass"))
+    phase0_assert_true(identical(distribution$status, 0L))
+  },
+
+  "realization identity excludes destination and time and regeneration is idempotent" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    phase0_assert_true(proof$repeated$idempotent)
+    phase0_assert_false(proof$repeated$replaced)
+    phase0_assert_true(identical(
+      proof$first$realization_instance_id,
+      proof$alternate$realization_instance_id
+    ))
+    first_manifest <- rrp_hospital_read_yaml(file.path(
+      proof$first_destination, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    second_manifest <- rrp_hospital_read_yaml(file.path(
+      proof$second_destination, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    phase0_assert_false(identical(first_manifest$realized_at, second_manifest$realized_at))
+    phase0_assert_false("destination" %in% names(first_manifest))
+  },
+
+  "different distribution and Platform provenance participate in identity" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    manifest <- rrp_hospital_read_yaml(file.path(
+      proof$first_destination, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    changed_distribution <- manifest
+    changed_distribution$source_distribution$distribution_instance_id <- paste0(
+      "hospital_implementation_distribution::", paste(rep("0", 64L), collapse = "")
+    )
+    changed_platform <- manifest
+    changed_platform$included_platform$archive_sha256 <- paste(
+      rep("f", 64L), collapse = ""
+    )
+    phase0_assert_false(identical(
+      rrp_hospital_git_realization_id(manifest),
+      rrp_hospital_git_realization_id(changed_distribution)
+    ))
+    phase0_assert_false(identical(
+      rrp_hospital_git_realization_id(manifest),
+      rrp_hospital_git_realization_id(changed_platform)
+    ))
+  },
+
+  "pristine realization may be replaced by a changed validated distribution" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    destination <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-replacement")
+    )
+    changed_source <- phase11_copy_baseline(
+      phase11_distribution_proof(repository_root, suite_root),
+      suite_root, "changed-realization-source"
+    )
+    write("A changed proof distribution.\n", file.path(changed_source, "README.md"),
+          append = TRUE)
+    phase11_reseal(changed_source)
+    changed_validation <- rrp_validate_hospital_distribution(
+      changed_source, allow_local_state = FALSE
+    )
+    phase0_assert_true(identical(changed_validation$overall_status, "pass"))
+    replacement <- rrp_build_hospital_git_realization(
+      repository_root, changed_source, destination, "2026-08-20T17:03:00Z"
+    )
+    phase0_assert_true(replacement$replaced)
+    phase0_assert_false(replacement$idempotent)
+    phase0_assert_false(identical(
+      replacement$realization_instance_id, proof$first$realization_instance_id
+    ))
+  },
+
+  "realized repository runs acquisition doctor reference and adopter baselines" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    destination <- file.path(suite_root, "git-acquisition")
+    built <- rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, destination,
+      "2026-08-20T17:04:00Z"
+    )
+    validated <- rrp_validate_completed_hospital_git_realization(destination)
+    initialized <- phase11_process(destination, "operations/initialize.R")
+    doctor <- phase11_process(destination, "operations/doctor.R")
+    reference <- phase11_process(
+      destination, "operations/run-reference-acceptance.R"
+    )
+    adopter <- phase11_process(
+      destination, "operations/run-fictional-adopter-proof.R"
+    )
+    phase0_assert_true(identical(built$overall_status, "succeeded"))
+    phase0_assert_true(identical(validated$overall_status, "pass"))
+    phase0_assert_true(all(c(
+      initialized$status, doctor$status, reference$status, adopter$status
+    ) == 0L))
+  },
+
+  "missing invalid and tampered source distributions fail before realization" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, file.path(suite_root, "missing-distribution"),
+      file.path(suite_root, "missing-output"), "2026-08-20T17:05:00Z"
+    ), "does not exist")
+    invalid <- file.path(suite_root, "invalid-distribution")
+    dir.create(invalid)
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, invalid, file.path(suite_root, "invalid-output"),
+      "2026-08-20T17:05:00Z"
+    ), "CURRENT.yml")
+    tampered <- phase11_copy_baseline(
+      phase11_distribution_proof(repository_root, suite_root),
+      suite_root, "tampered-git-source"
+    )
+    write("tampered\n", file.path(tampered, "README.md"), append = TRUE)
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, tampered, file.path(suite_root, "tampered-output"),
+      "2026-08-20T17:05:00Z"
+    ), "independently valid")
+  },
+
+  "unrelated and symbolic-link destinations are refused" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    unrelated <- file.path(suite_root, "unrelated-destination")
+    dir.create(unrelated)
+    writeLines("recipient work", file.path(unrelated, "notes.txt"))
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, unrelated,
+      "2026-08-20T17:06:00Z"
+    ), "outside pristine generator ownership")
+    target <- file.path(suite_root, "link-target")
+    dir.create(target)
+    linked <- file.path(suite_root, "linked-destination")
+    phase0_assert_true(file.symlink(target, linked))
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, linked,
+      "2026-08-20T17:06:00Z"
+    ), "non-linked path")
+  },
+
+  "modified generated destination is never overwritten" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    destination <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "modified-destination")
+    )
+    write("recipient change\n", file.path(destination, "README.md"), append = TRUE)
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, destination,
+      "2026-08-20T17:07:00Z"
+    ), "outside pristine generator ownership")
+  },
+
+  "committed generated destination is never overwritten" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    destination <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "committed-destination")
+    )
+    committed <- rrp_hospital_git_run(destination, c(
+      "-c", "user.name=Phase11Test", "-c", "user.email=test@example.invalid",
+      "commit", "-m", "temporary-test-commit"
+    ))
+    phase0_assert_true(identical(committed$status, 0L))
+    result <- rrp_validate_hospital_git_realization(
+      destination, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase11_git_issue(result, "generated_repository_has_commit")
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, destination,
+      "2026-08-20T17:08:00Z"
+    ), "outside pristine generator ownership")
+  },
+
+  "remote-configured generated destination is never overwritten" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    destination <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "remote-destination")
+    )
+    remote <- rrp_hospital_git_run(destination, c(
+      "remote", "add", "origin", "https://example.invalid/hospital.git"
+    ))
+    phase0_assert_true(identical(remote$status, 0L))
+    result <- rrp_validate_hospital_git_realization(
+      destination, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase11_git_issue(result, "configured_git_remote")
+    phase0_assert_error(rrp_build_hospital_git_realization(
+      repository_root, proof$distribution$distribution_path, destination,
+      "2026-08-20T17:09:00Z"
+    ), "outside pristine generator ownership")
+  },
+
+  "nested and suspicious Git state fails closed" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    suspicious <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "suspicious-git")
+    )
+    dir.create(file.path(suspicious, ".git", "objects", "info"),
+               recursive = TRUE, showWarnings = FALSE)
+    writeLines("/tmp/not-used", file.path(
+      suspicious, ".git", "objects", "info", "alternates"
+    ))
+    result <- rrp_validate_hospital_git_realization(
+      suspicious, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase11_git_issue(result, "suspicious_git_metadata")
+    nested <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "nested-git")
+    )
+    dir.create(file.path(nested, "implementation", ".git"))
+    writeLines("ref: refs/heads/main", file.path(
+      nested, "implementation", ".git", "HEAD"
+    ))
+    nested_result <- rrp_validate_hospital_git_realization(
+      nested, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase11_git_issue(nested_result, "nested_git_state")
+  },
+
+  "tampered missing and extra realization members fail closed" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    tampered <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-member-tampered")
+    )
+    write("tampered\n", file.path(tampered, "README.md"), append = TRUE)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      tampered, TRUE, FALSE
+    ), "git_realization_member_mismatch")
+    missing <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-member-missing")
+    )
+    unlink(file.path(missing, "implementation", "producer.yml"))
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      missing, TRUE, FALSE
+    ), "git_realization_inventory_mismatch")
+    extra <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-member-extra")
+    )
+    writeLines("unexpected", file.path(extra, "unexpected.txt"))
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      extra, TRUE, FALSE
+    ), "git_realization_inventory_mismatch")
+  },
+
+  "realization metadata and embedded Platform mismatches fail closed" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    metadata <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-metadata-mismatch")
+    )
+    manifest <- rrp_hospital_read_yaml(file.path(
+      metadata, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    manifest$source_distribution$distribution_instance_id <- paste0(
+      "hospital_implementation_distribution::", paste(rep("0", 64L), collapse = "")
+    )
+    phase11_write_git_manifest_checksum(metadata, manifest)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      metadata, TRUE, FALSE
+    ), "git_realization_provenance_mismatch")
+    platform <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-platform-mismatch")
+    )
+    platform_manifest <- rrp_hospital_read_yaml(file.path(
+      platform, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    platform_manifest$included_platform$archive_sha256 <- paste(
+      rep("0", 64L), collapse = ""
+    )
+    phase11_write_git_manifest_checksum(platform, platform_manifest)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      platform, TRUE, FALSE
+    ), "git_realization_provenance_mismatch")
+  },
+
+  "branch mismatch and unstaged modification fail Git baseline" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    branch <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-wrong-branch")
+    )
+    renamed <- rrp_hospital_git_run(branch, c("branch", "-m", "other"))
+    phase0_assert_true(identical(renamed$status, 0L))
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      branch, TRUE, FALSE
+    ), "unexpected_initial_branch")
+    unstaged <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-unstaged")
+    )
+    write("unstaged\n", file.path(unstaged, "README.md"), append = TRUE)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      unstaged, TRUE, FALSE
+    ), "unstaged_realization_change")
+  },
+
+  "ignored unexpected state fails the pristine Git baseline" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    ignored <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-ignored-state")
+    )
+    dir.create(file.path(ignored, "build"))
+    writeLines("unexpected ignored state", file.path(ignored, "build", "state.txt"))
+    result <- rrp_validate_hospital_git_realization(
+      ignored, check_git = TRUE, run_distribution_validator = FALSE
+    )
+    phase11_git_issue(result, "unexpected_ignored_git_state")
+    phase11_git_issue(result, "git_realization_inventory_mismatch")
+  },
+
+  "machine paths and hidden sibling dependencies are diagnosed" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    machine <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-machine-path")
+    )
+    write(paste0("/", "Users", "/developer/private/source\n"),
+          file.path(machine, "README.md"), append = TRUE)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      machine, TRUE, FALSE
+    ), "nonportable_sensitive_or_sibling_content")
+    sibling <- phase11_copy_git_tree(
+      proof$first_destination, file.path(suite_root, "git-sibling-path")
+    )
+    write(paste0("..", "/readmission-risk-pool/private.R\n"),
+          file.path(sibling, "README.md"), append = TRUE)
+    phase11_git_issue(rrp_validate_hospital_git_realization(
+      sibling, TRUE, FALSE
+    ), "nonportable_sensitive_or_sibling_content")
+  },
+
+  "realization contains no CentralStatz distribution builder or source path" = function() {
+    proof <- phase11_git_proof(repository_root, suite_root)
+    tree <- rrp_hospital_git_scan_tree(proof$first_destination)
+    phase0_assert_false(any(tree$files %in% c(
+      "operations/build-hospital-distribution.R",
+      "operations/build-hospital-git-realization.R",
+      "operations/validate-hospital-git-realization.R"
+    )))
+    manifest <- rrp_hospital_read_yaml(file.path(
+      proof$first_destination, "HOSPITAL-GIT-REALIZATION.yml"
+    ))
+    phase0_assert_false(any(grepl(
+      normalizePath(repository_root), unlist(manifest), fixed = TRUE
+    )))
+    phase0_assert_true(identical(manifest$provenance$authoritative_source_lookup, FALSE))
   }
 )

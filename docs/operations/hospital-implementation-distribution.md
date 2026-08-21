@@ -10,9 +10,11 @@ an editable producer scaffold; and a clearly separate fictional adopter
 example. It is generated output under ignored `build/`, not a second maintained
 CentralStatz repository.
 
-This proof does not publish a release, create a Git repository or remote, grant
-a software license, tag `v0.1.0`, deploy an application, or authorize clinical
-or production use. The candidate version is
+This proof does not publish a release, grant a software license, tag `v0.1.0`,
+deploy an application, or authorize clinical or production use. Iteration 11.5
+can separately turn only a validated artifact into a staged, uncommitted,
+remote-free [standalone Git realization](hospital-git-realization.md). The
+candidate version is
 `readmission-risk-pool-platform@0.0.0-proof.11.4`, explicitly not Platform
 `v0.1.0`.
 
@@ -137,8 +139,8 @@ not another supported reference health system.
 - Reference and fictional-adopter state use different directories and are
   never inputs to one another.
 
-Remaining Phase 11 work is release realization and hardening: a separate
-remote-free Git realization of only a validated Hospital artifact; final
+The separate remote-free Git realization is now implemented for maintainer
+release preparation. Remaining Phase 11 work is release hardening: final
 license/dependency/asset review and license installation; contribution,
 security, support, and DCO files; tested R/OS evidence; final Platform and
 Hospital release candidates/manifests; clean acquisition testing; and explicit

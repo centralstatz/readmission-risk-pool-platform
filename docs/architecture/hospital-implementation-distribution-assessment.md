@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative Iteration 11.3 architecture with the Iteration 11.4
-generated build/validation proof implemented
+generated build/validation proof and Iteration 11.5 standalone Git realization
+implemented
 
 **Decision date:** 2026-08-20
 
@@ -30,10 +31,14 @@ authoritative for the trusted adopter/source composition seam.
 Iteration 11.4 implements maintained source in `distribution/hospital/`, the
 versioned distribution contract, a proof-only embedded Platform candidate,
 build/validation operations, safe managed extraction, and independent copied
-acceptance. Generated evidence remains ignored and is removed after validation.
-No standalone repository, public release/archive, tag, license grant, CI, or
-publication is implemented. See the
-[Hospital Implementation distribution operation](../operations/hospital-implementation-distribution.md).
+acceptance. Generated evidence remains ignored or temporary and is removed
+after validation. Iteration 11.5 now realizes only that validated artifact at
+an explicit external destination as an independently valid repository on
+`main` with all files staged, zero commits, and zero remotes. No public
+release/archive, tag, license grant, CI, remote, push, or publication is
+implemented. See the
+[Hospital Implementation distribution operation](../operations/hospital-implementation-distribution.md)
+and [standalone Git realization](../operations/hospital-git-realization.md).
 The general [operator manual](../operations/operator-manual.md) remains
 authoritative for direct Platform operation.
 
@@ -170,8 +175,8 @@ Use these related terms precisely:
   documentation, builder inputs, and validation source inside this repository;
 - **Hospital Implementation distribution artifact** — immutable generated
   output built and validated under ignored local state;
-- **Hospital Implementation standalone Git realization** — optional later
-  generated repository produced only from the validated artifact; and
+- **Hospital Implementation standalone Git realization** — generated repository
+  produced only from the validated artifact for later publication; and
 - **Hospital Implementation release** — a published version of the validated
   generated product after explicit authorization.
 
@@ -273,7 +278,7 @@ Hospital Implementation builder@version
 immutable Hospital Implementation distribution build
         ↓ independent validation
 Hospital Implementation release candidate@version
-        ↓ optional standalone Git realization
+        ↓ standalone Git realization
         ↓ explicit authorization
 Hospital Implementation release/publication
 ```
@@ -357,7 +362,7 @@ authoritative maintained source + exact Platform release archive
 ignored immutable distribution build
         ↓ artifact-owned independent validator
 validated Hospital Implementation distribution artifact
-        ↓ later Git realization builder --destination PATH
+        ↓ Git realization builder --destination PATH
 standalone remote-free generated Git repository
         ↓ repository-owned independent validator
 STOP: optional commit/remote/push/publication requires authorization
@@ -761,8 +766,42 @@ tamper, incompatibility, trust, state-isolation, and hidden-dependency cases.
 Generated proof state is temporary or ignored and is removed after validation.
 
 The exact tested R/OS release matrix, final Apache-2.0 compatibility review and
-policy files, standalone Git realization, final candidate manifests, and
-publication form remain release-hardening work.
+policy files, final candidate manifests, and publication form remain
+release-hardening work.
+
+## Iteration 11.5 implementation evidence
+
+The standalone realization closes the artifact-to-repository boundary without
+creating another source authority:
+
+1. `platform.hospital-implementation-git-realization@0.1.0` declares exact
+   source-distribution, Platform, inventory, provenance, Git-state, validation,
+   ownership, and nonclaim semantics.
+2. `R/git-realization-runtime.R`, its contract, and
+   `validate-git-realization.R` are already members of the validated
+   distribution; the realization builder does not copy maintained Hospital
+   source or rebuild either upstream artifact.
+3. an explicit outside-repository destination is staged and validated before
+   atomic promotion; folder name and realization time are not logical identity.
+4. the repository contains the unchanged distribution plus only
+   `HOSPITAL-GIT-REALIZATION.yml`, its SHA-256 file, and root `.git` metadata.
+5. Git is initialized on `main`; all generated files are staged with zero
+   commits, remotes, tags, credentials, or local author configuration.
+6. only a complete pristine generated destination may be idempotently retained
+   or replaced by another validated artifact. Any modification, commit, remote,
+   branch drift, link, ignored state, alternate/nested Git state, or unrelated
+   content ends generator ownership and is refused without merge or repair.
+7. the artifact-owned validator independently proves exact inventory and
+   provenance, the original distribution's standalone validation and temporary
+   Platform doctor, and the Git baseline without the authoritative source tree.
+8. temporary acquisition runs initialization, doctor, synthetic reference
+   acceptance, and the materially different adopter workflow through unchanged
+   history, products, app, and reduced artifact behavior.
+
+The generated repository is publication-ready in structure only. It remains a
+proof artifact with the Iteration 11.4 unpublished Platform candidate and
+current no-license status; release hardening and explicit publication authority
+remain open.
 
 Online retrieval, automatic upgrade/merge, recipient dependency solving,
 dynamic plugins, OCI realization, broad migration infrastructure, and remote
@@ -825,13 +864,7 @@ tree; the fictional adopter producer substitutes through explicit trusted
 composition; tamper/incompatibility fails safely; and no generated artifact is
 maintained or published.
 
-## Later bounded increments
-
-### Standalone Hospital Implementation Git realization
-
-Consume only a validated distribution artifact, create an exact remote-free
-standalone Git repository at an explicit destination, stage generated files,
-validate independently, and stop before commit/remote/push/publication.
+## Remaining bounded increments
 
 ### Release/governance candidate
 

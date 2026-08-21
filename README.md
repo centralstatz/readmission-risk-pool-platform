@@ -23,8 +23,11 @@ Pool Hospital Implementation release containing one exact verified Platform
 release. Recipient modifications are outside the CentralStatz release
 architecture. Iteration 11.4 proves the generated artifact, exact unpublished
 Platform candidate, independent validator, safe extraction, and external-copy
-synthetic/adopter workflows under ignored local state. No standalone Git
-realization, license, release, tag, remote, or publication has been created.
+synthetic/adopter workflows under ignored local state. Iteration 11.5 proves
+the separate standalone Git form at an explicit outside-repository destination:
+closed identity/provenance, pristine replacement, independent validation, and
+`main` with all files staged, zero commits, and zero remotes. No license,
+release, tag, remote, push, or publication has been created.
 The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
@@ -157,7 +160,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the Iteration 11.4 checkpoint with:
+Evaluate the Iteration 11.5 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -169,6 +172,17 @@ Build and independently validate the proof-only Hospital Implementation with:
 Rscript operations/build-hospital-distribution.R
 Rscript operations/validate-hospital-distribution.R
 ```
+
+Maintainers can then generate and validate the pristine standalone repository
+at an explicit temporary destination:
+
+```sh
+Rscript operations/build-hospital-git-realization.R --destination PATH
+Rscript operations/validate-hospital-git-realization.R --destination PATH
+```
+
+These commands stop before commit, remote configuration, push, release, or
+publication.
 
 Generate and validate the deterministic reference flow with:
 
@@ -255,6 +269,8 @@ Phase 11 decision support is in the
 [distribution and first-release assessment](docs/architecture/distribution-release-assessment.md).
 Accepted hospital-facing composition architecture is in
 [Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md).
+Maintainer realization behavior is in
+[Standalone Hospital Implementation Git Realization](docs/operations/hospital-git-realization.md).
 The [current license status](LICENSE-STATUS.md) explicitly authorizes no public
 release or implied license grant; final license review and policy-file
 implementation remain incomplete.

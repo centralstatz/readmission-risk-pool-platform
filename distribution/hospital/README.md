@@ -6,6 +6,12 @@ release-candidate archive for the Iteration 11.4 proof, one top-level `renv`
 environment, thin human operations, an editable producer scaffold, and a
 separate complete fictional adopter example.
 
+When acquired as the CentralStatz-generated standalone Git realization, first
+run `Rscript validate-git-realization.R`. A valid pristine realization is on
+`main` with every generated file staged, zero commits, and zero remotes. The
+Git validator is expected to fail in a raw distribution artifact because Git
+realization is a separate maintainer boundary.
+
 This distribution is not a published release, clinical system, security
 boundary, hospital integration, deployment, or substitute for local validation
 and governance. No public license is installed by this proof.
@@ -50,6 +56,7 @@ library with `Rscript --vanilla` and never activate the embedded project.
 
 Recipient changes are allowed only under the license eventually supplied by an
 authorized release and may move the local tree outside CentralStatz's validated
-baseline. Iteration 11.4 provides no automatic updater, migration, remote Git
-repository, commit, push, publication, deployment, production support claim,
-or clinical authorization.
+baseline. Once modified, committed, operated, or configured with a remote, a
+realized repository is outside automatic generator replacement. The proof
+provides no updater, merge, migration, remote Git repository, commit, push,
+publication, deployment, production support claim, or clinical authorization.

@@ -9,10 +9,13 @@ reserve names or document hypothetical future capabilities.
   deployment repository through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
   specification assets, run Phase 0–11 tests, check repository policies, and
-  evaluate the Iteration 11.4 checkpoint.
+  evaluate the Iteration 11.5 checkpoint.
 - [Hospital Implementation Distribution](hospital-implementation-distribution.md)
   — generate and independently validate the proof-only adopter-facing source
   distribution, then initialize and exercise an external copied artifact.
+- [Standalone Hospital Implementation Git Realization](hospital-git-realization.md)
+  — maintainer-only generation and independent validation of the staged,
+  uncommitted, remote-free repository form, stopping before publication.
 - [Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
   — validate the configured producer, understand trusted registration and
   exact installation selection, and review the independent adopter proof.

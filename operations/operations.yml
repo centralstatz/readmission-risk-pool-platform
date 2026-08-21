@@ -20,7 +20,7 @@ operations:
     documentation: docs/operations/validation.md
   - operation_id: platform.validate-checkpoint
     command: Rscript operations/validate.R --mode checkpoint
-    purpose: Check the completed Phase 8 milestone.
+    purpose: Check every completed milestone through the current Phase 11 iteration.
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/validation.md
@@ -88,14 +88,26 @@ operations:
     command: Rscript operations/build-hospital-distribution.R
     purpose: Build and atomically expose one proof-only Hospital Implementation distribution.
     mutation: immutable_local_artifact_and_current_pointer
-    classification: public
+    classification: maintainer
     documentation: docs/operations/hospital-implementation-distribution.md
   - operation_id: platform.validate-hospital-distribution
     command: Rscript operations/validate-hospital-distribution.R
     purpose: Independently validate the current generated Hospital Implementation distribution.
     mutation: read_only_with_removed_temporary_checks
-    classification: public
+    classification: maintainer
     documentation: docs/operations/hospital-implementation-distribution.md
+  - operation_id: platform.build-hospital-git-realization
+    command: Rscript operations/build-hospital-git-realization.R --destination PATH
+    purpose: Realize one validated Hospital distribution as a pristine standalone Git repository.
+    mutation: create_or_replace_pristine_generated_repository
+    classification: maintainer
+    documentation: docs/operations/hospital-git-realization.md
+  - operation_id: platform.validate-hospital-git-realization
+    command: Rscript operations/validate-hospital-git-realization.R --destination PATH
+    purpose: Independently validate a staged uncommitted remote-free Hospital repository.
+    mutation: read_only_with_removed_temporary_checks
+    classification: maintainer
+    documentation: docs/operations/hospital-git-realization.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

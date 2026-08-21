@@ -4,9 +4,12 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
   required <- c(
     ".renvignore",
     "contracts/distribution/hospital-implementation-distribution.yml",
+    "contracts/distribution/hospital-implementation-git-realization.yml",
     "distribution/hospital/README.md",
     "distribution/hospital/R/distribution-runtime.R",
+    "distribution/hospital/R/git-realization-runtime.R",
     "distribution/hospital/validate-distribution.R",
+    "distribution/hospital/validate-git-realization.R",
     "distribution/hospital/implementation/producer.yml",
     "distribution/hospital/implementation/platform-instance.yml",
     "distribution/hospital/implementation/producer-configuration.yml",
@@ -17,11 +20,15 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
     "operations/lib/platform-cycle-operation.R",
     "operations/lib/hospital-distribution-operation.R",
     "operations/lib/hospital-distribution-validation.R",
+    "operations/lib/hospital-git-realization-operation.R",
     "operations/build-hospital-distribution.R",
     "operations/validate-hospital-distribution.R",
+    "operations/build-hospital-git-realization.R",
+    "operations/validate-hospital-git-realization.R",
     "tests/run-phase11-tests.R",
     "tests/phase11/test-hospital-distribution.R",
-    "docs/operations/hospital-implementation-distribution.md"
+    "docs/operations/hospital-implementation-distribution.md",
+    "docs/operations/hospital-git-realization.md"
   )
   present <- file.exists(file.path(repository_root, required))
   checks <- lapply(seq_along(required), function(index) rrp_check(
@@ -53,6 +60,29 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
     "hospital_distribution_repository", "invalid_hospital_distribution_contract",
     "Hospital distribution contract must conform with its exact supported identity.",
     contract_path
+  )
+
+  git_contract_ok <- FALSE
+  git_contract_path <- "contracts/distribution/hospital-implementation-git-realization.yml"
+  if (file.exists(file.path(repository_root, git_contract_path))) {
+    parsed <- rrp_parse_yaml_specification(file.path(repository_root, git_contract_path))
+    envelope <- if (is.null(parsed$parse_error)) {
+      rrp_validate_specification_envelope(parsed$document, git_contract_path)
+    } else NULL
+    git_contract_ok <- !is.null(envelope) && rrp_conforms(envelope) && identical(
+      parsed$document[c(
+        "specification_kind", "specification_id", "specification_version"
+      )], rrp_hospital_git_specification()
+    )
+  }
+  checks[[length(checks) + 1L]] <- rrp_check(
+    "hospital_git_realization_contract", git_contract_ok,
+    "Hospital Git realization contract has the supported exact envelope"
+  )
+  if (!git_contract_ok) issues[[length(issues) + 1L]] <- rrp_issue(
+    "hospital_distribution_repository", "invalid_hospital_git_realization_contract",
+    "Hospital Git realization contract must conform with its exact identity.",
+    git_contract_path
   )
 
   source_map <- tryCatch(
@@ -107,20 +137,45 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
     "distribution/hospital"
   )
 
+  realization_operation <- paste(readLines(file.path(
+    repository_root, "operations", "lib", "hospital-git-realization-operation.R"
+  ), warn = FALSE), collapse = "\n")
+  artifact_only <- !any(vapply(c(
+    "rrp_build_hospital_distribution(",
+    "rrp_build_platform_release_candidate(",
+    "distribution/hospital/"
+  ), grepl, logical(1), x = realization_operation, fixed = TRUE))
+  no_publication <- !any(vapply(c(
+    "git push", "git commit", "git remote add", "gh repo create",
+    "gh release create"
+  ), grepl, logical(1), x = realization_operation, fixed = TRUE))
+  checks[[length(checks) + 1L]] <- rrp_check(
+    "hospital_git_artifact_only_boundary", artifact_only && no_publication,
+    "Hospital Git realization consumes only the artifact and stops before publication"
+  )
+  if (!artifact_only || !no_publication) issues[[length(issues) + 1L]] <- rrp_issue(
+    "hospital_distribution_repository", "hospital_git_boundary_leak",
+    "Hospital Git realization must not rebuild maintained inputs or publish.",
+    "operations/lib/hospital-git-realization-operation.R"
+  )
+
   operation_text <- paste(readLines(file.path(
     repository_root, "operations", "operations.yml"
   ), warn = FALSE), collapse = "\n")
   operations_registered <- all(vapply(c(
     "platform.build-hospital-distribution",
-    "platform.validate-hospital-distribution"
+    "platform.validate-hospital-distribution",
+    "platform.build-hospital-git-realization",
+    "platform.validate-hospital-git-realization"
   ), grepl, logical(1), x = operation_text, fixed = TRUE))
   checks[[length(checks) + 1L]] <- rrp_check(
     "hospital_distribution_operations_registered", operations_registered,
-    "Hospital distribution build and validation are registered human operations"
+    "Hospital artifact and Git-realization operations are registered maintainer operations"
   )
   if (!operations_registered) issues[[length(issues) + 1L]] <- rrp_issue(
     "hospital_distribution_repository", "unregistered_hospital_operation",
-    "Register both Hospital distribution operations.", "operations/operations.yml"
+    "Register all Hospital distribution and realization operations.",
+    "operations/operations.yml"
   )
 
   rrp_validation_result(
@@ -135,16 +190,16 @@ rrp_validate_phase11_checkpoint <- function(repository_root) {
     repository_root, "docs", "architecture", "platform-implementation-record.md"
   ), warn = FALSE), collapse = "\n")
   evidence <- grepl(
-    "Iteration 11.4 — Generated Hospital Implementation distribution build/validation proof",
+    "Iteration 11.5 — Standalone Hospital Implementation Git realization",
     record, fixed = TRUE
   ) && grepl("Phase 11 status", record, fixed = TRUE)
   checks <- rrp_check(
     "phase11_iteration_checkpoint", evidence,
-    "Iteration 11.4 implementation and Phase 11 status are recorded"
+    "Iteration 11.5 implementation and Phase 11 status are recorded"
   )
   issues <- if (evidence) rrp_empty_issues() else rrp_issue(
     "phase11_checkpoint", "missing_phase11_iteration_record",
-    "Implementation record must record the Iteration 11.4 proof and Phase 11 status.",
+    "Implementation record must record Iteration 11.5 and Phase 11 status.",
     "docs/architecture/platform-implementation-record.md"
   )
   rrp_validation_result("Phase 11 checkpoint", checks, issues)

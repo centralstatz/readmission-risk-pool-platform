@@ -73,8 +73,9 @@ conformance, the migrated synthetic reference peer, and an independently
 developed test-only adopter producer using a materially different source shape.
 The two isolated compositions prove unchanged runtime/provider, DuckDB,
 products/app, and artifact behavior. The fixture is evidence, not a second
-shipped health system or permanent packaging model; final adopter-code
-packaging remains open for Phase 11.
+shipped health system. Iterations 11.4–11.5 now own the generated adopter-facing
+artifact and pristine standalone Git form; final release governance remains
+open for Phase 11.
 Iteration 11.1 owns the retained decision assessment in
 `docs/architecture/distribution-release-assessment.md`. Iteration 11.2
 baselines the maintainer's release/governance direction; its separately
@@ -91,10 +92,14 @@ exact unpublished Platform candidate archive, closed inventory/SHA-256, one
 top-level lock, safe managed extraction, callable cycle seam, thin wrappers,
 editable fail-closed scaffold, separate fictional adopter example, standalone
 validation, and external-copy workflows through unchanged history/products/app/
-reduced artifact. It creates no standalone Git realization, license, release,
-tag, remote, publication, or deployment. Phase 11 remains in progress; the
-current no-release license status remains authoritative pending final
-compatibility review and later release work.
+reduced artifact. Iteration 11.5 implements
+`platform.hospital-implementation-git-realization@0.1.0` and the maintainer-only
+artifact-to-repository boundary: explicit outside-repository destination,
+closed provenance/inventory, pristine-output replacement rules, independent
+validation, and `main` with all files staged, zero commits, and zero remotes.
+It creates no license, release, tag, remote, push, publication, or deployment.
+Phase 11 remains in progress; the current no-release license status remains
+authoritative pending final compatibility review and release hardening.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -177,6 +182,10 @@ build the Hospital Implementation distribution
     → Rscript operations/build-hospital-distribution.R
 validate the Hospital Implementation distribution
     → Rscript operations/validate-hospital-distribution.R
+generate a standalone Hospital Implementation repository
+    → Rscript operations/build-hospital-git-realization.R --destination PATH
+validate a standalone Hospital Implementation repository
+    → Rscript operations/validate-hospital-git-realization.R --destination PATH
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -212,19 +221,21 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the Iteration 11.4 checkpoint, run:
+For the Iteration 11.5 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
 ```
 
-Run the focused Hospital distribution tests and supported build/validation
-operations with:
+Run the focused Hospital distribution/Git-realization tests and supported
+maintainer build/validation operations with:
 
 ```sh
 Rscript tests/run-phase11-tests.R
 Rscript operations/build-hospital-distribution.R
 Rscript operations/validate-hospital-distribution.R
+Rscript operations/build-hospital-git-realization.R --destination PATH
+Rscript operations/validate-hospital-git-realization.R --destination PATH
 ```
 
 Run the focused Phase 3 producer tests and the supported reference operation
@@ -337,7 +348,7 @@ before runtime. The independent adopter evidence is isolated under
 registry. Do not add dynamic loading, hospital selectors, multiple active
 producers, or source configuration or secrets above this boundary.
 
-The selected future physical composition is governed by
+The selected physical composition is governed by
 `docs/architecture/hospital-implementation-distribution-assessment.md`.
 Maintained hospital-facing source remains in this repository and will generate
 an independently versioned distribution embedding one exact verified Platform
@@ -345,10 +356,13 @@ archive. Generated templates own one complete platform-instance selection,
 fixed reviewed composition, and the only active top-level `renv` environment;
 the embedded lock remains provenance, and isolated synthetic acceptance remains
 separate from adopter state. There is no separately maintained CentralStatz
-project or formal third release layer. Until Iteration 11.4 implements the
-bounded artifact proof, do not create distribution paths, wrappers, manifests,
-archives, repositories, downloads, or upgrade behavior merely because the
-architecture describes them.
+project or formal third release layer. Iteration 11.5 may realize only an
+independently validated artifact as a pristine outside-repository Git tree.
+Treat distribution and Git-realization operations as maintainer/release
+preparation, not hospital-facing operations; never rebuild inputs implicitly,
+overwrite modified/committed/remote-configured destinations, merge recipient
+changes, or proceed to publication without a later explicitly authorized
+release operation.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires

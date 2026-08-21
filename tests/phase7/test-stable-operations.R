@@ -25,9 +25,15 @@ phase7_test_cases <- function(repository_root) list(
     phase0_assert_true(result$passed, paste(result$issues$message, collapse = " | "))
     registry <- rrp_read_operations_registry(repository_root)
     public <- Filter(function(value) identical(value$classification, "public"), registry$operations)
-    phase7_assert_identical(length(public), 16L)
+    phase7_assert_identical(length(public), 14L)
+    maintainer <- Filter(function(value) {
+      identical(value$classification, "maintainer")
+    }, registry$operations)
+    phase7_assert_identical(length(maintainer), 4L)
     phase0_assert_true(all(vapply(registry$operations, function(value) {
-      value$classification %in% c("public", "advanced", "development")
+      value$classification %in% c(
+        "public", "maintainer", "advanced", "development"
+      )
     }, logical(1))))
   },
 

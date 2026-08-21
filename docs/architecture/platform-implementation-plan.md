@@ -637,23 +637,32 @@ repository strategy are decided from demonstrated needs.
 - **Iteration 11.4 — generated distribution build and validation proof:**
   complete. Added the minimal maintained hospital-facing source, artifact builder,
   ownership/inventory metadata, and independent validator in this repository.
-  Prove exact embedded-archive integrity, one top-level environment, isolated
+  Proved exact embedded-archive integrity, one top-level environment, isolated
   reference acceptance, explicit adopter composition and conformance,
   downstream execution, artifact construction, and fail-closed drift. Do not
-  add the later standalone Git realization, release, or publication. The proof
+  conflate the artifact with its later Git realization, release, or publication. The proof
   uses option C: a deliberately failing editable scaffold plus one clearly
   separate complete fictional adopter example.
-- **Later Phase 11 realization and release work:** add a separate operation that
-  turns only a validated generated artifact into a remote-free staged Git
-  repository. Then complete license/environment/governance evidence, assemble
+- **Iteration 11.5 — standalone Hospital Implementation Git realization:**
+  complete. Added the language-neutral realization contract, artifact-carried
+  standalone validator, and maintainer-only build/validation operations. Only
+  an independently validated distribution may be copied to an explicit
+  outside-repository destination. The exact generated repository is validated,
+  initialized on `main`, fully staged, uncommitted, and remote-free. Pristine
+  output is idempotent or replaceable after staged validation; unrelated,
+  modified, committed, remote-configured, linked, nested, or suspicious state
+  is refused. External acquisition proves unchanged synthetic and adopter
+  workflows. No publication action exists.
+- **Remaining Phase 11 release work:** complete
+  license/environment/governance evidence, assemble
   release candidates, and perform clean acquisition validation. Publication of
   `v0.1.0` still requires explicit maintainer authorization.
 
-**Phase 11 remains in progress.** Iteration 11.4 proves the generated
-distribution, independent validation, safe managed extraction, external copied
-execution, synthetic acceptance, and adopter substitution. No standalone Git
-realization, final license, public release artifact, tag, CI matrix, remote, or
-publication has been implemented.
+**Phase 11 remains in progress.** Iterations 11.4–11.5 prove the generated
+distribution and its standalone Git realization through independent validation,
+safe managed extraction, external execution, synthetic acceptance, and adopter
+substitution. No final license, public release candidate, tag, CI matrix,
+remote, push, GitHub release, or publication has been implemented.
 
 ## Cross-phase rules
 

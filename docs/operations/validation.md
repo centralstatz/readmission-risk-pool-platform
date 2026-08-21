@@ -127,7 +127,8 @@ Run the focused Phase 10 canonical-producer and independent substitution tests:
 Rscript tests/run-phase10-tests.R
 ```
 
-Run the focused Phase 11 Hospital distribution and external-copy tests:
+Run the focused Phase 11 Hospital distribution, Git realization, acquisition,
+and external-copy tests:
 
 ```sh
 Rscript tests/run-phase11-tests.R
@@ -139,6 +140,18 @@ Build and independently validate the proof-only Hospital Implementation:
 Rscript operations/build-hospital-distribution.R
 Rscript operations/validate-hospital-distribution.R
 ```
+
+Realize the validated artifact at a temporary outside-repository destination
+and independently validate the staged Git baseline:
+
+```sh
+Rscript operations/build-hospital-git-realization.R --destination PATH
+Rscript operations/validate-hospital-git-realization.R --destination PATH
+```
+
+Remove the temporary destination after evidence collection. It must contain no
+commit or remote and must never be left as a nested repository inside this
+authoritative tree.
 
 Validate the installed canonical producer without downstream execution:
 

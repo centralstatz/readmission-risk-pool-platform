@@ -4481,3 +4481,252 @@ matrix, both product candidates and clean-acquisition evidence, followed by a
 separately authorized publication action. This grouping keeps realization
 mechanics distinct from legal/release authorization without introducing
 another architecture phase.
+
+### Iteration 11.5 — Standalone Hospital Implementation Git realization
+
+**Status:** implemented on 2026-08-20; Phase 11 remains in progress
+
+#### Planned objective
+
+Consume one independently validated Hospital Implementation distribution and
+realize it as the exact standalone Git-shaped product a hospital may later
+acquire. The operation must use an explicit outside-repository destination,
+stage and validate before promotion, initialize `main`, stage every generated
+file, and stop with zero commits and remotes. It must neither reach maintained
+Hospital source nor rebuild the distribution or Platform candidate. Safe
+regeneration may own pristine generated output only; modifications, commits,
+remotes, links, suspicious Git state, and unrelated destinations must be
+preserved and refused. Publication, release governance, and licensing remain
+outside this iteration.
+
+#### Actual work
+
+Added `platform.hospital-implementation-git-realization@0.1.0`, its generated
+manifest/checksum form, the distribution-carried standalone runtime and
+validator, authoritative maintainer builder/validation operations, repository
+validation, and focused success/failure/acquisition evidence. A generated
+repository is the unchanged validated distribution at its root plus only
+`HOSPITAL-GIT-REALIZATION.yml`, its SHA-256 file, and local `.git` metadata.
+The distribution's own validator recognizes that exact envelope while still
+checking every original distribution member and Platform candidate.
+
+The operation boundary is now:
+
+```text
+independently validated Hospital distribution
+        → copy exact regular files to external staging
+        → write self-contained realization identity/provenance
+        → validate closed content
+        → git init --initial-branch=main
+        → git add --all
+        → validate pristine Git state
+        → atomically promote or restore prior pristine output
+        → run artifact-owned standalone validator
+        → STOP
+```
+
+The build command defaults only to the existing Hospital distribution store;
+it never invokes its builder. `--distribution` selects another exact artifact
+or store, `--destination` is mandatory, and `--realized-at` is optional
+occurrence provenance. The independent validator runs from the realized tree
+with the active package library and no authoritative-tree lookup.
+
+#### Realization contract and identity/provenance
+
+The realization manifest records its specification, deterministic instance
+identity, occurrence time, exact Hospital distribution specification/release/
+instance/build/manifest SHA-256, included Platform identity/version/candidate/
+archive SHA-256, builder identity/version/operation, expected repository files,
+per-source-member byte sizes and SHA-256 values, Git semantics, provenance,
+validation evidence, status, and explicit nonclaims.
+
+Logical identity includes the realization specification and builder versions,
+exact distribution instance/build/manifest, included Platform candidate and
+archive digest, and every copied source member. Destination, folder name,
+realization time, commit, tag, remote, publication, runtime run, products,
+artifacts, and deployment are excluded. Git commit identity is neither present
+nor required. Platform and Hospital Implementation versions remain independent.
+
+#### Source artifact and repository boundary
+
+The contract, `R/git-realization-runtime.R`, and
+`validate-git-realization.R` are themselves allowlisted distribution members.
+The realization builder loads them only after artifact-owned distribution
+validation passes. It does not copy from maintained `distribution/hospital/`,
+does not build a distribution, does not build a Platform candidate, and does
+not import CentralStatz distribution/Git builder operations into the realized
+repository or its embedded Platform candidate.
+
+The realization is adoption/distribution release preparation, not deployment.
+Connect-specific manifests, application realization behavior, credentials,
+publication APIs, or service concepts were not introduced. Hospital
+distribution and Git-realization operations are now explicitly classified as
+`maintainer`; the stable public Platform onboarding surface remains 14
+operations and the generated Hospital artifact retains its separate thin
+hospital-facing wrapper surface.
+
+#### Destination, ownership, refusal, and rollback
+
+Missing destinations are allowed only when their regular parent already
+exists outside the authoritative repository and outside the source artifact.
+Staging occurs beside the destination so promotion is a same-parent rename.
+An existing destination must pass the complete in-process realization and Git
+baseline before it is considered generator-owned. The same realization is an
+idempotent no-op even when a later occurrence time is supplied. A different
+validated source may replace a pristine generated destination only after the
+replacement stages and validates.
+
+Unrelated directories, non-directory paths, symbolic links, source/destination
+containment, changed or missing members, extra/untracked/ignored content,
+unstaged changes, commits, remotes, wrong branches, local author/work-tree
+configuration, nested `.git`, Git alternates/modules/worktrees/shallow state,
+and nonportable/sensitive/sibling content fail with actionable issues. No merge,
+reset, repair, recipient upgrade, or silent deletion exists. Promotion moves a
+validated prior destination aside, restores it if new promotion/validation
+fails, and removes that backup only after standalone validation succeeds.
+
+> The generator owns only pristine generated realizations. Once modified,
+> committed, or configured with a remote, the destination is outside automatic
+> replacement.
+
+#### Independent validation and acquisition proof
+
+The generated validator verifies its exact contract and manifest checksum,
+closed inventory, every copied size/SHA-256, exact distribution and embedded
+Platform provenance, validation evidence/nonclaims, no links/path escapes,
+machine/sibling/sensitive exclusions, one independent root Git directory,
+`main`, zero commits/remotes, exact staged index, no unstaged/untracked/ignored
+state, and no suspicious or nested Git metadata. It invokes the original
+artifact-owned distribution validator, which safely extracts the Platform to a
+temporary directory and runs Platform doctor. GitHub and the authoritative
+source tree are unnecessary.
+
+A separate temporary realized repository passes standalone Git and
+distribution validation, initialization, Hospital doctor, complete synthetic
+reference acceptance, and the materially different fictional-adopter proof.
+Those workflows reach unchanged DuckDB history, products, Shiny construction,
+and reduced application artifact behavior. Initialization/operation creates
+ignored `.rrp` and `build` state and deliberately transitions that checkout
+out of pristine generator ownership.
+
+#### Tests and failure cases
+
+The Phase 11 suite now covers contract/envelope, source allowlist, generated
+Git shape, independent validators, artifact validation inside the Git envelope,
+identity/path/time behavior, idempotent regeneration, changed-source pristine
+replacement, Platform/distribution identity propagation, full acquisition,
+and absence of authoritative builder/source leakage. Required failure evidence
+covers missing/invalid/tampered source, unrelated/modified/committed/remote
+destination, destination link, suspicious/nested Git, tampered/missing/extra
+member, metadata mismatch, embedded Platform digest mismatch, branch mismatch,
+unexpected commit/remote, unstaged or ignored state, machine path, and hidden
+sibling dependency. Failures never silently repair unknown state.
+
+#### Old assets used or adapted
+
+No sibling-repository asset was inspected, copied, modified, or required. The
+implemented Connect Cloud realization supplied in-repository architectural
+evidence for explicit destination, staged validation, Git initialization,
+pristine ownership, atomic replacement/rollback, and independent validation.
+Hospital realization code is new and intentionally omits Connect target,
+manifest, app, dependency-pruning, and deployment behavior. The Iteration 11.4
+artifact and validator are reused as the unchanged sole input boundary.
+
+#### Decisions, surprises, and deviations
+
+- Selected a direct root realization rather than nesting the distribution in a
+  subdirectory, preserving the eventual hospital acquisition experience.
+- Added only two generated realization metadata files. The artifact validator
+  excludes those and root `.git` only when the complete regular realization
+  envelope is present; the realization validator owns their content and Git
+  semantics.
+- Realization time remains inspectable occurrence provenance but never changes
+  logical identity. When an existing pristine destination has the same logical
+  identity, regeneration retains its original bytes rather than rewriting only
+  the timestamp.
+- Exact source distribution build identity participates in realization
+  identity because the realization consumes one physical validated artifact,
+  even when two builds share a logical distribution instance.
+- Maintainer tooling required an explicit operation classification distinct
+  from public onboarding, advanced debugging, and development validation.
+- No release version was bumped or fabricated: both generated products remain
+  proof-only and unpublished, and `LICENSE-STATUS.md` still grants no license.
+
+#### Validation evidence
+
+The final validation matrix reported:
+
+- `Rscript tests/run-phase11-tests.R`: PASS (55 tests), including independent
+  distribution/Git validators, complete synthetic/adopter acquisition, and all
+  required ownership, Git-state, identity, tamper, path, and refusal cases;
+- `Rscript tests/run-phase8-tests.R`: PASS (22 tests),
+  `Rscript tests/run-phase10-tests.R`: PASS (26 tests), and
+  `Rscript tests/run-phase7-tests.R`: PASS (8 tests);
+- development validation: PASS (159 checks, 0 issues), including every Phase
+  0–11 focused suite;
+- checkpoint validation: PASS (221 checks, 0 issues), including the Iteration
+  11.5 repository and implementation-record evidence;
+- documentation validation: PASS (4 checks, 0 issues), covering 37 required
+  documents, 271 local links, 25 navigation sources, and portable paths;
+- final direct Hospital distribution build/validation: succeeded with
+  distribution instance
+  `hospital_implementation_distribution::475d0187647ad9e94494b790343c6f837a9eaf6f5f44d1c4dbccb2afeb21b75e`,
+  build
+  `hospital_implementation_distribution_build::1114327144f53ed37cd91abe5a0b309377d34eb451cfc2682383d84587a44de4`,
+  candidate
+  `platform_release_candidate::d8beaf1117f96226743c1494cd5ccad2d123cb83636bf38290fe7b0d2afbbff5`,
+  and 41 exact inventory members;
+- final direct Git build/validation: succeeded with realization
+  `hospital_implementation_git_realization::2a6e1202f245a4b2cbd57f2df0487e937fdfa44948b14a21973011b8f234b456`,
+  `main`, all generated files staged, zero commits/remotes, passed source
+  distribution validation, and explicit `not_published` status;
+- clean `rrpruntime@0.3.0` source build and
+  `R CMD check --no-manual --no-vignettes`: `Status: OK`; restricted-network
+  package-index warnings did not affect local checks;
+- independent parse validation: PASS for 159 maintained R files and 60
+  maintained YAML files;
+- `renv::status()`: exit 0, “No issues found -- the project is in a consistent
+  state”; the known implicit dependency-discovery timing note and restricted-
+  network index warnings were nonfatal; and
+- final documentation, whitespace, Git diff, generated-state, nested-Git,
+  sensitive-file, and sibling-worktree hygiene checks passed.
+
+The managed execution environment's ordinary `renv` activation can repeatedly
+rescan and contend on its sandbox lock. Final composed validation and direct
+maintainer commands therefore used `R_PROFILE_USER=/dev/null` with the exact
+locked project library; the documented scripts and modes ran unchanged. No
+network access, restoration, dependency/lockfile change, commit, remote, tag,
+push, release, or publication occurred. Temporary distribution stores, package
+checks, and Git destinations were removed after evidence collection.
+
+#### Documentation and later implications
+
+Added the maintainer-facing standalone Git guide and updated the distribution
+guide, operator manual, validation guide, operation index/registry, root and
+documentation navigation, Platform Architecture, implementation plan, Hospital
+distribution assessment, open decisions, contracts index, and `AGENTS.md`.
+Publication can later consume this exact validated staged shape without
+restructuring it, but commit authorship, release identity, remote configuration,
+push, GitHub Release creation, and release attachment remain unauthorized.
+
+#### Phase 11 status and exact remaining work
+
+**IN PROGRESS.** Artifact construction and standalone Git realization are now
+proved. Before a deliberate first-release cutoff, Phase 11 still requires the
+final Apache-2.0 dependency/asset/license compatibility review and license
+installation; stewardship/copyright metadata; CONTRIBUTING and DCO guidance;
+SECURITY and SUPPORT; release notes/changelog/citation metadata if justified;
+tested R/OS matrix and CI evidence; actual Platform `v0.1.0` candidate; a
+Hospital Implementation candidate generated from that exact Platform
+candidate/release; clean acquisition evidence; final checksums/manifests and
+repository/release naming; explicit maintainer authorization; and separate
+commit/tag/remote/push/GitHub Release/publication actions.
+
+#### Recommended next task
+
+Implement one bounded **release-candidate and governance hardening** iteration:
+complete the final license review/installation and policy files, establish only
+the R/OS support matrix actually tested, assemble exact unpublished Platform
+and Hospital release candidates from this realized structure, and prove clean
+acquisition. Stop again for explicit maintainer authorization before any
+commit, tag, remote, push, GitHub Release, or publication action.

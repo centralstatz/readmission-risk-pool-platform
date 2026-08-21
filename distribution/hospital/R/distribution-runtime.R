@@ -102,12 +102,28 @@ rrp_hospital_now <- function() format(
   Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"
 )
 
-rrp_hospital_scan_tree <- function(root, allow_local_state = TRUE) {
+rrp_hospital_git_realization_envelope_present <- function(root) {
+  metadata <- file.path(root, c(
+    "HOSPITAL-GIT-REALIZATION.yml", "HOSPITAL-GIT-REALIZATION.sha256"
+  ))
+  dir.exists(file.path(root, ".git")) &&
+    !nzchar(Sys.readlink(file.path(root, ".git"))) &&
+    all(file.exists(metadata)) &&
+    !any(dir.exists(metadata)) &&
+    !any(nzchar(Sys.readlink(metadata)))
+}
+
+rrp_hospital_scan_tree <- function(root, allow_local_state = TRUE,
+                                   allow_git_realization = FALSE) {
   files <- character()
   directories <- ""
   symlinks <- character()
   queue <- ""
   ignored_roots <- if (allow_local_state) c(".rrp", "build", ".Rproj.user") else character()
+  if (allow_git_realization) ignored_roots <- c(
+    ignored_roots, ".git", "HOSPITAL-GIT-REALIZATION.yml",
+    "HOSPITAL-GIT-REALIZATION.sha256"
+  )
   while (length(queue) > 0L) {
     relative_directory <- queue[[1L]]
     queue <- queue[-1L]
@@ -395,7 +411,11 @@ rrp_hospital_distribution_build_id <- function(instance_id, built_at) paste0(
   rrp_hospital_sha256_string(paste(instance_id, built_at, sep = "\n"))
 )
 
-rrp_validate_hospital_distribution <- function(root, allow_local_state = TRUE) {
+rrp_validate_hospital_distribution <- function(
+  root,
+  allow_local_state = TRUE,
+  allow_git_realization = FALSE
+) {
   issues <- list()
   root_link <- nzchar(Sys.readlink(root))
   root <- normalizePath(root, mustWork = FALSE)
@@ -405,7 +425,7 @@ rrp_validate_hospital_distribution <- function(root, allow_local_state = TRUE) {
       "Distribution root must be an existing regular directory, not a symbolic link."
     )
   )))
-  tree <- rrp_hospital_scan_tree(root, allow_local_state)
+  tree <- rrp_hospital_scan_tree(root, allow_local_state, allow_git_realization)
   for (path in tree$symlinks) issues[[length(issues) + 1L]] <- rrp_hospital_issue(
     "integrity", "distribution_symbolic_link",
     "Symbolic links are prohibited in the generated distribution baseline.", path
@@ -629,6 +649,8 @@ rrp_validate_hospital_distribution <- function(root, allow_local_state = TRUE) {
     "implementation/producer-configuration.yml",
     "implementation/R/producer.R", "implementation/R/composition.R",
     "examples/fictional-adopter/README.md",
+    "contracts/hospital-implementation-git-realization.yml",
+    "R/git-realization-runtime.R", "validate-git-realization.R",
     "operations/initialize.R", "operations/doctor.R",
     "operations/run-reference-acceptance.R",
     "operations/validate-producer.R", "operations/run-platform.R",
@@ -659,7 +681,8 @@ rrp_validate_hospital_distribution <- function(root, allow_local_state = TRUE) {
 
 rrp_hospital_validate_platform_execution <- function(root, validation = NULL) {
   if (is.null(validation)) validation <- rrp_validate_hospital_distribution(
-    root, allow_local_state = TRUE
+    root, allow_local_state = TRUE,
+    allow_git_realization = rrp_hospital_git_realization_envelope_present(root)
   )
   if (!identical(validation$overall_status, "pass")) stop(
     "Distribution must pass structural validation before Platform validation.",
@@ -745,7 +768,10 @@ rrp_hospital_run_process <- function(script, arguments = character(), working_di
 }
 
 rrp_initialize_hospital_distribution <- function(root) {
-  validation <- rrp_validate_hospital_distribution(root, allow_local_state = TRUE)
+  validation <- rrp_validate_hospital_distribution(
+    root, allow_local_state = TRUE,
+    allow_git_realization = rrp_hospital_git_realization_envelope_present(root)
+  )
   if (!identical(validation$overall_status, "pass")) stop(
     "Hospital Implementation distribution is invalid: ",
     paste(validation$issues$issue_code, collapse = ", "), call. = FALSE

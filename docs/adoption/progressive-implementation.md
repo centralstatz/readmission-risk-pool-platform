@@ -76,13 +76,16 @@ normal operators continue to use the shipped configuration and
 
 Iteration 11.3 selects one authoritative CentralStatz source repository that
 will produce two independently versioned releases after the Platform release
-process exists. Iteration 11.4 implements its proof-only generated form:
+process exists. Iterations 11.4–11.5 implement its proof-only generated artifact
+and standalone Git form:
 
 ```text
 readmission-risk-pool-platform
         ├── independently released RRP Platform
         └── generated RRP Hospital Implementation distribution
                 └── embeds one exact verified Platform archive
+                        ↓ maintainer-only realization
+                staged / uncommitted / remote-free repository
 ```
 
 Hospital-facing templates, wrappers, documentation, builder logic, and
@@ -110,6 +113,8 @@ not a formal third release layer. Build with
 fails until its callable conforms. The separate `examples/fictional-adopter/`
 tree proves the pattern without defining a required source shape. See
 [Hospital Implementation Distribution Operations](../operations/hospital-implementation-distribution.md).
+The separate maintainer realization and pristine ownership cutoff are in
+[Standalone Hospital Implementation Git Realization](../operations/hospital-git-realization.md).
 
 ## Source responsibility
 

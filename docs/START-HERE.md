@@ -64,16 +64,19 @@ extending it.
 21. [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
    — the authoritative one-repository/two-release-product model, exact embedded
    Platform release, top-level environment, trusted composition, operations,
-   lifecycle, and implemented Iteration 11.4 proof.
+   lifecycle, and implemented artifact/Git-realization proofs.
 22. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
    — build, independently validate, initialize, and exercise a copied proof artifact.
-23. [Platform Implementation Record](architecture/platform-implementation-record.md)
+23. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
+   — generate and validate the pristine staged repository form while stopping
+   before commit, remote, tag, push, or publication.
+24. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-24. [Implementation Conventions](development/implementation-conventions.md) and
+25. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-25. [Repository Development Policies](development/repository-policies.md) for
+26. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-26. [Operations](operations/README.md) for supported human operations and
+27. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

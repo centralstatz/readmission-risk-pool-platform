@@ -5,7 +5,10 @@ script <- normalizePath(sub("^--file=", "", grep(
 )[[1L]]), mustWork = TRUE)
 root <- dirname(script)
 source(file.path(root, "R", "distribution-runtime.R"))
-result <- rrp_validate_hospital_distribution(root, allow_local_state = TRUE)
+result <- rrp_validate_hospital_distribution(
+  root, allow_local_state = TRUE,
+  allow_git_realization = rrp_hospital_git_realization_envelope_present(root)
+)
 if (!identical(result$overall_status, "pass")) {
   for (index in seq_len(nrow(result$issues))) message(
     "[", result$issues$category[[index]], "/",

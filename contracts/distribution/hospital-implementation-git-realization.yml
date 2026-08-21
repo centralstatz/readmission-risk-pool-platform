@@ -1,0 +1,83 @@
+# Standalone Git form of one validated Hospital Implementation distribution.
+specification_kind: hospital_implementation_git_realization
+specification_id: platform.hospital-implementation-git-realization
+specification_version: "0.1.0"
+specification_format_version: "1.0.0"
+identity_scope: platform
+title: Readmission Risk Pool Hospital Implementation standalone Git realization
+status: active
+description: >-
+  A generated standalone local Git repository containing one exact validated
+  Hospital Implementation distribution, self-contained realization metadata,
+  and no commit or remote. It is maintainer release-preparation output, not
+  maintained source, publication, deployment, or a recipient upgrade mechanism.
+
+required_manifest_fields:
+  - manifest_kind
+  - manifest_version
+  - realization_specification
+  - realization_instance_id
+  - realized_at
+  - source_distribution
+  - included_platform
+  - builder
+  - repository_semantics
+  - expected_repository_files
+  - source_inventory
+  - provenance
+  - validation_evidence
+  - validation_status
+  - nonclaims
+
+identity_semantics:
+  realization_instance_id: >-
+    Deterministic from this specification, builder version, exact source
+    distribution instance/build/manifest, included Platform candidate identity
+    and archive digest, and every copied source member checksum. Destination,
+    realization time, Git commit, tag, remote, publication, runtime runs,
+    products, artifacts, and deployment are excluded.
+  git_identity: >-
+    No commit or tag is required to identify a valid realization. A future Git
+    revision may be additional publication provenance but is not fabricated by
+    this contract.
+
+source_distribution:
+  specification_id: platform.hospital-implementation-distribution
+  specification_version: "0.1.0"
+  independently_validated: true
+  exact_copy_required: true
+  implicit_rebuild: prohibited
+  maintained_source_lookup: prohibited
+
+repository_semantics:
+  ownership: pristine_generated_output_only
+  initial_branch: main
+  initialized_with_git: true
+  generated_files_staged: true
+  generated_commit: false
+  configured_remote: false
+  configured_author_identity: false
+  automatic_replacement_after_modification_commit_or_remote: prohibited
+  merge_or_recipient_upgrade: prohibited
+
+closed_inventory: true
+integrity:
+  algorithm: sha256
+  manifest_checksum_file: HOSPITAL-GIT-REALIZATION.sha256
+
+validation_requirements:
+  - exact safe repository inventory and no symbolic links or path escapes
+  - unchanged independently valid Hospital Implementation distribution
+  - exact source distribution and included Platform identity and checksums
+  - self-contained provenance with no authoritative repository dependency
+  - one independent Git work tree on branch main
+  - every generated file staged with zero commits and zero remotes
+  - no unstaged untracked ignored nested or suspicious Git state
+  - initialization doctor and fictional baseline remain available
+  - no PHI secrets credentials operational state products deployments or machine paths
+
+nonclaims:
+  - no public repository release commit tag remote push or publication
+  - no license grant or final v0.1.0 release candidate
+  - no automatic upgrade merge or preservation of recipient changes
+  - no clinical security compliance production or support fitness claim

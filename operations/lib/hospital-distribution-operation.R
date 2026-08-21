@@ -5,6 +5,9 @@ rrp_load_hospital_distribution_runtime <- function(repository_root, envir = pare
   sys.source(file.path(
     repository_root, "distribution", "hospital", "R", "distribution-runtime.R"
   ), envir = envir)
+  sys.source(file.path(
+    repository_root, "distribution", "hospital", "R", "git-realization-runtime.R"
+  ), envir = envir)
   invisible(TRUE)
 }
 
@@ -28,6 +31,10 @@ rrp_hospital_distribution_source_map <- function(repository_root) {
     "contracts/hospital-implementation-distribution.yml" = file.path(
       repository_root, "contracts", "distribution",
       "hospital-implementation-distribution.yml"
+    ),
+    "contracts/hospital-implementation-git-realization.yml" = file.path(
+      repository_root, "contracts", "distribution",
+      "hospital-implementation-git-realization.yml"
     )
   )
   example_root <- file.path(
@@ -67,6 +74,9 @@ rrp_hospital_platform_candidate_files <- function(repository_root) {
     "operations/validate-documentation.R",
     "operations/lib/hospital-distribution-operation.R",
     "operations/lib/hospital-distribution-validation.R",
+    "operations/build-hospital-git-realization.R",
+    "operations/validate-hospital-git-realization.R",
+    "operations/lib/hospital-git-realization-operation.R",
     "operations/lib/platform-validation.R"
   )
   sort(setdiff(unique(c(root_files, files)), excluded), method = "radix")

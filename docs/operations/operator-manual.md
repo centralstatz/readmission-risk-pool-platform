@@ -348,6 +348,27 @@ Agent convenience: “generate a Connect Cloud deployment repository” and
 above. Neither authorizes commit, remote creation/configuration, push, or
 deployment.
 
+## Maintainer-only Hospital release preparation
+
+Hospital distribution construction and standalone Git realization are
+CentralStatz maintainer operations, not normal Platform onboarding or generated
+hospital-facing operations. Build and validate the artifact first, then choose
+an explicit outside-repository destination:
+
+```sh
+Rscript operations/build-hospital-distribution.R
+Rscript operations/validate-hospital-distribution.R
+Rscript operations/build-hospital-git-realization.R --destination PATH
+Rscript operations/validate-hospital-git-realization.R --destination PATH
+```
+
+The last two operations consume only the validated artifact and stop at a
+pristine repository on `main` with every generated file staged, zero commits,
+and zero remotes. They do not publish, deploy, configure authorship, or operate
+a hospital installation. Exact destination ownership, identity, refusal,
+rollback, and recovery rules are in
+[Standalone Hospital Implementation Git Realization](hospital-git-realization.md).
+
 ## Repeat, cadence, and estimand horizon
 
 Execution cadence is operator-controlled. The current estimand's next bounded
@@ -381,7 +402,9 @@ It is drift metadata, not executable orchestration or business logic.
 Public onboarding operations are initialize, doctor, development/checkpoint
 validation, configured-producer validation, one platform run, history inspection, product materialization,
 app validation/launch, artifact build/validation, and Connect repository
-generation/validation. Advanced/debug operations preserve individual stages:
+generation/validation. Hospital distribution and standalone-repository
+construction are separately classified maintainer/release-preparation
+operations. Advanced/debug operations preserve individual stages:
 
 ```sh
 Rscript operations/generate-reference.R --scale test

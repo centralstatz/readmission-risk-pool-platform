@@ -72,10 +72,15 @@ rrp_validate_operator_repository <- function(repository_root) {
       )
       if (!is.null(operation$operation_id)) ids <- c(ids, operation$operation_id)
       if (!is.null(operation$classification) &&
-          !operation$classification %in% c("public", "advanced", "development")) {
+          !operation$classification %in% c(
+            "public", "maintainer", "advanced", "development"
+          )) {
         issues[[length(issues) + 1L]] <- rrp_issue(
           "operation_registry", "invalid_operation_classification",
-          "Operation classification must be public, advanced, or development.", location
+          paste(
+            "Operation classification must be public, maintainer, advanced,",
+            "or development."
+          ), location
         )
       }
       script <- if (is.null(operation$command)) NULL else {
@@ -143,7 +148,11 @@ rrp_validate_operator_repository <- function(repository_root) {
     "Rscript operations/build-application-artifact.R",
     "Rscript operations/validate-application-artifact.R",
     "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
-    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/build-hospital-distribution.R",
+    "Rscript operations/validate-hospital-distribution.R",
+    "Rscript operations/build-hospital-git-realization.R --destination PATH",
+    "Rscript operations/validate-hospital-git-realization.R --destination PATH"
   )
   agent_aligned <- all(vapply(agent_commands, grepl, logical(1), x = agent_text, fixed = TRUE))
   if (!agent_aligned) issues[[length(issues) + 1L]] <- rrp_issue(
