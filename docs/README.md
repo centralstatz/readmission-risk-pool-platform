@@ -79,6 +79,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
   prepare and inspect exact unpublished `v0.1.0` candidates and the evidence
   required to stop at `READY FOR PUBLICATION`.
+- [Maintainer Release Publication](operations/release-publication.md) — fixed
+  GitHub targets, zero-mutation preflight, explicit publication, partial-stage
+  recovery, published-state verification, and development transition.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and

@@ -6,8 +6,9 @@ software and documentation. The copyright and stewardship notice is in
 
 The installation of a license does not mean that the intended `v0.1.0` release
 has been published. Release-candidate preparation is local and explicitly
-`not_published`; only a later, separately authorized publication operation may
-create tags, remotes, pushes, or GitHub Releases.
+`not_published`. Iteration 11.7 provides a separately authorized, fail-closed
+publication operation, but status becomes `published` only after both GitHub
+releases have been created and independently verified.
 
 Dependency licenses remain those declared by their respective authors. See
 [the bounded compatibility review](docs/architecture/release-license-review.md).

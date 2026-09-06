@@ -35,8 +35,10 @@ acceptance. Generated evidence remains ignored or temporary and is removed
 after validation. Iteration 11.5 now realizes only that validated artifact at
 an explicit external destination as an independently valid repository on
 `main` with all files staged, zero commits, and zero remotes. No public
-release/archive, tag, license grant, CI, remote, push, or publication is
-implemented. See the
+release is claimed by those construction operations. Iteration 11.6 adds
+Apache-2.0 and exact final candidates; Iteration 11.7 fixes the publication
+target as `centralstatz/readmission-risk-pool-hospital-implementation` and adds
+the separately authorized publication/verification workflow. See the
 [Hospital Implementation distribution operation](../operations/hospital-implementation-distribution.md)
 and [standalone Git realization](../operations/hospital-git-realization.md).
 The general [operator manual](../operations/operator-manual.md) remains
@@ -183,8 +185,9 @@ Use these related terms precisely:
 “Kit” is no longer preferred because it suggests an independently maintained
 starter project and does not emphasize generated release identity. “Edition”
 suggests a separate product tier, “SDK” suggests a library/API, and “starter”
-understates the supported end-to-end implementation surface. A final GitHub
-release/repository name can remain an implementation detail.
+understates the supported end-to-end implementation surface. The canonical
+generated-publication target is
+`centralstatz/readmission-risk-pool-hospital-implementation`.
 
 ## Source and release ownership
 
@@ -798,14 +801,14 @@ creating another source authority:
    acceptance, and the materially different adopter workflow through unchanged
    history, products, app, and reduced artifact behavior.
 
-The generated repository is publication-ready in structure only. It remains a
-proof artifact with the Iteration 11.4 unpublished Platform candidate and
-current no-license status; release hardening and explicit publication authority
-remain open.
+The generated repository is publication-ready in structure only until the
+separate maintainer workflow consumes an exact final candidate. Iteration 11.6
+installed Apache-2.0 and candidate evidence; Iteration 11.7 owns remote
+publication without changing this generator's pristine boundary.
 
 Online retrieval, automatic upgrade/merge, recipient dependency solving,
-dynamic plugins, OCI realization, broad migration infrastructure, and remote
-publication automation remain deliberately deferred.
+dynamic plugins, OCI realization, and broad migration infrastructure remain
+deliberately deferred.
 
 ## Implemented Iteration 11.4 — generated distribution build/validation proof
 

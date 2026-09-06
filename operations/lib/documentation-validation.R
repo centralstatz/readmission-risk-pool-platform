@@ -43,6 +43,7 @@ rrp_required_governing_documents <- function() {
     "docs/operations/connect-cloud-deployment.md",
     "docs/operations/observability-and-diagnostics.md",
     "docs/operations/release-preparation.md",
+    "docs/operations/release-publication.md",
     "contracts/README.md"
   )
 }
@@ -72,6 +73,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/release-license-review.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
+      "docs/operations/release-publication.md",
       "contracts/README.md"
     ),
     "docs/README.md" = c(
@@ -101,6 +103,7 @@ rrp_navigation_expectations <- function() {
       "docs/development/implementation-conventions.md",
       "docs/development/repository-policies.md",
       "docs/operations/README.md",
+      "docs/operations/release-publication.md",
       "contracts/README.md"
     ),
     "docs/START-HERE.md" = c(
@@ -127,6 +130,7 @@ rrp_navigation_expectations <- function() {
       "docs/development/implementation-conventions.md",
       "docs/development/repository-policies.md",
       "docs/operations/README.md",
+      "docs/operations/release-publication.md",
       "contracts/README.md"
     ),
     "docs/vision/platform-true-north.md" = c(
@@ -230,7 +234,8 @@ rrp_navigation_expectations <- function() {
       "docs/operations/application-artifacts.md",
       "docs/operations/connect-cloud-deployment.md",
       "docs/operations/observability-and-diagnostics.md",
-      "docs/operations/release-preparation.md"
+      "docs/operations/release-preparation.md",
+      "docs/operations/release-publication.md"
     ),
     "docs/operations/application-artifacts.md" = c(
       "docs/architecture/application-artifact-foundation.md",

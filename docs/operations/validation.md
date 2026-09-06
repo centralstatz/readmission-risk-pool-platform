@@ -6,8 +6,8 @@ Current validation answers two different questions:
 
 - **Development:** Is the intentionally changing repository coherent enough to
   continue development?
-- **Strict checkpoint:** Does the repository also satisfy the Iteration 11.4
-  generated Hospital Implementation proof requirements?
+- **Strict checkpoint:** Does the repository satisfy the implemented Phase 11
+  release and publication-workflow requirements?
 
 Development success is not release, deployment, publication, product, contract,
 or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
@@ -25,7 +25,10 @@ renderer, and bounded stable-operation integration, plus the completed Phase
 shipped producer migration, and independent adopter-side substitution proof,
 plus the Iteration 11.4 generated Hospital distribution contract, exact
 Platform candidate, one top-level environment, callable operation seam,
-independent validator, external-copy acceptance, and tamper evidence.
+independent validator, external-copy acceptance, tamper evidence, Apache-2.0
+governance, exact release preparation, and the Iteration 11.7 fail-closed
+publication boundary. Local validation does not fabricate live GitHub success;
+published-state verification is separate live evidence.
 
 ## Prerequisites
 
@@ -165,6 +168,24 @@ Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
 
 These maintainer operations create only ignored local candidates/evidence and
 stop before commit, tag, remote, push, GitHub Release, or publication.
+
+After a release-state commit and exact preparation, validate the live
+publication boundary without mutation:
+
+```sh
+Rscript operations/publish-release.R --version 0.1.0 --preflight
+```
+
+Only explicit release authorization permits the mutating mode:
+
+```sh
+Rscript operations/publish-release.R --version 0.1.0 --publish
+Rscript operations/publish-release.R --version 0.1.0 --verify
+```
+
+The first command repeats the complete preflight before remote mutation. The
+second rechecks published identities against retained evidence. Do not invoke
+`--publish` as routine development validation or in CI.
 
 Validate the installed canonical producer without downstream execution:
 
@@ -323,19 +344,19 @@ Checkpoint mode runs every development check and additionally verifies:
   artifact proof, negative downstream scans, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with required transitive packages plus build-only `rsconnect`;
-- installed Apache-2.0 terms with distinct `not_published` release status; and
+- installed Apache-2.0 terms with truthful candidate or published status; and
 - agreement between human validation commands and agent guidance.
 
 This is strict only relative to completed Phase 10 and the fictional
 source-to-local-deployable-repository boundary. It does not prove:
 
-- publication completion (release readiness is owned by the separate
-  maintainer preparation operation);
+- live publication completion before the explicitly authorized publication
+  operation has produced and verified remote evidence;
 - clinical provider validity, production persistence/materialization, or final
   application UX;
 - independent adopter-producer conformance, turnkey hospital onboarding, or a
   final extension packaging/distribution model;
-- remote Git publication, Connect service deployment, or another target;
+- Connect service deployment or another deployment target;
 - security or privacy certification;
 - absence of all PHI or secrets; or
 - clinical validity or production approval.

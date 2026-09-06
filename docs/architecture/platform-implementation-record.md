@@ -4907,3 +4907,75 @@ been published. The only recommended final task is **Phase 11 / Iteration 11.7
 authorization, release commit, tag/remote verification, pushes, GitHub Platform
 and Hospital releases/artifact attachment, post-publication verification, and
 transition to the next development version. None is authorized here.
+
+### Iteration 11.7 — Explicit maintainer publication workflow and first v0.1.0 release
+
+#### Objective and publication authorization
+
+Complete Phase 11 by turning the exact Iteration 11.6 candidates into the first
+actual public Platform and generated Hospital Implementation releases. This
+iteration explicitly authorizes only the controlled release commits, tags,
+GitHub repositories/releases, artifact uploads, pushes, remote acquisition,
+and post-release development transition described by the task. It prohibits
+force-push, deletion, history rewrite, unrelated repository mutation, and
+publication after any failed preflight check.
+
+#### Capability assessment before implementation
+
+The authoritative source was clean `main` at `754901d`, exactly matching the
+public `origin` at
+`centralstatz/readmission-risk-pool-platform`. No local or remote `v0.1.0` tag
+or GitHub Release existed. Authenticated GitHub identity `zajichek` was an
+active `centralstatz` administrator with Platform push/admin permission and a
+successful authenticated Git push dry-run. The intended public Hospital target
+`centralstatz/readmission-risk-pool-hospital-implementation` was absent and the
+organization allowed public repository creation. No branch rules protected
+`main`. Git and curl were available; `gh` was not, so the existing authenticated
+HTTPS credential and GitHub REST API were selected without an architecture
+change. Platform private vulnerability reporting was disabled but could be
+enabled and verified through the authenticated API after the zero-mutation
+preflight and before release exposure.
+
+#### Implemented publication boundary
+
+Added `operations/publish-release.R` with mandatory `--preflight`, `--publish`,
+or `--verify` mode. No invocation defaults to mutation. `RELEASE.yml` fixes the
+Platform repository/remote/branch, generated Hospital repository, and both
+`v0.1.0` tags. Credential-safe REST helpers keep the GitHub token in process
+memory and off command arguments, evidence, and diagnostics.
+
+The complete preflight reuses exact 11.6 preparation validation, requires clean
+source at the prepared revision, reruns the checkpoint, checks governance,
+release notes, authorship, authenticated owner/repository permission, branch
+rules, tag/release absence, Hospital target state, and vulnerability-reporting
+state, and performs zero remote mutation. Explicit publication proceeds
+Platform first, uploads the deterministic candidate archive and checksum,
+downloads and proves that published artifact, creates the generated public
+Hospital repository only after Platform verification, commits the exact
+validated realization, publishes it, and clones the public tag for standalone
+validation, synthetic acceptance, and fictional-adopter proof.
+
+Checksummed ignored publication state records every irreversible stage. A
+rerun may continue only from exact identity-matched state. No code deletes a
+remote object, force-pushes, rewrites history, or treats unrelated existing
+state as idempotent. Only after both releases verify may tracked publication
+evidence be written and development advance to `0.2.0-dev`; that transition is
+committed separately after final validation. The public Hospital repository is
+documented as generated output, never a second maintained source authority.
+
+#### Tests, documentation, and execution status
+
+Focused deterministic tests cover maintainer classification, explicit
+authorization, preflight non-mutation, repository/branch/dirty/revision/
+readiness/authentication/tag/release/Hospital conflicts, exact tag and digest
+relationships, stage recovery/idempotency, prohibited rollback, evidence,
+development-transition gating, generated-source authority, and human/agent
+command alignment. The maintainer publication guide documents commands,
+ordering, partial failure, rerun, verification, and post-release work.
+
+**Execution status at the immutable release-state cutoff:** publication
+machinery is implemented and live publication is authorized, but no mutation
+has yet occurred. Final validation, exact candidate identities, actual GitHub
+release evidence, post-publication verification, development transition, and
+Phase 11 completion are appended below only after they occur; they are not
+predicted inside the `v0.1.0` source contents.

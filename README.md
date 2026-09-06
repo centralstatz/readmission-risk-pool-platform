@@ -32,6 +32,11 @@ test claim plus Ubuntu CI, and adds one clean-source maintainer workflow for
 exact Platform and Hospital `v0.1.0` candidates, acquisition proof, and release
 evidence. The result is ready for publication but remains `not_published`: no
 release commit, tag, remote, push, GitHub Release, or publication is created.
+Iteration 11.7 now supplies the explicitly authorized maintainer publication
+workflow: a zero-mutation preflight, Platform-first GitHub release, generated
+Hospital repository/release, checksummed partial-stage recovery, published-
+state acquisition, and post-verification development transition. Publication
+still occurs only when the operation is invoked with explicit `--publish`.
 The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
@@ -285,7 +290,9 @@ Accepted hospital-facing composition architecture is in
 Maintainer realization behavior is in
 [Standalone Hospital Implementation Git Realization](docs/operations/hospital-git-realization.md).
 The [release preparation guide](docs/operations/release-preparation.md) owns the
-final local `v0.1.0` workflow. Repository-authored work is licensed under
+local candidate workflow, and the
+[release publication guide](docs/operations/release-publication.md) owns the
+separate preflight/publish/verify boundary. Repository-authored work is licensed under
 [Apache-2.0](LICENSE), while [publication status](LICENSE-STATUS.md) remains
 explicitly separate and `not_published`; the bounded
 [compatibility review](docs/architecture/release-license-review.md) records the

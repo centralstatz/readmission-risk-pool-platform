@@ -1,7 +1,8 @@
 # Maintainer release preparation
 
-Iteration 11.6 provides the final local workflow for preparing the intended
-Platform and Hospital Implementation `v0.1.0` releases. It does not publish.
+Iteration 11.6 provides the local workflow for preparing the intended Platform
+and Hospital Implementation `v0.1.0` releases. Publication is a separate,
+explicit operation documented in [Maintainer Release Publication](release-publication.md).
 
 ```text
 clean authoritative source
@@ -84,6 +85,7 @@ the bounded license review.
 ## Publication boundary
 
 When the result says `READY FOR PUBLICATION`, stop and inspect the evidence.
-Iteration 11.6 never commits, tags, configures a remote, pushes, calls GitHub,
-creates a release, or publishes an artifact. Those side effects require a later
-explicitly authorized Iteration 11.7 workflow.
+Preparation never commits, tags, configures a remote, pushes, calls GitHub,
+creates a release, or publishes an artifact. An explicitly authorized
+maintainer must next run the separate zero-mutation publication preflight and
+then invoke `publish-release.R` with `--publish`.

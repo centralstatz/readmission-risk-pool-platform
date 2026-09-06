@@ -74,13 +74,16 @@ extending it.
    [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
    prepare and inspect exact `v0.1.0` candidates and governance/readiness
    evidence while remaining explicitly unpublished.
-25. [Platform Implementation Record](architecture/platform-implementation-record.md)
+25. [Maintainer Release Publication](operations/release-publication.md) —
+   understand the zero-mutation preflight, explicit GitHub mutation boundary,
+   partial-failure recovery, and remote verification.
+26. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-26. [Implementation Conventions](development/implementation-conventions.md) and
+27. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-27. [Repository Development Policies](development/repository-policies.md) for
+28. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-28. [Operations](operations/README.md) for supported human operations and
+29. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

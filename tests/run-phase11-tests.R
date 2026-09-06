@@ -14,7 +14,8 @@ for (file in c(
   "product-operation.R", "product-materialization-operation.R",
   "application-artifact-operation.R", "platform-cycle-operation.R",
   "hospital-distribution-operation.R", "hospital-git-realization-operation.R",
-  "release-preparation-operation.R"
+  "release-preparation-operation.R", "github-publication-client.R",
+  "release-publication-operation.R"
 )) source(file.path(repository_root, "operations", "lib", file))
 source(file.path(repository_root, "operations", "compositions", "installed-producers.R"))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))

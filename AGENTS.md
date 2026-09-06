@@ -77,7 +77,8 @@ shipped health system. Iterations 11.4–11.5 own the generated adopter-facing
 artifact and pristine standalone Git form. Iteration 11.6 installs Apache-2.0
 and minimal governance, declares narrow tested support evidence, and owns the
 final local `v0.1.0` candidate/readiness workflow. Phase 11 remains in progress
-and ready for publication; publication is a separate authorization boundary.
+and ready for publication until Iteration 11.7 completes the explicitly
+authorized, fail-closed publication and remote verification workflow.
 Iteration 11.1 owns the retained decision assessment in
 `docs/architecture/distribution-release-assessment.md`. Iteration 11.2
 baselines the maintainer's release/governance direction; its separately
@@ -104,6 +105,12 @@ It creates no release, tag, remote, push, publication, or deployment. Iteration
 independently versioned products target `0.1.0`, exact local candidates and
 clean-acquisition evidence are produced under ignored `build/`, and status
 remains explicitly `not_published`.
+Iteration 11.7 owns only the maintainer publication boundary: exact GitHub
+targets in `RELEASE.yml`, zero-mutation preflight, explicit `--publish`,
+Platform-first tags/releases, generated Hospital repository publication,
+checksummed partial-stage recovery, published-state acquisition, and the
+post-verification development transition. It never force-pushes, deletes, or
+rewrites remote state, and the Hospital repository remains generated output.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -196,8 +203,12 @@ validate the v0.1.0 release candidate
     → Rscript operations/prepare-release.R --version 0.1.0 --validate-only
 show release readiness
     → Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
+run publication preflight for v0.1.0
+    → Rscript operations/publish-release.R --version 0.1.0 --preflight
 publish v0.1.0
-    → NOT IMPLEMENTED OR AUTHORIZED IN ITERATION 11.6
+    → Rscript operations/publish-release.R --version 0.1.0 --publish
+verify the published v0.1.0 release
+    → Rscript operations/publish-release.R --version 0.1.0 --verify
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -233,7 +244,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the Iteration 11.6 checkpoint, run:
+For the Iteration 11.7 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -251,6 +262,8 @@ Rscript operations/validate-hospital-git-realization.R --destination PATH
 Rscript operations/prepare-release.R --version 0.1.0
 Rscript operations/prepare-release.R --version 0.1.0 --validate-only
 Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
+Rscript operations/publish-release.R --version 0.1.0 --preflight
+Rscript operations/publish-release.R --version 0.1.0 --verify
 ```
 
 Run the focused Phase 3 producer tests and the supported reference operation
@@ -374,7 +387,9 @@ separate from adopter state. There is no separately maintained CentralStatz
 project or formal third release layer. Iteration 11.5 may realize only an
 independently validated artifact as a pristine outside-repository Git tree;
 Iteration 11.6 may compose that exact form into ignored local `not_published`
-release evidence from clean source.
+release evidence from clean source. Iteration 11.7 may publish only that exact
+form to the fixed Platform and generated Hospital GitHub targets after the
+documented preflight passes and explicit `--publish` authorization is present.
 Treat distribution and Git-realization operations as maintainer/release
 preparation, not hospital-facing operations; never rebuild inputs implicitly,
 overwrite modified/committed/remote-configured destinations, merge recipient

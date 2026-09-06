@@ -277,6 +277,7 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "SUPPORT.md",
     "CHANGELOG.md",
     "RELEASE.yml",
+    "docs/operations/release-publication.md",
     "docs/development/repository-policies.md",
     "docs/operations/README.md",
     "docs/operations/validation.md",
@@ -285,7 +286,10 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "operations/lib/validation-result.R",
     "operations/lib/documentation-validation.R",
     "operations/lib/repository-validation.R",
+    "operations/lib/github-publication-client.R",
+    "operations/lib/release-publication-operation.R",
     "operations/lib/platform-validation.R",
+    "operations/publish-release.R",
     "tests/run-phase0-tests.R"
   )
   missing <- required_files[!file.exists(file.path(repository_root, required_files))]
@@ -325,19 +329,21 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
   status_text <- paste(rrp_read_text(file.path(
     repository_root, "LICENSE-STATUS.md"
   )), collapse = "\n")
+  release_status_ok <- grepl("not_published", status_text, fixed = TRUE) ||
+    grepl("published", status_text, fixed = TRUE)
   license_ok <- grepl("Apache License", license_text, fixed = TRUE) &&
     grepl("Version 2.0, January 2004", license_text, fixed = TRUE) &&
-    grepl("not_published", status_text, fixed = TRUE)
+    release_status_ok
   if (!license_ok) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "license_status", "invalid_apache_license_status",
-      "Apache-2.0 must be installed while publication remains explicitly not_published.",
+      "Apache-2.0 must be installed with explicit publication status.",
       "LICENSE"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "license_status", license_ok,
-    "Apache-2.0 installed with distinct unpublished release status"
+    "Apache-2.0 installed with distinct publication status"
   )
 
   validation_doc <- file.path(repository_root, "docs", "operations", "validation.md")
@@ -365,7 +371,10 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/build-application-artifact.R",
     "Rscript operations/validate-application-artifact.R",
     "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
-    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/publish-release.R --version 0.1.0 --preflight",
+    "Rscript operations/publish-release.R --version 0.1.0 --publish",
+    "Rscript operations/publish-release.R --version 0.1.0 --verify"
   )
   operations_text <- if (file.exists(validation_doc)) {
     paste(rrp_read_text(validation_doc), collapse = "\n")
@@ -392,7 +401,10 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "Rscript operations/build-application-artifact.R",
     "Rscript operations/validate-application-artifact.R",
     "Rscript operations/build-connect-cloud-deployment.R --destination PATH",
-    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH"
+    "Rscript operations/validate-connect-cloud-deployment.R --destination PATH",
+    "Rscript operations/publish-release.R --version 0.1.0 --preflight",
+    "Rscript operations/publish-release.R --version 0.1.0 --publish",
+    "Rscript operations/publish-release.R --version 0.1.0 --verify"
   )
   agent_missing <- agent_commands[!vapply(
     agent_commands,

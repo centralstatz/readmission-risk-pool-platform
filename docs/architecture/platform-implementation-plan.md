@@ -661,14 +661,18 @@ repository strategy are decided from demonstrated needs.
   Platform `0.1.0` candidate, exact generated Hospital `0.1.0` candidate,
   pristine Hospital Git realization, recipient-like workflows, and checksummed
   `not_published` readiness evidence under ignored `build/`.
-- **Remaining Phase 11 release work:** only explicitly authorized publication.
-  Publication still requires a separate commit/tag/remote/push/GitHub Release
-  workflow and maintainer authorization.
+- **Iteration 11.7 — explicit maintainer publication workflow and first
+  v0.1.0 release:** implemented pending its one authorized live execution. It
+  fixes both GitHub repository identities, adds zero-mutation preflight,
+  explicit mutation mode, Platform-first publication, generated Hospital
+  publication, checksummed partial-stage recovery, remote acquisition
+  verification, and post-verification development transition.
 
 **Phase 11 remains in progress — READY FOR PUBLICATION.** Iterations 11.4–11.6
 prove the generated distribution, standalone Git form, Apache-2.0 governance,
-exact unpublished candidates, and clean acquisition. No release commit, tag,
-remote, push, GitHub Release, or publication has been implemented.
+exact unpublished candidates, and clean acquisition. Iteration 11.7 may mark
+Phase 11 complete only after both GitHub releases actually exist, remote
+acquisition verifies them, and the post-release development state is pushed.
 
 ## Cross-phase rules
 

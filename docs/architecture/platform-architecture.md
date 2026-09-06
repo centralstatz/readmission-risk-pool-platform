@@ -504,7 +504,12 @@ candidate, independently versioned Hospital candidate embedding its exact
 identity/digest, pristine staged Hospital Git realization, recipient-like
 acquisition evidence, and checksummed `not_published` readiness manifest under
 ignored `build/`. Apache-2.0, governance, and truthful support evidence are
-prerequisites. Publication remains a later explicitly authorized stage.
+prerequisites. Iteration 11.7 adds the explicitly authorized maintainer
+publication boundary: fixed GitHub targets, zero-mutation preflight,
+Platform-first publication, generated Hospital publication, conservative
+partial-stage recovery, remote acquisition proof, and a post-verification
+development transition. The published Hospital repository remains generated
+output and never becomes maintained source authority.
 
 ## Observability layer
 

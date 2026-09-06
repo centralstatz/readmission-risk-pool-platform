@@ -114,6 +114,24 @@ operations:
     mutation: ignored_local_release_candidates_and_evidence_only
     classification: maintainer
     documentation: docs/operations/release-preparation.md
+  - operation_id: platform.preflight-release-publication
+    command: Rscript operations/publish-release.R --version 0.1.0 --preflight
+    purpose: Prove exact release and GitHub readiness without remote mutation.
+    mutation: read_only_with_removed_temporary_checks
+    classification: maintainer
+    documentation: docs/operations/release-publication.md
+  - operation_id: platform.publish-release
+    command: Rscript operations/publish-release.R --version 0.1.0 --publish
+    purpose: Explicitly publish and remotely verify both authorized release products.
+    mutation: commits_tags_repositories_pushes_github_releases_and_local_evidence
+    classification: maintainer
+    documentation: docs/operations/release-publication.md
+  - operation_id: platform.verify-published-release
+    command: Rscript operations/publish-release.R --version 0.1.0 --verify
+    purpose: Reverify both published tags and GitHub Releases against retained evidence.
+    mutation: read_only_with_removed_temporary_checks
+    classification: maintainer
+    documentation: docs/operations/release-publication.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

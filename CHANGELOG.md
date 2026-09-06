@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0] — release candidate, not published
+## [0.1.0]
 
 The first public-release candidate provides:
 
@@ -17,5 +17,5 @@ The first public-release candidate provides:
 - Apache-2.0 licensing, lightweight DCO governance, security reporting,
   best-effort support, and local release-readiness evidence.
 
-Publication, clinical validation, production authorization, automated
-scheduling, remote deployment, and OCI/container delivery are not included.
+Clinical validation, production authorization, automated scheduling, remote
+deployment, and OCI/container delivery are not included.

@@ -14,7 +14,12 @@ targets:
     candidate_status: release_candidate_not_published
 publication:
   status: not_published
+  remote: origin
+  expected_branch: main
+  platform_repository: centralstatz/readmission-risk-pool-platform
+  hospital_repository: centralstatz/readmission-risk-pool-hospital-implementation
   expected_platform_tag: v0.1.0
+  expected_hospital_tag: v0.1.0
   tag_exists: false
   github_release_exists: false
 license:

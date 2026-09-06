@@ -3,7 +3,8 @@
 rrp_release_authority <- function(repository_root) {
   path <- file.path(repository_root, "RELEASE.yml")
   authority <- yaml::read_yaml(path)
-  if (!is.list(authority) || !identical(authority$release_authority_version, 1L)) {
+  if (!is.list(authority) ||
+      !authority$release_authority_version %in% c(1L, 2L)) {
     stop("RELEASE.yml is not the supported release authority.", call. = FALSE)
   }
   authority
@@ -45,7 +46,8 @@ rrp_release_validate_governance <- function(repository_root, version) {
     "LICENSE", "NOTICE", "LICENSE-STATUS.md", "CONTRIBUTING.md", "SECURITY.md",
     "SUPPORT.md", "CHANGELOG.md", "RELEASE.yml",
     "docs/architecture/release-license-review.md",
-    "docs/operations/release-preparation.md"
+    "docs/operations/release-preparation.md",
+    "docs/operations/release-publication.md"
   )
   missing <- required[!file.exists(file.path(repository_root, required))]
   if (length(missing) > 0L) stop(
@@ -57,6 +59,13 @@ rrp_release_validate_governance <- function(repository_root, version) {
   hospital <- authority$targets$hospital$intended_version
   if (!identical(version, expected) || !identical(version, hospital) ||
       !identical(authority$publication$status, "not_published") ||
+      !identical(authority$publication$platform_repository,
+                 "centralstatz/readmission-risk-pool-platform") ||
+      !identical(authority$publication$hospital_repository,
+                 "centralstatz/readmission-risk-pool-hospital-implementation") ||
+      !identical(authority$publication$expected_branch, "main") ||
+      !identical(authority$publication$expected_platform_tag, paste0("v", version)) ||
+      !identical(authority$publication$expected_hospital_tag, paste0("v", version)) ||
       !identical(authority$license$spdx_id, "Apache-2.0") ||
       !identical(authority$source$development_version, paste0(version, "-dev"))) {
     stop("Requested version conflicts with RELEASE.yml release authority.", call. = FALSE)

@@ -29,10 +29,14 @@ phase7_test_cases <- function(repository_root) list(
     maintainer <- Filter(function(value) {
       identical(value$classification, "maintainer")
     }, registry$operations)
-    phase7_assert_identical(length(maintainer), 5L)
+    phase7_assert_identical(length(maintainer), 8L)
     phase0_assert_true(any(vapply(maintainer, function(value) {
       identical(value$operation_id, "platform.prepare-release")
     }, logical(1))))
+    phase0_assert_true(all(c(
+      "platform.preflight-release-publication", "platform.publish-release",
+      "platform.verify-published-release"
+    ) %in% vapply(maintainer, `[[`, character(1), "operation_id")))
     phase0_assert_true(all(vapply(registry$operations, function(value) {
       value$classification %in% c(
         "public", "maintainer", "advanced", "development"

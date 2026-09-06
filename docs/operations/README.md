@@ -9,7 +9,7 @@ reserve names or document hypothetical future capabilities.
   deployment repository through the public surface.
 - [Validation](validation.md) — validate maintained documentation and
   specification assets, run Phase 0–11 tests, check repository policies, and
-  evaluate the Iteration 11.6 checkpoint.
+  evaluate the Iteration 11.7 checkpoint.
 - [Hospital Implementation Distribution](hospital-implementation-distribution.md)
   — generate and independently validate the proof-only adopter-facing source
   distribution, then initialize and exercise an external copied artifact.
@@ -19,6 +19,9 @@ reserve names or document hypothetical future capabilities.
 - [Maintainer Release Preparation](release-preparation.md) — prepare, validate,
   inspect, and prove the unpublished Platform and Hospital `v0.1.0` candidates,
   then stop at `READY FOR PUBLICATION`.
+- [Maintainer Release Publication](release-publication.md) — run the
+  zero-mutation preflight, explicitly publish Platform then Hospital, preserve
+  partial-stage evidence, and verify both products from GitHub.
 - [Canonical Producer Foundation](../architecture/canonical-producer-foundation.md)
   — validate the configured producer, understand trusted registration and
   exact installation selection, and review the independent adopter proof.
