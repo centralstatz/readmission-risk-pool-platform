@@ -1,14 +1,13 @@
-# License status
+# License and publication status
 
-This repository is intended to become open source, but no public release is
-authorized until the maintainer selects and installs the final license.
+The Apache License 2.0 in [LICENSE](LICENSE) applies to repository-authored
+software and documentation. The copyright and stewardship notice is in
+[NOTICE](NOTICE).
 
-The source is under active development. Open-source intent is documented, but
-the repository's current contents must not be represented as a completed
-open-source distribution or as carrying an implied permission to use, copy,
-modify, or redistribute them.
+The installation of a license does not mean that the intended `v0.1.0` release
+has been published. Release-candidate preparation is local and explicitly
+`not_published`; only a later, separately authorized publication operation may
+create tags, remotes, pushes, or GitHub Releases.
 
-This notice is not a software license and does not attempt to supply provisional
-legal terms. The final code, documentation, data, font, image, and other asset
-licensing decision remains tracked in
-[Open decisions](docs/architecture/open-decisions.md).
+Dependency licenses remain those declared by their respective authors. See
+[the bounded compatibility review](docs/architecture/release-license-review.md).

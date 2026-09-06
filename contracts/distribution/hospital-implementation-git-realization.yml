@@ -78,6 +78,6 @@ validation_requirements:
 
 nonclaims:
   - no public repository release commit tag remote push or publication
-  - no license grant or final v0.1.0 release candidate
+  - no claim that a v0.1.0 candidate is already a published release
   - no automatic upgrade merge or preservation of recipient changes
   - no clinical security compliance production or support fitness claim

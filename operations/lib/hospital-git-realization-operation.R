@@ -95,7 +95,7 @@ rrp_hospital_git_write_manifest <- function(root, distribution, realized_at) {
     nonclaims = list(
       "not a maintained CentralStatz source repository",
       "not committed tagged remote-configured pushed or published",
-      "not a final Platform or Hospital Implementation v0.1.0 release",
+      "release candidate only; not a published Platform or Hospital release",
       "not an upgrade merge or preservation mechanism for recipient changes",
       "not clinically validated security approved or production authorized"
     )
@@ -179,7 +179,8 @@ rrp_build_hospital_git_realization <- function(
   repository_root,
   distribution_path,
   destination,
-  realized_at = rrp_hospital_now()
+  realized_at = rrp_hospital_now(),
+  allow_ignored_release_area = FALSE
 ) {
   repository_root <- normalizePath(repository_root, mustWork = TRUE)
   destination_link <- rrp_hospital_git_is_link(destination)
@@ -187,9 +188,18 @@ rrp_build_hospital_git_realization <- function(
   if (!rrp_hospital_timestamp(realized_at)) stop(
     "Hospital Git realization time must be an RFC 3339 timestamp.", call. = FALSE
   )
-  if (destination_link || rrp_hospital_git_path_within(destination, repository_root)) stop(
-    "Hospital Git destination must be a non-linked path outside the authoritative repository.",
-    call. = FALSE
+  inside_repository <- rrp_hospital_git_path_within(destination, repository_root)
+  release_root <- normalizePath(file.path(
+    repository_root, "build", "releases"
+  ), mustWork = FALSE)
+  allowed_release_destination <- isTRUE(allow_ignored_release_area) &&
+    rrp_hospital_git_path_within(destination, release_root) &&
+    !identical(destination, release_root)
+  if (destination_link || (inside_repository && !allowed_release_destination)) stop(
+    paste(
+      "Hospital Git destination must be a non-linked path outside the authoritative",
+      "repository unless the release preparer selects its exact ignored build/releases area."
+    ), call. = FALSE
   )
   parent_input <- dirname(destination)
   parent_link <- rrp_hospital_git_is_link(parent_input)

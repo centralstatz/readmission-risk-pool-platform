@@ -10,13 +10,14 @@ an editable producer scaffold; and a clearly separate fictional adopter
 example. It is generated output under ignored `build/`, not a second maintained
 CentralStatz repository.
 
-This proof does not publish a release, grant a software license, tag `v0.1.0`,
+This lower-level proof operation does not publish a release, tag `v0.1.0`,
 deploy an application, or authorize clinical or production use. Iteration 11.5
 can separately turn only a validated artifact into a staged, uncommitted,
 remote-free [standalone Git realization](hospital-git-realization.md). The
 candidate version is
 `readmission-risk-pool-platform@0.0.0-proof.11.4`, explicitly not Platform
-`v0.1.0`.
+`v0.1.0`. The final maintainer workflow uses the same callable builder with
+explicit `0.1.0` candidate status; see [Release Preparation](release-preparation.md).
 
 ## Build and validate
 
@@ -139,9 +140,9 @@ not another supported reference health system.
 - Reference and fictional-adopter state use different directories and are
   never inputs to one another.
 
-The separate remote-free Git realization is now implemented for maintainer
-release preparation. Remaining Phase 11 work is release hardening: final
-license/dependency/asset review and license installation; contribution,
-security, support, and DCO files; tested R/OS evidence; final Platform and
-Hospital release candidates/manifests; clean acquisition testing; and explicit
-maintainer authorization before tags, GitHub releases, or publication.
+The separate remote-free Git realization and final local release preparation
+are implemented. Apache-2.0, governance, support evidence, exact `0.1.0`
+candidates, and clean acquisition are prerequisites of the primary maintainer
+command. Phase 11 stops at `READY FOR PUBLICATION`; explicit authorization is
+still required before commits, tags, remotes, pushes, GitHub Releases, or
+publication.

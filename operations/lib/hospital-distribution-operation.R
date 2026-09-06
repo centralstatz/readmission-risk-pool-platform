@@ -24,7 +24,13 @@ rrp_hospital_distribution_source_map <- function(repository_root) {
     ".gitignore" = file.path(source_root, "templates", "gitignore"),
     ".renvignore" = file.path(repository_root, ".renvignore"),
     ".Rprofile" = file.path(repository_root, ".Rprofile"),
+    "CHANGELOG.md" = file.path(repository_root, "CHANGELOG.md"),
+    "CONTRIBUTING.md" = file.path(repository_root, "CONTRIBUTING.md"),
+    "LICENSE" = file.path(repository_root, "LICENSE"),
     "LICENSE-STATUS.md" = file.path(repository_root, "LICENSE-STATUS.md"),
+    "NOTICE" = file.path(repository_root, "NOTICE"),
+    "SECURITY.md" = file.path(repository_root, "SECURITY.md"),
+    "SUPPORT.md" = file.path(repository_root, "SUPPORT.md"),
     "renv.lock" = file.path(repository_root, "renv.lock"),
     "renv/activate.R" = file.path(repository_root, "renv", "activate.R"),
     "renv/settings.json" = file.path(repository_root, "renv", "settings.json"),
@@ -51,35 +57,56 @@ rrp_hospital_distribution_source_map <- function(repository_root) {
   result[order(names(result), method = "radix")]
 }
 
-rrp_hospital_platform_candidate_files <- function(repository_root) {
-  roots <- c(
-    "app", "config", "contracts", "deploy", "implementations", "operations",
-    "products", "runtime"
-  )
-  files <- unlist(lapply(roots, function(root) {
-    relative <- list.files(
+rrp_hospital_platform_candidate_files <- function(repository_root, whole_repository = FALSE) {
+  if (!whole_repository) {
+    roots <- c(
+      "app", "config", "contracts", "deploy", "implementations", "operations",
+      "products", "runtime"
+    )
+    files <- unlist(lapply(roots, function(root) file.path(root, list.files(
       file.path(repository_root, root), recursive = TRUE, all.files = TRUE,
       no.. = TRUE, include.dirs = FALSE, full.names = FALSE
+    ))), use.names = FALSE)
+    root_files <- c(
+      ".Rprofile", ".renvignore", "CHANGELOG.md", "CONTRIBUTING.md", "LICENSE",
+      "LICENSE-STATUS.md", "NOTICE", "README.md", "RELEASE.yml", "SECURITY.md",
+      "SUPPORT.md", "renv.lock", "renv/activate.R", "renv/settings.json"
     )
-    file.path(root, relative)
-  }), use.names = FALSE)
-  root_files <- c(
-    ".Rprofile", ".renvignore", "LICENSE-STATUS.md", "README.md", "renv.lock",
-    "renv/activate.R", "renv/settings.json"
+    excluded <- c(
+      "operations/build-hospital-distribution.R",
+      "operations/validate-hospital-distribution.R", "operations/validate.R",
+      "operations/validate-documentation.R",
+      "operations/lib/hospital-distribution-operation.R",
+      "operations/lib/hospital-distribution-validation.R",
+      "operations/build-hospital-git-realization.R",
+      "operations/validate-hospital-git-realization.R",
+      "operations/lib/hospital-git-realization-operation.R",
+      "operations/lib/platform-validation.R", "operations/prepare-release.R",
+      "operations/lib/release-preparation-operation.R"
+    )
+    result <- sort(setdiff(unique(c(root_files, files)), excluded), method = "radix")
+    return(result[file.exists(file.path(repository_root, result))])
+  }
+  git <- Sys.which("git")
+  if (!nzchar(git)) stop("Git is required to enumerate the Platform release unit.", call. = FALSE)
+  output <- suppressWarnings(system2(
+    git, c("-C", shQuote(repository_root), "ls-files", "--cached"),
+    stdout = TRUE, stderr = TRUE
+  ))
+  if (!is.null(attr(output, "status")) && attr(output, "status") != 0L) stop(
+    "Could not enumerate the authoritative Platform release unit.", call. = FALSE
   )
-  excluded <- c(
-    "operations/build-hospital-distribution.R",
-    "operations/validate-hospital-distribution.R",
-    "operations/validate.R",
-    "operations/validate-documentation.R",
-    "operations/lib/hospital-distribution-operation.R",
-    "operations/lib/hospital-distribution-validation.R",
-    "operations/build-hospital-git-realization.R",
-    "operations/validate-hospital-git-realization.R",
-    "operations/lib/hospital-git-realization-operation.R",
-    "operations/lib/platform-validation.R"
+  release_additions <- c(
+    ".github/workflows/validation.yml", "CHANGELOG.md", "CONTRIBUTING.md",
+    "LICENSE", "LICENSE-STATUS.md", "NOTICE", "RELEASE.yml", "SECURITY.md",
+    "SUPPORT.md", "docs/architecture/release-license-review.md",
+    "docs/operations/release-preparation.md",
+    "operations/lib/release-preparation-operation.R",
+    "operations/prepare-release.R", "tests/phase11/test-release-preparation.R"
   )
-  sort(setdiff(unique(c(root_files, files)), excluded), method = "radix")
+  files <- sort(unique(c(as.character(output), release_additions)), method = "radix")
+  files <- files[!grepl("^([.]git|build)(/|$)", files)]
+  files[file.exists(file.path(repository_root, files))]
 }
 
 rrp_hospital_validate_lock_baseline <- function(platform_lock, top_level_lock,
@@ -214,8 +241,17 @@ rrp_hospital_write_tar <- function(root, paths, archive_path) {
   invisible(archive_path)
 }
 
-rrp_build_platform_release_candidate <- function(repository_root, staging_root) {
-  source_files <- rrp_hospital_platform_candidate_files(repository_root)
+rrp_build_platform_release_candidate <- function(
+  repository_root,
+  staging_root,
+  platform_version = "0.0.0-proof.11.4",
+  candidate_status = "proof_only_not_published_not_v0.1.0",
+  source_revision = NULL
+) {
+  source_files <- rrp_hospital_platform_candidate_files(
+    repository_root,
+    whole_repository = identical(candidate_status, "release_candidate_not_published")
+  )
   missing <- source_files[!file.exists(file.path(repository_root, source_files))]
   if (length(missing) > 0L) stop(
     "Platform candidate source is missing: ", paste(missing, collapse = ", "),
@@ -234,7 +270,7 @@ rrp_build_platform_release_candidate <- function(repository_root, staging_root) 
   ), character(1))
   platform_identity <- list(
     platform_id = "readmission-risk-pool-platform",
-    platform_version = "0.0.0-proof.11.4"
+    platform_version = platform_version
   )
   instance_id <- paste0(
     "platform_release_candidate::",
@@ -247,9 +283,14 @@ rrp_build_platform_release_candidate <- function(repository_root, staging_root) 
     manifest_version = "0.1.0",
     platform_identity = platform_identity,
     candidate_instance_id = instance_id,
-    candidate_status = "proof_only_not_published_not_v0.1.0",
+    candidate_status = candidate_status,
     source_provenance = list(
-      kind = "validated_allowlisted_working_tree_candidate",
+      kind = if (is.null(source_revision)) {
+        "validated_working_tree_candidate"
+      } else {
+        "validated_clean_authoritative_revision"
+      },
+      source_revision = source_revision %||% "uncommitted_working_tree",
       git_identity_is_semantic = FALSE,
       public_release = FALSE
     ),
@@ -267,13 +308,16 @@ rrp_build_platform_release_candidate <- function(repository_root, staging_root) 
       exact_inclusion_required = TRUE
     ),
     nonclaims = list(
-      "not a published Platform release",
-      "not Platform v0.1.0",
+      "release candidate only; not a published Platform release",
+      "no Git tag or GitHub Release is claimed",
       "not clinically validated or production authorized"
     )
   )
   rrp_hospital_write_yaml(manifest, file.path(candidate_root, "PLATFORM-CANDIDATE.yml"))
-  archive_name <- "readmission-risk-pool-platform-candidate-11.4.tar"
+  archive_name <- paste0(
+    "readmission-risk-pool-platform-", gsub("[^0-9A-Za-z.-]", "-", platform_version),
+    "-candidate.tar"
+  )
   archive_path <- file.path(staging_root, "platform", archive_name)
   dir.create(dirname(archive_path), recursive = TRUE, showWarnings = FALSE)
   rrp_hospital_write_tar(
@@ -352,7 +396,11 @@ rrp_resolve_hospital_distribution <- function(store_or_distribution) {
 rrp_build_hospital_distribution <- function(
   repository_root,
   distribution_store,
-  built_at = rrp_hospital_now()
+  built_at = rrp_hospital_now(),
+  platform_version = "0.0.0-proof.11.4",
+  hospital_version = "0.0.0-proof.11.4",
+  candidate_status = "proof_only_not_published_not_v0.1.0",
+  source_revision = NULL
 ) {
   repository_root <- normalizePath(repository_root, mustWork = TRUE)
   distribution_store <- normalizePath(distribution_store, mustWork = FALSE)
@@ -406,7 +454,9 @@ rrp_build_hospital_distribution <- function(
   for (relative in names(source_map)) rrp_hospital_copy_regular_file(
     unname(source_map[[relative]]), staging, relative
   )
-  platform <- rrp_build_platform_release_candidate(repository_root, staging)
+  platform <- rrp_build_platform_release_candidate(
+    repository_root, staging, platform_version, candidate_status, source_revision
+  )
   payload_paths <- rrp_hospital_scan_tree(staging, allow_local_state = FALSE)$files
   inventory <- rrp_hospital_inventory(
     staging, payload_paths, rrp_hospital_distribution_role
@@ -421,8 +471,12 @@ rrp_build_hospital_distribution <- function(
     distribution_specification = rrp_hospital_distribution_specification(),
     hospital_implementation = list(
       release_id = "readmission-risk-pool-hospital-implementation",
-      release_version = "0.0.0-proof.11.4",
-      release_status = "proof_only_not_published"
+      release_version = hospital_version,
+      release_status = if (identical(candidate_status, "release_candidate_not_published")) {
+        "release_candidate_not_published"
+      } else {
+        "proof_only_not_published"
+      }
     ),
     distribution_instance_id = "pending",
     distribution_build_id = "pending",
@@ -474,8 +528,8 @@ rrp_build_hospital_distribution <- function(
     data_classification = "fictional_nonclinical",
     validation_status = "passed",
     nonclaims = list(
-      "not a public Platform or Hospital Implementation release",
-      "not a license grant",
+      "release candidate only; not a published Platform or Hospital release",
+      "no Git tag or GitHub Release is claimed",
       "not a clinical or production-ready implementation",
       "not a deployment or publication",
       "not a guarantee for recipient-modified content"

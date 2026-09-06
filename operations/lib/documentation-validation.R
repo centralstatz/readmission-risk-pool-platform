@@ -26,6 +26,7 @@ rrp_required_governing_documents <- function() {
     "docs/architecture/observability-foundation.md",
     "docs/architecture/distribution-release-assessment.md",
     "docs/architecture/hospital-implementation-distribution-assessment.md",
+    "docs/architecture/release-license-review.md",
     "docs/architecture/reference-asset-reconciliation.md",
     "docs/architecture/platform-implementation-record.md",
     "docs/architecture/open-decisions.md",
@@ -41,6 +42,7 @@ rrp_required_governing_documents <- function() {
     "docs/operations/application-artifacts.md",
     "docs/operations/connect-cloud-deployment.md",
     "docs/operations/observability-and-diagnostics.md",
+    "docs/operations/release-preparation.md",
     "contracts/README.md"
   )
 }
@@ -67,6 +69,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/observability-foundation.md",
       "docs/architecture/distribution-release-assessment.md",
       "docs/architecture/hospital-implementation-distribution-assessment.md",
+      "docs/architecture/release-license-review.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "contracts/README.md"
@@ -91,6 +94,7 @@ rrp_navigation_expectations <- function() {
       "docs/architecture/observability-foundation.md",
       "docs/architecture/distribution-release-assessment.md",
       "docs/architecture/hospital-implementation-distribution-assessment.md",
+      "docs/architecture/release-license-review.md",
       "docs/architecture/reference-asset-reconciliation.md",
       "docs/architecture/platform-implementation-record.md",
       "docs/architecture/open-decisions.md",
@@ -225,7 +229,8 @@ rrp_navigation_expectations <- function() {
       "docs/operations/logical-products.md",
       "docs/operations/application-artifacts.md",
       "docs/operations/connect-cloud-deployment.md",
-      "docs/operations/observability-and-diagnostics.md"
+      "docs/operations/observability-and-diagnostics.md",
+      "docs/operations/release-preparation.md"
     ),
     "docs/operations/application-artifacts.md" = c(
       "docs/architecture/application-artifact-foundation.md",

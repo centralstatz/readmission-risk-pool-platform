@@ -410,7 +410,7 @@ rrp_validate_hospital_git_realization <- function(
   expected_nonclaims <- c(
     "not a maintained CentralStatz source repository",
     "not committed tagged remote-configured pushed or published",
-    "not a final Platform or Hospital Implementation v0.1.0 release",
+    "release candidate only; not a published Platform or Hospital release",
     "not an upgrade merge or preservation mechanism for recipient changes",
     "not clinically validated security approved or production authorized"
   )

@@ -11,6 +11,6 @@ Description: Focused internal runtime primitives for admitted canonical input,
     standardized estimate conformance, and backend-independent operational
     history ports. It performs no source mapping, durable storage, decision
     policy, product construction, application work, or deployment.
-License: file LICENSE
+License: Apache License (>= 2)
 Encoding: UTF-8
 Depends: R (>= 4.1.0)

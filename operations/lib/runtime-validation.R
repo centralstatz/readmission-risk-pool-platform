@@ -268,7 +268,7 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     "contracts/runtime/provider-execution-result.yml",
     "contracts/runtime/readmission-risk-estimate.yml",
     "contracts/runtime/providers/transparent-reference-provider.yml",
-    "runtime/DESCRIPTION", "runtime/LICENSE", "runtime/NAMESPACE",
+    "runtime/DESCRIPTION", "runtime/NAMESPACE",
     "runtime/README.md", "runtime/R/utils.R", "runtime/R/conformance.R",
     "runtime/R/specifications.R", "runtime/R/input.R",
     "runtime/R/eligibility.R", "runtime/R/state.R",
@@ -313,6 +313,21 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_runtime_scope", length(setdiff(expected_runtime, actual_runtime)) == 0L,
     "all Phase 4 runtime/provider/estimate package files remain present"
+  )
+
+  description_path <- file.path(repository_root, "runtime", "DESCRIPTION")
+  description <- if (file.exists(description_path)) read.dcf(description_path) else NULL
+  runtime_license_ok <- !is.null(description) && "License" %in% colnames(description) &&
+    identical(unname(description[1L, "License"]), "Apache License (>= 2)") &&
+    !file.exists(file.path(repository_root, "runtime", "LICENSE"))
+  if (!runtime_license_ok) issues[[length(issues) + 1L]] <- rrp_issue(
+    "phase4_runtime_license", "invalid_runtime_license_metadata",
+    "rrpruntime must use standard Apache package metadata without the former placeholder license file.",
+    "runtime/DESCRIPTION"
+  )
+  checks[[length(checks) + 1L]] <- rrp_check(
+    "phase4_runtime_license", runtime_license_ok,
+    "rrpruntime declares Apache License (>= 2) without a placeholder license file"
   )
 
   prohibited_directories <- c(

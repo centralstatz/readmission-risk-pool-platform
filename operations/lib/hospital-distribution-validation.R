@@ -21,14 +21,20 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
     "operations/lib/hospital-distribution-operation.R",
     "operations/lib/hospital-distribution-validation.R",
     "operations/lib/hospital-git-realization-operation.R",
+    "operations/lib/release-preparation-operation.R",
     "operations/build-hospital-distribution.R",
     "operations/validate-hospital-distribution.R",
     "operations/build-hospital-git-realization.R",
     "operations/validate-hospital-git-realization.R",
+    "operations/prepare-release.R",
     "tests/run-phase11-tests.R",
     "tests/phase11/test-hospital-distribution.R",
     "docs/operations/hospital-implementation-distribution.md",
-    "docs/operations/hospital-git-realization.md"
+    "docs/operations/hospital-git-realization.md",
+    "docs/operations/release-preparation.md",
+    "docs/architecture/release-license-review.md",
+    "LICENSE", "NOTICE", "CONTRIBUTING.md", "SECURITY.md", "SUPPORT.md",
+    "CHANGELOG.md", "RELEASE.yml"
   )
   present <- file.exists(file.path(repository_root, required))
   checks <- lapply(seq_along(required), function(index) rrp_check(
@@ -166,7 +172,7 @@ rrp_validate_hospital_distribution_repository <- function(repository_root) {
     "platform.build-hospital-distribution",
     "platform.validate-hospital-distribution",
     "platform.build-hospital-git-realization",
-    "platform.validate-hospital-git-realization"
+    "platform.validate-hospital-git-realization", "platform.prepare-release"
   ), grepl, logical(1), x = operation_text, fixed = TRUE))
   checks[[length(checks) + 1L]] <- rrp_check(
     "hospital_distribution_operations_registered", operations_registered,
@@ -190,16 +196,16 @@ rrp_validate_phase11_checkpoint <- function(repository_root) {
     repository_root, "docs", "architecture", "platform-implementation-record.md"
   ), warn = FALSE), collapse = "\n")
   evidence <- grepl(
-    "Iteration 11.5 — Standalone Hospital Implementation Git realization",
+    "Iteration 11.6 — v0.1.0 release-candidate and governance hardening",
     record, fixed = TRUE
   ) && grepl("Phase 11 status", record, fixed = TRUE)
   checks <- rrp_check(
     "phase11_iteration_checkpoint", evidence,
-    "Iteration 11.5 implementation and Phase 11 status are recorded"
+    "Iteration 11.6 implementation and Phase 11 status are recorded"
   )
   issues <- if (evidence) rrp_empty_issues() else rrp_issue(
     "phase11_checkpoint", "missing_phase11_iteration_record",
-    "Implementation record must record Iteration 11.5 and Phase 11 status.",
+    "Implementation record must record Iteration 11.6 and Phase 11 status.",
     "docs/architecture/platform-implementation-record.md"
   )
   rrp_validation_result("Phase 11 checkpoint", checks, issues)

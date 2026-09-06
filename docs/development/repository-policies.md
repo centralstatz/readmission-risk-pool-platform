@@ -9,10 +9,11 @@ release governance.
 
 ## Licensing and release status
 
-The repository has documented open-source intent, but no final license has been
-selected and no public release is authorized. The authoritative current notice
-is [License status](../../LICENSE-STATUS.md). Do not describe the repository as
-an open-source release until the maintainer installs approved license terms.
+Repository-authored software and documentation are licensed under Apache-2.0;
+see [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). License installation is
+distinct from publication: [License and publication status](../../LICENSE-STATUS.md)
+records that the `v0.1.0` candidate remains `not_published` until a separately
+authorized publication workflow completes.
 
 ## Version and change records
 

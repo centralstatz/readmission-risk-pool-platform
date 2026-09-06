@@ -20,6 +20,13 @@ Thumbs.db
 .cache/
 .tmp/
 tmp/
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
 
 # Generated deployment builds named by the target architecture
 build/

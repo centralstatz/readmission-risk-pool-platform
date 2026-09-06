@@ -108,6 +108,12 @@ operations:
     mutation: read_only_with_removed_temporary_checks
     classification: maintainer
     documentation: docs/operations/hospital-git-realization.md
+  - operation_id: platform.prepare-release
+    command: Rscript operations/prepare-release.R --version 0.1.0
+    purpose: Prepare, validate, and prove the unpublished Platform and Hospital release candidates.
+    mutation: ignored_local_release_candidates_and_evidence_only
+    classification: maintainer
+    documentation: docs/operations/release-preparation.md
   - operation_id: platform.validate-documentation
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.

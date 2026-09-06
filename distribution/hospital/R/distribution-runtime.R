@@ -283,13 +283,18 @@ rrp_hospital_validate_platform_candidate_archive <- function(
       rrp_hospital_distribution_specification(),
     exact_inclusion_required = TRUE
   )
+  supported_status <- candidate$candidate_status %in% c(
+    "proof_only_not_published_not_v0.1.0", "release_candidate_not_published"
+  )
+  supported_provenance <- candidate$source_provenance$kind %in% c(
+    "validated_working_tree_candidate", "validated_clean_authoritative_revision"
+  )
   candidate_contract_ok <- identical(
     candidate$manifest_kind, "platform_release_candidate_manifest"
   ) && identical(candidate$manifest_version, "0.1.0") &&
-    identical(candidate$candidate_status,
-              "proof_only_not_published_not_v0.1.0") &&
-    identical(candidate$source_provenance$kind,
-              "validated_allowlisted_working_tree_candidate") &&
+    supported_status && supported_provenance &&
+    is.character(candidate$source_provenance$source_revision) &&
+    length(candidate$source_provenance$source_revision) == 1L &&
     identical(candidate$source_provenance$git_identity_is_semantic, FALSE) &&
     identical(candidate$source_provenance$public_release, FALSE) &&
     identical(candidate$compatibility, expected_compatibility)
@@ -493,11 +498,14 @@ rrp_validate_hospital_distribution <- function(
       "HOSPITAL-DISTRIBUTION.yml#distribution_specification"
     )
   }
-  expected_release <- list(
-    release_id = "readmission-risk-pool-hospital-implementation",
-    release_version = "0.0.0-proof.11.4",
-    release_status = "proof_only_not_published"
-  )
+  release <- manifest$hospital_implementation
+  release_ok <- is.list(release) &&
+    identical(release$release_id, "readmission-risk-pool-hospital-implementation") &&
+    is.character(release$release_version) && length(release$release_version) == 1L &&
+    grepl("^[0-9]+[.][0-9]+[.][0-9]+([.-][0-9A-Za-z.-]+)?$", release$release_version) &&
+    release$release_status %in% c(
+      "proof_only_not_published", "release_candidate_not_published"
+    )
   expected_compatibility <- list(
     platform_inclusion = "exact_candidate_only",
     canonical_producer = list(
@@ -509,7 +517,7 @@ rrp_validate_hospital_distribution <- function(
       specification_version = "0.1.0"
     )
   )
-  if (!identical(manifest$hospital_implementation, expected_release) ||
+  if (!release_ok ||
       !identical(manifest$compatibility, expected_compatibility)) {
     issues[[length(issues) + 1L]] <- rrp_hospital_issue(
       "compatibility", "incompatible_hospital_platform_declaration",
@@ -624,7 +632,7 @@ rrp_validate_hospital_distribution <- function(
           manifest$platform_candidate$archive_inventory_member_count
         )) ||
         !identical(candidate$manifest$candidate_status,
-                   "proof_only_not_published_not_v0.1.0") ||
+                   manifest$platform_candidate$candidate_status) ||
         !identical(candidate$manifest$source_provenance$public_release, FALSE) ||
         !identical(manifest$platform_candidate$public_release, FALSE) ||
         !identical(candidate$manifest$environment$platform_lock_sha256,

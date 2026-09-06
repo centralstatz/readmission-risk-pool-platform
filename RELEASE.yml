@@ -1,0 +1,25 @@
+release_authority_version: 1
+source:
+  product_id: readmission-risk-pool-platform
+  development_version: 0.1.0-dev
+targets:
+  platform:
+    product_id: readmission-risk-pool-platform
+    intended_version: 0.1.0
+    candidate_status: release_candidate_not_published
+  hospital:
+    product_id: readmission-risk-pool-hospital-implementation
+    intended_version: 0.1.0
+    version_relationship: independently_versioned
+    candidate_status: release_candidate_not_published
+publication:
+  status: not_published
+  expected_platform_tag: v0.1.0
+  tag_exists: false
+  github_release_exists: false
+license:
+  spdx_id: Apache-2.0
+  file: LICENSE
+stewardship:
+  publisher: CentralStatz Statistical & Data Sciences LLC
+  initial_maintainer: Alex Zajichek

@@ -44,13 +44,15 @@ identity_semantics:
     build occurrences may have different build identities.
 
 platform_candidate:
-  release_status: proof_only_not_published
+  supported_candidate_statuses:
+    - proof_only_not_published_not_v0.1.0
+    - release_candidate_not_published
   exact_archive_required: true
   archive_count: 1
   integrity_algorithm: sha256
   offline_after_acquisition: true
   latest_lookup: prohibited
-  public_release_claim: prohibited
+  public_release_claim: prohibited_until_separate_publication
 
 closed_inventory: true
 integrity:

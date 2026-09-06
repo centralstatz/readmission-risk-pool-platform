@@ -70,13 +70,17 @@ extending it.
 23. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
    — generate and validate the pristine staged repository form while stopping
    before commit, remote, tag, push, or publication.
-24. [Platform Implementation Record](architecture/platform-implementation-record.md)
+24. [Maintainer Release Preparation](operations/release-preparation.md) and
+   [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
+   prepare and inspect exact `v0.1.0` candidates and governance/readiness
+   evidence while remaining explicitly unpublished.
+25. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-25. [Implementation Conventions](development/implementation-conventions.md) and
+26. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-26. [Repository Development Policies](development/repository-policies.md) for
+27. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-27. [Operations](operations/README.md) for supported human operations and
+28. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

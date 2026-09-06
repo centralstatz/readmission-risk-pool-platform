@@ -75,6 +75,10 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
   — realize that validated artifact as a staged, uncommitted, remote-free
   standalone repository for later release preparation.
+- [Maintainer Release Preparation](operations/release-preparation.md) and
+  [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
+  prepare and inspect exact unpublished `v0.1.0` candidates and the evidence
+  required to stop at `READY FOR PUBLICATION`.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
 - [Open Decisions](architecture/open-decisions.md) — maintainer decisions and

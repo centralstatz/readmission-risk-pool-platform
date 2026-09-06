@@ -14,7 +14,8 @@ realization is a separate maintainer boundary.
 
 This distribution is not a published release, clinical system, security
 boundary, hospital integration, deployment, or substitute for local validation
-and governance. No public license is installed by this proof.
+and governance. Repository-authored source is Apache-2.0 licensed; candidate
+status remains `not_published` until separate publication is authorized.
 
 ## Start here
 

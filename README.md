@@ -26,8 +26,12 @@ Platform candidate, independent validator, safe extraction, and external-copy
 synthetic/adopter workflows under ignored local state. Iteration 11.5 proves
 the separate standalone Git form at an explicit outside-repository destination:
 closed identity/provenance, pristine replacement, independent validation, and
-`main` with all files staged, zero commits, and zero remotes. No license,
-release, tag, remote, push, or publication has been created.
+`main` with all files staged, zero commits, and zero remotes. Iteration 11.6
+installs Apache-2.0 and lightweight governance, establishes a narrow R 4.4/macOS
+test claim plus Ubuntu CI, and adds one clean-source maintainer workflow for
+exact Platform and Hospital `v0.1.0` candidates, acquisition proof, and release
+evidence. The result is ready for publication but remains `not_published`: no
+release commit, tag, remote, push, GitHub Release, or publication is created.
 The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
@@ -160,7 +164,7 @@ with:
 Rscript operations/validate.R --mode development
 ```
 
-Evaluate the Iteration 11.5 checkpoint with:
+Evaluate the Iteration 11.6 checkpoint with:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -183,6 +187,15 @@ Rscript operations/validate-hospital-git-realization.R --destination PATH
 
 These commands stop before commit, remote configuration, push, release, or
 publication.
+
+From a clean committed source state, prepare the exact unpublished first
+release candidates and readiness evidence with:
+
+```sh
+Rscript operations/prepare-release.R --version 0.1.0
+```
+
+This also stops before commit, tag, remote, push, GitHub Release, or publication.
 
 Generate and validate the deterministic reference flow with:
 
@@ -271,6 +284,9 @@ Accepted hospital-facing composition architecture is in
 [Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md).
 Maintainer realization behavior is in
 [Standalone Hospital Implementation Git Realization](docs/operations/hospital-git-realization.md).
-The [current license status](LICENSE-STATUS.md) explicitly authorizes no public
-release or implied license grant; final license review and policy-file
-implementation remain incomplete.
+The [release preparation guide](docs/operations/release-preparation.md) owns the
+final local `v0.1.0` workflow. Repository-authored work is licensed under
+[Apache-2.0](LICENSE), while [publication status](LICENSE-STATUS.md) remains
+explicitly separate and `not_published`; the bounded
+[compatibility review](docs/architecture/release-license-review.md) records the
+dependency and asset evidence.

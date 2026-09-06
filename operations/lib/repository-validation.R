@@ -269,7 +269,14 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
   required_files <- c(
     ".editorconfig",
     ".gitignore",
+    "LICENSE",
     "LICENSE-STATUS.md",
+    "NOTICE",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CHANGELOG.md",
+    "RELEASE.yml",
     "docs/development/repository-policies.md",
     "docs/operations/README.md",
     "docs/operations/validation.md",
@@ -313,28 +320,24 @@ rrp_validate_phase0_checkpoint <- function(repository_root) {
     "no still-unauthorized configuration or observability scaffolding"
   )
 
-  license_path <- file.path(repository_root, "LICENSE-STATUS.md")
-  license_text <- if (file.exists(license_path)) {
-    paste(rrp_read_text(license_path), collapse = "\n")
-  } else {
-    ""
-  }
-  license_ok <- grepl(
-    "no public release[[:space:]]+is[[:space:]]+authorized",
-    license_text,
-    perl = TRUE
-  ) &&
-    grepl("not a software[[:space:]]+license", license_text, perl = TRUE)
+  license_path <- file.path(repository_root, "LICENSE")
+  license_text <- paste(rrp_read_text(license_path), collapse = "\n")
+  status_text <- paste(rrp_read_text(file.path(
+    repository_root, "LICENSE-STATUS.md"
+  )), collapse = "\n")
+  license_ok <- grepl("Apache License", license_text, fixed = TRUE) &&
+    grepl("Version 2.0, January 2004", license_text, fixed = TRUE) &&
+    grepl("not_published", status_text, fixed = TRUE)
   if (!license_ok) {
     issues[[length(issues) + 1L]] <- rrp_issue(
-      "license_status", "unclear_license_status",
-      "License notice must state that no release is authorized and no license is supplied.",
-      "LICENSE-STATUS.md"
+      "license_status", "invalid_apache_license_status",
+      "Apache-2.0 must be installed while publication remains explicitly not_published.",
+      "LICENSE"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(
     "license_status", license_ok,
-    "explicit non-release policy without provisional legal terms"
+    "Apache-2.0 installed with distinct unpublished release status"
   )
 
   validation_doc <- file.path(repository_root, "docs", "operations", "validation.md")

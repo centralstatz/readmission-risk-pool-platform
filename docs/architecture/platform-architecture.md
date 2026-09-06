@@ -498,7 +498,13 @@ and maintenance decision is authoritative in
 Iteration 11.4 implements and tests the proof-only builder and generated
 artifact under ignored local state. Iteration 11.5 implements and tests the
 separate standalone Git realization at explicit external destinations.
-Publication remains a later explicitly authorized stage.
+Iteration 11.6 composes the final local release-preparation boundary: one clean
+validated authoritative revision yields a closed whole-repository Platform
+candidate, independently versioned Hospital candidate embedding its exact
+identity/digest, pristine staged Hospital Git realization, recipient-like
+acquisition evidence, and checksummed `not_published` readiness manifest under
+ignored `build/`. Apache-2.0, governance, and truthful support evidence are
+prerequisites. Publication remains a later explicitly authorized stage.
 
 ## Observability layer
 

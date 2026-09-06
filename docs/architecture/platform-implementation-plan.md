@@ -653,16 +653,22 @@ repository strategy are decided from demonstrated needs.
   modified, committed, remote-configured, linked, nested, or suspicious state
   is refused. External acquisition proves unchanged synthetic and adopter
   workflows. No publication action exists.
-- **Remaining Phase 11 release work:** complete
-  license/environment/governance evidence, assemble
-  release candidates, and perform clean acquisition validation. Publication of
-  `v0.1.0` still requires explicit maintainer authorization.
+- **Iteration 11.6 — v0.1.0 release-candidate and governance hardening:**
+  implemented. Apache-2.0 and NOTICE replace the provisional no-license state;
+  lightweight DCO, security, support, changelog, version authority, bounded
+  dependency/asset evidence, and narrow R/OS support claims are maintained.
+  One clean-source maintainer operation builds and validates the whole-tree
+  Platform `0.1.0` candidate, exact generated Hospital `0.1.0` candidate,
+  pristine Hospital Git realization, recipient-like workflows, and checksummed
+  `not_published` readiness evidence under ignored `build/`.
+- **Remaining Phase 11 release work:** only explicitly authorized publication.
+  Publication still requires a separate commit/tag/remote/push/GitHub Release
+  workflow and maintainer authorization.
 
-**Phase 11 remains in progress.** Iterations 11.4–11.5 prove the generated
-distribution and its standalone Git realization through independent validation,
-safe managed extraction, external execution, synthetic acceptance, and adopter
-substitution. No final license, public release candidate, tag, CI matrix,
-remote, push, GitHub release, or publication has been implemented.
+**Phase 11 remains in progress — READY FOR PUBLICATION.** Iterations 11.4–11.6
+prove the generated distribution, standalone Git form, Apache-2.0 governance,
+exact unpublished candidates, and clean acquisition. No release commit, tag,
+remote, push, GitHub Release, or publication has been implemented.
 
 ## Cross-phase rules
 

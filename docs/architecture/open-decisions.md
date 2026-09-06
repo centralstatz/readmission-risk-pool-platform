@@ -8,7 +8,7 @@ earlier work unless stated.
 
 | Decision | Why it matters | Needed by | Current direction |
 |---|---|---:|---|
-| Open-source license and content/asset licensing | Determines permission to distribute and reuse source/assets | Final review before license installation/public release | Direction resolved in Iteration 11.2: Apache-2.0 after final dependency/asset/license compatibility review; MIT is the fallback for a genuine unresolved incompatibility. `LICENSE-STATUS.md` still authorizes no release |
+| Open-source license and content/asset licensing | Determines permission to distribute and reuse source/assets | Resolved in Iteration 11.6 | Apache-2.0 installed after the bounded dependency/asset review found no concrete incompatibility; dependency licenses remain their own and publication remains separate |
 | Initial schema/specification format | Affects readable and machine-validated contracts | Resolved in Phase 1 | YAML is the human-authored source; executable R validation uses the independently locked `yaml` dependency |
 | Pre-1.0 compatibility policy | Determines when draft interfaces may change and how migrations are stated | Resolved in Phase 1 | Patch changes are narrowly compatible; semantic or requiredness changes increment the minor line and require explicit consumer support |
 | Generic canonical bundle, registration, and dependency model | Prevents representation and status mechanics from being invented by individual domains | Resolved in Phase 2.1 | One bundle instance registers independently versioned domains/capabilities with required, conditional, or optional classes and simple acyclic typed dependencies |

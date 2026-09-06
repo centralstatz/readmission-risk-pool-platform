@@ -151,7 +151,20 @@ Rscript operations/validate-hospital-git-realization.R --destination PATH
 
 Remove the temporary destination after evidence collection. It must contain no
 commit or remote and must never be left as a nested repository inside this
-authoritative tree.
+authoritative tree. The sole exception is the release preparer's owned ignored
+`build/releases/VERSION/hospital/git-realization` candidate.
+
+From a clean committed source state, prepare and independently revalidate the
+unpublished first release candidates with:
+
+```sh
+Rscript operations/prepare-release.R --version 0.1.0
+Rscript operations/prepare-release.R --version 0.1.0 --validate-only
+Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
+```
+
+These maintainer operations create only ignored local candidates/evidence and
+stop before commit, tag, remote, push, GitHub Release, or publication.
 
 Validate the installed canonical producer without downstream execution:
 
@@ -310,13 +323,14 @@ Checkpoint mode runs every development check and additionally verifies:
   artifact proof, negative downstream scans, and implementation record;
 - an independently owned `renv` lockfile recording `yaml`, `DBI`, `duckdb`, and
   `shiny` with required transitive packages plus build-only `rsconnect`;
-- the explicit non-release license status; and
+- installed Apache-2.0 terms with distinct `not_published` release status; and
 - agreement between human validation commands and agent guidance.
 
 This is strict only relative to completed Phase 10 and the fictional
 source-to-local-deployable-repository boundary. It does not prove:
 
-- public release or license readiness;
+- publication completion (release readiness is owned by the separate
+  maintainer preparation operation);
 - clinical provider validity, production persistence/materialization, or final
   application UX;
 - independent adopter-producer conformance, turnkey hospital onboarding, or a

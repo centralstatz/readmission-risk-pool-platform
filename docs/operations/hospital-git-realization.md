@@ -21,7 +21,9 @@ validated Hospital Implementation distribution
 ```
 
 There is no commit, author identity, remote, tag, push, GitHub repository,
-release, publication, deployment, final license grant, or `v0.1.0` claim.
+release, publication, or deployment. Apache-2.0 is installed, and Iteration
+11.6 may identify this form as an unpublished `v0.1.0` candidate without
+claiming that the tag or public release exists.
 
 ## Preconditions and source boundary
 
@@ -124,11 +126,11 @@ make the generator overwrite them.
 
 ## Remaining publication boundary
 
-The structure is suitable for a later maintainer-only release workflow, but
-publication remains unauthorized. Final license/dependency/asset review,
-license installation, stewardship and policy files, tested R/OS evidence,
-actual Platform and Hospital release candidates, clean acquisition evidence,
-checksums/manifests, naming, maintainer authorization, commit/tag/remote/push,
-and GitHub Releases remain separate Phase 11 work. Platform and Hospital
+The structure is suitable for the maintainer-only release workflow, but
+publication remains unauthorized. License/governance, tested support evidence,
+actual candidates, clean acquisition, and checksums/manifests are composed by
+[Release Preparation](release-preparation.md). Maintainer authorization,
+commit/tag/remote/push, and GitHub Releases remain separate Phase 11 work.
+Platform and Hospital
 Implementation versions remain independent even when their first version
 numbers happen to match.

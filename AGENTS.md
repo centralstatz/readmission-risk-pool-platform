@@ -73,9 +73,11 @@ conformance, the migrated synthetic reference peer, and an independently
 developed test-only adopter producer using a materially different source shape.
 The two isolated compositions prove unchanged runtime/provider, DuckDB,
 products/app, and artifact behavior. The fixture is evidence, not a second
-shipped health system. Iterations 11.4–11.5 now own the generated adopter-facing
-artifact and pristine standalone Git form; final release governance remains
-open for Phase 11.
+shipped health system. Iterations 11.4–11.5 own the generated adopter-facing
+artifact and pristine standalone Git form. Iteration 11.6 installs Apache-2.0
+and minimal governance, declares narrow tested support evidence, and owns the
+final local `v0.1.0` candidate/readiness workflow. Phase 11 remains in progress
+and ready for publication; publication is a separate authorization boundary.
 Iteration 11.1 owns the retained decision assessment in
 `docs/architecture/distribution-release-assessment.md`. Iteration 11.2
 baselines the maintainer's release/governance direction; its separately
@@ -97,9 +99,11 @@ reduced artifact. Iteration 11.5 implements
 artifact-to-repository boundary: explicit outside-repository destination,
 closed provenance/inventory, pristine-output replacement rules, independent
 validation, and `main` with all files staged, zero commits, and zero remotes.
-It creates no license, release, tag, remote, push, publication, or deployment.
-Phase 11 remains in progress; the current no-release license status remains
-authoritative pending final compatibility review and release hardening.
+It creates no release, tag, remote, push, publication, or deployment. Iteration
+11.6 supersedes proof-only release preparation: Apache-2.0 is installed, both
+independently versioned products target `0.1.0`, exact local candidates and
+clean-acquisition evidence are produced under ignored `build/`, and status
+remains explicitly `not_published`.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -186,6 +190,14 @@ generate a standalone Hospital Implementation repository
     → Rscript operations/build-hospital-git-realization.R --destination PATH
 validate a standalone Hospital Implementation repository
     → Rscript operations/validate-hospital-git-realization.R --destination PATH
+prepare release v0.1.0
+    → Rscript operations/prepare-release.R --version 0.1.0
+validate the v0.1.0 release candidate
+    → Rscript operations/prepare-release.R --version 0.1.0 --validate-only
+show release readiness
+    → Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
+publish v0.1.0
+    → NOT IMPLEMENTED OR AUTHORIZED IN ITERATION 11.6
 ```
 
 Keep platform run, product refresh, and app launch distinct. “Refresh the local
@@ -221,7 +233,7 @@ Use the exact human operations documented in
 Rscript operations/validate.R --mode development
 ```
 
-For the Iteration 11.5 checkpoint, run:
+For the Iteration 11.6 checkpoint, run:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -236,6 +248,9 @@ Rscript operations/build-hospital-distribution.R
 Rscript operations/validate-hospital-distribution.R
 Rscript operations/build-hospital-git-realization.R --destination PATH
 Rscript operations/validate-hospital-git-realization.R --destination PATH
+Rscript operations/prepare-release.R --version 0.1.0
+Rscript operations/prepare-release.R --version 0.1.0 --validate-only
+Rscript operations/prepare-release.R --version 0.1.0 --show-readiness
 ```
 
 Run the focused Phase 3 producer tests and the supported reference operation
@@ -357,7 +372,9 @@ fixed reviewed composition, and the only active top-level `renv` environment;
 the embedded lock remains provenance, and isolated synthetic acceptance remains
 separate from adopter state. There is no separately maintained CentralStatz
 project or formal third release layer. Iteration 11.5 may realize only an
-independently validated artifact as a pristine outside-repository Git tree.
+independently validated artifact as a pristine outside-repository Git tree;
+Iteration 11.6 may compose that exact form into ignored local `not_published`
+release evidence from clean source.
 Treat distribution and Git-realization operations as maintainer/release
 preparation, not hospital-facing operations; never rebuild inputs implicitly,
 overwrite modified/committed/remote-configured destinations, merge recipient

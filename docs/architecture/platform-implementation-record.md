@@ -4730,3 +4730,180 @@ the R/OS support matrix actually tested, assemble exact unpublished Platform
 and Hospital release candidates from this realized structure, and prove clean
 acquisition. Stop again for explicit maintainer authorization before any
 commit, tag, remote, push, GitHub Release, or publication action.
+
+### Iteration 11.6 — v0.1.0 release-candidate and governance hardening
+
+#### Objective and settled decisions
+
+Turn the proven 11.4–11.5 artifact pipeline into the final local preparation
+workflow for intended Platform `v0.1.0` and independently versioned Hospital
+Implementation `v0.1.0`, then stop before publication. This iteration used the
+settled one-authoritative-repository/two-release-product model, whole-tree first
+Platform release, exact embedded Platform archive, one Hospital `renv`
+environment, fixed trusted producer composition, external secrets, best-effort
+support, CentralStatz stewardship, DCO/no-CLA contributions, and Apache-2.0
+direction without reopening them.
+
+#### License review and installed governance
+
+The bounded review inspected the 41 packages recorded by `renv.lock`, installed
+DESCRIPTION license metadata, `rrpruntime`, tracked source, generated contents,
+asset extensions, reference-repository reconciliation, and maintained examples.
+R dependencies are restored rather than bundled; their MIT, BSD, LGPL, and GPL
+licenses remain their own. No image, font, binary, vendored dependency tree, or
+copied third-party source ships. Reference evidence supplied principles only
+and is neither copied nor required. No concrete Apache-2.0 blocker was found.
+
+Installed the standard Apache License 2.0 in `LICENSE`, CentralStatz copyright
+and stewardship in `NOTICE`, and updated `LICENSE-STATUS.md` to distinguish the
+license grant from `not_published` release status. `rrpruntime` now declares
+Apache License (>= 2). Added the evidence-focused license review,
+`CONTRIBUTING.md` with DCO 1.1 sign-off through `git commit -s` and no CLA,
+`SECURITY.md` with GitHub private vulnerability reporting and no invented email,
+and `SUPPORT.md` with best-effort/no-SLA/no-entitlement terms. Added a concise
+`CHANGELOG.md`; `CITATION.cff` was deliberately omitted because no scholarly
+publication metadata is needed or available.
+
+#### Version, support, and candidate semantics
+
+`RELEASE.yml` is the small release authority: development source is
+`0.1.0-dev`; intended Platform and independently versioned Hospital candidates
+are `0.1.0`; publication is `not_published`; expected tag `v0.1.0` is recorded
+but explicitly nonexistent. Candidate identity remains distinct from source
+revision, occurrence time, Git commit/tag, and GitHub Release.
+
+The truthful local claim is R 4.4.1 on `aarch64-apple-darwin20` / Darwin 25.5.0.
+The release supports the R 4.4.x line through the shipped lock and standard
+`renv::restore()` path. Windows and other R minors are untested. A minimal
+read-only GitHub Actions workflow declares R 4.4 on Ubuntu; Ubuntu becomes
+tested evidence only after that workflow succeeds. First restoration may need
+network access and system libraries; third-party packages are not embedded.
+
+#### Implementation and release evidence
+
+The 11.4 candidate builder now accepts explicit intended versions, candidate
+status, and source revision. Proof defaults remain for lower-level regression
+tests. Release mode inventories the complete tracked authoritative source unit,
+adds the candidate manifest, creates deterministic regular-file USTAR, and
+retains closed size/SHA-256 evidence. Hospital build/validation accepts proof
+or final unpublished-candidate status and continues to require one exact
+embedded candidate, matching digest, exact top-level lock, closed inventory,
+and artifact-owned validation. The Git realization keeps its deterministic
+identity and staged/uncommitted/remote-free semantics while describing a final
+candidate without claiming publication.
+
+`Rscript operations/prepare-release.R --version 0.1.0` is the sole primary
+maintainer interface. It fails on dirty/uncommitted source, version conflict,
+invalid governance/license, failed checkpoint, existing unexpected output,
+candidate/digest mismatch, failed artifact/Git validation, or failed recipient
+proof. It orchestrates existing builders and validators under
+`build/releases/0.1.0/`, then emits checksummed `RELEASE-PREPARATION.yml` with
+versions, identities, archive SHA-256, source revision, governance/support,
+environment, validation, occurrence time, and explicit `not_published` state.
+`--validate-only` repeats acquisition validation; `--show-readiness` inspects
+retained evidence without rerunning workflows.
+
+The Platform acquisition proof extracts to an unrelated temporary root and
+runs initialize, doctor, synthetic platform/history, product materialization,
+app validation, and reduced-artifact build/validation. The Hospital proof copies
+the complete standalone Git realization to another temporary root, invokes its
+own validator, initializes, runs doctor and synthetic acceptance, and runs the
+fictional-adopter substitution. Neither proof looks up the authoritative tree
+or sibling repository. Preparation time is provenance, never logical identity.
+
+Agent mappings invoke the same maintainer command for prepare, validate, and
+show-readiness intents. `Publish v0.1.0` is explicitly unimplemented and
+unauthorized. The operation registry classifies release preparation as
+`maintainer`; generated hospital wrappers do not expose it.
+
+#### Assets, surprises, deviations, and refusal behavior
+
+No sibling repository was inspected or modified. Existing 11.4 deterministic
+archive, distribution, standalone validator, and 11.5 Git realization patterns
+were adapted in place. No new generalized release framework, dependency solver,
+secrets system, publication API, Docker/OCI, or analytical capability was
+introduced.
+
+Whole-repository enumeration initially made every proof regression repeatedly
+archive documentation and tests. The implementation retains the bounded legacy
+allowlist for proof-default tests while final candidate status selects the full
+tracked release unit. Release preparation still requires a clean source tree,
+so a missing/deleted tracked file or untracked source cannot enter a candidate
+silently. Local `renv` implementation directories were also added to
+`.gitignore` to keep Git cleanliness checks bounded and truthful.
+
+Recovery from an interrupted validation retained the coherent partial tree and
+discarded no valid implementation work. Focused reruns found four bounded
+integration defects: the release-area exception had changed a stable Git
+destination diagnostic; the Phase 7 exact maintainer-operation count had not
+included release preparation; the Phase 4 checkpoint still required the former
+placeholder `runtime/LICENSE`; and missing-path `Sys.readlink()` behavior on
+macOS made an absent release destination appear occupied. The fixes preserve
+the stable diagnostic, assert the fifth maintainer operation, replace the stale
+file requirement with explicit Apache package-metadata validation, and test
+absent versus symbolic-link release paths. A clean copied repository without a
+restored project library also proved that `renv` preflight blocks before any
+candidate state; constructing the locked environment allowed preparation to
+continue without changing source or requiring network access.
+
+No silent repair occurs. Existing release output is preserved; manifest,
+archive, distribution, realization, governance, version, environment, source
+cleanliness, or acquisition disagreement blocks readiness. No commit, author
+identity, tag, remote, push, GitHub API call, release, publication, or external
+repository mutation is implemented.
+
+#### Tests and validation
+
+Phase 11 focused tests cover Apache state, governance/DCO/security/support,
+tested support claims, version authority, whole-tree Platform candidate status,
+deterministic identity/inventory/checksum, exact Hospital embedding and
+independent version metadata, staged/uncommitted/remote-free Git state,
+orchestration, release evidence fields, acquisition command coverage, dirty
+source refusal, version conflict, and missing license/governance in addition to
+the complete 11.4–11.5 regression suite.
+
+The final validation matrix reported:
+
+- documentation validation: PASS (4 checks, 0 issues), covering 39 required
+  governing documents, 287 repository-local links, 25 maintained navigation
+  sources, and portable document paths;
+- Phase 11 focused validation: PASS (68 tests), including complete independent
+  synthetic/adopter acquisition, release candidate identity/digest/inventory,
+  Git safety, governance, refusal, and absent/link output-state evidence;
+- Phase 8, Phase 10, and Phase 7 regressions: PASS (22, 26, and 8 tests);
+- development validation: PASS (171 checks, 0 issues), including every Phase
+  0–11 suite; checkpoint validation: PASS (233 checks, 0 issues), including the
+  installed Apache package metadata and Iteration 11.6 record;
+- clean committed-copy `prepare`, retained `--validate-only`, and
+  `--show-readiness`: PASS; the Platform candidate contains 297 tracked source
+  members, the Hospital candidate embeds its exact identity/SHA-256, the Git
+  realization is `main` with all files staged and zero commits/remotes, both
+  acquisition proofs pass, and status is `READY FOR PUBLICATION` while
+  `not_published`;
+- clean `rrpruntime@0.3.0` source build and
+  `R CMD check --no-manual --no-vignettes`: `Status: OK`; restricted-network
+  package-index warnings did not affect local checks;
+- `renv::status()`: exit 0, “No issues found -- the project is in a consistent
+  state”; dependency-discovery timing and restricted-network repository-index
+  warnings were nonfatal;
+- independent parsing: PASS for 162 maintained R files and 62 maintained YAML
+  files; and
+- final whitespace, Git diff, generated-state, nested-Git, sensitive-file,
+  machine-path, sibling-independence, and repository hygiene checks: PASS.
+
+The final candidate identities and digests remain in ignored checksummed
+`RELEASE-PREPARATION.yml` evidence rather than this tracked record. Embedding a
+whole-repository candidate's own digest in a member of that candidate would be
+circular. No network restoration, lockfile change, authoritative commit, tag,
+remote, push, GitHub Release, publication, or external repository mutation
+occurred.
+
+#### Phase 11 status and remaining boundary
+
+**IN PROGRESS — READY FOR PUBLICATION.** Local release preparation and its
+architecture are complete, but Phase 11 is not complete because nothing has
+been published. The only recommended final task is **Phase 11 / Iteration 11.7
+— explicit maintainer publication workflow and first v0.1.0 release**: final
+authorization, release commit, tag/remote verification, pushes, GitHub Platform
+and Hospital releases/artifact attachment, post-publication verification, and
+transition to the next development version. None is authorized here.
