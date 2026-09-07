@@ -511,6 +511,13 @@ partial-stage recovery, remote acquisition proof, and a post-verification
 development transition. The published Hospital repository remains generated
 output and never becomes maintained source authority.
 
+Phase 11 completed this boundary with the public, independently versioned
+Platform and Hospital Implementation `v0.1.0` releases. The Platform tag
+identifies the exact prepared source commit; the Hospital tag identifies the
+generated realization commit and embeds the exact published Platform archive.
+Checksummed evidence is retained under `releases/0.1.0/`. Current development
+is `0.2.0-dev`, with no next release target prepared.
+
 ## Observability layer
 
 Observability is cross-cutting but accessed through a stable, small interface.

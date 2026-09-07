@@ -76,9 +76,10 @@ products/app, and artifact behavior. The fixture is evidence, not a second
 shipped health system. Iterations 11.4–11.5 own the generated adopter-facing
 artifact and pristine standalone Git form. Iteration 11.6 installs Apache-2.0
 and minimal governance, declares narrow tested support evidence, and owns the
-final local `v0.1.0` candidate/readiness workflow. Phase 11 remains in progress
-and ready for publication until Iteration 11.7 completes the explicitly
-authorized, fail-closed publication and remote verification workflow.
+final local `v0.1.0` candidate/readiness workflow. Phase 11 is complete:
+Iteration 11.7 used the explicitly authorized, fail-closed workflow to publish
+and remotely verify both `v0.1.0` products, then advanced development to
+`0.2.0-dev` with no next release prepared.
 Iteration 11.1 owns the retained decision assessment in
 `docs/architecture/distribution-release-assessment.md`. Iteration 11.2
 baselines the maintainer's release/governance direction; its separately
@@ -111,6 +112,8 @@ Platform-first tags/releases, generated Hospital repository publication,
 checksummed partial-stage recovery, published-state acquisition, and the
 post-verification development transition. It never force-pushes, deletes, or
 rewrites remote state, and the Hospital repository remains generated output.
+The Platform release commit is `7a3cca66db2cdd6f7796918282db294bbb7eb4e8`;
+durable publication evidence is under `releases/0.1.0/`.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned

@@ -4,16 +4,16 @@
 
 These policies establish the bookkeeping and development-safety rules needed
 before domain contracts and runtime software exist. Phase 1 defines the common
-specification and pre-1.0 compatibility vocabulary; Phase 11 will establish
-release governance.
+specification and pre-1.0 compatibility vocabulary; Phase 11 established
+release governance and the first verified public releases.
 
 ## Licensing and release status
 
 Repository-authored software and documentation are licensed under Apache-2.0;
 see [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). License installation is
 distinct from publication: [License and publication status](../../LICENSE-STATUS.md)
-records that the `v0.1.0` candidate remains `not_published` until a separately
-authorized publication workflow completes.
+records the verified Platform and Hospital Implementation `v0.1.0` publication
+and the current `0.2.0-dev` development state.
 
 ## Version and change records
 
@@ -26,9 +26,9 @@ Keep these concepts distinct:
   [Platform Implementation Record](../architecture/platform-implementation-record.md)
   records what a meaningful iteration actually built, reused, decided,
   validated, and changed.
-- **Platform/software version:** No supported software release exists in Phase
-  0, so no platform version is declared yet. Introduce one when executable
-  platform identity requires it; mature release rules belong to Phase 11.
+- **Platform/software version:** Platform and Hospital Implementation `v0.1.0`
+  are independently versioned published releases. Current Platform development
+  is `0.2.0-dev`; no next release version is prepared.
 - **Contract/specification version:** Every current or future specification
   owns a SemVer meaning version distinct from the common format version. The
   [Specification Foundation](../architecture/specification-foundation.md)

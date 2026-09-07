@@ -1,8 +1,12 @@
 # Changelog
 
-## [0.1.0]
+## [Unreleased]
 
-The first public-release candidate provides:
+No changes yet.
+
+## [0.1.0] — 2026-09-06
+
+The first public release provides:
 
 - versioned canonical bundle, clinical profile, producer, runtime, provider,
   persistence, logical-product, deployment-artifact, and diagnostic contracts;

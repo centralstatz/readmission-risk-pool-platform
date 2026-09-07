@@ -1,0 +1,31 @@
+evidence_kind: release_publication_evidence
+evidence_version: 0.1.0
+overall_status: published_and_verified
+platform:
+  version: 0.1.0
+  repository: centralstatz/readmission-risk-pool-platform
+  release_commit: 7a3cca66db2cdd6f7796918282db294bbb7eb4e8
+  tag: v0.1.0
+  github_release_id: '383743898'
+  github_release_url: https://github.com/centralstatz/readmission-risk-pool-platform/releases/tag/v0.1.0
+  candidate_instance_id: platform_release_candidate::6037e0117bd920d7fd4e951e96ba14ba01f159c7f99c99bf0989eab28237736f
+  artifact_sha256: 01eb816252ac181385b5b658bdd528e35481fa7ab4176646047bbd9029a7bb27
+  verified: yes
+hospital:
+  version: 0.1.0
+  repository: centralstatz/readmission-risk-pool-hospital-implementation
+  release_commit: 62d374292f51c69a6c97cf247b64ec49c05ba858
+  tag: v0.1.0
+  github_release_id: '383749269'
+  github_release_url: https://github.com/centralstatz/readmission-risk-pool-hospital-implementation/releases/tag/v0.1.0
+  distribution_instance_id: hospital_implementation_distribution::7b8aae7f0cbb0a68f45fe215a0d77466ded7074142a7340a3dddf73f43112f66
+  git_realization_instance_id: hospital_implementation_git_realization::b54ee70ae11c4c1a6b9ffd2a17528153a2409f71560371b38f6a085c46d28667
+  embedded_platform_candidate_instance_id: platform_release_candidate::6037e0117bd920d7fd4e951e96ba14ba01f159c7f99c99bf0989eab28237736f
+  embedded_platform_archive_sha256: 01eb816252ac181385b5b658bdd528e35481fa7ab4176646047bbd9029a7bb27
+  verified: yes
+publication:
+  authenticated_login: zajichek
+  started_at: '2026-09-06T22:59:25Z'
+  completed_at: '2026-09-06T23:38:08Z'
+  private_vulnerability_reporting: enabled
+  remote_verification: passed

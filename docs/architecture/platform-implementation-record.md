@@ -4979,3 +4979,95 @@ has yet occurred. Final validation, exact candidate identities, actual GitHub
 release evidence, post-publication verification, development transition, and
 Phase 11 completion are appended below only after they occur; they are not
 predicted inside the `v0.1.0` source contents.
+
+#### Prepublication validation and immutable identities
+
+Local validation completed before the publication boundary: documentation
+validation passed 4 checks; the focused Phase 11 suite passed 93 tests and the
+strengthened publication subset then passed 26 tests; Phase 7, 8, and 10
+regressions passed 8, 22, and 26 tests; development validation passed 170
+checks; and Phase 0 policy validation passed 10 tests. `rrpruntime@0.3.0`
+built and completed `R CMD check --no-manual --no-vignettes` with `Status: OK`.
+`renv::status()` reported a consistent project after nonfatal restricted-network
+repository-index warnings. Independent parsing covered 166 R files and 62 YAML
+files without failure. Documentation, generated-state, nested-Git, sensitive-
+file, machine-path, sibling-independence, repository-hygiene, and
+`git diff --check` evidence passed.
+
+The signed-off immutable release-state commit is
+`7a3cca66db2cdd6f7796918282db294bbb7eb4e8`. Exact preparation from that clean
+revision passed the complete checkpoint, governance, Platform candidate,
+Hospital distribution, Hospital Git realization, support, and both acquisition
+proofs. Its stable identities are:
+
+- Platform candidate
+  `platform_release_candidate::6037e0117bd920d7fd4e951e96ba14ba01f159c7f99c99bf0989eab28237736f`;
+- Platform archive SHA-256
+  `01eb816252ac181385b5b658bdd528e35481fa7ab4176646047bbd9029a7bb27`;
+- Hospital distribution
+  `hospital_implementation_distribution::7b8aae7f0cbb0a68f45fe215a0d77466ded7074142a7340a3dddf73f43112f66`;
+  and
+- Hospital Git realization
+  `hospital_implementation_git_realization::b54ee70ae11c4c1a6b9ffd2a17528153a2409f71560371b38f6a085c46d28667`.
+
+The separate live preflight repeated the complete checkpoint and returned
+`PUBLICATION PREFLIGHT: PASS` with `Remote mutation: NOT PERFORMED`. A final
+code review before that gate tightened partial-state reconciliation so a
+retained Platform or Hospital tag/release/branch stage must still exist at its
+exact recorded identity; missing or unrecorded remote state is a conflict.
+
+#### Actual publication and remote verification
+
+The explicitly authorized publication began only after the mutating invocation
+repeated the same successful preflight and printed `REMOTE MUTATION:
+AUTHORIZED`. Platform private vulnerability reporting was enabled and verified.
+The operation then completed all checksummed stages without force-push,
+deletion, history rewrite, unrelated repository mutation, or partial failure.
+
+The actual public products are:
+
+- [Readmission Risk Pool Platform v0.1.0](https://github.com/centralstatz/readmission-risk-pool-platform/releases/tag/v0.1.0),
+  GitHub Release `383743898`, annotated tag `v0.1.0`, release commit
+  `7a3cca66db2cdd6f7796918282db294bbb7eb4e8`, and attached archive digest
+  `01eb816252ac181385b5b658bdd528e35481fa7ab4176646047bbd9029a7bb27`;
+  and
+- [Readmission Risk Pool Hospital Implementation v0.1.0](https://github.com/centralstatz/readmission-risk-pool-hospital-implementation/releases/tag/v0.1.0),
+  GitHub Release `383749269`, annotated tag `v0.1.0`, and generated release
+  commit `62d374292f51c69a6c97cf247b64ec49c05ba858`.
+
+Published Platform verification downloaded the attached archive and checksum,
+matched the prepared SHA-256, and reran the full Platform acquisition proof.
+Published Hospital verification cloned the public tag into an unrelated
+temporary root, validated the generated content and distribution, ran
+initialize, doctor, synthetic acceptance, and the fictional-adopter proof, and
+confirmed the embedded Platform identity/digest. Publication ran from
+`2026-09-06T22:59:25Z` through `2026-09-06T23:38:08Z`; these timestamps are
+occurrence provenance, not identity. Checksummed durable evidence is retained
+under `releases/0.1.0/`. Both GitHub-hosted Ubuntu R 4.4 publication-triggered
+validation runs also completed successfully.
+
+#### Development transition, final status, and next work
+
+Only after both releases verified, `RELEASE.yml` advanced to authority version
+2 with `v0.1.0` published, retained history/evidence, current development
+`0.2.0-dev`, and no intended next version or prepared candidate. `CHANGELOG.md`
+now has an empty Unreleased section. Published-state governance validates the
+checksummed evidence, while release preparation remains restricted to an
+explicit unpublished intended target. Current-facing architecture, operations,
+support, acquisition, and agent guidance now describe the actual releases; the
+historical 11.1–11.6 record remains unchanged.
+
+Final post-publication validation passed documentation validation with 4 checks
+and 297 links, independent parsing of 166 R files and 63 YAML files,
+development validation with 170 checks and 0 issues, and the strict checkpoint
+with 233 checks and 0 issues. The checkpoint included all focused suites and
+the Phase 11 suite passed 94 tests. Release preparation also correctly refused
+the already-published `v0.1.0` target, proving that the development transition
+did not silently reopen the publication boundary.
+
+**Phase 11 status: COMPLETE.** Readmission Risk Pool Platform `v0.1.0` is
+**PUBLISHED**, and Readmission Risk Pool Hospital Implementation `v0.1.0` is
+**PUBLISHED**. The next task is not another Phase 11 cleanup iteration: define
+and authorize the first post-`v0.1.0` product increment against the
+`0.2.0-dev` baseline. No next release target, production deployment, clinical
+authorization, or automated release cadence is implied.

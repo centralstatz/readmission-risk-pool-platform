@@ -14,7 +14,7 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 10 is complete and Phase 11 is in progress.** Iteration 11.1 provides
+**Phase 11 is complete; current development is `0.2.0-dev`.** Iteration 11.1 provides
 the retained first-release decision assessment. Iteration 11.2 baselines the
 maintainer's release/governance direction. Iteration 11.3 revises the physical
 distribution architecture: this is the only maintained CentralStatz source
@@ -30,13 +30,12 @@ closed identity/provenance, pristine replacement, independent validation, and
 installs Apache-2.0 and lightweight governance, establishes a narrow R 4.4/macOS
 test claim plus Ubuntu CI, and adds one clean-source maintainer workflow for
 exact Platform and Hospital `v0.1.0` candidates, acquisition proof, and release
-evidence. The result is ready for publication but remains `not_published`: no
-release commit, tag, remote, push, GitHub Release, or publication is created.
-Iteration 11.7 now supplies the explicitly authorized maintainer publication
-workflow: a zero-mutation preflight, Platform-first GitHub release, generated
-Hospital repository/release, checksummed partial-stage recovery, published-
-state acquisition, and post-verification development transition. Publication
-still occurs only when the operation is invoked with explicit `--publish`.
+evidence. Iteration 11.7 supplied the explicitly authorized maintainer
+publication workflow and used it to publish and remotely verify the Platform
+and generated Hospital Implementation `v0.1.0` releases. The Platform tag is
+the exact prepared release commit; the Hospital release embeds the exact
+published Platform archive. Checksummed publication evidence is retained under
+[`releases/0.1.0/`](releases/0.1.0/), and the next release is not yet prepared.
 The focused internal
 `rrpruntime@0.3.0` package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
@@ -61,9 +60,9 @@ access/validation, its contracts/declarations, and one current coherent
 product bundle; it validates and constructs Shiny from an isolated copy. The
 first target realization now generates a separate, standalone, staged-but-
 uncommitted local Git repository for Connect Cloud and validates it without the
-platform source. Remote publication/deployment, OCI/container realization,
+platform source. Connect service deployment, OCI/container realization,
 retained/external observability routing, metrics, audit, scheduling, priority
-policy, replay, and CI/CD remain unimplemented. A versioned operation-run
+policy, replay, and automated release cadence remain unimplemented. A versioned operation-run
 context and structured privacy-conscious event contract now trace bounded
 doctor, reference-run, product, artifact, and Connect-realization stages
 through a non-retained console sink without changing analytical results or
@@ -75,8 +74,7 @@ and canonical admission before unchanged downstream runtime. A materially
 different test-only adopter producer now passes the same seam and shared
 conformance machinery, then reaches unchanged isolated DuckDB history,
 products, Shiny app, and reduced artifact. This closes adapter independence;
-turnkey hospital onboarding, real-data authorization, and final extension
-packaging are not yet claimed.
+turnkey hospital onboarding and real-data authorization are not claimed.
 
 The stable human operator surface now provides explicit initialization,
 read-only doctor/preflight, one reference platform run, history inspection,
@@ -86,6 +84,23 @@ external, and reference components are documented as independently replaceable.
 
 The platform is not clinically validated, production-ready, or approved for
 patient care.
+
+## Published v0.1.0 releases
+
+Hospitals normally begin with the generated
+[Hospital Implementation v0.1.0](https://github.com/centralstatz/readmission-risk-pool-hospital-implementation/releases/tag/v0.1.0):
+
+```sh
+git clone --branch v0.1.0 --depth 1 \
+  https://github.com/centralstatz/readmission-risk-pool-hospital-implementation.git
+```
+
+Platform integrators can obtain the exact
+[Platform v0.1.0 release](https://github.com/centralstatz/readmission-risk-pool-platform/releases/tag/v0.1.0),
+including its attached deterministic archive and SHA-256 checksum. Both are
+Apache-2.0 releases of fictional, nonclinical software; local security,
+clinical validation, production approval, and deployment remain operator
+responsibilities.
 
 ## Direction
 
@@ -293,7 +308,7 @@ The [release preparation guide](docs/operations/release-preparation.md) owns the
 local candidate workflow, and the
 [release publication guide](docs/operations/release-publication.md) owns the
 separate preflight/publish/verify boundary. Repository-authored work is licensed under
-[Apache-2.0](LICENSE), while [publication status](LICENSE-STATUS.md) remains
-explicitly separate and `not_published`; the bounded
+[Apache-2.0](LICENSE), while [publication status](LICENSE-STATUS.md) records the
+separate verified `v0.1.0` publication state; the bounded
 [compatibility review](docs/architecture/release-license-review.md) records the
 dependency and asset evidence.

@@ -135,7 +135,7 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Root README](../README.md) — project identity, status, and navigation.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
-Further target-specific realization and release guides will be added in the
-phases that create those capabilities. External publication remains operator
-controlled. Documentation must not claim an operation exists before it has a
-tested human implementation.
+Further target-specific realization and release guides will be added only in
+phases that create those capabilities. Publication remains maintainer
+controlled through the tested explicit operation. Documentation must not claim
+an operation exists before it has a tested human implementation.

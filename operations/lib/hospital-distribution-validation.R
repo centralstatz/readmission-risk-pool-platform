@@ -198,14 +198,17 @@ rrp_validate_phase11_checkpoint <- function(repository_root) {
   evidence <- grepl(
     "Iteration 11.6 — v0.1.0 release-candidate and governance hardening",
     record, fixed = TRUE
+  ) && grepl(
+    "Iteration 11.7 — Explicit maintainer publication workflow",
+    record, fixed = TRUE
   ) && grepl("Phase 11 status", record, fixed = TRUE)
   checks <- rrp_check(
     "phase11_iteration_checkpoint", evidence,
-    "Iteration 11.6 implementation and Phase 11 status are recorded"
+    "Iterations 11.6–11.7 implementation and Phase 11 status are recorded"
   )
   issues <- if (evidence) rrp_empty_issues() else rrp_issue(
     "phase11_checkpoint", "missing_phase11_iteration_record",
-    "Implementation record must record Iteration 11.6 and Phase 11 status.",
+    "Implementation record must record Iterations 11.6–11.7 and Phase 11 status.",
     "docs/architecture/platform-implementation-record.md"
   )
   rrp_validation_result("Phase 11 checkpoint", checks, issues)

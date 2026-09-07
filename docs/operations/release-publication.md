@@ -134,3 +134,20 @@ changelog section. Maintainers then update the implementation record/status,
 run final development and checkpoint validation, create a separate signed-off
 post-release development commit, and push `main`. The published `v0.1.0` tag is
 never changed. The Hospital repository remains at its release state.
+
+## Published v0.1.0 outcome
+
+The authorized 2026-09-06 execution completed every recorded stage and
+published:
+
+- [Readmission Risk Pool Platform v0.1.0](https://github.com/centralstatz/readmission-risk-pool-platform/releases/tag/v0.1.0)
+  at source commit `7a3cca66db2cdd6f7796918282db294bbb7eb4e8`; and
+- [Readmission Risk Pool Hospital Implementation v0.1.0](https://github.com/centralstatz/readmission-risk-pool-hospital-implementation/releases/tag/v0.1.0)
+  at generated commit `62d374292f51c69a6c97cf247b64ec49c05ba858`.
+
+The Platform archive SHA-256 is
+`01eb816252ac181385b5b658bdd528e35481fa7ab4176646047bbd9029a7bb27`,
+and the Hospital evidence records the same embedded digest. Durable identities
+and occurrence timestamps are in
+[`releases/0.1.0/PUBLICATION.yml`](../../releases/0.1.0/PUBLICATION.yml).
+Current development is `0.2.0-dev`; no next release is prepared.

@@ -480,3 +480,5 @@ Rscript operations/publish-release.R --version 0.1.0 --preflight
 
 Only an explicitly authorized maintainer may replace `--preflight` with
 `--publish`. Published-state verification uses the same script with `--verify`.
+The first authorized execution published and verified both `v0.1.0` products;
+rerunning publication for that version is refused by the published authority.

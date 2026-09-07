@@ -611,8 +611,9 @@ target-neutral reduced application artifact
 The hospital-facing builder packages Platform source and wrappers; it does not
 alter the reduced artifact. Hospital-facing operations delegate to the same
 artifact builder/validator. Connect concepts do not enter producer composition,
-environment ownership, or distribution identity. External publication remains
-separately authorized and recipient/operator-owned.
+environment ownership, or distribution identity. CentralStatz release
+publication is separately maintainer-controlled; recipient deployment remains
+operator-owned.
 
 ## CentralStatz release validation and responsibility boundary
 
@@ -867,17 +868,18 @@ tree; the fictional adopter producer substitutes through explicit trusted
 composition; tamper/incompatibility fails safely; and no generated artifact is
 maintained or published.
 
-## Remaining bounded increments
+## Completed release boundary and future increments
 
 ### Release/governance candidate
 
-Complete final license/governance/security/support files, establish the tested
-R/OS matrix, validate Platform and Hospital Implementation candidates, produce
-candidate archives/checksums/manifests, and request explicit maintainer
-authorization.
+Iteration 11.6 completed license/governance/security/support files, narrow
+tested-environment evidence, exact Platform and Hospital candidates, and
+candidate archives/checksums/manifests.
 
 ### Publication
 
-Publish Platform and Hospital Implementation releases only after explicit
-authorization. Publication is not deployment, and no hospital-specific state is
-part of either release.
+Iteration 11.7 published and remotely verified the independently versioned
+Platform and Hospital Implementation `v0.1.0` releases after explicit
+authorization. Publication is not deployment, and no hospital-specific state
+is part of either release. Future versions must repeat the same fail-closed
+boundary with newly authorized targets and evidence.

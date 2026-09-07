@@ -57,18 +57,57 @@ rrp_release_validate_governance <- function(repository_root, version) {
   authority <- rrp_release_authority(repository_root)
   expected <- authority$targets$platform$intended_version
   hospital <- authority$targets$hospital$intended_version
-  if (!identical(version, expected) || !identical(version, hospital) ||
-      !identical(authority$publication$status, "not_published") ||
-      !identical(authority$publication$platform_repository,
-                 "centralstatz/readmission-risk-pool-platform") ||
+  common_conflict <-
+    !identical(authority$publication$platform_repository,
+               "centralstatz/readmission-risk-pool-platform") ||
       !identical(authority$publication$hospital_repository,
                  "centralstatz/readmission-risk-pool-hospital-implementation") ||
       !identical(authority$publication$expected_branch, "main") ||
       !identical(authority$publication$expected_platform_tag, paste0("v", version)) ||
       !identical(authority$publication$expected_hospital_tag, paste0("v", version)) ||
-      !identical(authority$license$spdx_id, "Apache-2.0") ||
-      !identical(authority$source$development_version, paste0(version, "-dev"))) {
+      !identical(authority$license$spdx_id, "Apache-2.0")
+  candidate_authority <- identical(authority$publication$status, "not_published") &&
+    identical(version, expected) && identical(version, hospital) &&
+    identical(authority$source$development_version, paste0(version, "-dev"))
+  version_parts <- as.integer(strsplit(version, ".", fixed = TRUE)[[1L]])
+  next_development <- paste(
+    version_parts[[1L]], version_parts[[2L]] + 1L, "0-dev", sep = "."
+  )
+  published_authority <- identical(authority$publication$status, "published") &&
+    identical(authority$publication$latest_published, version) &&
+    isTRUE(authority$publication$tag_exists) &&
+    isTRUE(authority$publication$github_release_exists) &&
+    identical(authority$source$development_version, next_development) &&
+    identical(authority$targets$platform$candidate_status, "not_prepared") &&
+    identical(authority$targets$hospital$candidate_status, "not_prepared") &&
+    is.null(expected) && is.null(hospital)
+  if (common_conflict || (!candidate_authority && !published_authority)) {
     stop("Requested version conflicts with RELEASE.yml release authority.", call. = FALSE)
+  }
+  if (published_authority) {
+    evidence_path <- file.path(repository_root, authority$publication$evidence)
+    checksum_path <- sub("[.]yml$", ".sha256", evidence_path)
+    if (!file.exists(evidence_path) || !file.exists(checksum_path) ||
+        !identical(trimws(readLines(checksum_path, warn = FALSE)),
+                   rrp_hospital_sha256_file(evidence_path))) stop(
+      "Published release evidence is missing or has changed.", call. = FALSE
+    )
+    evidence <- rrp_hospital_read_yaml(evidence_path)
+    exact_evidence <- identical(evidence$overall_status, "published_and_verified") &&
+      identical(evidence$platform$version, version) &&
+      identical(evidence$hospital$version, version) &&
+      identical(evidence$platform$repository,
+                authority$publication$platform_repository) &&
+      identical(evidence$hospital$repository,
+                authority$publication$hospital_repository) &&
+      identical(evidence$platform$tag, authority$publication$expected_platform_tag) &&
+      identical(evidence$hospital$tag, authority$publication$expected_hospital_tag) &&
+      isTRUE(evidence$platform$verified) && isTRUE(evidence$hospital$verified) &&
+      identical(evidence$platform$artifact_sha256,
+                evidence$hospital$embedded_platform_archive_sha256)
+    if (!exact_evidence) stop(
+      "Published release evidence conflicts with RELEASE.yml.", call. = FALSE
+    )
   }
   text <- function(path) paste(readLines(
     file.path(repository_root, path), warn = FALSE, encoding = "UTF-8"
@@ -87,7 +126,7 @@ rrp_release_validate_governance <- function(repository_root, version) {
   )
   list(
     license = "pass", governance = "pass", support = "pass",
-    platform_version = expected, hospital_version = hospital,
+    platform_version = version, hospital_version = version,
     development_version = authority$source$development_version
   )
 }
@@ -331,6 +370,11 @@ rrp_validate_release_preparation <- function(root, run_acquisition = FALSE) {
 rrp_prepare_release <- function(repository_root, version, prepared_at = rrp_hospital_now()) {
   repository_root <- normalizePath(repository_root, mustWork = TRUE)
   governance <- rrp_release_validate_governance(repository_root, version)
+  authority <- rrp_release_authority(repository_root)
+  if (!identical(authority$publication$status, "not_published")) stop(
+    "Release preparation requires an explicit unpublished intended target.",
+    call. = FALSE
+  )
   source_revision <- rrp_release_source_revision(repository_root, require_clean = TRUE)
   release_parent <- file.path(repository_root, "build", "releases")
   final <- file.path(release_parent, version)

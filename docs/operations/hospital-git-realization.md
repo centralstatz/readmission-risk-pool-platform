@@ -124,13 +124,13 @@ For a destination refusal, choose a new empty path or deliberately relocate the
 recipient-owned repository. Never delete commits, remotes, or modifications to
 make the generator overwrite them.
 
-## Remaining publication boundary
+## Publication boundary
 
-The structure is suitable for the maintainer-only release workflow, but
-publication remains unauthorized. License/governance, tested support evidence,
-actual candidates, clean acquisition, and checksums/manifests are composed by
-[Release Preparation](release-preparation.md). Maintainer authorization,
-commit/tag/remote/push, and GitHub Releases remain separate Phase 11 work.
+This local realization operation remains remote-free and never publishes.
+License/governance, candidate evidence, clean acquisition, and manifests are
+composed by [Release Preparation](release-preparation.md). The separately
+authorized [publication workflow](release-publication.md) consumed the exact
+validated realization for the public Hospital Implementation `v0.1.0` release.
 Platform and Hospital
 Implementation versions remain independent even when their first version
 numbers happen to match.

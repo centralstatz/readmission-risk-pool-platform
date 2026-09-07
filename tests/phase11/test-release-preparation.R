@@ -52,11 +52,26 @@ phase11_release_test_cases <- function(repository_root, suite_root) list(
   },
   "release authority separates development candidate and publication identity" = function() {
     authority <- rrp_release_authority(repository_root)
-    phase0_assert_true(identical(authority$source$development_version, "0.1.0-dev"))
-    phase0_assert_true(identical(authority$targets$platform$intended_version, "0.1.0"))
     phase0_assert_true(identical(authority$targets$hospital$version_relationship,
                                  "independently_versioned"))
-    phase0_assert_true(identical(authority$publication$status, "not_published"))
+    if (identical(authority$publication$status, "published")) {
+      phase0_assert_true(identical(
+        authority$source$development_version, "0.2.0-dev"
+      ))
+      phase0_assert_true(identical(authority$publication$latest_published, "0.1.0"))
+      phase0_assert_true(is.null(authority$targets$platform$intended_version))
+      phase0_assert_true(file.exists(file.path(
+        repository_root, authority$publication$evidence
+      )))
+    } else {
+      phase0_assert_true(identical(
+        authority$source$development_version, "0.1.0-dev"
+      ))
+      phase0_assert_true(identical(
+        authority$targets$platform$intended_version, "0.1.0"
+      ))
+      phase0_assert_true(identical(authority$publication$status, "not_published"))
+    }
   },
   "Platform v0.1.0 candidate has deterministic identity checksum and inventory" = function() {
     proof <- phase11_release_candidate_proof(repository_root, suite_root)
