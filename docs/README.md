@@ -89,6 +89,9 @@ The documentation is the active product at this bootstrap stage. Begin with
 
 ## Development
 
+- [Hospital Implementation v0.1.0 Clean-Room Adoption Assessment](development/hospital-implementation-v0.1.0-adoption-assessment.md)
+  — evidence from exact-release acquisition, recipient-owned source/provider/
+  estimand extension attempts, and implications for the 0.2.0 baseline.
 - [Implementation Conventions](development/implementation-conventions.md) —
   concise human-readable code and boundary conventions.
 - [Repository Development Policies](development/repository-policies.md) —
