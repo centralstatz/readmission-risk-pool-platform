@@ -5747,3 +5747,47 @@ passed 4 checks with 0 issues, covering 40 required governing documents, 325
 repository-local links, 25 maintained navigation sources, and portable
 document paths. Stale-authority scans, affected-Markdown whitespace review,
 and `git diff --check` passed.
+
+### Progressive RRP 1.0.0 planning cadence (2026-09-11)
+
+#### Objective and scope
+
+Clarify how the approved high-level roadmap will acquire implementation detail
+without speculatively decomposing all ten stages. This is documentation and
+planning policy only; no stage, executable source, contract, semantic behavior,
+version metadata, release evidence, or publication state changed.
+
+#### Decision and authority updates
+
+The implementation plan now distinguishes one stable high-level roadmap from
+progressive stage-level planning. Each stage is detailed immediately before it
+is implemented, then implemented and validated, then explicitly reconciled
+against its exit state and roadmap-level gate before the next stage is planned.
+The reconciliation records realized decisions, changed assumptions, legacy
+retirement, temporary coexistence, and facts constraining the next stage. It is
+a concise implementation closeout, not an automatic new architecture
+assessment.
+
+Later mechanics will therefore be planned against the repository and software
+actually produced by preceding stages. The architecture and ten-stage roadmap
+remain stable unless implementation evidence exposes a genuine contradiction,
+blocker, dependency error, or materially wrong major assumption. Detailed
+stage plans should remain in the same current plan authority when readable;
+future speculative stage sections are neither required nor desirable.
+
+Updated architecture, True North, root and documentation navigation, agent
+guidance, and the historical decision-register status to express the same
+cadence. The next task is now explicitly **detailed implementation planning for
+RRP 1.0.0 Stage 1**. Stage 1 itself was not detailed or implemented.
+
+#### Validation posture
+
+Validation is limited to affected documentation/navigation/authority
+consistency, Markdown hygiene, the supported documentation validator, and
+repository diff integrity. Historical Phase, Hospital, development/checkpoint,
+release, and publication suites do not validate this planning-policy change
+and were not run. The supported documentation validator passed 4 checks with 0
+issues, covering 40 required governing documents, 325 repository-local links,
+25 maintained navigation sources, and portable document paths. Authority-
+wording review, affected-Markdown whitespace inspection, and `git diff --check`
+passed.

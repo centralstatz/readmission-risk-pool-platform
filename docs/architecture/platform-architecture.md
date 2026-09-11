@@ -856,11 +856,14 @@ Posit and OCI product-only realizations, adopter acceptance/legacy retirement,
 and release qualification. It is organized by architecture-owned stages rather
 than Phase chronology.
 
-The next planning pass must decompose those stable major stages into concrete
-increments and acceptance tests before source implementation begins. Each
+Detailed planning is progressive: Stage 1 is decomposed before Stage 1 begins,
+then each later stage is planned only after its predecessor has been
+implemented, validated, and reconciled against the declared exit state. Each
 increment will state what remains working, reuse/replacement, compatibility and
-state effects, human operation, and proportional evidence. Legacy release
-assets remain unchanged until replacement acceptance makes retirement safe.
+state effects, human operation, and proportional evidence. The high-level
+roadmap changes only if implementation evidence invalidates a major dependency
+or assumption. Legacy release assets remain unchanged until replacement
+acceptance makes retirement safe.
 
 ## Prohibited dependencies
 

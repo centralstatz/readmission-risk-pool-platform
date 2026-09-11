@@ -14,8 +14,9 @@ describe history rather than the forward development hierarchy.
    deployment, upgrade, and validation responsibilities now live.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — authoritative high-level RRP 1.0.0 stages, dependency order, transition
-   strategy, and acceptance gates. Detailed increments are the next planning
-   task; the published `v0.1.0` tag retains the historical Phase 0–11 plan.
+   strategy, acceptance gates, and progressive planning cadence. Detailed Stage
+   1 planning is next; the published `v0.1.0` tag retains the historical Phase
+   0–11 plan.
 4. [Specification Foundation](architecture/specification-foundation.md),
    [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md),
    and [Initial Canonical Clinical Profile](architecture/canonical-clinical-profile.md)

@@ -9,15 +9,16 @@ product work, read:
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
 3. `docs/architecture/platform-implementation-plan.md` (the authoritative
-   high-level RRP 1.0.0 roadmap; detailed increments are pending);
+   high-level RRP 1.0.0 roadmap; detailed Stage 1 planning is pending);
 4. `docs/architecture/reference-asset-reconciliation.md`; and
 5. `docs/architecture/platform-implementation-record.md`.
 
 Authority flows from True North to architecture to plan to implementation
 record to software. Do not infer architecture from whichever code happens to
-exist. The high-level roadmap authorizes its detailed planning pass, not source
-implementation; concrete increments and acceptance tests must be accepted
-before executable 1.0 work begins.
+exist. The high-level roadmap authorizes progressive stage planning, not source
+implementation. Detail only the current stage; its increments and acceptance
+tests must be accepted before that stage's executable work begins. Plan the
+next stage only after the current one is implemented, validated, and reconciled.
 
 ## Reference repository
 
@@ -57,12 +58,13 @@ It supersedes contrary forward recommendations in assessments and historical
 Phase documents. `1.0.0` is not implemented or released.
 
 The current RRP 1.0.0 Implementation Plan now replaces Phase chronology as the
-forward high-level roadmap. Do not begin software implementation until its
-stages are decomposed into explicitly accepted increments and acceptance
-tests. Work from those architecture-owned stages rather than continuing Phase
-numbers. Documentation synthesis and planning may use proportional validation
-when explicitly scoped. Do not alter released `v0.1.0` assets or publication
-evidence while developing the new generation.
+forward high-level roadmap. Do not decompose all stages up front. Before a
+stage begins, detail and accept only that stage; after implementation and
+validation, reconcile its actual exit state before planning the next. Work from
+those architecture-owned stages rather than continuing Phase numbers.
+Documentation synthesis and planning may use proportional validation when
+explicitly scoped. Do not alter released `v0.1.0` assets or publication evidence
+while developing the new generation.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned

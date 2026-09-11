@@ -25,11 +25,13 @@ Detailed `v0.1.0` documents and tests remain implementation evidence until a
 1.0 stage deliberately replaces, reassigns, or retires them.
 
 This is intentionally a big-picture roadmap. It authorizes the next planning
-pass, not executable implementation. Before source changes begin, these stages
-must be decomposed into bounded increments with concrete interfaces, state
-effects, human operations, and acceptance tests. RRP 1.0.0 is neither
-implemented nor released because this roadmap exists. Transitional
-`0.2.0-dev` executable metadata remains unchanged by this planning work.
+pass, not executable implementation. Before a stage's source changes begin,
+that stage must be decomposed into bounded increments with concrete interfaces,
+state effects, human operations, and acceptance tests. Later stages are
+detailed progressively after preceding stages close; they are not decomposed
+up front. RRP 1.0.0 is neither implemented nor released because this roadmap
+exists. Transitional `0.2.0-dev` executable metadata remains unchanged by this
+planning work.
 
 ## Starting point and destination
 
@@ -80,6 +82,98 @@ condition.
    permanent dual architecture.
 10. Require development-repository independence at installed, project,
     artifact, and release gates.
+
+## Planning model and cadence
+
+### Stable high-level roadmap
+
+The ten stages in this document are the durable implementation framework for
+RRP 1.0.0. They establish major boundaries, dependency order, objectives,
+scope, reuse/refactor/replace posture, exit states, roadmap-level gates,
+transition strategy, and major deferrals. They are not casually replanned
+after each increment.
+
+Change the high-level roadmap only when implementation evidence shows that an
+architectural dependency, stage boundary, or major assumption is materially
+wrong. Ordinary implementation discoveries should refine the current or next
+stage plan without reopening accepted target architecture.
+
+### Progressive stage-level planning
+
+Detailed planning occurs immediately before the stage it governs. Do not
+decompose Stages 1–10 in advance. The implementation cadence is:
+
+```text
+approve high-level RRP 1.0.0 roadmap
+        ↓
+detail Stage 1
+        ↓
+implement and validate Stage 1
+        ↓
+reconcile the actual Stage 1 exit state
+        ↓
+detail Stage 2 against that realized state
+        ↓
+implement, validate, and reconcile Stage 2
+        ↓
+detail Stage 3
+        ↓
+...
+```
+
+Later mechanics must be planned against the repository and software that
+actually exist after earlier work, not an imagined future implementation. For
+example, Stage 2's realized package/resource/distribution boundary constrains
+Stage 3 installation, and Stage 3's realized operation boundary constrains
+Stage 4 project loading. This roadmap preserves those dependencies without
+pretending their exact downstream forms are already knowable.
+
+Keep detailed stage plans in this document when that remains readable. A
+future stage may have no detailed section until the preceding stage has closed.
+Do not populate placeholder sections with speculative increments merely to make
+the plan look complete. Git history preserves how current detailed authority
+evolves.
+
+### Stage-close reconciliation
+
+Before planning Stage `N + 1`, close Stage `N` with concise evidence-based
+reconciliation answering:
+
+- what was actually implemented and which concrete decisions were realized;
+- whether the declared exit state occurred and acceptance gate passed;
+- which assumptions changed, if any;
+- which legacy path became non-authoritative or retired;
+- which temporary coexistence remains and its retirement condition;
+- which new facts constrain the next stage; and
+- whether a genuine contradiction or blocker requires architecture or roadmap
+  revision.
+
+This is implementation closeout, not a new broad architecture assessment.
+Reopen architecture or major roadmap decisions only when actual evidence
+requires it.
+
+### Detailed-stage scope
+
+The current stage's detailed plan may settle concrete increment ordering,
+repository and package/resource changes, contracts, programmatic interfaces,
+CLI surfaces, manifest/schema details, migrations, focused and downstream
+tests, documentation, recovery/rollback, and increment-level acceptance. Its
+detail should match that stage; it neither designs later stages nor authorizes
+them.
+
+The authority chain therefore remains:
+
+```text
+True North
+    ↓
+RRP 1.0.0 target architecture
+    ↓
+stable high-level roadmap
+    ↓
+current detailed stage plan
+    ↓
+implementation and stage-close evidence
+```
 
 ## Dependency-oriented roadmap
 
@@ -729,19 +823,19 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-After maintainers approve this roadmap, the next task is:
+The next task is:
 
-> **Decompose the approved RRP 1.0.0 roadmap into concrete implementation
-> increments and acceptance tests.**
+> **Detailed implementation planning for RRP 1.0.0 Stage 1.**
 
-Prefer expanding this document beneath the stable major stages so one planning
-authority remains readable. Each increment should name prerequisites, boundary
-changes, compatibility/state effects, old-path transition, human operation,
+Expand this document with the bounded Stage 1 increments while preserving the
+stable roadmap. Each increment should name prerequisites, boundary changes,
+compatibility/state effects, old-path transition, human operation,
 documentation, focused and downstream evidence, recovery, and completion
-state. Use a separate detailed plan only if expansion would materially reduce
-clarity.
+state. Do not detail Stage 2 until Stage 1 has been implemented, validated, and
+reconciled. Use a separate detailed plan only if expansion would materially
+reduce clarity.
 
-That next pass must settle the architecture's bounded implementation choices.
-It must not collapse software upgrade, project migration, state migration,
-deployment, or publication, and it must not begin source implementation before
-the detailed sequence is accepted.
+That next pass must settle only the bounded implementation choices needed for
+Stage 1. It must not collapse software upgrade, project migration, state
+migration, deployment, or publication, and Stage 1 source work must not begin
+before its detailed sequence is accepted.

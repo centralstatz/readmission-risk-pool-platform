@@ -20,8 +20,9 @@ current [Platform Architecture](docs/architecture/platform-architecture.md)
 defines the conventional installed-software and independent-project product,
 and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
 defines its authoritative high-level roadmap. `1.0.0` is a target generation,
-not a released version. Detailed increments are the next planning step;
-existing `0.2.0-dev` metadata is transitional and no next release is prepared.
+not a released version. Detailed planning proceeds one stage at a time; Stage
+1 planning is next. Existing `0.2.0-dev` metadata is transitional and no next
+release is prepared.
 
 Phase 11 and Iteration 11.1 provide
 the retained first-release decision assessment. Iteration 11.2 baselines the
@@ -139,8 +140,8 @@ forward 1.0.0 product boundary.
    the authoritative RRP 1.0.0 target boundaries and dependency direction.
 3. Read the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
    for the authoritative major stages, dependency order, transition strategy,
-   and roadmap-level acceptance gates. The exact historical Phase 0–11 plan is
-   retained by the published `v0.1.0` tag.
+   roadmap-level acceptance gates, and progressive stage-planning cadence. The
+   exact historical Phase 0–11 plan is retained by the published `v0.1.0` tag.
 4. Read the [Specification Foundation](docs/architecture/specification-foundation.md)
    for the shared contract vocabulary.
 5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md),

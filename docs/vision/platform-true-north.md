@@ -9,8 +9,10 @@ governs the current
 [RRP 1.0.0 implementation roadmap](../architecture/platform-implementation-plan.md).
 The [implementation record](../architecture/platform-implementation-record.md)
 records what is actually built. Forward software must conform to the complete
-chain; detailed implementation increments must be accepted before source work
-begins.
+chain. Detailed planning is progressive: the current stage's increments must
+be accepted before that stage's source work begins, and later stages are
+planned from reconciled implementation evidence rather than decomposed up
+front.
 
 ```text
 Platform True North
