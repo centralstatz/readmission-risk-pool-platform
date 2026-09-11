@@ -5673,3 +5673,77 @@ required governing documents, 322 repository-local links, 25 maintained
 navigation sources, and portable document paths. It was invoked with R init
 files disabled to avoid unrelated repository `renv` activation/locking; the
 validator and inputs were unchanged.
+
+### RRP 1.0.0 high-level implementation roadmap (2026-09-11)
+
+#### Objective and scope
+
+Replace the historical Phase 0–11 plan in current authority with one
+architecture-driven, big-picture roadmap from immutable `v0.1.0` to the RRP
+1.0.0 installed-software and independent-project target. This work is planning
+and documentation only: it changes no executable source, contract, runtime
+semantics, package, state, artifact, release metadata, or publication state.
+
+#### Planned path and decisions
+
+Rewrote `docs/architecture/platform-implementation-plan.md` in place as the
+single current plan authority. The roadmap establishes ten dependency-ordered
+stages: transition governance; software source and closed distribution;
+installed software and shared operations; independent projects and trusted
+extensions; the singular cumulative-risk analytical slice; new history/state;
+products/app; product-only deployment realizations; adopter acceptance,
+documentation, and legacy retirement; and release qualification/publication.
+Each stage records objective, ordering rationale, major scope, reuse/refactor/
+replace posture, exit state, roadmap-level gate, and deliberately deferred
+detail. A transition table bounds coexistence, and cross-cutting work identifies
+safe partial parallelism without bypassing semantic dependencies.
+
+The published `v0.1.0` tag remains the historical Phase-plan authority and no
+parallel permanent version plan was added. Existing machinery is preserved or
+refactored by invariant: `rrpruntime`, producer/provider boundaries, history
+rules, product/app separation, diagnostics, inventory, and release safeguards
+remain useful; repository sourcing, generated Hospital delivery, public daily
+hazard, and Phase governance leave the active path only after replacements
+pass. Transitional `0.2.0-dev` metadata remains unchanged until the
+distribution foundation establishes a real 1.0 development identity.
+
+#### Deployment clarification and authority updates
+
+Clarified the normative architecture and True North so Posit Connect Cloud is
+the initial reference/example target, the artifact stays broadly Posit-
+compatible for a near-adjacent but separately evidenced internal Posit Connect
+path, and product-only OCI/Docker is a first-class realization of the same
+application/product semantics. Compute-capable deployment remains distinct and
+deferred. Updated root, documentation, START HERE, open-decision, and agent
+authority pointers to identify the roadmap as current while stating that
+detailed increments must be accepted before source implementation begins.
+
+No old repository asset was newly copied or adapted. The plan relies on the
+current repository implementation and the architecture's reviewed `v0.1.0`
+reuse/retirement map; the sibling reference repository was not accessed.
+
+#### Surprises, deviations, and next task
+
+No architectural contradiction or implementation blocker was found. The
+deployment correction adds OCI/Docker product-only realization to the 1.0
+roadmap while narrowing the reference Posit name from generic Connect to
+Connect Cloud; it does not promote self-managed Connect support or compute
+deployment. The roadmap remains intentionally above exact commands, schemas,
+functions, file moves, and test cases.
+
+The next task is to decompose these approved major stages into concrete
+implementation increments and acceptance tests, preferably within the same
+plan document. Executable 1.0 work remains unauthorized until that detailed
+sequence is accepted.
+
+#### Validation posture
+
+Validation is intentionally limited to affected documentation, authority and
+navigation consistency, Markdown hygiene, repository diff integrity, and the
+supported documentation validator. Historical Phase, Hospital, full
+development/checkpoint, release, and publication suites do not validate this
+planning-only change and were not run. The supported documentation validator
+passed 4 checks with 0 issues, covering 40 required governing documents, 325
+repository-local links, 25 maintained navigation sources, and portable
+document paths. Stale-authority scans, affected-Markdown whitespace review,
+and `git diff --check` passed.

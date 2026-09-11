@@ -8,7 +8,9 @@ implementation and release not yet complete
 This document is the current normative architecture of the Readmission Risk
 Pool (RRP). It translates [Platform True North](../vision/platform-true-north.md)
 into the software, project, analytical, state, product, deployment, lifecycle,
-and validation boundaries that the next implementation plan must realize.
+and validation boundaries that the current
+[RRP 1.0.0 implementation roadmap](platform-implementation-plan.md) must
+realize.
 Future contributors should be able to understand the target system here
 without reconciling the assessment sequence that produced it.
 
@@ -19,9 +21,9 @@ still substantially implements `v0.1.0`; statements below are target
 architecture until the implementation record and acceptance evidence say
 otherwise.
 
-The completed [Phase 0–11 implementation plan](platform-implementation-plan.md)
-is historical `v0.1.0` evidence. A new RRP 1.0.0 implementation plan is the
-next authority required before implementation begins. Supporting assessments
+The current [implementation plan](platform-implementation-plan.md) is the
+authoritative high-level RRP 1.0.0 roadmap. The published `v0.1.0` tag retains
+the completed Phase 0–11 plan as historical evidence. Supporting assessments
 explain why this architecture was selected, but they do not compete with it.
 
 ## Purpose and scope
@@ -578,12 +580,21 @@ binding declarations, provenance, and validator. Secrets remain target
 configuration. This boundary is defined but not promised for 1.0.0.
 
 A target builder adds only target-required entry points and dependency metadata
-around an accepted artifact. Posit Connect remains the first reference target
-for the Shiny app and owns target R/package installation. Future closure derives
-from artifact/release metadata, not the development lock. Generated Git trees
-are disposable target outputs. Remote creation, credentials, commit/push,
-service authorization, sharing, networking, monitoring, and deployment remain
-explicit operator actions.
+around an accepted artifact. A broadly Posit-compatible realization supports
+the Shiny application without changing product semantics. Posit Connect Cloud
+is the first demonstrated reference/example target; self-managed Posit Connect
+is a closely related hospital path but is not a support claim until its own
+acceptance evidence passes. Each target owns its R/package installation.
+
+A product-only OCI/Docker image is a separate first-class portability
+realization of the same artifact boundary. It contains the same frozen products
+and application semantics with the required RRP app subset, dependency closure,
+provenance, inventory, digests, and validator; it does not add producers,
+providers, history writers, or project state. Future closure derives from
+artifact/release metadata, not the development lock. Generated Git trees and
+images are disposable target outputs. Remote creation, registries, credentials,
+commit/push, service authorization, sharing, networking, monitoring, and
+deployment remain explicit operator actions.
 
 ## Distribution, build, and release
 
@@ -704,7 +715,8 @@ install user-scoped RRP and verify host R/software
 → execute, append, close, and reopen history
 → build/materialize/validate products and initialize the app
 → build and independently validate the product-only artifact
-→ realize and validate the supported Connect target
+→ realize and validate the Posit Connect Cloud reference target
+→ build and validate the product-only OCI/Docker realization
 ```
 
 The proof has no development/sibling repository access, Hospital distribution,
@@ -744,7 +756,8 @@ This architecture does not design or version `readmit`.
 | Temporary runtime install per operation | **RETIRE FROM ACTIVE PRODUCT PATH** | Runtime ships installed |
 | Root `renv` | **SIMPLIFY / RETAIN FOR DEVELOPMENT** | Not installed/project authority |
 | Reduced artifact/target separation | **REUSE SUBSTANTIALLY** | Installed inputs and SHA-256 closure |
-| Connect realization | **REFACTOR** | Artifact/release dependency evidence |
+| Connect Cloud realization | **REFACTOR** | Posit-compatible artifact/release dependency evidence; Cloud remains the reference target |
+| OCI/Docker realization | **ADD FROM SHARED ARTIFACT** | Product-only portable realization; no compute-capable semantics |
 | Full Platform tree as payload | **REPLACE** | Closed installed distribution |
 | Generated Hospital release/embedded archive | **RETIRE FROM ACTIVE PRODUCT PATH** | Preserve `v0.1.0` history |
 | Hospital Git/wrappers | **RETAIN AS HISTORICAL EVIDENCE** | No normal 1.0 role |
@@ -798,8 +811,9 @@ The implementation plan must finalize launcher/installer technology and paths;
 package names/APIs; project manifest and registration schema/paths; 1.0 target,
 canonical, request, provider, history, and product IDs/schemas; distribution
 manifest/build/signing details; project dependency/conflict mechanics;
-migration and legacy archive contracts; artifact/Connect versions; validation
-profile graph; documentation move sequence; and the release support matrix.
+migration and legacy archive contracts; artifact/Connect Cloud/OCI versions;
+validation profile graph; documentation move sequence; and the release support
+matrix.
 
 These are bounded plan decisions, not reasons for another broad assessment.
 Use reversible spikes where evidence is needed before an irreversible choice.
@@ -835,24 +849,17 @@ implementation/history evidence until planned replacement.
 
 ## Implementation-plan bridge
 
-The next task is the **RRP 1.0.0 Implementation Plan**, derived from this
-architecture rather than Phase chronology. It should sequence:
+The authoritative [RRP 1.0.0 implementation roadmap](platform-implementation-plan.md)
+sequences governance, source/distribution ownership, installed operations,
+independent projects, singular-target analytics, new history, products/app,
+Posit and OCI product-only realizations, adopter acceptance/legacy retirement,
+and release qualification. It is organized by architecture-owned stages rather
+than Phase chronology.
 
-1. authority/governance and lifecycle validation transition;
-2. distribution manifest, packages, resources, and clean installation;
-3. stable programmatic API and thin launcher;
-4. project contract, loading, dependencies, registration, and state root;
-5. singular target/canonical/runtime/provider refactor;
-6. new history schema and explicit legacy isolation/migration;
-7. product/materialization/app migration;
-8. product-only artifact and Connect refactor;
-9. synthetic and independent adopter clean-install acceptance;
-10. documentation reclassification and human operations;
-11. legacy deprecation/retirement; and
-12. 1.0.0 candidate, support, publication, and acquisition proof.
-
-Each increment states what remains working, reuse/replacement, compatibility
-and state effects, human operation, and proportional evidence. Legacy release
+The next planning pass must decompose those stable major stages into concrete
+increments and acceptance tests before source implementation begins. Each
+increment will state what remains working, reuse/replacement, compatibility and
+state effects, human operation, and proportional evidence. Legacy release
 assets remain unchanged until replacement acceptance makes retirement safe.
 
 ## Prohibited dependencies

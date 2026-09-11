@@ -1,720 +1,747 @@
-# Platform implementation plan
+# RRP 1.0.0 implementation plan
 
 ## Status and authority
 
-**Status:** completed historical `v0.1.0` clean-build sequence; not the forward
-RRP 1.0.0 implementation plan
+**Status:** authoritative high-level implementation roadmap for the RRP 1.0.0
+target generation; implementation has not begun
 
-This plan records the Phase 0–11 sequence that produced and published immutable
-`v0.1.0`. Git history and the release tag preserve the architecture that
-governed it. The current [Platform True North](../vision/platform-true-north.md)
-and [Platform Architecture](platform-architecture.md) now define the forward
-RRP 1.0.0 target and supersede this plan wherever product, project, target,
-distribution, or governance directions differ.
+This is the one current implementation-plan authority beneath
+[Platform True North](../vision/platform-true-north.md) and the
+[Platform Architecture](platform-architecture.md). It defines the major stages,
+dependency order, transition states, and evidence required to turn the released
+`v0.1.0` implementation into the declared RRP 1.0.0 product. Where it and an
+older Phase document differ, this roadmap governs forward work.
 
-The next architecture task is to replace this file in place with the **RRP
-1.0.0 Implementation Plan** described by the current architecture's plan
-bridge. Until that plan is accepted, this document authorizes no 1.0.0
-implementation work. The historical content below is retained as evidence and
-is not silently rewritten to make it appear that Phase 0–11 built the new
-architecture.
+The [implementation record](platform-implementation-record.md) records what is
+actually completed under this roadmap. The
+[reference-asset reconciliation](reference-asset-reconciliation.md) remains the
+required target-first control when old implementation or sibling-repository
+evidence is considered for deliberate reuse.
 
-The plan starts from an empty software repository. Each phase must leave a
-coherent, documented state and must add an entry to the
-[implementation record](platform-implementation-record.md). Later phases may
-refine sequencing when evidence changes, but they must record the reason rather
-than silently drift.
+The published `v0.1.0` tag preserves the exact Phase 0–11 plan,
+implementation, and release evidence for that immutable release. Rewriting
+this document in place does not reinterpret those bytes or erase their history.
+Detailed `v0.1.0` documents and tests remain implementation evidence until a
+1.0 stage deliberately replaces, reassigns, or retires them.
 
-## Implementation strategy
+This is intentionally a big-picture roadmap. It authorizes the next planning
+pass, not executable implementation. Before source changes begin, these stages
+must be decomposed into bounded increments with concrete interfaces, state
+effects, human operations, and acceptance tests. RRP 1.0.0 is neither
+implemented nor released because this roadmap exists. Transitional
+`0.2.0-dev` executable metadata remains unchanged by this planning work.
 
-### Target interfaces, simple realizations
-
-Build the intended public boundary first, then place the simplest valid
-implementation behind it. Early R objects, local files, a deterministic
-provider, and a small Shiny application are useful if they exercise the same
-contracts expected of later implementations.
-
-> Implement simple valid realizations behind the correct architecture, then
-> replace implementations later without replacing the architecture.
-
-### Working vertical milestones
-
-The repository should become executable in a narrow end-to-end form once the
-minimum canonical, temporal, estimand, provider, and history semantics exist.
-It should not wait for every backend adapter or public operation to be complete.
-Conversely, the early slice must not write source data directly into app files,
-substitute reconstructed trajectories for operational history, or let the app
-invoke a provider.
-
-### Evidence and reuse
-
-Before implementing a subsystem, revisit the relevant rows in
-[Reference Asset Reconciliation](reference-asset-reconciliation.md), inspect the
-candidate assets just in time, and record the actual reuse decision. A prior
-classification is guidance, not authorization to bypass current design or
-review.
-
-### Continuous quality spine
-
-From the first executable phase, retain a regression path:
+## Starting point and destination
 
 ```text
-synthetic source
-  → canonical handoff
-  → validation
-  → eligibility/state
-  → conforming default provider
-  → append-oriented records
-  → logical products
-  → supplied application
-  → reference deployment
+released v0.1.0
+    = immutable working implementation
+    = repository-operated and physically coupled
+
+RRP 1.0.0 architecture
+    = authoritative target
+    = installed software + independent projects
+    = not yet implemented
+
+this roadmap
+    = forward-only path between them
 ```
 
-The path grows by phase. Tests and documentation distinguish fictional
-software conformance from clinical validity.
+The destination is one conventionally installed RRP software product. A thin
+CLI and supported programmatic operations apply it to an explicit,
+independently owned hospital project. The project supplies its producer,
+mapping, selected provider/model, extension dependencies, nonsecret
+configuration, and writable state. RRP owns canonical admission, one fixed
+remaining cumulative day-30 risk target, request construction, execution and
+history semantics, products, the supplied product-only app, and closed
+artifact builders.
 
-## Phase map
+This is not an all-at-once rewrite. Existing semantic machinery is kept when
+it still serves the new boundary; obsolete physical and delivery coupling
+leaves the active path as soon as its replacement passes an explicit gate.
+Temporary coexistence is allowed only with a named purpose and retirement
+condition.
 
-| Phase | Milestone | First material use |
-|---:|---|---|
-| 0 | Repository and engineering foundation | Clear, testable project conventions |
-| 1 | Identity, compatibility, and contract foundation | Public specification vocabulary |
-| 2 | Canonical implementation boundary | Independently supplied canonical data |
-| 3 | Synthetic reference implementation | Complete conforming source producer |
-| 4 | Minimal governed runtime and provider | Valid state and estimate records |
-| 5 | First persistent vertical slice | Durable source-to-history flow through a conforming reference adapter |
-| 6 | Operational-history and product maturity | Migration, products, and capability-aware app views |
-| 7 | Stable platform operations and adoption guides | Human-operable selection/build/run/recovery |
-| 8 | Deployment build and Connect Cloud reference | Validated target-specific realization |
-| 9 | Observability integration | Correlated, privacy-conscious operations |
-| 10 | Adapter independence | Concrete replacement of a reference component |
-| 11 | Distribution and open-source governance | Intentionally supported public release |
+## Roadmap principles
 
-## Phase 0 — Repository and engineering foundation
+1. Follow architecture ownership rather than historical Phase numbering.
+2. Establish source, package, resource, and distribution ownership before
+   installed operations depend on it.
+3. Put one shared programmatic operation boundary beneath every client and
+   keep the CLI thin.
+4. Establish project recognition and trust before executing project code.
+5. Stabilize the singular target and temporal semantics before versioning new
+   history or products.
+6. Never relabel daily-hazard records or products as cumulative risk.
+7. Keep software installation, project migration, state migration, artifact
+   creation, deployment, and publication separate.
+8. Move validation ownership with the component or lifecycle claim.
+9. Preserve a bounded working path during transition without creating a
+   permanent dual architecture.
+10. Require development-repository independence at installed, project,
+    artifact, and release gates.
 
-### Objective
+## Dependency-oriented roadmap
 
-Turn the documentation bootstrap into a small, safe engineering workspace
-without adding domain runtime behavior.
+```text
+1. Authority and transition controls
+        ↓
+2. Software source and closed-distribution foundation
+        ↓
+3. Installed software and shared-operations foundation
+        ↓
+4. Independent project and trusted extension foundation
+        ↓
+5. Singular risk-target analytical vertical slice
+        ↓
+6. RRP 1.0 history and project-state generation
+        ↓
+7. Cumulative-risk products and supplied application
+        ↓
+8. Product-only deployment realizations
+        ↓
+9. Adopter acceptance, documentation, and legacy retirement
+        ↓
+10. RRP 1.0.0 qualification, publication, and acquisition proof
+```
 
-### Deliverables
+Validation ownership, dependency evidence, privacy/security review,
+documentation, and support-matrix automation are continuous workstreams. They
+start when their owning boundary appears and converge at Stages 9–10; they do
+not bypass the dependency spine.
 
-- license decision or an explicit non-release placeholder policy;
-- `.gitignore`, `.editorconfig`, and minimal repository metadata;
-- documentation link/path validation;
-- a lightweight test/validation entry point with development and strict
-  checkpoint concepts kept distinct;
-- initial versioning and change-record conventions;
-- privacy, fictional-data, and nonclinical test-fixture rules; and
-- exact human instructions for validation.
-
-Do not initialize `renv`, CI/CD, a package, or deployment tooling until an
-executable need exists.
-
-### Exit evidence
-
-- a fresh checkout can run documentation validation;
-- broken local links and malformed governing files fail clearly;
-- repository status and generated/local path policy are understandable; and
-- human and agent guidance name the same validation operation.
-
-### Dependencies and decisions
-
-No software prerequisite. License selection becomes material before public
-distribution, not necessarily before internal Phase 0 work.
-
-## Phase 1 — Identity, compatibility, and contract foundation
-
-### Objective
-
-Define cross-layer vocabulary before individual schemas make accidental
-identity decisions.
-
-### Deliverables
-
-- compatibility and versioning policy for pre-1.0 contracts;
-- logical definitions for as-of context, run identity, implementation identity,
-  capability status, provenance references, and conformance results;
-- contract authoring and validation conventions;
-- initial diagnostic-envelope vocabulary without a logging implementation;
-- machine-readable format decision based on small examples; and
-- fixtures proving version and error-reporting conventions.
-
-### Exit evidence
-
-- contracts can identify themselves and report structured, actionable failures;
-- reference defaults are visibly distinct from universal values;
-- logical identity does not depend on Git, file layout, R lists, or a database;
-  and
-- tests distinguish contract validation from clinical validation.
-
-### Dependencies and decisions
-
-Depends on Phase 0 validation. Decide the initial schema/specification format
-and pre-1.0 compatibility expectations here. Do not decide a production store.
-
-## Phase 2 — Canonical implementation boundary
+## Stage 1 — Authority and transition controls
 
 ### Objective
 
-Make the first public source-to-platform interface explicit and independently
-testable.
+Make the RRP 1.0.0 architecture and roadmap operable as the active development
+system without deleting or weakening `v0.1.0` evidence.
 
-### Deliverables
+### Why now
 
-- selected canonical domain schemas and vocabularies;
-- bundle identity, as-of context, implementation/mapping provenance, and
-  capability declarations;
-- required, conditional, optional, unavailable, and unsupported semantics;
-- structural, relationship, vocabulary, and temporal conformance rules;
-- a representation-neutral producer/result interface;
-- an independent canonical fixture with no synthetic implementation imports;
-- R realization and validator only as needed to exercise the logical contract;
-  and
-- compatibility examples and failure fixtures.
+Repository restructuring and semantic migration cannot be governed by Phase
+0–11 gates for a different product. Validation and documentation authority
+must be corrected before those gates obstruct or falsely certify later work.
 
-### Exit evidence
+### Major scope
 
-- a separately constructed fixture passes the public handoff and reaches a
-  no-op/minimal generic consumer;
-- future information, bad keys, invalid windows, and false capability claims
-  fail with structured issues;
-- list/file/table mechanics are not public requirements; and
-- generic code has no reference-implementation names or paths.
+- Replace phase-number routing for new work with named component and lifecycle
+  validation profiles plus an explicit dependency/ownership map.
+- Classify current normative, user/developer, maintainer, assessment, and
+  historical documentation and plan their incremental physical separation.
+- Establish a transition ledger assigning every active `v0.1.0` path or
+  invariant to reuse, refactor, replacement, historical retention, or deferral.
+- Update conventions for installed-resource discovery, namespaced code,
+  explicit project context, package ownership, and proportional evidence.
+- Preserve strict scientific, temporal, state, privacy, artifact, and release
+  invariants while changing how checks are selected.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-Depends on Phase 1 identity and compatibility vocabulary. Maintainers decide
-the first required/capability-dependent domains before completion.
+Reuse focused tests and repository rules that still prove a current invariant.
+Refactor their routing and ownership. Replace Phase 0–11 and whole-tree
+checkpoint status as the forward hierarchy. Retain historical suites and
+publication evidence until later retirement gates say otherwise.
 
-### Completion status
+### Exit state
 
-Completed in Iterations 2.1 and 2.2. The generic bundle foundation and initial
-three-domain clinical profile satisfy the deliverables and exit evidence. The
-temporary conformance realization proves the public handoff but is not a
-runtime package or mandated representation. Phase 3 is the next active phase.
+Architecture, roadmap, contribution guidance, and validation policy agree on
+what governs new work. Each current check is owned by a new profile, explicitly
+legacy, or pending deliberate reassignment. The executable remains the
+`v0.1.0`-derived development baseline.
 
-## Phase 3 — Synthetic reference implementation
+### Acceptance gate
 
-### Objective
+Documentation/navigation checks, validation-routing tests, and a reviewed
+ownership map prove that evidence can be selected by changed boundary without
+silently dropping a protected invariant. No analytical or release claim
+changes.
 
-Create the first complete source implementation beneath the public boundary.
+### Deferred detail
 
-### Deliverables
+Exact profile names, machine-readable map schema, CI layout, document moves,
+and per-test reassignment wait for the detailed increment pass.
 
-- deterministic fictional source generation with declared seed, as-of time,
-  generator version, and scale;
-- recognizable relational source domains rather than renamed canonical tables;
-- implementation-owned source validation and mappings;
-- explicit mapping provenance and fictional/nonclinical classification;
-- implementation conformance operation and report;
-- focused small fixtures plus a richer reference scale; and
-- onboarding documentation explaining what a local implementation replaces.
-
-### Exit evidence
-
-- repeated generation is deterministic for declared inputs;
-- source failures and canonical failures remain distinguishable;
-- the implementation passes the same handoff as the independent fixture;
-- generic code contains no synthetic branch; and
-- no generated data are required to be committed merely to prove generation.
-
-### Dependencies and decisions
-
-Depends on Phase 2. Decide whether a small prebuilt fictional bundle is also
-distributed for immediate exploration; generation remains reproducible either
-way.
-
-### Completion status
-
-Completed in Iteration 3.1. The reference implementation owns six fictional
-source feeds, source-local conformance, deterministic mapping, two declared
-scales, and a staged producer result. It reaches the existing Phase 2 handoff
-without a synthetic branch in generic validation and writes no generated data.
-Phase 4 followed and is now complete.
-
-## Phase 4 — Minimal governed runtime and provider
+## Stage 2 — Software source and closed-distribution foundation
 
 ### Objective
 
-Produce valid state and estimates through the intended runtime and extension
-interfaces.
+Turn the repository into source that builds one closed RRP software
+distribution, with physical ownership matching the two-package and installed-
+resource architecture.
 
-### Deliverables
+### Why now
 
-- focused internal R package under `runtime/` with minimal dependencies;
-- canonical/bundle validation API, eligibility, dual-time filtering, and a
-  small versioned state contract;
-- at least one versioned default estimand with explicit event, horizon,
-  terminal, and coherence semantics;
-- provider specification, controlled registry/selection, and execution request;
-- transparent deterministic nonclinical provider valid for that estimand;
-- universal and estimand-specific conformance scenarios;
-- standardized estimate record with run/state/estimand/provider provenance;
-- separation of estimate generation from decision/priority policy; and
-- an operation that runs synthetic bundle → state → estimate in a clean session.
+Installed operations cannot be stable while they depend on repository-root
+sourcing, ordered global files, or an undefined payload. Package/resource and
+distribution boundaries must precede installation, project loading, and CLI
+work.
 
-### Exit evidence
+### Major scope
 
-- a second tiny test provider can register and run without generic-runtime
-  edits;
-- missing capability, unsupported estimand, execution failure, invalid bounds,
-  cardinality, horizon, future information, and terminal behavior are tested;
-- the default provider is simple but contractually valid and visibly
-  nonclinical; and
-- package APIs do not depend on source implementations, products, app,
-  deployment, Git, or optional methods.
+- Establish one main RRP implementation package beside focused `rrpruntime`.
+- Rehome generic orchestration, adapters, products/app support, diagnostics,
+  and artifact builders according to their owners.
+- Classify contracts, schemas, defaults, app resources, project examples and
+  templates, target resources, user docs, and legal material as installed
+  resources accessed through a stable API.
+- Separate shippable content from tests, fixtures, assessments, historical
+  Hospital machinery, release evidence, and maintainer-only tools.
+- Introduce a closed inclusion manifest, exact output inventory, SHA-256
+  digests, target-keyed dependency closure, and normalized-content
+  reproducibility rules.
+- Distinguish development `renv`, installed RRP, project extension, build, and
+  deployment dependency environments.
+- Move executable identity onto the 1.0 development line only after the new
+  distribution identity is real and validated; never alter `v0.1.0` evidence.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-Depends on Phases 1–3. Maintainers must approve the first default estimand and
-initial provider trust/registration boundary. Full non-R provider execution is
-deferred.
+Retain `rrpruntime`, current generic semantic code, contracts, adapters,
+products/app resources, and inventory/digest patterns where ownership remains
+sound. Refactor repository scripts and loose R files into package/resource
+boundaries. Replace the full tracked tree and ignore subtraction as payload
+definitions. The generated Hospital product remains historical.
 
-### Completion status
+### Exit state
 
-Completed in Iterations 4.1 and 4.2. `rrpruntime@0.2.0` now owns normalized
-admitted input, eligibility, minimal state, the first next-day
-conditional-hazard estimand and request, language-neutral provider contracts,
-controlled in-memory registration and exact selection, compatibility,
-isolated adapter execution, structured failures, and accepted estimates. The
-transparent deterministic provider and a test-only second provider satisfy
-the Phase 4 exit evidence against independent and synthetic admitted inputs.
-Phase 5 operational history is the next active phase.
+A minimal real RRP distribution builds from declared inputs, contains only
+classified output, stages its internal packages and resources, and validates
+without assuming a checkout root. Legacy repository-run analytical operations
+may coexist while Stage 3 builds installed behavior.
 
-Iteration 5.1 subsequently advanced the package to `rrpruntime@0.3.0` and the
-execution-result contract to `0.2.0` solely to add persistence ports and retry
-lineage; the completed Phase 4 provider semantics remain intact.
+### Acceptance gate
 
-## Phase 5 — First persistent vertical slice
+Package build/check, resource discovery, dependency/license checks, closed-
+inventory rejection, digest verification, and two independent builds on one
+declared environment establish the new distribution boundary. This is not yet
+a supported end-user installation claim.
 
-### Objective
+### Deferred detail
 
-Deliver the first durable source-to-operational-history slice without violating
-runtime, history, product, or application boundaries.
+Final directories, package/API names, manifest fields, archive format,
+dependency acquisition, signing, and byte-identical reproducibility claims
+wait for detailed planning or later evidence.
 
-### Deliverables
-
-- logical ports for appending and reading runs, state, and estimate records;
-- a lightweight local reference storage adapter;
-- explicit idempotency, retry, provider-transition, invalidation, restatement,
-  atomicity, raw/valid/current-read, and prospective-start behavior;
-- one human operation to generate, run, persist, close/reopen, and inspect;
-- documented initialization, connection lifecycle, backup, recovery,
-  troubleshooting, and concurrency posture; and
-- end-to-end fictional regression tests.
-
-### Exit evidence
-
-- day `t` and `t+1` plus provider A/provider B remain distinct retained facts;
-- identical reruns are no-ops and conflicts remain loud across restart;
-- an interrupted terminal batch exposes no partial members after reopen;
-- raw facts and validity-resolved reads preserve invalidation/restatement;
-- generic runtime and contracts contain no reference-storage dependency; and
-- a new user can create, rerun, inspect, and back up visibly fictional durable
-  history through documented commands.
-
-### Dependencies and decisions
-
-Depends on Phase 4 identities and records. Choose only a reference local
-storage technology; do not make it the production requirement. Product and
-application scope begins in Phase 6 after durable operational truth exists.
-
-### Completion status
-
-**Complete.** Iteration 5.1 defines operational truth, immutable run
-lifecycle, persisted state/request/execution/estimate families, atomic terminal
-batches, idempotency/conflict/retry/provider-transition behavior,
-invalidation/restatement, raw/valid/current reads, and backend-independent
-persistence ports. Iteration 5.2 adds the conforming DuckDB reference adapter,
-durable close/reopen operation, interruption/restart evidence, and documented
-backup/recovery. No product or application exists; that work now starts in
-Phase 6 rather than widening the persistence milestone after its evidence is
-complete.
-
-## Phase 6 — Operational-history and product maturity
+## Stage 3 — Installed software and shared-operations foundation
 
 ### Objective
 
-Mature durable history and evolve it into stable, capability-aware product and
-application interfaces.
+Make the distribution installable, verifiable, selectable, and operable
+outside the development repository through stable programmatic operations and
+a thin human launcher.
 
-### Deliverables
+### Why now
 
-- migration and retention policy for the duplicate, correction, invalidation,
-  restatement, transaction, and adapter semantics established in Iteration 5.1;
-- provider/estimand/platform/state-schema transition representation;
-- retained decision and lineage records where their operational meaning
-  justifies persistence;
-- versioned product-suite composition, keys, relationships, freshness, and
-  compatibility;
-- explicit partial/unavailable capability behavior;
-- current, trajectory, care-management, executive, and lineage products chosen
-  for the reference suite;
-- product storage/materialization and access adapters;
-- a minimal Shiny interface that reads only logical products;
-- one human path to rebuild products and launch the fictional app; and
-- storage adapter migration rules beyond the already conforming reference.
+Projects must be tested against installed software, not temporary source.
+A minimal launcher is useful now for installation and health; full commands
+should appear only as their underlying operations mature.
 
-### Exit evidence
+### Major scope
 
-- provider A history remains visible when provider B begins;
-- correction/restatement never silently overwrites prior operational truth;
-- a prospectively initialized deployment works with empty prior history;
-- products rebuild consistently from authoritative records;
-- optional products can be absent without false zero values;
-- app consumers reject or qualify incompatible/stale products safely; and
-- the app can change product storage adapters without source, provider, or
-  operational-history schema knowledge.
+- Implement user-scoped, side-by-side immutable installation and explicit
+  activation, rollback, and uninstall boundaries.
+- Resolve, validate, and record an explicit host R, initially R 4.4.x without
+  bundling it.
+- Install and verify the private RRP library, resource catalog, inventory,
+  digests, permissions, and compatibility evidence.
+- Establish the stable programmatic operation/result boundary and structured,
+  privacy-safe diagnostics inherited from current operations.
+- Add a thin CLI/launcher shell for version, installation doctor, and other
+  capabilities only when an underlying operation exists.
+- Keep parsing, explicit project context, exit status, signals, safe rendering,
+  and recovery guidance out of analytical logic.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-Depends on the Phase 5 slice. Resolve persistence semantics and the default
-product suite before freezing their first supported versions. Production
-database choice remains deployment-owned.
+Reuse operation classification, structured contexts/events, validation
+results, doctor intent, and safe console rendering. Refactor bodies into the
+main package and expose supported namespaced operations. Replace per-operation
+temporary package installation and repository-root source chains on the new
+path. Legacy scripts may temporarily remain comparison wrappers.
 
-### Iteration sequence and current status
+### Exit state
 
-- **Iteration 6.1 — logical product contracts and product-building boundary:**
-  complete. It defines the required three-product core suite, coherent set and
-  freshness identity, compatibility/availability/failure semantics,
-  backend-neutral builders, independent conformance, logical access, and one
-  in-memory human build/inspection path over existing durable history.
-- **Iteration 6.2 — physical product access and minimal application:**
-  complete. It adds the replaceable YAML bundle adapter, atomic coherent-set
-  publication, whole-set access validation, factual freshness, and a minimal
-  Shiny app consuming only injected product access.
+From exact distribution bytes, a user can install two RRP versions, verify
+either, explicitly select one, roll back selection, and invoke project-neutral
+operations without repository access or an interactive R session.
 
-**Phase 6 is complete.** The deliberately narrow reference suite now proves
-logical contracts/builders, durable rebuildable materialization, replaceable
-access, integrity/compatibility/coherence/freshness, irregular and same-day
-history, and the source-to-app human path. Broader optional products, final UX,
-and production retention/migration policy require future concrete needs rather
-than an Iteration 6.3 for polish.
+### Acceptance gate
 
-## Phase 7 — Stable platform operations and adoption guides
+Clean user-scope tests prove host-R selection, private-library isolation,
+resource discovery, launcher/doctor behavior, activation atomicity, rollback,
+uninstall safety, structured failures, and checkout independence on at least
+one initial environment cell.
+
+### Deferred detail
+
+Installer/launcher technology, paths, exact CLI syntax, shell styling, broader
+platform support, system-wide installation, and complete analytical commands
+remain later decisions.
+
+## Stage 4 — Independent project and trusted extension foundation
 
 ### Objective
 
-Make stable capabilities fully human-operable through one reusable control
-surface.
+Introduce the real RRP project lifecycle and make producer/provider code
+ordinary, explicit, hospital-owned extensions of installed RRP.
 
-### Deliverables
+### Why now
 
-- callable operations with IDs, inputs, outputs, side effects, validation,
-  structured results, dry-run where appropriate, and recovery behavior;
-- human entry points for initialize, doctor, validate, generate reference,
-  build/run, select implementation/provider, build products, launch, and
-  upgrade as supported;
-- operation registry and documentation-drift tests;
-- fresh-checkout and clean-session tests;
-- guides for exploration, local integration, prototype, pilot preparation, and
-  governed operational adoption; and
-- agent mappings that invoke, rather than reproduce, those operations.
+Project code must not be designed around repository internals, and the target
+refactor needs a trustworthy producer/provider selection boundary.
 
-### Exit evidence
+### Major scope
 
-- an experienced external developer can operate and troubleshoot supported
-  flows without conversation history or AI;
-- selection changes configuration, not generic source code;
-- agents and scripts reach the same implementation; and
-- mutation and checkpoint requirements are explicit.
+- Recognize an explicit project root, versioned nonsecret manifest, and one
+  fixed trusted registration entry point.
+- Establish project identity/version, supported RRP/API range, exact producer
+  and provider selection, dependency/model evidence, state profile/root, and
+  nonsecret operation settings.
+- Separate callable registration from declarative selection and reject
+  missing, duplicate, ambiguous, undeclared, or incompatible entries.
+- Establish an RRP-first private library plus project extension library, with
+  conflict and ambient-library rejection.
+- Implement safe initialization, recognition, validation, dependency checks,
+  and non-mutating lifecycle behavior.
+- Turn the synthetic composition into a fictional example project and retain
+  a materially independent adopter fixture for conformance.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-Thin human wrappers begin earlier, but stable extraction depends on Phases 2–6.
-Decide whether a CLI or package control surface adds evidence-based value only
-after operation APIs stabilize.
+Generalize the producer declaration/result/admission seam and provider
+registry/execution pattern. Move synthetic source and transparent-provider
+composition behind the same project boundary as adopter code. Replace
+installation-owned producer selection and configuration-driven executable
+loading. Do not add target, estimand, or request-builder registration.
 
-### Completion status
+### Exit state
 
-**Complete in Iteration 7.1.** The stable Rscript surface now owns explicit
-local initialization, warning-tolerant read-only doctor, one reference
-source-to-history run, history inspection, downstream product materialization,
-and product-only app validation/launch. A small declarative registry protects
-command/documentation/agent drift; the operator manual and progressive-
-implementation guide cover cadence, missed/same-day runs, troubleshooting, and
-independent source/provider/persistence/product/app replacement. No CLI
-framework or convenience workflow wrapper was justified. Scheduling,
-deployment, release, upgrade, publishing, and observability remain later work.
+Installed RRP can initialize, recognize, load, and validate a fictional project
+outside the repository; execute only its fixed registration entry point after
+preflight; and resolve exactly one producer and provider. Deep analytical
+compatibility completes in Stage 5.
 
-## Phase 8 — Deployment build and Connect Cloud reference
+### Acceptance gate
 
-### Objective
+External-project tests prove safe initialization, paths, manifest
+compatibility, trust/selection separation, dependency isolation, model
+integrity references, secret exclusion, duplicate/missing rejection, state-
+root ownership, and equal treatment of fictional and independent extensions.
 
-Prove the deployment interface with a safe, target-specific reference
-realization.
+### Deferred detail
 
-### Deliverables
+Exact project tree, manifest schema, registration shape, template content,
+extension lock mechanism, migration command, and provider ergonomics wait for
+the detailed plan.
 
-- deployment artifact contract and target profile;
-- explicit runtime allowlist and generated adapter/template boundary;
-- independent artifact validation from a clean copy/session;
-- artifact and product/run provenance linkage;
-- Connect Cloud target builder and validation;
-- conservative local-repository generation with explicit destination
-  ownership, staging, validation, and no external mutations; and
-- human deployment and recovery guides.
-
-### Exit evidence
-
-- the platform root is not a hosting application root;
-- the artifact contains only target-required, approved content;
-- target packaging does not change app, product, or model semantics;
-- validation can prove portability without the sibling repository; and
-- commit/push remain explicit rather than automatic defaults.
-
-### Dependencies and decisions
-
-Depends on a stable application/product runtime and Phase 7 operations.
-Deployment ownership is now resolved for the generated local repository;
-remote and service destinations remain operator-owned external choices. Do not
-add other infrastructure without a concrete target.
-
-### Iteration sequence and current status
-
-- **Iteration 8.1 — target-neutral reduced application artifact:** complete.
-  `platform.reduced-application-artifact@0.1.0` defines a closed product-only
-  runtime unit, deterministic instance/build identities, direct dependency
-  declaration, staged immutable build/current-pointer model, standalone
-  validation, and isolated Shiny construction. It contains no DuckDB, source,
-  provider, operational-history, Git, or target-specific runtime behavior.
-- **Iteration 8.2 — Connect Cloud local Git realization:** complete.
-  `platform.connect-cloud-git-realization@0.1.0` consumes an independently
-  valid artifact, produces an exact standalone Git repository with target
-  manifest/dependency metadata and root adapter, validates from generated
-  content, stages without committing, and refuses unsafe destinations. Remote
-  creation, commit, push, and Connect deployment are explicitly external.
-
-**Phase 8 is complete.** The platform owns generated deployable artifacts; the
-operator owns where they are published or deployed. No publication helper is
-needed to close this phase. A future OCI/container realization may consume the
-same target-neutral artifact as a peer target when concretely authorized.
-
-## Phase 9 — Observability integration
+## Stage 5 — Singular risk-target analytical vertical slice
 
 ### Objective
 
-Connect stable operations and runtime stages with portable, privacy-conscious
-diagnostics.
+Establish the complete in-memory 1.0 analytical path for RRP's one remaining
+cumulative day-30 readmission-risk target.
 
-### Deliverables
+### Why now
 
-- run context propagation across implementation, validation, computation,
-  provider, persistence, product, app, and deployment operations;
-- structured event contract, console renderer, verbosity, redaction, and safe
-  context rules;
-- bounded local reference sink plus deployment-owned routing interface;
-- operational metrics separated from diagnostic events;
-- explicit links among run diagnostics, provenance, and validation reports; and
-- failure-actionability and redaction tests.
+Target, state, request, and output semantics govern every new history and
+product record. They must be proved through the installed project boundary
+before persistence migrates.
 
-### Exit evidence
+### Major scope
 
-- one run can be followed across major stages;
-- no default diagnostic contains PHI, raw records, secrets, or connection
-  strings;
-- routing/retention can change without domain-code changes;
-- diagnostics do not alter computational results; and
-- logging is not represented as a governed audit trail.
+- Revise canonical admission to represent terminal occurrence separately from
+  availability and prove coverage through fixed `W30`.
+- Define first canonical readmission in `(t, W30]`, conditional on being alive
+  and readmission-free through `t`, using only facts available through `t`;
+  death competes and readmission wins an equal-time tie.
+- Refactor eligibility, immutable as-of state, temporal filtering, and standard
+  request construction in `rrpruntime`.
+- Remove estimands, target selection, and request builders from project/runtime
+  composition and retire daily hazard as public 1.0 semantics.
+- Bind project-selected providers to exact target/request/API compatibility,
+  probability validation, model attribution, and structured failure.
+- Provide one installed example provider and a materially different project
+  provider conformance path.
+- Expose a nonpersistent project run through the operation API and CLI once its
+  semantics pass.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-The event vocabulary begins in Phase 1; integration waits for stable operations
-and history. Deployments choose sinks and retention.
+Reuse admitted-input discipline, as-of filtering, eligibility structure,
+provider registry/execution, bounds/cardinality checks, standardized outcomes,
+and provenance. Replace hazard estimand/request/estimate meaning rather than
+renaming it. Retain hazard contracts/tests only as `v0.1.0` evidence or
+provider-internal mathematics.
 
-### Implemented checkpoint
+### Exit state
 
-Iteration 9.1 implements `platform.operation-run-context@0.1.0` and
-`platform.operational-diagnostic-event@0.1.0`, an in-memory base-R emitter,
-callable sink interface, privacy-safe shallow details, and a non-retained
-console renderer. Doctor, reference run, product materialization, artifact
-build, and Connect realization use the common boundary. Analytical history,
-provenance, validation, metrics, audit, and deployment-owned routing/retention
-remain separate.
+Fictional and independent-provider projects can produce a valid request and
+either one attributable remaining-risk probability or structured failure
+without future information, runtime source lookup, or project-defined target
+semantics. The cumulative-risk path is authoritative; hazard is legacy-only.
 
-**Phase 9 is complete for the bounded local diagnostic foundation.** External
-observability services, retained sinks, metrics, alerts, and audit remain
-future deployment/governance work rather than missing core exit evidence.
+### Acceptance gate
 
-## Phase 10 — Adapter independence
+Evidence covers endpoint inclusion, before-discharge/after-endpoint
+ineligibility, late-known terminal events, equal-time precedence, fixed
+coverage, no future information, exact provider selection, malformed/failing
+providers, probability bounds/cardinality, determinism, and provenance across
+both projects.
 
-### Objective
+### Deferred detail
 
-Demonstrate that a reference component can be replaced through the architecture
-rather than a named exception.
+Exact contract IDs, fields, signatures, provider helper APIs, clinical model
+validation, remote transports, and non-R providers wait for later planning.
 
-### Deliverables
-
-- one concrete non-synthetic canonical producer or realistic independent
-  producer fixture;
-- and/or one contract-tested non-file storage adapter;
-- and/or a second deployment target based on a real need;
-- conformance suites usable by each adapter category; and
-- a cross-combination test matrix.
-
-### Exit evidence
-
-- the replacement requires no named hospital, storage, or target branch in
-  generic code;
-- reference components remain valid peers;
-- missing capabilities are explicit; and
-- changing one adapter does not require unrelated components to change.
-
-### Dependencies and decisions
-
-Depends on stable contracts and operations. Choose the adapter that provides
-the strongest real evidence; do not build speculative abstractions merely to
-complete the phase number.
-
-### Iteration sequence and current status
-
-- **Iteration 10.1 — generic canonical-producer interface and adopter handoff
-  foundation:** complete. It defines
-  `platform.canonical-producer@0.1.0`, structured success/failure results,
-  trusted process-local registration, exact installation-level selection,
-  reusable conformance, privacy-safe producer diagnostics, and migrates the
-  shipped synthetic producer plus stable run onto the seam.
-- **Iteration 10.2 — independent adopter-side producer conformance proof:**
-  complete. A test-only denormalized export/activity-feed producer owns local
-  validation, mapping, identities, configuration, dual-time filtering, and an
-  unsupported baseline capability. It passes the unchanged shared producer
-  conformance path and reaches the unchanged runtime/provider, isolated DuckDB,
-  products, Shiny app, and reduced artifact.
-
-**Phase 10 is complete.** The shipped reference and materially different
-adopter fixture are substitutable peers through the same seam, missing
-capability is explicit, and generic downstream code has no named source branch.
-Final physical packaging/distribution of adopter-owned code remains Phase 11
-work rather than missing adapter-independence evidence.
-
-## Phase 11 — Distribution and open-source governance
+## Stage 6 — RRP 1.0 history and project-state generation
 
 ### Objective
 
-Publish an intentionally supported open-source platform rather than an
-unqualified source snapshot.
+Persist the new target's operational truth in hospital-owned project state
+without contaminating it with `v0.1.0` daily-hazard meaning.
 
-### Deliverables
+### Why now
 
-- final license and asset/license inventory;
-- contribution, security reporting, support, and code-of-conduct policies;
-- release/version/compatibility and upgrade policy;
-- supported R/OS/environment matrix;
-- clean release validation and reproducible release metadata;
-- public/private/companion methodology and extension policy;
-- CentralStatz stewardship and branding boundaries; and
-- evidence-based acquisition through clone, release archive, installer, or
-  optional client.
+History can stabilize only after target/request/result attribution is stable.
+Products must consume this history rather than bridge semantics ad hoc.
 
-### Exit evidence
+### Major scope
 
-- a supported release reproduces the fictional reference path;
-- users understand compatibility, security, support, and adopter obligations;
-- no proprietary service, agent, or optional package gates core operation; and
-- release artifacts carry clear provenance and licensing.
+- Version run, request/state, execution, estimate, invalidation, and
+  restatement records for the 1.0 target generation.
+- Preserve append orientation, atomic terminal batches, retry distinction,
+  idempotency/conflict behavior, attribution, raw/valid reads, invalidation,
+  and restatement.
+- Refactor persistence ports and default DuckDB into installed RRP with
+  project-declared writable locations.
+- Add run, inspect, close/reopen, backup/recovery, and state-health operations
+  over the shared API/CLI.
+- Define empty-state initialization and state-version compatibility.
+- Isolate legacy hazard evidence in a separately typed archive and define
+  explicit project/state migration without automatic upgrade mutation.
 
-### Dependencies and decisions
+### Reuse / refactor / replace
 
-Legal and brand decisions can begin earlier. Formal public release depends on
-stabilized contracts and operations. The role of `readmit` and extension
-repository strategy are decided from demonstrated needs.
+Reuse current history lifecycle, ports where structurally sound, DuckDB
+transactions/deterministic reads, and product-independent truth. Refactor
+identities and discovery around project state. Replace hazard-specific fields
+and repository-local paths. Never coerce hazard records into 1.0 estimates.
 
-### Iteration sequence and current status
+### Exit state
 
-- **Iteration 11.1 — distribution and first-release decision assessment:**
-  complete. It ranked license, release, environment, adopter packaging,
-  governance, security, support, integrity, and compatibility choices without
-  adopting or implementing them.
-- **Iteration 11.2 — hospital-facing distribution and managed composition
-  assessment:** complete as historical architecture evidence. The maintainer
-  baselined `v0.1.0`,
-  whole-tree first release, GitHub authority, `renv::restore()`, explicit
-  producer trust, external secrets, target-neutral deployment, CentralStatz
-  stewardship, conditional Apache-2.0 direction, DCO contribution governance,
-  best-effort support, normal security governance, and ordinary release
-  integrity. Its exact embedded Platform, one active R environment, producer
-  trust, thin operations, fictional acceptance, and deployment-neutrality
-  conclusions remain accepted. Iteration 11.3 supersedes its separately
-  maintained kit and formal three-level interpretation. See
-  [Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
-- **Iteration 11.3 — generated hospital-facing distribution architecture
-  revision:** complete as architecture. One authoritative maintained repository
-  will generate two independently versioned products: the Platform release and
-  the Readmission Risk Pool Hospital Implementation release. The latter embeds
-  one exact verified Platform archive; recipient modifications are outside the
-  CentralStatz release architecture. No second maintained project or formal
-  third release layer exists.
-- **Iteration 11.4 — generated distribution build and validation proof:**
-  complete. Added the minimal maintained hospital-facing source, artifact builder,
-  ownership/inventory metadata, and independent validator in this repository.
-  Proved exact embedded-archive integrity, one top-level environment, isolated
-  reference acceptance, explicit adopter composition and conformance,
-  downstream execution, artifact construction, and fail-closed drift. Do not
-  conflate the artifact with its later Git realization, release, or publication. The proof
-  uses option C: a deliberately failing editable scaffold plus one clearly
-  separate complete fictional adopter example.
-- **Iteration 11.5 — standalone Hospital Implementation Git realization:**
-  complete. Added the language-neutral realization contract, artifact-carried
-  standalone validator, and maintainer-only build/validation operations. Only
-  an independently validated distribution may be copied to an explicit
-  outside-repository destination. The exact generated repository is validated,
-  initialized on `main`, fully staged, uncommitted, and remote-free. Pristine
-  output is idempotent or replaceable after staged validation; unrelated,
-  modified, committed, remote-configured, linked, nested, or suspicious state
-  is refused. External acquisition proves unchanged synthetic and adopter
-  workflows. No publication action exists.
-- **Iteration 11.6 — v0.1.0 release-candidate and governance hardening:**
-  implemented. Apache-2.0 and NOTICE replace the provisional no-license state;
-  lightweight DCO, security, support, changelog, version authority, bounded
-  dependency/asset evidence, and narrow R/OS support claims are maintained.
-  One clean-source maintainer operation builds and validates the whole-tree
-  Platform `0.1.0` candidate, exact generated Hospital `0.1.0` candidate,
-  pristine Hospital Git realization, recipient-like workflows, and checksummed
-  `not_published` readiness evidence under ignored `build/`.
-- **Iteration 11.7 — explicit maintainer publication workflow and first
-  v0.1.0 release:** complete. It fixed both GitHub repository identities,
-  added zero-mutation preflight,
-  explicit mutation mode, Platform-first publication, generated Hospital
-  publication, checksummed partial-stage recovery, remote acquisition
-  verification, and post-verification development transition. Both `v0.1.0`
-  releases are public and verified; current development is `0.2.0-dev` with no
-  next release prepared.
+An installed project run appends one atomic attributable 1.0 terminal batch;
+later processes reopen it identically through logical ports. Failures expose
+no partial success. Software activation leaves project source/state untouched,
+and legacy state cannot enter current-risk reads.
 
-**Phase 11 — COMPLETE.** Iterations 11.4–11.6 proved the generated distribution,
-standalone Git form, Apache-2.0 governance, exact unpublished candidates, and
-clean acquisition. Iteration 11.7 published and remotely verified both
-products; the separate post-release development commit records the transition
-away from the immutable `v0.1.0` tag.
+### Acceptance gate
 
-## Cross-phase rules
+In-memory and DuckDB conformance, lifecycle, concurrency, retry/conflict,
+atomic failure, invalidation/restatement, backup/reopen, compatibility,
+migration failure, legacy isolation, and provenance tests pass through
+external projects and installed operations.
 
-Every meaningful iteration must:
+### Deferred detail
 
-1. state the planned objective and affected architecture boundary;
-2. inspect old-repository candidates just in time;
-3. record reuse, adaptation, reference-only use, and newly written code;
-4. preserve human-readable decomposition and dependency direction;
-5. add success and failure validation proportional to risk;
-6. update human operations and agent mappings together when operations change;
-7. state compatibility and migration effects;
-8. keep fictional/nonclinical labeling visible;
-9. append the actual result to the implementation record; and
-10. leave a recommended next task.
+Exact schemas/tables, migration inventory, backup format, locking, production
+databases, retention, encryption implementation, and retrospective conversion
+remain outside this pass.
 
-No phase may create a runtime/test/deployment dependency on
-`../readmission-risk-pool`. No old asset may enter merely because it is already
-implemented.
+## Stage 7 — Cumulative-risk products and supplied application
 
-## Ordering rationale
+### Objective
 
-Identity and compatibility precede domains because bundle, run, provider,
-history, and product records must agree on attribution. The canonical boundary
-precedes the synthetic producer so the reference conforms to a public
-interface. Estimand meaning precedes provider selection. Provider and state
-identity precede durable estimates. A narrow history-backed app arrives before
-full persistence/product breadth to preserve an early working vertical slice.
-Stable operations precede deployment and full observability because both need
-well-defined run and side-effect boundaries. Adapter generalization follows a
-real first implementation, and formal release follows stabilized public
-interfaces.
+Restore the product-only application boundary on correct 1.0 history before
+pursuing visual refinement.
+
+### Why now
+
+Products and views cannot safely migrate until new history and validity rules
+are stable. Deployment should package tested interfaces, not an interim UI or
+physical database query.
+
+### Major scope
+
+- Version a narrow logical set for current eligible remaining risk, retained
+  risk trajectory/history, and terminal run summary.
+- Preserve construction from persistence ports, coherent sets, explicit empty
+  states, rebuildability, freshness, and target/provider/model/software/history
+  provenance.
+- Refactor materialization and logical access into installed RRP with project-
+  owned product state and atomic replacement.
+- Update Shiny view models, labels, explanations, failures, and empty states
+  for cumulative remaining risk.
+- Keep estimation, product refresh, app validation, and launch as distinct
+  operations surfaced through the CLI.
+- Establish a functional 1.0 app baseline before optional visual refinement.
+
+### Reuse / refactor / replace
+
+Reuse the three product roles, neutral builders, coherent materialized set,
+access seam, product-only app direction, and safe empty/failure behavior.
+Refactor identities, grains, fields, provenance, discovery, and app language.
+Replace hazard views; never infer cumulative risk from legacy bundles.
+
+### Exit state
+
+Installed RRP rebuilds and validates one coherent cumulative-risk product set
+from reopened 1.0 history and launches the app using only logical access. The
+app has no source, provider, model, runtime, or physical-history dependency.
+
+### Acceptance gate
+
+Builder/access/materialization conformance, provenance/freshness, empty/failure,
+restart, and Shiny initialization/view tests pass for fictional and independent
+projects. Every displayed probability describes the fixed target.
+
+### Deferred detail
+
+Exact product schemas, materialization format, UI framework, visual system,
+accessibility refinements, and custom product/app contracts wait for later
+planning or work.
+
+## Stage 8 — Product-only deployment realizations
+
+### Objective
+
+Build portable product-only deployments from the same application semantics,
+with Posit Connect Cloud as the first reference example and OCI/Docker as a
+first-class portability realization.
+
+### Why now
+
+Artifact closure depends on stable products, app resources, and installed
+dependency evidence. Target packaging must wrap that closure rather than drive
+upstream architecture.
+
+### Major scope
+
+- Refactor the target-neutral artifact builder to consume exact installed RRP
+  resources and one frozen coherent project product set.
+- Preserve the minimal app/runtime subset, product access, contracts,
+  dependencies, provenance, closed inventory, SHA-256, and self-validation.
+- Create a broadly Posit-compatible realization and prove Posit Connect Cloud
+  as the initial reference/example target.
+- Keep self-managed Posit Connect near-adjacent through the same semantics, but
+  make no support claim until it has target-specific acceptance evidence.
+- Build and independently validate a product-only OCI/Docker image from the
+  same product/application boundary and dependency closure.
+- Keep credentials, publication, authorization, networking, sharing, and
+  monitoring outside artifact construction.
+
+### Reuse / refactor / replace
+
+Reuse artifact/target separation, product-only exclusions, safe construction,
+inventories/digests, standalone validation, and Connect Cloud lessons.
+Refactor builders around installed resources and release dependency evidence.
+Replace repository-root and generated-Git assumptions as upstream authority.
+
+### Exit state
+
+The same product set becomes independently valid Posit-compatible and OCI
+realizations. Connect Cloud works without repository, project source, local
+installation, mutable state, producer/provider/model, or history writer. OCI
+is not a second analytical implementation.
+
+### Acceptance gate
+
+Inventory, digest, dependency, secret/PHI exclusion, tamper, isolated startup,
+app behavior, and entrypoint tests pass for both realization families. Connect
+Cloud receives reference-target evidence; self-managed Connect remains
+unclaimed until separately tested.
+
+### Deferred detail
+
+Exact target IDs, lock formats, base image, registry, signing/attestation,
+Connect administration, deployment automation, and compute-capable artifacts
+wait for detailed planning or later generations.
+
+## Stage 9 — Adopter acceptance, documentation, and legacy retirement
+
+### Objective
+
+Prove the installed adopter journey, finish product-facing documentation, and
+remove obsolete coupling only after every replacement is demonstrated.
+
+### Why now
+
+Components can pass while the product remains unusable from clean bytes. Broad
+retirement is safe only after the whole path works on initial environments.
+
+### Major scope
+
+- Exercise obtain/install/verify, example initialization/run, independent
+  project initialization, custom mapping/producer, custom provider/model,
+  dependency reproduction, execution, state reopen, products, app, artifact,
+  and target validation without repository access.
+- Complete evidence on macOS arm64 and Ubuntu x86_64 with R 4.4.x; scope
+  support claims to fully passing cells.
+- Produce installed user/developer documentation for installation, projects,
+  mapping, providers, operations, state, products, app, artifacts, migration,
+  recovery, security, and limitations.
+- Reclassify assessments, Phase records, Hospital generation, and maintainer
+  material away from adopter navigation.
+- Retire repository scripts, temporary runtime installation, legacy
+  composition, generated Hospital handoff, and historical gates from the
+  active path after successors pass; retain immutable history.
+- Resolve every temporary adapter and compatibility shim explicitly.
+
+### Reuse / refactor / replace
+
+Reuse clean-acquisition discipline, synthetic/adopter acceptance ideas,
+human-first docs, and privacy/security rules. Refactor them around installed
+RRP and independent projects. Replace Hospital clone/generated-repository
+onboarding as current guidance while preserving `v0.1.0` evidence.
+
+### Exit state
+
+An adopter can operate 1.0 without reading assessments, CentralStatz history,
+Phase records, generated Hospital instructions, or source-repository
+procedures. No active operation depends on legacy architecture and no
+unresolved permanent dual path remains.
+
+### Acceptance gate
+
+The end-to-end clean-install/adopter matrix passes from exact candidate-like
+bytes in every claimed environment. Documentation usability, links,
+privacy/secret scanning, lifecycle recovery, support limits, and a reviewed
+retirement ledger pass. This establishes release eligibility, not publication.
+
+### Deferred detail
+
+Exact tutorials, support wording, CI provider, removal commits, deprecation
+periods, migration walkthroughs, and optional UI polish wait for detailed
+planning and implementation evidence.
+
+## Stage 10 — RRP 1.0.0 qualification, publication, and acquisition proof
+
+### Objective
+
+Turn the accepted product into one exact immutable RRP 1.0.0 release and prove
+that public bytes reproduce the adopter experience.
+
+### Why now
+
+Release metadata and support claims are truthful only after all installed,
+project, analytical, state, product, app, deployment, and documentation gates
+close.
+
+### Major scope
+
+- Prepare from one exact clean revision using the inclusion manifest,
+  target-keyed dependencies, inventory, digests, licenses, notices, support
+  statement, provenance, and normalized-content reproducibility evidence.
+- Run the complete release matrix from candidate bytes, including installed,
+  example/adopter, and product-only deployment workflows.
+- Replace two-product Platform/Hospital publication assumptions with one RRP
+  product while preserving fail-closed authorization, immutable tags/assets,
+  checksums, staged recovery, and remote verification.
+- Separate preparation, zero-mutation preflight, explicitly authorized
+  publication, public verification, and post-release development transition.
+- Acquire the public release ordinarily and repeat representative install,
+  doctor, project, artifact, and integrity proofs without source access.
+
+### Reuse / refactor / replace
+
+Reuse Apache-2.0 governance, candidate discipline, checksummed evidence,
+publication authorization, recovery, and acquisition verification. Refactor
+for one installed RRP product and support matrix. Retire Hospital construction
+from current publication without modifying its `v0.1.0` evidence.
+
+### Exit state
+
+Before authorization, the repository can report an exact 1.0.0 candidate as
+ready but unpublished. After separately authorized publication, RRP 1.0.0 is
+one immutable, publicly acquired and verified installed release, and
+development advances without rewriting it.
+
+### Acceptance gate
+
+Candidate inventory/digests, all lifecycle/component matrices, licenses,
+security/docs, every claimed OS/R cell, reproducibility, publication preflight,
+exact remote identity, and clean public acquisition pass. Publication always
+requires explicit authorization and is never implied by validation.
+
+### Deferred detail
+
+Exact release commands, assets, signatures, release-note template, recovery
+checkpoints, support duration, and post-1.0 roadmap belong to detailed planning
+and later authorization.
+
+## Transition-state strategy
+
+The old path remains authoritative only for what the working `v0.1.0`-derived
+source currently does. The new path becomes authoritative one boundary at a
+time after its gate passes.
+
+| After stage | Repository transition state |
+|---|---|
+| Roadmap establishment | New architecture and roadmap govern forward design; the old executable path remains the only implemented path |
+| 1 | New governance controls new work; historical suites remain available but do not gate unrelated changes |
+| 2 | Old and new physical layouts coexist; the closed distribution boundary governs new shippable content |
+| 3 | Installed health and shared operations govern; legacy analytical scripts may wrap or compare during migration |
+| 4 | Independent projects govern 1.0 composition; installation-owned synthetic composition is legacy-only |
+| 5 | Cumulative-risk runtime/provider semantics govern; public daily hazard is retired from the 1.0 path |
+| 6 | Project history governs 1.0; hazard history is isolated and never a current product source |
+| 7 | New products/app govern; hazard products and views are legacy-only |
+| 8 | Installed-input artifacts govern; repository-root target construction is historical comparison only |
+| 9 | The installed-project path is the sole active adopter architecture; obsolete wrappers and Hospital delivery are retired |
+| 10 | The published RRP 1.0.0 distribution is immutable release authority; forward development begins from it |
+
+No stage removes the last working path before its successor passes. No shim
+survives Stage 9 without an explicit purpose, owner, and retirement policy.
+
+## Parallel workstreams
+
+- Validation implementation and test reassignment can follow each component
+  move in Stages 2–8; final matrices wait for Stages 9–10.
+- User documentation can begin with installation in Stage 3, projects in Stage
+  4, and provider authoring in Stage 5; final navigation waits for Stage 9.
+- OS/R automation, dependency acquisition, licensing, inventory, and
+  reproducibility can start in Stage 2 and mature continuously.
+- Project template and example can evolve together in Stage 4, but analytical
+  content cannot finalize before Stage 5.
+- Product/app view design may explore cumulative-risk presentation during
+  Stage 6, but contract-bound implementation waits for Stage 7.
+- Posit and OCI builders may proceed in parallel after the target-neutral
+  artifact contract stabilizes; neither may fork product/app semantics.
+- Visual app refinement and self-managed Posit Connect investigation may
+  proceed after Stage 7, but neither blocks migration or creates a support
+  claim.
+
+Parallel work never authorizes a prohibited dependency between source,
+provider, product, application, or deployment layers.
+
+## Intentionally deferred beyond the initial 1.0.0 path
+
+This roadmap does not add bundled R, system-wide installation, remote/non-R
+providers, multiple targets, project estimands/request builders, custom
+product/app plugins, a compute-capable artifact, production database mandate,
+scheduling, source credentials in artifacts, automatic migration, universal
+feature storage, decision/priority/work/intervention systems,
+metrics/alerts/audit platforms, multi-hospital tenancy, mandatory `readmit`, or
+clinical validation claims.
+
+Self-managed Posit Connect is adjacent to the Posit-compatible artifact, but
+support waits for its own acceptance evidence. OCI/Docker here is product-only;
+it does not imply producer/provider/history compute inside the image.
+
+## Next planning step
+
+After maintainers approve this roadmap, the next task is:
+
+> **Decompose the approved RRP 1.0.0 roadmap into concrete implementation
+> increments and acceptance tests.**
+
+Prefer expanding this document beneath the stable major stages so one planning
+authority remains readable. Each increment should name prerequisites, boundary
+changes, compatibility/state effects, old-path transition, human operation,
+documentation, focused and downstream evidence, recovery, and completion
+state. Use a separate detailed plan only if expansion would materially reduce
+clarity.
+
+That next pass must settle the architecture's bounded implementation choices.
+It must not collapse software upgrade, project migration, state migration,
+deployment, or publication, and it must not begin source implementation before
+the detailed sequence is accepted.

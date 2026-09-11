@@ -13,8 +13,9 @@ describe history rather than the forward development hierarchy.
    the authoritative RRP 1.0.0 software, project, target, runtime, state,
    deployment, upgrade, and validation responsibilities now live.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
-   — completed historical `v0.1.0` Phase 0–11 plan. Do not use it as the RRP
-   1.0.0 implementation sequence; the replacement plan is the next task.
+   — authoritative high-level RRP 1.0.0 stages, dependency order, transition
+   strategy, and acceptance gates. Detailed increments are the next planning
+   task; the published `v0.1.0` tag retains the historical Phase 0–11 plan.
 4. [Specification Foundation](architecture/specification-foundation.md),
    [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md),
    and [Initial Canonical Clinical Profile](architecture/canonical-clinical-profile.md)

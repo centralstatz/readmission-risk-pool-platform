@@ -17,10 +17,11 @@ runtime or test dependency.
 **`v0.1.0` is complete and immutable; the current target architecture is RRP
 1.0.0.** The exact released code remains the implemented baseline, while the
 current [Platform Architecture](docs/architecture/platform-architecture.md)
-defines the conventional installed-software and independent-project product
-now awaiting its implementation plan. `1.0.0` is a target generation, not a
-released version. Existing `0.2.0-dev` metadata is transitional and no next
-release is prepared.
+defines the conventional installed-software and independent-project product,
+and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
+defines its authoritative high-level roadmap. `1.0.0` is a target generation,
+not a released version. Detailed increments are the next planning step;
+existing `0.2.0-dev` metadata is transitional and no next release is prepared.
 
 Phase 11 and Iteration 11.1 provide
 the retained first-release decision assessment. Iteration 11.2 baselines the
@@ -122,10 +123,13 @@ privileged installed composition.
 
 One deployment represents one health system. The supplied Shiny application
 will be an important interface, but it will not define the platform. Posit
-Connect will be the first reference target for a reduced product-only artifact,
-not a core dependency or compute-deployment promise. Published `v0.1.0`
-Hospital acquisition remains supported historical release guidance; it is not
-the forward 1.0.0 product boundary.
+Connect Cloud will be the first reference/example target for a broadly Posit-
+compatible product-only artifact; internal Posit Connect is adjacent but needs
+separate support evidence. A product-only OCI/Docker realization will provide
+another portable form from the same app/product semantics. None is a core
+dependency or compute-deployment promise. Published `v0.1.0` Hospital
+acquisition remains supported historical release guidance; it is not the
+forward 1.0.0 product boundary.
 
 ## Start here
 
@@ -133,9 +137,10 @@ the forward 1.0.0 product boundary.
    identity and durable principles.
 2. Read [Platform Architecture](docs/architecture/platform-architecture.md) for
    the authoritative RRP 1.0.0 target boundaries and dependency direction.
-3. Read the [Implementation Plan](docs/architecture/platform-implementation-plan.md)
-   as the completed historical `v0.1.0` Phase 0–11 plan. The replacement RRP
-   1.0.0 plan is the next architecture task.
+3. Read the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
+   for the authoritative major stages, dependency order, transition strategy,
+   and roadmap-level acceptance gates. The exact historical Phase 0–11 plan is
+   retained by the published `v0.1.0` tag.
 4. Read the [Specification Foundation](docs/architecture/specification-foundation.md)
    for the shared contract vocabulary.
 5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md),

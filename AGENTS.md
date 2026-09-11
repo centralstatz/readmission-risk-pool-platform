@@ -8,16 +8,16 @@ product work, read:
 
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
-3. `docs/architecture/platform-implementation-plan.md` (currently the
-   completed historical `v0.1.0` plan; the RRP 1.0.0 plan is pending);
+3. `docs/architecture/platform-implementation-plan.md` (the authoritative
+   high-level RRP 1.0.0 roadmap; detailed increments are pending);
 4. `docs/architecture/reference-asset-reconciliation.md`; and
 5. `docs/architecture/platform-implementation-record.md`.
 
 Authority flows from True North to architecture to plan to implementation
 record to software. Do not infer architecture from whichever code happens to
-exist. Until the RRP 1.0.0 plan replaces the historical plan, forward software
-implementation is not authorized and the forward authority stops at the
-current architecture.
+exist. The high-level roadmap authorizes its detailed planning pass, not source
+implementation; concrete increments and acceptance tests must be accepted
+before executable 1.0 work begins.
 
 ## Reference repository
 
@@ -56,9 +56,10 @@ product-only deployment, non-mutating upgrades, and lifecycle-owned validation.
 It supersedes contrary forward recommendations in assessments and historical
 Phase documents. `1.0.0` is not implemented or released.
 
-Do not begin 1.0.0 software implementation until the explicitly authorized RRP
-1.0.0 Implementation Plan replaces the historical plan. Work from that future
-plan's workstreams and acceptance evidence rather than continuing Phase
+The current RRP 1.0.0 Implementation Plan now replaces Phase chronology as the
+forward high-level roadmap. Do not begin software implementation until its
+stages are decomposed into explicitly accepted increments and acceptance
+tests. Work from those architecture-owned stages rather than continuing Phase
 numbers. Documentation synthesis and planning may use proportional validation
 when explicitly scoped. Do not alter released `v0.1.0` assets or publication
 evidence while developing the new generation.

@@ -11,12 +11,12 @@ historical release evidence have different authority.
 - [Platform Architecture](architecture/platform-architecture.md) —
   authoritative RRP 1.0.0 target architecture for installed software,
   independent projects, singular risk, lifecycle ownership, and migration.
+- [RRP 1.0.0 Implementation Plan](architecture/platform-implementation-plan.md)
+  — authoritative high-level stage order, transition strategy, and acceptance
+  gates; detailed implementation increments are the next planning task.
 
 ## Implemented and historical `v0.1.0` boundary documentation
 
-- [Platform Implementation Plan](architecture/platform-implementation-plan.md)
-  — completed historical Phase 0–11 sequence; the RRP 1.0.0 plan is the next
-  architecture task.
 - [Specification Foundation](architecture/specification-foundation.md) — common
   YAML envelope, compatibility, identity, time, conformance, and diagnostic
   vocabulary.

@@ -5,12 +5,12 @@
 This document is the authoritative statement of the intended identity and
 long-term direction of the Readmission Risk Pool Platform. It governs the
 [platform architecture](../architecture/platform-architecture.md), which
-will govern the replacement
-[implementation plan](../architecture/platform-implementation-plan.md); the
-linked plan currently records completed `v0.1.0` history. The
-[implementation record](../architecture/platform-implementation-record.md)
+governs the current
+[RRP 1.0.0 implementation roadmap](../architecture/platform-implementation-plan.md).
+The [implementation record](../architecture/platform-implementation-record.md)
 records what is actually built. Forward software must conform to the complete
-chain once the RRP 1.0.0 plan is accepted.
+chain; detailed implementation increments must be accepted before source work
+begins.
 
 ```text
 Platform True North
@@ -399,9 +399,12 @@ Generated deployment repositories are ordinarily realizations and should not
 be edited as authoritative source.
 
 Posit Connect Cloud remains the default reference target because it provides a
-practical public demonstration path. It is not a core dependency. Other
-approved targets should be added from concrete needs rather than speculative
-infrastructure.
+practical public demonstration path. The product artifact remains broadly
+Posit-compatible so an organization's internal Posit Connect is a closely
+related path, though support requires its own evidence. Product-only OCI/Docker
+is a first-class portability realization of the same product/application
+semantics. None is a core dependency, and target-specific packaging must not
+leak upward into the application or analytical architecture.
 
 The development repository is not the installed payload. A closed inclusion
 manifest, exact output inventory, dependency/build evidence, cryptographic
@@ -410,7 +413,8 @@ normally clone or modify platform source. Generated Hospital Implementation
 repositories remain `v0.1.0` history rather than the forward product boundary.
 
 The initial deployed artifact is product-only and excludes producers,
-providers, models, and history writers. A compute-capable artifact is a later,
+providers, models, and history writers. Both Posit-compatible and OCI/Docker
+realizations preserve that boundary. A compute-capable artifact is a later,
 distinct profile. No distribution or target wrapper may duplicate or redefine
 platform logic.
 
