@@ -2,8 +2,14 @@
 
 ## Status and scope
 
-**Status:** accepted-direction `v0.2.0` architecture assessment; no redesign
-implemented
+**Status:** retained forward precursor; its software/project ownership seam
+remains recommended, while its provisional user-facing R-package topology is
+superseded by the
+[software distribution and build-reproducibility assessment](software-distribution-build-reproducibility-assessment.md)
+
+No redesign described here is implemented. References to a `v0.2.0` package
+are historical proposal language, not a settled product form or next-release
+designation.
 
 This assessment defines the conceptual ownership seam between conventional
 installed Readmission Risk Pool software and an independently owned RRP

@@ -78,28 +78,33 @@ extending it.
    installs, the minimum independent-project contract, the trusted composition
    seam, and the focused decisions still required before implementation.
 25. [Estimand Composition and Trusted Project Registration Assessment](architecture/estimand-composition-project-registration-assessment.md)
-   — the forward-looking v0.2.0 policy for supplied executable estimands,
-   closed producer/provider registration, one exact provider route, and staged
-   compatibility before execution.
-26. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
+   — the retained v0.2.0 precursor that assessed a selectable supplied
+   estimand, trusted registration, provider routing, and compatibility.
+26. [Platform-Defined Readmission-Risk Target Assessment](architecture/readmission-risk-target-assessment.md)
+   — the superseding v0.2.0 recommendation for one explicit nonselectable
+   remaining cumulative 30-day risk target and provider-focused extension.
+27. [Software Distribution, Dependency, and Build-Reproducibility Assessment](architecture/software-distribution-build-reproducibility-assessment.md)
+   — the recommended installed RRP software boundary, internal R package and
+   host-R roles, project dependency ownership, closed builds, and deployments.
+28. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
    — build, independently validate, initialize, and exercise a copied proof artifact.
-27. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
+29. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
    — generate and validate the pristine staged repository form while stopping
    before commit, remote, tag, push, or publication.
-28. [Maintainer Release Preparation](operations/release-preparation.md) and
+30. [Maintainer Release Preparation](operations/release-preparation.md) and
    [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
    prepare and inspect exact `v0.1.0` candidates and governance/readiness
    evidence while remaining explicitly unpublished.
-29. [Maintainer Release Publication](operations/release-publication.md) —
+31. [Maintainer Release Publication](operations/release-publication.md) —
    understand the zero-mutation preflight, explicit GitHub mutation boundary,
    partial-failure recovery, and remote verification.
-30. [Platform Implementation Record](architecture/platform-implementation-record.md)
+32. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-31. [Implementation Conventions](development/implementation-conventions.md) and
+33. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-32. [Repository Development Policies](development/repository-policies.md) for
+34. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-33. [Operations](operations/README.md) for supported human operations and
+35. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -5436,3 +5436,143 @@ checks with 0 issues, covering 40 required governing documents, 310
 repository-local links, 25 maintained navigation sources, and portable
 document paths; affected Markdown had no trailing whitespace, and `git diff
 --check` passed.
+
+### Platform-defined readmission-risk target assessment (2026-09-11)
+
+#### Objective and scope
+
+Assess the narrowed forward product decision that RRP should define one
+continuously updated readmission-risk question rather than implement a general
+estimand platform. The work traces the exact released daily-hazard semantics,
+specifies the proposed remaining-window quantity, and evaluates runtime,
+provider, history, product, app, project-composition, validation, and
+provenance consequences. It is documentation-only and leaves `v0.1.0`, code,
+contracts, state, artifacts, releases, and publication unchanged.
+
+#### Evidence and conclusion
+
+The assessment inspected canonical discharge/baseline/event contracts and
+validation, runtime eligibility/state/request construction, provider
+declarations/compatibility/execution, boundary tests, history conformance and
+DuckDB representation, product contracts/builders, app view models, and
+artifact provenance. Current `v0.1.0` estimates first canonical readmission
+over `(t, min(t + 1 day, W)]`, conditional on being alive,
+readmission-free, eligible, and limited to information available through `t`,
+where `W` is the earlier of canonical follow-up end and 30 elapsed days.
+
+The recommended forward target is actual-world remaining cumulative incidence
+over `(t, W30]`, conditional on being alive and readmission-free at `t`, with
+death competing and same-instant terminal precedence retained. `W30` is a fixed
+endpoint 30 elapsed days after discharge and must not be silently shortened by
+episode data coverage. The first version honestly retains the current event
+limitation—first canonical readmission without a planned/unplanned claim—and
+uses all admitted canonical episodes rather than implying a measure cohort.
+
+Estimands therefore cease to be project components. RRP owns one explicit,
+versioned, nonselectable risk-target specification, eligibility/temporal
+framing, and deterministic standard request. Projects register producers and
+providers and select one exact instance of each. Provider compatibility names
+the installed target; there is no target catalog, manifest target field,
+request-builder extension, estimand route, or multi-target execution. Daily
+hazard may remain provider-internal but is removed from active public target,
+history, product, and app semantics.
+
+#### Implications and next task
+
+The provider registry/execution boundary, structured failures, operational
+history lifecycle/atomicity/retry/invalidation, product-from-history design,
+product-only app, and artifact integrity remain reusable. New semantic contract
+versions must rename target/request/history/product fields, build `(t, W30]`
+requests, record target identity throughout provenance, and prevent hazard
+history from being relabeled as cumulative risk. Terminal-event availability
+and exact canonical follow-up representation must be closed during target
+contract synthesis.
+
+Created `docs/architecture/readmission-risk-target-assessment.md`, marked the
+prior estimand-composition document as a retained superseded precursor, and
+updated both documentation navigation paths. No unresolved issue blocks the
+package/dependency/build-reproducibility assessment, which remains the next
+task before forward target-architecture synthesis and implementation planning.
+
+#### Validation posture
+
+The accepted proportional-validation posture limits this assessment to the
+documentation/navigation validator, direct diff/scope review, Markdown
+trailing-whitespace inspection, and `git diff --check`. Historical Phase 0–11,
+Hospital distribution/acquisition, full development/checkpoint, release, and
+publication proofs were intentionally not run. The supported documentation
+validator passed 4 checks with 0 issues, covering 40 required governing
+documents, 313 repository-local links, 25 maintained navigation sources, and
+portable document paths; affected Markdown had no trailing whitespace, and
+`git diff --check` passed.
+
+### Software distribution, dependency, and build-reproducibility assessment (2026-09-11)
+
+#### Objective and scope
+
+Assess what a hospital should install when it installs RRP without presuming
+that the product is an R package. The documentation-only work traces current
+repository-sourced operations, `rrpruntime`, adapters, products/app, reduced
+artifact and Connect realization, root dependencies, and `v0.1.0` release
+construction. It changes no executable behavior, contract, dependency,
+artifact, released asset, or publication state.
+
+#### Conclusion and decisions
+
+Created
+`docs/architecture/software-distribution-build-reproducibility-assessment.md`.
+It recommends one versioned installed RRP software distribution with a thin
+operator launcher, stable programmatic operations, a private RRP-owned package
+library, the existing focused `rrpruntime` package, one additional main
+implementation package, and declared non-package resources. R remains an
+explicitly selected and validated host prerequisite initially rather than a
+bundled runtime; ordinary operation does not expose R sessions, libraries, or
+source ordering.
+
+RRP and each independent project own separate dependency environments. The
+project owns producer/provider dependencies, model artifacts, clients, and
+writable state; RRP owns its exact tested closure. A future `readmit` package
+remains an optional project/provider dependency over supported RRP interfaces.
+The software build uses a closed inclusion manifest and exact output inventory,
+with ignore rules only as supplemental classification help. Product-only app
+artifacts continue to exclude producer/provider/history machinery, while any
+future compute-capable artifact must freeze the selected project code,
+dependencies, model, configuration, RRP subset, and provenance appropriate to
+its target.
+
+Marked the earlier installed-software project-contract assessment as a retained
+precursor whose ownership seam survives but whose user-facing R-package
+topology and next-version language are not settled. Updated the two maintained
+documentation navigation paths.
+
+#### Reuse, implications, and next task
+
+The forward design retains `v0.1.0` canonical/provider/history/product/app
+boundaries, closed inventories, independent artifact validation, clean
+acquisition, immutable publication, and recovery principles. It prospectively
+replaces the full tracked repository as user payload, generated Hospital
+handoff, ambient repository lock as universal dependency environment, and
+Phase-numbered validation as the active product lifecycle. Published `v0.1.0`
+remains immutable historical evidence.
+
+The distribution, project, singular target, deployment, and proportional
+governance decisions are now coherent enough for target-architecture synthesis
+and incremental implementation planning. That synthesis must settle the first
+OS/R support matrix, installation/update model, R discovery, package/API names,
+build manifest and dependency acquisition, project isolation rules,
+documentation taxonomy, artifact profiles, CI ownership, and eventual release
+designation. Another broad assessment is not required first.
+
+#### Validation posture
+
+Per the explicitly authorized proportional scope, validation was limited to
+the supported documentation validator, direct documentation/diff review,
+Markdown trailing-whitespace inspection, and `git diff --check`. Historical
+Phase 0–11, Hospital distribution/acquisition, development/checkpoint, release,
+and publication suites were intentionally not run. The supported documentation
+validator passed 4 checks with 0 issues, covering 40 required governing
+documents, 319 repository-local links, 25 maintained navigation sources, and
+portable document paths. It was invoked with R init files disabled after the
+ordinary invocation blocked during unrelated `renv` activation; the validator
+itself and its inputs were unchanged. Affected Markdown had no trailing
+whitespace, and `git diff --check` passed.

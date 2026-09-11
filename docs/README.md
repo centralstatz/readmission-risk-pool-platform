@@ -82,8 +82,14 @@ The documentation is the active product at this bootstrap stage. Begin with
   minimum manifest and trust boundary, packaging options, and remaining design
   decisions.
 - [Estimand Composition and Trusted Project Registration Assessment](architecture/estimand-composition-project-registration-assessment.md)
-  — v0.2.0 supplied-only single-estimand policy, closed trusted project
-  registration result, exact provider routing, and compatibility sequence.
+  — retained v0.2.0 precursor assessing a selectable installed estimand,
+  registration result, provider routing, and compatibility sequence.
+- [Platform-Defined Readmission-Risk Target Assessment](architecture/readmission-risk-target-assessment.md)
+  — current v0.2.0 recommendation for one nonselectable remaining cumulative
+  30-day target, provider-focused extension, and simplified composition.
+- [Software Distribution, Dependency, and Build-Reproducibility Assessment](architecture/software-distribution-build-reproducibility-assessment.md)
+  — recommended installed RRP software boundary, internal R package and host-R
+  roles, independent project dependencies, closed builds, and artifact closure.
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)

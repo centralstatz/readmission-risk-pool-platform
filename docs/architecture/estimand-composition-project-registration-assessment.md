@@ -2,8 +2,10 @@
 
 ## Status and scope
 
-**Status:** focused `v0.2.0` architecture assessment and recommendation; no
-estimand or project-loading implementation
+**Status:** retained `v0.2.0` precursor assessment; its configurable installed-
+estimand recommendation is superseded by the focused
+[platform-defined readmission-risk target
+assessment](readmission-risk-target-assessment.md)
 
 This assessment closes the first analytical composition decision beneath the
 proposed [installed software and minimum project
@@ -14,6 +16,12 @@ direction](governance-validation-architecture-assessment.md). It does not
 modify or finalize an estimand contract, project manifest, registration API,
 runtime, history, product, application, artifact, package, test, release, or
 publication.
+
+The code trace, provider-injection findings, and trusted registration-result
+analysis remain useful evidence. The later assessment narrows the product:
+projects neither select nor register an estimand, RRP owns one standard request,
+and provider selection replaces estimand-to-provider routing. This document is
+not active direction where the conclusions differ.
 
 ## Executive conclusion
 
