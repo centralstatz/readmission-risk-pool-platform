@@ -5364,3 +5364,75 @@ validate this ownership assessment and were not run. The supported documentation
 validator passed 4 checks with 0 issues, including 308 repository-local links
 and 25 maintained navigation sources; affected Markdown had no trailing
 whitespace, and `git diff --check` passed.
+
+### Estimand composition and trusted project registration assessment (2026-09-11)
+
+#### Objective and scope
+
+Resolve the estimand-composition and trusted-registration questions blocking
+the prospective installed-RRP/independent-project architecture. The assessment
+traces current request construction, provider compatibility and execution,
+history, products, application, and artifact behavior, then recommends the
+narrowest rigorous first-generation extension policy. It changes no software,
+contract, operation, validator, test, artifact, dependency, release, or
+publication state, and leaves immutable `v0.1.0` behavior untouched.
+
+#### Evidence, findings, and decision
+
+An executable estimand requires more than a semantic YAML declaration: it pairs
+exact semantic and request-builder identities with a trusted callable,
+compatibility requirements, request/result conformance, deterministic identity,
+and provenance. Current `v0.1.0` cleanly separates estimand requests from
+providers and carries estimand/provider identity through accepted estimates and
+products, but request construction and normal provider injection remain fixed.
+History and products can represent the one supported route; current request
+identity, history query keys, product compatibility, and app presentation do
+not safely support simultaneous estimands.
+
+The recommended initial policy is therefore supplied estimands only. A project
+may contribute producers and providers, while its manifest selects exactly one
+producer, one installed estimand, and one exact provider route for a run.
+Trusted registration returns a closed set of available project producer and
+provider components; it does not select components, register estimands, mutate
+globals, or override installed entries. Installed and project catalogs remain
+distinct inputs to deterministic resolution, with duplicate exact identities
+and reserved-namespace collisions failing closed.
+
+Compatibility is staged: validate manifest identity, registration shape,
+catalog resolution, and declared producer/estimand/provider relationships
+before source access; validate canonical results after production; then apply
+request-specific provider compatibility after admitted state exists. The
+resolved immutable project context is distinct from each run-specific
+execution plan. One route has no fallback, ranking, ensemble, or implicit
+latest-version behavior.
+
+#### Implications and next task
+
+Existing producer admission, provider registry/execution, structured outcomes,
+history ports, product builders, app, artifact integrity, and Phase 10 adopter
+evidence are reusable with bounded generalization. Implementation must inject
+the resolved provider, introduce an explicit request-builder boundary and
+builder provenance, and include estimand identity in future request IDs before
+custom or multiple estimands are considered. Default products and app remain
+installed RRP capabilities; custom product/app plugins and multi-estimand
+presentation are deferred.
+
+Created
+`docs/architecture/estimand-composition-project-registration-assessment.md`
+and added it to the documentation index and START HERE reading order. The next
+focused task is the package/dependency and build-reproducibility assessment;
+after that, target architecture can be synthesized and versioned project and
+registration contracts finalized.
+
+#### Validation posture
+
+The accepted proportional-validation posture limits this documentation-only
+assessment to documentation/navigation validation, direct diff/scope review,
+Markdown trailing-whitespace inspection, and `git diff --check`. Historical
+Phase 0–11, Hospital distribution/acquisition, full development/checkpoint,
+release, and publication proofs do not validate the prospective policy and
+were intentionally not run. The supported documentation validator passed 4
+checks with 0 issues, covering 40 required governing documents, 310
+repository-local links, 25 maintained navigation sources, and portable
+document paths; affected Markdown had no trailing whitespace, and `git diff
+--check` passed.

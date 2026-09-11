@@ -81,6 +81,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   — v0.2.0 operational dependency trace, installed/project ownership map,
   minimum manifest and trust boundary, packaging options, and remaining design
   decisions.
+- [Estimand Composition and Trusted Project Registration Assessment](architecture/estimand-composition-project-registration-assessment.md)
+  — v0.2.0 supplied-only single-estimand policy, closed trusted project
+  registration result, exact provider routing, and compatibility sequence.
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
