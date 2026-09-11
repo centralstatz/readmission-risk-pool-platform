@@ -77,6 +77,10 @@ The documentation is the active product at this bootstrap stage. Begin with
 - [Governance and Validation Architecture Assessment](architecture/governance-validation-architecture-assessment.md)
   — v0.2.0 assessment of proportional validation, lifecycle ownership,
   historical phase governance, and strict release/publication boundaries.
+- [Installed Software Boundary and Minimum RRP Project Contract Assessment](architecture/installed-software-project-contract-assessment.md)
+  — v0.2.0 operational dependency trace, installed/project ownership map,
+  minimum manifest and trust boundary, packaging options, and remaining design
+  decisions.
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)

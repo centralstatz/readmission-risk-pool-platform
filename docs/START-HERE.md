@@ -73,25 +73,29 @@ extending it.
    — the forward-looking v0.2.0 assessment of current authority coupling,
    proportional validation, lifecycle ownership, and historical phase status.
    It recommends future governance changes but does not enact them.
-24. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
+24. [Installed Software Boundary and Minimum RRP Project Contract Assessment](architecture/installed-software-project-contract-assessment.md)
+   — the concrete v0.2.0 dependency and ownership trace defining what RRP
+   installs, the minimum independent-project contract, the trusted composition
+   seam, and the focused decisions still required before implementation.
+25. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
    — build, independently validate, initialize, and exercise a copied proof artifact.
-25. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
+26. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
    — generate and validate the pristine staged repository form while stopping
    before commit, remote, tag, push, or publication.
-26. [Maintainer Release Preparation](operations/release-preparation.md) and
+27. [Maintainer Release Preparation](operations/release-preparation.md) and
    [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
    prepare and inspect exact `v0.1.0` candidates and governance/readiness
    evidence while remaining explicitly unpublished.
-27. [Maintainer Release Publication](operations/release-publication.md) —
+28. [Maintainer Release Publication](operations/release-publication.md) —
    understand the zero-mutation preflight, explicit GitHub mutation boundary,
    partial-failure recovery, and remote verification.
-28. [Platform Implementation Record](architecture/platform-implementation-record.md)
+29. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.
-29. [Implementation Conventions](development/implementation-conventions.md) and
+30. [Implementation Conventions](development/implementation-conventions.md) and
    [AGENTS.md](../AGENTS.md) before making changes.
-30. [Repository Development Policies](development/repository-policies.md) for
+31. [Repository Development Policies](development/repository-policies.md) for
    licensing, version bookkeeping, privacy, fixtures, tests, and dependencies.
-31. [Operations](operations/README.md) for supported human operations and
+32. [Operations](operations/README.md) for supported human operations and
    [Validation](operations/validation.md) for exact commands.
 
 ## Reading rule

@@ -5281,3 +5281,86 @@ and checkpoint matrices, focused Phase suites, Hospital build/validation,
 release preparation, acquisition proof, and publication preflight were not run:
 they provide broad regression or lifecycle evidence, not evidence necessary to
 establish this assessment's document, navigation, or formatting correctness.
+
+### Installed software boundary and minimum project contract assessment (2026-09-11)
+
+#### Objective and scope
+
+Trace the actual `v0.1.0` operational dependency graph and define the
+prospective ownership seam between conventional installed RRP software and an
+independently owned RRP project. The accepted `v0.2.0` direction treats Phase
+0–11 and generated Hospital delivery as immutable historical evidence rather
+than future architecture. This work is assessment only and changes no package,
+contract, operation, loader, CLI, validator, artifact, dependency, release, or
+publication state.
+
+#### Evidence and findings
+
+The assessment traced initialize, doctor, producer validation, run, canonical
+admission, estimand request construction, provider execution, history,
+products, app, reduced artifact, and Connect realization from human scripts
+through sourced libraries, contracts, fixed composition, adapters, package
+code, dependencies, state, and builders. It also separated normal runtime
+assets from repository development, Hospital distribution, and release
+machinery. No sibling repository or external source was used.
+
+Conventional installation is feasible without replacing the semantic core.
+Canonical and producer contracts, `rrpruntime`, provider execution, history
+ports, DuckDB behavior, products, YAML access, the product-only app, artifact
+integrity, target isolation, and diagnostics remain substantially reusable.
+Current coupling is chiefly physical: scripts infer the Platform root, source
+ordered files, parse source-tree contracts, temporarily install `rrpruntime`,
+select reference components, use root-relative state, and copy repository files
+into artifacts.
+
+The installed release should provide namespaced orchestration, contracts and
+validators, runtime, default adapters, products/app, artifact/target tooling,
+project operations, and an ordinary synthetic example. The minimum project
+provides one versioned nonsecret manifest, one fixed trusted registration entry
+point, its producer/mapping and selected/custom components, exact
+estimand-to-provider selections, dependencies, and one writable state root.
+Installed defaults keep persistence, products, app, and target fields out of
+the minimum manifest unless overridden.
+
+The provisional physical recommendation is one user-facing RRP package that
+composes the existing focused `rrpruntime` package as one coordinated software
+release. Project paths are explicit; current-directory use is allowed only
+when the manifest is directly present. No upward search, ambient plugin
+discovery, executable YAML, arbitrary remote loading, or project Git-state
+requirement is proposed. Registration is trusted local R code, not a security
+sandbox, and returns a validated structured composition without global
+mutation.
+
+#### Generalization and remaining decisions
+
+Two substantive generalizations remain: estimand identity and interval logic
+are embedded in the current request builder, and normal history orchestration
+constructs the transparent reference provider instead of receiving the
+project's selected provider composition. Project registration builds on the
+existing producer/provider registries, while repository-root loading, reference
+IDs/scales, temporary installation, and artifact source maps become installed
+resource/context concerns.
+
+The next focused assessment should decide estimand composition and the trusted
+registration result together: supplied versus project estimands, request-builder
+trust/conformance, single/multiple cardinality, exact provider routing, and the
+pre-execution compatibility sequence. A subsequent package/dependency/build
+assessment should confirm the package split, installed inventory, project
+dependency evidence, clean installation, and deployment closure. Those are
+needed before synthesizing final target architecture and an implementation
+plan; history migration and custom app/product/non-R-provider support can
+remain later decisions.
+
+#### Files and validation posture
+
+Created
+`docs/architecture/installed-software-project-contract-assessment.md`; updated
+the documentation index and START HERE navigation; and appended this record.
+The accepted proportional-validation posture limits this documentation-only
+assessment to documentation/navigation validation, direct diff/scope review,
+Markdown whitespace inspection, and `git diff --check`. Historical Phase
+0–11, Hospital distribution/acquisition, release, and publication proofs do not
+validate this ownership assessment and were not run. The supported documentation
+validator passed 4 checks with 0 issues, including 308 repository-local links
+and 25 maintained navigation sources; affected Markdown had no trailing
+whitespace, and `git diff --check` passed.
