@@ -5071,3 +5071,139 @@ did not silently reopen the publication boundary.
 and authorize the first post-`v0.1.0` product increment against the
 `0.2.0-dev` baseline. No next release target, production deployment, clinical
 authorization, or automated release cadence is implied.
+
+## v0.2.0 development assessments
+
+### Installed RRP and independent project architecture assessment (2026-09-11)
+
+#### Objective and authority boundary
+
+Assess whether the forward `0.2.0-dev` architecture should replace the
+generated Hospital Implementation delivery model with conventionally installed
+RRP software operating on independently owned hospital projects. Identify what
+currently prevents that model, classify existing machinery, distinguish
+maintainer validation from project validation and build/run provenance, and
+recommend the next assessment. This work is assessment only: it does not amend
+the authoritative architecture, implement a package/project loader, repair or
+rewrite `v0.1.0`, or prepare a new release.
+
+#### Evidence inspected
+
+The assessment reconciled True North, architecture, plan, reference-asset
+record, implementation record, implementation conventions, current release
+authority, the clean-room v0.1.0 adoption assessment, producer/runtime/provider/
+history/product/app/artifact/Connect architecture, progressive adoption, the
+Hospital distribution decision, repository layout, contracts, configuration,
+package metadata, human scripts, operation libraries, fixed reference
+composition, persistence and product adapters, app source, deployment builders,
+Hospital templates/wrappers/validators, and release/publication separation.
+
+No sibling repository or external source was needed. No old or released asset
+was copied or modified.
+
+#### Conclusion
+
+The installed-software plus independent-project model is feasible and is the
+recommended direction for `v0.2.0-dev`. It materially simplifies acquisition,
+ownership, dependencies, operation, and upgrades while better matching existing
+architectural boundaries. The analytical platform does not require a rewrite.
+
+A substantial majority of semantic machinery is reusable: common contracts,
+canonical admission, producer result semantics, `rrpruntime` temporal/provider/
+history behavior, DuckDB semantics, products, YAML materialization, the
+product-only app, reduced artifact, Connect target boundary, observability, and
+operation result/recovery principles. Numeric reuse percentages were
+deliberately not fabricated.
+
+The material work is packaging and orchestration refactoring plus two real
+generalizations. Only `rrpruntime` is currently package-shaped; most reusable
+behavior is sourced from fixed Platform repository paths, operations infer a
+repository root, the shipped source composition is the only installed
+composition, and builders copy repository assets. Estimand validation/request
+construction supports one exact quantity, while normal history orchestration
+constructs the transparent reference provider despite the generic provider
+registry beneath it.
+
+#### Recommended conceptual boundary
+
+Installed RRP should own namespaced runtime/orchestration, versioned contracts,
+default adapters, the supplied app, deployment assets, project tooling, and the
+synthetic example. One explicit project root should own a versioned manifest,
+trusted registration entry point, source-to-canonical implementation, selected
+estimands/providers, dependency environment, configuration, and generated state
+locations. Configuration remains non-executable; the operator explicitly trusts
+the selected project and RRP loads only a fixed registration boundary rather
+than scanning plugins or remote code.
+
+Maintainer/software release validation may continue to enforce clean source,
+tests, package inventory, licensing, provenance, checksums, tags, and
+publication. Project validation should enforce manifest/component contracts,
+compatibility, mapping admission, provider/estimand conformance, dependencies,
+and safe state paths without inspecting unrelated Git state. Runtime and build
+provenance should record exact software/component identities plus approved
+nonsecret code/configuration and artifact digests; mutable project source does
+not remove attributable reproducibility.
+
+#### Disposition and migration implications
+
+- **Preserve:** canonical/producer contracts, temporal runtime, provider
+  execution, operational history, logical products, YAML access, product-only
+  app, artifact/target contracts, diagnostics, and human-operation principles.
+- **Generalize:** estimand registration/request construction, provider
+  injection into history, project component selection, run discovery, and
+  reference-named defaults.
+- **Refactor:** sourced modules and repository-relative assets into installed
+  namespaces/resources; make operations accept project context and explicit
+  component composition.
+- **Replace:** generated Hospital acquisition with installed RRP plus project
+  initialization; represent synthetic behavior as a conforming example project.
+- **Remove from the future user path:** embedded Platform extraction, Hospital
+  closed inventories, checksums over editable implementation, pristine Hospital
+  Git validation, nested candidate language, and whole-tree wrappers.
+- **Retain as maintainer/history:** immutable `v0.1.0` releases and evidence,
+  development/source validation, and controlled software publication.
+
+The generated public Hospital repository is unnecessary under the recommended
+primary model. Its v0.1.0 history remains immutable. A future lightweight
+template repository is optional and should exist only if it improves discovery
+beyond an installed project template; it must not embed Platform source.
+
+#### Risks and nonclaims
+
+Simplification must not weaken executable-code trust, estimand meaning,
+provider compatibility, temporal validity, append-oriented history, dependency
+compatibility, privacy, provenance, or artifact integrity. Those controls move
+to contract, project, run/build, and software-release boundaries rather than
+disappearing. This assessment does not choose package topology, exact project
+manifest fields, estimand extension class, dependency manager, history
+migration, custom app/product ABI, template repository fate, or a future
+`readmit` API.
+
+#### Files and validation
+
+Created
+`docs/architecture/installed-software-project-model-assessment.md`; updated the
+documentation index and START HERE navigation; and appended this record. No
+contract, runtime, operation, adapter, product, app, deployment, distribution,
+dependency, release authority, tag, or publication changed.
+
+Final validation reported:
+
+- documentation validation: PASS (4 checks, 0 issues), covering 40 required
+  governing documents, 303 repository-local links, 25 maintained navigation
+  sources, and portable document paths;
+- Phase 0 focused tests: PASS (10 tests);
+- development validation: PASS (170 checks, 0 issues), including every Phase
+  0–11 focused suite and 94 Phase 11 tests; and
+- `git diff --check`: PASS, with only this assessment document, navigation,
+  and implementation-record entry changed in the clean working tree.
+
+#### Recommended next task
+
+Perform one installed-package and minimum-RRP-project-contract assessment. Map
+every dependency of validate/run/products/app/build into installed assets,
+required project declarations/code, optional project extensions, or
+maintainer-only material; then specify project-root resolution, manifest,
+trusted registration, dependency ownership, generated-state layout, and
+callable operation boundaries. Do not build a CLI or new implementation before
+that ownership contract is accepted.

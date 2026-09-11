@@ -70,6 +70,10 @@ The documentation is the active product at this bootstrap stage. Begin with
   release, top-level environment, trusted composition, lifecycle, and bounded
   generated-artifact and standalone Git proofs implemented in Iterations
   11.4–11.5.
+- [Installed RRP and Independent Project Architecture Assessment](architecture/installed-software-project-model-assessment.md)
+  — v0.2.0 assessment of replacing the generated Hospital product with
+  installed software, independently owned projects, layered validation, and
+  project-composable estimands and providers.
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
