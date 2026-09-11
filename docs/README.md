@@ -74,6 +74,9 @@ The documentation is the active product at this bootstrap stage. Begin with
   — v0.2.0 assessment of replacing the generated Hospital product with
   installed software, independently owned projects, layered validation, and
   project-composable estimands and providers.
+- [Governance and Validation Architecture Assessment](architecture/governance-validation-architecture-assessment.md)
+  — v0.2.0 assessment of proportional validation, lifecycle ownership,
+  historical phase governance, and strict release/publication boundaries.
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)

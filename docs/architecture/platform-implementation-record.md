@@ -5207,3 +5207,77 @@ maintainer-only material; then specify project-root resolution, manifest,
 trusted registration, dependency ownership, generated-state layout, and
 callable operation boundaries. Do not build a CLI or new implementation before
 that ownership contract is accepted.
+
+### Governance and validation architecture assessment (2026-09-11)
+
+#### Objective and authority boundary
+
+Assess whether governance and validation built around the Phase 0–11 bootstrap,
+generated Hospital distribution, and first-release workflow remain
+proportionate for forward `0.2.0-dev` work. Operational safety remained
+binding, while current architecture, phase, documentation, and validation
+governance were evaluated as evidence. This assessment does not enact its
+recommendations or change `v0.1.0`, `AGENTS.md`, authoritative governance,
+validators, tests, workflows, software, artifacts, or publication state.
+
+#### Evidence and conclusion
+
+The assessment traced the authority hierarchy, all repository validators, the
+development/checkpoint composition, Phase 0–11 aggregators, CI, release and
+publication operations, documentation rules, repository/Git assertions, and
+artifact, Connect, and Hospital proofs. Current development validation always
+runs 14 repository validators and all 12 Phase suites, currently 342 underlying
+tests; checkpoint adds all historical phase checkpoints, and CI separately
+runs documentation validation before checkpoint repeats it.
+
+Current governance is materially over-scoped for ordinary development. It
+couples narrow edits to historical milestone and release/distribution proofs,
+uses implementation-record prose and old phase shapes as machine inputs, and
+makes objective architecture change unnecessarily coordinated and costly. The
+scientific, software, privacy, trust, mutation-safety, artifact-integrity,
+dependency, compatibility, provenance, release, and publication invariants
+remain essential. They should be owned by the smallest relevant component or
+lifecycle boundary rather than universally exercised.
+
+The recommendation is proportional validation: fast default checks,
+component-owned suites, explicit integration profiles, broader CI, complete
+clean release-candidate proof, exact publication verification, and separate
+RRP-project validation. Phase 0–11 remains immutable `v0.1.0` provenance but
+should not remain the active `v0.2.0` development hierarchy. Historical tests
+can first be retained behind explicit ownership/legacy scopes; no test must be
+deleted to establish the new model.
+
+#### Disposition and next task
+
+Created
+`docs/architecture/governance-validation-architecture-assessment.md` and added
+it to the documentation index and START HERE reading order. The implementation
+record remains appropriate for this material prospective assessment, but the
+assessment recommends ending exact record-prose checks and using concise ADR,
+compatibility, changelog, and release evidence for future active governance.
+
+The installed-package and minimum-RRP-project-contract assessment remains the
+next architecture task. Before implementation begins, maintainers should accept
+or revise the proportional-validation, explicit-ownership, historical-phase,
+and lifecycle-boundary principles; the governance profiles can then be
+established before or alongside the package-boundary refactor.
+
+#### Validation posture and result
+
+Current `AGENTS.md` ordinarily directs intentional work to run full development
+validation. That would invoke every repository validator and Phase 0–11 suite,
+including Hospital distribution, Git-realization, release, and acquisition
+proofs unrelated to these Markdown changes. The task explicitly required the
+governance under assessment not to serve as unquestioned proof of its own
+necessity. This conflict is recorded rather than silently ignored.
+
+Validation was therefore intentionally limited to the directly affected
+documentation boundary. The supported documentation validator passed 4 checks
+with 0 issues, covering 40 required documents, 305 repository-local links, 25
+maintained navigation sources, and portable paths. Direct review, Markdown
+trailing-whitespace inspection, repository status, and `git diff --check` were
+also used to confirm the documentation-only scope. The complete development
+and checkpoint matrices, focused Phase suites, Hospital build/validation,
+release preparation, acquisition proof, and publication preflight were not run:
+they provide broad regression or lifecycle evidence, not evidence necessary to
+establish this assessment's document, navigation, or formatting correctness.
