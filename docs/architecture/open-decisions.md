@@ -1,5 +1,9 @@
 # Open decisions
 
+**Status:** completed historical Phase 0–11 decision register. The current
+[Platform Architecture](platform-architecture.md) owns the RRP 1.0.0 direction;
+its implementation plan will establish the active decision register.
+
 ## Purpose
 
 This list records maintainer decisions that affect product or architecture.

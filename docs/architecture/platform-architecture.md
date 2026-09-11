@@ -1,690 +1,876 @@
-# Platform architecture
+# Readmission Risk Pool platform architecture
 
 ## Status and authority
 
-**Status:** authoritative clean target architecture
+**Status:** authoritative target architecture for the RRP 1.0.0 generation;
+implementation and release not yet complete
 
-This document translates [Platform True North](../vision/platform-true-north.md)
-into the target structure of this repository. It describes logical ownership
-and dependency direction, not current implementation maturity or a commitment
-to any storage technology.
+This document is the current normative architecture of the Readmission Risk
+Pool (RRP). It translates [Platform True North](../vision/platform-true-north.md)
+into the software, project, analytical, state, product, deployment, lifecycle,
+and validation boundaries that the next implementation plan must realize.
+Future contributors should be able to understand the target system here
+without reconciling the assessment sequence that produced it.
 
-The target was designed before reconciling old code. The sibling
-`readmission-risk-pool` repository is development-time reference evidence only.
-It is not imported, sourced, symlinked, required by tests, or assumed to exist
-on an adopter's machine. Any later reused asset must be brought into this
-repository deliberately, adapted as required, and owned here.
+The published `v0.1.0` tag remains the exact architecture and implementation
+record for that release. This document does not reinterpret, migrate, amend,
+or claim compatibility with those released bytes. Current executable source
+still substantially implements `v0.1.0`; statements below are target
+architecture until the implementation record and acceptance evidence say
+otherwise.
 
-## Architectural overview
+The completed [Phase 0–11 implementation plan](platform-implementation-plan.md)
+is historical `v0.1.0` evidence. A new RRP 1.0.0 implementation plan is the
+next authority required before implementation begins. Supporting assessments
+explain why this architecture was selected, but they do not compete with it.
+
+## Purpose and scope
+
+RRP is becoming conventionally installed open-source software for operating a
+hospital-owned readmission-risk project. It accepts a trusted local
+source-to-canonical producer, constructs temporally valid episode state,
+requests one RRP-defined readmission-risk quantity from a selected provider,
+retains attributable operational history, builds logical products, serves a
+supplied product-only application, and builds closed deployment artifacts.
+
+This architecture governs the development/software boundary, independent
+project contract, trusted composition, singular risk target, runtime, state,
+products, application, deployment, dependency ownership, upgrades, validation,
+release acceptance, and the disposition of `v0.1.0` machinery. It does not
+approve clinical use, define hospital policy, implement the new system,
+finalize command syntax, or promise a released `1.0.0`.
+
+## Product definition
+
+RRP is the installed software. An RRP project is one hospital's implementation
+of the software's public project contract. R is the initial implementation
+technology and a host prerequisite, not the normal human interaction model.
 
 ```text
-Organization-specific sources
-        ↓
-Reference / implementation source layer
-        ↓
-Canonical implementation boundary
-        ↓
-Generic runtime and computational layer
-        ↓                 ↘
-Operational state          Estimand + selected provider
-        ↓                 ↙
-Append-oriented derived operational history
-        ↓
-Logical application products
-        ↓
-Application interfaces
-
-Operations, observability, configuration, storage ports, and deployment
-cross these layers only through declared interfaces.
-```
-
-The architecture has two complementary dimensions:
-
-- **semantic flow** from local source interpretation to user-facing products;
-- **control flow** through tested operations that select, validate, run,
-  persist, build, and deploy that semantic flow.
-
-## Authority and ownership
-
-```text
-Platform True North
-        ↓
-Platform Architecture
-        ↓
-Platform Implementation Plan
-        ↓
-Platform Implementation Record
-        ↓
-Software and tests
-
-Sibling reference repository
-        ↓
-Evidence and candidate assets only
-```
-
-Contracts and tests may become executable authorities for implemented
-behavior, but they remain subordinate to accepted architecture. When code and
-architecture disagree, the discrepancy is recorded and resolved explicitly;
-the code does not silently redefine the target.
-
-## Core identities shared across layers
-
-The following logical identities should be established early because several
-layers depend on them. Their concrete encodings remain contract decisions.
-
-- platform and contract release;
-- health-system deployment identity;
-- implementation and mapping identity/version;
-- canonical bundle identity and as-of context;
-- declared implementation capabilities;
-- operational run identity and operation identity;
-- episode and relevant source lineage identities;
-- state schema/version and state record identity;
-- estimand identity/version;
-- provider and model identity/version;
-- population, decision-policy, measure, and product versions;
-- derived-record identity, correction/restatement status, and provenance; and
-- product set, deployment artifact, and deployment realization identity.
-
-Identity must not assume Git commits, local file paths, or one programming
-language, though reference implementations may record those as additional
-provenance.
-
-## Reference / implementation source layer
-
-### Responsibility
-
-This layer turns organization-specific source meaning into canonical meaning.
-It owns extraction, local joins, identifier construction, code/status
-translation, timestamp normalization, source validation, baseline-score
-adaptation, and mapping provenance.
-
-Examples include the synthetic health system, hospital SQL, warehouse views,
-dbt models, R or Python extraction, or governed service adapters.
-
-### Boundary
-
-An implementation produces a candidate canonical bundle plus an
-implementation conformance report. It may expose component-level validation
-while being developed, but generic execution begins only after the active
-bundle satisfies its declared cross-domain and capability requirements.
-
-Iteration 10.1 realizes this control boundary through
-[`platform.canonical-producer@0.1.0`](../../contracts/canonical/canonical-producer.yml).
-A language-neutral declaration is explicitly paired with a trusted callable in
-installation composition; exact installation configuration selects one
-registered producer; generic execution validates its structured result and
-admits the candidate bundle. Declaration, registration, selection, execution,
-and admission remain distinct. The shipped synthetic implementation is the
-first peer on this seam, not a branch in the stable operation. See
-[Canonical Producer Foundation](canonical-producer-foundation.md).
-
-Iteration 10.2 independently proves replacement with a test-only fictional
-adopter producer whose denormalized export, local identifiers/vocabularies,
-timestamp normalization, source validation, and mapping differ materially from
-the shipped source. It passes the same registration, selection, execution,
-admission, and conformance mechanism and reaches the unchanged downstream
-stack in isolated state. This is substitution evidence, not a second installed
-health system or a normal multi-producer composition.
-
-### Constraints
-
-- Source names, vendor concepts, credentials, and connection details do not
-  cross into generic runtime logic.
-- The synthetic reference uses the same producer and conformance interfaces as
-  every other implementation.
-- A source implementation cannot build application products directly.
-- Local source validation and canonical conformance are distinct results.
-- The layer may depend on public contracts and implementation tooling; it may
-  not depend on products, the application, or deployment targets.
-
-## Canonical implementation boundary
-
-### Responsibility
-
-This is the public source-to-platform handoff. It is a logical specification,
-not a mandated container format.
-
-A conforming handoff conceptually carries:
-
-- one bundle identity and declared as-of context;
-- versioned canonical domain instances;
-- implementation and mapping identity/version;
-- declared available, unavailable, and unsupported capabilities;
-- contract versions and compatibility information;
-- source-to-canonical lineage sufficient for attribution;
-- a structured conformance result; and
-- safe failure detail for invalid or incomplete input.
-
-### Canonical domains
-
-The first supported profile selects a required discharge episode root plus
-optional immutable baseline risk and optional longitudinal episode events.
-Workflow tasks, interventions, measure membership, and optional model features
-remain deferred until their owning phases provide concrete need. Derived state
-and estimates are outputs, not input domains.
-
-Durable semantics include stable episode identity, child-to-episode
-relationships, observation and terminal times, controlled vocabularies, and
-the distinction between event occurrence and information availability.
-
-### Representation independence
-
-The same logical boundary may be realized as in-memory R objects, files with a
-manifest, database tables, warehouse relations, or a service response. Adapters
-translate representation into the logical interface. Generic behavior must not
-branch on the representation.
-
-## Generic runtime / computational layer
-
-### Responsibility grouping
-
-The runtime is a reusable, implementation-neutral computational library with
-small cohesive APIs. It should initially group behavior that shares canonical
-semantics and needs strong unit testing:
-
-- contract and canonical-bundle validation;
-- eligibility and temporal availability filtering;
-- reproducible episode-state construction;
-- estimand request and provider invocation contracts;
-- standardized derived-record validation;
-- stable decision/priority primitives when policy boundaries are defined; and
-- lineage and record-identity primitives.
-
-These functions may share types and run context but must not become one large
-pipeline function. Orchestration belongs to operations; application product
-construction belongs to the product layer; implementation-specific providers
-belong behind provider interfaces.
-
-### Temporal behavior
-
-Every calculation is made for a declared as-of time. Event time describes when
-something occurred; recorded or available time describes when the platform
-could know it. No event, baseline, feature, task, intervention, membership, or
-outcome may influence a run before its declared availability.
-
-Eligibility and each estimand own their terminal semantics. Generic code must
-not infer truth from a source status field when timestamp-based rules are the
-governed basis.
-
-### Decision separation
-
-Estimates describe a quantity. Decision or priority policies determine how
-information is used operationally. They have separate IDs, versions, inputs,
-outputs, tests, and provenance. A high risk estimate does not intrinsically
-mean high work priority, and a task is not evidence that an intervention
-occurred.
-
-## Estimand and model-provider layer
-
-### Estimand registry
-
-An estimand specification is a versioned public contract defining:
-
-- quantity and output domain;
-- eligible population and time origin;
-- conditioning state and required information;
-- horizon and interval boundaries;
-- event, terminal, death, and competing-event semantics;
-- output dimensions and missing/unsupported states;
-- universal and estimand-specific coherence requirements; and
-- controlled conformance scenarios.
-
-### Provider specification
-
-A provider declares:
-
-- provider and implementation version;
-- supported estimand versions, populations, and horizons;
-- required canonical capabilities, domains, state fields, and runtime needs;
-- uncertainty and explanation capabilities;
-- deterministic/reproducibility behavior;
-- safe missing-input, unsupported, and execution-failure behavior; and
-- provider-specific conformance cases and limitations.
-
-### Registration and selection
-
-Providers enter a controlled registry through an explicit trust boundary.
-Configuration selects only registered providers compatible with the active
-estimand and implementation capabilities. Selection never consists of sourcing
-an arbitrary path from ordinary data configuration. The exact shipped/local
-registration policy is an open decision for the provider phase.
-
-### Execution and conformance
-
-Provider execution receives an estimand request and only the declared,
-as-of-valid input view. The platform validates output identity, cardinality,
-finite bounds, horizon alignment, temporal validity, terminal behavior, and
-estimand-specific coherence before results reach persistence or products.
-
-Software conformance is not clinical validation. Provider records and user
-interfaces must preserve that distinction.
-
-### Defaults and extensions
-
-The reference provider should be transparent, reproducible, nonclinical, and
-valid for its estimand. It is not the architecture. Advanced methods remain
-optional provider packages, companion projects, local implementations, or
-research unless a core use case justifies inclusion.
-
-## Operational-history / persistence layer
-
-### Five different record classes
-
-| Class | Authority and purpose | Typical behavior |
-|---|---|---|
-| Source data | Hospital or synthetic implementation | Remains outside platform history authority |
-| Canonical inputs | Validated input used by a run | May be referenced or retained according to policy |
-| Operational state | Reproducible state used for computation | Versioned and attributable to run/as-of |
-| Derived historical records | Estimates, retained decisions, lineage, and run facts | Append-oriented operational truth |
-| Application products | Curated consumer interfaces | Rebuildable/materializable views, not history authority |
-
-### Persistence ports
-
-The platform defines logical append/read/query and correction/restatement
-behavior for record classes without selecting a production backend. Storage
-adapters own serialization, transactions, indexes, connection handling, and
-backend-specific optimization.
-
-The reference adapter may be lightweight and local while exercising the same
-contract suite expected of another adapter. Production choices remain adopter
-owned.
-
-The current reference is `reference.duckdb-persistence@0.1.0`, documented in
-[DuckDB Reference Persistence](duckdb-reference-persistence.md). It uses one
-controlled writer process, explicit sessions, and a versioned physical schema.
-This realization does not add DuckDB concepts to the port or make its
-concurrency limits universal.
-
-### Operational semantics
-
-- Run identity and idempotency keys distinguish a retry from a new run.
-- Append is the default for a new as-of time or implementation state.
-- Corrections, invalidations, and restatements are explicit records or governed
-  state changes; they never silently rewrite operational truth.
-- Provider A history remains when provider B becomes active.
-- A prospective first run is valid with no platform-created prior history.
-- Rebuilding products does not alter authoritative historical records.
-- Persistence does not imply retention of every raw input or creation of a
-  universal feature store.
-
-## Product layer
-
-### Responsibility
-
-Products are versioned logical views built from canonical current data and
-derived history. Likely product families include:
-
-- active/current episode views;
-- estimate and trajectory views;
-- care-management queues and workflow views;
-- executive and operational summaries;
-- measure membership and lineage views; and
-- capability, freshness, validation, or explanatory views.
-
-The exact default suite is an open decision. Each product contract declares
-logical identity, keys, schema/version, required upstream capabilities,
-freshness/as-of meaning, lineage, compatibility, and partial/unavailable
-behavior.
-
-Iteration 6.1 resolves the first deliberately narrow suite through
-[`platform.initial-risk-product-set@0.1.0`](../../contracts/products/initial-risk-product-set.yml):
-current valid episode/estimand risk, persisted accepted-estimate history, and
-valid terminal operational-run summaries. The exact grains, coherent-set
-identity, freshness, compatibility, failure behavior, builders, conformance,
-and in-memory access seam are authoritative in
-[Logical Product Foundation](logical-product-foundation.md). Iteration 6.2
-realizes the seam with a replaceable
-[YAML reference materialization](reference-product-materialization.md) and the
-[minimal product-only Shiny application](reference-application.md).
-
-### Storage independence
-
-Product readers and writers interact with logical products, not CSV-specific
-or database-specific behavior. A local file adapter may materialize products
-for the reference application. A database or service adapter can replace it
-without changing product builders or application modules.
-
-### Constraints
-
-- Products do not become the only copy of operational history.
-- Product structure is not dictated by synthetic source configuration.
-- Missing capability is explicit, not represented by fabricated zeroes.
-- Presentation convenience fields must not silently become canonical facts.
-- Product version changes include compatibility and migration consequences.
-
-## Application layer
-
-The supplied Shiny application consumes product contracts through a product
-access service. Its initial reference renders current risk, actual retained
-risk history, run status, and freshness only; later apps may add separately
-contracted products.
-
-It is insulated from:
-
-- source-system queries and local mapping;
-- canonical representation mechanics;
-- provider implementation and model internals;
-- persistence and product storage backend details; and
-- hosting-specific packaging.
-
-Application authorization and protected-data behavior are deployment concerns
-that must be made explicit before real-data use. The fictional reference may
-remain intentionally simple while never implying production readiness.
-
-## Operations layer
-
-Operations are the tested control surface over architectural components. An
-operation declares inputs, outputs, side effects, validation performed,
-diagnostics, failure/recovery behavior, and whether it is read-only or
-mutating.
-
-The expected operation families are:
-
-- initialize and doctor;
-- validate contracts, implementations, providers, products, and deployments;
-- generate the synthetic reference implementation;
-- build and run a declared configuration;
-- select an implementation or provider;
-- build/materialize products;
-- launch an application;
-- build and validate a local deployment realization;
-- upgrade or migrate compatible state.
-
-Names are provisional until implemented. Human commands, schedulers, agents,
-and any optional client invoke the same operation implementation. Operations
-may orchestrate all layers but do not absorb their domain logic.
-
-Phase 7 stabilizes the local reference operator surface as initialize, doctor,
-validate, one platform run, history inspection, product materialization, app
-validation, and app launch. A lightweight registry records their IDs, commands,
-mutation levels, classifications, and human guides; it is not an execution
-router. The platform run creates operational history, product refresh projects
-retained history, and app launch consumes the current product set. Scheduling
-is external: the platform owns run behavior and the operator owns cadence.
-
-## Deployment layer
-
-Phase 8 makes deployment a two-boundary transformation. The first is a
-target-neutral reduced application artifact containing only the product-only
-app, read-only product access/validation, required contracts/declarations, and
-one coherent materialized product set. The second, target-owned, turns that
-validated artifact into a Connect Cloud, container, or other realization.
-
-A deployment target implements a build contract:
-
-```text
-validated app + coherent products + runtime dependency declaration
-        ↓
-target-neutral closed application artifact
-        ↓
-target builder
-        ↓
-allowlisted artifact + provenance + target validation
-        ↓
-local target-specific realization
-        ↓
-operator-controlled publication/deployment
-```
-
-Artifact realization and external publication are separate responsibilities.
-The platform stops after an independently valid local deployable output.
-Generated realizations have explicit ownership; external Git commits, remotes,
-pushes, service credentials, and deployment remain operator controlled.
-
-Iteration 8.2 realizes Connect Cloud as a generated, remote-free local Git
-repository with staged but uncommitted files. Connect remains a reference
-target, not a condition in the application or runtime. A second target should
-be added as a peer adapter only when concrete requirements exist.
-
-## Hospital-facing distribution and installation composition
-
-CentralStatz maintains this one authoritative source repository and derives two
-independently versioned release products from it: the reusable Platform release
-and a generated **Readmission Risk Pool Hospital Implementation** release. The
-hospital-facing release is not a second maintained source project or another
-platform. A recipient's later customization is outside the CentralStatz release
-architecture rather than a formal third release layer.
-
-```text
-readmission-risk-pool-platform
-        ├── Platform release
-        └── generated Hospital Implementation distribution
-                ↓ standalone Git realization
-                ↓ staged / uncommitted / remote-free / independently valid
-                ↓ recipient acquisition/customization
-```
-
-Hospital-facing wrapper, scaffold, documentation, builder, validator, and
-metadata source are maintained in this repository. The Iteration 11.4 builder combines
-those inputs with one exact Platform release archive under ignored local build
-state and independently validates the generated distribution. No Platform logic
-or hospital-facing source is manually synchronized in a second CentralStatz
-repository. The Iteration 11.5 Git realization consumes only that validated
-artifact and creates a remote-free staged standalone repository without
-becoming source authority. It replaces only pristine generator-owned output
-and stops once a complete `main` index exists with zero commits and remotes.
-
-The generated distribution carries the exact Platform identity, version,
-archive, payload digest, compatibility, environment provenance, builder
-identity, and generated inventory. Initialization may safely extract and
-validate the archive into managed local state. The source stays inspectable;
-integrity reports whether it matches CentralStatz's validated release baseline
-and does not prevent recipient modification.
-
-The generated Hospital Implementation root owns one active `renv` environment
-and deterministic baseline lock derived from the exact Platform lock plus only
-maintained wrapper dependencies. The embedded Platform retains its lock for
-provenance, while nested activation is not routine operation. Recipient-added
-dependencies and modifications fall outside the exact released baseline.
-
-Generated templates provide the supported place for a producer declaration,
-callable implementation, fixed trusted composition, exact platform-instance
-selection, and conformance operation. Configuration never names executable
-paths or functions. Thin top-level wrappers delegate to callable Platform
-operations with an already constructed registry/selection and explicit state
-paths; they copy no domain logic and do not make the operation registry a CLI
-router.
-
-The embedded platform's shipped configuration remains unchanged for isolated
-fictional reference acceptance. A fictional adopter example proves the
-generated composition scaffold while normal adopter execution remains blocked
-until a recipient supplies conforming code. This preserves one-health-system
-scope and is not runtime multi-hospital switching.
-
-The complete ownership, environment, trust, lifecycle, upgrade, alternatives,
-and maintenance decision is authoritative in
-[Hospital-Facing Implementation Distribution](hospital-implementation-distribution-assessment.md).
-Iteration 11.4 implements and tests the proof-only builder and generated
-artifact under ignored local state. Iteration 11.5 implements and tests the
-separate standalone Git realization at explicit external destinations.
-Iteration 11.6 composes the final local release-preparation boundary: one clean
-validated authoritative revision yields a closed whole-repository Platform
-candidate, independently versioned Hospital candidate embedding its exact
-identity/digest, pristine staged Hospital Git realization, recipient-like
-acquisition evidence, and checksummed `not_published` readiness manifest under
-ignored `build/`. Apache-2.0, governance, and truthful support evidence are
-prerequisites. Iteration 11.7 adds the explicitly authorized maintainer
-publication boundary: fixed GitHub targets, zero-mutation preflight,
-Platform-first publication, generated Hospital publication, conservative
-partial-stage recovery, remote acquisition proof, and a post-verification
-development transition. The published Hospital repository remains generated
-output and never becomes maintained source authority.
-
-Phase 11 completed this boundary with the public, independently versioned
-Platform and Hospital Implementation `v0.1.0` releases. The Platform tag
-identifies the exact prepared source commit; the Hospital tag identifies the
-generated realization commit and embeds the exact published Platform archive.
-Checksummed evidence is retained under `releases/0.1.0/`. Current development
-is `0.2.0-dev`, with no next release target prepared.
-
-## Observability layer
-
-Observability is cross-cutting but accessed through a stable, small interface.
-A versioned operation-run context propagates one operation-attempt identity;
-it remains distinct from analytical runtime-run identity. Versioned structured
-events carry explicit-offset timestamp, operation correlation, controlled
-stage/component, severity, lifecycle, relevant non-patient identities,
-duration, safe code, and actionable message.
-
-The operations layer owns a base-R emitter and callable sink boundary. The
-reference console sink retains nothing and supports normal, quiet, and debug
-rendering while never hiding terminal errors. Deployments own any later
-routing, retention, and approved sinks. No default event contains PHI,
-patient-level clinical values or identities, secrets, connection strings, raw
-records, SQL, paths, or arbitrary nested payloads. Diagnostics remain
-distinct from provenance, validation reports, operational metrics, and audit
-records even when a run ID links them.
-
-The concrete contract, privacy allowlist/rejection rules, lifecycle, and
-implemented operation scope are defined in
-[Observability Foundation](observability-foundation.md).
-
-```text
-                         observability port
-                        ↗    ↑    ↑    ↖
-source → canonical → runtime → history → products → app/deployment
-```
-
-Safe stage events point outward to the port. No stage reads diagnostics as an
-input, so this cross-cutting capability does not change the dependency spine.
-
-## Configuration architecture
-
-Configuration selects declared implementations, estimands, providers,
-policies, products, storage adapters, and deployment profiles. It does not
-contain executable arbitrary code or redefine contract meaning.
-
-Configuration is versioned, validated before use, scoped by owner, and
-separates platform defaults, reference-instance values, adopter-local values,
-and secrets. Secrets and environment-owned connection details never belong in
-committed general configuration.
-
-The initial installation-level realization is
-`config/platform-instance.yml`. It selects exactly one canonical producer ID
-and version for one health-system context. Trusted maintained composition code,
-not YAML, associates declarations with callables. Producer-owned source
-configuration and environment-owned secrets remain below that seam. The
-Iteration 10.2 test-owned composition proves that declaration, callable,
-producer-local configuration, and alternate exact selection can be supplied
-without changing the default installation. Iteration 11.3 selects a generated,
-independently versioned Hospital Implementation distribution carrying one exact
-Platform release. Maintained templates in this repository supply the supported
-place for one complete platform-instance document and fixed trusted composition
-code above that embedded release; the test-fixture layout remains evidence
-rather than the mandated physical layout.
-
-## Dependency direction
-
-The primary dependency spine is:
-
-```text
-local implementation
-        ↓
-public canonical contracts and boundary
-        ↓
-generic computation
-        ↓
-operational history ports
+RRP development repository
+        ↓ closed build and release
+versioned installed RRP software
+        ↓ CLI + supported programmatic operations
+independent hospital-owned RRP project
+        ↓ trusted producer / source mapping
+canonical admission and RRP runtime
+        ↓ standard RRP risk request
+project-selected provider and model
+        ↓ accepted estimate or structured failure
+append-oriented operational history
         ↓
 logical products
         ↓
-application
+supplied app / closed deployment artifact
 ```
 
-Orthogonal dependencies point inward toward interfaces:
+One RRP installation may operate multiple separately invoked projects, but one
+project and one deployment represent one health system. There is no runtime
+hospital selector or multi-hospital shared analytical state. The open product
+remains independently useful: no proprietary model, agent, package, service,
+or CentralStatz engagement is required to operate it.
+
+## Architectural principles
+
+1. Local implementations own source meaning and stop at the canonical handoff.
+2. RRP owns exactly one versioned, nonselectable readmission-risk target in the
+   1.0.0 generation.
+3. Producers and providers are the initial project extension seams; projects
+   do not define target semantics or request construction.
+4. Generic runtime never branches on a hospital, synthetic example, source
+   system, or provider implementation identity.
+5. Only information legitimately available by the declared as-of time may
+   affect state or estimates.
+6. Provider method is replaceable; target meaning, validation, and output
+   semantics are not.
+7. Structured failure is preferable to fabricated probability, silent
+   fallback, or partial history.
+8. Operational history is append-oriented, attributable truth. Products are
+   rebuildable consumer views, not history authority.
+9. Risk, decision/priority policy, tasks, interventions, measures, diagnostics,
+   provenance, metrics, and audit remain distinct concepts.
+10. The supplied app consumes products and never queries sources, executes a
+    provider, or understands history storage internals.
+11. Generated artifacts have closed target-specific closure; editable projects
+    do not become immutable software artifacts.
+12. Software, project, and deployment dependency environments have explicit
+    owners and cannot silently override one another.
+13. Software upgrades do not mutate project source or state. Project and state
+    migrations are separate, explicit operations.
+14. Human operators use a thin CLI over the same stable operations used by
+    tests, automation, agents, and supported programmatic clients.
+15. Validation rigor belongs to the lifecycle boundary whose claim it proves.
+16. Published releases are immutable, reproducible from declared evidence, and
+    never rewritten to accommodate forward development.
+17. No repository content or ordinary diagnostic may expose PHI, credentials,
+    private mappings, connection strings, raw records, or confidential material.
+
+## System and ownership boundaries
+
+These are distinct architectural units, even when one build machine sees more
+than one of them.
+
+| Unit | Owner | Mutability | Lifecycle | Validation owner |
+|---|---|---|---|---|
+| Development repository | RRP maintainers | Editable source | design, build, test, release | source/component/maintainer validation |
+| Installed RRP software | RRP publisher; local installer controls activation | Immutable per installed version | acquire, install, verify, activate, upgrade/rollback, uninstall | distribution and installation validation |
+| RRP project | Hospital/adopter | Editable trusted code and nonsecret configuration | initialize, customize, version, validate, migrate | project and extension conformance |
+| Project state | Hospital/adopter | Append-oriented or explicitly migrated | initialize, run, back up, recover, retain, migrate | state adapter and history validation |
+| Deployment artifact | Project/operator generated output | Immutable generated unit | build, independently validate, publish or discard | artifact validation |
+| Deployment target | Hospital/operator and hosting service | Externally managed | configure, deploy, authorize, monitor, retire | target and operational governance |
+| Published release | RRP publisher and release service | Immutable | prepare, authorize, publish, verify, support | release/publication verification |
 
 ```text
-provider implementation  → provider + estimand contracts ← generic runtime
-storage adapter          → persistence/product ports      ← runtime/products
-operation interface      → callable component APIs
-deployment target        → application/runtime artifact contracts
-observability adapter    → diagnostic interface           ← all operations
+development repository
+    ≠ installed RRP software
+    ≠ RRP project
+    ≠ project state
+    ≠ deployment artifact
+    ≠ deployment target
 ```
 
-### Prohibited dependencies
+No unit discovers another by assuming the current working directory is an RRP
+source checkout.
 
-- Generic runtime must not import synthetic or hospital implementation code.
-- Runtime must not depend on app modules, deployment targets, Git, or hosting.
-- Source implementations must not determine generic product structure.
-- Source implementations must not bypass the canonical boundary to write
-  products.
-- Providers must not depend on application modules or storage internals.
-- Provider selection must not be an arbitrary source-file path from ordinary
-  configuration.
-- Product builders must not query hospital source systems or provider internals.
-- The app must not query source systems, invoke models, or understand database
-  schemas used behind product ports.
-- Application products must not be treated as authoritative historical storage.
-- Storage adapters must not change canonical, estimand, or product semantics.
-- Deployment targets must not change canonical or product semantics.
-- Connect-specific files must not appear in the platform or application core.
-- Observability must not become provenance, validation, metrics, or audit by
-  implication.
-- AI agents and future clients must not contain unique platform logic.
-- Advanced methodology must not become a mandatory runtime dependency.
-- Generic code must not branch on named hospitals or synthetic identity.
-- No runtime, test, or deployment may depend on the sibling reference
-  repository.
+## Identity and compatibility
 
-## Proposed repository structure
+RRP maintains related but noninterchangeable identities for:
 
-Only `docs/` is populated during bootstrap. The following is the intended
-top-level layout, to be created just in time by implementation phases.
+- RRP software product/version, distribution target/build, and installation;
+- internal packages and dependency closure;
+- project contract, project, and project version;
+- canonical profile, producer, mapping, bundle, and as-of context;
+- risk target and standard request;
+- provider implementation and fitted model artifact;
+- operation, analytical run, state, execution attempt, and estimate;
+- history schema, record, invalidation, and restatement;
+- product contract, product set, freshness, and materialization;
+- deployment artifact and target realization; and
+- source revision, release candidate, published release, and verification.
 
-| Directory | Responsibility and contents | Must not contain | Role and dependencies |
-|---|---|---|---|
-| `contracts/` | Language-neutral schemas/specifications for canonical bundles, estimands, providers, derived records, products, diagnostics, and compatibility | Executable source mappings, app views, backend logic | Public; depended on by every conforming implementation |
-| `implementations/` | Source-owned producers/mappings and concrete reference adapters; includes synthetic source and DuckDB persistence realizations | Generic runtime, provider registry internals, app products | Public reference/example plus adopter-owned implementations; depends on contracts, logical ports, and implementation tooling |
-| `runtime/` | Internal R package for stable implementation-neutral computation and logical ports | Orchestration, source extraction, app rendering, deployment, Git/publication | Internal platform component with public-ish APIs; depends on contracts and minimal R libraries |
-| `products/` | Product specifications, builders, suite composition, and product storage ports/adapters | Historical authority, source queries, UI rendering | Public logical interface; depends on contracts, runtime records, and persistence reads |
-| `app/` | Supplied Shiny application and product-access boundary | Source mappings, provider code, persistence backend queries, hosting adapters | Replaceable public reference app; depends only on product interfaces and app configuration |
-| `operations/` | Callable operation implementations, human entry points, operation registry, and recovery contracts | Unique domain algorithms or hidden agent procedures | Public control surface; orchestrates components through their APIs |
-| `deploy/` | Target adapters, declarations, and standalone validation payloads used by deployment builders | Canonical or model semantics, authoritative app source, external publication credentials | Public reference targets; depends on stable artifact/operation interfaces |
-| `distribution/` | Future maintained templates, wrappers, documentation, metadata, and construction inputs for generated adopter-facing distributions | Generated release trees, recipient-private configuration, secrets, or copied platform logic | Public release-construction source; a later builder consumes an exact validated Platform release |
-| `config/` | Versioned platform defaults, reference selections, examples, and configuration schemas where not contract-owned | Secrets, executable code, private hospital values | Public/default and local override boundary; interpreted by operations/components |
-| `tests/` | Cross-component, conformance, fixture, architecture, and end-to-end tests | Production runtime data or private source material | Public evidence; depends on public interfaces and explicit fixtures |
-| `docs/` | Vision, architecture, implementation record, developer, adoption, operations, and user documentation | Undocumented executable procedures | Public human authority; describes all supported interfaces |
+Git commits, filesystem paths, R objects, and deployment URLs may be provenance
+but do not define semantic identity. Compatibility checks state the identities
+and direction they compare; loadability alone is not conformance. The project
+manifest declares its project-contract version and an explicit supported RRP
+software/API range. RRP validates that declaration before trusted project code
+executes. Stored-state compatibility is checked separately.
 
-Generated builds, local data, operational stores, caches, and secrets are not
-architectural source directories. Their eventual locations must be ignored,
-configurable, and governed by operations rather than becoming repository APIs.
+## Installed software architecture
 
-## Role of R and the internal package
+### Installed unit
 
-The platform is not an R package. R is expected to be the first implementation
-language because Shiny and much accumulated platform knowledge are R-based.
+One RRP distribution installs one coordinated product containing:
 
-A focused internal package under `runtime/` is useful because it provides a
-namespace, dependency declarations, unit tests, installation/versioning, and a
-clear reusable API boundary. Its intended responsibilities are:
+```text
+RRP installation
+├── launcher / CLI entry point
+├── stable programmatic operation API
+├── private RRP-owned R package library
+│   ├── rrpruntime
+│   ├── main RRP implementation package
+│   └── exact tested third-party runtime closure
+├── contracts, schemas, defaults, and validators
+├── supplied adapters, products, and app resources
+├── project initializer, template, and fictional example
+├── artifact and deployment-target build resources
+├── user and normative product documentation
+├── license, notices, support, and security material
+└── software inventory, digests, compatibility, and build provenance
+```
 
-- contract and canonical-bundle validation;
-- temporal eligibility and availability rules;
-- state construction primitives;
-- estimand/provider request and result contracts;
-- provider conformance utilities;
-- derived-record identities and validation; and
-- persistence/product port definitions only where they are computationally
-  reusable.
+This is a responsibility map, not a fixed filesystem layout. The distribution
+manifest and installed resource catalog are the discovery authority. Installed
+code cannot derive a development-repository root or source ordered files into a
+global environment.
 
-It does not own project orchestration, reference-source generation, local
-mapping, provider implementation packages, product materialization workflows,
-app rendering, deployment publication, Git operations, or target-specific
-files.
+### Launcher and doctor
 
-No package scaffold is created during bootstrap. Package name, dependency
-budget, and exact exported API follow the contracts phase. Conceptual contracts
-remain language- and storage-neutral so future Python, service, database, or
-command-line adapters can be considered without rewriting platform meaning.
+The launcher locates the recorded R executable and installed RRP entry point,
+passes explicit project/operation inputs, preserves signals and exit status,
+and renders privacy-safe structured results. It contains no analytical or
+project-specific logic.
 
-## Architecture conformance
+Installation health is distinct from project health. An installed doctor
+checks the selected R executable, RRP-owned library, package/resource inventory,
+digests, loadability, permissions, and compatibility metadata. It does not open
+hospital sources, execute a provider, or require initialized project state.
 
-Every implementation phase should add evidence proportional to the boundary it
-introduces: schema examples, unit tests, conformance fixtures, integration
-tests, end-to-end reference checks, documentation, and an implementation-record
-entry. Exact repository-tree assertions must identify whether they protect a
-platform contract, a reference profile, or a deployment target.
+### Internal package topology
 
-Architecture changes require an explicit update here and in the implementation
-plan before code establishes a conflicting dependency.
+`rrpruntime` remains a focused, dependency-light internal package owning
+admitted canonical input types, target eligibility and temporal state,
+standard risk-request and accepted-estimate semantics, provider compatibility
+and execution, and storage-neutral history records/ports.
+
+One additional main implementation package owns stable operations, project
+loading, resource access, diagnostics, default adapter composition,
+products/app initialization, and artifact/target builders. Exact package names
+and exported function names are implementation-plan decisions. More packages
+require a demonstrated independent dependency, substitution, or release
+boundary; files are not converted mechanically into micro-packages.
+
+Contracts, templates, static app files, examples, licenses, and product docs
+remain ordinary installed resources accessed through a stable resource API.
+Package topology is invisible to ordinary operators and is not a project
+contract.
+
+### Initial installation posture
+
+The first implementation is user-scoped and must not require administrator or
+root privileges. Versions are installed side by side in immutable locations or
+an equivalent atomic layout. An explicit activation pointer or launcher choice
+selects the active version only after installation and project compatibility
+checks succeed. System-wide installation is deferred until an adopter need and
+permission/security model justify it.
+
+## Host R architecture
+
+R 4.4.x is the initial implementation and clean-install proof line. The first
+evidence cells are macOS arm64 and Ubuntu x86_64; neither becomes a support
+claim until its complete distribution-install and acceptance matrix passes.
+Every build and installation records exact R version, platform, architecture,
+and relevant capabilities. Broader support requires equivalent evidence.
+
+Installation prefers an explicitly supplied R executable. A documented,
+deterministic PATH/known-location fallback may be used once when no path is
+supplied. RRP resolves and records the canonical executable path and thereafter
+uses it; it does not silently rediscover a different R for each operation.
+Doctor and runtime preflight fail clearly if that executable or its
+compatibility facts change.
+
+RRP does not initially bundle R. Bundling adds operating-system packaging,
+native library, security update, size, license, and patch-lifecycle obligations
+without demonstrated need. It may be reconsidered only if the validated host-R
+model proves operationally inadequate. Deployment targets own their R runtime
+independently and cannot use the operator installation's recorded R path.
+
+## Independent RRP project architecture
+
+### Project recognition
+
+A project is recognized only from an explicit project root containing:
+
+1. one versioned, nonsecret root project manifest; and
+2. one fixed trusted registration entry point at the location defined by the
+   project-contract version.
+
+Those locations, their contract versions, safe path rules, and project-relative
+state references are public physical contract. Suggested directories for
+mappings, providers, models, tests, and documentation are template conventions
+unless a later contract explicitly requires them. RRP never searches parents
+indefinitely, scans arbitrary code directories, or treats a Git repository as a
+project by implication.
+
+### Manifest and project ownership
+
+The declarative manifest owns project-contract/project identity and version,
+one-health-system scope, supported RRP/API and canonical-profile versions,
+exact producer/provider selections, dependency/model evidence references,
+state/persistence profile and writable root, and nonsecret operation settings.
+Product/app/artifact overrides appear only after such extension contracts
+exist.
+
+The manifest does not contain executable R, function names, arbitrary load
+paths, package-install instructions, remote code URLs, credentials, connection
+strings, raw records, or target semantics. It identifies selection; it does not
+make code trusted or available.
+
+The hospital project owns source access and validation, mapping, producer and
+provider declarations/callables, model artifacts, extension dependencies,
+configuration, tests, docs, and all writable state. It contains no RRP source
+and does not know RRP's internal package layout. Secrets come from an approved
+external environment or secret service.
+
+The initializer creates a minimal editable project, never modifies an
+unrecognized existing tree, and keeps fictional examples distinct from
+hospital code. Generated state is isolated from project source by default.
+
+## Trusted registration and composition
+
+Registration and selection are separate:
+
+```text
+trusted project registration
+        ↓ declares available executable producers and providers
+validated project manifest
+        ↓ selects one exact producer and one exact provider
+deterministic resolver
+        ↓ requires one matching registered component of each kind
+```
+
+The loader executes only the fixed local registration boundary after manifest,
+software, project-contract, dependency, and safe-path preflight. Registration
+returns a structured result pairing declarations with trusted local callables.
+It exposes project-defined producers and providers only.
+
+The 1.0.0 registration boundary does not expose estimands, targets, request
+builders, products, apps, persistence ports, deployment targets, or arbitrary
+plugins. RRP defaults are registered by installed maintained code, not copied
+into projects. Resolution fails closed on missing, duplicate, undeclared,
+incompatible, or ambiguous components. Declarative configuration never loads a
+package, file, function, or remote resource dynamically. Executable
+availability, manifest selection, and clinical approval remain distinct.
+
+## Canonical source and admission architecture
+
+The producer owns organization-specific extraction, joins, identifiers,
+vocabulary translation, timestamp normalization, source validation, mapping
+provenance, and candidate bundle construction. Its dependencies remain below
+the public handoff.
+
+A successful producer result contains a candidate canonical bundle and
+structured evidence. RRP admits it only after validating bundle, producer,
+mapping, project, as-of and contract identities; domains, relationships, keys,
+controlled values, and capabilities; occurrence/effective and availability/
+recorded time roles; coverage through the target endpoint; terminal-event
+occurrence and availability; and installed-contract compatibility.
+
+The handoff is representation-independent. An in-memory R realization may be
+first, but files, tables, or services cannot redefine meaning. Generic runtime
+receives only admitted input and never queries a source system. The synthetic
+implementation is a separately initialized fictional project using this exact
+boundary, not a privileged installed composition or runtime mode.
+
+## Singular readmission-risk target
+
+### Target identity and meaning
+
+RRP 1.0.0 defines one versioned, nonselectable target: remaining actual-world
+cumulative probability of first canonical readmission through the fixed day-30
+endpoint.
+
+For discharge instant `D`, as-of instant `t`, and
+`W30 = D + 30 × 86,400 elapsed seconds`, the requested quantity is:
+
+```text
+P(first canonical readmission occurs in (t, W30]
+  | alive and without canonical readmission through t,
+    admitted information legitimately available through t)
+```
+
+The endpoint is included. The episode must be discharged and eligible at `t`,
+with `D <= t < W30`. RRP emits no request before discharge, at or after `W30`,
+or after a known terminal event. It never manufactures zero risk for an
+ineligible episode.
+
+### Population, event, and competing death
+
+The population is every episode admitted under the 1.0 canonical readmission
+profile, not a measure, payer, service-line, or program cohort. The event is
+first canonical readmission; the initial contract does not distinguish planned
+from unplanned readmission.
+
+Death before readmission competes and prevents the event. If admitted
+readmission and death share an occurrence instant, readmission has precedence.
+Other events may enter the information set when valid and available but are not
+terminal or competing events unless a later target version says so.
+
+### Fixed endpoint and available information
+
+`W30` cannot be shortened by provider choice, data availability, or a source
+follow-up field. Admission must prove target coverage through `W30`, or reject
+the episode for this target. Broader source observation is distinct.
+
+Every governed fact affecting eligibility or state has explicit occurrence/
+effective and availability/recorded roles when those differ. Terminal
+readmission and death evidence must carry both roles in the 1.0 contract. A
+fact may influence a run only when its occurrence is not after `t` and it was
+available by `t`. Late-recorded terminal evidence affects eligibility only
+from the first run that may legitimately know it, while retaining occurrence
+time in provenance.
+
+### Nonselectability
+
+The target contract owns population, conditioning, horizon, interval, event,
+death, terminal, output, failure, and temporal meaning. RRP constructs the
+standard immutable request. Projects neither register nor select estimands,
+targets, or request builders; there is no estimand catalog, target router, or
+multi-target execution.
+
+Daily hazard is not a public 1.0 target. Providers may use hazards, survival,
+Bayesian updating, machine learning, or external scores internally, but must
+return this remaining cumulative risk. Repeated predictions are landmark
+updates toward one fixed endpoint and need not be monotone.
+
+## Runtime architecture
+
+For each explicit project and as-of invocation, RRP performs:
+
+```text
+load and validate project
+→ resolve exactly one producer and provider
+→ execute producer and admit canonical result
+→ evaluate target eligibility and build immutable as-of state
+→ construct the standard remaining-risk request
+→ validate and execute the selected provider
+→ validate estimate or structured failure
+→ append one atomic attributable terminal history batch
+```
+
+RRP owns project loading, admission, eligibility, temporal filtering, state and
+request construction, provider execution boundaries, output validation,
+failures, history orchestration, diagnostics, and provenance. The main package
+owns orchestration; `rrpruntime` owns focused computation and history
+primitives.
+
+Operation-run identity remains distinct from analytical run and provider-
+execution identity. State is immutable input to one request, not a universal
+feature store, and cannot perform provider source lookups.
+
+An accepted estimate is exactly one finite probability in `[0,1]` per request
+and carries project, software, target, state, request, provider/model, run,
+execution, and as-of attribution. Ineligibility produces no request;
+incompatibility, missing input, execution error, or invalid output produces a
+structured failure and no estimate. Scheduling remains external.
+
+## Provider architecture
+
+A provider owns method, required admitted state/capabilities, identity,
+optional fitted-model identity/integrity, dependencies, determinism claims,
+limitations, and safe failure behavior. It declares compatibility with the
+exact RRP target and request/API versions.
+
+RRP owns registration, selection, compatibility, input isolation, invocation,
+cardinality/bounds/identity validation, and standardized results. A provider
+cannot broaden the information set, redefine eligibility/endpoint/target,
+query application products, or write history directly.
+
+Provider conformance establishes software compatibility, not calibration,
+fairness, effectiveness, regulatory status, or local production approval.
+Those remain adopter responsibilities. The transparent provider is visibly
+fictional and serves example/conformance roles, not clinical default.
+
+Remote and non-R transports are deferred. They may later implement the same
+request/result semantics if concrete transport, privacy, authentication,
+timeout, and failure requirements justify them.
+
+## Operational history and project state
+
+The hospital owns the state root and its access, retention, backup, recovery,
+encryption, and infrastructure policy. RRP supplies logical history semantics
+and a default local DuckDB adapter; DuckDB is not a production requirement.
+
+History records what RRP actually knew, requested, attempted, and accepted.
+Initial retained families include run status, target-eligible state/request,
+provider execution outcome, accepted estimate, and explicit invalidation/
+restatement evidence.
+
+History obeys these rules:
+
+- new as-of runs append attributable records;
+- one terminal run batch is atomic and never exposes partial success;
+- retry identity is distinct from a new analytical run;
+- identical identity/content is idempotent; conflict fails loudly;
+- provider/model/software/target transitions retain prior facts;
+- invalidation is an overlay, never physical erasure;
+- restatement is a new attributed run, never silent replacement;
+- raw facts and validity-resolved/current reads remain distinct; and
+- rebuilding products never changes history.
+
+The 1.0 target, request, estimate, history, and product contracts are a new
+semantic/version boundary. `v0.1.0` daily-hazard records cannot be renamed,
+coerced, aggregated, or presented as remaining cumulative risk. A 1.0 project
+may begin prospectively with empty state. Any legacy import retains the old
+target identity in a separately typed archive and cannot enter current-risk
+products as a 1.0 estimate.
+
+State migration is an explicit versioned operation. It validates source and
+destination schemas, preserves/backs up source state, stages output, checks
+integrity, records provenance, and promotes only after validation. It is retry-
+safe and fail-closed. Software upgrade never invokes it implicitly.
+
+## Products and supplied application
+
+Products are versioned views of valid attributable history. Builders consume
+persistence ports, not DuckDB tables, hospital sources, producer internals,
+provider code, or models. Materialized products live in project state and are
+rebuildable without rewriting history.
+
+The initial migrated product family remains narrow: current eligible episode
+remaining risk, retained remaining-risk trajectory/history, and terminal run
+summary. Exact names/versions are plan decisions. Every product/set carries
+target, provider/model where relevant, software, history-schema, freshness,
+source-run, compatibility, and materialization provenance. Missing capability
+is explicit; zero rows are a valid empty state.
+
+The supplied Shiny app receives validated logical product access. It does not
+query sources, run producers/providers, interpret model features, or know
+persistence schemas. App reload, product materialization, and estimation are
+separate operations. Authentication, protected-data handling, networking, and
+production authorization belong to deployment.
+
+Custom products/apps are not initial project extension contracts. They require
+later demonstrated need and explicit compatibility/trust boundaries.
+
+## CLI and programmatic operations
+
+The CLI is the canonical human interface. Stable programmatic operations do
+the work:
+
+```text
+CLI / tests / automation / agents / readmit / supported clients
+                         ↓
+             stable operation API
+                         ↓
+  project loader, runtime, history, products, app, artifact builders
+```
+
+The CLI owns parsing, explicit project context, invocation, safe rendering,
+exit status, and recovery guidance—not domain logic. Command names, flags,
+styling, and implementation language are not finalized here.
+
+Operation categories are installation/version health; project initialization
+and health; project/producer/provider/dependency validation; one run and
+history inspection; product materialization and app launch; artifact and target
+build/validation; and explicit activation, migration, backup, and recovery as
+implemented. Each declares inputs, output, side effects, mutation class,
+diagnostics, recovery, and compatibility.
+
+Human docs, tests, automation, and agents call the same behavior. Repository
+validation and release/publication remain maintainer operations, not hospital
+CLI capabilities.
+
+## Dependency architecture
+
+The installed distribution owns internal packages, exact tested transitive
+runtime closure, installed resources, and dependency provenance in a private
+immutable library. The root development `renv` is not this environment.
+
+The project owns producer/mapping and provider/model packages, optional
+clients/drivers, model artifacts, and exact reproduction evidence. `renv` is an
+acceptable first mechanism, but its syntax is not the permanent public
+contract. The project environment is not the development environment and
+cannot overwrite RRP's library.
+
+Initially, a controlled R process places the RRP library first and a project
+extension library after it. Validation rejects incompatible requirements for
+RRP-owned packages, verifies model integrity, and does not accept ambient user
+libraries as declared closure. Stronger process/protocol isolation begins only
+when real projects demonstrate irreconcilable graphs or security/runtime need.
+
+Build-only dependencies belong to the maintainer/builder environment.
+Deployment runtime dependencies belong to the artifact's target closure.
+Neither enters ordinary runtime solely because a later build uses it.
+
+## Artifacts and deployment
+
+```text
+validated project/product inputs + exact installed RRP resources
+        ↓ target-neutral artifact builder
+closed independently valid artifact
+        ↓ target-specific builder
+closed target realization
+        ↓ explicit operator-controlled publication/deployment
+```
+
+The initial deployed scope is a product-only application artifact. It contains
+only the app/runtime subset, product access, contracts/resources, one frozen
+coherent product set, target R/package requirements, provenance, closed
+inventory, SHA-256 digests, and a self-validator. It excludes producer,
+provider, model, source clients, history writer, tests, and mutable state. It
+runs without the development repository, local RRP installation, or mutable
+project source.
+
+A future compute-capable artifact is distinct. If authorized, it freezes the
+needed RRP runtime/resources, effective project manifest, trusted producer/
+provider code, dependencies, models, nonsecret configuration, external/state
+binding declarations, provenance, and validator. Secrets remain target
+configuration. This boundary is defined but not promised for 1.0.0.
+
+A target builder adds only target-required entry points and dependency metadata
+around an accepted artifact. Posit Connect remains the first reference target
+for the Shiny app and owns target R/package installation. Future closure derives
+from artifact/release metadata, not the development lock. Generated Git trees
+are disposable target outputs. Remote creation, credentials, commit/push,
+service authorization, sharing, networking, monitoring, and deployment remain
+explicit operator actions.
+
+## Distribution, build, and release
+
+The development repository may contain code, contracts, tests, fixtures,
+assessments, records, historical release machinery, CI, and maintainer tools
+that do not ship. A distribution is built only from a closed inclusion manifest
+declaring source inputs by role and permitted transformations. Ignore patterns
+may classify development material, but subtraction from the source tree never
+defines the payload.
+
+The build rejects missing, duplicate, unsafe, linked, unexpected, or
+unclassified output. Its manifest records product/distribution identity,
+source revision, build tool, platform/R target, internal packages, dependency
+closure and acquisition, contracts/resources/docs/licenses/notices, every
+output path/role/size/digest, determinism claim, and validation evidence.
+Development assessments, Phase history, Hospital generation, private fixtures,
+and maintainer release procedures do not ship merely because they are tracked.
+
+The first reproducibility claim is normalized content reproducibility: equal
+declared source, tool, platform/R target, and dependency inputs yield equal
+installed inventory and digests. Ordering, permissions, line endings, locale,
+timestamps, metadata, and compression are controlled or excluded from content
+identity. Byte-identical archives are claimed only after independent proof.
+
+Internal packages declare direct dependencies; a target-keyed release
+resolution records the transitive closure and immutable acquisition evidence.
+The development lock is not the distribution or project lock.
+
+Source validation, distribution build, installation proof, candidate
+validation, publication, and public acquisition are separate claims. Release
+preparation uses an exact clean commit. Publication requires explicit
+authorization, immutable version/tag/assets, integrity/authenticity evidence,
+recovery, and verification. Published releases are never rebuilt in place.
+
+## Documentation architecture
+
+| Class | Answers | Prospective treatment |
+|---|---|---|
+| Normative product architecture | What is RRP now? | `docs/architecture/`; current authority, version-matched in releases |
+| User/developer product docs | How do I install, create, map, provide, run, deploy, and recover? | prospective `docs/user/`; ships or is version-linked |
+| Internal development evidence | Why was architecture chosen? | prospective `docs/development/assessments/`; source only |
+| Historical release evidence | What was previously built/released? | prospective `docs/history/` plus immutable tags/evidence |
+| Maintainer docs | How is RRP built, tested, released, and recovered? | prospective `docs/maintainers/`; source/maintainer tooling |
+
+The current tree is transitional. Assessments remain decision evidence, while
+this document controls where they differ. Detailed canonical/runtime/provider/
+history/product/app/deployment documents describe implemented `v0.1.0`
+boundaries until prospectively revised. The Phase plan and implementation
+record are historical evidence.
+
+The 1.0 plan must schedule documentation reclassification rather than moving
+the tree in this synthesis. Git tags preserve release-specific architecture;
+current normative architecture evolves in place rather than accumulating a
+parallel tree per version. Installed docs use a closed version-matched product
+subset and exclude internal CentralStatz reasoning/process.
+
+## Upgrade, compatibility, and migration
+
+A project declares supported RRP software/API and project-contract versions.
+RRP checks canonical, target, provider, dependency, state, product, and
+artifact compatibility at their owning boundaries.
+
+A software upgrade installs a new immutable version beside the active version,
+verifies it, and validates projects before activation. It never changes project
+manifest, registration, producer/provider code, dependency declarations,
+models, history, products, or configuration. Activation is separate from
+installation; the previous version remains selectable for rollback until an
+explicit uninstall/retention action. Rollback does not reverse migrations.
+
+Project migration is an explicit adopter-controlled source/config change for a
+project-contract evolution. RRP may produce a plan or staged copy but cannot
+silently overwrite the project. State migration is separately authorized and
+versioned, with source preservation/backup, staging, integrity and semantic
+checks, provenance, retry/failure behavior, and validated promotion. Software
+upgrade, project migration, and state migration may have prerequisites but are
+never one implicit action.
+
+## Validation and governance
+
+Validation is proportional to the claim and routed by ownership.
+
+| Boundary | Required evidence |
+|---|---|
+| Fast source | formatting, links, schemas, static policy, dependency/build-manifest consistency |
+| Component/package | focused unit/conformance tests, API checks, `R CMD build/check`, dependency/license metadata |
+| Integration | declared downstream combinations for changed public boundaries; synthetic and independent adopter compositions |
+| Installed distribution | inventory/digests, paths/permissions, host R, private-library isolation, resources, launcher/doctor, install/activate/rollback/uninstall |
+| Project | manifest/paths/trust/selections, dependencies/model, secret exclusion, state safety, compatibility |
+| Producer/provider | canonical/temporal or target/request conformance and failures; clinical validation remains separate |
+| Runtime/history | target/temporal/output semantics, atomicity, retry, invalidation/restatement, provenance |
+| Artifact/target | closed runtime, integrity, secret exclusion, independence, self-validation, target behavior |
+| Release candidate | clean build, support matrix, licenses/docs, clean install, adopter acceptance, artifact proof |
+| Publication | authorization, exact remote/tag/assets, checksums/signatures, recovery, public acquisition/install |
+
+The plan replaces phase-number routing with named profiles and a machine-
+readable dependency/ownership map. Broad active-product matrices run in CI and
+release preparation, while local checks follow affected boundaries. High-
+consequence scientific, privacy, state, artifact, and publication invariants
+remain strict.
+
+Phase 0–11 suites, prose gates, Hospital acquisition, and whole-repository
+checkpoints remain `v0.1.0` evidence or legacy checks. They do not govern
+unrelated 1.0 work. No test is removed until its current invariant is reassigned
+or deliberately retired. Diagnostics, validation, provenance, metrics, and
+audit remain distinct; passing software tests never implies clinical approval.
+
+## Clean-install and release acceptance
+
+An RRP 1.0.0 candidate is acceptable only when clean environments prove from
+exact candidate bytes, outside the development repository:
+
+```text
+install user-scoped RRP and verify host R/software
+→ initialize and run the supplied fictional project
+→ initialize a separate independent adopter project
+→ replace its producer/mapping and register a custom provider/model
+→ reproduce dependencies and validate compatibility
+→ execute, append, close, and reopen history
+→ build/materialize/validate products and initialize the app
+→ build and independently validate the product-only artifact
+→ realize and validate the supported Connect target
+```
+
+The proof has no development/sibling repository access, Hospital distribution,
+ambient undeclared library, maintainer Git-state requirement, real data,
+credential, or project mutation by installation. Evidence retains source,
+build, inventory, digest, R/platform, dependency, install/doctor, project,
+component, runtime/history/product/artifact, and publication/acquisition
+identities and privacy-safe results. Support claims name only cells that pass.
+
+## Relationship to `readmit`
+
+`readmit` is a separate optional user-facing R package built on supported RRP
+programmatic interfaces. It may help construct, fit, package, test, or operate
+providers and models. It belongs to a project/provider environment, is not
+required for RRP, and cannot register a target or redefine the risk quantity.
+Readmit-backed and independently implemented providers are conformance peers.
+This architecture does not design or version `readmit`.
+
+## `v0.1.0` reuse and retirement map
+
+| Existing machinery | 1.0.0 disposition | Action |
+|---|---|---|
+| Identity/specification envelope | **REUSE SUBSTANTIALLY** | Retain vocabulary; revise estimand/Hospital identities |
+| Producer result/admission/trusted callable pattern | **GENERALIZE / MOVE TO PROJECT** | Preserve stage separation; project registers producer |
+| Synthetic producer | **RETAIN AS EXAMPLE** | Normal fictional project, not installed composition |
+| `rrpruntime` temporal/state/provider/history core | **REFACTOR INTO INSTALLED SOFTWARE** | Preserve package; replace hazard request semantics |
+| Provider registry/execution/result checks | **REUSE SUBSTANTIALLY** | Bind to singular target/project selection |
+| Transparent provider | **RETAIN AS EXAMPLE** | Nonclinical conformance tool |
+| Daily-hazard contracts | **REPLACE** | New target/request/estimate; no relabeling |
+| History ports and append/atomic/retry/invalidation rules | **REUSE SUBSTANTIALLY** | New target-attributed schema/project state |
+| DuckDB adapter | **REFACTOR INTO INSTALLED SOFTWARE** | Supplied default with project path |
+| Logical products and three roles | **REUSE / REFACTOR** | Remaining-risk semantics and identities |
+| YAML materializer/access | **REFACTOR INTO INSTALLED SOFTWARE** | Supplied default/project product state |
+| Product-only Shiny app | **REFACTOR INTO INSTALLED SOFTWARE** | Preserve product-only boundary |
+| Structured operations/diagnostics | **REUSE SUBSTANTIALLY** | Stable API under CLI |
+| Repository-root scripts/source chains | **REPLACE** | Namespaced operations/explicit project |
+| Temporary runtime install per operation | **RETIRE FROM ACTIVE PRODUCT PATH** | Runtime ships installed |
+| Root `renv` | **SIMPLIFY / RETAIN FOR DEVELOPMENT** | Not installed/project authority |
+| Reduced artifact/target separation | **REUSE SUBSTANTIALLY** | Installed inputs and SHA-256 closure |
+| Connect realization | **REFACTOR** | Artifact/release dependency evidence |
+| Full Platform tree as payload | **REPLACE** | Closed installed distribution |
+| Generated Hospital release/embedded archive | **RETIRE FROM ACTIVE PRODUCT PATH** | Preserve `v0.1.0` history |
+| Hospital Git/wrappers | **RETAIN AS HISTORICAL EVIDENCE** | No normal 1.0 role |
+| Inventory, acquisition, publication recovery | **REUSE SUBSTANTIALLY** | Reassign to correct lifecycle |
+| Phase 0–11 validation hierarchy | **REPLACE** | Lifecycle/component profiles |
+| Two-product publication machinery | **REFACTOR LATER** | Preserve authorization/immutability, replace payload assumptions |
+| Decision/workflow/metrics/scheduling | **DEFER** | Preserve separation; no 1.0 promise |
+
+## Superseded forward directions
+
+The following are not competing current options:
+
+- generated Hospital repositories are not normal acquisition;
+- the full development repository is not installed software;
+- RRP is not defined as one user-facing R package;
+- projects do not register/select estimands, targets, or request builders;
+- daily hazard is not the public target;
+- the development `renv` is not universal dependency authority;
+- repository scripts are not the future human surface;
+- Phase 0–11 is not the forward plan/validation hierarchy;
+- clean Git, zero commits/remotes, and whole-tree checks are not project
+  validity requirements; and
+- Connect Git realization is not software acquisition.
+
+Assessments remain decision evidence. Detailed `v0.1.0` documents/contracts
+remain accurate for that release only where this architecture supersedes them.
+
+## Non-goals and deferrals
+
+The initial 1.0.0 implementation does not require bundled R; system-wide
+installation; remote/non-R providers; multiple targets or estimand plugins;
+custom products/apps; a compute-capable artifact; a production database;
+scheduling; decision/priority/work/intervention/measure features;
+hazard-to-risk conversion; retrospective fabricated predictions; a universal
+feature store; uncertainty/explanation, calibration, fairness, monitoring,
+metrics, alerts, or audit systems; multi-hospital tenancy; automatic migration;
+or mandatory `readmit`, agent, service, or proprietary dependencies.
+
+Deferred features enter only through concrete requirements and preserve
+ownership and target semantics rather than speculative plugin surfaces.
+
+## Bounded implementation decisions
+
+This architecture settles the product boundary, user-scoped side-by-side
+posture, host-R line/discovery principle, two-package topology, project
+registration/selection split, dependency isolation, inclusion manifest,
+documentation taxonomy, product-only artifact scope, validation ownership, and
+1.0.0 target generation.
+
+The implementation plan must finalize launcher/installer technology and paths;
+package names/APIs; project manifest and registration schema/paths; 1.0 target,
+canonical, request, provider, history, and product IDs/schemas; distribution
+manifest/build/signing details; project dependency/conflict mechanics;
+migration and legacy archive contracts; artifact/Connect versions; validation
+profile graph; documentation move sequence; and the release support matrix.
+
+These are bounded plan decisions, not reasons for another broad assessment.
+Use reversible spikes where evidence is needed before an irreversible choice.
+
+## Release and versioning direction
+
+This document adopts **RRP 1.0.0 as the target generation** because it creates
+the first intended stable conventional product boundary: installed software,
+independent projects, CLI/API, separate dependencies/upgrades, one cumulative
+risk target, and new history/product compatibility. There is no mature
+`v0.1.0` compatibility promise that a `0.2.0` label needs to preserve, and a
+minor pre-1.0 label would obscure the deliberate new adopter contract.
+
+This is not a release claim. Distinguish the accepted **1.0.0 target
+architecture**, forthcoming **1.0.0 implementation development**, and a future
+**released 1.0.0** that exists only after acceptance and publication. Current
+`0.2.0-dev` metadata is transitional and changes only in an implementation-plan
+increment.
+
+## Architecture acceptance criteria
+
+Implementation planning may begin when maintainers accept that RRP is one
+installed product; projects contain no RRP source; producer/provider are the
+only initial executable seams; the cumulative day-30 target is singular;
+terminal availability and fixed endpoint are enforced; hazard history is not
+relabeled; software/project/state/artifact lifecycles and dependencies are
+separate; upgrades are non-mutating; product-only deployment is first scope;
+validation is lifecycle-owned; and 1.0.0 is a target, not released state.
+
+No implementation should begin while an active authority still asserts a
+contradictory target. Detailed old documents may remain as clearly classified
+implementation/history evidence until planned replacement.
+
+## Implementation-plan bridge
+
+The next task is the **RRP 1.0.0 Implementation Plan**, derived from this
+architecture rather than Phase chronology. It should sequence:
+
+1. authority/governance and lifecycle validation transition;
+2. distribution manifest, packages, resources, and clean installation;
+3. stable programmatic API and thin launcher;
+4. project contract, loading, dependencies, registration, and state root;
+5. singular target/canonical/runtime/provider refactor;
+6. new history schema and explicit legacy isolation/migration;
+7. product/materialization/app migration;
+8. product-only artifact and Connect refactor;
+9. synthetic and independent adopter clean-install acceptance;
+10. documentation reclassification and human operations;
+11. legacy deprecation/retirement; and
+12. 1.0.0 candidate, support, publication, and acquisition proof.
+
+Each increment states what remains working, reuse/replacement, compatibility
+and state effects, human operation, and proportional evidence. Legacy release
+assets remain unchanged until replacement acceptance makes retirement safe.
+
+## Prohibited dependencies
+
+- Installed operations may not require the development or sibling repository.
+- Runtime may not import project producers/providers, Shiny, targets, Git,
+  release tooling, or `readmit`.
+- Project code may not modify/source installation internals.
+- Producers may not bypass admission or build products.
+- Providers may not redefine target/eligibility, broaden available state, query
+  products, or write history.
+- Product builders may not query sources/provider internals; the app may not
+  invoke runtime/providers or query physical history.
+- Product-only artifacts may not include source/provider/model/history writers.
+- Targets may not change canonical, target, history, or product semantics.
+- Project dependencies may not silently override RRP-owned packages.
+- Configuration may not contain executable code, arbitrary load paths, remote
+  code, PHI, or secrets.
+- Installation/upgrades may not mutate project source or state.
+- Agents/clients may not own unique logic or recovery procedures.
+- Nothing may depend on `../readmission-risk-pool`.

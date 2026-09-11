@@ -1,19 +1,22 @@
 # Documentation index
 
-The documentation is the active product at this bootstrap stage. Begin with
-[START HERE](START-HERE.md) for the recommended reading order.
+Begin with [START HERE](START-HERE.md). Current normative architecture,
+supporting decision evidence, implemented `v0.1.0` documentation, and
+historical release evidence have different authority.
 
-## Vision
+## Current normative authority
 
 - [Platform True North](vision/platform-true-north.md) — authoritative product
   identity, principles, ownership, and direction.
+- [Platform Architecture](architecture/platform-architecture.md) —
+  authoritative RRP 1.0.0 target architecture for installed software,
+  independent projects, singular risk, lifecycle ownership, and migration.
 
-## Architecture and implementation
+## Implemented and historical `v0.1.0` boundary documentation
 
-- [Platform Architecture](architecture/platform-architecture.md) — clean
-  layers, interfaces, structure, dependencies, and prohibited dependencies.
 - [Platform Implementation Plan](architecture/platform-implementation-plan.md)
-  — phased clean-build sequence and exit evidence.
+  — completed historical Phase 0–11 sequence; the RRP 1.0.0 plan is the next
+  architecture task.
 - [Specification Foundation](architecture/specification-foundation.md) — common
   YAML envelope, compatibility, identity, time, conformance, and diagnostic
   vocabulary.
@@ -59,37 +62,47 @@ The documentation is the active product at this bootstrap stage. Begin with
   console rendering, and separation from history/metrics/audit.
 - [Progressive Implementation](adoption/progressive-implementation.md) —
   reference composition and source/provider/persistence/product/app replacement.
+
+These component documents describe the released/source `v0.1.0` implementation
+until each is prospectively revised under the 1.0.0 plan. They do not override
+the current Platform Architecture.
+
+## Supporting architecture assessments and decision evidence
+
 - [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
   — target-first classifications of evidence in the sibling repository.
 - [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
   — retained Phase 11.1 evidence for licensing, packaging, governance,
   environment support, release gaps, and maintainer choices.
 - [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
-  — authoritative Iteration 11.3 decision for one maintained repository, two
+  — historical Iteration 11.3 decision for one maintained repository, two
   independently versioned release products, the exact embedded Platform
   release, top-level environment, trusted composition, lifecycle, and bounded
   generated-artifact and standalone Git proofs implemented in Iterations
   11.4–11.5.
 - [Installed RRP and Independent Project Architecture Assessment](architecture/installed-software-project-model-assessment.md)
-  — v0.2.0 assessment of replacing the generated Hospital product with
+  — precursor assessment of replacing the generated Hospital product with
   installed software, independently owned projects, layered validation, and
   project-composable estimands and providers.
 - [Governance and Validation Architecture Assessment](architecture/governance-validation-architecture-assessment.md)
-  — v0.2.0 assessment of proportional validation, lifecycle ownership,
+  — assessment of proportional validation, lifecycle ownership,
   historical phase governance, and strict release/publication boundaries.
 - [Installed Software Boundary and Minimum RRP Project Contract Assessment](architecture/installed-software-project-contract-assessment.md)
-  — v0.2.0 operational dependency trace, installed/project ownership map,
+  — precursor dependency trace, installed/project ownership map,
   minimum manifest and trust boundary, packaging options, and remaining design
   decisions.
 - [Estimand Composition and Trusted Project Registration Assessment](architecture/estimand-composition-project-registration-assessment.md)
-  — retained v0.2.0 precursor assessing a selectable installed estimand,
+  — retained superseded precursor assessing a selectable installed estimand,
   registration result, provider routing, and compatibility sequence.
 - [Platform-Defined Readmission-Risk Target Assessment](architecture/readmission-risk-target-assessment.md)
-  — current v0.2.0 recommendation for one nonselectable remaining cumulative
+  — accepted evidence for one nonselectable remaining cumulative
   30-day target, provider-focused extension, and simplified composition.
 - [Software Distribution, Dependency, and Build-Reproducibility Assessment](architecture/software-distribution-build-reproducibility-assessment.md)
-  — recommended installed RRP software boundary, internal R package and host-R
-  roles, independent project dependencies, closed builds, and artifact closure.
+  — accepted evidence for the RRP software boundary, internal packages/host R,
+  independent project dependencies, closed builds, and artifact closure.
+
+## Historical release and implementation evidence
+
 - [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
   — build, validate, initialize, and exercise the proof-only generated artifact.
 - [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
@@ -104,14 +117,14 @@ The documentation is the active product at this bootstrap stage. Begin with
   recovery, published-state verification, and development transition.
 - [Platform Implementation Record](architecture/platform-implementation-record.md)
   — append-oriented record of actual work and validation.
-- [Open Decisions](architecture/open-decisions.md) — maintainer decisions and
-  the phases in which they become material.
+- [Open Decisions](architecture/open-decisions.md) — historical Phase decisions;
+  the RRP 1.0.0 plan will establish the active decision register.
 
 ## Development
 
 - [Hospital Implementation v0.1.0 Clean-Room Adoption Assessment](development/hospital-implementation-v0.1.0-adoption-assessment.md)
   — evidence from exact-release acquisition, recipient-owned source/provider/
-  estimand extension attempts, and implications for the 0.2.0 baseline.
+  estimand extension attempts, and implications synthesized into RRP 1.0.0.
 - [Implementation Conventions](development/implementation-conventions.md) —
   concise human-readable code and boundary conventions.
 - [Repository Development Policies](development/repository-policies.md) —

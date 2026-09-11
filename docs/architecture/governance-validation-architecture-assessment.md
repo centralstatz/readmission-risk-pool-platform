@@ -2,8 +2,9 @@
 
 ## Status and scope
 
-**Status:** v0.2.0 governance assessment and recommendation; no authoritative
-governance change implemented
+**Status:** retained decision evidence; the accepted lifecycle-owned validation
+direction is authoritative in the current
+[Platform Architecture](platform-architecture.md)
 
 This assessment evaluates the governance system used to develop and release
 Readmission Risk Pool. Operational safety remains binding. The current

@@ -2,8 +2,9 @@
 
 ## Status and scope
 
-**Status:** recommended forward architecture; assessment only; no distribution,
-installer, CLI, package, project, artifact, or release implementation
+**Status:** retained accepted decision evidence; the recommendation is
+synthesized in the current [Platform Architecture](platform-architecture.md),
+with no distribution, installer, CLI, or package implementation yet
 
 This assessment asks what a hospital should install when it installs the
 Readmission Risk Pool (RRP), how that software should be built from this

@@ -8,13 +8,16 @@ product work, read:
 
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
-3. `docs/architecture/platform-implementation-plan.md`;
+3. `docs/architecture/platform-implementation-plan.md` (currently the
+   completed historical `v0.1.0` plan; the RRP 1.0.0 plan is pending);
 4. `docs/architecture/reference-asset-reconciliation.md`; and
 5. `docs/architecture/platform-implementation-record.md`.
 
 Authority flows from True North to architecture to plan to implementation
 record to software. Do not infer architecture from whichever code happens to
-exist.
+exist. Until the RRP 1.0.0 plan replaces the historical plan, forward software
+implementation is not authorized and the forward authority stops at the
+current architecture.
 
 ## Reference repository
 
@@ -38,82 +41,27 @@ Consult the reconciliation document. Record the actual decision in the
 implementation record. Once deliberately copied or adapted, the asset must be
 owned, documented, and tested in this repository with no sibling dependency.
 
-## Work by implementation phase
+## Forward architecture and historical implementation
 
-Keep work within the active phase and its stated exit evidence. Do not create
-later-phase scaffolding merely to make the tree look complete. In particular,
-do not add persistence, products, app code, deployment, or CI/CD
-before the relevant task authorizes it. Completed Phase 4 owns admitted input,
-eligibility, state, estimand requests, provider contracts/registry/execution,
-structured outcomes, the transparent reference provider, and accepted
-estimates inside `rrpruntime`. The current `renv` state owns the Phase 1 YAML
-parser plus DBI and DuckDB solely for the Iteration 5.2 concrete reference
-adapter; `rrpruntime` remains base-R-only. Completed Phase 6 owns the
-three-product logical core set, backend-neutral builders/conformance, YAML
-reference materialization/access adapter, and minimal product-only Shiny app.
-The app owns Shiny; the adapter reuses YAML. Completed Phase 7 owns the stable
-human initialize/doctor/run/inspect/materialize/validate/launch surface,
-operation classification/registry, and progressive-adoption guide. Completed
-Phase 8 owns the target-neutral reduced application-artifact contract and the
-`platform.connect-cloud-git-realization@0.1.0` local Git realization. It may
-generate and independently validate an explicitly chosen, outside-repository,
-remote-free deployment repository. Remote creation, commit, push, Connect
-deployment, OCI/container realization, and later layers remain outside the
-implemented platform boundary.
-Completed Phase 9 owns the distinct operation-run context and structured
-diagnostic-event contracts, base-R in-memory emitter/callable sink, safe
-shallow context rules, non-retained console renderer, and bounded integration
-with doctor, reference run, product materialization, artifact build, and
-Connect realization. Retained/external sinks, routing, retention, metrics,
-alerts, tracing protocols, audit, and scheduling remain outside this slice.
-Completed Phase 10 owns `platform.canonical-producer@0.1.0`, the generic
-structured producer result/admission boundary, explicit trusted callable
-registration, exact single installation selection, reusable producer
-conformance, the migrated synthetic reference peer, and an independently
-developed test-only adopter producer using a materially different source shape.
-The two isolated compositions prove unchanged runtime/provider, DuckDB,
-products/app, and artifact behavior. The fixture is evidence, not a second
-shipped health system. Iterations 11.4–11.5 own the generated adopter-facing
-artifact and pristine standalone Git form. Iteration 11.6 installs Apache-2.0
-and minimal governance, declares narrow tested support evidence, and owns the
-final local `v0.1.0` candidate/readiness workflow. Phase 11 is complete:
-Iteration 11.7 used the explicitly authorized, fail-closed workflow to publish
-and remotely verify both `v0.1.0` products, then advanced development to
-`0.2.0-dev` with no next release prepared.
-Iteration 11.1 owns the retained decision assessment in
-`docs/architecture/distribution-release-assessment.md`. Iteration 11.2
-baselines the maintainer's release/governance direction; its separately
-maintained kit and formal three-level interpretation are historical evidence.
-Iteration 11.3 authoritatively revises
-`docs/architecture/hospital-implementation-distribution-assessment.md`: this one
-maintained repository will produce the independently versioned Platform and
-generated Readmission Risk Pool Hospital Implementation releases. The latter
-carries one exact verified Platform archive, thin wrappers, fixed trusted
-composition, and one top-level R environment. Recipient modifications are
-outside the CentralStatz release architecture. Iteration 11.4 implements the
-proof-only generated artifact under ignored `build/`: versioned contract,
-exact unpublished Platform candidate archive, closed inventory/SHA-256, one
-top-level lock, safe managed extraction, callable cycle seam, thin wrappers,
-editable fail-closed scaffold, separate fictional adopter example, standalone
-validation, and external-copy workflows through unchanged history/products/app/
-reduced artifact. Iteration 11.5 implements
-`platform.hospital-implementation-git-realization@0.1.0` and the maintainer-only
-artifact-to-repository boundary: explicit outside-repository destination,
-closed provenance/inventory, pristine-output replacement rules, independent
-validation, and `main` with all files staged, zero commits, and zero remotes.
-It creates no release, tag, remote, push, publication, or deployment. Iteration
-11.6 supersedes proof-only release preparation: Apache-2.0 is installed, both
-independently versioned products target `0.1.0`, exact local candidates and
-clean-acquisition evidence are produced under ignored `build/`, and status
-remains explicitly `not_published`.
-Iteration 11.7 owns only the maintainer publication boundary: exact GitHub
-targets in `RELEASE.yml`, zero-mutation preflight, explicit `--publish`,
-Platform-first tags/releases, generated Hospital repository publication,
-checksummed partial-stage recovery, published-state acquisition, and the
-post-verification development transition. It never force-pushes, deletes, or
-rewrites remote state, and the Hospital repository remains generated output.
-The Platform release commit is `7a3cca66db2cdd6f7796918282db294bbb7eb4e8`;
-durable publication evidence is under `releases/0.1.0/`.
+Phase 0–11 is the completed `v0.1.0` implementation history, not the forward
+development hierarchy. The exact release remains immutable; its code, focused
+component documents, tests, generated Hospital distribution, and publication
+evidence remain the current implemented baseline until deliberately replaced.
+
+The current [Platform Architecture](docs/architecture/platform-architecture.md)
+is the authoritative RRP 1.0.0 target. It establishes installed RRP software,
+independent hospital projects, one nonselectable cumulative day-30 risk target,
+project producer/provider seams, separate dependency/state lifecycles,
+product-only deployment, non-mutating upgrades, and lifecycle-owned validation.
+It supersedes contrary forward recommendations in assessments and historical
+Phase documents. `1.0.0` is not implemented or released.
+
+Do not begin 1.0.0 software implementation until the explicitly authorized RRP
+1.0.0 Implementation Plan replaces the historical plan. Work from that future
+plan's workstreams and acceptance evidence rather than continuing Phase
+numbers. Documentation synthesis and planning may use proportional validation
+when explicitly scoped. Do not alter released `v0.1.0` assets or publication
+evidence while developing the new generation.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -126,7 +74,8 @@ the architecture or plan explicitly if evidence changes them.
 - Local source implementations own source interpretation and stop at the
   canonical handoff.
 - Generic runtime never depends on a named implementation or source system.
-- Estimands own quantity semantics; providers declare and conform to them.
+- RRP owns one versioned remaining cumulative day-30 readmission-risk target;
+  projects do not register or select estimands or request builders.
 - Risk and decision/priority policy remain separate.
 - Tasks and interventions remain separate.
 - Operational history is append-oriented and distinct from products.
@@ -134,8 +83,8 @@ the architecture or plan explicitly if evidence changes them.
 - The app consumes products and does not query sources or invoke providers.
 - Deployment targets package stable runtime interfaces and do not alter
   upstream semantics.
-- Hospital-facing distribution composes an exact managed platform release; it
-  does not fork, duplicate, dynamically discover, or redefine platform logic.
+- Installed RRP software and independent project source/state are distinct;
+  software installation or upgrade never silently modifies a project.
 - Observability, provenance, validation, metrics, and audit remain distinct.
 - One deployment represents one health system.
 - Optional advanced methods never become mandatory core dependencies.
@@ -159,7 +108,9 @@ privacy tests, console guidance, and affected operation together when event
 behavior changes. Agents are consumers of the same interface, never an
 observability dependency.
 
-Read `docs/operations/operator-manual.md` before platform operation. Invoke its
+The commands below operate the current `v0.1.0` source implementation. They are
+historical/current executable interfaces, not the future RRP 1.0.0 CLI
+contract. Read `docs/operations/operator-manual.md` before platform operation. Invoke its
 exact commands instead of recreating multi-stage sequences ad hoc, report the
 human operation invoked, keep documentation/registry/tests aligned when an
 operation changes, and never introduce scheduling implicitly. Do not modify a
@@ -241,7 +192,12 @@ Follow `docs/development/implementation-conventions.md`.
 ## Validation and documentation
 
 Use the exact human operations documented in
-`docs/operations/validation.md`. During intentional work, run:
+`docs/operations/validation.md` for changes to the implemented `v0.1.0`
+software. The universal Phase/checkpoint commands are legacy release evidence,
+not default proof for forward documentation or planning. Select validation
+proportional to the affected architecture boundary and follow an explicit task's
+stricter or narrower validation scope. The current legacy development command
+is:
 
 ```sh
 Rscript operations/validate.R --mode development
@@ -369,7 +325,7 @@ complete. The Phase 3 implementation is documented in
 runtime mode, and generic canonical code must not depend on its identity or
 source tables.
 
-The generic adopter/source composition seam uses
+The currently implemented `v0.1.0` adopter/source composition seam uses
 `docs/architecture/canonical-producer-foundation.md` and
 `contracts/canonical/canonical-producer.yml`. One installation selects one
 exact producer in `config/platform-instance.yml`; trusted maintained code, not
@@ -379,25 +335,14 @@ before runtime. The independent adopter evidence is isolated under
 registry. Do not add dynamic loading, hospital selectors, multiple active
 producers, or source configuration or secrets above this boundary.
 
-The selected physical composition is governed by
-`docs/architecture/hospital-implementation-distribution-assessment.md`.
-Maintained hospital-facing source remains in this repository and will generate
-an independently versioned distribution embedding one exact verified Platform
-archive. Generated templates own one complete platform-instance selection,
-fixed reviewed composition, and the only active top-level `renv` environment;
-the embedded lock remains provenance, and isolated synthetic acceptance remains
-separate from adopter state. There is no separately maintained CentralStatz
-project or formal third release layer. Iteration 11.5 may realize only an
-independently validated artifact as a pristine outside-repository Git tree;
-Iteration 11.6 may compose that exact form into ignored local `not_published`
-release evidence from clean source. Iteration 11.7 may publish only that exact
-form to the fixed Platform and generated Hospital GitHub targets after the
-documented preflight passes and explicit `--publish` authorization is present.
-Treat distribution and Git-realization operations as maintainer/release
-preparation, not hospital-facing operations; never rebuild inputs implicitly,
-overwrite modified/committed/remote-configured destinations, merge recipient
-changes, or proceed to publication without a later explicitly authorized
-release operation.
+The generated Hospital composition in
+`docs/architecture/hospital-implementation-distribution-assessment.md` is
+immutable `v0.1.0` release history, not forward architecture. Preserve its
+published assets and explicit publication safeguards, but do not extend it as
+the RRP 1.0.0 acquisition path. The forward project registers producers and
+providers only; installed RRP owns the singular target and runtime. The
+development lock, installed software environment, project extension
+environment, and deployment closure are distinct.
 
 The generic runtime foundation uses
 `docs/architecture/runtime-foundation.md` and `contracts/runtime/`. It requires
@@ -430,7 +375,7 @@ runtime-run identity; events are not history, validation, provenance, metrics,
 or audit, and no default sink persists them.
 
 Update versions, tests, examples/configuration, human documentation, and the
-implementation record together when changing a contract, estimand, provider,
+implementation record together when changing a contract, risk target, provider,
 policy, record, product, operation, or deployment interface. Keep current
 maturity and fictional/nonclinical limitations explicit.
 

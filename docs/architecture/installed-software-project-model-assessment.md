@@ -2,8 +2,8 @@
 
 ## Status and scope
 
-**Status:** v0.2.0 architecture assessment and recommendation; not yet accepted
-target architecture
+**Status:** retained decision evidence; accepted conclusions and supersessions
+are synthesized in the current [Platform Architecture](platform-architecture.md)
 
 This assessment asks whether Readmission Risk Pool should move forward from the
 immutable `v0.1.0` baseline as conventional installed software operating on

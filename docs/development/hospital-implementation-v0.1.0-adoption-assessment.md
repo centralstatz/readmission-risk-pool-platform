@@ -1,5 +1,11 @@
 # Hospital Implementation v0.1.0 clean-room adoption assessment
 
+## Status and authority
+
+**Status:** retained external acceptance evidence. Its forward implications are
+synthesized in the current
+[Platform Architecture](../architecture/platform-architecture.md).
+
 ## Overall verdict
 
 **FAIL — the released Hospital Implementation does not provide a viable

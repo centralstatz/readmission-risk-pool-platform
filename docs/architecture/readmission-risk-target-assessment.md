@@ -2,8 +2,9 @@
 
 ## Status and scope
 
-**Status:** focused `v0.2.0` architecture assessment and recommendation; no
-risk-target implementation
+**Status:** retained accepted decision evidence; the target is authoritative in
+the current [Platform Architecture](platform-architecture.md) but is not yet
+implemented
 
 This assessment narrows the prospective installed-RRP and independent-project
 model described by the [installed software boundary

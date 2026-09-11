@@ -5,7 +5,8 @@
 **Status:** retained `v0.2.0` precursor assessment; its configurable installed-
 estimand recommendation is superseded by the focused
 [platform-defined readmission-risk target
-assessment](readmission-risk-target-assessment.md)
+assessment](readmission-risk-target-assessment.md) and the current
+[Platform Architecture](platform-architecture.md)
 
 This assessment closes the first analytical composition decision beneath the
 proposed [installed software and minimum project

@@ -6,6 +6,7 @@
 remains recommended, while its provisional user-facing R-package topology is
 superseded by the
 [software distribution and build-reproducibility assessment](software-distribution-build-reproducibility-assessment.md)
+and synthesized in the current [Platform Architecture](platform-architecture.md)
 
 No redesign described here is implemented. References to a `v0.2.0` package
 are historical proposal language, not a settled product form or next-release

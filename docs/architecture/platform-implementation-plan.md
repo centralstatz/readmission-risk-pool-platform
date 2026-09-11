@@ -2,11 +2,22 @@
 
 ## Status and authority
 
-**Status:** authoritative clean-build sequence
+**Status:** completed historical `v0.1.0` clean-build sequence; not the forward
+RRP 1.0.0 implementation plan
 
-This plan derives from [Platform Architecture](platform-architecture.md), which
-derives from [Platform True North](../vision/platform-true-north.md). It is not
-a continuation of the sibling repository's refactoring plan.
+This plan records the Phase 0–11 sequence that produced and published immutable
+`v0.1.0`. Git history and the release tag preserve the architecture that
+governed it. The current [Platform True North](../vision/platform-true-north.md)
+and [Platform Architecture](platform-architecture.md) now define the forward
+RRP 1.0.0 target and supersede this plan wherever product, project, target,
+distribution, or governance directions differ.
+
+The next architecture task is to replace this file in place with the **RRP
+1.0.0 Implementation Plan** described by the current architecture's plan
+bridge. Until that plan is accepted, this document authorizes no 1.0.0
+implementation work. The historical content below is retained as evidence and
+is not silently rewritten to make it appear that Phase 0–11 built the new
+architecture.
 
 The plan starts from an empty software repository. Each phase must leave a
 coherent, documented state and must add an entry to the

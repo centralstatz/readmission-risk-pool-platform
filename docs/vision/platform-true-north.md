@@ -5,9 +5,12 @@
 This document is the authoritative statement of the intended identity and
 long-term direction of the Readmission Risk Pool Platform. It governs the
 [platform architecture](../architecture/platform-architecture.md), which
-governs the [implementation plan](../architecture/platform-implementation-plan.md).
-The [implementation record](../architecture/platform-implementation-record.md)
-records what is actually built. Software must conform to that chain.
+will govern the replacement
+[implementation plan](../architecture/platform-implementation-plan.md); the
+linked plan currently records completed `v0.1.0` history. The
+[implementation record](../architecture/platform-implementation-record.md)
+records what is actually built. Forward software must conform to the complete
+chain once the RRP 1.0.0 plan is accepted.
 
 ```text
 Platform True North
@@ -34,8 +37,9 @@ Use these labels when discussing maturity:
 - **Open decision** — a choice requiring maintainer input when it becomes
   material.
 
-At bootstrap, this repository contains governing documentation only. Target
-statements are not claims of implemented or clinically validated capability.
+The published `v0.1.0` release is immutable historical evidence. Current
+development targets the RRP 1.0.0 architecture; target statements are not
+claims that 1.0.0 is implemented, released, or clinically validated.
 
 ## Platform identity and purpose
 
@@ -55,7 +59,7 @@ pipeline, or consulting deliverable. It includes:
 - public canonical and extension contracts;
 - implementation-owned source interpretation;
 - generic computation after the canonical boundary;
-- governed estimands and model providers;
+- one governed readmission-risk target and replaceable model providers;
 - append-oriented operational history;
 - curated logical application products;
 - a working supplied application;
@@ -84,9 +88,9 @@ monitoring, incident response, and operational adoption.
 complete components are replaced or customized.
 
 ```text
-Acquire platform
+Install RRP software
         ↓
-Run synthetic reference implementation
+Initialize an independent fictional project
         ↓
 Run transparent default provider
         ↓
@@ -96,12 +100,12 @@ Launch supplied application
         ↓
 Build a reference deployment
         ↓
-Replace source, provider, storage, deployment, or interface deliberately
+Replace project source mapping or provider deliberately
 ```
 
 Replacement order is not fixed. The durable expectations are:
 
-- deployment can change without changing canonical or model semantics;
+- deployment can change without changing canonical or target semantics;
 - source implementation can change without changing the selected provider;
 - providers can change without rewriting application code;
 - applications can change without redefining canonical contracts;
@@ -127,11 +131,11 @@ decision.
 pilot, and broader governed adoption are stages of one platform, not different
 products requiring different architecture.
 
-A technically capable analyst or developer should be able to acquire the
-project, run the fictional system, understand the boundaries, map approved
-local data, test a conforming provider, build products, and demonstrate a
-prototype without first buying services or installing enterprise
-infrastructure.
+A technically capable analyst or developer should be able to install RRP,
+initialize and run the fictional project, understand the boundaries, create a
+separate local project, map approved local data, test a conforming provider,
+build products, and demonstrate a prototype without first buying services or
+installing enterprise infrastructure.
 
 Low-friction exploration does not remove governance. Work with real data must
 use approved environments and controls. Successful execution does not imply
@@ -198,9 +202,10 @@ enforceable.
 ## Generic runtime and computational responsibilities
 
 After conformance, the generic runtime owns implementation-neutral behavior,
-including population eligibility, temporal filtering, reproducible state
-construction, estimand requests, provider invocation, decision and priority
-logic, lineage, and construction of derived records.
+including target eligibility, temporal filtering, reproducible state
+construction, the standard remaining-risk request, provider invocation,
+lineage, and construction of derived records. Any later decision and priority
+logic remains a separate policy layer.
 
 These responsibilities share identifiers and run context but remain separable:
 
@@ -211,44 +216,49 @@ These responsibilities share identifiers and run context but remain separable:
 - measure lineage is not the organizing data model; and
 - derived operational records are not application views.
 
-## Estimands and governed model providers
+## Platform-defined risk target and governed model providers
 
 **Target state:** Model providers are first-class extensions governed by the
 meaning of the quantities they estimate. Technical executability alone is not
 sufficient.
 
 ```text
-Canonical data and state
+Canonical data and temporally valid state
         ↓
-Versioned estimand specification
+Versioned RRP risk-target specification and standard request
         ↓
 Selected provider specification and declared capabilities
         ↓
-Universal + estimand-specific + provider-specific conformance
+Target + provider conformance
         ↓
 Standardized derived estimate records
 ```
 
-Estimands own quantity meaning: population, conditioning information, time
-origin, horizon, event definition, terminal and competing-event behavior,
-output domain, and mathematical or temporal coherence.
+RRP owns one nonselectable target for the 1.0.0 generation: remaining
+actual-world cumulative probability of first canonical readmission through the
+fixed endpoint 30 elapsed days after discharge, conditional on being alive and
+readmission-free at the current as-of time and using only admitted information
+available through that time. Death before readmission competes. Daily hazard is
+not a public target.
 
-Providers own method: required inputs and state fields, supported estimands,
-configuration or loading, dependencies, uncertainty and explanation
-capabilities, and declared limitations and failure behavior.
+Providers own method: required admitted inputs and state fields, target/API
+compatibility, configuration/loading, dependencies, fitted model artifacts,
+optional uncertainty/explanation capabilities, and limitations/failure
+behavior. A provider may use hazard, survival, Bayesian, machine-learning, or
+other methods internally but must return the RRP-defined quantity.
 
-The platform owns controlled registration and selection, input compatibility,
-future-information exclusion, standardized results, universal probability and
-cardinality rules, estimand-specific conformance, safe unsupported/missing
-input behavior, and provider/version provenance.
+The platform owns target meaning and request construction, controlled provider
+registration and exact project selection, compatibility, future-information
+exclusion, standardized results, probability/cardinality rules, safe failure,
+and provider/model provenance. Projects do not register or select estimands,
+targets, or request builders.
 
 Conformance must remain distinct from clinical validity, calibration,
 fairness, effectiveness, regulatory status, and local production approval.
 
-The reference path should ship with a small number of versioned estimands and
-transparent, reproducible, visibly nonclinical default providers. Advanced
-Bayesian, survival, simulation, causal, or intervention-learning methods are
-optional providers or research extensions, never mandatory core dependencies.
+The reference path should include a transparent, reproducible, visibly
+nonclinical example provider. Advanced methods are optional project providers
+or research extensions, never mandatory core dependencies.
 
 ## Persistent operational history
 
@@ -322,16 +332,17 @@ Tested platform operations
 Agents, skills, scripts, schedulers, and future clients
 ```
 
-First-class operations will grow with the implementation and may include
-initialize, doctor, validate, generate a reference implementation, build, run,
-select an implementation, select a provider, build products, launch, build a
-deployment, publish, and upgrade. Final names and packaging should follow
-working interfaces rather than precede them.
+The CLI is the canonical human operational interface. A stable programmatic
+API performs the work and is shared by the CLI, tests, automation, agents, and
+supported clients. Operation categories include software/project health,
+project initialization and validation, run/history, products/app, artifacts,
+and explicit upgrade or migration as those capabilities are implemented. Final
+command syntax follows working interfaces rather than preceding them.
 
 An agent must not own unique business logic or an undocumented recovery path.
-If all AI-specific files disappeared, the platform would remain operable. A
-future `readmit` R package or CLI may be a convenient client or control surface,
-but it must remain optional and invoke the same operations.
+If all AI-specific files disappeared, the platform would remain operable. The
+future `readmit` R package is an optional client/provider-development tool over
+supported interfaces, not the RRP CLI, runtime, or target authority.
 
 ## Observability, provenance, validation, metrics, and audit
 
@@ -359,23 +370,31 @@ These concepts are related but not interchangeable:
 Ordinary logs must never be described as a clinical or regulatory audit trail
 without a governed design establishing that property.
 
-## Deployment and distribution
+## Installation, deployment, and distribution
 
-**Target state:** Deployment is a transformation from platform source into a
-validated target-specific realization.
+**Target state:** RRP is one versioned installed software distribution operating
+on an independently owned project. Deployment is a separate transformation of
+validated installed/project outputs into a closed target realization.
 
 ```text
-Platform source
-        ↓
-Deployment build
+Development source → closed software build → installed RRP
+                                           ↓ explicit project
+                              validated project products
+                                           ↓ artifact build
+                              target-neutral closed artifact
         ↓
 Target-specific realization
         ↓
 Deployment or publication
 ```
 
+The software distribution may contain internal R packages, but R is an
+implementation dependency rather than the operator experience. RRP and each
+project own separate dependency environments. Installation is versioned and
+non-mutating with respect to project source and state.
+
 Deployment targets own runtime packaging and validation. They must not alter
-canonical, estimand, provider, product, or operational-history semantics.
+canonical, target, provider, product, or operational-history semantics.
 Generated deployment repositories are ordinarily realizations and should not
 be edited as authoritative source.
 
@@ -384,10 +403,35 @@ practical public demonstration path. It is not a core dependency. Other
 approved targets should be added from concrete needs rather than speculative
 infrastructure.
 
-The platform is intended for public open-source distribution. The initial
-acquisition path may be a repository clone; releases, archives, installers,
-containers, and optional clients require evidence and explicit support
-decisions. No distribution wrapper may hide or duplicate platform logic.
+The development repository is not the installed payload. A closed inclusion
+manifest, exact output inventory, dependency/build evidence, cryptographic
+digests, and clean installation proof define a distribution. Hospitals do not
+normally clone or modify platform source. Generated Hospital Implementation
+repositories remain `v0.1.0` history rather than the forward product boundary.
+
+The initial deployed artifact is product-only and excludes producers,
+providers, models, and history writers. A compute-capable artifact is a later,
+distinct profile. No distribution or target wrapper may duplicate or redefine
+platform logic.
+
+## Upgrade and migration separation
+
+**Design principle:** software upgrades do not silently mutate independent
+projects or their state.
+
+```text
+install and verify a new RRP version
+        ↓
+validate a project against it
+        ↓
+activate explicitly or retain the prior version
+```
+
+Project migration explicitly changes project source/configuration. State
+migration explicitly transforms persistent state with source preservation,
+staging, validation, and provenance. Neither is an installer side effect.
+Side-by-side or equivalently atomic software versions must permit validation
+and rollback before an old installation is removed.
 
 ## Human-readable implementation
 
@@ -413,17 +457,17 @@ product, deployment, and operational boundaries.
 
 ## Stewardship and ownership boundaries
 
-The core platform owns public contracts, conformance, generic post-canonical
-behavior, the synthetic reference, valid nonclinical defaults, product
-interfaces, a working application and deployment, persistence and diagnostic
-interfaces, operations, tests, documentation, versioning, provenance, and
-open-source stewardship.
+The core platform owns the installed distribution, public project/canonical/
+target/provider/history/product/artifact contracts, conformance, generic
+post-canonical behavior, fictional example project, valid nonclinical defaults,
+product interfaces, supplied app/deployment builders, operations, tests,
+documentation, versioning, provenance, and open-source stewardship.
 
-The adopter owns source queries and interpretation, local mappings and
-configuration, custom provider approval, storage infrastructure and policy,
-identity and access, security, deployment approval, diagnostic routing and
-retention, local model and clinical governance, monitoring, incident response,
-and adoption.
+The adopter owns an independent project: source access/interpretation, mapping
+and producer, selected provider/model and extension dependencies, model
+artifacts, nonsecret configuration, writable state and storage policy, identity
+and access, secrets, deployment approval, diagnostic routing/retention, local
+model/clinical governance, monitoring, incident response, and adoption.
 
 CentralStatz and third parties may own optional providers, integrations,
 extensions, and professional services. Their value is expertise and judgment,
@@ -446,7 +490,7 @@ Before accepting a material change, ask whether it:
 4. keeps generic code unaware of local sources and named implementations;
 5. strengthens a versioned, storage-independent public interface;
 6. preserves temporal validity, provenance, and attributable history;
-7. keeps estimand meaning ahead of provider convenience;
+7. keeps the singular RRP target ahead of provider convenience;
 8. separates risk, decisions, work, interventions, products, and audit;
 9. remains human-operable without AI or a proprietary service;
 10. keeps the app separate from source, model, and storage internals;

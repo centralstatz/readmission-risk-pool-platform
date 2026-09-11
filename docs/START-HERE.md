@@ -1,18 +1,20 @@
 # Start here
 
-This repository has completed its first durable source-to-history-to-product-
-application flow. Understand its logical and physical boundaries before
-extending it.
+The repository contains an immutable released `v0.1.0` implementation and the
+authoritative target architecture for RRP 1.0.0. Read authority before
+implementation detail: assessments explain decisions, and Phase 0–11 documents
+describe history rather than the forward development hierarchy.
 
 ## Recommended review
 
 1. [Platform True North](vision/platform-true-north.md) — what the platform is
    and the durable tests for future changes.
 2. [Platform Architecture](architecture/platform-architecture.md) — where
-   responsibilities live, how dependencies flow, and which dependencies are
-   prohibited.
+   the authoritative RRP 1.0.0 software, project, target, runtime, state,
+   deployment, upgrade, and validation responsibilities now live.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
-   — how the empty repository becomes a working platform in coherent phases.
+   — completed historical `v0.1.0` Phase 0–11 plan. Do not use it as the RRP
+   1.0.0 implementation sequence; the replacement plan is the next task.
 4. [Specification Foundation](architecture/specification-foundation.md),
    [Canonical Bundle Foundation](architecture/canonical-bundle-foundation.md),
    and [Initial Canonical Clinical Profile](architecture/canonical-clinical-profile.md)
@@ -57,46 +59,42 @@ extending it.
 18. [Reference Asset Reconciliation](architecture/reference-asset-reconciliation.md)
    — which old assets appear useful and why none controls the design.
 19. [Open Decisions](architecture/open-decisions.md) — choices that require
-   maintainers at phase-appropriate checkpoints.
+   maintainer decisions in the historical Phase plan; the 1.0.0 plan will
+   establish the active decision register.
 20. [Distribution and First-Release Assessment](architecture/distribution-release-assessment.md)
    — the Phase 11.1 options, evidence, deliberate deferrals, and release gaps
    that preceded maintainer decisions.
 21. [Hospital-Facing Implementation Distribution](architecture/hospital-implementation-distribution-assessment.md)
-   — the authoritative one-repository/two-release-product model, exact embedded
-   Platform release, top-level environment, trusted composition, operations,
-   lifecycle, and implemented artifact/Git-realization proofs.
+   — the historical `v0.1.0` one-repository/two-release-product model, exact
+   embedded Platform release, environment, composition, and generated proofs.
 22. [Installed RRP and Independent Project Architecture Assessment](architecture/installed-software-project-model-assessment.md)
-   — the forward-looking v0.2.0 assessment of installed software, independent
-   hospital projects, reusable machinery, validation layers, and remaining
-   extension decisions. It is a recommendation, not yet accepted architecture.
+   — supporting evidence for installed software, independent projects, and
+   reusable boundaries; later target/package conclusions supersede parts of it.
 23. [Governance and Validation Architecture Assessment](architecture/governance-validation-architecture-assessment.md)
-   — the forward-looking v0.2.0 assessment of current authority coupling,
-   proportional validation, lifecycle ownership, and historical phase status.
-   It recommends future governance changes but does not enact them.
+   — supporting evidence for proportional validation, lifecycle ownership,
+   authority simplification, and historical Phase status.
 24. [Installed Software Boundary and Minimum RRP Project Contract Assessment](architecture/installed-software-project-contract-assessment.md)
-   — the concrete v0.2.0 dependency and ownership trace defining what RRP
-   installs, the minimum independent-project contract, the trusted composition
-   seam, and the focused decisions still required before implementation.
+   — retained ownership/dependency trace; its provisional user-facing package
+   topology is superseded by the current architecture.
 25. [Estimand Composition and Trusted Project Registration Assessment](architecture/estimand-composition-project-registration-assessment.md)
-   — the retained v0.2.0 precursor that assessed a selectable supplied
+   — the retained superseded precursor that assessed a selectable supplied
    estimand, trusted registration, provider routing, and compatibility.
 26. [Platform-Defined Readmission-Risk Target Assessment](architecture/readmission-risk-target-assessment.md)
-   — the superseding v0.2.0 recommendation for one explicit nonselectable
-   remaining cumulative 30-day risk target and provider-focused extension.
+   — accepted decision evidence for one explicit nonselectable remaining
+   cumulative 30-day risk target and provider-focused extension.
 27. [Software Distribution, Dependency, and Build-Reproducibility Assessment](architecture/software-distribution-build-reproducibility-assessment.md)
-   — the recommended installed RRP software boundary, internal R package and
+   — accepted decision evidence for the RRP software boundary, internal packages,
    host-R roles, project dependency ownership, closed builds, and deployments.
 28. [Hospital Implementation Distribution Operations](operations/hospital-implementation-distribution.md)
-   — build, independently validate, initialize, and exercise a copied proof artifact.
+   — historical `v0.1.0` build/validation operation for its proof artifact.
 29. [Standalone Hospital Implementation Git Realization](operations/hospital-git-realization.md)
-   — generate and validate the pristine staged repository form while stopping
+   — historical generation/validation of the pristine staged form, stopping
    before commit, remote, tag, push, or publication.
 30. [Maintainer Release Preparation](operations/release-preparation.md) and
    [Apache-2.0 Compatibility Review](architecture/release-license-review.md) —
-   prepare and inspect exact `v0.1.0` candidates and governance/readiness
-   evidence while remaining explicitly unpublished.
+   historical preparation and governance evidence for exact `v0.1.0` candidates.
 31. [Maintainer Release Publication](operations/release-publication.md) —
-   understand the zero-mutation preflight, explicit GitHub mutation boundary,
+   historical zero-mutation preflight, explicit GitHub mutation boundary,
    partial-failure recovery, and remote verification.
 32. [Platform Implementation Record](architecture/platform-implementation-record.md)
    — what has actually been done, validated, and learned.

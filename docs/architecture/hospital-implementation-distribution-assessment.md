@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative Iteration 11.3 architecture with the Iteration 11.4
-generated build/validation proof and Iteration 11.5 standalone Git realization
-implemented
+**Status:** historical `v0.1.0` architecture and implementation evidence; the
+generated Hospital product is retired from the forward path by the current
+[Platform Architecture](platform-architecture.md)
 
 **Decision date:** 2026-08-20
 

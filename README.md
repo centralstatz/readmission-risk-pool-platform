@@ -14,7 +14,15 @@ runtime or test dependency.
 
 ## Current status
 
-**Phase 11 is complete; current development is `0.2.0-dev`.** Iteration 11.1 provides
+**`v0.1.0` is complete and immutable; the current target architecture is RRP
+1.0.0.** The exact released code remains the implemented baseline, while the
+current [Platform Architecture](docs/architecture/platform-architecture.md)
+defines the conventional installed-software and independent-project product
+now awaiting its implementation plan. `1.0.0` is a target generation, not a
+released version. Existing `0.2.0-dev` metadata is transitional and no next
+release is prepared.
+
+Phase 11 and Iteration 11.1 provide
 the retained first-release decision assessment. Iteration 11.2 baselines the
 maintainer's release/governance direction. Iteration 11.3 revises the physical
 distribution architecture: this is the only maintained CentralStatz source
@@ -102,27 +110,32 @@ Apache-2.0 releases of fictional, nonclinical software; local security,
 clinical validation, production approval, and deployment remain operator
 responsibilities.
 
-## Direction
+## Forward direction
 
-The intended first working realization will use a deterministic, visibly
-fictional synthetic health system. It will exercise the same canonical
-boundary, runtime, provider, history, products, application, and deployment
-interfaces expected of an adopter. Generic code will not contain a privileged
-synthetic mode.
+RRP 1.0.0 will be one versioned installed software product operated primarily
+through a thin CLI over stable programmatic interfaces. Hospitals will own
+independent projects containing source mappings/producers, selected providers
+and models, extension dependencies, configuration, and writable state. RRP
+will define one remaining cumulative 30-day readmission-risk target. The
+fictional reference will become a normal example project rather than a
+privileged installed composition.
 
 One deployment represents one health system. The supplied Shiny application
 will be an important interface, but it will not define the platform. Posit
-Connect Cloud will be the reference deployment target, not a core dependency.
+Connect will be the first reference target for a reduced product-only artifact,
+not a core dependency or compute-deployment promise. Published `v0.1.0`
+Hospital acquisition remains supported historical release guidance; it is not
+the forward 1.0.0 product boundary.
 
 ## Start here
 
 1. Read [Platform True North](docs/vision/platform-true-north.md) for product
    identity and durable principles.
 2. Read [Platform Architecture](docs/architecture/platform-architecture.md) for
-   layers, dependency direction, prohibited dependencies, and the proposed
-   repository structure.
+   the authoritative RRP 1.0.0 target boundaries and dependency direction.
 3. Read the [Implementation Plan](docs/architecture/platform-implementation-plan.md)
-   for the clean-build phases.
+   as the completed historical `v0.1.0` Phase 0–11 plan. The replacement RRP
+   1.0.0 plan is the next architecture task.
 4. Read the [Specification Foundation](docs/architecture/specification-foundation.md)
    for the shared contract vocabulary.
 5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md),

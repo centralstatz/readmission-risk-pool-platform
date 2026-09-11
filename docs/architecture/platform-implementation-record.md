@@ -5576,3 +5576,100 @@ portable document paths. It was invoked with R init files disabled after the
 ordinary invocation blocked during unrelated `renv` activation; the validator
 itself and its inputs were unchanged. Affected Markdown had no trailing
 whitespace, and `git diff --check` passed.
+
+### RRP 1.0.0 target-architecture synthesis (2026-09-11)
+
+#### Objective and scope
+
+Convert the completed forward assessment sequence into one authoritative
+architecture for RRP's next implementation generation. The synthesis resolves
+the installed product, independent project, trusted composition, singular risk
+target, runtime, state, products/app, deployment, dependency, upgrade,
+validation, documentation, and release boundaries. It is architecture-only:
+no runtime, contract, package, project loader, CLI, distribution, state,
+artifact, or release implementation changed, and published `v0.1.0` remains
+immutable.
+
+#### Authority reconciliation
+
+Revised `docs/architecture/platform-architecture.md` in place rather than
+creating a version-parallel architecture tree. It is now the single normative
+target architecture below True North. Aligned conflicting plural-estimand,
+repository-acquisition, operation-surface, distribution/deployment, ownership,
+and upgrade statements in `docs/vision/platform-true-north.md`.
+
+Marked the completed Phase 0–11 plan and open-decision register as historical
+`v0.1.0` evidence. Marked the generated Hospital architecture as historical
+and the clean-room, installed-software, governance, project, estimand,
+risk-target, and distribution assessments as supporting decision evidence.
+Updated root, documentation, START HERE, and agent navigation so contributors
+no longer reconcile assessments as competing authority. Historical documents
+and records were not rewritten to imply they implemented the new architecture.
+
+#### Synthesized architecture
+
+RRP is one installed software distribution, operated through a thin canonical
+human CLI over shared programmatic operations. It contains a private dependency
+library, `rrpruntime`, one main orchestration package, installed resources,
+defaults, products/app, example/template, deployment builders, docs, and closed
+build evidence. Host R 4.4.x is the initial prerequisite. The first evidence
+cells are macOS arm64 and Ubuntu x86_64; support requires complete clean-install
+acceptance. Installation is user-scoped and side-by-side, with an explicit
+recorded R executable and activation/rollback separation.
+
+An independent hospital project owns a nonsecret manifest, one fixed trusted
+registration entry point, producer/mapping, selected provider/model,
+dependencies, configuration, model artifacts, and writable state. Registration
+declares available producers/providers; the manifest selects exactly one of
+each. Projects do not register estimands, targets, or request builders.
+
+RRP defines one nonselectable remaining actual-world cumulative probability of
+first canonical readmission in `(t, W30]`, conditional on being alive and
+readmission-free through `t` using admitted information available through `t`.
+`W30` is exactly 30 elapsed days after discharge; death competes and
+readmission wins an equal-time tie. The 1.0 canonical boundary must represent
+terminal occurrence/availability separately and prove coverage through `W30`.
+Daily hazard may be provider-internal but is not a public target.
+
+Append-oriented attributable history, atomicity/retry/invalidation/restatement,
+rebuildable products, and the product-only app survive. Hazard history cannot
+be relabeled as cumulative risk. Software upgrade, project migration, and state
+migration are separate, and upgrades never mutate project source/state.
+
+The first deployment scope remains a reduced product-only artifact and Connect
+realization; compute-capable deployment is deferred. Builds use a closed
+inclusion manifest, exact SHA-256 inventory, target-keyed dependencies, and
+normalized content reproducibility. RRP, project, builder, and deployment
+environments have distinct owners. `readmit` is an optional project/provider
+client, never an RRP dependency or target authority.
+
+#### Versioning, disposition, and next task
+
+Adopted RRP 1.0.0 as the target generation because installed software,
+independent projects, CLI/API, singular target, new history/product semantics,
+dependency ownership, upgrade behavior, and Hospital-delivery retirement form
+the first intended stable conventional adopter contract. This does not claim
+1.0.0 is implemented or released. Existing `0.2.0-dev` executable/release
+metadata remains transitional and unchanged.
+
+The architecture maps `v0.1.0` machinery to reuse, refactor, replace, retire,
+or defer. Repository-root sourcing, temporary runtime installation, whole-tree
+payload, generated Hospital handoff, configurable estimands, daily-hazard
+public semantics, universal root `renv`, and Phase-number governance leave the
+active path while useful semantic and integrity machinery survives.
+
+The next task is the **RRP 1.0.0 Implementation Plan**, replacing the historical
+plan in place and sequencing architecture-owned workstreams rather than Phase
+0–11 chronology.
+
+#### Validation posture
+
+The task explicitly authorizes proportional architecture-document validation.
+Historical Phase 0–11, Hospital distribution/acquisition, development/
+checkpoint, release, and publication suites were not run. Final documentation,
+authority-diff, Markdown whitespace, and `git diff --check` review passed. The
+supported documentation validator passed 4 checks with 0 issues, covering 40
+required governing documents, 322 repository-local links, 25 maintained
+navigation sources, and portable document paths. It was invoked with R init
+files disabled to avoid unrelated repository `renv` activation/locking; the
+validator and inputs were unchanged.
