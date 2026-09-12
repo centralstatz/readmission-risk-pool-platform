@@ -5791,3 +5791,80 @@ issues, covering 40 required governing documents, 325 repository-local links,
 25 maintained navigation sources, and portable document paths. Authority-
 wording review, affected-Markdown whitespace inspection, and `git diff --check`
 passed.
+
+### Detailed RRP 1.0.0 Stage 1 planning (2026-09-12)
+
+#### Objective and scope
+
+Decompose only Stage 1 — Authority and Transition Controls into a bounded,
+dependency-ordered implementation sequence grounded in the repository's actual
+governance and validation machinery. This is planning/documentation work only:
+Stage 1 was not implemented, later stages were not detailed, and no executable,
+contract, package, runtime, state, artifact, CI, version, release, or
+publication behavior changed.
+
+#### Current evidence and chosen design
+
+Inspected the sole root agent instruction file, current authority/navigation,
+development conventions and policies, documentation and repository validators,
+all Phase 0–11 runners and checkpoint functions, standalone lifecycle
+validators, the aggregate validation entry point, operation registry, release/
+publication coupling, and the sole CI workflow. The current `development`
+aggregate runs fourteen repository validators plus every Phase suite;
+`checkpoint` adds every Phase checkpoint after eagerly sourcing/loading nearly
+all subsystems. CI runs documentation separately before that checkpoint even
+though checkpoint already includes it. No machine-readable validation
+ownership/dependency map exists, and multiple checkpoints use implementation-
+record heading presence as completion proof.
+
+The plan selects a minimal `validation/ownership.yml` registry, independent-
+process profile dispatcher, direct validators, an allowlisted transitional
+runner for current repository-check functions, and exact legacy bridges for
+the old modes. Initial forward profiles are `source-fast`, `source-changed`,
+and `ci-active`; the old compositions become explicitly named
+`legacy-v0.1-development` and `legacy-v0.1-checkpoint`. The registry records
+owner, lifecycle, disposition, protected invariant, safe literal path triggers,
+prerequisites, runner, and transition-ledger link without defining future
+component validators.
+
+Classified current validation into active global/scoped, composite, legacy
+callable, historical evidence, replace-later, and retire-later groups. The plan
+preserves canonical/temporal/history/privacy/dependency/artifact/release/
+publication/documentation/destructive-operation invariants while removing
+Phase chronology and Hospital/release proofs from ordinary forward routing.
+It also defines minimal document classification, Stage 2-safe development
+conventions, an actionable transition ledger, and CI alignment without broad
+documentation moves or a future 1.0 matrix.
+
+#### Planned increments and handoff
+
+Stage 1 now contains five increments: 1.A ownership registry and transition
+baseline; 1.B profile dispatcher and legacy bridge; 1.C authority,
+documentation, and conventions; 1.D CI alignment; and 1.E acceptance and
+closeout. The plan provides the required scope/non-scope, disposition,
+compatibility effect, human/agent workflow, evidence, recovery, completion,
+and record expectations for each, plus their dependency graph.
+
+The concrete Stage 1 gate requires complete current-check classification,
+registry/routing integrity, exact legacy availability, invariant continuity,
+human/agent/document/CI agreement, actionable retirement controls, behavioral
+non-change outside development control, and repository hygiene. A concise
+stage-close reconciliation template captures actual implementation and the
+facts allowed to constrain later Stage 2 planning. Stage 2 remains undetailed
+and unauthorized.
+
+No sibling-repository asset was inspected or adapted; current repository files
+were sufficient planning evidence. The next task, after maintainer acceptance,
+is to implement Stage 1 beginning with Increment 1.A.
+
+#### Validation posture
+
+Per the requested planning-only scope, validation is limited to targeted
+inspection of the current governance/validation surface, documentation and
+authority consistency, Markdown hygiene, the supported documentation
+validator, and repository diff integrity. Historical Phase, Hospital,
+development/checkpoint, release, and publication suites were not run.
+The supported documentation validator passed 4 checks with 0 issues, covering
+40 required governing documents, 325 repository-local links, 25 maintained
+navigation sources, and portable document paths. Affected-Markdown whitespace
+inspection and `git diff --check` passed.
