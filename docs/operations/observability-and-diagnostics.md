@@ -1,5 +1,8 @@
 # Operational diagnostics
 
+**Status:** current executable `v0.1.0`-derived diagnostic operation; not the
+future RRP 1.0 installed-software/project observability contract
+
 The normative boundary is defined in the
 [Observability Foundation](../architecture/observability-foundation.md). Exact
 aggregate validation commands and claim limits are in
@@ -71,12 +74,14 @@ Run the focused contract/privacy/lifecycle/renderer suite:
 Rscript tests/run-phase9-tests.R
 ```
 
-Run complete development or completed Phase 10 checkpoint validation:
+For ordinary source changes, run the ownership-routed current workflow:
 
 ```sh
-Rscript operations/validate.R --mode development
-Rscript operations/validate.R --mode checkpoint
+Rscript operations/validate.R --profile source-changed
 ```
+
+Use an explicit legacy aggregate only when historical `v0.1.0` compatibility
+is the intended claim; see [Validation](validation.md).
 
 When reviewing output, verify one correlated lifecycle, aggregate-only detail,
 safe terminal recovery, unchanged domain/result identities, and absence of any

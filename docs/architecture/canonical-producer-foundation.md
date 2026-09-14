@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative completed Phase 10 producer seam and substitution proof
+**Status:** implemented `v0.1.0` producer seam and substitution proof; retained
+until prospectively revised under the current RRP 1.0 architecture
 
 This document defines the supported seam through which one configured source
 implementation supplies canonical data to one platform installation. Iteration

@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative Iteration 4.1 runtime boundary
+**Status:** implemented `v0.1.0` runtime boundary; retained until prospectively
+revised under the current RRP 1.0 architecture
 
 The focused `rrpruntime` package begins only after canonical admission:
 

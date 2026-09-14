@@ -1,5 +1,8 @@
 # Maintainer release preparation
 
+**Status:** historical exact `v0.1.0` preparation workflow; retained unchanged
+for release evidence and compatibility
+
 Iteration 11.6 provides the local workflow for preparing the intended Platform
 and Hospital Implementation `v0.1.0` releases. Publication is a separate,
 explicit operation documented in [Maintainer Release Publication](release-publication.md).

@@ -1,12 +1,16 @@
 # Local reference platform operator manual
 
+**Status:** current executable `v0.1.0`-derived reference operations; not the
+future RRP 1.0 installed-software/project CLI contract
+
 ## Purpose and current support
 
 This is the authoritative, human-first procedure for operating the complete
 local fictional reference platform. It needs no AI and assumes only a local
 installation of the repository's current files. A Git clone is the Platform
-development path; the generated Hospital Implementation is the normal eventual
-hospital acquisition product.
+development path for this implemented baseline. The generated Hospital
+Implementation is retained `v0.1.0` acquisition history, not the forward RRP
+1.0 adopter boundary.
 
 The supported journey is:
 
@@ -402,12 +406,15 @@ The lightweight [operation registry](../../operations/operations.yml) records
 IDs, exact commands, purpose, mutation level, documentation, and classification.
 It is drift metadata, not executable orchestration or business logic.
 
-Public onboarding operations are initialize, doctor, development/checkpoint
-validation, configured-producer validation, one platform run, history inspection, product materialization,
-app validation/launch, artifact build/validation, and Connect repository
-generation/validation. Hospital distribution and standalone-repository
-construction are separately classified maintainer/release-preparation
-operations. Advanced/debug operations preserve individual stages:
+Public `v0.1.0`-derived onboarding operations are initialize, doctor,
+configured-producer validation, one platform run, history inspection, product
+materialization, app validation/launch, artifact build/validation, and Connect
+repository generation/validation. Current source development uses the
+proportional profiles in [Validation](validation.md); the old development and
+checkpoint aggregates are explicit legacy compatibility operations. Hospital
+distribution and standalone-repository construction are separately classified
+maintainer/release-preparation operations. Advanced/debug operations preserve
+individual stages:
 
 ```sh
 Rscript operations/generate-reference.R --scale test
@@ -418,9 +425,10 @@ Rscript operations/build-reference-products.R --scale test
 Rscript operations/backup-reference-history.R --database build/reference-operational-history.duckdb --backup build/backups/reference-operational-history-001.duckdb
 ```
 
-Documentation-only and phase-specific test entry points are development
-operations. Lower-level operations remain supported for debugging, but normal
-onboarding does not require Phase 1–6 internals. Every operation documents its
+Documentation-only and existing Phase-specific test entry points remain
+development/historical evidence. New tests are owned by components, contracts,
+lifecycles, or operations. Lower-level operations remain supported for
+debugging, but normal onboarding does not require Phase 1–6 internals. Every operation documents its
 inputs, outputs, side effects, repeat behavior, failures, and recovery in this
 manual or the linked focused guide.
 

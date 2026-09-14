@@ -1,5 +1,9 @@
 # Validation operation
 
+**Status:** Current RRP 1.0 development-control operation over the accepted
+Stage 1 ownership registry. Sections explicitly labeled legacy describe exact
+`v0.1.0` compatibility evidence, not the ordinary forward workflow.
+
 ## Purpose
 
 Current validation answers three deliberately separate questions:

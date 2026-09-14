@@ -7,9 +7,9 @@ reserve names or document hypothetical future capabilities.
   initialize, doctor, run once, inspect history, materialize products, validate,
   launch, build/validate a reduced artifact, and generate a local Connect
   deployment repository through the public surface.
-- [Validation](validation.md) — validate maintained documentation and
-  specification assets, run Phase 0–11 tests, check repository policies, and
-  evaluate the Iteration 11.7 checkpoint.
+- [Validation](validation.md) — run proportional `source-changed`, bounded
+  `source-fast`, direct, or broad `ci-active` evidence, and deliberately invoke
+  exact legacy aggregates only when historical compatibility requires them.
 - [Hospital Implementation Distribution](hospital-implementation-distribution.md)
   — generate and independently validate the proof-only adopter-facing source
   distribution, then initialize and exercise an external copied artifact.

@@ -813,7 +813,7 @@ provider, product, application, or deployment layers.
 
 ### Stage 1 detailed plan — Authority and transition controls
 
-**Implementation status:** in progress; Increments 1.A and 1.B complete
+**Implementation status:** in progress; Increments 1.A–1.C complete
 
 This section details only Stage 1. It does not refine Stage 2 or authorize any
 distribution, package, installation, project, analytical, state, product,
@@ -1378,6 +1378,8 @@ legacy classifications, and append the 1.B record entry.
 
 ##### 1.C — Authority, documentation, and development-convention alignment
 
+**Implementation status:** complete (2026-09-14)
+
 ###### Objective
 
 Make human and agent instructions use the new development-control model and
@@ -1747,10 +1749,10 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-With Increments 1.A and 1.B complete, the next task is:
+With Increments 1.A–1.C complete, the next task is:
 
-> **Implement RRP 1.0.0 Stage 1, Increment 1.C — Authority, documentation, and
-> development-convention alignment.**
+> **Implement RRP 1.0.0 Stage 1, Increment 1.D — CI alignment and deliberate
+> legacy execution.**
 
 Implement the five bounded increments in dependency order, preserving a
 coherent repository and recording actual evidence at each close. Do not detail

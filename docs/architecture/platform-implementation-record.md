@@ -6093,3 +6093,130 @@ Increment 1.B is complete; Stage 1 remains in progress. The next task, after
 maintainer acceptance, is **Increment 1.C — Authority, documentation, and
 development-convention alignment**. Do not begin Increment 1.C, 1.D, or Stage
 2 as part of this increment.
+
+### RRP 1.0.0 Stage 1, Increment 1.C — authority, documentation, and development-convention alignment (2026-09-14)
+
+#### Objective and scope
+
+Align maintained human and agent instructions with the accepted 1.A/1.B
+development-control model and establish safe forward conventions for RRP 1.0.
+This is a bounded documentation, instruction, policy, and governance-test
+increment. It does not implement 1.D/1.E or Stage 2, change CI, prescribe the
+Stage 2 physical layout, or alter contracts, product operations, runtime,
+state, artifacts, release/publication behavior, or published `v0.1.0` evidence.
+
+#### Authority, orientation, and status clarification
+
+Updated `AGENTS.md`, the root README, `CONTRIBUTING.md`, START HERE, and the
+documentation index around one current authority chain: True North → Platform
+Architecture → RRP 1.0.0 Implementation Plan/current detailed Stage 1 plan →
+Implementation Record → software. Validation Governance now clearly owns
+development-evidence selection and the Transition Ledger owns coexistence and
+retirement conditions. Git history and immutable release tags preserve prior
+authority/release states rather than requiring parallel current architecture
+documents.
+
+The entry points now distinguish the RRP 1.0 target, current Stage 1 development
+control, the still-executable `v0.1.0`-derived product/runtime baseline, and
+historical release evidence. Added concise status clarification where direct
+readers could reasonably misinterpret old authority: the specification,
+canonical, synthetic, runtime, and producer component documents are implemented
+`v0.1.0` boundaries retained pending prospective revision; the progressive-
+adoption and local operator guides describe the current `v0.1.0`-derived
+workflow rather than the future installed/project contract; and Hospital and
+release preparation/publication guides are exact historical `v0.1.0`
+maintainer workflows. The history, estimation, logical-product, and diagnostic
+operation guides are current executable `v0.1.0`-derived component procedures,
+not the future installed-software/project CLI contract. Historical bodies and
+prior record entries were not rewritten or relocated.
+
+#### Development workflow and conventions
+
+Made `source-changed` the ordinary contributor/agent validation operation.
+`source-fast`, direct eligible validators, and `ci-active` are documented for
+their realized bounded, direct, and broad-forward claims. Explicit
+`legacy-v0.1-development` and `legacy-v0.1-checkpoint` remain available for
+deliberate historical evidence; `--mode development|checkpoint` remain visibly
+deprecated compatibility aliases. Phase-named runners remain callable and may
+carry transitional component evidence, but maintained current guidance no
+longer uses Phase chronology or whole development/checkpoint aggregates to
+select ordinary forward validation. Broader evidence is required when the
+changed owner, an accepted increment/stage gate, or a release/publication
+lifecycle owns the broader claim—not because maximum test volume is equated
+with rigor.
+
+Removed stale routine recommendations for the deprecated whole-repository
+`--mode` aggregates from the maintained history, estimation, logical-product,
+and diagnostic operation guides. Their Phase-named focused suites remain
+callable component evidence; the guides now route ordinary changes through
+`source-changed` and reserve explicit legacy aggregates for intended historical
+claims.
+
+Expanded the concise implementation and repository policies with these
+normative forward rules:
+
+- organize new tests by protected component, contract, lifecycle, or operation,
+  while leaving existing Phase suites in place;
+- put new or adapted reusable functionality behind an explicit owner/namespace,
+  with entry points orchestrating rather than defining it;
+- introduce no new reusable `.GlobalEnv`, arbitrary source-order, or eager
+  whole-repository sourcing dependency;
+- resolve installed resources through their owner and reserve repository-root
+  assumptions for repository-owned development tools;
+- require explicit supported project context rather than current-directory,
+  parent-search, source-repository, or Git identity inference;
+- separate RRP software, independent project, provider/model extension,
+  deployment, and development dependency ownership without prescribing the
+  later mechanism;
+- require transition shims to name their legacy boundary, reason, owner,
+  replacement/review stage, retirement condition, and ledger representation;
+  and
+- keep published versions immutable and move materially changed software
+  forward under new versions.
+
+The core-reuse rule is deliberately two-sided: proven `v0.1.0` capability
+should be reused, extracted, adapted, or relocated when it cleanly serves the
+RRP 1.0 architecture; working code is not rewritten for novelty. Conversely,
+repository-root assumptions, source-order coupling, Phase chronology,
+Hospital-distribution assumptions, Git-state adopter constraints, and other
+obsolete structure are not compatibility requirements merely because they
+surrounded that capability historically. Existing code is evidence, not an
+automatic preserve-or-rewrite decision.
+
+#### Governance evidence and transition effect
+
+Added a non-Phase development-guidance test file to the existing governance
+runner. Its four cases enforce the maintained authority links, exact forward
+commands shared by the operation registry and human/agent documents, explicit
+legacy classification rather than forward defaults, and the paired
+reuse/structural-decoupling conventions. The governance suite now contains 34
+tests. The 1.B dispatcher, ownership classifications, profile compositions,
+and operation registry required no factual correction; targeted operator
+validation confirmed the already-registered commands remain exact and
+documented.
+
+Updated only the documentation-authority and validation-control ledger rows
+materially affected by 1.C and added the 1.C transition state. Nothing is
+retired. The root development environment, current Phase/component suites,
+Hospital/release machinery, compatibility adapter, and legacy aggregate bridge
+continue under their existing transition conditions.
+
+#### Validation and next task
+
+Focused evidence passed: documentation validation; direct operator/operation-
+registry validation; all 34 governance tests; authority-link and stale-forward-
+language scans; status-label review; R parsing of the new governance test;
+YAML parsing of the unchanged registries; Markdown whitespace/hygiene; actual
+`source-fast`; changed-working-tree `source-changed` explanation; a
+representative explicit `source-changed` execution; and `git diff --check`.
+No expensive legacy aggregate, Hospital generation/acquisition, release
+preparation, publication, or public acquisition operation ran.
+
+No executable product behavior or product/state data changed. CI is unchanged,
+the 1.B dispatcher needed no correction, and no Stage 2 package name,
+directory, project-context API, resource layout, dependency environment, CLI,
+or installation mechanism was specified.
+
+Increment 1.C is complete; Stage 1 remains in progress. The next task, after
+maintainer acceptance, is **Increment 1.D — CI alignment and deliberate legacy
+execution**. Do not begin 1.D, 1.E, or Stage 2 as part of this increment.

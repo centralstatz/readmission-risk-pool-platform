@@ -1,5 +1,8 @@
 # Standalone Hospital Implementation Git realization
 
+**Status:** historical `v0.1.0` maintainer operation retained for exact release
+evidence; not the RRP 1.0 adopter workflow
+
 ## Purpose and authority
 
 Iteration 11.5 gives CentralStatz maintainers a release-preparation operation

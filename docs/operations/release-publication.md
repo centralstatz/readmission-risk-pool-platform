@@ -1,5 +1,8 @@
 # Maintainer release publication
 
+**Status:** historical exact `v0.1.0` publication/verification workflow;
+retained unchanged for immutable release evidence and recovery
+
 This is the authoritative human procedure for publishing the independently
 versioned Readmission Risk Pool Platform and generated Hospital Implementation.
 It is a maintainer-only operation. It is not hospital operation, deployment, or

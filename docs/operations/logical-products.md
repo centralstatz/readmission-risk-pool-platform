@@ -1,5 +1,8 @@
 # Build, materialize, inspect, and launch reference products
 
+**Status:** current executable `v0.1.0`-derived product operation; not the
+future RRP 1.0 installed-software/project CLI contract
+
 ## Purpose and prerequisites
 
 These human operations read fictional DuckDB history through the logical
@@ -88,13 +91,15 @@ explicit staleness policy without changing the bundle.
 
 ```sh
 Rscript tests/run-phase6-tests.R
-Rscript operations/validate.R --mode development
-Rscript operations/validate.R --mode checkpoint
+Rscript operations/validate.R --profile source-changed
 ```
 
 The suite covers in-memory/DuckDB logical equivalence, YAML round-trip access,
 replacement, corruption/incompatibility, old-valid freshness, zero rows, safe
 app failure, provider transitions, missed days, and multiple same-day runs.
+The Phase-named suite remains direct component evidence; its chronology does
+not select ordinary forward validation. Use an explicit legacy aggregate only
+for an intended historical `v0.1.0` claim; see [Validation](validation.md).
 
 ## Recovery and troubleshooting
 

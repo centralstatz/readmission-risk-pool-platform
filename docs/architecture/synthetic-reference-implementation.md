@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative Phase 3 reference implementation boundary
+**Status:** implemented `v0.1.0` reference boundary; retained until
+prospectively revised under the current RRP 1.0 architecture
 
 This document applies [Platform True North](../vision/platform-true-north.md),
 the [Platform Architecture](platform-architecture.md), and the approved

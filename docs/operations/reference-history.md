@@ -1,5 +1,8 @@
 # Durable reference history operations
 
+**Status:** current executable `v0.1.0`-derived history operation; not the
+future RRP 1.0 installed-software/project CLI contract
+
 ## Purpose
 
 These operations create and inspect a local DuckDB database containing only
@@ -121,16 +124,22 @@ Do not combine files, copy an active WAL alone, or replace a live database.
 
 ## Validation
 
-Run the focused suite and full repository checks:
+Run the retained focused component suite:
 
 ```sh
 Rscript tests/run-phase5-tests.R
-Rscript operations/validate.R --mode development
-Rscript operations/validate.R --mode checkpoint
 ```
 
-The focused suite uses temporary databases and removes them. Repository
-validation must leave no tracked or untracked DuckDB database.
+For ordinary source changes, run the ownership-routed current workflow:
+
+```sh
+Rscript operations/validate.R --profile source-changed
+```
+
+The focused suite uses temporary databases and removes them. Validation must
+leave no tracked or untracked DuckDB database. Invoke an explicit legacy
+aggregate only when historical `v0.1.0` compatibility is the intended claim;
+see [Validation](validation.md).
 
 ## Troubleshooting and recovery
 

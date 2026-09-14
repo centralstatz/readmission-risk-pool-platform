@@ -21,8 +21,20 @@ defines the conventional installed-software and independent-project product,
 and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
 defines its authoritative high-level roadmap. `1.0.0` is a target generation,
 not a released version. Detailed planning proceeds one stage at a time; Stage
-1 planning is next. Existing `0.2.0-dev` metadata is transitional and no next
-release is prepared.
+1 Increments 1.A–1.C are complete and Increment 1.D is next after maintainer
+acceptance. Existing `0.2.0-dev` metadata is transitional and no next release
+is prepared.
+
+Current development control is defined by
+[Validation Governance](docs/development/validation-governance.md) and the
+[Transition Ledger](docs/development/transition-ledger.md). Ordinary local work
+uses ownership-routed `source-changed` validation. The executable product and
+runtime remain substantially `v0.1.0`-derived until later 1.0 stages
+deliberately reuse, extract, adapt, relocate, or replace each capability.
+Working core capability is not rewritten merely because its old repository,
+source-order, Phase, Hospital, or adopter coupling is no longer authoritative.
+
+### Implemented `v0.1.0`-derived baseline
 
 Phase 11 and Iteration 11.1 provide
 the retained first-release decision assessment. Iteration 11.2 baselines the
@@ -134,6 +146,10 @@ forward 1.0.0 product boundary.
 
 ## Start here
 
+Items 1–3 are current forward authority. The detailed component documents in
+items 4–17 describe the executable `v0.1.0`-derived baseline until later 1.0
+stages deliberately revise their boundaries.
+
 1. Read [Platform True North](docs/vision/platform-true-north.md) for product
    identity and durable principles.
 2. Read [Platform Architecture](docs/architecture/platform-architecture.md) for
@@ -142,6 +158,9 @@ forward 1.0.0 product boundary.
    for the authoritative major stages, dependency order, transition strategy,
    roadmap-level acceptance gates, and progressive stage-planning cadence. The
    exact historical Phase 0–11 plan is retained by the published `v0.1.0` tag.
+   Then read [Validation Governance](docs/development/validation-governance.md)
+   and the [Transition Ledger](docs/development/transition-ledger.md) for
+   current evidence selection and coexistence/retirement controls.
 4. Read the [Specification Foundation](docs/architecture/specification-foundation.md)
    for the shared contract vocabulary.
 5. Read the [Canonical Bundle Foundation](docs/architecture/canonical-bundle-foundation.md),
@@ -184,9 +203,9 @@ forward 1.0.0 product boundary.
    for the evidence and ranked Phase 11 options that preceded maintainer
    decisions.
 20. Read [Hospital-Facing Implementation Distribution](docs/architecture/hospital-implementation-distribution-assessment.md)
-   for the authoritative one-repository/two-release-product ownership,
-   embedded Platform archive, environment, trusted composition, lifecycle,
-   and next-proof decision.
+   for the historical `v0.1.0` one-repository/two-release-product ownership,
+   embedded Platform archive, environment, trusted composition, lifecycle, and
+   proof decisions.
 21. Read the [Implementation Record](docs/architecture/platform-implementation-record.md)
    for what has actually happened.
 
@@ -200,16 +219,22 @@ The complete human procedure and claim boundaries are documented in the
 with:
 
 ```sh
-Rscript operations/validate.R --mode development
+Rscript operations/validate.R --profile source-changed
 ```
 
-Evaluate the Iteration 11.6 checkpoint with:
+Use the bounded universal or broad forward profile when its claim is intended:
 
 ```sh
-Rscript operations/validate.R --mode checkpoint
+Rscript operations/validate.R --profile source-fast
+Rscript operations/validate.R --profile ci-active
 ```
 
-Build and independently validate the proof-only Hospital Implementation with:
+The exact `v0.1.0` development/checkpoint aggregates remain explicit legacy
+compatibility operations; they are not the ordinary forward workflow. See the
+validation guide before invoking them.
+
+For deliberate historical `v0.1.0` maintenance, build and independently
+validate the proof-only Hospital Implementation with:
 
 ```sh
 Rscript operations/build-hospital-distribution.R
@@ -315,7 +340,10 @@ reuse, adapt, reference, or reject.
 ## Contributing at this stage
 
 Follow [AGENTS.md](AGENTS.md) and the
-[implementation conventions](docs/development/implementation-conventions.md).
+[implementation conventions](docs/development/implementation-conventions.md),
+then use ownership-routed proportional validation. New tests are organized by
+the component, contract, lifecycle, or operation they protect; existing
+Phase-named evidence remains in place during transition.
 Open decisions are tracked in [Open decisions](docs/architecture/open-decisions.md).
 Phase 11 decision support is in the
 [distribution and first-release assessment](docs/architecture/distribution-release-assessment.md).

@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative Phase 2.2 clinical canonical handoff contract
+**Status:** implemented `v0.1.0` clinical canonical handoff; retained until
+prospectively revised under the current RRP 1.0 architecture
 
 This document instantiates the generic
 [Canonical Bundle Foundation](canonical-bundle-foundation.md) with the first
@@ -253,4 +254,3 @@ independent fixture, and compatibility/failure evidence. Phase 2 is complete.
 Phase 3 may now build the deterministic fictional source and mapping that
 produce this same public handoff; it must not change generic behavior based on
 the implementation identity.
-

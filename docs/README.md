@@ -13,8 +13,20 @@ historical release evidence have different authority.
   independent projects, singular risk, lifecycle ownership, and migration.
 - [RRP 1.0.0 Implementation Plan](architecture/platform-implementation-plan.md)
   — authoritative high-level stage order, transition strategy, and acceptance
-  gates; detailed planning proceeds one stage at a time, beginning with Stage
-  1 only.
+  gates plus the current detailed Stage 1 plan; Increments 1.A–1.C are complete
+  and Increment 1.D is next after maintainer acceptance.
+
+## Current development control
+
+- [Validation Governance](development/validation-governance.md) — executable
+  ownership profiles, protected invariants, deterministic selection, and
+  explicit legacy compatibility.
+- [RRP 1.0.0 Transition Ledger](development/transition-ledger.md) — actionable
+  coexistence and retirement controls for current implementation machinery.
+
+These controls govern how forward work is evidenced; they are not product
+architecture or installed resources. The implementation record states what is
+actually built. Git history and immutable release tags preserve earlier states.
 
 ## Implemented and historical `v0.1.0` boundary documentation
 
@@ -124,8 +136,8 @@ the current Platform Architecture.
 ## Development
 
 - [Validation Governance](development/validation-governance.md) — current
-  validator ownership, statuses, protected invariants, exact legacy aggregate
-  capture, and the classification-only boundary before dispatcher activation.
+  validator ownership, active proportional profiles, protected invariants,
+  direct/current-boundary execution, and exact legacy aggregate bridges.
 - [RRP 1.0.0 Transition Ledger](development/transition-ledger.md) — actionable
   coexistence and retirement controls for current implementation machinery.
 - [Hospital Implementation v0.1.0 Clean-Room Adoption Assessment](development/hospital-implementation-v0.1.0-adoption-assessment.md)
@@ -144,8 +156,8 @@ the current Platform Architecture.
 - [Local Reference Platform Operator Manual](operations/operator-manual.md) —
   initialize, doctor, run, inspect, materialize, validate, launch, repeat, and
   troubleshoot without AI.
-- [Validation](operations/validation.md) — exact development, checkpoint,
-  documentation, and Phase 0–10 test commands.
+- [Validation](operations/validation.md) — exact `source-changed`, `source-fast`,
+  direct, `ci-active`, and explicit legacy commands and claim boundaries.
 - [Operational Diagnostics](operations/observability-and-diagnostics.md) —
   interpret structured console events, privacy limits, failure recovery, and
   focused validation.
@@ -178,6 +190,6 @@ the current Platform Architecture.
 - [Agent Guidance](../AGENTS.md) — human-first, target-first working agreement.
 
 Further target-specific realization and release guides will be added only in
-phases that create those capabilities. Publication remains maintainer
+stages that create those capabilities. Publication remains maintainer
 controlled through the tested explicit operation. Documentation must not claim
 an operation exists before it has a tested human implementation.

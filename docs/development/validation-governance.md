@@ -185,9 +185,11 @@ the printed validator ID and output, repair its owned boundary, and rerun the
 same profile. Use an explicit legacy profile only when the historical aggregate
 claim is actually required.
 
-Later increments own broad authority/instruction alignment, CI alignment, and
-Stage 1 closeout. Component validators, Phase suite names/locations, package and
-project validators, and release/publication behavior are unchanged here. A
-later stage may reclassify a unit only with its direct validator, registry,
-transition condition, focused routing evidence, documentation, and
-implementation record updated together.
+Contributor and agent instructions now use this proportional model. See
+[Implementation Conventions](implementation-conventions.md) for forward code,
+resource, project-context, dependency, test, reuse, and shim rules. Increment
+1.D owns CI alignment and Increment 1.E owns Stage 1 closeout. Component
+validators, Phase suite names/locations, package and project validators, and
+release/publication behavior remain unchanged. A later stage may reclassify a
+unit only with its direct validator, registry, transition condition, focused
+routing evidence, documentation, and implementation record updated together.

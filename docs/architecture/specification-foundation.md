@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative Phase 1 foundation vocabulary
+**Status:** implemented `v0.1.0` foundation vocabulary; retained until
+prospectively revised under the current RRP 1.0 architecture
 
 This vocabulary follows [Platform True North](../vision/platform-true-north.md),
 the [Platform Architecture](platform-architecture.md), and the

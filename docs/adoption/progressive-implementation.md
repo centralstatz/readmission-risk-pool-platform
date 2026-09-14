@@ -1,5 +1,8 @@
 # Progressive implementation and component replacement
 
+**Status:** implemented `v0.1.0`-derived replacement guidance; not the future
+RRP 1.0 installed-software and independent-project acquisition contract
+
 ## Purpose
 
 The shipped fictional reference composition is usable before any hospital

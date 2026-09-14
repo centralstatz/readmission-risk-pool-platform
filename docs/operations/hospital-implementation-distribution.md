@@ -1,5 +1,8 @@
 # Hospital Implementation distribution proof
 
+**Status:** historical `v0.1.0` maintainer operation retained for exact release
+evidence; not the RRP 1.0 adopter workflow
+
 ## Purpose and boundary
 
 Iteration 11.4 proves that this authoritative repository can generate a

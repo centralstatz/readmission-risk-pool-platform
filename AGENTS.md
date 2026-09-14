@@ -9,16 +9,24 @@ product work, read:
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
 3. `docs/architecture/platform-implementation-plan.md` (the authoritative
-   high-level RRP 1.0.0 roadmap; detailed Stage 1 planning is pending);
-4. `docs/architecture/reference-asset-reconciliation.md`; and
-5. `docs/architecture/platform-implementation-record.md`.
+   high-level RRP 1.0.0 roadmap and current detailed Stage 1 plan);
+4. `docs/development/validation-governance.md` for executable development
+   evidence selection;
+5. `docs/development/transition-ledger.md` for coexistence and retirement
+   controls;
+6. `docs/architecture/reference-asset-reconciliation.md`; and
+7. `docs/architecture/platform-implementation-record.md`.
 
 Authority flows from True North to architecture to plan to implementation
-record to software. Do not infer architecture from whichever code happens to
-exist. The high-level roadmap authorizes progressive stage planning, not source
-implementation. Detail only the current stage; its increments and acceptance
-tests must be accepted before that stage's executable work begins. Plan the
-next stage only after the current one is implemented, validated, and reconciled.
+record to software; validation governance and the transition ledger control
+how that work is evidenced and retired. Do not infer architecture from
+whichever code happens to exist. The high-level roadmap authorizes progressive
+stage planning, not source implementation. Detail only the current stage; its
+increments and acceptance tests must be accepted before that stage's executable
+work begins. Plan the next stage only after the current one is implemented,
+validated, and reconciled. Current architecture evolves in place; Git history,
+release tags, and the append-only record preserve prior states without creating
+parallel current authorities.
 
 ## Reference repository
 
@@ -65,6 +73,14 @@ those architecture-owned stages rather than continuing Phase numbers.
 Documentation synthesis and planning may use proportional validation when
 explicitly scoped. Do not alter released `v0.1.0` assets or publication evidence
 while developing the new generation.
+
+RRP 1.0 is not a blanket rewrite. Prefer direct reuse, extraction, adaptation,
+or relocation of proven `v0.1.0` capability when its semantics serve the
+current architecture. Historical existence alone is not a reason to preserve
+or replace code. Repository-root assumptions, source-order coupling, Phase
+chronology, Hospital-distribution assumptions, and Git-state adopter rules are
+not compatibility requirements when they conflict with the installed-software
+and independent-project boundary.
 
 For every meaningful iteration, update
 `docs/architecture/platform-implementation-record.md` with the planned
@@ -191,26 +207,62 @@ Follow `docs/development/implementation-conventions.md`.
 - Keep AI-assisted changes directly understandable to human maintainers.
 - Prefer correctness, safety, reproducibility, and appropriate performance over
   stylistic conformity.
+- Organize new tests by the component, contract, lifecycle, or operation whose
+  invariant they protect. Existing Phase-named evidence stays in place until
+  its registry transition condition is satisfied.
+- Put new or adapted reusable product code behind an explicit owner/namespace;
+  do not introduce `.GlobalEnv` dependence, arbitrary source order, or eager
+  repository-wide sourcing as a reusable pattern.
+- Resolve installed resources through their owning component. Repository-root
+  paths are appropriate only for repository-owned development tooling.
+- Require explicit supported project context for project-dependent behavior;
+  do not infer project identity from the working directory, an arbitrary parent
+  search, the source repository, or Git identity.
+- Assign dependencies to RRP software, project extensions, provider/model
+  extensions, deployment closure, or development tooling as applicable; do not
+  add them to the root development environment by convenience alone.
+- Give every transition shim a legacy boundary, reason, owner, replacement or
+  review stage, retirement condition, and ledger entry where material.
 
 ## Validation and documentation
 
 Use the exact human operations documented in
-`docs/operations/validation.md` for changes to the implemented `v0.1.0`
-software. The universal Phase/checkpoint commands are legacy release evidence,
-not default proof for forward documentation or planning. Select validation
-proportional to the affected architecture boundary and follow an explicit task's
-stricter or narrower validation scope. The current legacy development command
-is:
+`docs/operations/validation.md`. Select validation proportional to the affected
+architecture boundary and follow an explicit task's stricter or narrower
+acceptance scope. Ordinary local source work begins with:
 
 ```sh
-Rscript operations/validate.R --mode development
+Rscript operations/validate.R --profile source-changed
 ```
 
-For the Iteration 11.7 checkpoint, run:
+Use the bounded universal checks, a direct eligible validator, or broad forward
+evidence intentionally:
 
 ```sh
+Rscript operations/validate.R --profile source-fast
+Rscript operations/validate.R --validator VALIDATOR_ID
+Rscript operations/validate.R --profile ci-active
+```
+
+Broader evidence is appropriate when the changed boundary owns it, an accepted
+increment/stage gate requires it, or a CI/release/publication lifecycle
+operation explicitly requires it. Maximum validation volume is not a substitute
+for selecting the correct owned invariants.
+
+The exact old aggregates remain available only for deliberate historical
+compatibility. Prefer their explicit names; the `--mode` forms are deprecated
+aliases:
+
+```sh
+Rscript operations/validate.R --profile legacy-v0.1-development
+Rscript operations/validate.R --profile legacy-v0.1-checkpoint
+Rscript operations/validate.R --mode development
 Rscript operations/validate.R --mode checkpoint
 ```
+
+The following Phase-named commands are retained direct `v0.1.0` component and
+lifecycle evidence. Do not use their chronology to choose ordinary forward
+validation; the ownership registry and named profiles make that selection.
 
 Run the focused Hospital distribution/Git-realization tests and supported
 maintainer build/validation operations with:
@@ -297,10 +349,10 @@ Rscript operations/build-reference-products.R --scale test --materialize
 Rscript operations/launch-reference-app.R --validate-only
 ```
 
-Development coherence and strict milestone readiness are different claims.
-Never use development mode to bypass checkpoint failure. Later generation,
-deployment, publication, and release checkpoints may add stronger state
-requirements only when their components exist.
+Forward source coherence and historical/lifecycle readiness are different
+claims. Never use a narrower forward profile to bypass an explicitly required
+checkpoint. Later generation, deployment, publication, and release gates may
+add stronger state requirements only when their components exist.
 
 Do not invent alternate validation behavior in agent instructions. When
 validation changes, update callable behavior, focused tests, human operations
@@ -364,7 +416,7 @@ in `docs/architecture/reference-product-materialization.md`, and the app in
 `docs/architecture/reference-application.md`. Phase 7 is complete through
 `docs/operations/operator-manual.md`, `docs/adoption/progressive-implementation.md`,
 and `operations/operations.yml`. Replay, decision policy, scheduling, and later
-capabilities remain unauthorized until their phases.
+capabilities remain unauthorized until their roadmap stages.
 The target-neutral deployment boundary is documented in
 `docs/architecture/application-artifact-foundation.md` and
 `contracts/deployment/application-artifact.yml`; the completed Connect target

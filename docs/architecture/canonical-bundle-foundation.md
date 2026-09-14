@@ -2,7 +2,8 @@
 
 ## Status and scope
 
-**Status:** authoritative generic canonical handoff contract
+**Status:** implemented `v0.1.0` generic canonical handoff; retained until
+prospectively revised under the current RRP 1.0 architecture
 
 This document follows [Platform True North](../vision/platform-true-north.md),
 the [Platform Architecture](platform-architecture.md), and the

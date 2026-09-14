@@ -1,5 +1,8 @@
 # Run reference estimation
 
+**Status:** current executable `v0.1.0`-derived reference operation; not the
+future RRP 1.0 installed-software/project CLI contract
+
 ## Purpose
 
 This operation proves the completed Phase 4 path using the current clean
@@ -65,11 +68,16 @@ history. Ordinary console output is not a provenance, audit, or metrics store.
 A successful run must report the exact provider
 `reference.transparent-readmission-hazard@0.1.0`, estimate contract
 `platform.readmission-risk-estimate@0.1.0`, and equal request and successful
-estimate counts. Run the current completed Phase 7 checkpoint separately:
+estimate counts. For ordinary source changes, run the ownership-routed current
+workflow:
 
 ```sh
-Rscript operations/validate.R --mode checkpoint
+Rscript operations/validate.R --profile source-changed
 ```
+
+Use the retained focused component suites or an explicit legacy aggregate only
+when that component or historical `v0.1.0` claim is intended; see
+[Validation](validation.md).
 
 ## Recovery and troubleshooting
 
