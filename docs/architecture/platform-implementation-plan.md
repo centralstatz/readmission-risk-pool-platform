@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level implementation roadmap for the RRP 1.0.0
-target generation with a detailed Stage 1 plan; Stage 1 implementation has not
-begun
+target generation with a detailed Stage 1 plan; Stage 1 implementation is in
+progress and Increment 1.A is complete
 
 This is the one current implementation-plan authority beneath
 [Platform True North](../vision/platform-true-north.md) and the
@@ -25,8 +25,9 @@ this document in place does not reinterpret those bytes or erase their history.
 Detailed `v0.1.0` documents and tests remain implementation evidence until a
 1.0 stage deliberately replaces, reassigns, or retires them.
 
-This is intentionally a big-picture roadmap. It authorizes the next planning
-pass, not executable implementation. Before a stage's source changes begin,
+The high-level roadmap is intentionally big-picture; its accepted detailed
+current-stage section authorizes only that stage's bounded increments. Before
+a stage's source changes begin,
 that stage must be decomposed into bounded increments with concrete interfaces,
 state effects, human operations, and acceptance tests. Later stages are
 detailed progressively after preceding stages close; they are not decomposed
@@ -812,7 +813,7 @@ provider, product, application, or deployment layers.
 
 ### Stage 1 detailed plan — Authority and transition controls
 
-**Planning status:** ready for maintainer acceptance; implementation not begun
+**Implementation status:** in progress; Increment 1.A complete
 
 This section details only Stage 1. It does not refine Stage 2 or authorize any
 distribution, package, installation, project, analytical, state, product,
@@ -1218,6 +1219,8 @@ validator and lacks an explicit pending replacement reason.
 #### Stage 1 increments
 
 ##### 1.A — Ownership registry and transition baseline
+
+**Implementation status:** complete (2026-09-12)
 
 ###### Objective
 
@@ -1742,9 +1745,10 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-After this detailed Stage 1 plan is accepted, the next task is:
+With Increment 1.A complete, the next task is:
 
-> **Implement RRP 1.0.0 Stage 1, beginning with Increment 1.A.**
+> **Implement RRP 1.0.0 Stage 1, Increment 1.B — Profile dispatcher and legacy
+> compatibility bridge.**
 
 Implement the five bounded increments in dependency order, preserving a
 coherent repository and recording actual evidence at each close. Do not detail

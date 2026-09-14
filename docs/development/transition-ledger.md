@@ -1,0 +1,47 @@
+# RRP 1.0.0 transition ledger
+
+## Purpose and rules
+
+This ledger turns the RRP 1.0.0 migration posture into reviewable retirement
+controls. It tracks current machinery, the invariant that must survive, its
+forward disposition, coexistence needs, and the evidence required before it
+can leave the active path. It does not itself authorize implementation or
+retirement.
+
+Every validator in [`validation/ownership.yml`](../../validation/ownership.yml)
+links to one stable `transition_id`. Non-validation machinery is recorded here
+directly. Later stage closeout updates the relevant row's latest evidence and
+notes; it does not rewrite the historical implementation record.
+
+An item may be marked retired only when its named successor passes or the
+authoritative architecture explicitly decides that its invariant no longer
+belongs to RRP. Temporary shims need an owner, purpose, and testable retirement
+condition from creation. The immutable published `v0.1.0` source, artifacts,
+and evidence are never edited to perform a forward retirement.
+
+## Ledger
+
+| `transition_id` | Current location and purpose | Protected invariant | Disposition / authority now | Replacement stage | Coexistence need | Retirement condition | Latest completed-stage evidence and notes |
+|---|---|---|---|---|---|---|---|
+| `documentation-authorities` | True North, architecture, plan, implementation record, and maintained navigation | Documentation authority | Keep current authority; progressively reclassify implementation guidance | Stages 1 and 9 | Current and historical `v0.1.0` documentation must remain distinguishable | Stage 9 navigation and classification acceptance passes without breaking immutable release evidence | Stage 1.A adds governance and ledger navigation; no broad document move |
+| `validation-phase-controls` | `operations/validate.R`, repository policy, Phase runners/checkpoints, and prose gates | Privacy, dependency, documentation, and safe validation selection | Reassign useful units; preserve exact modes as legacy; replace universal Phase governance | Stage 1 | Old development/checkpoint modes remain executable through the Stage 1 transition | Stage 1 closeout proves active profiles, exact legacy bridges, CI agreement, and invariant continuity | Stage 1.A captures ownership and exact ordered aggregate membership; dispatch is unchanged |
+| `foundation-canonical-contracts` | `contracts/foundation/`, `contracts/canonical/`, and their validators | Specification/canonical identity, compatibility, relationships, and temporal validity | Reuse foundation; refactor clinical target inputs | Stage 5 | Current canonical admission remains executable until the 1.0 handoff passes | Stage 5 terminal-availability and fixed-coverage contract plus migration evidence passes | Stage 1.A classifies foundation active-scoped and canonical evidence replace-later |
+| `root-operation-scripts` | Repository-root `operations/` scripts and synthetic/reference orchestration | Human-first operations, deterministic fictional evidence, and safe mutation | Replace with installed shared operations across later stages | Stages 2–8 | Current wrappers remain executable until each successor operation passes | Each installed successor has matching human docs, tests, recovery, and explicit state ownership | Stage 1.A inventories current validators; no operation changed |
+| `operation-library-chain` | `operations/lib/` source-order chain and observability helpers | Boundary ownership plus privacy-safe diagnostics | Split by eventual package/resource owner | Stages 2–8 | Current source chain remains the implemented baseline | All live responsibilities have namespaced owners and no active operation depends on repository source order | Stage 1.A records the chain as replace-later and does not restructure it |
+| `runtime-package` | Internal `rrpruntime` package, runtime/provider contract, and current temporal checks | Eligibility, temporal correctness, trust, explicit failure, and dependency integrity | Reuse and refactor | Stages 2 and 5 | Installed package work coexists with current daily-hazard behavior | Installed closure passes and Stage 5 cumulative-risk runtime replaces public hazard semantics | Stage 1.A preserves current runtime/provider validation as scoped transitional evidence |
+| `estimand-daily-hazard` | Current configurable estimand and daily-hazard request/estimate semantics | No accidental relabeling; temporal and analytical meaning stay explicit | Replace; never rename as cumulative day-30 risk | Stage 5 | Callable only as clearly versioned transition/history | Singular platform-owned cumulative day-30 target passes and old identity is legacy-only | Stage 1.A records the invariant; no analytical code or contract changed |
+| `provider-registry-execution` | Current producer/provider registration, selection, admission, and execution | Trusted extension, compatibility, temporal input, and failure integrity | Reuse and bind to independent project plus platform target | Stages 4–5 | Current installation-selected composition remains executable | Project/provider registration and singular target execution pass with no named implementation in generic runtime | Stage 1.A inventories repository, suite, and direct conformance evidence |
+| `history-persistence` | History ports, current record families, and DuckDB adapter | Atomic append, retry, conflict, invalidation, restatement, and deterministic reads | Reuse/refactor | Stage 6 | Current hazard-oriented state stays isolated during transition | Versioned 1.0 history/state and migration/rollback evidence pass | Stage 1.A keeps current history validation replace-later |
+| `products-materializer-application` | Logical products, YAML materializer/access, and product-only app | Product/history separation, integrity, freshness, and product-only consumption | Reuse boundary; refactor semantics | Stage 7 | Current hazard products/views remain until cumulative-risk replacements pass | Stage 7 products and app acceptance pass and current views become legacy-only | Stage 1.A keeps current product/app checks replace-later |
+| `application-artifact-connect` | Target-neutral artifact and Connect Cloud realization | Closed inventory, dependency and content integrity, target separation, and no implicit publication | Reuse/refactor | Stage 8 | Repository-built realization remains until installed-input artifact proof | Product-only installed-input artifact plus each supported target realization passes | Stage 1.A classifies artifact/Connect repository, suite, and lifecycle evidence |
+| `hospital-distribution-git` | Generated Hospital distribution and standalone Git realization | Immutable `v0.1.0` delivery evidence, safe destinations, and remote-free staging | Retire from active 1.0 path | Stage 9 | Retained for explicit historical verification only | Stage 9 retirement review proves replacement adoption path and preserves exact release evidence | Stage 1.A marks Hospital units retire-later and excludes them from planned forward profiles |
+| `development-renv` | Root `renv.lock` and repository development environment | Reproducible development dependencies without payload conflation | Retain for development only | Stage 2 | Root environment supports current source while installed closure is established | Stage 2 proves installed software closure separately and documents root lock as development-only | Stage 1.A makes no dependency or lockfile change |
+| `release-publication-tooling` | Release preparation, GitHub publication, verification, and acquisition machinery | Authorization, immutability, checksums, recovery, and public verification | Preserve safeguards; replace two-product payload later | Stage 10 | Explicit `v0.1.0` lifecycle remains callable and outside ordinary profiles | One-product 1.0 release path passes equivalent or stronger safeguards and immutable old evidence remains | Stage 1.A inventories lifecycle checks; no release or remote operation ran |
+
+## Stage 1.A state
+
+Increment 1.A is additive. The registry is classification authority while the
+existing `development` and `checkpoint` operations remain executable
+authority. No item above is retired, no replacement stage has begun, and no
+new runtime, distribution, project, or release component is implied.
+

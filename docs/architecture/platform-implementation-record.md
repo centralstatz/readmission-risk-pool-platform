@@ -5868,3 +5868,107 @@ The supported documentation validator passed 4 checks with 0 issues, covering
 40 required governing documents, 325 repository-local links, 25 maintained
 navigation sources, and portable document paths. Affected-Markdown whitespace
 inspection and `git diff --check` passed.
+
+### RRP 1.0.0 Stage 1, Increment 1.A — ownership registry and transition baseline (2026-09-12)
+
+#### Objective and scope
+
+Implement the accepted classification baseline before changing validation
+dispatch: account for meaningful current checks, preserve protected invariants,
+freeze both existing aggregate compositions, and establish actionable
+transition controls. This increment is additive development governance only.
+It does not activate profiles, alter existing validation execution, change CI,
+or modify package, runtime, product, artifact, release, or publication behavior.
+
+#### Actual work and realized decisions
+
+Added `validation/ownership.yml` as a versioned development-control registry.
+Its closed schema records stable validator IDs, owner boundary, lifecycle
+scope, one of the seven accepted statuses, protected invariants, structured
+repository-relative R-script runners with literal arguments, literal path
+triggers, prerequisites, transition-ledger links, and the current checks each
+entry accounts for. The file explicitly declares itself classification-only
+and records that no profile dispatcher is active.
+
+The inventory contains 46 validator units covering documentation and
+repository policy; repository validators; Phase 0–11 suites and checkpoints;
+producer, runtime/provider, history, products/app, artifact/Connect,
+observability, Hospital, and lifecycle validators; release preparation;
+publication preflight and verification; lifecycle-specific Git checks; and
+the implementation-record prose gates. It classifies useful current evidence
+as active or transitional, Hospital delivery as retire-later, Phase checkpoint
+gates as historical evidence, and explicit release/publication controls as
+replace-later lifecycle evidence. No future component validator was invented.
+
+Captured the current `development` aggregate as exactly 26 ordered units and
+the current `checkpoint` aggregate as exactly 38 ordered units: checkpoint is
+the development order with Phase 0–11 checkpoint functions inserted after the
+first four repository checks. Matching planned profiles
+`legacy-v0.1-development` and `legacy-v0.1-checkpoint` carry those frozen lists.
+The planned `source-fast`, `source-changed`, and `ci-active` compositions are
+registry data only and are not executable in this increment.
+
+Added the human governance guide and transition ledger under
+`docs/development/`. The ledger establishes stable controls for documentation
+authority, Phase validation, root operations and source chains, foundation and
+canonical contracts, `rrpruntime`, daily-hazard replacement, producer/provider
+execution, history/DuckDB, products/app, artifact/Connect, Hospital delivery,
+development `renv`, and release/publication tooling. Every registered unit
+resolves to a current ledger row; no machinery is marked retired.
+
+Added `validation/R/ownership.R` and the non-Phase
+`tests/run-governance-tests.R` suite. Validation is declarative and does not
+evaluate registry function names or shell text. It checks closed fields and
+statuses, safe literal paths and arguments, regular in-repository runner
+scripts, unique IDs, resolved references, graph acyclicity, deterministic
+ownership, forward-profile isolation, complete current-check coverage, ledger
+linkage, protected-invariant continuity, and exact legacy membership by
+statically inspecting the unchanged aggregate implementation. Negative tests
+exercise missing/unknown fields, invalid statuses, duplicates, ambiguity,
+unknown references, cycles, absolute/traversal/glob/shell paths, missing and
+symlinked runners, lost inventory, broken ledger links, lost invariants,
+legacy leakage, and changed aggregate order.
+
+Updated only the documentation index and factual Stage 1/Increment 1.A plan
+status so maintainers can find the two new guides and see Increment 1.B as
+next. No sibling-repository evidence was needed or inspected. No old asset was
+copied or adapted; the current repository's actual validators and accepted
+Stage 1 plan were the complete evidence base.
+
+#### Surprises, deviations, and transition effect
+
+Inventory confirmed the planned source-order detail: the effective Phase 8
+checkpoint is the later combined artifact/Connect definition. Lifecycle
+validation scripts that require an artifact or destination remain represented
+through their current focused suites and check inventory rather than gaining a
+new dispatcher or speculative argument mechanism. `current_checks` and a
+small frozen-aggregate section were added to the conceptual minimum schema
+because exact coverage and later compatibility cannot otherwise be tested.
+These are bounded 1.A inventory fields, not product or plugin contracts.
+
+There was no architectural deviation. Existing
+`operations/validate.R --mode development` and `--mode checkpoint` routing,
+membership, sourcing, exit behavior, and publication-preflight coupling are
+unchanged and remain current executable authority. The registry is now the
+accepted classification source for later Stage 1 work, with temporary
+coexistence documented explicitly.
+
+#### Validation and next task
+
+The focused governance runner passed 14 tests. Independent YAML parsing found
+46 validators, five planned profiles, and two frozen aggregates. R parsing of
+the new helper and test files passed. The supported documentation validator
+passed all four checks, including 329 repository-local links before this final
+record entry. Direct repository-policy validation passed all four checks for
+sibling independence, portable executable paths, obvious secrets, and
+fictional-fixture classification. Markdown trailing-whitespace inspection and
+`git diff --check` passed before the final record update; both are rerun over
+the complete diff at handoff. Full development/checkpoint, Phase, Hospital,
+release, publication, and acquisition workflows were deliberately not run
+because they neither changed nor proportionately validate this additive
+governance increment.
+
+Increment 1.A is complete; Stage 1 remains in progress. The next task, after
+maintainer acceptance, is **Increment 1.B — Profile dispatcher and legacy
+compatibility bridge**. Do not begin Increment 1.C or Stage 2 as part of that
+work.

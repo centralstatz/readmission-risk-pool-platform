@@ -123,6 +123,11 @@ the current Platform Architecture.
 
 ## Development
 
+- [Validation Governance](development/validation-governance.md) — current
+  validator ownership, statuses, protected invariants, exact legacy aggregate
+  capture, and the classification-only boundary before dispatcher activation.
+- [RRP 1.0.0 Transition Ledger](development/transition-ledger.md) — actionable
+  coexistence and retirement controls for current implementation machinery.
 - [Hospital Implementation v0.1.0 Clean-Room Adoption Assessment](development/hospital-implementation-v0.1.0-adoption-assessment.md)
   — evidence from exact-release acquisition, recipient-owned source/provider/
   estimand extension attempts, and implications synthesized into RRP 1.0.0.
