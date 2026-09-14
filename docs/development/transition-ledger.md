@@ -24,7 +24,7 @@ and evidence are never edited to perform a forward retirement.
 | `transition_id` | Current location and purpose | Protected invariant | Disposition / authority now | Replacement stage | Coexistence need | Retirement condition | Latest completed-stage evidence and notes |
 |---|---|---|---|---|---|---|---|
 | `documentation-authorities` | True North, architecture, plan, implementation record, and maintained navigation | Documentation authority | Keep current authority; progressively reclassify implementation guidance | Stages 1 and 9 | Current and historical `v0.1.0` documentation must remain distinguishable | Stage 9 navigation and classification acceptance passes without breaking immutable release evidence | Stage 1.C aligns agent/contributor entry points to one current authority chain and labels 1.0 target, current development control, `v0.1.0`-derived implementation, and historical evidence without broad relocation |
-| `validation-phase-controls` | `operations/validate.R`, repository policy, Phase runners/checkpoints, and prose gates | Privacy, dependency, documentation, and safe validation selection | Ownership profiles now route useful units; preserve exact modes as legacy; replace universal Phase governance | Stage 1 | Forward profiles and the isolated old aggregates coexist through the Stage 1 transition | Stage 1 closeout proves active profiles, exact legacy bridges, CI agreement, and invariant continuity | Stage 1.C makes `source-changed` normative in human/agent guidance, retains explicit legacy commands, and adds command/authority drift evidence; CI remains pending 1.D |
+| `validation-phase-controls` | `operations/validate.R`, repository policy, Phase runners/checkpoints, and prose gates | Privacy, dependency, documentation, and safe validation selection | Ownership profiles now route useful units; preserve exact modes as legacy; replace universal Phase governance | Stage 1 | Forward profiles and the isolated old aggregates coexist through the Stage 1 transition | Stage 1 closeout proves active profiles, exact legacy bridges, CI agreement, and invariant continuity | Stage 1.D repository state makes push/PR select registered `ci-active` once and exposes only the two exact legacy profiles through a read-only manual choice; static/local evidence passes and hosted acceptance remains pending |
 | `foundation-canonical-contracts` | `contracts/foundation/`, `contracts/canonical/`, and their validators | Specification/canonical identity, compatibility, relationships, and temporal validity | Reuse foundation; refactor clinical target inputs | Stage 5 | Current canonical admission remains executable until the 1.0 handoff passes | Stage 5 terminal-availability and fixed-coverage contract plus migration evidence passes | Stage 1.A classifies foundation active-scoped and canonical evidence replace-later |
 | `root-operation-scripts` | Repository-root `operations/` scripts and synthetic/reference orchestration | Human-first operations, deterministic fictional evidence, and safe mutation | Replace with installed shared operations across later stages | Stages 2–8 | Current wrappers remain executable until each successor operation passes | Each installed successor has matching human docs, tests, recovery, and explicit state ownership | Stage 1.A inventories current validators; no operation changed |
 | `operation-library-chain` | `operations/lib/` source-order chain and observability helpers | Boundary ownership plus privacy-safe diagnostics | Split by eventual package/resource owner | Stages 2–8 | The eager whole-platform chain is isolated behind legacy validation; finite source lists expose current repository checks | All live responsibilities have namespaced owners and no active operation depends on repository source order | Stage 1.B prevents forward profiles from entering the eager aggregate; no library responsibility was moved or retired |
@@ -64,3 +64,15 @@ owned reusable code/resources, explicit project context and dependency owners,
 recorded retireable shims, immutable published versions, and evidence-led reuse
 of proven core capability without preserving obsolete structural coupling. No
 implementation machinery is retired; CI alignment remains Increment 1.D.
+
+## Stage 1.D state — awaiting hosted acceptance
+
+The validation workflow now preserves its Ubuntu/R 4.4/root-`renv` environment
+and read-only permissions while replacing separate documentation plus legacy
+checkpoint execution with one registry-owned `ci-active` invocation on pushes
+and pull requests. A manual workflow choice exposes exactly
+`legacy-v0.1-development` or `legacy-v0.1-checkpoint`; neither branch performs
+release, publication, deployment, artifact upload, or remote mutation. Static
+and local evidence passes. No 1.D change has been pushed from this working tree,
+so the required successful hosted `ci-active` run has not yet been observed and
+the increment is not complete. Nothing is retired.

@@ -813,7 +813,8 @@ provider, product, application, or deployment layers.
 
 ### Stage 1 detailed plan — Authority and transition controls
 
-**Implementation status:** in progress; Increments 1.A–1.C complete
+**Implementation status:** in progress; Increments 1.A–1.C complete; Increment
+1.D implemented locally and awaiting hosted acceptance
 
 This section details only Stage 1. It does not refine Stage 2 or authorize any
 distribution, package, installation, project, analytical, state, product,
@@ -1454,6 +1455,9 @@ entries.
 
 ##### 1.D — CI alignment and deliberate legacy execution
 
+**Implementation status:** repository changes and local evidence complete;
+required hosted `ci-active` acceptance pending (2026-09-14)
+
 ###### Objective
 
 Make hosted validation agree with local ownership routing while preserving an
@@ -1749,10 +1753,11 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-With Increments 1.A–1.C complete, the next task is:
+With Increments 1.A–1.C complete and 1.D locally implemented, the next task is:
 
-> **Implement RRP 1.0.0 Stage 1, Increment 1.D — CI alignment and deliberate
-> legacy execution.**
+> **Obtain and record a successful hosted push/pull-request `ci-active` run for
+> Increment 1.D. After maintainer acceptance, implement Increment 1.E — Stage 1
+> acceptance and closeout.**
 
 Implement the five bounded increments in dependency order, preserving a
 coherent repository and recording actual evidence at each close. Do not detail

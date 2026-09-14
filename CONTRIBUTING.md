@@ -31,9 +31,17 @@ For ordinary work, run before requesting review:
 Rscript operations/validate.R --profile source-changed
 ```
 
-Use `source-fast`, a direct eligible validator, or `ci-active` when that is the
-intended claim. Run broader lifecycle or explicit legacy evidence only when the
-changed boundary or an accepted gate requires it; the old `--mode` commands are
-deprecated compatibility aliases, not the forward contribution workflow. See
-the [validation operation](docs/operations/validation.md) for exact commands
-and recovery.
+Use `source-fast` or a direct eligible validator locally when that is the
+intended claim. Hosted push and pull-request validation runs the broad forward
+profile once:
+
+```sh
+Rscript operations/validate.R --profile ci-active
+```
+
+Do not treat that hosted command as required after every edit. Maintainers can
+deliberately request exactly `legacy-v0.1-development` or
+`legacy-v0.1-checkpoint` through the validation workflow; the old `--mode`
+commands are deprecated compatibility aliases. See the
+[validation operation](docs/operations/validation.md) for claim boundaries and
+recovery.

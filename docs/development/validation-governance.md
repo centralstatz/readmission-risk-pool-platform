@@ -15,6 +15,11 @@ development selection mechanism. It does not retire the implemented `v0.1.0`
 evidence. Exact old aggregates remain deliberately callable as legacy profiles
 and deprecated `--mode` aliases.
 
+Local and hosted breadth are intentionally different. Ordinary local work uses
+`source-changed`; push and pull-request CI uses `ci-active` once; maintainers
+may manually request exactly one explicit legacy profile for historical
+regression evidence.
+
 ## Human commands
 
 The normal local operation discovers tracked, staged, and untracked working-
@@ -43,6 +48,10 @@ Other forward operations are:
 Rscript operations/validate.R --profile source-fast
 Rscript operations/validate.R --profile ci-active
 ```
+
+`source-fast` is the bounded local universal profile. The registered
+`ci-active` command is the hosted push/pull-request authority, not the routine
+command after every local edit.
 
 Discover and explain routing without running validators:
 
@@ -88,8 +97,9 @@ Generated ignored state is not selected.
 `ci-active` may still use Phase-named suites where the registry says they carry
 forward evidence. It excludes Hospital distribution, Phase 11 delivery,
 historical checkpoints/prose gates, release preparation, publication, and
-public-acquisition verification. Increment 1.D, not this dispatcher increment,
-owns changing the hosted CI workflow.
+public-acquisition verification. The hosted workflow lists none of those
+members itself: it invokes `ci-active` once and the dispatcher prints the
+registry-owned resolved membership and result.
 
 ## Execution boundary
 
@@ -126,6 +136,13 @@ Run historical aggregate evidence only deliberately:
 Rscript operations/validate.R --profile legacy-v0.1-development
 Rscript operations/validate.R --profile legacy-v0.1-checkpoint
 ```
+
+The hosted `validation` workflow exposes those two identities—and only those
+two—as a required manual choice. Each choice invokes its exact registered
+dispatcher command under read-only permissions, without secrets, release,
+publication, deployment, artifact upload, or remote mutation. Push/pull-request
+jobs cannot select either legacy profile. Existing publication preflight keeps
+its separate exact checkpoint lifecycle behavior.
 
 The old commands remain exact, visibly deprecated aliases:
 
@@ -185,10 +202,12 @@ the printed validator ID and output, repair its owned boundary, and rerun the
 same profile. Use an explicit legacy profile only when the historical aggregate
 claim is actually required.
 
-Contributor and agent instructions now use this proportional model. See
+Contributor, agent, and hosted-CI instructions now use this proportional model.
+See
 [Implementation Conventions](implementation-conventions.md) for forward code,
 resource, project-context, dependency, test, reuse, and shim rules. Increment
-1.D owns CI alignment and Increment 1.E owns Stage 1 closeout. Component
+1.D repository changes await successful hosted `ci-active` acceptance;
+Increment 1.E owns Stage 1 closeout after 1.D is accepted. Component
 validators, Phase suite names/locations, package and project validators, and
 release/publication behavior remain unchanged. A later stage may reclassify a
 unit only with its direct validator, registry, transition condition, focused

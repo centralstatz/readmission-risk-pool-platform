@@ -6220,3 +6220,117 @@ or installation mechanism was specified.
 Increment 1.C is complete; Stage 1 remains in progress. The next task, after
 maintainer acceptance, is **Increment 1.D — CI alignment and deliberate legacy
 execution**. Do not begin 1.D, 1.E, or Stage 2 as part of this increment.
+
+### RRP 1.0.0 Stage 1, Increment 1.D — CI alignment and deliberate legacy execution (repository implementation; hosted acceptance pending, 2026-09-14)
+
+#### Objective and scope
+
+Align hosted validation with the accepted 1.A–1.C ownership/profile model while
+preserving deliberate exact `v0.1.0` regression access. This increment changes
+only the existing validation workflow, focused governance evidence, and the
+minimum supporting guidance/status records. It does not redesign CI, alter the
+dispatcher or ownership membership, change product/runtime/state/artifact
+behavior, modify release/publication tooling, begin Stage 2, or authorize any
+remote mutation.
+
+#### Previous hosted behavior and retained infrastructure
+
+Inspection found one `validation` workflow triggered by pushes and pull
+requests. Its single job, `checkpoint`, ran on `ubuntu-latest`, checked out the
+repository, installed R 4.4 with public RSPM, restored the root development
+environment through `r-lib/actions/setup-renv@v2`, then separately invoked:
+
+```sh
+Rscript operations/validate-documentation.R
+Rscript operations/validate.R --mode checkpoint
+```
+
+The second command was the deprecated exact legacy checkpoint aggregate, so
+ordinary hosted validation duplicated documentation evidence and equated
+source coherence with historical release-era breadth. The workflow already had
+global `contents: read` permissions, no secrets, no explicit artifact upload,
+no release/deployment/publication command, and no remote mutation. The existing
+Ubuntu runner, R line, checkout/setup actions, root `renv` restore and
+action-managed setup behavior, permissions, workflow name, and push/PR job ID
+were retained.
+
+#### Workflow and manual legacy design
+
+Push and pull requests now conditionally enter the retained `checkpoint` job
+and invoke the operation registry's exact broad-forward command once:
+
+```sh
+Rscript operations/validate.R --profile ci-active
+```
+
+The separate documentation and checkpoint steps were removed. The workflow
+does not reproduce the profile's 24 current members or prerequisite graph;
+the ownership registry remains authoritative and the dispatcher prints the
+selected profile, resolved validators/reasons, individual outcomes, and final
+status in the ordinary job log.
+
+Added `workflow_dispatch` with one required `choice` input permitting exactly:
+
+```text
+legacy-v0.1-development
+legacy-v0.1-checkpoint
+```
+
+A separately conditioned `legacy-regression` job uses the same hosted
+environment. Two mutually exclusive steps contain the exact registered
+dispatcher commands, and an impossible/unsupported value has an explicit
+nonzero rejection step. Workflow input is never interpolated into a command.
+The manual job inherits only `contents: read`, receives no secrets, and has no
+Hospital, acquisition, release preparation, publication, deployment, artifact
+upload, Git tag/push/remote, or release-creation behavior. It is historical
+regression access, not a shadow release path. Publication preflight and all
+existing maintainer lifecycle operations are unchanged.
+
+#### Governance, guidance, and transition effect
+
+Added a non-Phase CI workflow governance file with six cases. The suite parses
+the real workflow and operations registry and proves push/PR trigger agreement,
+exactly one registered `ci-active` invocation, absence of duplicate/legacy/
+Phase validation in the ordinary job, the exact manual allowlist and commands,
+fail-closed non-interpolation, read-only permissions, Ubuntu/R 4.4/root-`renv`
+continuity, absence of release/deployment/remote mutation, and human/agent
+documentation agreement. The governance suite now contains 40 tests.
+
+Updated agent, contributor, README, validation-operation, and validation-
+governance guidance only enough to distinguish ordinary local
+`source-changed`, hosted push/PR `ci-active`, and deliberate manual legacy
+regression. Hosted `ci-active` is explicitly source-coherence evidence rather
+than RRP 1.0 release qualification; release/publication validation remains a
+separate lifecycle. The operation registry and validation ownership registry
+already contained the exact commands and correct profile membership, so
+neither changed.
+
+Updated only the `validation-phase-controls` ledger evidence and added the 1.D
+pending state. No Phase, Hospital, release/publication, product/runtime, or
+other transition item is retired.
+
+#### Local evidence and hosted acceptance state
+
+Local/static evidence passes: workflow YAML parsing and structural assertions;
+all 40 governance tests; documentation and repository-policy validation;
+operation-registry command agreement; an actual `source-fast`; an actual
+representative `source-changed` execution for the workflow path; and one local
+`ci-active` execution resolving and passing all 24 forward/transitional
+validators. Final changed-tree routing explanation, R/YAML parsing, stale CI
+command and permission/mutation scans, Markdown hygiene, and `git diff --check`
+are performed over the complete handoff diff. Neither exact legacy profile nor
+any Hospital, release, publication, deployment, or acquisition operation ran.
+
+Required hosted evidence does not yet exist. At implementation time local
+`HEAD` was three accepted Stage 1 commits ahead of `origin/main`, and the 1.D
+workflow changes were uncommitted and unpushed. Consequently no GitHub Actions
+push/PR run can yet contain this workflow, and no run identity or successful
+hosted result is claimed or fabricated. No commit, push, pull request, manual
+dispatch, or repository-setting change was performed.
+
+Increment 1.D is therefore **implemented locally but not complete**. Stage 1
+remains in progress. The next task is to place this exact reviewed change on an
+authorized pushed branch, observe a successful push/PR `ci-active` run, and
+append its factual run identity/status. After 1.D maintainer acceptance, the
+next implementation task is **Increment 1.E — Stage 1 acceptance and
+closeout**. Do not begin 1.E or Stage 2 before that evidence exists.

@@ -15,6 +15,15 @@ Current validation answers three deliberately separate questions:
 - **Legacy compatibility:** Does the exact implemented `v0.1.0` development or
   checkpoint aggregate still pass when deliberately requested?
 
+The supported operating roles are:
+
+```text
+ordinary local development       → source-changed
+hosted push/pull-request evidence → ci-active
+deliberate historical regression → legacy-v0.1-development
+                                   or legacy-v0.1-checkpoint
+```
+
 Forward validation success is not release, deployment, publication, product,
 contract, or clinical readiness. Legacy checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
@@ -65,11 +74,17 @@ Run only the small universal source checks:
 Rscript operations/validate.R --profile source-fast
 ```
 
-Run the broad forward-relevant profile:
+Hosted push and pull-request validation runs the broad forward-relevant profile
+once. The dispatcher prints the selected profile, resolved validators, their
+selection reasons, individual results, and combined status:
 
 ```sh
 Rscript operations/validate.R --profile ci-active
 ```
+
+This is active source-coherence evidence in the supported Ubuntu/R 4.4/root-
+`renv` development environment. It is not RRP 1.0 release qualification and is
+not required after every ordinary local edit.
 
 List profiles without executing them:
 
@@ -113,6 +128,20 @@ Deliberately run the frozen legacy checkpoint aggregate:
 ```sh
 Rscript operations/validate.R --profile legacy-v0.1-checkpoint
 ```
+
+Maintainers may request the same exact historical evidence from GitHub Actions:
+
+1. Open the `validation` workflow and choose **Run workflow**.
+2. Select exactly `legacy-v0.1-development` or
+   `legacy-v0.1-checkpoint` in the required `profile` choice.
+3. Review the dispatcher membership and result in the hosted job log.
+
+The manual path is read-only and receives no secrets. It restores the same root
+development environment and runs exactly one selected dispatcher profile. It
+does not prepare or publish a release, deploy, create artifacts, tag, push, or
+mutate remotes. A failure is historical regression evidence: inspect the first
+failing owned validator and rerun deliberately after correction. Release and
+publication validation remain separate maintainer lifecycle operations.
 
 The old development command remains a deprecated exact alias:
 

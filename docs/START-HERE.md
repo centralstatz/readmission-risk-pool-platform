@@ -22,8 +22,9 @@ current architectures.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — authoritative high-level RRP 1.0.0 stages, dependency order, transition
    strategy, acceptance gates, and current detailed Stage 1 plan. Increments
-   1.A–1.C are complete; Increment 1.D is next after maintainer acceptance. The
-   published `v0.1.0` tag retains its historical Phase 0–11 state.
+   1.A–1.C are complete; Increment 1.D is implemented locally and awaits a
+   successful hosted `ci-active` run before acceptance. The published `v0.1.0`
+   tag retains its historical Phase 0–11 state.
    [Validation Governance](development/validation-governance.md) and the
    [Transition Ledger](development/transition-ledger.md) define current evidence
    selection and controlled coexistence/retirement.

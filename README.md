@@ -21,9 +21,9 @@ defines the conventional installed-software and independent-project product,
 and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
 defines its authoritative high-level roadmap. `1.0.0` is a target generation,
 not a released version. Detailed planning proceeds one stage at a time; Stage
-1 Increments 1.A–1.C are complete and Increment 1.D is next after maintainer
-acceptance. Existing `0.2.0-dev` metadata is transitional and no next release
-is prepared.
+1 Increments 1.A–1.C are complete, and Increment 1.D is implemented locally but
+awaits successful hosted `ci-active` acceptance. Existing `0.2.0-dev` metadata
+is transitional and no next release is prepared.
 
 Current development control is defined by
 [Validation Governance](docs/development/validation-governance.md) and the
@@ -222,16 +222,23 @@ with:
 Rscript operations/validate.R --profile source-changed
 ```
 
-Use the bounded universal or broad forward profile when its claim is intended:
+Use the bounded universal profile locally when its claim is intended:
 
 ```sh
 Rscript operations/validate.R --profile source-fast
+```
+
+Hosted pushes and pull requests run the registered broad forward profile once:
+
+```sh
 Rscript operations/validate.R --profile ci-active
 ```
 
-The exact `v0.1.0` development/checkpoint aggregates remain explicit legacy
-compatibility operations; they are not the ordinary forward workflow. See the
-validation guide before invoking them.
+This hosted source-coherence check is not RRP 1.0 release qualification and is
+not the routine command after every local edit. Maintainers can deliberately
+select exactly `legacy-v0.1-development` or `legacy-v0.1-checkpoint` in the
+validation workflow for historical regression evidence. See the validation
+guide before invoking either legacy profile.
 
 For deliberate historical `v0.1.0` maintenance, build and independently
 validate the proof-only Hospital Implementation with:

@@ -235,14 +235,23 @@ acceptance scope. Ordinary local source work begins with:
 Rscript operations/validate.R --profile source-changed
 ```
 
-Use the bounded universal checks, a direct eligible validator, or broad forward
-evidence intentionally:
+Use bounded universal checks or a direct eligible validator locally when that
+is the intended claim:
 
 ```sh
 Rscript operations/validate.R --profile source-fast
 Rscript operations/validate.R --validator VALIDATOR_ID
+```
+
+Hosted push and pull-request validation runs the registered broad forward
+profile once and prints its resolved membership:
+
+```sh
 Rscript operations/validate.R --profile ci-active
 ```
+
+Do not substitute `source-changed` for hosted source-coherence validation or
+make `ci-active` the routine command after every local edit.
 
 Broader evidence is appropriate when the changed boundary owns it, an accepted
 increment/stage gate requires it, or a CI/release/publication lifecycle
@@ -250,8 +259,10 @@ operation explicitly requires it. Maximum validation volume is not a substitute
 for selecting the correct owned invariants.
 
 The exact old aggregates remain available only for deliberate historical
-compatibility. Prefer their explicit names; the `--mode` forms are deprecated
-aliases:
+compatibility. Maintainers may select either explicit legacy profile through
+the validation workflow's closed manual choice; the same exact commands remain
+callable locally. Prefer their explicit names because the `--mode` forms are
+deprecated aliases:
 
 ```sh
 Rscript operations/validate.R --profile legacy-v0.1-development
