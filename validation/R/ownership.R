@@ -216,7 +216,14 @@ rrp_governance_expected_current_checks <- function(repository_root) {
     phase_runners,
     direct_validators,
     lifecycle_checks,
-    "tests/run-governance-tests.R"
+    "tests/run-governance-tests.R",
+    "validation/R/ownership.R",
+    "validation/R/dispatcher.R",
+    "validation/R/current-boundary.R",
+    "operations/validate.R",
+    "operations/validate-current-boundary.R",
+    "operations/validate-legacy.R",
+    "operations/validate-repository-policy.R"
   ))
 }
 
@@ -297,10 +304,11 @@ rrp_governance_validate_registry <- function(registry, repository_root, ledger_i
     rrp_governance_unknown_fields(state, governance_fields, "governance_state"),
     rrp_governance_missing_fields(state, governance_fields, "governance_state")
   )
-  if (!isTRUE(state$classification_only) || !identical(state$activated_dispatcher, FALSE)) {
+  if (!identical(state$classification_only, FALSE) ||
+      !isTRUE(state$activated_dispatcher)) {
     issues <- c(issues, rrp_governance_issue(
       "invalid_governance_state",
-      "Increment 1.A must remain classification-only with dispatcher activation false."
+      "Increment 1.B requires classification_only false and activated_dispatcher true."
     ))
   }
   issues <- c(

@@ -24,8 +24,20 @@ governance_test_cases <- function(repository_root) {
     "ownership registry conforms" = function() {
       result <- governance_validate(registry, repository_root)
       phase0_assert_true(result$passed, paste(result$issues, collapse = " | "))
-      phase0_assert_true(isTRUE(registry$governance_state$classification_only))
-      phase0_assert_false(registry$governance_state$activated_dispatcher)
+      phase0_assert_false(registry$governance_state$classification_only)
+      phase0_assert_true(isTRUE(registry$governance_state$activated_dispatcher))
+      phase0_assert_true(identical(
+        rrp_governance_values(
+          registry$governance_state$current_development_runner$arguments
+        ),
+        c("--profile", "source-changed")
+      ))
+      phase0_assert_true(identical(
+        rrp_governance_values(
+          registry$governance_state$current_checkpoint_runner$arguments
+        ),
+        c("--profile", "legacy-v0.1-checkpoint")
+      ))
     },
 
     "status vocabulary is exact and closed" = function() {

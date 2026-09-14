@@ -14,13 +14,13 @@ operations:
     documentation: docs/operations/operator-manual.md
   - operation_id: platform.validate-development
     command: Rscript operations/validate.R --mode development
-    purpose: Check current repository coherence during development.
+    purpose: Deprecated alias for the exact legacy v0.1.0 development aggregate.
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/validation.md
   - operation_id: platform.validate-checkpoint
     command: Rscript operations/validate.R --mode checkpoint
-    purpose: Check every completed milestone through the current Phase 11 iteration.
+    purpose: Deprecated alias for the exact legacy v0.1.0 checkpoint aggregate.
     mutation: read_only_with_removed_temporary_checks
     classification: public
     documentation: docs/operations/validation.md
@@ -136,6 +136,54 @@ operations:
     command: Rscript operations/validate-documentation.R
     purpose: Validate maintained documentation and local links.
     mutation: read_only
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-source-changed
+    command: Rscript operations/validate.R --profile source-changed
+    purpose: Run universal source checks plus validators owned by current working-tree changes.
+    mutation: read_only_with_removed_temporary_checks
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-source-fast
+    command: Rscript operations/validate.R --profile source-fast
+    purpose: Run bounded validation-governance, documentation, and repository-policy checks.
+    mutation: read_only_with_removed_temporary_checks
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-ci-active
+    command: Rscript operations/validate.R --profile ci-active
+    purpose: Run broad forward-relevant source and transitional component evidence without release delivery.
+    mutation: read_only_with_removed_temporary_checks
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.list-validation-profiles
+    command: Rscript operations/validate.R --list
+    purpose: List executable forward and explicit legacy validation profiles without running them.
+    mutation: read_only
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.explain-source-changed-validation
+    command: Rscript operations/validate.R --profile source-changed --paths PATH --explain
+    purpose: Explain changed-path ownership and prerequisite routing without running validators.
+    mutation: read_only
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-repository-policy
+    command: Rscript operations/validate-repository-policy.R
+    purpose: Run only repository policy validation through its direct noninteractive entry point.
+    mutation: read_only
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-legacy-development
+    command: Rscript operations/validate.R --profile legacy-v0.1-development
+    purpose: Deliberately run the frozen exact v0.1.0 development aggregate.
+    mutation: read_only_with_removed_temporary_checks
+    classification: development
+    documentation: docs/operations/validation.md
+  - operation_id: platform.validate-legacy-checkpoint
+    command: Rscript operations/validate.R --profile legacy-v0.1-checkpoint
+    purpose: Deliberately run the frozen exact v0.1.0 checkpoint aggregate.
+    mutation: read_only_with_removed_temporary_checks
     classification: development
     documentation: docs/operations/validation.md
   - operation_id: reference.generate-source

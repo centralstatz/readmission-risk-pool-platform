@@ -5,6 +5,8 @@ test_script <- normalizePath(sub("^--file=", "", file_argument[[1L]]), mustWork 
 repository_root <- normalizePath(file.path(dirname(test_script), ".."), mustWork = TRUE)
 
 source(file.path(repository_root, "validation", "R", "ownership.R"))
+source(file.path(repository_root, "validation", "R", "current-boundary.R"))
+source(file.path(repository_root, "validation", "R", "dispatcher.R"))
 source(file.path(repository_root, "tests", "helpers", "assertions.R"))
 
 test_files <- sort(list.files(
@@ -47,4 +49,3 @@ if (length(failures) > 0L) {
 }
 
 cat("Result: PASS (", length(cases), " tests)\n", sep = "")
-

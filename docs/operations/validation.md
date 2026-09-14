@@ -2,15 +2,17 @@
 
 ## Purpose
 
-Current validation answers two different questions:
+Current validation answers three deliberately separate questions:
 
-- **Development:** Is the intentionally changing repository coherent enough to
-  continue development?
-- **Strict checkpoint:** Does the repository satisfy the implemented Phase 11
-  release and publication-workflow requirements?
+- **Changed source:** Which owned evidence is required by this working-tree or
+  explicit path set, in addition to universal source checks?
+- **Broad forward evidence:** Do all currently active and transitional source
+  units pass without invoking historical delivery and release qualification?
+- **Legacy compatibility:** Does the exact implemented `v0.1.0` development or
+  checkpoint aggregate still pass when deliberately requested?
 
-Development success is not release, deployment, publication, product, contract,
-or clinical readiness. Checkpoint success is limited to the Phase 0 engineering
+Forward validation success is not release, deployment, publication, product,
+contract, or clinical readiness. Legacy checkpoint success is limited to the Phase 0 engineering
 foundation, Phase 1 specification foundation, Phase 2 canonical handoff, Phase
 3 fictional source implementation, completed Phase 4 runtime/provider
 foundation, Iteration 5.1 operational-history contracts/ports, Iteration 5.2
@@ -46,19 +48,75 @@ machine-specific project path.
 
 ## Commands
 
+Validate the current working-tree changes using ownership routing. This is the
+primary local development operation:
+
+```sh
+Rscript operations/validate.R --profile source-changed
+```
+
+Run only the small universal source checks:
+
+```sh
+Rscript operations/validate.R --profile source-fast
+```
+
+Run the broad forward-relevant profile:
+
+```sh
+Rscript operations/validate.R --profile ci-active
+```
+
+List profiles without executing them:
+
+```sh
+Rscript operations/validate.R --list
+```
+
+Explain routing for an explicit repository-relative path without execution:
+
+```sh
+Rscript operations/validate.R --profile source-changed --paths PATH --explain
+```
+
+Use multiple values after `--paths` for a proposed path set, or replace
+`--paths PATH` with `--base BASE` to discover changes relative to a simple
+branch, tag, or commit. Default discovery compares the working tree with
+`HEAD`, including modified tracked, staged, and untracked non-ignored files.
+A clean tree is not required. Invalid or unavailable Git discovery fails
+clearly instead of broadening to an expensive profile.
+
+Run repository policy alone:
+
+```sh
+Rscript operations/validate-repository-policy.R
+```
+
 Validate maintained documentation only:
 
 ```sh
 Rscript operations/validate-documentation.R
 ```
 
-Validate the current in-progress repository:
+Deliberately run the frozen legacy development aggregate:
+
+```sh
+Rscript operations/validate.R --profile legacy-v0.1-development
+```
+
+Deliberately run the frozen legacy checkpoint aggregate:
+
+```sh
+Rscript operations/validate.R --profile legacy-v0.1-checkpoint
+```
+
+The old development command remains a deprecated exact alias:
 
 ```sh
 Rscript operations/validate.R --mode development
 ```
 
-Validate the Iteration 11.4 checkpoint:
+The old checkpoint command remains a deprecated exact alias:
 
 ```sh
 Rscript operations/validate.R --mode checkpoint
@@ -273,9 +331,30 @@ operating system's temporary directory and removed by the test process.
 The validator does not request external URLs and does not attempt to render all
 Markdown dialects.
 
-## What development validation checks
+## What forward profiles check
 
-Development mode composes:
+`source-fast` runs exactly the validation-governance suite, documentation
+validation, and repository policy. `source-changed` adds every
+`active_scoped` or `replace_later` validator whose literal trigger matches a
+changed path, recursively placing registered prerequisites before dependents
+and executing each unit once. With no scoped matches, it remains the bounded
+`source-fast` composition.
+
+`ci-active` runs `source-fast` plus all registry-declared forward-relevant
+repository and current/transitional Phase-suite evidence. It deliberately
+excludes Hospital distribution, Phase 11 delivery, historical Phase
+checkpoints and prose gates, release preparation, publication, and public
+acquisition. Hosted CI is not changed until Stage 1 Increment 1.D.
+
+Forward units execute in independent R subprocesses. All selected units report
+their own status, and any failure makes the combined operation fail. Before
+execution, `--explain` prints deterministic order and whether each unit is
+global, profile-included, path-matched, or prerequisite-expanded.
+
+## What the legacy development aggregate checks
+
+The explicit `legacy-v0.1-development` profile and deprecated `--mode
+development` alias compose:
 
 - documentation validation;
 - executable/configuration independence from the sibling reference repository;
@@ -300,12 +379,16 @@ Development mode composes:
 - all Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, and focused
   Phase 6, Phase 7, Phase 8, Phase 9, Phase 10, and Phase 11 tests.
 
-Intentional source and documentation changes are allowed. Development mode
-does not impose a clean Git worktree and does not prove a milestone is complete.
+Intentional source and documentation changes are allowed. The legacy
+development aggregate does not impose a clean Git worktree and does not prove
+a milestone is complete. It is compatibility evidence, not the recommended
+ordinary workflow.
 
-## What checkpoint validation adds
+## What the legacy checkpoint aggregate adds
 
-Checkpoint mode runs every development check and additionally verifies:
+The explicit `legacy-v0.1-checkpoint` profile and deprecated `--mode
+checkpoint` alias run every frozen legacy development check and additionally
+verify:
 
 - required Phase 0 through Iteration 5.2 metadata, policy, operation,
   specification, package, implementation, and test files;
@@ -372,6 +455,16 @@ observability output, not retained logs, provenance, metrics, or audit.
 
 ## Common failures and recovery
 
+- **Changed-path discovery failure:** Confirm the command runs in this Git
+  repository and that the selected base is a valid simple branch, tag, or
+  commit. Supply explicit safe repository-relative paths when they are the
+  intended evidence; never substitute an unrelated broad profile silently.
+- **Unexpected routing:** Rerun the same selector with `--explain`, then correct
+  the ownership trigger or prerequisite if the registry evidence is wrong.
+  Do not edit YAML runners to invoke functions or shell commands.
+- **Validator subprocess failure:** Use the reported validator ID and captured
+  child output to repair the owning boundary. Other selected units still run,
+  but any required failure keeps the combined exit status nonzero.
 - **Broken local link:** Correct the relative target or restore the maintained
   document. Do not replace it with a machine-local path.
 - **Missing navigation target:** Add the required link to the named navigation
@@ -438,6 +531,7 @@ observability output, not retained logs, provenance, metrics, or audit.
 - **Premature later-phase content:** Remove the scaffold unless the
   implementation plan has explicitly advanced and its record documents why.
 
-After correction, rerun the same command. Do not use development validation to
-bypass a failing checkpoint. If validation behavior changes, update this guide,
-the tests, `AGENTS.md`, and the implementation record together.
+After correction, rerun the same command. Do not use a forward profile to
+bypass a deliberately required legacy checkpoint. If validation behavior
+changes, update this guide, the tests, applicable authority/instructions, and
+the implementation record together.

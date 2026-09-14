@@ -5972,3 +5972,124 @@ Increment 1.A is complete; Stage 1 remains in progress. The next task, after
 maintainer acceptance, is **Increment 1.B — Profile dispatcher and legacy
 compatibility bridge**. Do not begin Increment 1.C or Stage 2 as part of that
 work.
+
+### RRP 1.0.0 Stage 1, Increment 1.B — profile dispatcher and legacy compatibility bridge (2026-09-14)
+
+#### Objective and scope
+
+Activate the accepted validation-ownership model so ordinary source work can
+run only its owned evidence, while preserving the exact `v0.1.0` development
+and checkpoint aggregates behind deliberate compatibility names. This
+increment changes development control only. It does not alter CI, packages,
+canonical or analytical contracts, runtime/provider/history/product/app
+behavior, artifact payloads, release/version state, publication, or public
+acquisition.
+
+#### Actual work and realized design
+
+Added `validation/R/dispatcher.R` as the single routing implementation over the
+1.A parser and validated registry. It resolves named profiles and direct
+eligible validators, recursively expands profile composition and registered
+prerequisites, deduplicates with prerequisites before dependents, and reports
+every global, profile, path-match, and prerequisite reason in deterministic
+order. Exact paths, literal directory prefixes, and literal suffixes remain the
+only trigger language. Explicit `--paths` input and Git discovery relative to
+`HEAD` or a validated simple `--base` cover unstaged tracked, staged, and
+untracked non-ignored files without requiring a clean tree. Discovery errors
+fail instead of selecting a broader profile.
+
+Refactored `operations/validate.R` into the active profile CLI. It supports
+`--profile`, eligible `--validator` selection, `--list`, non-executing
+`--explain`, source-changed `--paths`/`--base`, and combined exit reporting.
+Each forward unit is invoked once in a separate `Rscript` process, with output
+captured per validator; ordinary child failures do not hide later selected
+results, while any failed requirement returns nonzero. Interrupt handling
+returns the conventional interrupted status and stops further dispatch.
+
+Activated the accepted profiles without changing their classifications:
+`source-fast` is the three-unit governance/documentation/repository-policy
+composition; `source-changed` is that base plus matching `active_scoped` or
+`replace_later` units and prerequisites; and `ci-active` is the broad 24-unit
+forward/transitional composition. `ci-active` contains current Phase-named
+component suites only where 1.A classified them as continuing evidence. It
+contains no Hospital distribution, Phase 11, checkpoint/prose gate, release,
+publication, or acquisition unit.
+
+Added `validation/R/current-boundary.R` and
+`operations/validate-current-boundary.R` as a finite compatibility adapter for
+twelve current repository-check boundaries. Validator IDs select exact
+code-owned source lists and exact functions. Neither runner data nor YAML can
+supply a function, source path, expression, or shell command; unknown mappings
+fail closed, and the adapter never loads the eager platform aggregate. Existing
+clean direct scripts remain the preferred runner. Repository policy gained its
+own direct noninteractive `operations/validate-repository-policy.R` entry point
+without changing `rrp_validate_repository_policies()` semantics.
+
+Moved the unchanged old eager loading and `rrp_validate_platform()` call into
+`operations/validate-legacy.R`. The callable
+`legacy-v0.1-development` and `legacy-v0.1-checkpoint` profiles use the exact
+26- and 38-unit ordered lists frozen in 1.A and execute one exact compatibility
+process rather than being reconstructed from forward ownership. The existing
+`--mode development` and `--mode checkpoint` commands remain supported,
+print a visible deprecation/legacy diagnostic, and map exactly to those
+profiles. Publication preflight remains unchanged and therefore continues to
+receive exact checkpoint semantics.
+
+Updated registry runner facts and activated its governance state only after
+focused dispatcher evidence passed. Updated the human validation operation,
+operation registry, validation-governance guide, the two materially affected
+transition-ledger controls, and factual Stage 1 status. The eager aggregate is
+isolated from forward routing, but no Phase, Hospital, release, publication, or
+source-chain machinery is retired.
+
+#### Existing evidence, new work, and surprises
+
+The current `operations/validate.R`, unchanged
+`operations/lib/platform-validation.R`, direct Phase runners, repository-check
+functions, 1.A registry/frozen aggregates, and existing structured validation
+results were reused as repository-owned evidence. The repository-check
+semantics and old aggregate body were not rewritten. New work is limited to
+the dispatcher, finite adapter, direct policy and isolated legacy entry points,
+non-Phase routing tests, and aligned development-control documentation and
+metadata. No sibling repository was inspected or used.
+
+Realized inspection confirmed twelve repository-function runners whose 1.A
+historical runner declaration would otherwise have fallen through to the whole
+development aggregate. Explicitly mapping those boundaries was the anticipated
+transition detail, not an architecture deviation. All twelve ran successfully
+in isolation with their bounded source lists. No source classification needed
+to change, and no unresolved lifecycle or publication coupling was found.
+
+#### Focused evidence and next task
+
+The non-Phase governance suite passes 30 tests, including registry and cycle
+safety, literal matching, multi-owner/no-match cases, dirty/staged/untracked
+Git discovery, recursive prerequisite order, deterministic deduplication,
+forward isolation, finite adapter allowlisting and failure propagation, direct
+repository-policy isolation, independent child processes, combined nonzero
+failure, and exact legacy membership and alias equivalence. Direct repository
+policy passes four checks. Every one of the twelve adapter boundaries passes
+when invoked independently.
+
+Actual `source-fast` execution passes its three independent units. A
+representative explicit `source-changed` run for `operations/operations.yml`
+passes its 11 deduplicated units: the universal three, operations repository
+check, and the registry-declared Phase 1/2/4/5/6/7 prerequisite chain.
+`ci-active` explanation resolves 24 forward units and both legacy explanations
+show the frozen 26- and 38-unit orders without execution. Working-tree routing
+is separately covered by the temporary Git fixture so dirty state is evidence,
+not a failure condition.
+
+Documentation validation, operation-registry validation, changed-R parsing,
+YAML parsing, repository policy, Markdown hygiene, and `git diff --check` are
+the final proportional checks. The expensive legacy aggregates, Hospital
+generation/acquisition, release preparation, publication, and public
+acquisition were deliberately not executed. `.github/workflows/validation.yml`,
+`AGENTS.md`, `operations/lib/platform-validation.R`, product/runtime/state/
+artifact/release/publication semantics, and published `v0.1.0` evidence are
+unchanged.
+
+Increment 1.B is complete; Stage 1 remains in progress. The next task, after
+maintainer acceptance, is **Increment 1.C — Authority, documentation, and
+development-convention alignment**. Do not begin Increment 1.C, 1.D, or Stage
+2 as part of this increment.

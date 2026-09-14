@@ -813,7 +813,7 @@ provider, product, application, or deployment layers.
 
 ### Stage 1 detailed plan — Authority and transition controls
 
-**Implementation status:** in progress; Increment 1.A complete
+**Implementation status:** in progress; Increments 1.A and 1.B complete
 
 This section details only Stage 1. It does not refine Stage 2 or authorize any
 distribution, package, installation, project, analytical, state, product,
@@ -1295,6 +1295,8 @@ record entry.
 
 ##### 1.B — Profile dispatcher and legacy compatibility bridge
 
+**Implementation status:** complete (2026-09-14)
+
 ###### Objective
 
 Make named, ownership-routed validation executable while preserving exact old
@@ -1745,10 +1747,10 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-With Increment 1.A complete, the next task is:
+With Increments 1.A and 1.B complete, the next task is:
 
-> **Implement RRP 1.0.0 Stage 1, Increment 1.B — Profile dispatcher and legacy
-> compatibility bridge.**
+> **Implement RRP 1.0.0 Stage 1, Increment 1.C — Authority, documentation, and
+> development-convention alignment.**
 
 Implement the five bounded increments in dependency order, preserving a
 coherent repository and recording actual evidence at each close. Do not detail

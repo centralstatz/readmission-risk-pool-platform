@@ -2,68 +2,151 @@
 
 ## Current state
 
-The RRP 1.0.0 validation ownership model is now classified but not yet active.
+The RRP 1.0.0 ownership dispatcher is active.
 [`validation/ownership.yml`](../../validation/ownership.yml) is the
 machine-readable inventory of current validators, protected invariants,
-ownership, transition status, prerequisites, path triggers, and planned
-profiles. It is a development control, not an installed RRP resource, project
-manifest, clinical contract, or release authorization.
+ownership, transition status, prerequisites, literal path triggers, executable
+profiles, and frozen legacy aggregates. It is a development control, not an
+installed RRP resource, project manifest, clinical contract, or release
+authorization.
 
-The change is needed because the implemented aggregate organizes evidence by
-historical Phase completion and loads nearly the whole repository for either
-mode. That remains valid `v0.1.0` evidence, but it cannot answer which current
-component or lifecycle owns a check, why a changed path needs it, or when a
-transitional check may leave the forward path. Ownership and protected
-invariants therefore govern the 1.0 transition; Phase chronology remains
-historical evidence rather than the forward development hierarchy.
+The dispatcher replaces historical Phase chronology as the ordinary source-
+development selection mechanism. It does not retire the implemented `v0.1.0`
+evidence. Exact old aggregates remain deliberately callable as legacy profiles
+and deprecated `--mode` aliases.
 
-Increment 1.A does not change validation dispatch. The supported executable
-aggregates remain:
+## Human commands
+
+The normal local operation discovers tracked, staged, and untracked working-
+tree changes relative to `HEAD`:
+
+```sh
+Rscript operations/validate.R --profile source-changed
+```
+
+Use explicit repository-relative paths when validating a proposed path set:
+
+```sh
+Rscript operations/validate.R --profile source-changed --paths PATH
+```
+
+Multiple literal paths may follow `--paths`. Use a simple branch, tag, or commit
+identity to compare the working tree with another base:
+
+```sh
+Rscript operations/validate.R --profile source-changed --base BASE
+```
+
+Other forward operations are:
+
+```sh
+Rscript operations/validate.R --profile source-fast
+Rscript operations/validate.R --profile ci-active
+```
+
+Discover and explain routing without running validators:
+
+```sh
+Rscript operations/validate.R --list
+Rscript operations/validate.R --profile source-changed --paths PATH --explain
+Rscript operations/validate.R --profile legacy-v0.1-development --explain
+Rscript operations/validate.R --profile legacy-v0.1-checkpoint --explain
+```
+
+A current validator whose status permits direct forward execution may also be
+selected by stable ID:
+
+```sh
+Rscript operations/validate.R --validator repository.policy
+```
+
+Unknown, legacy-only, retired, or historical validator IDs fail closed.
+
+## Profiles and selection
+
+| Profile | Executable role |
+|---|---|
+| `source-fast` | Three bounded universal units: governance self-check, documentation, and repository policy |
+| `source-changed` | `source-fast` plus every matching `active_scoped` or `replace_later` unit and all registered prerequisites |
+| `ci-active` | Broad forward-relevant current and transitional component evidence |
+| `legacy-v0.1-development` | Frozen exact 26-unit old development composition, executed through one compatibility process |
+| `legacy-v0.1-checkpoint` | Frozen exact 38-unit old checkpoint composition, executed through one compatibility process |
+
+`source-changed` matches only exact paths, literal directory prefixes, and
+literal suffixes recorded in the registry. It does not interpret regexes,
+globs, shell syntax, or configuration as code. Matching a file may select
+multiple owners. Registered prerequisites expand recursively, precede their
+dependents, and execute once. The explanation identifies global, profile,
+path-matched, and prerequisite reasons in deterministic order. With no scoped
+match, `source-fast` remains selected; Git discovery failure is reported and
+never broadens silently to a larger profile.
+
+Git cleanliness is not a source-validity invariant. Default discovery includes
+unstaged tracked changes, staged changes, and untracked non-ignored files.
+Generated ignored state is not selected.
+
+`ci-active` may still use Phase-named suites where the registry says they carry
+forward evidence. It excludes Hospital distribution, Phase 11 delivery,
+historical checkpoints/prose gates, release preparation, publication, and
+public-acquisition verification. Increment 1.D, not this dispatcher increment,
+owns changing the hosted CI workflow.
+
+## Execution boundary
+
+The dispatcher validates the registry before planning. Each forward validator
+runs once in an independent `Rscript` process. It captures every result,
+continues across ordinary child failures so the complete selected result is
+visible, and exits nonzero if any required unit fails. An interrupt stops the
+active process and returns an interrupt status rather than spawning further
+units.
+
+Safe direct scripts are used as registered. Twelve existing repository-check
+functions that previously were reachable only through the eager aggregate use
+a finite code-owned compatibility adapter in
+[`validation/R/current-boundary.R`](../../validation/R/current-boundary.R).
+The adapter maps an allowlisted validator ID to exact source files and one exact
+function. YAML cannot supply function names, expressions, source lists, or shell
+commands. Unknown IDs fail closed, and the adapter never sources
+`platform-validation.R`.
+
+Repository policy has its own noninteractive operation:
+
+```sh
+Rscript operations/validate-repository-policy.R
+```
+
+It invokes the existing repository-policy semantics only; it does not enter a
+Phase suite or either aggregate.
+
+## Legacy compatibility
+
+Run historical aggregate evidence only deliberately:
+
+```sh
+Rscript operations/validate.R --profile legacy-v0.1-development
+Rscript operations/validate.R --profile legacy-v0.1-checkpoint
+```
+
+The old commands remain exact, visibly deprecated aliases:
 
 ```sh
 Rscript operations/validate.R --mode development
 Rscript operations/validate.R --mode checkpoint
 ```
 
-Their exact ordered membership is frozen in the registry as
-`legacy-v0.1-development` and `legacy-v0.1-checkpoint`. Named profiles such as
-`source-fast`, `source-changed`, and `ci-active` describe the accepted routing
-design, but they cannot be invoked until Increment 1.B implements and tests the
-dispatcher. CI and the legacy commands are unchanged in this increment.
+The aliases bypass changed-path routing and map respectively to the two frozen
+legacy profiles. One isolated legacy entry point retains the unchanged eager
+source chain and `rrp_validate_platform()` behavior, including checkpoint
+semantics used by publication preflight. Forward profiles cannot route through
+that entry point merely because a validator was historically reachable from an
+aggregate.
 
-## Registry semantics
+## Registry semantics and safety
 
-The planned Stage 1 model distinguishes four concepts:
-
-- A **validator unit** is one owned, noninteractive check with a structured
-  runner, protected invariant, triggers, prerequisites, and transition link.
-- A **profile** is an acyclic named composition. It makes a bounded validation
-  claim; it is not a new check.
-- **Changed-path selection** will match literal repository-relative paths to
-  scoped units, expand their prerequisites, and explain the deterministic
-  result. Increment 1.A records triggers but does not execute this selection.
-- A **legacy bridge** will preserve the exact old aggregate compositions under
-  explicit names. Increment 1.A freezes those compositions; Increment 1.B will
-  make the names callable without changing their meaning.
-
-Component checks belong to the code or contract boundary whose conformance
-they establish. Lifecycle checks belong to the operation whose stronger state,
-artifact, Git, release, or publication claim they establish. A lifecycle rule
-such as Git cleanliness must not become an unrelated source-validity rule.
-
-Every validator entry identifies one current unit and records:
-
-- a stable validator ID, owner boundary, and lifecycle scope;
-- one status from the closed governance vocabulary;
-- the protected invariants it currently carries;
-- a repository-relative R script and literal argument vector;
-- exact paths, literal directory prefixes, and literal suffixes for future
-  changed-path routing;
-- validator prerequisites;
-- a transition-ledger link; and
-- the current functions, scripts, or lifecycle checks covered by the entry.
-
-The status vocabulary is:
+A validator unit owns one noninteractive check and declares a stable ID,
+boundary, lifecycle, status, protected invariants, structured runner, literal
+triggers, prerequisites, transition link, and current checks. A profile is an
+acyclic composition, not a new validator. Status meanings are:
 
 | Status | Meaning |
 |---|---|
@@ -75,73 +158,36 @@ The status vocabulary is:
 | `replace_later` | Current evidence until a named successor passes |
 | `retire_later` | Legacy evidence retained until its retirement condition passes |
 
-The registry does not execute function names or shell text. Runner scripts must
-be regular, non-symlinked files inside this repository. Paths are literal and
-repository-relative; absolute paths, parent traversal, shell syntax, globbing,
-and regular expressions are rejected. IDs and references are unique and
-acyclic. A protected invariant cannot silently lose every current owner.
-The protected set covers specification/canonical validity, temporal
-correctness, history integrity, privacy and secrets, dependency integrity,
-artifact integrity, release immutability, publication authorization/recovery,
-documentation authority, and destructive-operation safety. Reclassification
-may move their evidence but cannot weaken or silently discard these promises.
+Runner scripts must be regular, non-symlinked repository files. Registry and
+dispatcher validation reject unknown references, duplicate IDs, cycles,
+absolute or parent-traversing paths, malformed literal arguments, unsafe or
+missing runners, shell syntax, and unclassified routing states. Protected
+invariants cannot silently lose every current owner.
 
-## Planned profiles
+## Focused governance and recovery
 
-The registry records these profiles so Increment 1.B has one accepted source
-of composition truth:
-
-| Profile | Intended role | Executable now? |
-|---|---|---|
-| `source-fast` | Governance self-check, repository policy, and documentation | No |
-| `source-changed` | `source-fast` plus path-owned validators and prerequisites | No |
-| `ci-active` | All forward-relevant current and transitional evidence | No |
-| `legacy-v0.1-development` | Exact current development aggregate | Through `--mode development` only |
-| `legacy-v0.1-checkpoint` | Exact current checkpoint aggregate | Through `--mode checkpoint` only |
-
-The three forward profiles are classification data only. The registry's
-`governance_state.classification_only` and `activated_dispatcher` fields make
-that limitation machine-readable. This prevents documentation or an agent from
-claiming a command before its human operation exists.
-
-## Governance check
-
-Maintainers and agents can validate this classification without running any
-Phase, Hospital, release, publication, or product operation:
+Run the non-Phase governance evidence directly:
 
 ```sh
 Rscript tests/run-governance-tests.R
 ```
 
-The check parses the registry and verifies its closed schema and statuses,
-safe runner/path representation, unique identities, known references,
-acyclic prerequisite/profile graphs, transition-ledger linkage, protected-
-invariant continuity, current-check coverage, and exact-order legacy
-aggregate capture. Its negative tests cover duplicate IDs, cycles, unsafe and
-linked runners, unknown references, missing ledger links, lost invariants,
-and unclassified current checks.
+It covers closed registry semantics, inventory and transition linkage, literal
+matching, dirty/staged/untracked discovery, profile/prerequisite resolution,
+determinism, deduplication, process isolation, combined failures, forward/
+legacy separation, adapter allowlisting, direct repository policy, and exact
+legacy composition and alias equivalence.
 
-This command is intentionally a non-Phase development test runner. It changes
-no state other than ordinary R process-local state and temporary test fixtures.
-On failure, inspect the reported issue code, correct the registry or ledger,
-and rerun it. Do not work around a failure by changing a current validator or
-the old aggregate; those executable changes belong to Increment 1.B or the
-later stage that owns the affected boundary.
+On a routing failure, use `--explain` with the same selector. Correct the
+registry trigger or prerequisite only when ownership evidence is wrong; do not
+broaden to `ci-active` to conceal ambiguous discovery. On a child failure, use
+the printed validator ID and output, repair its owned boundary, and rerun the
+same profile. Use an explicit legacy profile only when the historical aggregate
+claim is actually required.
 
-## Updating ownership later
-
-A later stage may change an entry only with all of the following in the same
-meaningful iteration:
-
-1. identify the actual boundary and invariant being changed;
-2. add or update a direct, noninteractive validator owned by that boundary;
-3. update its registry paths, prerequisites, runner, status, and current-check
-   inventory;
-4. update the linked transition-ledger condition and evidence;
-5. test success, failure, routing safety, and invariant continuity; and
-6. append the implementation record.
-
-Do not invent validators for components that do not exist. A `replace_later`
-or `retire_later` entry remains current or deliberately callable until its
-ledger condition has named successor evidence. Published `v0.1.0` evidence and
-release safeguards remain immutable and outside ordinary forward routing.
+Later increments own broad authority/instruction alignment, CI alignment, and
+Stage 1 closeout. Component validators, Phase suite names/locations, package and
+project validators, and release/publication behavior are unchanged here. A
+later stage may reclassify a unit only with its direct validator, registry,
+transition condition, focused routing evidence, documentation, and
+implementation record updated together.
