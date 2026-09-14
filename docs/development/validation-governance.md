@@ -206,8 +206,8 @@ Contributor, agent, and hosted-CI instructions now use this proportional model.
 See
 [Implementation Conventions](implementation-conventions.md) for forward code,
 resource, project-context, dependency, test, reuse, and shim rules. Increment
-1.D repository changes await successful hosted `ci-active` acceptance;
-Increment 1.E owns Stage 1 closeout after 1.D is accepted. Component
+1.D completed after successful hosted `ci-active` acceptance; Increment 1.E
+owns Stage 1 closeout. Component
 validators, Phase suite names/locations, package and project validators, and
 release/publication behavior remain unchanged. A later stage may reclassify a
 unit only with its direct validator, registry, transition condition, focused

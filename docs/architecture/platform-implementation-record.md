@@ -6221,7 +6221,7 @@ Increment 1.C is complete; Stage 1 remains in progress. The next task, after
 maintainer acceptance, is **Increment 1.D — CI alignment and deliberate legacy
 execution**. Do not begin 1.D, 1.E, or Stage 2 as part of this increment.
 
-### RRP 1.0.0 Stage 1, Increment 1.D — CI alignment and deliberate legacy execution (repository implementation; hosted acceptance pending, 2026-09-14)
+### RRP 1.0.0 Stage 1, Increment 1.D — CI alignment and deliberate legacy execution (complete, 2026-09-14)
 
 #### Objective and scope
 
@@ -6321,16 +6321,42 @@ command and permission/mutation scans, Markdown hygiene, and `git diff --check`
 are performed over the complete handoff diff. Neither exact legacy profile nor
 any Hospital, release, publication, deployment, or acquisition operation ran.
 
-Required hosted evidence does not yet exist. At implementation time local
-`HEAD` was three accepted Stage 1 commits ahead of `origin/main`, and the 1.D
-workflow changes were uncommitted and unpushed. Consequently no GitHub Actions
-push/PR run can yet contain this workflow, and no run identity or successful
-hosted result is claimed or fabricated. No commit, push, pull request, manual
-dispatch, or repository-setting change was performed.
+At initial implementation, local `HEAD` was three accepted Stage 1 commits
+ahead of `origin/main`, and the 1.D workflow changes were uncommitted and
+unpushed. No hosted result was claimed at that point. The maintainer then
+committed and pushed the exact reviewed state as
+`371905480a90af0fa09907c04e4d79de1061f0bf` (`1.D pending push`) on `main`.
 
-Increment 1.D is therefore **implemented locally but not complete**. Stage 1
-remains in progress. The next task is to place this exact reviewed change on an
-authorized pushed branch, observe a successful push/PR `ci-active` run, and
-append its factual run identity/status. After 1.D maintainer acceptance, the
-next implementation task is **Increment 1.E — Stage 1 acceptance and
-closeout**. Do not begin 1.E or Stage 2 before that evidence exists.
+GitHub Actions run [`34885965725`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/34885965725)
+was the `validation` workflow's first-attempt `push` run for that exact head SHA
+and completed successfully. Its `checkpoint` job
+[`104116580336`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/34885965725/job/104116580336)
+ran on `ubuntu-latest` and completed successfully after checkout, R setup, root
+`renv` setup, and the `Validate active forward source` step. The committed
+workflow at the run's exact SHA defines that sole validation step as the
+operation registry's exact command:
+
+```sh
+Rscript operations/validate.R --profile ci-active
+```
+
+The public Actions API supplied the run and job identities, event, head SHA,
+environment label, timestamps, step names, and successful conclusions.
+Anonymous job-log download was not available; command correspondence is
+established by the exact run SHA, committed workflow, registered command, and
+passing static workflow-agreement test. Because that successful step can exit
+zero only after the dispatcher completes its selected plan, this is hosted
+acceptance of the registered `ci-active` path, not fabricated local evidence.
+No workflow behavior or repository setting changed during closeout.
+
+All 1.D completion criteria are satisfied: ordinary push/PR CI runs
+registry-owned `ci-active` exactly once; manual legacy selection is closed,
+exact, read-only, and isolated; the retained hosted environment succeeds;
+membership and status are emitted by the dispatcher; current documentation and
+static governance agree; no release/deployment/remote path was added; and
+product/runtime/state/artifact and release/publication behavior remain
+unchanged.
+
+Increment 1.D is complete; Stage 1 remains in progress. The next task, after
+maintainer acceptance, is **Increment 1.E — Stage 1 acceptance and closeout**.
+Do not begin 1.E or Stage 2 as part of this increment.
