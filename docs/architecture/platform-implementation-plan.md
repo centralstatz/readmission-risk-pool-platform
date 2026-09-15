@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level implementation roadmap for the RRP 1.0.0
-target generation with completed Stage 1 and a proposed detailed Stage 2 plan
-ready for maintainer review; Stage 2 implementation has not started
+target generation with completed Stage 1 and an accepted detailed Stage 2
+plan; Increment 2.A is complete and Stage 2 remains in progress
 
 This is the one current implementation-plan authority beneath
 [Platform True North](../vision/platform-true-north.md) and the
@@ -1739,8 +1739,8 @@ authorize Stage 2 source changes.
 
 ### Stage 2 detailed plan — Software Source and Closed-Distribution Foundation
 
-**Planning status:** proposed (2026-09-15); ready for maintainer review; Stage 2
-implementation not started
+**Planning status:** accepted; Increment 2.A complete (2026-09-15); Stage 2 in
+progress
 
 This section details only Stage 2. It does not authorize Stage 3 installation,
 launcher, CLI, shared-operation, project, analytical, history, product,
@@ -2020,6 +2020,11 @@ before its successor and compatibility evidence pass.
 
 ##### 2.A — Package topology and source ownership
 
+**Implementation status:** complete (2026-09-15). The realized main package
+starts with a conventional internal namespace and exact runtime import; the
+broad result/conformance cluster remains repository-owned until 2.C rather
+than being duplicated or moved prematurely.
+
 ###### Objective and order
 
 Create the two real package source owners before moving reusable code or
@@ -2030,8 +2035,9 @@ stable namespace and dependency direction.
 
 - Relocate the unchanged `rrpruntime` package source to
   `packages/rrpruntime/` and update owned development/test references.
-- Create `packages/rrpplatform/` with package metadata, namespace, base result
-  primitives, and no public operation or project API.
+- Create `packages/rrpplatform/` with package metadata, a minimal internal
+  namespace, and no public operation or project API; move base result
+  primitives only if they are required rather than duplicating them.
 - Declare `rrpplatform -> rrpruntime`; prohibit the reverse dependency.
 - Establish package versions independently from RRP product identity;
   initially `rrpplatform@0.1.0.9000` and unchanged `rrpruntime@0.3.0`.
@@ -2415,17 +2421,15 @@ Self-managed Posit Connect is adjacent to the Posit-compatible artifact, but
 support waits for its own acceptance evidence. OCI/Docker here is product-only;
 it does not imply producer/provider/history compute inside the image.
 
-## Next review and implementation step
+## Next implementation step
 
-The proposed detailed Stage 2 plan is ready for maintainer review. The next
-step is:
+The detailed Stage 2 plan is accepted and Increment 2.A is complete. The next
+task is:
 
-> **Review and accept or revise the detailed RRP 1.0.0 Stage 2 plan.**
+> **Increment 2.B — Installed-resource catalog and access boundary.**
 
-Only after acceptance may implementation begin with **Increment 2.A — Package
-topology and source ownership**. Do not begin 2.B or later increments with 2.A,
-and do not detail Stage 3 until Stage 2 has been implemented, validated, and
-reconciled.
+Do not begin 2.C or later increments with 2.B, and do not detail Stage 3 until
+Stage 2 has been implemented, validated, and reconciled.
 
 Stage 1 changes only development control. It must not collapse software
 upgrade, project migration, state migration, deployment, or publication, or

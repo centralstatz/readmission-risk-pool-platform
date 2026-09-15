@@ -72,7 +72,9 @@ phase4_test_cases <- function(repository_root) {
   list(
     "runtime package installs and loads with no external package imports" = function() {
       phase0_assert_true("rrpruntime" %in% loadedNamespaces())
-      description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
+      description <- read.dcf(file.path(
+        repository_root, "packages", "rrpruntime", "DESCRIPTION"
+      ))
       phase0_assert_true(identical(description[[1L, "Package"]], "rrpruntime"))
       phase0_assert_true(identical(description[[1L, "Version"]], "0.3.0"))
       phase0_assert_false("Imports" %in% colnames(description))
@@ -405,7 +407,7 @@ phase4_test_cases <- function(repository_root) {
 
     "runtime package has no synthetic source or repository-path dependency" = function() {
       files <- list.files(
-        file.path(repository_root, "runtime"), recursive = TRUE,
+        file.path(repository_root, "packages", "rrpruntime"), recursive = TRUE,
         full.names = TRUE
       )
       text <- unlist(lapply(files[grepl("[.](R|md|DESCRIPTION|NAMESPACE)$", files)],

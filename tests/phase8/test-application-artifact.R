@@ -180,7 +180,7 @@ phase8_test_cases <- function(repository_root, suite_root) {
     "artifact contains no upstream runtime or development machinery" = function() {
       files <- rrp_artifact_scan_tree(artifact_path)$files
       prohibited_prefixes <- c(
-        "operations/", "runtime/", "implementations/", "tests/", "docs/",
+        "operations/", "packages/", "implementations/", "tests/", "docs/",
         "history/", "source/", "provider/"
       )
       phase0_assert_false(any(vapply(files, function(path) any(startsWith(

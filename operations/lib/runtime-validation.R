@@ -118,7 +118,7 @@ rrp_validate_runtime_repository <- function(repository_root) {
   if (!installed_ok) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "runtime_package_install", "runtime_package_install_failed",
-      conditionMessage(installed), "runtime/DESCRIPTION"
+      conditionMessage(installed), "packages/rrpruntime/DESCRIPTION"
     )
   } else {
     on.exit(rrp_unload_runtime_package(installed), add = TRUE)
@@ -268,16 +268,21 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     "contracts/runtime/provider-execution-result.yml",
     "contracts/runtime/readmission-risk-estimate.yml",
     "contracts/runtime/providers/transparent-reference-provider.yml",
-    "runtime/DESCRIPTION", "runtime/NAMESPACE",
-    "runtime/README.md", "runtime/R/utils.R", "runtime/R/conformance.R",
-    "runtime/R/specifications.R", "runtime/R/input.R",
-    "runtime/R/eligibility.R", "runtime/R/state.R",
-    "runtime/R/estimand-request.R", "runtime/tests/runtime-unit.R",
-    "runtime/R/provider-specification.R", "runtime/R/provider-registry.R",
-    "runtime/R/provider-compatibility.R", "runtime/R/reference-provider.R",
-    "runtime/R/estimate.R", "runtime/R/provider-execution.R",
-    "runtime/man/runtime-api.Rd",
-    "runtime/man/provider-api.Rd",
+    "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
+    "packages/rrpruntime/README.md", "packages/rrpruntime/R/utils.R",
+    "packages/rrpruntime/R/conformance.R",
+    "packages/rrpruntime/R/specifications.R", "packages/rrpruntime/R/input.R",
+    "packages/rrpruntime/R/eligibility.R", "packages/rrpruntime/R/state.R",
+    "packages/rrpruntime/R/estimand-request.R",
+    "packages/rrpruntime/tests/runtime-unit.R",
+    "packages/rrpruntime/R/provider-specification.R",
+    "packages/rrpruntime/R/provider-registry.R",
+    "packages/rrpruntime/R/provider-compatibility.R",
+    "packages/rrpruntime/R/reference-provider.R",
+    "packages/rrpruntime/R/estimate.R",
+    "packages/rrpruntime/R/provider-execution.R",
+    "packages/rrpruntime/man/runtime-api.Rd",
+    "packages/rrpruntime/man/provider-api.Rd",
     "operations/lib/runtime-operation.R", "operations/lib/runtime-validation.R",
     "operations/lib/provider-operation.R",
     "operations/run-reference-runtime.R",
@@ -301,12 +306,14 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     paste(length(required_files), "required completed Phase 4 files")
   )
 
-  expected_runtime <- sub("^runtime/", "", required_files[
-    startsWith(required_files, "runtime/")
+  runtime_prefix <- "packages/rrpruntime/"
+  expected_runtime <- sub(paste0("^", runtime_prefix), "", required_files[
+    startsWith(required_files, runtime_prefix)
   ])
-  actual_runtime <- if (dir.exists(file.path(repository_root, "runtime"))) {
+  runtime_root <- file.path(repository_root, "packages", "rrpruntime")
+  actual_runtime <- if (dir.exists(runtime_root)) {
     sort(list.files(
-      file.path(repository_root, "runtime"), recursive = TRUE,
+      runtime_root, recursive = TRUE,
       all.files = TRUE, no.. = TRUE, include.dirs = FALSE
     ))
   } else character()
@@ -315,15 +322,15 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     "all Phase 4 runtime/provider/estimate package files remain present"
   )
 
-  description_path <- file.path(repository_root, "runtime", "DESCRIPTION")
+  description_path <- file.path(runtime_root, "DESCRIPTION")
   description <- if (file.exists(description_path)) read.dcf(description_path) else NULL
   runtime_license_ok <- !is.null(description) && "License" %in% colnames(description) &&
     identical(unname(description[1L, "License"]), "Apache License (>= 2)") &&
-    !file.exists(file.path(repository_root, "runtime", "LICENSE"))
+    !file.exists(file.path(runtime_root, "LICENSE"))
   if (!runtime_license_ok) issues[[length(issues) + 1L]] <- rrp_issue(
     "phase4_runtime_license", "invalid_runtime_license_metadata",
     "rrpruntime must use standard Apache package metadata without the former placeholder license file.",
-    "runtime/DESCRIPTION"
+    "packages/rrpruntime/DESCRIPTION"
   )
   checks[[length(checks) + 1L]] <- rrp_check(
     "phase4_runtime_license", runtime_license_ok,
@@ -341,7 +348,7 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     premature <- c(premature, "config")
   }
   runtime_r <- list.files(
-    file.path(repository_root, "runtime", "R"), pattern = "[.]R$",
+    file.path(runtime_root, "R"), pattern = "[.]R$",
     full.names = TRUE
   )
   runtime_text <- if (length(runtime_r) > 0L) {
@@ -365,7 +372,7 @@ rrp_validate_phase4_checkpoint <- function(repository_root) {
     issues[[length(issues) + 1L]] <- rrp_issue(
       "phase4_later_scope", "prohibited_runtime_implementation",
       paste0("Runtime code contains prohibited completed-Phase-4 concept: ", value, "."),
-      "runtime/R"
+      "packages/rrpruntime/R"
     )
   }
   checks[[length(checks) + 1L]] <- rrp_check(

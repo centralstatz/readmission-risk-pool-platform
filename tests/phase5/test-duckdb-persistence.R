@@ -430,7 +430,7 @@ phase5_test_cases <- function(repository_root) list(
 
   "DuckDB remains absent from runtime and language-neutral contracts" = function() {
     runtime_files <- list.files(
-      file.path(repository_root, "runtime"), recursive = TRUE,
+      file.path(repository_root, "packages", "rrpruntime"), recursive = TRUE,
       full.names = TRUE, pattern = "[.](R|Rd|DESCRIPTION)$"
     )
     contract_files <- list.files(

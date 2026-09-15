@@ -29,7 +29,7 @@ changing Platform runtime or clinical semantics.
   two controlled vocabularies, the initial profile, generic examples, and a
   source-independent fictional clinical fixture, and the generic canonical-
   producer contract.
-- `runtime/` contains eligibility, minimal episode-state, first estimand,
+- `contracts/runtime/` contains eligibility, minimal episode-state, first estimand,
   provider-neutral request, provider declaration/adapter/result, accepted
   estimate, and the shipped reference-provider specifications.
 - `persistence/` contains backend-independent operational run, invalidation,

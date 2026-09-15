@@ -61,7 +61,7 @@ rrp_hospital_platform_candidate_files <- function(repository_root, whole_reposit
   if (!whole_repository) {
     roots <- c(
       "app", "config", "contracts", "deploy", "implementations", "operations",
-      "products", "runtime"
+      "packages/rrpruntime", "products"
     )
     files <- unlist(lapply(roots, function(root) file.path(root, list.files(
       file.path(repository_root, root), recursive = TRUE, all.files = TRUE,

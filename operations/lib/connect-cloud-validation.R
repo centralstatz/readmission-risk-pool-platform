@@ -78,7 +78,9 @@ rrp_validate_connect_cloud_repository <- function(repository_root) {
     "rsconnect@1.3.1 is a build-only locked dependency"
   )
 
-  core_directories <- c("app", "products", "runtime", "implementations/synthetic-reference")
+  core_directories <- c(
+    "app", "products", "packages", "implementations/synthetic-reference"
+  )
   core_files <- unlist(lapply(core_directories, function(directory) list.files(
     file.path(repository_root, directory), recursive = TRUE, full.names = TRUE,
     pattern = "[.](R|yml)$"

@@ -21,9 +21,9 @@ defines the conventional installed-software and independent-project product,
 and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
 defines its authoritative high-level roadmap. `1.0.0` is a target generation,
 not a released version. Detailed planning proceeds one stage at a time; Stage
-1 and Increments 1.A–1.E are complete, and the proposed detailed Stage 2 plan
-is ready for maintainer review. Stage 2 implementation has not started.
-Existing `0.2.0-dev` metadata is transitional and no next release is prepared.
+1 and Increments 1.A–1.E are complete, the detailed Stage 2 plan is accepted,
+and Increment 2.A is complete. Stage 2 remains in progress. Existing
+`0.2.0-dev` metadata is transitional and no next release is prepared.
 
 Current development control is defined by
 [Validation Governance](docs/development/validation-governance.md) and the
@@ -58,8 +58,11 @@ and generated Hospital Implementation `v0.1.0` releases. The Platform tag is
 the exact prepared release commit; the Hospital release embeds the exact
 published Platform archive. Checksummed publication evidence is retained under
 [`releases/0.1.0/`](releases/0.1.0/), and the next release is not yet prepared.
-The focused internal
-`rrpruntime@0.3.0` package accepts an
+The source now has two explicit internal package owners under `packages/`:
+focused `rrpruntime@0.3.0` and minimal main implementation namespace
+`rrpplatform@0.1.0.9000`, with the one-way dependency
+`rrpplatform -> rrpruntime`. These packages are not the user-facing product,
+installation mechanism, or operator interface. The focused runtime package accepts an
 admitted canonical input, evaluates temporal eligibility, builds minimal
 availability-filtered episode state, creates requests for the first versioned
 conditional readmission-hazard estimand, resolves an exactly selected trusted

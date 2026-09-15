@@ -32,13 +32,14 @@ phase11_release_candidate_proof <- local({
 phase11_release_test_cases <- function(repository_root, suite_root) list(
   "Apache-2.0 release state and governance are valid" = function() {
     result <- rrp_release_validate_governance(repository_root, "0.1.0")
-    description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
+    runtime_root <- file.path(repository_root, "packages", "rrpruntime")
+    description <- read.dcf(file.path(runtime_root, "DESCRIPTION"))
     phase0_assert_true(identical(result$license, "pass"))
     phase0_assert_true(file.exists(file.path(repository_root, "NOTICE")))
     phase0_assert_true(identical(
       unname(description[1L, "License"]), "Apache License (>= 2)"
     ))
-    phase0_assert_false(file.exists(file.path(repository_root, "runtime", "LICENSE")))
+    phase0_assert_false(file.exists(file.path(runtime_root, "LICENSE")))
   },
   "DCO security support and tested-environment guidance are explicit" = function() {
     contributing <- paste(readLines(file.path(repository_root, "CONTRIBUTING.md")),

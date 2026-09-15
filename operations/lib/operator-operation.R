@@ -97,7 +97,7 @@ rrp_initialize_local_platform <- function(repository_root, build_root) {
 }
 
 rrp_doctor_required_files <- function() c(
-  "renv.lock", "runtime/DESCRIPTION",
+  "renv.lock", "packages/rrpruntime/DESCRIPTION",
   "implementations/synthetic-reference/config/test.yml",
   "implementations/persistence/duckdb/adapter.yml",
   "implementations/persistence/duckdb/config/reference.yml",

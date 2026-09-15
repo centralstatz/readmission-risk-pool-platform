@@ -1,0 +1,17 @@
+Package: rrpplatform
+Type: Package
+Title: Internal Readmission Risk Pool Implementation
+Version: 0.1.0.9000
+Authors@R: person("Readmission Risk Pool", "Maintainers", role = c("aut", "cre"), email = "maintainers@invalid.example")
+Author: Readmission Risk Pool Maintainers [aut, cre]
+Maintainer: Readmission Risk Pool Maintainers <maintainers@invalid.example>
+Description: Internal implementation namespace for the Readmission Risk Pool
+    software. It will own reusable orchestration and product support as those
+    responsibilities move from repository development code. It is not the RRP
+    product identity, installation mechanism, operator interface, or an
+    independent hospital project.
+License: Apache License (>= 2)
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Imports: rrpruntime
+

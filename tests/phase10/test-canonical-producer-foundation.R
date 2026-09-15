@@ -217,7 +217,10 @@ phase10_test_cases <- function(repository_root, suite_root = NULL) {
 
     "runtime persistence products and app remain source independent" = function() {
       files <- c(
-        list.files(file.path(repository_root, "runtime", "R"), full.names = TRUE),
+        list.files(
+          file.path(repository_root, "packages", "rrpruntime", "R"),
+          full.names = TRUE
+        ),
         list.files(file.path(repository_root, "products"), pattern = "[.]R$", recursive = TRUE, full.names = TRUE),
         list.files(file.path(repository_root, "app"), pattern = "[.]R$", recursive = TRUE, full.names = TRUE),
         list.files(file.path(repository_root, "implementations", "persistence"), pattern = "[.]R$", recursive = TRUE, full.names = TRUE)

@@ -62,7 +62,9 @@ rrp_validate_history_repository <- function(repository_root) {
       }
     }
   }
-  description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
+  description <- read.dcf(file.path(
+    repository_root, "packages", "rrpruntime", "DESCRIPTION"
+  ))
   dependency_fields <- intersect(c("Imports", "Suggests", "LinkingTo"), colnames(description))
   no_backend_dependencies <- length(dependency_fields) == 0L
   checks[[length(checks) + 1L]] <- rrp_check(
@@ -72,7 +74,7 @@ rrp_validate_history_repository <- function(repository_root) {
   if (!no_backend_dependencies) issues[[length(issues) + 1L]] <- rrp_issue(
     "history_backend_independence", "storage_dependency_added",
     "Generic runtime must not select a concrete storage dependency.",
-    "runtime/DESCRIPTION"
+    "packages/rrpruntime/DESCRIPTION"
   )
   rrp_validation_result(
     "Operational-history contract and port validation",
@@ -89,9 +91,11 @@ rrp_validate_phase5_checkpoint <- function(repository_root) {
     "contracts/persistence/operational-run-status.yml",
     "contracts/persistence/history-invalidation.yml",
     "contracts/persistence/persistence-adapter.yml",
-    "runtime/R/history-specification.R", "runtime/R/history-records.R",
-    "runtime/R/history-conformance.R", "runtime/R/persistence-port.R",
-    "runtime/man/history-api.Rd",
+    "packages/rrpruntime/R/history-specification.R",
+    "packages/rrpruntime/R/history-records.R",
+    "packages/rrpruntime/R/history-conformance.R",
+    "packages/rrpruntime/R/persistence-port.R",
+    "packages/rrpruntime/man/history-api.Rd",
     "tests/helpers/in-memory-history-adapter.R",
     "tests/phase5/test-operational-history.R", "tests/run-phase5-tests.R",
     "operations/lib/history-validation.R",

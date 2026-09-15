@@ -403,7 +403,7 @@ rrp_validate_application_artifact <- function(
     )
   }
   prohibited_directories <- c(
-    "source", "implementations", "runtime", "operations", "tests", "docs",
+    "source", "implementations", "packages", "operations", "tests", "docs",
     "history", "database", "provider", "canonical", ".git", "renv"
   )
   first_parts <- vapply(strsplit(inventory_paths, "/", fixed = TRUE), `[[`, character(1), 1L)

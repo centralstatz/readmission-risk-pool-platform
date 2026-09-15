@@ -86,4 +86,3 @@ resolve_provider <- function(registry, provider_id, provider_version) {
   }
   entry
 }
-

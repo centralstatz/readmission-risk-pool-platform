@@ -212,7 +212,7 @@ validators:
     trigger_paths:
       exact: []
       prefixes:
-        - runtime/
+        - packages/rrpruntime/
         - contracts/runtime/
         - operations/lib/runtime-
         - operations/lib/provider-
@@ -222,6 +222,51 @@ validators:
     transition_ledger_id: runtime-package
     current_checks:
       - rrp_validate_runtime_repository
+
+  - validator_id: package.rrpruntime
+    owner_boundary: runtime_package
+    lifecycle_scope: package
+    status: active_scoped
+    invariant:
+      - temporal_correctness
+      - dependency_integrity
+    runner:
+      script: tests/run-package-tests.R
+      arguments:
+        - --package
+        - rrpruntime
+    trigger_paths:
+      exact: []
+      prefixes:
+        - packages/rrpruntime/
+      suffixes: []
+    prerequisites:
+      - repository.policy
+    transition_ledger_id: runtime-package
+    current_checks:
+      - package_rrpruntime_build_check
+
+  - validator_id: package.rrpplatform
+    owner_boundary: platform_implementation_package
+    lifecycle_scope: package
+    status: active_scoped
+    invariant:
+      - dependency_integrity
+    runner:
+      script: tests/run-package-tests.R
+      arguments:
+        - --package
+        - rrpplatform
+    trigger_paths:
+      exact: []
+      prefixes:
+        - packages/rrpplatform/
+      suffixes: []
+    prerequisites:
+      - package.rrpruntime
+    transition_ledger_id: operation-library-chain
+    current_checks:
+      - package_rrpplatform_build_check
 
   - validator_id: repository.history-persistence
     owner_boundary: history_persistence
@@ -556,7 +601,7 @@ validators:
         - tests/run-phase4-tests.R
       prefixes:
         - tests/phase4/
-        - runtime/
+        - packages/rrpruntime/
         - contracts/runtime/
       suffixes: []
     prerequisites:
@@ -1215,6 +1260,8 @@ profiles:
     status: composite
     includes:
       - source-fast
+      - package.rrpruntime
+      - package.rrpplatform
       - repository.specification-foundation
       - repository.canonical
       - repository.synthetic-reference

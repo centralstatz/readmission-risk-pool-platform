@@ -43,7 +43,7 @@ rrp_install_runtime_package <- function(repository_root) {
     c(
       "CMD", "INSTALL", "--no-byte-compile", "--no-staged-install",
       paste0("--library=", shQuote(library_root)),
-      shQuote(file.path(repository_root, "runtime"))
+      shQuote(file.path(repository_root, "packages", "rrpruntime"))
     ),
     stdout = output,
     stderr = output

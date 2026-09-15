@@ -45,7 +45,7 @@ does not modify Git or a sibling repository.
 - **Canonical admission failed:** fix the owning canonical producer or fixture;
   runtime is not invoked.
 - **Package installation failed:** restore the repository R environment and
-  inspect `runtime/DESCRIPTION`, `NAMESPACE`, and package source.
+  inspect `packages/rrpruntime/DESCRIPTION`, its `NAMESPACE`, and package source.
 - **Runtime contract failed:** restore the supported `0.1.0` documents or make
   an explicit compatibility change.
 - **Runtime input failed:** correct the representation adapter; do not add a

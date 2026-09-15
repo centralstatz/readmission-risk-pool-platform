@@ -579,7 +579,8 @@ phase42_provider_test_cases <- function(repository_root) {
 
     "provider runtime remains independent of sources and later layers" = function() {
       files <- list.files(
-        file.path(repository_root, "runtime", "R"), pattern = "[.]R$",
+        file.path(repository_root, "packages", "rrpruntime", "R"),
+        pattern = "[.]R$",
         full.names = TRUE
       )
       text <- unlist(lapply(files, readLines, warn = FALSE))

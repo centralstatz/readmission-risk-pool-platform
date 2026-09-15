@@ -237,10 +237,10 @@ phase8_test_cases <- function(repository_root, suite_root) {
       )
       files <- rrp_connect_scan_tree(destination)$files
       phase0_assert_false(any(vapply(c(
-        "operations/", "runtime/", "implementations/", "products/", "tests/",
+        "operations/", "packages/", "implementations/", "products/", "tests/",
         "docs/", "source/", "provider/", "history/"
       ), function(prefix) any(startsWith(files, prefix)), logical(1))))
-      boundary_files <- unlist(lapply(c("app", "products", "runtime",
+      boundary_files <- unlist(lapply(c("app", "products", "packages",
         "implementations/synthetic-reference"), function(directory) {
           list.files(file.path(repository_root, directory), recursive = TRUE,
             full.names = TRUE, pattern = "[.](R|yml)$"

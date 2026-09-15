@@ -46,4 +46,3 @@ validate_history_contracts <- function(contracts) {
     issues
   )
 }
-

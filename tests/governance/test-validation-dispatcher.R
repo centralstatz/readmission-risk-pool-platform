@@ -71,6 +71,15 @@ governance_test_cases <- function(repository_root) {
       phase0_assert_true(match("suite.phase2", ids) < match("suite.phase4", ids))
       phase0_assert_true(match("suite.phase4", ids) < match("suite.phase5", ids))
       phase0_assert_true(!anyDuplicated(ids))
+
+      platform <- rrp_validation_resolve_validator(
+        registry, "package.rrpplatform"
+      )
+      package_ids <- dispatcher_unit_ids(platform)
+      phase0_assert_true(
+        match("package.rrpruntime", package_ids) <
+          match("package.rrpplatform", package_ids)
+      )
     },
 
     "literal trigger matching covers exact prefix and suffix" = function() {
@@ -128,8 +137,12 @@ governance_test_cases <- function(repository_root) {
           expected = "repository.specification-foundation"
         ),
         list(
-          path = "runtime/rrpruntime/R/example.R",
-          expected = "repository.runtime-provider"
+          path = "packages/rrpruntime/R/example.R",
+          expected = "package.rrpruntime"
+        ),
+        list(
+          path = "packages/rrpplatform/R/example.R",
+          expected = "package.rrpplatform"
         ),
         list(
           path = "implementations/persistence/duckdb/R/example.R",

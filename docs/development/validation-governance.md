@@ -94,6 +94,13 @@ Git cleanliness is not a source-validity invariant. Default discovery includes
 unstaged tracked changes, staged changes, and untracked non-ignored files.
 Generated ignored state is not selected.
 
+The non-Phase `package.rrpruntime` and `package.rrpplatform` validators own
+package structure, build, isolated installation/loading, `R CMD check`, and
+static package-boundary evidence. Changes below the corresponding `packages/`
+tree select their owner; `package.rrpplatform` depends on
+`package.rrpruntime`, matching the only allowed package dependency direction.
+Both participate in `ci-active` but not the bounded `source-fast` profile.
+
 `ci-active` may still use Phase-named suites where the registry says they carry
 forward evidence. It excludes Hospital distribution, Phase 11 delivery,
 historical checkpoints/prose gates, release preparation, publication, and

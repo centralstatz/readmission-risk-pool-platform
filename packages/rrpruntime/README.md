@@ -3,6 +3,11 @@
 `rrpruntime` is the focused internal R package for implementation-neutral
 computation after canonical admission. Phases 4 and 5.1 currently own:
 
+Its authoritative source is `packages/rrpruntime/`. The move from the former
+top-level location changed physical ownership only. Package version `0.3.0`,
+the base-R dependency posture, and the current daily-hazard semantics remain
+unchanged and transitional until Stage 5.
+
 - the normalized admitted-canonical input interface;
 - runtime-contract support checks;
 - temporal eligibility;

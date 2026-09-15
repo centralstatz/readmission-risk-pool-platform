@@ -104,7 +104,9 @@ phase5_test_cases <- function(repository_root) list(
         phase5_in_memory_adapter(), contracts$persistence_adapter
       )
     ))
-    description <- read.dcf(file.path(repository_root, "runtime", "DESCRIPTION"))
+    description <- read.dcf(file.path(
+      repository_root, "packages", "rrpruntime", "DESCRIPTION"
+    ))
     phase0_assert_true(identical(description[[1L, "Version"]], "0.3.0"))
     phase0_assert_false("Imports" %in% colnames(description))
   },

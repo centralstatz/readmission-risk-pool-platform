@@ -9,8 +9,8 @@ product work, read:
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
 3. `docs/architecture/platform-implementation-plan.md` (the authoritative
-   high-level RRP 1.0.0 roadmap, completed detailed Stage 1 plan, and proposed
-   detailed Stage 2 plan ready for maintainer review);
+   high-level RRP 1.0.0 roadmap, completed detailed Stage 1 plan, and accepted
+   detailed Stage 2 plan; Increment 2.A is complete and Stage 2 is in progress);
 4. `docs/development/validation-governance.md` for executable development
    evidence selection;
 5. `docs/development/transition-ledger.md` for coexistence and retirement
@@ -243,6 +243,17 @@ is the intended claim:
 Rscript operations/validate.R --profile source-fast
 Rscript operations/validate.R --validator VALIDATOR_ID
 ```
+
+The two internal package owners have direct non-Phase validators:
+
+```sh
+Rscript operations/validate.R --validator package.rrpruntime
+Rscript operations/validate.R --validator package.rrpplatform
+```
+
+Their authoritative source locations are `packages/rrpruntime/` and
+`packages/rrpplatform/`. The latter is an internal implementation namespace,
+not the RRP product, installer, project API, or operator interface.
 
 Hosted push and pull-request validation runs the registered broad forward
 profile once and prints its resolved membership:

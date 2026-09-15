@@ -311,7 +311,7 @@ phase10_test_cases <- function(repository_root, suite_root) list(
 
   "generic downstream code has no source-specific branches" = function() {
     roots <- c(
-      "runtime", "products", "app", "deploy",
+      "packages", "products", "app", "deploy",
       "implementations/persistence", "contracts/observability"
     )
     files <- c(unlist(lapply(roots, function(root) list.files(

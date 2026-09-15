@@ -185,4 +185,3 @@ validate_history_invalidation <- function(record, contract) {
   )
   rrp_runtime_result(target, issues)
 }
-

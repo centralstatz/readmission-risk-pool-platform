@@ -441,7 +441,7 @@ rrp_validate_connect_cloud_realization <- function(
   )
 
   prohibited_prefixes <- c(
-    "operations/", "runtime/", "implementations/", "products/", "tests/",
+    "operations/", "packages/", "implementations/", "products/", "tests/",
     "docs/", "renv/", ".github/", "source/", "provider/", "history/"
   )
   prohibited <- tree$files[vapply(tree$files, function(path) any(startsWith(

@@ -377,7 +377,15 @@ and executing each unit once. With no scoped matches, it remains the bounded
 repository and current/transitional Phase-suite evidence. It deliberately
 excludes Hospital distribution, Phase 11 delivery, historical Phase
 checkpoints and prose gates, release preparation, publication, and public
-acquisition. Hosted CI is not changed until Stage 1 Increment 1.D.
+acquisition. Hosted CI invokes the registry-owned profile once, so package
+membership changes require no duplicate workflow step.
+
+It also runs the current non-Phase package owners
+`package.rrpruntime` and `package.rrpplatform`. Each builds its package source,
+installs and loads it from an isolated temporary library, requires `R CMD check
+--no-manual` to report `Status: OK`, and applies the package-topology and static
+dependency/source-coupling checks. Package-tree changes select these validators
+under `source-changed`; `source-fast` remains unchanged.
 
 Forward units execute in independent R subprocesses. All selected units report
 their own status, and any failure makes the combined operation fail. Before
