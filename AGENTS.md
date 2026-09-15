@@ -278,11 +278,15 @@ The two internal package owners have direct non-Phase validators:
 ```sh
 Rscript operations/validate.R --validator package.rrpruntime
 Rscript operations/validate.R --validator package.rrpplatform
+Rscript operations/validate.R --validator repository.software-resources
 ```
 
 Their authoritative source locations are `packages/rrpruntime/` and
 `packages/rrpplatform/`. The latter is an internal implementation namespace,
 not the RRP product, installer, project API, or operator interface.
+`repository.software-resources` owns the closed development catalog and schema
+under `distribution/software/`; it does not imply an installed distribution or
+resource accessor.
 
 Hosted push and pull-request validation runs the registered broad forward
 profile once and prints its resolved membership:

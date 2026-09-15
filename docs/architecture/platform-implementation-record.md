@@ -6944,3 +6944,143 @@ as did final Markdown-link/path checks, repository hygiene, and
 `git diff --check`. No package, semantic, broad integration, lifecycle,
 deployment, release, publication, acquisition, distribution, or remote
 workflow ran.
+
+### RRP 1.0.0 Stage 2, Increment 2.B — installed-resource catalog authority execution unit (complete, 2026-09-15)
+
+#### Objective and bounded starting state
+
+Implement only the first coherent execution unit of accepted Increment 2.B:
+establish the real closed catalog/schema/classification authority for current
+non-code RRP software resources. The completed 2.A record and commit were
+accepted as starting evidence. Focused inspection confirmed the two package
+owners and versions, one-way dependency, intentionally minimal `rrpplatform`,
+repository development loader, unchanged root `renv`, `0.2.0-dev` product
+identity, and absence of a resource catalog or software distribution. No broad
+2.A reconnaissance or package/semantic validation was repeated.
+
+The actual candidate surface was checked across contracts; canonical and
+foundation resources; runtime/provider, history/persistence, product,
+observability, and application-artifact declarations; supplied adapter
+metadata; app identity; synthetic implementation metadata; normative product
+documents; legal/security/support files; repository configuration; tests and
+fixtures; validation/CI; assessments/planning/history; Connect and Hospital
+delivery; release/publication evidence; maintainer operations; development
+dependency state; and generated state. No candidate contradicted the accepted
+Stage 2 ship/exclude boundary.
+
+#### Catalog, schema, and exact classification
+
+Added `distribution/software/resource-catalog.yml` as
+`rrp.installed-resources@0.1.0` with catalog format `1.0.0` and status
+`development_unpublished`. Its 48 required entries declare one stable logical
+ID, closed role, closed owner, exact repository source path, exact future
+distribution output path, required flag, format, and compatibility status/note.
+IDs follow `rrp.<role-family>.<logical-name>` and deliberately do not encode
+current source layout, so a logical resource can retain identity across later
+source relocation.
+
+The shipped classification contains:
+
+- current non-Hospital foundation, canonical, runtime/provider,
+  persistence/history, product, observability, and target-neutral
+  application-artifact contracts;
+- supplied DuckDB and YAML adapter declarations without repository-local path
+  configuration;
+- the current app identity and target-neutral artifact dependency declaration;
+- six synthetic README/configuration/implementation/producer/schema resources;
+- only the product README, True North, current Platform Architecture, contract
+  orientation, and new software-resource limitation guide as documentation;
+  and
+- `LICENSE`, `NOTICE`, `SECURITY.md`, and `SUPPORT.md`.
+
+Package sources and package documentation remain future source-manifest inputs,
+not catalog entries merely because they are non-R files under `packages/`.
+Likewise, implementation R files remain code/source-manifest concerns.
+
+Eleven explicit exclusion families classify Connect-specific target material;
+repository/DuckDB configuration; tests and examples; validation and CI;
+assessments, plans, records, and development guidance; maintainer operations;
+the root development environment; Hospital delivery; release/publication
+state; and generated build state. These exclusions document the boundary and
+never form an ignore-subtraction inclusion rule. The nonexistent independent
+project template is one explicit deferred role assigned to Stage 4 rather than
+an empty resource.
+
+Every shipped mapping is a normalized relative exact file path—never a glob,
+directory inclusion, shell expression, callable name, environment lookup, or
+discovery rule. Output mappings are confined to `resources/`, `docs/`, or
+`legal/`; this execution unit declares them but creates no output tree or
+distribution.
+
+Added the closed
+`platform.installed-resource-catalog-schema@0.1.0`. It fixes the catalog
+identity/version/status, top-level and nested field sets, ID forms, roles,
+owners, formats, compatibility states, exclusions, deferred roles, path rules,
+and mandatory cross-entry invariants. Unknown fields and disabled safety rules
+fail closed. Finite code-owned conformance additionally enforces unique IDs and
+sources; exact, case-folded, and file/directory-conflict-free outputs; safe
+relative paths; required regular-file existence; repository containment;
+linked-source rejection; forbidden classes; shipped/excluded separation; and
+exact accepted classification completeness.
+
+#### Transitional and synthetic truthfulness
+
+Current daily-hazard request, estimand, reference-provider, estimate, dependent
+product-set/view/materializer, and application resources retain their exact
+current identities and are marked `transitional_daily_hazard`. Nothing is
+renamed or reinterpreted as remaining cumulative day-30 risk. The catalog adds
+no future target resource.
+
+All six synthetic entries are marked `fictional_nonclinical`. The catalog and
+distribution-facing guide state that they are reference/demo seed material,
+not a real hospital project, installed-project support, a clinical deployment,
+or the Stage 4 project template. Synthetic generation and mapping code were not
+changed.
+
+#### Validation ownership and evidence
+
+Added the non-Phase `repository.software-resources` active-scoped owner. Its
+triggers cover the catalog/schema, focused validator/tests, contract families,
+and exact shipped-resource declarations; its only prerequisite is repository
+policy. It participates in `ci-active` without changing `source-fast` or either
+frozen legacy aggregate. Current validation, operations, development, and agent
+guidance document the direct validator and its development-only claim.
+
+The focused suite covers authoritative schema/catalog success, required fields,
+stable identity and mapping uniqueness, regular source existence, normalized
+paths, exact 48-entry and 11-exclusion classification, controlled values,
+daily-hazard/synthetic limitations, missing fields/sources, identity tampering,
+duplicate and conflicting output mappings, absolute/traversing/backslash
+paths, linked sources, forbidden classes, invalid role/owner/compatibility,
+unknown fields, incomplete classification, and the deferred project role.
+
+Focused resource and adversarial tests, validation-governance evidence,
+representative changed-path routing, documentation and repository-policy
+checks, YAML/R parsing, repository hygiene, and `git diff --check` passed. The
+complete 2.A package build/check and runtime/provider/history evidence was
+inherited because this execution unit changes no package or analytical source
+and therefore cannot reasonably invalidate those proofs. No `ci-active`,
+package check, semantic suite, Hospital, deployment, release, publication,
+acquisition, software-distribution, or remote workflow ran.
+
+#### Transition, deviations, remaining work, and stopping state
+
+Added the `installed-resource-foundation` transition item. The catalog/schema
+is active but development-unpublished; repository consumers retain their
+current paths through 2.C/2.D, the next 2.B execution unit owns explicit-root
+package access and copied-root/adversarial acceptance, and 2.E owns the separate
+source manifest and closed distribution builder. Nothing was retired.
+
+There was no architectural deviation. A separate exclusion-family collection
+records exact excluded roots/files without treating them as resources or an
+inclusion mechanism, and the absent project template is represented only as a
+deferred role. No accessor primitive proved necessary for catalog conformance,
+so `rrpplatform` was intentionally unchanged.
+
+This execution unit is **complete**. Increment 2.B and Stage 2 remain **in
+progress**. Remaining accepted 2.B work is the explicit-root
+`rrp_open_resource_catalog()` / `rrp_resource_path()` package boundary,
+copied-distribution-root validation with varied CWD/Git/source-checkout context,
+and missing/extra/linked/escaping/duplicate/identity-tamper accessor evidence.
+No resource consumer was migrated, Increment 2.C was not begun, and no software
+distribution exists.

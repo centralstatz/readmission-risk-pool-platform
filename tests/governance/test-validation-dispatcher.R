@@ -129,7 +129,7 @@ governance_test_cases <- function(repository_root) {
       ))
     },
 
-    "representative changed paths reach every Stage 1 scoped owner" = function() {
+    "representative changed paths reach every current scoped owner" = function() {
       mappings <- list(
         list(path = "docs/example.md", expected = "repository.documentation"),
         list(
@@ -143,6 +143,10 @@ governance_test_cases <- function(repository_root) {
         list(
           path = "packages/rrpplatform/R/example.R",
           expected = "package.rrpplatform"
+        ),
+        list(
+          path = "distribution/software/resource-catalog.yml",
+          expected = "repository.software-resources"
         ),
         list(
           path = "implementations/persistence/duckdb/R/example.R",

@@ -387,6 +387,18 @@ installs and loads it from an isolated temporary library, requires `R CMD check
 dependency/source-coupling checks. Package-tree changes select these validators
 under `source-changed`; `source-fast` remains unchanged.
 
+The installed-resource catalog boundary has one direct non-Phase validator:
+
+```sh
+Rscript operations/validate.R --validator repository.software-resources
+```
+
+It validates the closed catalog and schema, exact shipped/excluded
+classification, normalized source-to-output paths, source existence and
+containment, link rejection, transitional and fictional limitations, and
+adversarial failures. This is development source evidence only; it does not
+build a distribution or resolve installed resources.
+
 Forward units execute in independent R subprocesses. All selected units report
 their own status, and any failure makes the combined operation fail. Before
 execution, `--explain` prints deterministic order and whether each unit is

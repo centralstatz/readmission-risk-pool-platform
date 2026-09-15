@@ -101,6 +101,14 @@ tree select their owner; `package.rrpplatform` depends on
 `package.rrpruntime`, matching the only allowed package dependency direction.
 Both participate in `ci-active` but not the bounded `source-fast` profile.
 
+The non-Phase `repository.software-resources` validator owns the closed
+installed-resource catalog/schema, exact current classification, safe
+source-to-output mappings, and adversarial catalog conformance. Catalog,
+schema, and governed resource changes select it through `source-changed`; it
+participates in `ci-active` and depends only on repository policy. The current
+owner proves a `development_unpublished` input authority, not an installed
+distribution or explicit-root accessor.
+
 `ci-active` may still use Phase-named suites where the registry says they carry
 forward evidence. It excludes Hospital distribution, Phase 11 delivery,
 historical checkpoints/prose gates, release preparation, publication, and

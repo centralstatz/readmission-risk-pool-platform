@@ -268,6 +268,51 @@ validators:
     current_checks:
       - package_rrpplatform_build_check
 
+  - validator_id: repository.software-resources
+    owner_boundary: installed_software_resources
+    lifecycle_scope: component
+    status: active_scoped
+    invariant:
+      - artifact_integrity
+      - dependency_integrity
+      - documentation_authority
+    runner:
+      script: tests/run-software-resource-tests.R
+      arguments: []
+    trigger_paths:
+      exact:
+        - README.md
+        - LICENSE
+        - NOTICE
+        - SECURITY.md
+        - SUPPORT.md
+        - app/application.yml
+        - deploy/application-artifact/runtime-dependencies.yml
+        - implementations/persistence/duckdb/adapter.yml
+        - implementations/products/yaml/adapter.yml
+        - implementations/synthetic-reference/README.md
+        - implementations/synthetic-reference/config/reference.yml
+        - implementations/synthetic-reference/config/test.yml
+        - implementations/synthetic-reference/implementation.yml
+        - implementations/synthetic-reference/producer.yml
+        - implementations/synthetic-reference/source-schema.yml
+        - docs/vision/platform-true-north.md
+        - docs/architecture/platform-architecture.md
+        - tests/run-software-resource-tests.R
+        - tests/software/test-resource-catalog.R
+        - validation/R/software-resources.R
+      prefixes:
+        - contracts/
+        - distribution/software/
+      suffixes: []
+    prerequisites:
+      - repository.policy
+    transition_ledger_id: installed-resource-foundation
+    current_checks:
+      - rrp_validate_software_resource_repository
+      - rrp_validate_installed_resource_catalog
+      - tests/run-software-resource-tests.R
+
   - validator_id: repository.history-persistence
     owner_boundary: history_persistence
     lifecycle_scope: component
@@ -1262,6 +1307,7 @@ profiles:
       - source-fast
       - package.rrpruntime
       - package.rrpplatform
+      - repository.software-resources
       - repository.specification-foundation
       - repository.canonical
       - repository.synthetic-reference
