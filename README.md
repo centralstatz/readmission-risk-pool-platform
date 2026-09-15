@@ -13,8 +13,9 @@ This repository is the clean implementation line for RRP 1.0. Its current
 development identity is `1.0.0-dev`, with [RRP.yml](RRP.yml) as the sole
 machine-readable product-development identity authority.
 
-The repository presently contains product and architecture documentation plus
-public repository essentials. It has no installable software, package,
+The repository presently contains product and architecture documentation,
+public repository essentials, human development guidance, and one local
+repository-foundation validator. It has no installable software, package,
 hospital project, clinical contract, runtime, product, application, command-
 line interface, or deployment capability. Nothing here is a released 1.0.0
 product or an approved clinical system.
@@ -53,6 +54,22 @@ the human development method, current source ownership, and evidence boundary.
 Contributions are welcome when they follow that guidance and the current
 accepted increment; see [CONTRIBUTING.md](CONTRIBUTING.md). Coding agents must
 also follow the derived [working agreement](AGENTS.md).
+
+## Repository validation
+
+From the repository root, a human can validate the current source-foundation
+claims with:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+```
+
+The command checks only the Stage 1 repository structure, local documentation
+links, development identity, legal/public metadata, machine-readable metadata,
+path and text hygiene, and obvious generated or confidential content. It does
+not validate an RRP package, project, clinical contract, runtime, installation,
+deployment, or release. Automated screening cannot replace human review for
+patient-level or confidential information.
 
 ## License
 

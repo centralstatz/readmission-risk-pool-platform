@@ -129,3 +129,83 @@ history, product, application, CLI, validator, test suite, CI, dependency
 environment, installation, artifact, or deployment capability.
 
 **Next task:** implement only Increment 1.C — Minimal repository validation.
+
+### Increment 1.C — Minimal repository validation (complete, 2026-09-15)
+
+Increment 1.C added `tools/validate-repository.R` as one human-callable,
+base-R maintainer operation. From the repository root,
+`Rscript --vanilla tools/validate-repository.R` resolves its own source owner,
+runs seven bounded repository-foundation checks, renders each category and its
+issues in plain language, summarizes the result, and returns status zero only
+when every check passes. It is a single script with no registry, profiles,
+changed-path routing, shared validation framework, package dependency, Git-
+state requirement, sibling checkout, network use, or installed-product role.
+
+The operation checks the exact current owned file and directory inventory;
+repository-local Markdown targets and heading fragments; the limited
+parseability and exact three-field meaning of `RRP.yml`; agreement on product
+identity, `1.0.0-dev`, and unreleased status; current Apache/notice/security/
+support/contribution/README/editor/ignore assertions; path, symlink, line-ending,
+final-newline, trailing-whitespace, and case-collision hygiene; and obvious
+generated-output, secret-file, private-key, access-key, and token indicators.
+It states explicitly that automated screening cannot prove the absence of
+patient-level or confidential information and therefore does not replace human
+review.
+
+The README, contribution guide, human implementation guide, and derived agent
+agreement now document the same command and narrow evidence boundary. The
+ownership map adds only the concrete `tools/validate-repository.R` path. The
+new `tools/` directory exists solely because that maintained file owns current
+development validation; no empty future tree was introduced.
+
+Historical review at immutable tag `v0.1.0` inspected
+`operations/validate-documentation.R`,
+`operations/lib/documentation-validation.R`,
+`operations/lib/repository-validation.R`, and
+`operations/lib/validation-result.R`. Script-relative root discovery,
+actionable categorized output, repository-local link parsing, non-traversal of
+linked directories, and bounded obvious-secret screening were adapted as
+useful mechanics. The multi-file result framework, required-document graph,
+Phase checkpoint, broad product/repository policies, sibling exception list,
+validation registry/profiles, release checks, and historical path assumptions
+were rejected. No historical source file was copied wholesale.
+
+Focused evidence passed the documented command with seven checks and zero
+issues. Independent temporary repository copies demonstrated status 1 and an
+actionable category for a missing foundational file, malformed development
+metadata, a symbolic link, a missing local-document target, and generated
+output. A sensitive-looking `.env` fixture was also rejected. Direct R parsing,
+repository inventory/symlink review, local-link and development-metadata review,
+text hygiene, and `git diff --check` completed successfully after the record
+and status updates.
+
+### Stage 1 acceptance and reconciliation (complete, 2026-09-15)
+
+The complete Stage 1 acceptance criteria were reviewed separately from the
+validator result. The four-document authority chain is intact and linked; the
+sole machine-readable development authority reports
+`readmission-risk-pool-platform`, `1.0.0-dev`, and `not_released`; public/legal
+files and text policies agree with the clean line; human, contributor, and
+agent guidance share one development method; all 16 files and both non-root
+directories have current owners; and the documented local operation passes
+without product source, Git publication state, external services, secrets, or
+historical infrastructure. Human review confirmed why each current path
+exists and that the repository claims only its implemented foundation.
+
+Reconciliation found no conflict with Platform True North or Platform
+Architecture. The result preserves honest maturity, human-first operation,
+privacy-conscious evidence, direct source ownership, proportional validation,
+and separation of development tooling from future installed RRP software. No
+roadmap dependency or architectural assumption changed. The exact Stage 1
+inventory is intentionally closed; the next accepted stage must update this
+validator and ownership map only as concrete new owners are introduced.
+
+**Current implementation state:** Stage 1 complete. RRP has a truthful
+development identity, public repository essentials, maintainable working
+rules, and a small repository-validation path. It still has no installable
+package, project, clinical contract, runtime, history, product, application,
+CLI, dependency environment, CI, installation, artifact, deployment, or
+release capability.
+
+**Next task:** detail and accept Stage 2 before beginning its source
+implementation.

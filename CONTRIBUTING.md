@@ -16,10 +16,17 @@ Contributions should be focused, explain the user or architectural need, stay
 within the currently accepted increment, and update documentation and evidence
 with behavior. Do not create later-stage or empty directory scaffolding.
 
-No repository validator exists yet. Use the documentary review described by
-the implementation guide until Increment 1.C supplies the local check. These
-checks do not establish package, runtime, clinical, installation, deployment,
-or release validity.
+Before submitting a change, run the local repository-foundation validator from
+the repository root:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+```
+
+Its human-readable result and process exit status cover only the Stage 1
+source-foundation claims documented by the implementation guide. Passing does
+not establish package, runtime, clinical, installation, deployment, or release
+validity, and automated screening does not replace privacy review.
 
 ## Sign off contributions
 

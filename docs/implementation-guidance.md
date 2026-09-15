@@ -7,9 +7,9 @@ Pool (RRP) 1.0 implementation. It explains how to turn the accepted roadmap
 into understandable, owned changes. It does not define product architecture,
 authorize a future stage, or claim that planned software exists.
 
-The current repository contains only governing and public documentation,
-development identity, and repository working guidance. There is no executable
-RRP software or repository validator yet.
+The current repository contains governing and public documentation,
+development identity, repository working guidance, and one local repository-
+foundation validator. There is no executable RRP product software.
 
 ## Read authority before source
 
@@ -100,6 +100,7 @@ closed to the following present paths:
 | `.editorconfig` | Basic text-format defaults. |
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
+| `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
 increment introduces a concrete responsibility that needs it, and update this
@@ -172,12 +173,24 @@ status. Automated detection can assist but cannot replace human review.
 
 ## Evidence and completion
 
-Validation proves only the claim owned by the current change. There is no
-repository validator, test suite, package check, CI workflow, or platform
-acceptance operation yet. Until Increment 1.C introduces the local repository
-validator, review the current file inventory, authority and local links,
-product identity, licensing/public metadata consistency, path and symlink
-hygiene, confidential/generated content, and the complete diff manually.
+Validation proves only the claim owned by the current change. Run the current
+repository-foundation validator from the repository root:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+```
+
+It checks the owned Stage 1 inventory, local documentation links, the exact
+development identity and parseable metadata, legal/public metadata, basic path,
+symlink, and text hygiene, and obvious generated or confidential material. It
+has a human-readable result and nonzero status on failure. Automated checks
+cannot prove that content is free of patient or confidential information, so
+human review remains required.
+
+There is no test suite, package check, CI workflow, platform acceptance
+operation, or installed product validation yet. Do not use this source check
+to imply package, runtime, clinical, installation, deployment, or release
+validity.
 
 Do not invent commands or restore historical validators to make an evidence
 list look complete. Hosted software verification begins no earlier than Stage

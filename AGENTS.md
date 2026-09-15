@@ -53,8 +53,13 @@ adopter rules are not forward architecture.
 
 ## Current evidence boundary
 
-No repository validator, executable package, test suite, dependency
-environment, CI workflow, platform operation, or release procedure exists on
-the clean line. Use the documentary review described in the human guide until
-the accepted Increment 1.C implements the local repository validator. Do not
-recreate historical validation commands or claim broader evidence.
+Use the same repository-foundation operation documented for people:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+```
+
+It proves only current Stage 1 structure and static policy. No executable
+package, test suite, dependency environment, CI workflow, platform operation,
+or release procedure exists on the clean line. Do not recreate historical
+validation commands or claim broader evidence.
