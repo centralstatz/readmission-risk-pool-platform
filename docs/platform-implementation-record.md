@@ -52,8 +52,38 @@ is deferred until Stage 2 has executable package build/check/test behavior.
 Stage acceptance and reconciliation remain the normal progressive-planning
 lifecycle after Increment 1.C rather than a separate implementation increment.
 
-**Current implementation state:** planning foundation complete; Stage 1 not
-started.
+## Stage 1 — Repository and development foundation
 
-**Next task:** review and accept the detailed Stage 1 plan, then implement only
-its first accepted increment.
+### Increment 1.A — Product identity and public repository essentials (complete, 2026-09-15)
+
+Increment 1.A established `RRP.yml` as the single machine-readable product-
+development identity: `readmission-risk-pool-platform` at `1.0.0-dev`, with
+status `not_released`. The new README describes the intended product, current
+documentation-only capability, authority order, historical boundary, safety
+limits, contribution path, and Apache-2.0 license without advertising an
+installation or released 1.0 product.
+
+The standard Apache-2.0 `LICENSE`, CentralStatz `NOTICE`, and small
+`.editorconfig` were reused byte-for-byte from `v0.1.0` after reviewing the
+historical license assessment, repository origin, authorship history, current
+year, and absence of new bundled third-party material. `SECURITY.md`,
+`SUPPORT.md`, and `CONTRIBUTING.md` were adapted to the unreleased,
+non-executable clean line. The old release-specific README, support matrix,
+validation commands, broad ignore rules, `RELEASE.yml`, `LICENSE-STATUS.md`,
+and changelog were rejected as temporally false or premature. The manually
+added `.gitignore` retains only `.DS_Store`; its missing final newline was
+normalized without adding speculative rules.
+
+Static review confirmed the exact three-field YAML identity, byte-identical
+license and notice reuse, complete local Markdown links, the intended 13-file
+tree, no tracked symbolic links, text-format hygiene, and a clean
+`git diff --check`. Public documentation consistently states that 1.0 is
+unreleased and no package or operational validation is claimed.
+
+**Current implementation state:** Increment 1.A complete; Stage 1 in progress.
+There is still no installable software, package, project, clinical contract,
+runtime, history, product, application, CLI, validator, CI, dependency
+environment, or deployment capability.
+
+**Next task:** implement only Increment 1.B — Human development and ownership
+rules.
