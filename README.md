@@ -14,11 +14,12 @@ development identity is `1.0.0-dev`, with [RRP.yml](RRP.yml) as the sole
 machine-readable product-development identity authority.
 
 The repository presently contains product and architecture documentation,
-public repository essentials, human development guidance, and one local
-repository-foundation validator. It has no installable software, package,
-hospital project, clinical contract, runtime, product, application, command-
-line interface, or deployment capability. Nothing here is a released 1.0.0
-product or an approved clinical system.
+public repository essentials, human development guidance, one local
+repository-foundation validator, and a conventional but deliberately behavior-
+free internal `rrpruntime` package owner. It has no installed RRP software,
+hospital project, clinical contract, runtime calculation, product,
+application, command-line interface, or deployment capability.
+Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
 The 1.0 implementation may selectively reuse proven historical work, but it is
@@ -64,12 +65,12 @@ claims with:
 Rscript --vanilla tools/validate-repository.R
 ```
 
-The command checks only the Stage 1 repository structure, local documentation
+The command checks only the current repository structure, local documentation
 links, development identity, legal/public metadata, machine-readable metadata,
 path and text hygiene, and obvious generated or confidential content. It does
-not validate an RRP package, project, clinical contract, runtime, installation,
-deployment, or release. Automated screening cannot replace human review for
-patient-level or confidential information.
+not validate package lifecycle behavior, a project, clinical contract, runtime,
+installation, deployment, or release. Automated screening cannot replace human
+review for patient-level or confidential information.
 
 ## License
 

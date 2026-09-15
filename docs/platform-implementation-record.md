@@ -245,3 +245,67 @@ environment, distribution, deployment, or release capability.
 
 **Next task:** implement only Increment 2.A — Dependency-light `rrpruntime`
 package owner.
+
+### Increment 2.A — Dependency-light `rrpruntime` package owner (complete, 2026-09-15)
+
+Increment 2.A created `packages/rrpruntime/` as one conventional, loadable,
+deliberately behavior-free R package. Its independent internal package identity
+is `rrpruntime` version `0.3.0.9000`; it requires R 4.4.0 or newer, uses only
+base R package machinery, declares no `Imports`, `Suggests`, or `LinkingTo`, and
+exports no callable API. Its manually maintained package source, documentation,
+README, and one package-native base-R test state the current narrow boundary
+without adding placeholder canonical, eligibility, state, request, provider,
+history, resource, project, or product behavior. `RRP.yml` remains the sole RRP
+product-development identity at `1.0.0-dev` and `not_released`.
+
+Package metadata uses current verifiable repository facts: the maintainer
+identity already present in current Git history, the CentralStatz copyright
+holder in `NOTICE`, Apache-2.0 licensing, and the configured GitHub repository
+and issue tracker. No historical placeholder contact address was retained.
+The current ownership map now assigns each realized package metadata, source,
+documentation, and test path. The repository validator's closed inventory now
+recognizes exactly the new package root and its three concrete subdirectories;
+no ignore rule or speculative future directory was added. README and human/
+agent guidance now distinguish this package source from installed RRP software
+and from future package-lifecycle tooling.
+
+Historical reconnaissance re-inspected `v0.1.0` `runtime/DESCRIPTION` and
+`runtime/NAMESPACE`, plus pre-reset commit `d31534a` package metadata, README,
+base-R build/check harness, and package-boundary assertions. Conventional
+package layout, manual package documentation, DCF/namespace inspection, source
+archive construction, isolated temporary-library installation, fresh-process
+loading, package-native check execution, and exact check-log status inspection
+were adapted. The historical `0.3.0` behavior and all R files, exports, manuals,
+domain tests, daily-hazard semantics, provider/history execution, Phase
+ownership, repository-root compatibility loading, temporary installer, joint
+two-package harness, and broad validation machinery were rejected from this
+increment. No historical source file was restored wholesale.
+
+Focused evidence on R 4.4.1 for macOS arm64 passed: every new R file parsed;
+`DESCRIPTION` parsed as DCF with the exact identity, version, R requirement,
+Apache license, and absent dependency fields; the manual page parsed; and the
+namespace parsed with zero exports. Static inspection found no reverse
+`rrpplatform` reference or repository/sibling-discovery code. `R CMD build`
+created `rrpruntime_0.3.0.9000.tar.gz` in temporary space; `R CMD INSTALL`
+installed it into a new otherwise empty temporary library; and a fresh
+`Rscript --vanilla` process loaded that exact installed copy and confirmed its
+version and empty export set. `R CMD check --no-manual` ran the package-native
+foundation test and completed with exact `Status: OK`. An initial evidence-
+harness path assertion compared macOS aliases `/tmp` and `/private/tmp`
+textually; normalizing both paths corrected the harness assertion without a
+package-source change. All generated validation artifacts were removed.
+
+The expanded human repository operation passed all seven checks with zero
+issues. Direct source/dependency/API inspection, repository inventory and
+symlink review, and `git diff --check` also passed. No accepted plan or
+architecture discrepancy was found.
+
+**Current implementation state:** Increment 2.A complete; Stage 2 remains in
+progress. RRP now has one dependency-light, loadable internal runtime-package
+owner with no behavior or exports. It still has no `rrpplatform` package, joint
+package-validation operation, hosted CI, installed resources, project,
+clinical contract, runtime calculation, history, product, application, CLI,
+dependency environment, distribution, deployment, or release capability.
+
+**Next task:** implement only Increment 2.B — Main package and local package-
+boundary proof.

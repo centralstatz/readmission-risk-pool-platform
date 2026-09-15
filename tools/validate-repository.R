@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# Validate only the repository-foundation claims implemented in Stage 1.
+# Validate the repository-foundation and realized source-inventory claims.
 # This base-R maintainer operation is intentionally not a validation framework
 # or an installed RRP command.
 
@@ -23,9 +23,17 @@ expected_files <- c(
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
+  "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
+  "packages/rrpruntime/R/rrpruntime-package.R",
+  "packages/rrpruntime/README.md",
+  "packages/rrpruntime/man/rrpruntime-package.Rd",
+  "packages/rrpruntime/tests/package-foundation.R",
   "tools/validate-repository.R"
 )
-expected_directories <- c("docs", "tools")
+expected_directories <- c(
+  "docs", "packages", "packages/rrpruntime", "packages/rrpruntime/R",
+  "packages/rrpruntime/man", "packages/rrpruntime/tests", "tools"
+)
 check_ids <- c(
   "foundational_files", "local_documentation_links",
   "metadata_parseability", "development_identity",
@@ -420,8 +428,9 @@ cat(sprintf(
   if (passed) "PASS" else "FAIL", length(check_ids), issue_count
 ))
 cat(
-  "Scope: Stage 1 repository structure and static policy only; ",
-  "human review remains required for confidential or patient-level content.\n",
+  "Scope: repository structure and static policy only; package lifecycle ",
+  "evidence is separate, and human review remains required for confidential ",
+  "or patient-level content.\n",
   sep = ""
 )
 if (!passed) quit(save = "no", status = 1L, runLast = FALSE)

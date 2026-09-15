@@ -1,0 +1,14 @@
+Package: rrpruntime
+Type: Package
+Title: Dependency-Light Readmission Runtime Foundation
+Version: 0.3.0.9000
+Authors@R: c(person("Alex", "Zajichek", email = "alexzajichek@gmail.com", role = c("aut", "cre")), person("CentralStatz Statistical & Data Sciences LLC", role = "cph"))
+Description: Establishes the dependency-light internal package owner for
+    future implementation-neutral Readmission Risk Pool runtime
+    responsibilities. The package intentionally provides no callable behavior
+    during the package-foundation stage.
+License: Apache License (>= 2)
+URL: https://github.com/centralstatz/readmission-risk-pool-platform
+BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues
+Encoding: UTF-8
+Depends: R (>= 4.4.0)
