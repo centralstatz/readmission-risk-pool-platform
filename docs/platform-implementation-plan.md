@@ -2,8 +2,8 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stage 1 is detailed and complete;
-Stage 2 is not yet detailed
+**Status:** authoritative high-level roadmap; Stage 1 is complete and Stage 2
+is detailed and accepted for implementation
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -67,8 +67,9 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 1 is the
-only detailed stage in this version of the plan. After a stage is implemented:
+Only the current stage is decomposed into accepted increments. Stage 2 is the
+current detailed stage; completed Stage 1 detail remains as implementation
+lineage. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -298,23 +299,222 @@ Stage 2 files and package APIs are decided during Stage 2 planning.
 
 ## Stage 2 — Internal installed-software package foundation
 
-### Objective and responsibilities
+**Planning status:** detailed and accepted; source implementation not started
 
-Create the conventional internal R package owners required by the architecture:
-a dependency-light `rrpruntime` and one main implementation package, with only
-the one-way main-package-to-runtime dependency. Establish namespace, package
-identity, build/check, isolated install/load, API visibility, and ownership
-tests without prematurely importing later domain behavior. Package
-build/check/test behavior creates the first concrete reason for hosted software
-verification, so Stage 2 may introduce the initial CI workflow for that claim.
+### Objective
 
-### Why here and dependencies
+Create the first two conventional executable owners required by the
+architecture: a dependency-light `rrpruntime` package and one main internal
+implementation package, `rrpplatform`. Establish their identities, namespaces,
+one-way dependency, API visibility, package-native tests, local build/check and
+isolated install/load evidence, and proportionate hosted verification. Stop
+before either package owns an installed resource, project, clinical contract,
+runtime calculation, operator command, or distribution lifecycle.
 
-Packages are the first executable owners. They depend on Stage 1 source rules
-and validation but precede installed resources, projects, and business
-semantics so those later capabilities enter their final namespaces directly.
-Hosted verification begins here rather than in the documentation-only source
-foundation.
+### Stage 1 reconciliation and inherited constraints
+
+Stage 1 is complete and requires no corrective change before Stage 2. Stage 2
+inherits these concrete constraints:
+
+- `RRP.yml` remains the sole product-development identity authority at
+  `1.0.0-dev` and `not_released`; an internal package name or version cannot
+  redefine that product identity;
+- `docs/implementation-guidance.md` owns the current source map, which must
+  grow only when a concrete package, test, tool, or workflow path appears;
+- `tools/validate-repository.R` owns repository-foundation validation and its
+  closed inventory must expand atomically with each accepted new path;
+- repository-relative lookup remains valid only for maintainer development
+  tooling, never for package behavior intended to become installed software;
+- no package, dependency environment, test framework, CI workflow, installed
+  resource, or product operation currently exists; and
+- generated package archives, check directories, and temporary libraries are
+  evidence, not source, and must be created outside the repository or removed
+  by their owning operation without speculative ignore rules.
+
+The existing human-readable R, dependency ownership, privacy, historical-reuse,
+and no-empty-scaffold conventions continue unchanged. Every increment updates
+the README or implementation guidance only to the extent needed to describe
+what then exists.
+
+### Settled package-foundation decisions
+
+| Decision | Accepted Stage 2 choice |
+|---|---|
+| Physical owners | Exactly `packages/rrpruntime/` and `packages/rrpplatform/`; no third package or duplicate package root. |
+| Main package name | `rrpplatform`, an internal implementation namespace, not the product name, installer, CLI, project API, or separately marketed package. |
+| Runtime version | `rrpruntime` begins clean development at `0.3.0.9000`, advancing the historical internal `0.3.0` identity without importing its old behavior or promising source/API compatibility. |
+| Main-package version | `rrpplatform` begins at `0.1.0.9000`; it is independently versioned from both `rrpruntime` and product `1.0.0-dev`. |
+| R line | Both packages require `R (>= 4.4.0)`, matching the architecture's initial implementation line without creating a final support claim. |
+| Dependency direction | `rrpplatform` declares and namespace-imports `rrpruntime`; `rrpruntime` never depends on or refers to `rrpplatform`. |
+| Runtime dependencies | Stage 2 `rrpruntime` has no `Imports`, `Suggests`, or `LinkingTo` dependencies and uses only base R/package machinery. |
+| Main-package dependencies | Stage 2 `rrpplatform` has only `rrpruntime` in `Imports`; no resource, YAML, database, UI, project, deployment, or development dependency enters early. |
+| API posture | Both namespaces initially export no callable functions. The main package imports the runtime namespace only to establish the dependency. Later cross-package calls require explicit owned exports/imports when their behavior exists. Package exports remain technical internal APIs, not the future human CLI. |
+| Tests | Each package owns one base-R package-foundation test under its conventional `tests/` directory; one maintainer operation later owns cross-package topology and package-lifecycle proof. No third-party test framework is justified. |
+| Development dependency environment | None. Base R 4.4, `R CMD build`, `R CMD INSTALL`, and `R CMD check` are sufficient for every Stage 2 claim. No root `renv`, lockfile, package repository, or installed-distribution closure is introduced. |
+
+Package metadata must be conventional and accurate: package identity, title,
+development version, authorship/maintainer facts, description of the narrow
+current responsibility, Apache-2.0 licensing, UTF-8 encoding, R requirement,
+repository URL, and issue tracker. Package-level documentation is maintained
+manually in Stage 2; roxygen or another documentation generator is not a
+dependency.
+
+### Implementation sequence
+
+```text
+2.A — Dependency-light rrpruntime package owner
+        ↓
+2.B — Main package and local package-boundary proof
+        ↓
+2.C — Hosted package-foundation verification
+        ↓
+Stage 2 acceptance and reconciliation
+        ↓
+Detail Stage 3
+```
+
+The three increments follow the real dependency graph: establish the leaf
+package, add its only dependent plus joint local evidence, then run that stable
+human operation in a hosted environment. Documentation and stage acceptance
+are updates within those lifecycle boundaries, not artificial increments.
+
+### Increment 2.A — Dependency-light `rrpruntime` package owner
+
+Create `packages/rrpruntime/` as a complete but deliberately behavior-free R
+package. It owns its `DESCRIPTION`, empty-export `NAMESPACE`, minimal package
+source/documentation, and one base-R package-foundation test. The package may
+identify and document its future architectural responsibility, but it must not
+implement placeholder canonical, eligibility, state, request, provider, or
+history behavior.
+
+The package test confirms installed identity/version, the R requirement, and
+the absence of exported callables. Focused implementation evidence directly
+parses all new R and DCF files, builds the source package, installs it into a
+fresh temporary library, loads it in a fresh `Rscript --vanilla` process, runs
+`R CMD check --no-manual` with exact `Status: OK`, and confirms the source tree
+contains no repository/sibling discovery or reverse `rrpplatform` reference.
+Archives, check directories, and libraries remain in temporary space.
+
+In the same change, expand the current ownership map and repository validator
+for only the realized runtime-package paths and directories. Historical
+`rrpruntime` metadata, package layout, package-level documentation shape, and
+base-R check mechanics are useful references. Historical R files, exports,
+manuals, tests, version `0.3.0` behavior, daily-hazard contracts, provider and
+history execution, temporary installers, and Phase ownership are rejected.
+
+Increment 2.A stops with one loadable leaf package. It does not create
+`rrpplatform`, a joint package runner, CI, installed resources, reusable runtime
+primitives, or any Stage 3+ interface.
+
+### Increment 2.B — Main package and local package-boundary proof
+
+Create `packages/rrpplatform/` as the main internal package at
+`0.1.0.9000`. Its metadata and namespace establish the sole
+`rrpplatform -> rrpruntime` dependency; its minimal source/documentation and
+base-R package test establish package identity, import presence, and zero
+exported callables without inventing orchestration or product behavior.
+
+Add one base-R maintainer operation at `tools/validate-packages.R`. It is the
+documented human command for the complete local Stage 2 package claim and must:
+
+- require exactly the two accepted package roots and their conventional files;
+- parse package source, `DESCRIPTION`, and `NAMESPACE` metadata;
+- verify exact package identities/versions, the R line, Apache license metadata,
+  zero exports, the one-way dependency, and absence of unexpected/heavy
+  dependencies or repository/sibling discovery in package source;
+- build both packages into a temporary directory;
+- install `rrpruntime` and then `rrpplatform` from the built archives into an
+  otherwise empty temporary user library;
+- load each from a fresh vanilla R process without an ambient user library;
+- run package-native tests through `R CMD check --no-manual` and require exact
+  `Status: OK` for each package; and
+- render understandable package-by-package results and return nonzero status
+  on any failure.
+
+Copied temporary-tree failures should demonstrate, at minimum, rejection of a
+missing package file, a reverse dependency, an unexpected export, and inability
+to install the main package without its runtime dependency. The operation is
+repository maintainer tooling, not an installed product command or a general
+validation dispatcher.
+
+Update the ownership map, repository validator inventory, README/contribution
+guidance, and agent agreement for the exact package and validation paths now
+present. Historical `tests/run-package-tests.R`, package-boundary assertions,
+temporary-library isolation, install order, fresh-process loading, and strict
+check-log inspection are adaptable. Historical source compatibility loaders,
+active Phase regressions, registry/profile integration, and runtime semantic
+tests are rejected.
+
+Increment 2.B stops after the full two-package foundation is locally
+repeatable. It adds no CI yet and no resource access, structured operation
+result, project loader, runtime behavior, distribution, or dependency closure.
+
+### Increment 2.C — Hosted package-foundation verification
+
+Once the exact 2.B human operation passes, add one narrowly owned GitHub Actions
+workflow for push and pull-request events. It uses read-only repository
+permission, a maintained immutable action revision policy, Ubuntu with R 4.4,
+and no repository secret. It invokes, without duplicating their logic:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+The workflow has no matrix, release/deployment job, artifact publication,
+cache-dependent correctness, manual legacy mode, validation profile, registry,
+changed-path routing, `renv` setup, or remote mutation. It proves that the
+committed source-foundation and two-package claims work in one independent
+hosted Ubuntu/R 4.4 environment. It does not establish a released support cell,
+cross-platform equivalence, installed distribution, or clinical validity.
+
+Update the ownership map and repository validator for the concrete workflow
+path. Local evidence checks its limited triggers, read-only permission, exact
+commands, absence of secrets/mutating steps, and continued package/repository
+validation. Final Stage 2 acceptance requires the identity and successful
+result of the hosted push or pull-request run for the committed workflow;
+creating a local YAML file alone is insufficient. Commit, push, or other remote
+mutation requires separate explicit authorization.
+
+Historical least-privilege workflow structure, R 4.4 setup, exact human-command
+reuse, and static no-publication assertions are adaptable. The old `ci-active`
+profile, `renv` bootstrap, legacy manual dispatch, validation registry/tests,
+Phase aggregates, and release/deployment vocabulary are rejected.
+
+### Stage 2 acceptance
+
+Stage 2 is complete only when:
+
+- exactly two internal package roots exist and each has conventional,
+  understandable metadata, namespace, source, package documentation, and
+  package-native base-R evidence;
+- `rrpplatform` depends only on `rrpruntime`, while `rrpruntime` has no reverse,
+  heavy, project, resource, UI, database, deployment, or development dependency;
+- `RRP.yml` remains the sole `1.0.0-dev` product authority and both package
+  identities/versions are documented as independent internal identities;
+- both packages parse and build, install and load from fresh temporary-library
+  state in dependency order, and pass `R CMD check --no-manual` with exact
+  `Status: OK`;
+- namespace tests prove zero premature exports and reject accidental visibility,
+  reverse dependency, repository discovery, or duplicate package authority;
+- tests and the human package-validation operation protect only the introduced
+  package topology, identity, namespace, dependency, and lifecycle invariants;
+- the implementation guidance owns every new path, the expanded repository
+  validator passes, and no empty future directory or persistent generated
+  output remains;
+- the hosted workflow, if introduced as planned, invokes the same two human
+  operations under read-only Ubuntu/R 4.4, and a committed push or pull-request
+  run has completed successfully; and
+- no installed-resource discovery, common operation result, hospital project,
+  canonical/domain contract, runtime calculation, history, product,
+  application, CLI, dependency closure, distribution, deployment, or release
+  behavior has entered the packages.
+
+After the implementation increments pass, reconcile the realized packages and
+evidence with True North and Platform Architecture, record actual historical
+reuse and deviations, and update status. Stage acceptance is a lifecycle action,
+not Increment 2.D. If hosted evidence or any other criterion remains pending,
+Stage 2 remains in progress.
 
 ### Plain-language exit state
 
@@ -322,19 +522,34 @@ foundation.
 > dependency direction, but it cannot yet resolve installed resources,
 > recognize a project, or calculate anything.
 
-### Expected historical reuse
+### Historical reuse disposition
 
-Inspect the pre-reset `packages/rrpruntime` relocation and minimal
-`packages/rrpplatform` experiment. Its conventional two-package layout,
-package-check harness, isolated-library tests, and dependency-direction checks
-are likely substantially reusable. Recover only source whose responsibility is
-actually introduced; do not repopulate `rrpruntime` with daily-hazard or later
-runtime behavior merely because the old package contained it.
+Reconnaissance inspected immutable `v0.1.0` `runtime/` package metadata and
+namespace plus pre-reset commits `b9672cc`, `d31534a`, `d23e315`, and `855a4b0`.
+The two-package layout, `rrpplatform` name, conventional metadata/documentation,
+base-R package tests, strict build/check harness, isolated install/load order,
+dependency/API boundary assertions, and least-privilege hosted R 4.4 pattern are
+substantially reusable after simplification.
 
-### Major deferrals
+The old package contents are not reusable in Stage 2: daily-hazard input,
+eligibility, requests, estimates, providers, history, canonical conformance,
+and their exports/tests belong to later stages under new semantics. The former
+compatibility loader, repository source chain, validation registry/profiles,
+Phase suites, root `renv`, resource/distribution design, Hospital/release paths,
+and broad CI workflow are also rejected from this stage.
 
-Resource access, operations, project code, clinical contracts, runtime logic,
-dependency closure, distribution, and user commands remain later stages.
+### Major deferrals and deliberately open decisions
+
+Stage 3 owns installed-resource catalog/access and common structured operation
+results. Later stages own explicit software context, project contracts,
+canonical and risk semantics, provider/history behavior, products/application,
+CLI and installed distributions, dependency closure, deployment, and release.
+Stage 2 therefore does not settle exported function names, resource IDs or
+layout, project paths, package-to-resource mechanics, launcher/installer form,
+final distribution versions, runtime third-party dependencies, dependency-lock
+technology, CI matrices/caching, support cells, or release artifacts. Package
+authorship/contact fields must use current verified project facts during 2.A;
+no unverified address is invented by this plan.
 
 ## Stage 3 — Installed resources and shared operation foundation
 

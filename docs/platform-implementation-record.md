@@ -209,3 +209,39 @@ release capability.
 
 **Next task:** detail and accept Stage 2 before beginning its source
 implementation.
+
+## Stage 2 detailed-plan acceptance — 2026-09-15
+
+Stage 1 remains complete and its repository validator passes unchanged. The
+realized 16-file source map, closed validator inventory, human-first operation,
+base-R/dependency restraint, and absence of packages, tests, CI, dependency
+environments, or installed-product machinery were reconciled as the concrete
+starting constraints for Stage 2. No Stage 1 inconsistency required correction.
+
+The existing high-level package-foundation objective was detailed and accepted
+as three implementation increments: establish the dependency-light
+`rrpruntime` leaf package; add the main `rrpplatform` package and repeatable
+local two-package proof; then run those same human operations in one
+least-privilege hosted Ubuntu/R 4.4 workflow before stage acceptance. The plan
+settles package locations, names, initial development versions, R requirement,
+one-way dependency, zero-export starting posture, base-R tests, temporary
+build/check/install evidence, no-development-lock decision, and bounded CI
+claim. Resource access and every later product responsibility remain deferred.
+
+Historical reconnaissance inspected the `v0.1.0` runtime package and pre-reset
+commits `b9672cc`, `d31534a`, `d23e315`, and `855a4b0`. Conventional package
+structure, the `rrpplatform` name, base-R build/check and isolated-library
+mechanics, boundary assertions, and least-privilege hosted verification informed
+the plan. No source was restored. Historical runtime/domain behavior,
+compatibility loading, validation registries/profiles, Phase suites, `renv`,
+resource/distribution work, and release/deployment behavior were rejected from
+the Stage 2 boundary.
+
+**Current implementation state:** Stage 1 complete; Stage 2 detailed and
+accepted for implementation; Stage 2 source implementation not started. The
+repository still has no internal package, installed resource, project,
+clinical contract, runtime calculation, product, application, CLI, dependency
+environment, distribution, deployment, or release capability.
+
+**Next task:** implement only Increment 2.A — Dependency-light `rrpruntime`
+package owner.
