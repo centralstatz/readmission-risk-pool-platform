@@ -4,15 +4,13 @@
 
 This document is the authoritative statement of the intended identity and
 long-term direction of the Readmission Risk Pool Platform. It governs the
-[platform architecture](../architecture/platform-architecture.md), which
-governs the current
-[RRP 1.0.0 implementation roadmap](../architecture/platform-implementation-plan.md).
-The [implementation record](../architecture/platform-implementation-record.md)
-records what is actually built. Forward software must conform to the complete
-chain. Detailed planning is progressive: the current stage's increments must
-be accepted before that stage's source work begins, and later stages are
-planned from reconciled implementation evidence rather than decomposed up
-front.
+[platform architecture](platform-architecture.md). Together they are the
+current authority for why RRP exists and what the completed RRP 1.0 system must
+be. Implementation planning must derive the construction path from these
+documents; an implementation record then reports what the clean 1.0 line has
+actually built. Forward software must conform to that authority chain.
+Detailed planning is progressive: only the current stage is decomposed before
+its source work begins, and later stages are planned from reconciled evidence.
 
 ```text
 Platform True North
@@ -86,8 +84,10 @@ monitoring, incident response, and operational adoption.
 
 ## Progressive implementation
 
-**Design principle:** The platform should work early and remain working while
-complete components are replaced or customized.
+**Design principle:** Build the platform in coherent, understandable layers.
+Early construction stages may intentionally be incomplete. Once an end-to-end
+reference path exists, it should remain working while complete components are
+replaced or customized.
 
 ```text
 Install RRP software
@@ -491,7 +491,7 @@ record.
 Before accepting a material change, ask whether it:
 
 1. follows this document rather than inherited implementation shape;
-2. preserves or creates a valid working reference path;
+2. advances a coherent reference path and preserves it once established;
 3. lets the affected component be replaced independently;
 4. keeps generic code unaware of local sources and named implementations;
 5. strengthens a versioned, storage-independent public interface;
@@ -506,5 +506,5 @@ Before accepting a material change, ask whether it:
 14. communicates its intent to future human maintainers; and
 15. states maturity and clinical-use limitations honestly.
 
-Open decisions are tracked in [Open decisions](../architecture/open-decisions.md)
-and should be resolved just before the phase that needs them, not prematurely.
+Implementation planning should record open decisions and resolve each one just
+before the stage that needs it, not prematurely.

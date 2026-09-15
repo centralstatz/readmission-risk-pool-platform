@@ -6,25 +6,24 @@
 implementation and release not yet complete
 
 This document is the current normative architecture of the Readmission Risk
-Pool (RRP). It translates [Platform True North](../vision/platform-true-north.md)
-into the software, project, analytical, state, product, deployment, lifecycle,
-and validation boundaries that the current
-[RRP 1.0.0 implementation roadmap](platform-implementation-plan.md) must
-realize.
+Pool (RRP). It translates [Platform True North](platform-true-north.md) into
+the software, project, analytical, state, product, deployment, lifecycle, and
+validation boundaries that RRP 1.0 implementation planning must realize.
 Future contributors should be able to understand the target system here
-without reconciling the assessment sequence that produced it.
+without reconciling the historical assessment sequence that produced it.
 
-The published `v0.1.0` tag remains the exact architecture and implementation
-record for that release. This document does not reinterpret, migrate, amend,
-or claim compatibility with those released bytes. Current executable source
-still substantially implements `v0.1.0`; statements below are target
-architecture until the implementation record and acceptance evidence say
-otherwise.
+The published `v0.1.0` tag remains immutable historical implementation and
+release evidence. This document does not reinterpret, migrate, amend, or claim
+compatibility with those released bytes. The active repository has been
+deliberately reset to this architecture and its True North; no RRP 1.0
+software is implemented yet. Historical implementations remain available
+through Git for selective reuse.
 
-The current [implementation plan](platform-implementation-plan.md) is the
-authoritative high-level RRP 1.0.0 roadmap. The published `v0.1.0` tag retains
-the completed Phase 0–11 plan as historical evidence. Supporting assessments
-explain why this architecture was selected, but they do not compete with it.
+Implementation planning must derive a progressive construction path from this
+architecture. When established, that plan governs construction order and its
+implementation record reports only what the clean 1.0 line actually builds.
+The published tag and pre-reset commits preserve former plans, assessments,
+records, and implementation evidence without making them active authorities.
 
 ## Purpose and scope
 
@@ -488,7 +487,7 @@ persistence ports, not DuckDB tables, hospital sources, producer internals,
 provider code, or models. Materialized products live in project state and are
 rebuildable without rewriting history.
 
-The initial migrated product family remains narrow: current eligible episode
+The initial product family remains narrow: current eligible episode
 remaining risk, retained remaining-risk trajectory/history, and terminal run
 summary. Exact names/versions are plan decisions. Every product/set carries
 target, provider/model where relevant, software, history-schema, freshness,
@@ -633,21 +632,17 @@ recovery, and verification. Published releases are never rebuilt in place.
 
 | Class | Answers | Prospective treatment |
 |---|---|---|
-| Normative product architecture | What is RRP now? | `docs/architecture/`; current authority, version-matched in releases |
+| Normative product architecture | What is RRP now? | governing documents at the `docs/` root; version-matched in releases |
 | User/developer product docs | How do I install, create, map, provide, run, deploy, and recover? | prospective `docs/user/`; ships or is version-linked |
 | Internal development evidence | Why was architecture chosen? | prospective `docs/development/assessments/`; source only |
 | Historical release evidence | What was previously built/released? | prospective `docs/history/` plus immutable tags/evidence |
 | Maintainer docs | How is RRP built, tested, released, and recovered? | prospective `docs/maintainers/`; source/maintainer tooling |
 
-The current tree is transitional. Assessments remain decision evidence, while
-this document controls where they differ. Detailed canonical/runtime/provider/
-history/product/app/deployment documents describe implemented `v0.1.0`
-boundaries until prospectively revised. The Phase plan and implementation
-record are historical evidence.
-
-The 1.0 plan must schedule documentation reclassification rather than moving
-the tree in this synthesis. Git tags preserve release-specific architecture;
-current normative architecture evolves in place rather than accumulating a
+The clean active tree begins with True North and this architecture. Future
+implementation planning adds only the documentation needed by the capability
+being built. Historical assessments, component documents, plans, and records
+remain available through Git and need not be copied into the active tree.
+Current normative architecture evolves in place rather than accumulating a
 parallel tree per version. Installed docs use a closed version-matched product
 subset and exclude internal CentralStatz reasoning/process.
 
@@ -695,11 +690,12 @@ release preparation, while local checks follow affected boundaries. High-
 consequence scientific, privacy, state, artifact, and publication invariants
 remain strict.
 
-Phase 0–11 suites, prose gates, Hospital acquisition, and whole-repository
-checkpoints remain `v0.1.0` evidence or legacy checks. They do not govern
-unrelated 1.0 work. No test is removed until its current invariant is reassigned
-or deliberately retired. Diagnostics, validation, provenance, metrics, and
-audit remain distinct; passing software tests never implies clinical approval.
+Historical Phase suites, prose gates, Hospital acquisition, and whole-repository
+checkpoints remain available through Git as `v0.1.0` evidence; they do not
+belong in the active tree merely for preservation. Tests are selectively
+recovered when they protect a current 1.0 invariant and are placed under its
+current owner. Diagnostics, validation, provenance, metrics, and audit remain
+distinct; passing software tests never implies clinical approval.
 
 ## Clean-install and release acceptance
 
@@ -760,7 +756,7 @@ This architecture does not design or version `readmit`.
 | OCI/Docker realization | **ADD FROM SHARED ARTIFACT** | Product-only portable realization; no compute-capable semantics |
 | Full Platform tree as payload | **REPLACE** | Closed installed distribution |
 | Generated Hospital release/embedded archive | **RETIRE FROM ACTIVE PRODUCT PATH** | Preserve `v0.1.0` history |
-| Hospital Git/wrappers | **RETAIN AS HISTORICAL EVIDENCE** | No normal 1.0 role |
+| Hospital Git/wrappers | **HISTORY ONLY** | Preserve through Git; no active 1.0 role |
 | Inventory, acquisition, publication recovery | **REUSE SUBSTANTIALLY** | Reassign to correct lifecycle |
 | Phase 0–11 validation hierarchy | **REPLACE** | Lifecycle/component profiles |
 | Two-product publication machinery | **REFACTOR LATER** | Preserve authorization/immutability, replace payload assumptions |
@@ -782,8 +778,9 @@ The following are not competing current options:
   validity requirements; and
 - Connect Git realization is not software acquisition.
 
-Assessments remain decision evidence. Detailed `v0.1.0` documents/contracts
-remain accurate for that release only where this architecture supersedes them.
+Historical assessments and detailed `v0.1.0` documents/contracts remain
+available through Git as evidence for their own context; they are not active
+1.0 authorities.
 
 ## Non-goals and deferrals
 
@@ -829,9 +826,10 @@ minor pre-1.0 label would obscure the deliberate new adopter contract.
 
 This is not a release claim. Distinguish the accepted **1.0.0 target
 architecture**, forthcoming **1.0.0 implementation development**, and a future
-**released 1.0.0** that exists only after acceptance and publication. Current
-`0.2.0-dev` metadata is transitional and changes only in an implementation-plan
-increment.
+**released 1.0.0** that exists only after acceptance and publication.
+Implementation planning should establish an explicit `1.0.0-dev` product
+identity before software source begins; no tag or release follows from that
+development identity.
 
 ## Architecture acceptance criteria
 
@@ -844,26 +842,26 @@ separate; upgrades are non-mutating; product-only deployment is first scope;
 validation is lifecycle-owned; and 1.0.0 is a target, not released state.
 
 No implementation should begin while an active authority still asserts a
-contradictory target. Detailed old documents may remain as clearly classified
-implementation/history evidence until planned replacement.
+contradictory target. Historical documents need not remain in the active tree;
+Git history is their preservation mechanism.
 
-## Implementation-plan bridge
+## Implementation-planning requirements
 
-The authoritative [RRP 1.0.0 implementation roadmap](platform-implementation-plan.md)
-sequences governance, source/distribution ownership, installed operations,
-independent projects, singular-target analytics, new history, products/app,
-Posit and OCI product-only realizations, adopter acceptance/legacy retirement,
-and release qualification. It is organized by architecture-owned stages rather
-than Phase chronology.
+The implementation plan must sequence the clean construction of source and
+package ownership, installed resources and operations, independent projects,
+singular-target analytics, history, products/application, distribution and
+CLI, product-only deployment realizations, acceptance, and release. It must be
+organized by architectural dependency and human comprehension rather than
+historical Phase chronology.
 
-Detailed planning is progressive: Stage 1 is decomposed before Stage 1 begins,
-then each later stage is planned only after its predecessor has been
-implemented, validated, and reconciled against the declared exit state. Each
-increment will state what remains working, reuse/replacement, compatibility and
-state effects, human operation, and proportional evidence. The high-level
-roadmap changes only if implementation evidence invalidates a major dependency
-or assumption. Legacy release assets remain unchanged until replacement
-acceptance makes retirement safe.
+Detailed planning is progressive: only the first stage is decomposed initially,
+then each later stage is detailed after its predecessor has been implemented,
+validated, and reconciled against a plain-language exit state. Each stage must
+state its claim, ownership, likely selective historical reuse, validation, and
+deferrals. The high-level roadmap changes only if implementation evidence
+invalidates a major dependency or assumption. The active line has no
+compatibility obligation to retain historical source structure, operations,
+tests, or validation machinery.
 
 ## Prohibited dependencies
 
