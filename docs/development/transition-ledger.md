@@ -36,7 +36,7 @@ and evidence are never edited to perform a forward retirement.
 | `application-artifact-connect` | Target-neutral artifact and Connect Cloud realization | Closed inventory, dependency and content integrity, target separation, and no implicit publication | Reuse/refactor | Stage 8 | Repository-built realization remains until installed-input artifact proof | Product-only installed-input artifact plus each supported target realization passes | Stage 1.A classifies artifact/Connect repository, suite, and lifecycle evidence |
 | `hospital-distribution-git` | Generated Hospital distribution and standalone Git realization | Immutable `v0.1.0` delivery evidence, safe destinations, and remote-free staging | Retire from active 1.0 path | Stage 9 | Retained for explicit historical verification only | Stage 9 retirement review proves replacement adoption path and preserves exact release evidence | Stage 1.A marks Hospital units retire-later and excludes them from planned forward profiles |
 | `development-renv` | Root `renv.lock` and repository development environment | Reproducible development dependencies without payload conflation | Retain for development only | Stage 2 | Root environment supports current source while installed closure is established | Stage 2 proves installed software closure separately and documents root lock as development-only | Increment 2.A requires no dependency or lockfile change; target-keyed installed closure remains 2.E work |
-| `installed-resource-foundation` | `distribution/software/resource-catalog.yml`, its closed schema, and `repository.software-resources` validation | Stable logical resource identity, exact safe source-to-output classification, and explicit separation of software resources from repository-only content | Active development/unpublished catalog authority; add explicit-root package access later in 2.B | Stage 2 and later semantic-owner stages | Repository consumers retain current source paths until 2.C/2.D; no installed-root selector or distribution exists | Explicit-root `rrpplatform` access passes copied-root and adversarial acceptance, consumers migrate through it, and later resource revisions retain the same owner | First 2.B execution unit catalogs 48 required resources, 11 excluded families, and the absent Stage 4 project template; schema/conformance and adversarial evidence pass while status remains `development_unpublished` |
+| `installed-resource-foundation` | `distribution/software/resource-catalog.yml`, its closed schema/projection, `repository.software-resources`, and the `rrpplatform` explicit-root access pair | Stable logical resource identity, exact safe source-to-output classification, closed installed inventory, and explicit separation of software resources from repository-only content | Active development/unpublished catalog and access boundary; installed-root selection remains Stage 3 | Stage 2 and later semantic-owner stages | Repository consumers retain current source paths until 2.C/2.D; no installed-root selector or actual distribution exists | Consumers migrate through the accepted accessor, 2.E realizes the closed distribution, and later resource revisions retain the same owner | Second 2.B execution unit adds deterministic source-free installed projection and package access; isolated copied-root, varied-context, missing/extra/linked/escaping/duplicate/identity-tamper, and TOCTOU evidence passes for all 48 resources |
 | `release-publication-tooling` | Release preparation, GitHub publication, verification, and acquisition machinery | Authorization, immutability, checksums, recovery, and public verification | Preserve safeguards; replace two-product payload later | Stage 10 | Explicit `v0.1.0` lifecycle remains callable and outside ordinary profiles | One-product 1.0 release path passes equivalent or stronger safeguards and immutable old evidence remains | Stage 1.A inventories lifecycle checks; no release or remote operation ran |
 
 ## Stage 1.A state
@@ -95,10 +95,11 @@ and the installed-software/project architecture is not yet implemented. Stage
 The detailed Stage 2 plan is accepted. Increment 2.A is complete: the only
 active package sources are `packages/rrpruntime/` and
 `packages/rrpplatform/`, with one-way `rrpplatform -> rrpruntime` dependency and
-non-Phase package validation. The first bounded 2.B execution unit establishes
-the closed `development_unpublished` resource catalog, schema, exact
-classification, and non-Phase validation owner. Repository consumers still use
-their current paths; the explicit-root `rrpplatform` access API and copied-root
-acceptance remain the next 2.B execution unit. No machinery is retired, root
-`renv` remains development-only, product identity remains `0.2.0-dev`, and no
-software distribution exists. Stage 2 and Increment 2.B remain in progress.
+non-Phase package validation. Two bounded 2.B execution units now establish the
+closed `development_unpublished` source catalog/schema/classification, its
+deterministic source-free installed projection, and explicit-root package
+access with copied-root/adversarial acceptance. Repository consumers still use
+their current paths; 2.C/2.D own migration, Stage 3 owns root/version selection,
+and 2.E owns the actual distribution. No machinery is retired, root `renv`
+remains development-only, product identity remains `0.2.0-dev`, and no software
+distribution exists. Stage 2 and Increment 2.B remain in progress.

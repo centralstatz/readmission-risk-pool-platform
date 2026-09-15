@@ -258,7 +258,10 @@ validators:
         - --package
         - rrpplatform
     trigger_paths:
-      exact: []
+      exact:
+        - tests/software/installed-resource-access.R
+        - tests/software/package-boundaries.R
+        - tests/run-package-tests.R
       prefixes:
         - packages/rrpplatform/
       suffixes: []
@@ -267,6 +270,7 @@ validators:
     transition_ledger_id: operation-library-chain
     current_checks:
       - package_rrpplatform_build_check
+      - installed_resource_copied_root_acceptance
 
   - validator_id: repository.software-resources
     owner_boundary: installed_software_resources
@@ -300,6 +304,7 @@ validators:
         - docs/architecture/platform-architecture.md
         - tests/run-software-resource-tests.R
         - tests/software/test-resource-catalog.R
+        - tests/software/installed-resource-access.R
         - validation/R/software-resources.R
       prefixes:
         - contracts/
@@ -311,6 +316,7 @@ validators:
     current_checks:
       - rrp_validate_software_resource_repository
       - rrp_validate_installed_resource_catalog
+      - rrp_installed_resource_catalog_projection
       - tests/run-software-resource-tests.R
 
   - validator_id: repository.history-persistence

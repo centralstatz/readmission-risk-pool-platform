@@ -163,7 +163,8 @@ rrp_validate_resource_catalog_schema <- function(schema) {
   top_fields <- c(
     "specification_kind", "specification_id", "specification_version",
     "specification_format_version", "identity_scope", "title", "status",
-    "description", "catalog_contract", "resource_entry_contract",
+    "description", "catalog_contract", "installed_realization_contract",
+    "resource_entry_contract",
     "excluded_family_contract", "deferred_role_contract", "path_rules",
     "cross_entry_invariants"
   )
@@ -197,6 +198,14 @@ rrp_validate_resource_catalog_schema <- function(schema) {
       "catalog_format_version", "status_values",
       "required_top_level_fields", "allowed_top_level_fields",
       "schema_reference_fields", "product_fields", "limitation_fields"
+    ),
+    installed_realization_contract = c(
+      "catalog_path", "schema_path", "required_top_level_fields",
+      "allowed_top_level_fields", "source_only_top_level_fields",
+      "required_resource_fields", "allowed_resource_fields",
+      "source_only_resource_fields", "governed_output_roots",
+      "expected_resource_count", "closed_output_inventory",
+      "linked_outputs_prohibited", "required_outputs_must_be_regular_files"
     ),
     resource_entry_contract = c(
       "required_fields", "allowed_fields", "resource_id_pattern",
@@ -243,6 +252,13 @@ rrp_validate_resource_catalog_schema <- function(schema) {
     c("catalog_contract", "schema_reference_fields"),
     c("catalog_contract", "product_fields"),
     c("catalog_contract", "limitation_fields"),
+    c("installed_realization_contract", "required_top_level_fields"),
+    c("installed_realization_contract", "allowed_top_level_fields"),
+    c("installed_realization_contract", "source_only_top_level_fields"),
+    c("installed_realization_contract", "required_resource_fields"),
+    c("installed_realization_contract", "allowed_resource_fields"),
+    c("installed_realization_contract", "source_only_resource_fields"),
+    c("installed_realization_contract", "governed_output_roots"),
     c("resource_entry_contract", "required_fields"),
     c("resource_entry_contract", "allowed_fields"),
     c("resource_entry_contract", "allowed_roles"),
@@ -270,6 +286,10 @@ rrp_validate_resource_catalog_schema <- function(schema) {
 
   required_allowed_pairs <- list(
     c("catalog_contract", "required_top_level_fields", "allowed_top_level_fields"),
+    c("installed_realization_contract", "required_top_level_fields",
+      "allowed_top_level_fields"),
+    c("installed_realization_contract", "required_resource_fields",
+      "allowed_resource_fields"),
     c("resource_entry_contract", "required_fields", "allowed_fields"),
     c("excluded_family_contract", "required_fields", "allowed_fields"),
     c("deferred_role_contract", "required_fields", "allowed_fields")
@@ -317,6 +337,34 @@ rrp_validate_resource_catalog_schema <- function(schema) {
         "Required path-safety rules cannot be disabled."
       )
   }
+  installed <- schema$installed_realization_contract
+  for (field in c(
+    "closed_output_inventory", "linked_outputs_prohibited",
+    "required_outputs_must_be_regular_files"
+  )) {
+    if (!identical(installed[[field]], TRUE)) issues <-
+      rrp_software_resource_add_issue(
+        issues, "invalid_schema_rule",
+        paste0("$schema.installed_realization_contract.", field),
+        "Required installed-resource safety rules cannot be disabled."
+      )
+  }
+  if (!identical(installed$catalog_path, "resources/resource-catalog.yml") ||
+      !identical(installed$schema_path,
+                 "resources/resource-catalog-schema.yml") ||
+      !identical(installed$expected_resource_count, 48L) ||
+      !identical(
+        rrp_software_resource_values(installed$governed_output_roots),
+        c("resources", "docs", "legal")
+      ) ||
+      !identical(
+        rrp_software_resource_values(installed$source_only_resource_fields),
+        "source_path"
+      )) issues <- rrp_software_resource_add_issue(
+    issues, "invalid_installed_realization_contract",
+    "$schema.installed_realization_contract",
+    "Installed-catalog projection does not match the accepted boundary."
+  )
   for (field in names(schema$cross_entry_invariants)) {
     if (!identical(schema$cross_entry_invariants[[field]], TRUE)) issues <-
       rrp_software_resource_add_issue(
@@ -326,6 +374,21 @@ rrp_validate_resource_catalog_schema <- function(schema) {
       )
   }
   rrp_software_resource_result(issues)
+}
+
+rrp_installed_resource_catalog_projection <- function(catalog, schema) {
+  contract <- schema$installed_realization_contract
+  top_fields <- rrp_software_resource_values(
+    contract$required_top_level_fields
+  )
+  resource_fields <- rrp_software_resource_values(
+    contract$required_resource_fields
+  )
+  projected <- catalog[top_fields]
+  projected$resources <- lapply(catalog$resources, function(resource) {
+    resource[resource_fields]
+  })
+  projected
 }
 
 rrp_software_resource_is_forbidden <- function(path, path_rules) {

@@ -285,8 +285,10 @@ Their authoritative source locations are `packages/rrpruntime/` and
 `packages/rrpplatform/`. The latter is an internal implementation namespace,
 not the RRP product, installer, project API, or operator interface.
 `repository.software-resources` owns the closed development catalog and schema
-under `distribution/software/`; it does not imply an installed distribution or
-resource accessor.
+under `distribution/software/`; `package.rrpplatform` owns explicit-root
+installed-catalog access and copied-root acceptance. This does not imply an
+installed distribution, root/version selection, or repository-consumer
+migration.
 
 Hosted push and pull-request validation runs the registered broad forward
 profile once and prints its resolved membership:

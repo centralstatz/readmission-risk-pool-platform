@@ -103,6 +103,15 @@ rrp_run_package_command(
   paste0("R_LIBS_USER=", library_root)
 )
 
+if (identical(package_name, "rrpplatform")) {
+  library(rrpplatform, lib.loc = library_root)
+  source(file.path(repository_root, "validation", "R", "software-resources.R"))
+  source(file.path(
+    repository_root, "tests", "software", "installed-resource-access.R"
+  ))
+  rrp_run_installed_resource_access_tests(repository_root)
+}
+
 local_repository <- file.path(work_root, "repository")
 local_contrib <- file.path(local_repository, "src", "contrib")
 dir.create(local_contrib, recursive = TRUE)

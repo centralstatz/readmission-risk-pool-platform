@@ -8,7 +8,11 @@ stopifnot(
 imports <- getNamespaceImports("rrpplatform")
 stopifnot(
   "rrpruntime" %in% names(imports),
-  identical(imports$rrpruntime[["runtime_conforms"]], "runtime_conforms")
+  "yaml" %in% names(imports),
+  identical(imports$rrpruntime[["runtime_conforms"]], "runtime_conforms"),
+  identical(imports$yaml[["read_yaml"]], "read_yaml"),
+  is.function(rrp_open_resource_catalog),
+  is.function(rrp_resource_path)
 )
 
 conforming <- structure(

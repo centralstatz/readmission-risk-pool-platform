@@ -44,7 +44,7 @@ rrp_validate_package_boundaries <- function(repository_root) {
   platform_imports <- rrp_package_dependency_values(platform, "Imports")
   stopifnot(
     length(runtime_dependencies) == 0L,
-    identical(platform_imports, "rrpruntime")
+    identical(sort(platform_imports), c("rrpruntime", "yaml"))
   )
 
   runtime_namespace <- readLines(
@@ -57,7 +57,15 @@ rrp_validate_package_boundaries <- function(repository_root) {
   platform_namespace <- platform_namespace[nzchar(trimws(platform_namespace))]
   stopifnot(
     !any(grepl("rrpplatform", runtime_namespace, fixed = TRUE)),
-    identical(platform_namespace, "importFrom(rrpruntime,runtime_conforms)")
+    identical(
+      sort(platform_namespace),
+      sort(c(
+        "export(rrp_open_resource_catalog)",
+        "export(rrp_resource_path)",
+        "importFrom(rrpruntime,runtime_conforms)",
+        "importFrom(yaml,read_yaml)"
+      ))
+    )
   )
 
   forbidden_dependencies <- c(

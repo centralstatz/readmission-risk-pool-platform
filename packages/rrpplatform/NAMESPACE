@@ -1,1 +1,4 @@
+export(rrp_open_resource_catalog)
+export(rrp_resource_path)
 importFrom(rrpruntime,runtime_conforms)
+importFrom(yaml,read_yaml)

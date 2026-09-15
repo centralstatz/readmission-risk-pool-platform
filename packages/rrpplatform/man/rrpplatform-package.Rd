@@ -4,8 +4,9 @@
 \docType{package}
 \title{Internal Readmission Risk Pool Implementation}
 \description{
-The main internal implementation namespace within RRP software. The package
-does not define the RRP product identity, installation mechanism, operator
-interface, or independent-project boundary.
+The main internal implementation namespace within RRP software. It owns narrow
+explicit-root resource access, but does not define the RRP product identity,
+installation mechanism, installed-version selection, operator interface, or
+independent-project boundary.
 }
 \keyword{internal}

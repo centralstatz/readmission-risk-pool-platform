@@ -63,6 +63,22 @@ software_resource_test_cases <- function(repository_root) {
       }, logical(1L))))
     },
 
+    "installed projection is deterministic and omits source-only fields" = function() {
+      projected <- rrp_installed_resource_catalog_projection(catalog, schema)
+      contract <- schema$installed_realization_contract
+      phase0_assert_true(identical(
+        names(projected),
+        rrp_software_resource_values(contract$required_top_level_fields)
+      ))
+      phase0_assert_true(length(projected$resources) == 48L)
+      phase0_assert_true(all(vapply(projected$resources, function(entry) {
+        identical(
+          names(entry),
+          rrp_software_resource_values(contract$required_resource_fields)
+        ) && !"source_path" %in% names(entry)
+      }, logical(1L))))
+    },
+
     "stable resource IDs and exact outputs are unique" = function() {
       phase0_assert_true(!anyDuplicated(resource_ids))
       phase0_assert_true(!anyDuplicated(outputs))

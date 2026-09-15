@@ -7084,3 +7084,111 @@ copied-distribution-root validation with varied CWD/Git/source-checkout context,
 and missing/extra/linked/escaping/duplicate/identity-tamper accessor evidence.
 No resource consumer was migrated, Increment 2.C was not begun, and no software
 distribution exists.
+
+### RRP 1.0.0 Stage 2, Increment 2.B — explicit-root installed-resource access execution unit (complete, 2026-09-15)
+
+#### Objective and inherited starting evidence
+
+Implement only the second bounded 2.B execution unit: package-owned opening and
+safe logical-ID lookup from an explicit distribution-shaped root. Commit
+`a08cd8e` supplied the coherent first-unit checkpoint: 48 required resources,
+11 exclusions, one deferred project-template role, exact source/output mapping,
+closed schema and source conformance, `development_unpublished` status, and no
+package accessor or consumer migration. That classification evidence and the
+completed 2.A `rrpruntime` analytical evidence were inherited; no broad
+resource archaeology, analytical suite, legacy aggregate, or `ci-active` run
+was repeated.
+
+#### Package API and explicit-root representation
+
+Added the narrow `rrpplatform` software interfaces
+`rrp_open_resource_catalog(explicit_distribution_root)` and
+`rrp_resource_path(validated_catalog, resource_id)`. The open boundary requires
+one caller-supplied existing directory and fixed installed metadata locations
+under `resources/`. It validates exact catalog, schema, product, version,
+format, status, and development-limitation identities; closed fields and
+controlled values; the exact 48-entry count; stable IDs; safe output paths;
+exact/case-folded/file-directory uniqueness; required regular files;
+containment; link prohibition; and the complete file inventory under governed
+`resources/`, `docs/`, and `legal/` roots. It returns a validated catalog
+object rather than arbitrary YAML.
+
+Lookup requires that object and one exact well-formed ID, reopens and validates
+the current root/catalog, rejects catalog/root inconsistency or catalog change,
+finds exactly one entry, and rechecks the concrete resource's existence,
+regular-file state, link state, and containment before returning its normalized
+path. This proportional time-of-check/time-of-use behavior detects plausible
+post-open removal, catalog replacement, and symlink substitution without
+introducing the SHA-256 inventory owned by 2.E. No CWD, parent, Git,
+environment-variable, global-option, source-checkout, sibling-repository, or
+package-development-location discovery exists in package code. Stage 3 still
+owns installed root/version selection.
+
+#### Source authority, installed projection, and dependency ownership
+
+Extended the existing schema with one deterministic installed-realization
+contract. Maintainer/test code projects the authoritative catalog by retaining
+catalog/product/limitation identity and installed output metadata while
+omitting source-only exclusion/deferred sections and every `source_path`.
+Thus the source catalog remains the sole maintained list, while the package
+sees only a derived installed catalog and never learns how repository resources
+were authored. The schema itself accompanies that projection. This fixture
+identity is sufficient for the 2.B boundary; it is not `DISTRIBUTION.yml` and
+does not claim an actual installed distribution.
+
+`yaml` is now a truthful direct `rrpplatform` dependency because package-owned
+code parses the installed catalog and schema. It was already present in the
+root development lock, so no `renv` bookkeeping changed. `rrpruntime` and its
+dependency-free boundary were untouched. No `digest`, database, application,
+deployment, installer, or target-closure dependency entered.
+
+#### Copied-root, adversarial, ownership, and validation evidence
+
+The package validator now deterministically creates a temporary minimal
+distribution-shaped root with empty `packages/` and `bin/` containers, the
+derived installed catalog/schema, and copies all 48 resources to declared
+output locations. The installed package opens it while CWD is an unrelated
+temporary directory, `.git` is absent, and the root has no relationship to the
+source checkout. A representative logical ID resolves beneath that root and
+its bytes match the authoritative source; the installed entry contains no
+source path.
+
+Fourteen access cases pass positive and fail-closed evidence for missing or
+non-directory roots; missing catalog/schema; malformed and unknown catalog
+structure; catalog/schema identity tampering; partial inventory; duplicate IDs;
+duplicate and file/directory-conflicting outputs; relative escape and absolute
+paths; missing and extra resources; symlinked resources; unknown/malformed
+lookup IDs; catalog/root mismatch; post-open removal or link substitution; and
+post-open catalog replacement. The first package run exposed that
+`Sys.readlink()` returns `NA` for absent paths on this platform; the predicate
+was corrected to distinguish absence from a real link, preserving separate
+missing and linked failure identities.
+
+The existing `package.rrpplatform` owner now includes the copied-root harness;
+`repository.software-resources` continues to own source schema/catalog and the
+deterministic projection. No owner, trigger, or aggregate for 2.C–2.F was
+introduced, and frozen legacy membership is unchanged. Focused source-catalog
+validation passes 22 tests for all 48 resources. `rrpplatform` build, isolated
+install/load, 14 access cases, static dependency/direction/discovery checks,
+and `R CMD check --no-manual` pass with `Status: OK`. Focused governance,
+documentation, policy, parsing, routing, and hygiene evidence complete this
+unit. Earlier first-unit catalog evidence and 2.A runtime/analytical evidence
+remain inherited because their owned semantics and sources did not change.
+
+#### Transition, non-scope, and stopping state
+
+Updated the existing `installed-resource-foundation` item rather than creating
+a competing transition. Repository consumers remain unchanged for 2.C/2.D;
+Stage 4 still owns independent project context; and 2.E still owns the source
+manifest, actual distribution builder, `DISTRIBUTION.yml`, SHA-256/content
+identity, dependency closure, and targets. No software root is selected, no
+distribution is built, no project/CLI/installer/activation capability exists,
+and no machinery is retired.
+
+This execution unit is **complete**: given an explicit distribution-shaped
+root, installed `rrpplatform` independently opens the full catalog and resolves
+a declared resource by logical identity without repository discovery, and the
+accepted copied-root/adversarial access cases fail closed. Increment 2.B and
+Stage 2 remain **in progress** pending maintainer determination of any final
+2.B acceptance/closeout unit. No consumer migrated and Increment 2.C was not
+begun.

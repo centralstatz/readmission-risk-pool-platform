@@ -103,11 +103,14 @@ Both participate in `ci-active` but not the bounded `source-fast` profile.
 
 The non-Phase `repository.software-resources` validator owns the closed
 installed-resource catalog/schema, exact current classification, safe
-source-to-output mappings, and adversarial catalog conformance. Catalog,
-schema, and governed resource changes select it through `source-changed`; it
-participates in `ci-active` and depends only on repository policy. The current
-owner proves a `development_unpublished` input authority, not an installed
-distribution or explicit-root accessor.
+source-to-output mappings, deterministic installed projection, and adversarial
+source-catalog conformance. Catalog, schema, and governed resource changes
+select it through `source-changed`; it participates in `ci-active` and depends
+only on repository policy. The existing `package.rrpplatform` owner proves the
+explicit-root access API after isolated installation, including copied-root,
+varied-context, closed-inventory, and adversarial behavior. Together they prove
+a `development_unpublished` boundary, not an installed distribution or root
+selection mechanism.
 
 `ci-active` may still use Phase-named suites where the registry says they carry
 forward evidence. It excludes Hospital distribution, Phase 11 delivery,

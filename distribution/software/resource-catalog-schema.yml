@@ -8,7 +8,7 @@ title: RRP installed-resource catalog schema
 status: active
 description: >-
   Closed declarative schema for the non-code resources owned by the RRP
-  software boundary before an installed distribution or accessor exists.
+  software boundary and its deterministic installed-catalog projection.
 
 catalog_contract:
   catalog_kind: installed_resource_catalog
@@ -55,6 +55,61 @@ catalog_contract:
     - clinical_use
     - hospital_project
     - final_release_payload
+
+installed_realization_contract:
+  catalog_path: resources/resource-catalog.yml
+  schema_path: resources/resource-catalog-schema.yml
+  required_top_level_fields:
+    - catalog_kind
+    - catalog_id
+    - catalog_version
+    - catalog_format_version
+    - schema
+    - status
+    - product
+    - limitations
+    - resource_id_convention
+    - resources
+  allowed_top_level_fields:
+    - catalog_kind
+    - catalog_id
+    - catalog_version
+    - catalog_format_version
+    - schema
+    - status
+    - product
+    - limitations
+    - resource_id_convention
+    - resources
+  source_only_top_level_fields:
+    - excluded_resource_families
+    - deferred_resource_roles
+  required_resource_fields:
+    - resource_id
+    - role
+    - owner
+    - output_path
+    - required
+    - format
+    - compatibility
+  allowed_resource_fields:
+    - resource_id
+    - role
+    - owner
+    - output_path
+    - required
+    - format
+    - compatibility
+  source_only_resource_fields:
+    - source_path
+  governed_output_roots:
+    - resources
+    - docs
+    - legal
+  expected_resource_count: 48
+  closed_output_inventory: true
+  linked_outputs_prohibited: true
+  required_outputs_must_be_regular_files: true
 
 resource_entry_contract:
   required_fields:
