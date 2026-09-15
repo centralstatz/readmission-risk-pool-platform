@@ -87,4 +87,13 @@ Hospital machinery, and release/publication safeguards remain contained and
 callable under their recorded dispositions. No item is newly retired. The
 `v0.1.0`-derived product/runtime remains executable and behaviorally unchanged,
 and the installed-software/project architecture is not yet implemented. Stage
-1 and Increments 1.A–1.E are complete; only detailed Stage 2 planning is next.
+1 and Increments 1.A–1.E are complete.
+
+## Stage 2 planning state
+
+The proposed detailed Stage 2 plan is ready for maintainer review. It confirms
+the two-package target, names the proposed main package `rrpplatform`, defines
+an explicit resource-catalog and closed-distribution boundary, and sequences
+six bounded increments. Planning changes no current disposition, retires no
+machinery, and does not start Stage 2. After plan acceptance, Increment 2.A —
+package topology and source ownership — is the next implementation task.

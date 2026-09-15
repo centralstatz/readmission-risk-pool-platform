@@ -21,8 +21,8 @@ defines the conventional installed-software and independent-project product,
 and the [RRP 1.0.0 Implementation Plan](docs/architecture/platform-implementation-plan.md)
 defines its authoritative high-level roadmap. `1.0.0` is a target generation,
 not a released version. Detailed planning proceeds one stage at a time; Stage
-1 and Increments 1.A–1.E are complete. The next task is detailed Stage 2
-planning against the realized Stage 1 exit state, not Stage 2 implementation.
+1 and Increments 1.A–1.E are complete, and the proposed detailed Stage 2 plan
+is ready for maintainer review. Stage 2 implementation has not started.
 Existing `0.2.0-dev` metadata is transitional and no next release is prepared.
 
 Current development control is defined by

@@ -6530,3 +6530,183 @@ stage design disciplines, not Stage 1 deliverables.
 **detailed planning for RRP 1.0.0 Stage 2 — Software Source and Closed-
 Distribution Foundation against the realized Stage 1 exit state**. Stage 2 was
 neither detailed nor implemented here.
+
+### Detailed RRP 1.0.0 Stage 2 planning — Software Source and Closed-Distribution Foundation (2026-09-15)
+
+#### Objective and planning boundary
+
+Define the smallest evidence-backed sequence that turns this repository into
+source for one deliberate, closed, self-identifying RRP software distribution.
+This work tested the accepted high-level Stage 2 objective against the realized
+Stage 1 exit and actual source responsibilities. It changes planning and
+navigation only: no package was created or moved, no namespace or runtime
+behavior changed, no distribution was built, no product identity changed, and
+no installation, project, deployment, release, publication, acquisition, Git,
+or remote operation occurred.
+
+The review followed the current authority chain from True North through the
+target architecture and high-level roadmap, then used the completed Stage 1
+records, validation governance, transition ledger, implementation conventions,
+reference-asset reconciliation, repository layout, executable source, resource
+trees, dependency metadata, tests, documentation, and lifecycle machinery as
+evidence. The sibling reference repository was neither required nor modified.
+
+#### Realized evidence and architectural conclusion
+
+The high-level Stage 2 objective is confirmed without roadmap revision. The
+repository has one focused `rrpruntime@0.3.0` package, while reusable RRP
+implementation remains spread across `operations/lib/`, product and adapter
+trees, the Shiny app, and target-neutral artifact support. Repository operations
+still derive a checkout root, source ordered loose files, and temporarily
+install the runtime package. The root `renv.lock` combines development,
+installed-software, app, persistence, build, Connect, and publication needs and
+therefore cannot serve as installed-product dependency authority. Current
+artifact, Hospital, Git-realization, and release paths contain useful closed-
+inventory, path-safety, SHA-256, provenance, staging, promotion, and recovery
+patterns, but their payload identities and lifecycle assumptions are not the
+new software-distribution contract.
+
+The preferred two-package architecture remains sound; no third package is
+justified by current ownership or lifecycle evidence. The proposed main
+internal implementation package is `rrpplatform`. `rrpruntime` retains admitted
+input, temporal eligibility/state, request and estimate, provider compatibility
+and execution, and storage-neutral history primitives. It retains current daily
+hazard semantics until Stage 5 and gains no repository, resource, app, DuckDB,
+project, Git, or lifecycle responsibility.
+
+`rrpplatform` will own reusable conformance and resource access, canonical and
+producer orchestration, current runtime/provider composition, the supplied
+DuckDB adapter and history composition, privacy-safe diagnostic primitives,
+logical products and YAML materialization, product-only app support, and
+target-neutral artifact construction. Repository validation, CI, Phase
+composition, synthetic source interpretation, Connect realization, Hospital
+delivery, release/publication, and the software-distribution builder remain
+with their distinct development or lifecycle owners.
+
+#### Refined Stage 2 design
+
+The detailed plan establishes these concrete boundaries for maintainer review:
+
+- conventionally located `packages/rrpruntime/` and
+  `packages/rrpplatform/`, with the one-way dependency
+  `rrpplatform -> rrpruntime`;
+- a closed, versioned resource catalog and exact source manifest under
+  `distribution/software/`;
+- an explicit-root resource boundary through
+  `rrp_open_resource_catalog()` and `rrp_resource_path()`, with no CWD,
+  upward, Git, environment-variable, checkout, or sibling discovery;
+- one unpacked `rrp-<software-version>-<target-id>/` directory as the minimal
+  Stage 2 realization, rather than prematurely defining an archive or
+  installer;
+- exact declared inclusion, a finite code-owned transformation allowlist,
+  exact output inventory, normalized safe paths and modes, regular-file-only
+  content, SHA-256, and separated build/content identity;
+- direct installed dependencies owned by package metadata and a complete
+  target-keyed resolution independent of the root development lock; and
+- a bounded reproducibility claim of identical normalized payload paths,
+  roles, modes, bytes, SHA-256 values, and content identity across two builds
+  in the same declared environment—not byte-identical archives,
+  cross-platform equivalence, signing, or reproducible external repositories.
+
+The initial evidence target is `macos-arm64-r-4.4`, matching the realized local
+environment, while recording the exact R patch level and platform facts used.
+This is evidence, not a support promise. Proposed installed dependency roots
+are `rrpruntime`, `yaml`, `digest`, `DBI`, `duckdb`, and `shiny`; exact versions,
+transitive closure, acquisition references/checksums, licenses, and
+compatibility belong to the target resolution. Project extension dependencies
+remain Stage 4 work, and deployment/Connect closure remains Stage 8 work.
+
+The distribution will ship exact normalized package sources; explicitly
+cataloged current non-Hospital contracts and supplied adapter declarations;
+app and target-neutral artifact resources; a clearly inert, fictional,
+nonclinical synthetic seed; narrow product/normative documentation; and legal,
+security, and support material. It will not ship tests or fixtures,
+assessments, plans or implementation records, CI and validation machinery,
+repository instance/path configuration, the root lock, Git metadata, Hospital
+or release evidence, publication/acquisition tooling, maintainer-only tools, or
+generated state. No project template exists yet, so Stage 2 records that role
+as deferred instead of inventing a premature project contract.
+
+#### Planned increments and dependency order
+
+The accepted work, if maintainers approve this plan, proceeds sequentially:
+
+1. **2.A — Package topology and source ownership:** relocate the unchanged
+   runtime package, create the main internal package owner, enforce dependency
+   direction, and add a finite source-compatibility loader without changing
+   semantics.
+2. **2.B — Installed-resource catalog and access boundary:** classify exact
+   resources, establish the closed catalog/schema and explicit-root package
+   API, and prove copied-context resolution before code depends on it.
+3. **2.C — Core implementation extraction and repository compatibility:**
+   extract reusable conformance, canonical/producer, runtime/provider,
+   DuckDB/history, and observability implementation while retaining thin
+   repository entrypoints and semantic equivalence.
+4. **2.D — Product, app, and artifact implementation ownership:** package-own
+   product/materializer/app and target-neutral artifact code while leaving
+   product semantics and Connect realization unchanged.
+5. **2.E — Closed distribution, dependency, and integrity machinery:** add the
+   manifest-driven builder, standalone validator, target resolution, exact
+   inventory, SHA-256, safe promotion/recovery, and bounded one- and two-build
+   evidence.
+6. **2.F — Stage 2 acceptance, identity transition, and closeout:** execute the
+   full distribution-boundary gate, reconcile actual implementation, and move
+   product identity from `0.2.0-dev` to `1.0.0-dev` only after the exact final
+   distribution passes every gate.
+
+Each increment creates one reviewable fact and retains the last working
+repository path until its owned successor passes. No increment authorizes
+installation, project discovery or dependency management, cumulative-risk
+semantics, new history/products/UI, Connect or OCI realization, or public
+release/acquisition.
+
+#### Acceptance, coexistence, and transition consequences
+
+The proposed Stage 2 acceptance matrix proves package topology and physical
+ownership; cataloged resource ownership and copied-context discovery; explicit
+ship/exclude classification; closed input/output behavior; SHA-256 and tamper
+resistance; target-keyed dependency and license closure; checkout-independent
+self-validation; two-build normalized equivalence; behavioral continuity;
+lifecycle separation; governance/hygiene; and a conditional `1.0.0-dev`
+identity handoff. Passing it defines a software payload but does not claim a
+supported end-user installation.
+
+Validation remains ownership-based and non-Phase. The plan proposes scoped
+package validators for both packages, resource and bounded distribution
+validators in `ci-active`, and a separate lifecycle-only
+`software-distribution-acceptance` profile for the expensive two-build and
+outside-checkout proof. Exact legacy aggregates remain frozen.
+
+No current transition item is retired during planning. Future Stage 2 work is
+expected to update evidence or partial delegation for `runtime-package`,
+`root-operation-scripts`, `operation-library-chain`,
+`provider-registry-execution`, `history-persistence`,
+`products-materializer-application`, `application-artifact-connect`, and
+`development-renv`; leave Hospital and release/publication paths unchanged;
+and introduce `installed-resource-foundation` and
+`software-distribution-foundation`. Copying code alone never satisfies a
+retirement condition.
+
+#### Surprises, deviations, validation, and next task
+
+No material contradiction, extra package boundary, or unresolved Stage 2
+architectural decision emerged. Precision was added around ownership versus
+later semantic redesign, the explicit resource API, exact ship/exclude
+classification, the unpacked directory realization, dependency target and
+closure, truthful reproducibility scope, conditional development identity, and
+the separation between bounded CI evidence and lifecycle acceptance. The
+high-level objective and stage order remain unchanged.
+
+`Rscript --vanilla operations/validate.R --profile source-fast` passed its
+three resolved owners: all 41 validation-governance tests, all four
+documentation checks (including 355 local links and 25 maintained navigation
+sources), and all four repository-policy checks. The final stale-status scan,
+planning-only changed-file audit, and `git diff --check` also passed. No legacy
+aggregate, Hospital, release, publication, deployment, acquisition, runtime,
+or generated-distribution workflow was run.
+
+The detailed Stage 2 plan is **proposed and ready for maintainer review**.
+Stage 2 is not started. The next task is to review and accept or revise the
+plan; only after acceptance may **Increment 2.A — Package topology and source
+ownership** begin. Stage 3 must not be detailed until Stage 2 is implemented,
+validated, and reconciled.

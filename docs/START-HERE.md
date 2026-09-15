@@ -7,7 +7,8 @@ describe history rather than the forward development hierarchy.
 
 Current authority is one chain: True North → Platform Architecture → RRP 1.0.0
 Implementation Plan → Implementation Record → software. The plan contains the
-completed detailed Stage 1 plan; detailed Stage 2 planning is next. Validation
+completed detailed Stage 1 plan and proposed detailed Stage 2 plan, which is
+ready for maintainer review; Stage 2 implementation has not started. Validation
 Governance controls evidence selection, and the Transition Ledger controls
 coexistence and retirement. Git history and release tags preserve earlier
 authority and release states; they do not create parallel current architectures.
@@ -21,10 +22,10 @@ authority and release states; they do not create parallel current architectures.
    deployment, upgrade, and validation responsibilities now live.
 3. [Platform Implementation Plan](architecture/platform-implementation-plan.md)
    — authoritative high-level RRP 1.0.0 stages, dependency order, transition
-   strategy, acceptance gates, and completed detailed Stage 1 plan. Stage 1 and
-   Increments 1.A–1.E are complete; detailed Stage 2 planning against the
-   realized Stage 1 exit is next. The published `v0.1.0` tag retains its
-   historical Phase 0–11 state.
+   strategy, acceptance gates, completed detailed Stage 1 plan, and proposed
+   detailed Stage 2 plan. Stage 1 is complete; Stage 2 is ready for plan review
+   and has not begun. The published `v0.1.0` tag retains its historical
+   Phase 0–11 state.
    [Validation Governance](development/validation-governance.md) and the
    [Transition Ledger](development/transition-ledger.md) define current evidence
    selection and controlled coexistence/retirement.
