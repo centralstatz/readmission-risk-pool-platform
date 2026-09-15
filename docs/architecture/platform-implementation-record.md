@@ -6710,3 +6710,183 @@ Stage 2 is not started. The next task is to review and accept or revise the
 plan; only after acceptance may **Increment 2.A — Package topology and source
 ownership** begin. Stage 3 must not be detailed until Stage 2 is implemented,
 validated, and reconciled.
+
+### RRP 1.0.0 Stage 2, Increment 2.A — Package topology and source ownership (complete, 2026-09-15)
+
+#### Objective and inspected starting state
+
+Establish the accepted two-package physical source topology without changing
+analytical or product semantics. The implementation began from one focused
+`rrpruntime@0.3.0` package at `runtime/`, no `rrpplatform` package, loose
+repository-owned implementation, ownership-routed validation, repository-root
+operation composition, and a root `renv` serving development. The accepted
+Stage 2 plan, package metadata and source, every active `runtime/` reference,
+package-loading helpers, runtime/provider/history tests, validation registry,
+transition ledger, current documentation, and compatibility boundary were
+inspected before the move. No realized evidence contradicted the accepted 2.A
+design.
+
+#### Realized topology and source ownership
+
+The package topology is now:
+
+```text
+packages/
+├── rrpruntime/   0.3.0
+└── rrpplatform/  0.1.0.9000
+```
+
+The 24-file runtime source tree moved from `runtime/` to
+`packages/rrpruntime/`. All executable R, package metadata, manual, and package
+test blobs are byte-identical to the pre-move source. The package README alone
+received a bounded current-location clarification. A recovery audit detected
+that five R files in the committed checkpoint had lost only their final blank
+line during the move; their original blobs were restored before final
+validation. There is no old directory, symlink, mirror, or second runtime
+package authority.
+
+`packages/rrpplatform/` is a conventional, intentionally minimal internal
+implementation package. Its metadata, namespace, package documentation, and
+unit test establish package identity and import the existing
+`rrpruntime::runtime_conforms()` function. It introduces no placeholder
+business logic and does not claim to be the RRP product, operator interface,
+installer, project, launcher, or future user-facing package. Major conformance,
+canonical, provider/history, product, app, and artifact extraction remains
+owned by 2.C and 2.D.
+
+The realized and statically enforced dependency direction is only:
+
+```text
+rrpplatform -> rrpruntime
+```
+
+`rrpruntime` has no Imports, Suggests, or LinkingTo dependencies and no reverse
+reference to `rrpplatform`. `rrpplatform` declares only the dependency used by
+its current namespace. No third package was created and no future dependency
+was declared early.
+
+#### Repository compatibility and active-reference adaptation
+
+The existing `rrp_install_runtime_package()` helper remains the single bounded
+development compatibility mechanism. It now installs the explicit
+`packages/rrpruntime/` source into an isolated temporary library. No second
+loader, arbitrary search, eager repository-wide source chain, or `.GlobalEnv`
+package implementation path was introduced. It remains repository development
+machinery, is excluded from the future software payload by the accepted Stage
+2 manifest design, and remains linked to the `operation-library-chain`
+transition. Its retirement condition is unchanged: later package-owned and
+installed-operation successors must remove the repository source-development
+need before the bridge can retire.
+
+Active operation, validation, deployment-support, and test references were
+changed only where the physical package location required it. Retained Phase
+and release checks received path-only compatibility adaptations; their frozen
+legacy aggregate identities, order, and membership did not change. Historical
+documents and immutable release evidence were not rewritten merely for using
+the historical path.
+
+The retained human operation
+`Rscript --vanilla operations/run-reference-runtime.R --input independent --scale test`
+completed successfully through this compatibility path. It loaded
+`rrpruntime@0.3.0`, accepted two independent episodes, produced one eligible
+state and request, and did not invoke provider, risk, or persistence behavior.
+This is repository compatibility evidence, not an installed operation.
+
+#### Validation ownership and package acceptance
+
+Two non-Phase scoped owners were added:
+
+- `package.rrpruntime`, triggered by `packages/rrpruntime/`;
+- `package.rrpplatform`, triggered by `packages/rrpplatform/` and explicitly
+  preceded by `package.rrpruntime`.
+
+Both participate in `ci-active`; neither was added to `source-fast` or a frozen
+legacy aggregate. Representative `source-changed --explain` selection for both
+package DESCRIPTION paths resolved the package owners, their prerequisites,
+and the affected runtime/canonical suites proportionally. The corresponding
+executing `source-changed` run reached both package owners and all selected
+component suites. Every package, documentation, and semantic validator passed;
+its initial overall failure was solely the repository policy's correct
+rejection of a literal local-file URI in the package-check harness.
+
+The harness originally gave an isolated `rrpplatform` check process no explicit
+way to see its already installed internal dependency. It was corrected to pass
+the isolated library explicitly, not by weakening package acceptance. During
+recovery, the empty local package repository used to make dependency discovery
+deterministic was represented by its normalized filesystem path rather than a
+prohibited local-file URI literal. The repository-policy validator then passed, and
+the final integrated run exercised that corrected harness.
+
+Both package owners passed, initially before checkpoint and again through the
+final `ci-active` run:
+
+- package source parsing and conventional structure;
+- package build;
+- isolated temporary-library installation and load;
+- package unit tests;
+- `R CMD check --no-manual` with exact `Status: OK` and no note allowlist;
+- static topology, dependency, discovery, stale-path, and duplicate-authority
+  checks.
+
+Pre-checkpoint semantic non-change evidence passed all 55 runtime/provider
+tests and all 18 history/persistence tests. The final integrated run passed
+those same suites and all 26 resolved `ci-active` validators, including 41
+validation-governance tests and the forward Phase 1–10 component evidence.
+Current daily-hazard semantics, canonical behavior, provider execution,
+history/persistence, products, app, artifacts, Connect, Hospital, and
+release/publication semantics were not changed.
+
+Final bounded `source-fast` evidence passed all 41 governance tests, all four
+documentation checks, and all four repository-policy checks. Focused final
+checks also passed R source, package metadata, and validation YAML parsing;
+static dependency and discovery boundaries; exact relocated-blob comparison;
+stale-path and duplicate-package-authority rejection; unchanged root `renv`;
+repository artifact hygiene; and the combined Increment 2.A
+`git diff --check`.
+
+#### Root environment, transitions, documentation, and identity
+
+Neither `renv.lock` nor `renv/settings.json` changed. The root environment
+remains repository-development authority only; no installed-product,
+project-extension, deployment, or target-keyed dependency closure was created.
+
+The transition ledger now records the conventional runtime source owner and
+unchanged Stage 5 semantic debt under `runtime-package`, the retained bounded
+temporary-library bridge and deferred broad extraction under
+`operation-library-chain`, and the continued repository ownership of human
+operations under `root-operation-scripts`. No affected row was retired and no
+unrelated Hospital, Connect, Phase, release, or publication disposition
+changed.
+
+Maintained navigation, validation guidance, package documentation, the accepted
+Stage 2 plan, and agent guidance now describe both package locations and
+versions, the one-way dependency, `rrpplatform`'s internal role, the bounded
+development bridge, and the 2.C/2.D extraction deferrals. The RRP product
+development identity remains `0.2.0-dev`; package versions are independent.
+Stage 2 remains in progress.
+
+#### Deviations, recovery, deferrals, and closeout
+
+The accepted allowance to move a tiny result/conformance foundation was not
+used: a real minimal namespace could be established by importing one existing
+runtime conformance function, avoiding duplication and premature 2.C
+extraction. The pre-existing safe installer was reused, so no new compatibility
+shim required separate ownership. The only recovery corrections were exact
+trailing-byte restoration and the policy-compliant local repository path in
+the package validation harness. Neither changes runtime semantics.
+
+Rollback remains bounded: the physical package move and active path references
+can be restored together, and the incomplete internal package could be removed
+without affecting persisted state. No generated runtime state, installation,
+project, deployment, release, publication, Git tag, or remote was created or
+mutated.
+
+The installed-resource catalog and accessor, software source manifest,
+distribution builder, target dependency resolution, integrity inventory,
+reproducibility proof, broad implementation extraction, installed operations,
+projects, cumulative-risk semantics, and product identity transition all remain
+explicitly deferred. No 2.B implementation exists.
+
+Increment 2.A is **complete**. Stage 2 remains **in progress**. The next task is
+**Increment 2.B — Installed-resource catalog and access boundary**, which was
+not begun here.

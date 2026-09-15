@@ -108,8 +108,8 @@ local_contrib <- file.path(local_repository, "src", "contrib")
 dir.create(local_contrib, recursive = TRUE)
 writeLines(character(), file.path(local_contrib, "PACKAGES"))
 check_profile <- file.path(work_root, "check-profile.R")
-repository_url <- paste0(
-  "file://", normalizePath(local_repository, winslash = "/", mustWork = TRUE)
+repository_url <- normalizePath(
+  local_repository, winslash = "/", mustWork = TRUE
 )
 writeLines(paste0(
   "options(repos = c(CRAN = ",
