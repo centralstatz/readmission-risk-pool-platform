@@ -7192,3 +7192,76 @@ accepted copied-root/adversarial access cases fail closed. Increment 2.B and
 Stage 2 remain **in progress** pending maintainer determination of any final
 2.B acceptance/closeout unit. No consumer migrated and Increment 2.C was not
 begun.
+
+### RRP 1.0.0 Stage 2, Increment 2.B — formal acceptance and closeout (complete, 2026-09-15)
+
+#### Accepted objective and checkpoint
+
+Increment 2.B was accepted to define both which non-code assets are RRP
+software and how software-owned code resolves them before consumer extraction.
+Closeout began from clean commit `72f67fb`, immediately after the two completed
+2.B execution units, with no later working-tree change capable of invalidating
+their evidence. Narrow inspection confirmed the realized catalog counts,
+status, projection identity, package API, discovery prohibitions, transition
+state, and records against the unchanged accepted 2.B contract. No new
+criterion or implementation work was introduced.
+
+The accepted architecture is:
+
+```text
+maintainer/source resource authority
+        ↓ deterministic installed projection
+explicit distribution root
+        ↓
+rrp_open_resource_catalog()
+        ↓
+validated installed-resource boundary
+        ↓
+rrp_resource_path()
+        ↓
+safe logical-ID resource resolution
+```
+
+#### Acceptance reconciliation
+
+| Original criterion | Applicable evidence and provenance | Final status |
+|---|---|---|
+| Closed versioned catalog/schema, every declared field, and exact mappings rather than globs | First-unit schema/catalog implementation and inherited 22-test source-resource suite | Pass |
+| Exact approved classification, stable IDs, and preserved identities | Inherited first-unit evidence: 48 required resources, 11 exclusion families, one Stage 4 deferral, unique IDs/sources/outputs, and exact classification completeness | Pass |
+| Safe normalized source/output paths, existence, containment, links, conflicts, and forbidden classes | Inherited first-unit conformance and adversarial cases for traversal, absolute/backslash paths, missing/linked sources, duplicate/case/file-directory outputs, and prohibited resource families | Pass |
+| Development, nonclinical, synthetic, and transitional daily-hazard truthfulness | Inherited catalog/schema tests and distribution-facing documentation; no identity or analytical semantic change followed | Pass |
+| Package-owned explicit-root open and logical-ID lookup | Inherited second-unit `rrpplatform` interfaces and static dependency/discovery checks | Pass |
+| Installed catalog is derived without repository source-path knowledge | Inherited deterministic projection test for all 48 resources and installed-entry source-path absence | Pass |
+| Temporary copied-root use independent of CWD, Git, and checkout location | Inherited second-unit installed-package positive proof from an unrelated CWD and root with no `.git` or source-layout relationship | Pass |
+| Missing, extra, linked, escaping, duplicate, and identity-tampered cases fail closed | Inherited 14-case installed-access suite, including partial inventory, unknown structure/ID, root mismatch, and output conflicts | Pass |
+| Plausible post-open changes fail closed | Inherited lookup-time removal, link-substitution, and catalog-replacement cases | Pass |
+| Package build, isolated install/load, and check quality | Inherited successful `rrpplatform` build, isolated library proof, package boundaries, and `R CMD check --no-manual` `Status: OK` | Pass |
+| Validation ownership, routing, documentation, policy, parsing, and hygiene | Inherited governance, documentation, policy, explain-only routing, R/Rd/YAML parsing, and diff/whitespace checks from the second unit | Pass |
+| Additive coexistence and later-stage deferrals | Current ledger and static inspection confirm no consumer migration, project/template/target, selector, installer/CLI, distribution manifest/builder/integrity closure, Connect/Hospital, or release change | Pass |
+
+All evidence remained applicable because the second unit was committed as the
+current checkpoint and the tree was clean at closeout start. Closeout newly ran
+only read-only identity/count/static consistency checks and, after the status
+edits, lightweight documentation and diff/hygiene validation. It intentionally
+did not rerun the 22 source-resource tests, 14 installed-access cases,
+`rrpplatform` package check, `rrpruntime`, analytical semantics, `ci-active`,
+legacy aggregates, or Hospital/deployment/release/publication/acquisition
+workflows: no subsequent changed surface could reasonably invalidate those
+owned proofs and the original 2.B contract requires no broader gate.
+
+#### Transition and final status
+
+The existing `installed-resource-foundation` ledger item now records formal
+acceptance without creating a redundant transition or retiring machinery. The
+catalog/schema authority and explicit-root package access remain
+`development_unpublished`. Repository consumers continue using current source
+paths until 2.C/2.D; Stage 3 owns root/version selection; Stage 4 owns the real
+independent project/template; Stages 5–8 own their later semantic and deployment
+resources; and 2.E owns the closed distribution, manifest, content identity,
+and dependency closure.
+
+**Increment 2.B — Complete.**
+
+**Stage 2 — In progress.**
+
+**Increment 2.C — Not started.**

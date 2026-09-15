@@ -4,7 +4,7 @@
 
 **Status:** authoritative high-level implementation roadmap for the RRP 1.0.0
 target generation with completed Stage 1 and an accepted detailed Stage 2
-plan; Increment 2.A is complete and Stage 2 remains in progress
+plan; Increments 2.A and 2.B are complete and Stage 2 remains in progress
 
 This is the one current implementation-plan authority beneath
 [Platform True North](../vision/platform-true-north.md) and the
@@ -1877,8 +1877,8 @@ authorize Stage 2 source changes.
 
 ### Stage 2 detailed plan — Software Source and Closed-Distribution Foundation
 
-**Planning status:** accepted; Increment 2.A complete (2026-09-15); Stage 2 in
-progress
+**Planning status:** accepted; Increments 2.A and 2.B complete (2026-09-15);
+Stage 2 in progress
 
 This section details only Stage 2. It does not authorize Stage 3 installation,
 launcher, CLI, shared-operation, project, analytical, history, product,
@@ -2211,6 +2211,12 @@ the implementation record. Installed selection/activation, operation APIs,
 CLI, project loading, and analytical changes remain Stages 3–5.
 
 ##### 2.B — Installed-resource catalog and access boundary
+
+**Implementation status:** complete (2026-09-15). The closed source catalog
+and schema classify the exact installed non-code boundary, and the
+`rrpplatform` explicit-root pair resolves its deterministic installed
+projection independently of repository context. Repository consumers remain
+unchanged until 2.C/2.D, and no actual distribution or root selector exists.
 
 ###### Objective and order
 
@@ -2561,13 +2567,15 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next implementation step
 
-The detailed Stage 2 plan is accepted and Increment 2.A is complete. The next
-task is:
+The detailed Stage 2 plan is accepted and Increments 2.A and 2.B are complete.
+The next task is:
 
-> **Increment 2.B — Installed-resource catalog and access boundary.**
+> **Increment 2.C — Core implementation extraction and repository
+> compatibility.**
 
-Do not begin 2.C or later increments with 2.B, and do not detail Stage 3 until
-Stage 2 has been implemented, validated, and reconciled.
+Increment 2.C is not started. Do not begin later increments with 2.C, and do
+not detail Stage 3 until Stage 2 has been implemented, validated, and
+reconciled.
 
 Stage 1 changes only development control. It must not collapse software
 upgrade, project migration, state migration, deployment, or publication, or
