@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level implementation roadmap for the RRP 1.0.0
-target generation with a detailed Stage 1 plan; Stage 1 implementation is in
-progress and Increment 1.A is complete
+target generation with a completed detailed Stage 1 plan; Stage 1 and
+Increments 1.A–1.E are complete
 
 This is the one current implementation-plan authority beneath
 [Platform True North](../vision/platform-true-north.md) and the
@@ -813,7 +813,7 @@ provider, product, application, or deployment layers.
 
 ### Stage 1 detailed plan — Authority and transition controls
 
-**Implementation status:** in progress; Increments 1.A–1.D complete
+**Implementation status:** complete (2026-09-14); Increments 1.A–1.E complete
 
 This section details only Stage 1. It does not refine Stage 2 or authorize any
 distribution, package, installation, project, analytical, state, product,
@@ -1528,6 +1528,8 @@ append the 1.D implementation-record evidence, including the observed CI run.
 
 ##### 1.E — Stage 1 acceptance and closeout
 
+**Implementation status:** complete (2026-09-14)
+
 ###### Objective
 
 Prove the complete development-control transition, record the realized Stage 1
@@ -1751,15 +1753,15 @@ it does not imply producer/provider/history compute inside the image.
 
 ## Next planning step
 
-With Increments 1.A–1.D complete, the next task is:
+With Stage 1 and Increments 1.A–1.E complete, the next task is:
 
-> **Implement RRP 1.0.0 Stage 1, Increment 1.E — Stage 1 acceptance and
-> closeout.**
+> **Detail RRP 1.0.0 Stage 2 — Software Source and Closed-Distribution
+> Foundation against the realized Stage 1 exit state.**
 
-Implement the five bounded increments in dependency order, preserving a
-coherent repository and recording actual evidence at each close. Do not detail
-Stage 2 until Stage 1 has been implemented, validated, and reconciled. Do not
-implement Stage 2 until its later detailed plan is accepted.
+Stage 2 detailed planning is authorized as a separate subsequent task. Stage 2
+implementation remains unauthorized until that detailed plan is accepted; no
+Stage 2 increments, physical layout, package, project API, environment, CLI, or
+installation mechanism are specified by this Stage 1 closeout.
 
 Stage 1 changes only development control. It must not collapse software
 upgrade, project migration, state migration, deployment, or publication, or

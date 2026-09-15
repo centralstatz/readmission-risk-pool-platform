@@ -120,6 +120,56 @@ governance_test_cases <- function(repository_root) {
       ))
     },
 
+    "representative changed paths reach every Stage 1 scoped owner" = function() {
+      mappings <- list(
+        list(path = "docs/example.md", expected = "repository.documentation"),
+        list(
+          path = "contracts/foundation/example.yml",
+          expected = "repository.specification-foundation"
+        ),
+        list(
+          path = "runtime/rrpruntime/R/example.R",
+          expected = "repository.runtime-provider"
+        ),
+        list(
+          path = "implementations/persistence/duckdb/R/example.R",
+          expected = "repository.history-persistence"
+        ),
+        list(
+          path = "products/R/example.R",
+          expected = "repository.products-application"
+        ),
+        list(
+          path = "deploy/application-artifact/example.R",
+          expected = "repository.application-artifact"
+        ),
+        list(
+          path = "deploy/connect-cloud/example.R",
+          expected = "repository.connect-cloud"
+        ),
+        list(
+          path = "contracts/observability/example.yml",
+          expected = "repository.observability"
+        ),
+        list(
+          path = "RELEASE.yml",
+          expected = "lifecycle.release-candidate-validation"
+        )
+      )
+      for (mapping in mappings) {
+        plan <- rrp_validation_resolve_profile(
+          registry, "source-changed", mapping$path
+        )
+        phase0_assert_true(mapping$expected %in% dispatcher_unit_ids(plan))
+        if (!identical(mapping$expected, "repository.documentation")) {
+          unit <- plan$units[[match(mapping$expected, dispatcher_unit_ids(plan))]]
+          phase0_assert_true(
+            paste0("path-matched: ", mapping$path) %in% unit$reasons
+          )
+        }
+      }
+    },
+
     "explicit changed paths are normalized and unsafe paths fail" = function() {
       parsed <- rrp_validation_parse_cli(c(
         "--profile", "source-changed", "--paths",

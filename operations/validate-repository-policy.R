@@ -15,4 +15,3 @@ if (length(commandArgs(trailingOnly = TRUE)) > 0L) {
 }
 
 rrp_exit_for_result(rrp_validate_repository_policies(repository_root))
-

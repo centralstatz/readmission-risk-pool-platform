@@ -9,7 +9,8 @@ product work, read:
 1. `docs/vision/platform-true-north.md`;
 2. `docs/architecture/platform-architecture.md`;
 3. `docs/architecture/platform-implementation-plan.md` (the authoritative
-   high-level RRP 1.0.0 roadmap and current detailed Stage 1 plan);
+   high-level RRP 1.0.0 roadmap and completed detailed Stage 1 plan; detailed
+   Stage 2 planning is next);
 4. `docs/development/validation-governance.md` for executable development
    evidence selection;
 5. `docs/development/transition-ledger.md` for coexistence and retirement

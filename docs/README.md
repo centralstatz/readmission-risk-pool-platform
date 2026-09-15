@@ -13,8 +13,8 @@ historical release evidence have different authority.
   independent projects, singular risk, lifecycle ownership, and migration.
 - [RRP 1.0.0 Implementation Plan](architecture/platform-implementation-plan.md)
   — authoritative high-level stage order, transition strategy, and acceptance
-  gates plus the current detailed Stage 1 plan; Increments 1.A–1.D are complete
-  and Increment 1.E is next after maintainer acceptance.
+  gates plus the completed detailed Stage 1 plan. Stage 1 and Increments
+  1.A–1.E are complete; detailed Stage 2 planning is next.
 
 ## Current development control
 

@@ -6360,3 +6360,173 @@ unchanged.
 Increment 1.D is complete; Stage 1 remains in progress. The next task, after
 maintainer acceptance, is **Increment 1.E — Stage 1 acceptance and closeout**.
 Do not begin 1.E or Stage 2 as part of this increment.
+
+### RRP 1.0.0 Stage 1, Increment 1.E — Stage 1 acceptance and closeout (complete, 2026-09-14)
+
+#### Objective and acceptance method
+
+Determine whether the realized 1.A–1.D implementation satisfies every
+authoritative Stage 1 gate, reconcile the roadmap and transition ledger to the
+actual repository, and close Stage 1 only on complete evidence. The audit read
+the current authority chain, complete Stage 1 plan, accepted increment records,
+ownership registry, parser/dispatcher/current-boundary code, public validation
+operations and registry, governance tests, CI workflow, maintained human and
+agent guidance, transition ledger, Git history/status, and accepted 1.D hosted
+evidence. It compared the complete Stage 1 diff from pre-implementation commit
+`690ebe27b9b70aea4b5e1e4ad27b5ee3671be15a` with the allowed governance,
+validation-routing, test, documentation, and CI boundary.
+
+One genuine evidence gap was found: changed-path routing existed and its
+general behavior was tested, but the governance suite did not explicitly
+exercise representative paths for every major Stage 1 scoped owner. The only
+functional remediation adds a table-driven case covering documentation,
+specification, runtime/provider, history, products/application, application
+artifact, Connect, observability, and release-lifecycle paths. A final
+`git diff --check` also found and removed one extra trailing blank line from the
+1.A repository-policy wrapper. Neither change affects dispatcher, ownership,
+workflow, product, or lifecycle behavior. The governance suite now passes 41
+cases.
+
+#### Authoritative Stage 1 acceptance matrix
+
+| Gate | Status | Evidence | Qualification / residual transition |
+|---|---|---|---|
+| 1. Authority | **PASS** | True North, Platform Architecture, this roadmap, append-only record, Validation Governance, Transition Ledger, navigation scans, and documentation validator agree on one chain | The completed detailed Stage 1 plan remains evidence beneath the high-level roadmap; it is not a competing architecture |
+| 2. Registry integrity | **PASS** | 41 governance tests parse the closed schema; prove unique IDs, valid statuses/references/runners, prerequisite and profile acyclicity, complete inventory, safe literal triggers, ledger linkage, and frozen aggregates | The registry is development control, not an installed resource or product contract |
+| 3. Selection correctness | **PASS** | Governance cases cover universal evidence, single/multiple/no-match paths, prerequisites, stable deduplication/order, explicit paths, dirty/staged/untracked discovery, and fail-closed invalid discovery/base behavior; the added representative-owner case closes the only evidence gap | Path fixtures prove routing without fabricating files or running unrelated owners |
+| 4. Profile separation | **PASS** | Governance tests and profile explanations prove `source-fast`, `source-changed`, and `ci-active` cannot reach the eager aggregate; the current-boundary adapter is finite and code-owned; runner representations reject expressions, shell text, arbitrary functions, and unsafe paths | The finite adapter remains transitional rather than target package architecture |
+| 5. Legacy availability and exactness | **PASS** | Exact-membership/alias governance tests pass; explain-only resolution preserves 26 ordered `legacy-v0.1-development` members and 38 ordered `legacy-v0.1-checkpoint` members; deprecated mode aliases resolve identically | Neither expensive aggregate was executed; existing release/publication lifecycle behavior remains separate and unchanged |
+| 6. Invariant continuity | **PASS** | Registry tests retain a current owner for all 10 protected invariants and `ci-active` passes every forward/transitional owner | Release immutability and publication authorization/recovery remain explicit lifecycle/legacy safeguards pending Stage 10 rather than being misrepresented as native 1.0 behavior |
+| 7. Human/agent alignment | **PASS** | Development-guidance governance tests, operation-registry validation, `AGENTS.md`, contributor guidance, validation operations, and Validation Governance agree on `source-changed`, `source-fast`, hosted `ci-active`, and explicit legacy profiles | Stable product operations remain the current `v0.1.0`-derived interface until later owners replace them |
+| 8. Documentation classification | **PASS** | Documentation validation and maintained-navigation/stale-language scans distinguish the 1.0 target, active development control, executable `v0.1.0`-derived behavior, and immutable release history | No broad document move or historical relabeling was needed |
+| 9. Transition control | **PASS** | All 46 validators link to one of 15 ledger entries; statuses are 3 `active_global`, 2 `active_scoped`, 25 `replace_later`, 3 `retire_later`, 1 `legacy_callable`, and 12 `historical_evidence`; no item lacks a retirement condition | Current-boundary, legacy, Phase, source-order, Hospital, and release machinery remain contained and are not retired |
+| 10. CI agreement | **PASS** | Static workflow tests prove push/PR invokes registered `ci-active` exactly once and manual choice is closed to two legacy profiles; accepted run `34885965725`, job `104116580336`, passed at exact SHA `371905480a90af0fa09907c04e4d79de1061f0bf` | 1.E changed no executable workflow or dispatcher behavior, so another hosted run is not required |
+| 11. Behavioral non-change | **PASS** | Stage diff and changed-path audit show only governance, validation routing/isolation, tests, documentation, operation metadata, and CI changes; local `ci-active` passes all current forward/transitional component evidence | No canonical, target, provider, runtime, state, product, app, artifact payload, Hospital, release/publication/acquisition, dependency, or published evidence semantics changed |
+| 12. Repository hygiene | **PASS** | Repository policy/secrets checks, R/YAML parsing, Markdown/link validation, changed-file audit, dependency/output inspection, `git diff --check`, and final status inspection pass | The expected uncommitted 1.E source changes are reported; no generated release/deployment/acquisition output exists |
+
+Every gate passes. The central conclusion is that forward development is no
+longer governed by repository-wide Phase/checkpoint chronology: explicit owners
+select proportional local evidence, hosted CI selects the broad forward profile,
+and exact historical compatibility is deliberate and contained.
+
+#### Executed evidence and selected validators
+
+The following current operations completed successfully:
+
+```sh
+Rscript --vanilla tests/run-governance-tests.R
+Rscript --vanilla operations/validate-documentation.R
+Rscript --vanilla operations/validate-repository-policy.R
+Rscript --vanilla operations/validate-current-boundary.R --validator repository.operations
+Rscript --vanilla operations/validate.R --profile source-fast
+Rscript --vanilla operations/validate.R --profile source-changed --paths tests/governance/test-validation-dispatcher.R
+Rscript --vanilla operations/validate.R --profile source-changed --explain
+Rscript --vanilla operations/validate.R --profile source-changed
+Rscript --vanilla operations/validate.R --profile ci-active
+Rscript --vanilla operations/validate.R --profile legacy-v0.1-development --explain
+Rscript --vanilla operations/validate.R --profile legacy-v0.1-checkpoint --explain
+```
+
+`source-fast` and the representative changed governance path selected and
+passed `repository.validation-governance`, `repository.documentation`, and
+`repository.policy`. The complete local `ci-active` run selected and passed all
+24 forward/transitional validator IDs:
+
+```text
+repository.validation-governance
+repository.documentation
+repository.policy
+repository.specification-foundation
+repository.canonical
+repository.synthetic-reference
+repository.runtime-provider
+repository.history-persistence
+repository.products-application
+repository.operations
+repository.application-artifact
+repository.connect-cloud
+repository.observability
+repository.canonical-producer
+suite.phase1
+suite.phase2
+suite.phase3
+suite.phase4
+suite.phase5
+suite.phase6
+suite.phase7
+suite.phase8
+suite.phase9
+suite.phase10
+```
+
+The final changed-tree run selected and passed 11 relevant IDs:
+`repository.validation-governance`, `repository.documentation`,
+`repository.policy`, `repository.operations`,
+`repository.specification-foundation`, `suite.phase1`, `suite.phase2`,
+`suite.phase4`, `suite.phase5`, `suite.phase6`, and `suite.phase7`. Both actual
+profile executions printed `Validation result: PASS`. The legacy explanations
+were read-only membership evidence and executed no validator. Final R parsing
+covers all 12 Stage 1-changed `.R` files; YAML parsing covers all three changed
+`.yml`/`.yaml` files, including the workflow, operation registry, and ownership
+registry.
+Documentation validation covers required governing documents, local links,
+navigation, and portable paths. Repository policy covers sibling independence,
+portable paths, obvious secret patterns, and fictional-fixture policy. Static
+governance covers workflow structure, registry/ledger linkage, invariant
+ownership, exact legacy aliases, and forward/legacy isolation. No Hospital,
+release, publication, deployment, or acquisition operation ran.
+
+The inherited hosted evidence remains valid. GitHub Actions run
+[`34885965725`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/34885965725),
+job [`104116580336`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/34885965725/job/104116580336),
+was the successful push run at exact committed SHA
+`371905480a90af0fa09907c04e4d79de1061f0bf`. The workflow at that SHA invokes
+`Rscript operations/validate.R --profile ci-active` once for push/pull request.
+
+#### Realized Stage 1 reconciliation
+
+| Increment | Planned | Realized | Deviation |
+|---|---|---|---|
+| 1.A | Ownership registry, transition baseline, frozen legacy membership, governance foundation | One 46-validator/5-profile registry, 15-entry ledger, 10 protected invariants, closed schema, complete inventory, and exact development/checkpoint sequences | Added explicit current-check and legacy composition detail required to represent the real repository; no architecture deviation |
+| 1.B | Dispatcher, proportional profiles, finite current-boundary adapter, exact compatibility bridge | Deterministic isolated dispatcher implements `source-fast`, Git/explicit `source-changed`, 24-unit `ci-active`, direct validators, and exact legacy profiles/mode aliases | Existing validators were adapted through a finite allowlist rather than eagerly sourced; no product behavior changed |
+| 1.C | Authority, human/agent guidance, forward conventions, proportional selection, evidence-led reuse | Maintained entry points share one authority chain and command model; conventions assign code, resource, project, dependency, test, and shim ownership | Classification and navigation were sufficient; broad document relocation was unnecessary |
+| 1.D | Push/PR `ci-active`, deliberate manual legacy regression, hosted acceptance | One read-only hosted forward job, a closed two-choice manual legacy job, static governance, and successful hosted run/job at the exact workflow SHA | No CI redesign or lifecycle automation was needed |
+| 1.E | Complete acceptance matrix, reconciliation, evidence, and conditional close | All 12 gates pass; one bounded representative-owner routing test closes an evidence gap and one trailing blank line is removed; plan, ledger, governance, navigation, and record reflect completion | No product/runtime remediation, retirement, or roadmap revision was required |
+
+Stage 1 achieved its intended development-control objective. The realized exit
+state is a transition-ready repository: the accepted RRP 1.0 authority and
+roadmap sit above ownership-based validation, proportional local routing, broad
+hosted forward validation, explicit historical regression, aligned human/agent
+instructions, and a controlled transition ledger. The executable core remains
+substantially `v0.1.0`-derived and available for deliberate reuse.
+
+Temporary machinery deliberately remains: the current-boundary allowlist, exact
+legacy bridge and deprecated aliases, Phase-named component suites/checkpoints,
+repository-root operation wrappers and eager source chain, Hospital distribution
+and Git realization, root development `renv`, and release/publication safeguards.
+Their ledger dispositions and later replacement/retirement conditions remain
+valid. None became target RRP 1.0 architecture, and none is retired merely
+because the forward validation default changed.
+
+The high-level Stage 2 objective—**Software Source and Closed-Distribution
+Foundation**—remains correctly positioned. Stage 1 evidence does not invalidate
+it or any later high-level dependency. Stage 2 must be detailed separately
+against this realized exit; this increment creates no Stage 2 increments,
+layout, package, project interface, dependency environment, CLI, installation
+mechanism, or source implementation.
+
+Two constraints carry forward. First, RRP 1.0 should ultimately look like the
+implementation chosen if `v0.1.0` had never existed: proven capability may be
+reused, extracted, adapted, or relocated, but historical structure and
+compatibility machinery are not target architecture merely because they aided
+transition. Second, do not prematurely extract a universal analytical platform
+while implementing the concrete RRP product, and do not unnecessarily embed
+readmission semantics in structurally generic infrastructure. These are later-
+stage design disciplines, not Stage 1 deliverables.
+
+#### Completion and next task
+
+**Increment 1.E is complete. Stage 1 is complete.** The next authorized task is
+**detailed planning for RRP 1.0.0 Stage 2 — Software Source and Closed-
+Distribution Foundation against the realized Stage 1 exit state**. Stage 2 was
+neither detailed nor implemented here.

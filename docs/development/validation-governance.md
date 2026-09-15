@@ -202,13 +202,12 @@ the printed validator ID and output, repair its owned boundary, and rerun the
 same profile. Use an explicit legacy profile only when the historical aggregate
 claim is actually required.
 
-Contributor, agent, and hosted-CI instructions now use this proportional model.
-See
-[Implementation Conventions](implementation-conventions.md) for forward code,
-resource, project-context, dependency, test, reuse, and shim rules. Increment
-1.D completed after successful hosted `ci-active` acceptance; Increment 1.E
-owns Stage 1 closeout. Component
-validators, Phase suite names/locations, package and project validators, and
-release/publication behavior remain unchanged. A later stage may reclassify a
-unit only with its direct validator, registry, transition condition, focused
-routing evidence, documentation, and implementation record updated together.
+Contributor, agent, and hosted-CI instructions use this proportional model.
+See [Implementation Conventions](implementation-conventions.md) for forward
+code, resource, project-context, dependency, test, reuse, and shim rules. Stage
+1 and Increments 1.A–1.E are complete after local acceptance of all 24
+`ci-active` validators and the accepted hosted 1.D run. Component validators,
+Phase suite names/locations, package and project validators, and release/
+publication behavior remain unchanged. A later stage may reclassify a unit only
+with its direct validator, registry, transition condition, focused routing
+evidence, documentation, and implementation record updated together.
