@@ -1,0 +1,60 @@
+# Working agreement for coding agents
+
+## Read first
+
+Before changing this repository, read:
+
+1. `docs/platform-true-north.md`;
+2. `docs/platform-architecture.md`;
+3. `docs/platform-implementation-plan.md`;
+4. `docs/platform-implementation-record.md`; and
+5. `docs/implementation-guidance.md`.
+
+The first four documents define why, what, planned order, and actual state.
+The implementation guide is the human development method and current source-
+ownership reference. This file adds no agent-only product rule or procedure.
+
+## Work within the accepted increment
+
+- Inspect the working tree and current record before acting. Preserve
+  unrelated or user-owned changes.
+- Follow the accepted increment and stop at its boundary. Do not introduce
+  later-stage behavior or speculative directory scaffolding.
+- Place new behavior directly under the owner required by the RRP 1.0
+  architecture. Do not infer architecture from historical layout or whichever
+  code already exists.
+- Keep target state and current implemented capability distinct.
+- Update the implementation record with actual work, decisions, validation,
+  limits, and the next task.
+
+## Reuse history without restoring it
+
+Inspect `v0.1.0` or relevant pre-reset commits just in time after establishing
+the current requirement and intended owner. Reuse or adapt only semantics that
+still fit the 1.0 architecture, recover useful invariant-focused tests with
+their eventual owner, and record the decision.
+
+Never restore the historical tree wholesale, create a legacy compatibility
+layer, or make this repository depend on another checkout. Historical Phase
+chronology, repository-root execution, generated Hospital repositories,
+temporary runtime installation, daily-hazard public semantics, and Git-state
+adopter rules are not forward architecture.
+
+## Keep work human-readable and safe
+
+- Follow `docs/implementation-guidance.md` for implementation, dependency,
+  path, privacy, and evidence conventions.
+- Agents use the same documented operations and recovery paths as people. Do
+  not invent hidden logic, secret procedures, or an AI-only interface.
+- Never add PHI, patient-level clinical values, credentials, keys, connection
+  strings, raw records, private hospital mappings, or confidential material.
+- Do not commit, push, publish, deploy, or mutate an external repository or
+  service unless the user explicitly authorizes it.
+
+## Current evidence boundary
+
+No repository validator, executable package, test suite, dependency
+environment, CI workflow, platform operation, or release procedure exists on
+the clean line. Use the documentary review described in the human guide until
+the accepted Increment 1.C implements the local repository validator. Do not
+recreate historical validation commands or claim broader evidence.

@@ -87,3 +87,45 @@ environment, or deployment capability.
 
 **Next task:** implement only Increment 1.B — Human development and ownership
 rules.
+
+### Increment 1.B — Human development and ownership rules (complete, 2026-09-15)
+
+Increment 1.B added `docs/implementation-guidance.md` as the concise human
+guide for authority, progressive increment work, just-in-time historical
+reuse, current ownership, readable implementation, explicit context and
+dependency ownership, privacy, proportional evidence, and record discipline.
+It defines responsibilities only for the 15 files that now exist and requires
+future paths to enter with an accepted concrete owner; it does not reserve or
+scaffold later package, contract, project, test, application, operation,
+artifact, deployment, or build trees.
+
+The new root `AGENTS.md` is a short derivative working agreement. It directs
+coding agents to the same authority, human guide, increment boundary, reuse
+method, privacy rules, and evidence available to maintainers. It introduces no
+agent-only logic, operation, or recovery path. `CONTRIBUTING.md` now serves as
+the public entry point and delegates detailed development rules to the human
+guide; the README links both the human guide and the derived agent agreement.
+
+Historical review covered the `v0.1.0` and pre-reset `AGENTS.md`, implementation
+conventions, repository policies, and pre-reset Stage 1 implementation record.
+Authority order, bounded work, human-readable R, direct ownership,
+just-in-time reuse, dependency separation, explicit context, privacy, and
+proportional evidence were adapted. Phase commands and ownership, validation
+registries/profiles, transition-ledger rules, old source paths, executable
+component status, Hospital/release procedures, temporary compatibility, and
+dependency-environment details were rejected. No historical guidance file was
+copied wholesale.
+
+Documentary review confirmed the exact current inventory and ownership map,
+complete local links, consistent authority order and `1.0.0-dev` identity, no
+stale workflow/path references, no symbolic links, final-newline and whitespace
+hygiene, and a clean `git diff --check`. The plan's stale top-level statement
+that Stage 1 was not yet implemented was corrected to `in progress`; no
+roadmap, increment, or architectural decision changed.
+
+**Current implementation state:** Increment 1.B complete; Stage 1 remains in
+progress. There is still no package, project, clinical contract, runtime,
+history, product, application, CLI, validator, test suite, CI, dependency
+environment, installation, artifact, or deployment capability.
+
+**Next task:** implement only Increment 1.C — Minimal repository validation.

@@ -2,8 +2,8 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stage 1 is detailed and not yet
-implemented
+**Status:** authoritative high-level roadmap; Stage 1 is detailed and in
+progress
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)

@@ -48,8 +48,11 @@ See [SECURITY.md](SECURITY.md) for vulnerability reporting and
 
 ## Contributing
 
-Contributions are welcome when they follow the current authority and the
-progressive implementation stage. See [CONTRIBUTING.md](CONTRIBUTING.md).
+The [RRP 1.0 implementation guidance](docs/implementation-guidance.md) defines
+the human development method, current source ownership, and evidence boundary.
+Contributions are welcome when they follow that guidance and the current
+accepted increment; see [CONTRIBUTING.md](CONTRIBUTING.md). Coding agents must
+also follow the derived [working agreement](AGENTS.md).
 
 ## License
 
