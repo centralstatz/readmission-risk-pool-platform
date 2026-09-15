@@ -136,6 +136,144 @@ Do not populate placeholder sections with speculative increments merely to make
 the plan look complete. Git history preserves how current detailed authority
 evolves.
 
+### Increments and execution units
+
+An increment is the formal architectural implementation and acceptance unit.
+Its accepted contract owns the objective, architectural scope, completion
+criteria, final acceptance, and implementation-plan status. Completing an
+increment remains the point at which the roadmap advances.
+
+An increment may be realized through one or more bounded **execution units**.
+An execution unit is an implementation session subordinate to the increment,
+not another architecture or roadmap level. It may perform a bounded portion of
+code, tests, documentation, migration, or focused evidence. Each execution unit
+should have a narrow starting state, objective, affected surface, validation
+expectation, and stopping point, and should normally stop there rather than
+continue automatically through the rest of the increment.
+
+Execution units do not independently advance increment status or weaken the
+accepted increment contract. Do not add mechanical identifiers such as
+`2.B.1` or `2.B.2` to this roadmap merely because implementation uses several
+agent sessions. Record an execution-unit boundary permanently only when its
+realized evidence or decision matters to later work.
+
+```text
+accepted increment
+        ↓
+one or more bounded execution units
+        ↓
+complete increment acceptance
+```
+
+### Evidence-aware execution
+
+Begin each execution unit from the best current trustworthy evidence of the
+realized repository state. That evidence may include the immediately preceding
+implementation record, the current accepted plan, prior passing validation, a
+known committed checkpoint, focused maintainer or reviewer reconnaissance, and
+the inspected working tree.
+
+Inspect the files and relationships needed to verify the bounded task against
+current reality. Do not repeat open-ended repository archaeology that current
+trustworthy evidence has already resolved. This does not permit blind execution
+from stale assumptions: if the repository contradicts the stated starting
+state, stop or reconcile the contradiction before continuing.
+
+Passing evidence from an earlier execution unit or checkpoint may be inherited
+only when subsequent changes cannot reasonably invalidate what it proves. For
+example, unrelated documentation does not invalidate a package check, a
+transition-ledger-only edit does not invalidate runtime semantics, and closeout
+need not reconstruct an already proven package topology. Rerun evidence when a
+later change touches or plausibly affects its invariant. Where useful, the
+implementation record distinguishes:
+
+- inherited evidence still applicable to the final state;
+- newly executed evidence; and
+- evidence rerun because subsequent changes could invalidate it.
+
+Evidence inheritance must never conceal an affected surface or unresolved
+failure.
+
+### Proportional execution-unit validation
+
+During an execution unit, prefer focused validation for changed components,
+directly affected contracts, relevant static boundaries, immediate regressions,
+and any validation routing changed by the work. Do not automatically run every
+broad integration or lifecycle profile after every bounded unit.
+
+At increment acceptance, every accepted completion criterion and required
+invariant must still have evidence applicable to the final changed state.
+Required broad integrated evidence normally runs at that boundary rather than
+after every intermediate unit:
+
+```text
+execution unit A -> focused evidence
+execution unit B -> focused evidence
+execution unit C -> focused evidence
+increment closeout -> remaining and integrated acceptance evidence
+```
+
+Execution efficiency changes how work and evidence collection are organized;
+it does not weaken an increment's architecture, completion criteria, validation
+requirements, or acceptance standard. Inherited evidence must remain valid,
+required integration must pass, and execution-unit boundaries must not hide a
+failure. Existing Stage 2 acceptance gates remain unchanged.
+
+### Deterministic validation and recovery
+
+For long-running deterministic package builds, `R CMD check`, test suites,
+broad profiles, and artifact checks, prefer one bounded invocation that can
+complete without duplicates. Retain concise result evidence and detailed logs
+when practical; inspect or ingest detailed output primarily when diagnosing a
+failure. Do not restart a quiet process merely for status, launch duplicate
+checks to test liveness, repeatedly ingest large successful logs, or rerun
+expensive deterministic evidence when no intervening change can invalidate it.
+Use a safe bounded-output wait-and-return pattern when the available tooling
+supports it. Do not introduce complex asynchronous infrastructure solely for
+agent efficiency; validation remains simple and human-operable.
+
+If a session stops because of an execution limit, interruption, or another
+non-code failure:
+
+1. preserve valid completed work;
+2. establish the exact checkpoint and working-tree state;
+3. identify which increment criteria are already satisfied and which remain;
+4. inherit still-applicable evidence;
+5. resume only the incomplete affected work; and
+6. do not restart or revert the whole increment by default.
+
+A stopped session is not evidence that valid implementation should be reverted.
+When realized state permits, its recovery prompt should be narrower than the
+original increment specification.
+
+### Iterative workflow within an increment
+
+Choose execution units iteratively from realized evidence rather than
+decomposing all agent sessions far in advance:
+
+```text
+approve detailed increment contract
+        ↓
+review realized starting state
+        ↓
+choose bounded execution unit
+        ↓
+implement and run focused validation
+        ↓
+review realized state
+        ↓
+choose another execution unit if needed
+        ↓
+increment acceptance and integrated evidence
+        ↓
+close out the implementation record
+        ↓
+plan the next increment against realized state
+```
+
+This execution model extends the progressive stage-planning cadence; it does
+not replace its authority hierarchy or authorize a later increment early.
+
 ### Stage-close reconciliation
 
 Before planning Stage `N + 1`, close Stage `N` with concise evidence-based

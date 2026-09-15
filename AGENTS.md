@@ -29,6 +29,35 @@ validated, and reconciled. Current architecture evolves in place; Git history,
 release tags, and the append-only record preserve prior states without creating
 parallel current authorities.
 
+## Increment execution
+
+An accepted increment is the architectural implementation and acceptance unit;
+an agent session is only a bounded execution unit within it. One increment may
+use several sessions. Each session should have an explicit starting state,
+affected surface, focused objective, validation expectation, and stopping
+point. Stop after that bounded work unless the current request explicitly owns
+the remaining increment; do not create roadmap subincrements merely to name
+agent sessions.
+
+Start from the best trustworthy current evidence, including the accepted plan,
+latest implementation record, known checkpoint, prior passing results, and
+inspected working tree. Inspect enough to verify the bounded task safely, but
+do not redo broad archaeology already resolved by current evidence. Reconcile
+or stop on a factual contradiction.
+
+Inherit prior validation only when later changes cannot reasonably affect its
+invariant, and state when evidence is inherited versus newly run. During an
+execution unit, validate the changed owner and direct regressions
+proportionally. Run the complete accepted gate at increment closeout. Never use
+execution boundaries to hide an affected surface, unresolved failure, or
+missing completion criterion.
+
+Invoke long-running deterministic validation once, avoid duplicate runs and
+unnecessary polling, and prefer concise results with detailed logs retained for
+failure diagnosis. After interruption, preserve valid work, audit the exact
+checkpoint and remaining criteria, reuse still-applicable evidence, and resume
+the incomplete work instead of restarting the increment by default.
+
 ## Reference repository
 
 The sibling `../readmission-risk-pool` repository is development-time reference

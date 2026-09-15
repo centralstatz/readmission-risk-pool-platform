@@ -6890,3 +6890,57 @@ explicitly deferred. No 2.B implementation exists.
 Increment 2.A is **complete**. Stage 2 remains **in progress**. The next task is
 **Increment 2.B — Installed-resource catalog and access boundary**, which was
 not begun here.
+
+### RRP 1.0.0 implementation-methodology refinement — evidence-aware execution units (2026-09-15)
+
+#### Objective and maintainer decision
+
+Incorporate execution lessons from completed Increment 2.A without changing
+the RRP 1.0 architecture, roadmap, Stage 2 design, accepted increments, or
+acceptance criteria. This is a forward-looking documentation and governance
+decision. The completed 2.A record above remains an accurate account of its
+actual implementation and recovery rather than being rewritten as though this
+methodology had already governed it.
+
+The implementation plan remains the methodology authority beneath True North
+and target architecture. It now distinguishes an increment—the formal
+architectural implementation and acceptance unit—from one or more bounded
+execution units used to realize it efficiently. Execution units are iterative
+session boundaries with explicit starting state, scope, evidence expectation,
+and stopping point. They neither create roadmap subincrements nor advance plan
+status independently.
+
+#### Realized methodology
+
+Future execution begins from the best trustworthy current evidence while still
+inspecting enough of the affected surface to detect stale assumptions. Prior
+passing evidence may be inherited only when subsequent changes cannot
+reasonably invalidate its invariant; records should distinguish inherited,
+newly run, and necessarily rerun evidence where useful.
+
+Validation during an execution unit is proportional to its changed owners and
+direct regressions. Complete increment criteria and required integrated gates
+remain mandatory at increment acceptance. Long-running deterministic checks
+should run once with bounded output, concise success evidence, retained logs
+where practical, and detailed inspection when failure diagnosis requires it.
+Quiet output alone does not justify duplicate or restarted work.
+
+Recovery now explicitly preserves valid work, establishes the exact checkpoint
+and working tree, determines satisfied and remaining increment criteria,
+inherits applicable evidence, and resumes only incomplete affected work. A
+session interruption is not itself a reason to revert or restart an increment.
+
+`AGENTS.md` received the concise operational form of these rules. Existing
+validation governance already required ownership-based proportional evidence
+and therefore needed no change. No product or package code, analytical
+semantics, architecture, transition disposition, validation implementation,
+product identity, Stage 2 scope, or 2.B artifact changed. Increment 2.B remains
+unstarted.
+
+Proportional `source-changed` routing for the three edited guidance files
+resolved only validation governance, documentation, repository policy, and the
+existing operation-registry documentation boundary. All four validators passed,
+as did final Markdown-link/path checks, repository hygiene, and
+`git diff --check`. No package, semantic, broad integration, lifecycle,
+deployment, release, publication, acquisition, distribution, or remote
+workflow ran.
