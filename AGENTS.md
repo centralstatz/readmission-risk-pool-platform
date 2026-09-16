@@ -77,6 +77,8 @@ package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
 `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
-2. Increments 3.A–3.C are complete locally; Stage 3 still requires committed
-hosted evidence and final acceptance/reconciliation. Do not claim that evidence,
-begin another implementation increment, or begin a later stage.
+2. Committed push run `35116049077`, job `104861623678`, succeeded for revision
+`11fc44835c0d3862196e1af5d1ef691e781c9688`, completing Stage 3 after final
+reconciliation. The next authorized task is only to detail Stage 4 — Independent
+Project Foundation from the accepted Stage 3 baseline; do not begin Stage 4
+source implementation.

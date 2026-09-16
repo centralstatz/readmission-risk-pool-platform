@@ -876,3 +876,174 @@ True North/Architecture reconciliation have not occurred.
 its run identity, reconcile the realized Stage 3 boundary with Platform True
 North and Platform Architecture, and then accept/close Stage 3. There is no
 Increment 3.D, and Stage 4 must not begin before that lifecycle action.
+
+## Stage 3 acceptance and reconciliation (complete, 2026-09-16)
+
+Stage 3 was assessed from clean committed baseline
+`11fc44835c0d3862196e1af5d1ef691e781c9688` on `main`, with local `main` and
+`origin/main` at that same revision before this record-only closeout work. That
+baseline contains the complete 3.A–3.C implementation and no uncommitted source
+change. No Increment 3.D was created.
+
+The complete local human surface was rerun from that baseline. Repository
+validation passed all eight checks with zero issues. Package/resource
+validation passed the exact catalog, schema, and contract checks; deterministic
+byte-preserving projection; all positive and adversarial resource cases; exact
+package topology, dependency direction, and four/zero export posture; both
+source builds; rejection of `rrpplatform` installation without `rrpruntime`;
+isolated dependency-order install/load; package-native tests; copied-root
+installed access and structured success/failure evidence; and exact
+`R CMD check --no-manual` `Status: OK` for both packages. The operation removed
+its temporary archives, libraries, projections, fixtures, and check trees.
+
+The committed hosted evidence is GitHub Actions push run
+[`35116049077`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/35116049077),
+job
+[`104861623678`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/35116049077/job/104861623678).
+The run used workflow `package-foundation` from
+`.github/workflows/package-foundation.yml`, event `push`, branch `main`, head
+SHA `11fc44835c0d3862196e1af5d1ef691e781c9688`, run attempt 1, and completed
+successfully on 2026-09-16. Its sole `validate` job completed successfully on
+Ubuntu with R 4.4; checkout, R setup, repository validation, and package
+validation all succeeded. The workflow remained read-only and invoked exactly
+the same two documented human operations. This is committed Stage 3 evidence,
+not a distribution support-cell, runtime, clinical, deployment, or release
+claim.
+
+The realized source-resource inventory contains exactly these logical
+identities, all `contract` resources owned by `rrpplatform` in `dcf` format:
+
+- `rrp.contract.resource-catalog` at
+  `resources/resource-catalog-schema.dcf`;
+- `rrp.contract.diagnostic` at `resources/contracts/diagnostic.dcf`; and
+- `rrp.contract.operation-result` at
+  `resources/contracts/operation-result.dcf`.
+
+`resources/source-catalog.dcf` is closed over those three current files and
+conforms to `resources/resource-catalog-schema.dcf`; there is no fixed expected
+resource count. Temporary projection creates the installed catalog, removes
+only `Source-Path`, preserves the three identities and source bytes, and does
+not establish a final installation layout, distribution inventory, or
+distribution lifecycle.
+
+The exact package posture is `rrpruntime` version `0.3.0.9000` with no
+`Imports`, `Suggests`, `LinkingTo`, or exports, and `rrpplatform` version
+`0.1.0.9000` importing only `rrpruntime`. `rrpplatform` exports exactly
+`rrp_open_resource_catalog()`, `rrp_operation_succeeded()`,
+`rrp_resource_path()`, and `rrp_validate_software_resources()`. No third-party
+package dependency or `renv` environment exists, and both packages remain
+internal implementation components rather than the product interface.
+
+Installed resource access requires one explicit caller-supplied software root,
+canonicalizes it, validates the projected catalog and closed inventory,
+resolves exact logical IDs, and revalidates state before lookup. Copied roots
+outside the repository work. Changed or unsafe state fails closed through
+stable `rrp_resource_error` conditions. There is no current-directory, parent,
+Git, sibling-repository, environment-variable, package-installation,
+source-path, or installed-version discovery or fallback.
+
+The realized diagnostic has exact class `c("rrp_diagnostic", "list")` and exact
+fields `code`, `severity`, and `message`. Code is bounded to 64 lowercase
+letters, digits, or underscores, starts with a letter, and matches
+`^[a-z][a-z0-9_]*$`; severity is exactly `info`, `warning`, or `error`; message
+is nonempty, trimmed, single-line, maintainer-authored text of at most 240
+bytes. There is no context/details field, and validation rejects obvious
+patient identifiers, credentials, secrets, authorization material, connection
+strings, private keys, raw content, control characters, and path-like payload.
+This is a small operation diagnostic, not an observability framework or a
+claim of complete privacy/security classification.
+
+The realized operation result has exact class
+`c("rrp_operation_result", "list")` and exact fields `operation_id`, `status`,
+`value`, and `diagnostics`. One result represents one operation; status is
+exactly `success` or `failure`; diagnostics are an ordered unnamed list of
+valid diagnostics. Success can carry a value and zero or non-error diagnostics;
+failure requires `NULL` value and at least one error. The public predicate
+validates the whole object before returning one logical result, so malformed
+result-like lists are not silently interpreted. No run/correlation identity,
+timestamp, event lifecycle, orchestration, metric, log, trace, audit,
+persistence, or arbitrary metadata/context entered.
+
+`rrp_validate_software_resources()` is the first operation using that common
+result. Success returns the controlled operation ID, catalog identity/version,
+and catalog-derived resource count. Expected typed resource failures become a
+valid failure result that preserves the stable resource code and uses one fixed
+safe message without copying path, parser, resource, or input detail.
+Unexpected internal errors are not caught by a generalized translator. The
+explicit-root requirement is unchanged, and the lower-level catalog and lookup
+APIs continue to raise typed resource errors rather than being forced through
+operation-result wrappers.
+
+Every accepted Stage 3 criterion is satisfied:
+
+- **Closed current catalog and schema — Satisfied.** The three real current
+  contract resources are the catalog schema, diagnostic contract, and
+  operation-result contract; the source catalog conforms to its versioned DCF
+  schema and closure rejects undeclared payload.
+- **Exact portable classification — Satisfied.** IDs, classes, owners, formats,
+  source paths, and installed paths are exact, unique, safe after case folding,
+  non-conflicting, and fully classified.
+- **Deterministic projection boundary — Satisfied with documented non-blocking
+  clarification.** Projection removes only repository source paths, preserves
+  resource bytes and identities, and is temporary evidence rather than a
+  distribution manifest or settled final layout.
+- **Explicit-root installed access — Satisfied.** Installed `rrpplatform` opens
+  and resolves the projected catalog only from its caller-supplied canonical
+  root, with no repository, Git, sibling, environment, or working-directory
+  discovery.
+- **Copied-root and fail-closed behavior — Satisfied.** Independent copied roots
+  work; malformed, unsafe, missing, undeclared, escaping, linked, changed,
+  case-conflicting, and related invalid states fail with stable safe typed
+  resource errors.
+- **Package and API boundary — Satisfied.** `rrpplatform` imports only
+  `rrpruntime` and exports exactly the four accepted resource/result APIs;
+  `rrpruntime` remains dependency-light, export-free, and independent of its
+  dependent.
+- **Machine-inspectable operation result — Satisfied.** One exact result carries
+  controlled success/failure, value, and ordered diagnostics, with whole-object
+  validation and predicate inspection that requires no prose parsing.
+- **Privacy-safe diagnostic contract — Satisfied with documented non-blocking
+  clarification.** Diagnostics use only the bounded code/severity/message
+  shape, and evidence rejects arbitrary detail, patient-level, credential,
+  secret, connection, raw-content, control, and path-like text. These bounded
+  filters do not claim to be a complete privacy/security system.
+- **Complete local evidence and hygiene — Satisfied.** Parsing, both documented
+  validators, builds, isolated installation/loading, package-native tests, and
+  strict package checks passed without persistent generated output.
+- **Committed hosted evidence — Satisfied.** Run `35116049077`, job
+  `104861623678`, for the exact complete Stage 3 commit identified above.
+- **Deferred-capability exclusion — Satisfied.** No installed-root
+  discovery/selection, installation identity, launcher, CLI, complete
+  distribution manifest/digests, final dependency closure, distribution
+  build/install/upgrade, hospital project/context, project
+  manifest/registration, canonical or clinical contract, readmission target,
+  runtime/provider/model behavior, analytical run identity, operational
+  history, logical product, application behavior, deployment, persistent
+  diagnostic/logging/tracing/metrics/audit system, or release behavior entered.
+
+Reconciliation found no deviation from Platform True North. The implementation
+advances composable, explicit, fail-closed, privacy-aware foundations without
+claiming clinical validity, production readiness, or a hospital workflow. It
+also matches Platform Architecture: `rrpplatform` owns resource access and
+operation evidence; `rrpruntime` remains the downward-only computational leaf;
+software context is explicit; stable logical resource identity is independent
+of physical layout; diagnostics are structured and safe; and no project,
+clinical, runtime, product, distribution, or deployment responsibility was
+pulled forward.
+
+Two boundaries are worth carrying into later planning but are not deviations
+or blockers: the current installed projection is temporary evidence rather
+than a complete installed distribution, and the diagnostic filters enforce the
+accepted small obvious-pattern boundary rather than claiming a complete
+privacy/security classification system. Stage 4 must establish the independent
+project and trusted registration boundary without turning the Stage 3 explicit
+software-root APIs into ambient root discovery.
+
+**Current implementation state:** Stage 3 is accepted and complete. RRP package
+code can safely find declared installed resources and report a structured,
+privacy-safe operation outcome from an explicit software context, but there is
+still no hospital project or risk behavior.
+
+**Next task:** detail Stage 4 — Independent Project Foundation from the accepted
+Stage 3 baseline. Do not begin Stage 4 source implementation before that
+separate planning and acceptance action.

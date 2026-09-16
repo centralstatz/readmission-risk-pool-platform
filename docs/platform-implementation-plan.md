@@ -2,10 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
-Stage 3 is detailed, accepted, and in progress; Increments 3.A–3.C are complete
-locally and Stage 3 awaits committed hosted evidence plus final acceptance and
-reconciliation
+**Status:** authoritative high-level roadmap; Stages 1–3 are complete. The next
+lifecycle step is to detail Stage 4 — Independent Project Foundation from the
+accepted Stage 3 baseline; Stage 4 source implementation is not yet authorized.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -70,8 +69,9 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current stage is decomposed into accepted increments. Stage 3 is the
-current detailed stage; completed Stage 1 and Stage 2 detail remains as
-implementation lineage. After a stage is implemented:
+most recently completed detailed stage; completed Stage 1–3 detail remains as
+implementation lineage. Stage 4 remains high-level until its separate planning
+and acceptance task. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -556,8 +556,9 @@ no unverified address is invented by this plan.
 ## Stage 3 — Installed resources and shared operation foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-15;
-Increments 3.A–3.C completed locally on 2026-09-16; Stage 3 implementation
-awaits committed hosted evidence and final acceptance/reconciliation
+Increments 3.A–3.C and Stage 3 acceptance/reconciliation completed on
+2026-09-16. Hosted push run `35116049077`, job `104861623678`, passed for the
+committed Stage 3 revision `11fc44835c0d3862196e1af5d1ef691e781c9688`.
 
 ### Objective
 
@@ -812,8 +813,8 @@ operation results, projects, CLI, installation, or domain resources.
 
 ### Increment 3.C — Common operation result and privacy-safe diagnostics
 
-**Implementation status:** complete locally on 2026-09-16; Stage 3 remains in
-progress pending committed hosted evidence and final acceptance/reconciliation.
+**Implementation status:** complete on 2026-09-16; its committed evidence was
+included in the successful Stage 3 hosted acceptance run.
 
 Add the operation-result and diagnostic contracts as
 `resources/contracts/operation-result.dcf` and
@@ -901,6 +902,13 @@ Stage 3 is complete only when:
 After the increments and hosted evidence pass, reconcile the realized resource
 and result boundaries with True North and Platform Architecture and record any
 deviation. Stage acceptance is a lifecycle action, not Increment 3.D.
+
+**Acceptance result:** complete on 2026-09-16. All criteria above passed for
+committed revision `11fc44835c0d3862196e1af5d1ef691e781c9688`, including
+read-only hosted push run `35116049077` / job `104861623678`. Reconciliation
+found no deviation from Platform True North or Platform Architecture. The next
+lifecycle step is to detail Stage 4 — Independent Project Foundation from the
+accepted Stage 3 baseline; no Stage 4 source work is yet authorized.
 
 ### Plain-language exit state
 

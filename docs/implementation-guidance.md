@@ -13,10 +13,10 @@ foundation validator, two conventional internal package owners,
 one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and one structured resource-validation
 operation in the main package, one local package/resource-foundation validator,
-and one narrowly scoped hosted workflow with a successful committed Stage 2
-push run. Stage 2 is complete and Stage 3 is in progress pending committed
-hosted evidence and final acceptance. There is no complete installed RRP
-product or ordinary operator command.
+and one narrowly scoped hosted workflow with successful committed Stage 2 and
+Stage 3 push evidence. Stages 1–3 are complete; Stage 4 remains high-level and
+must be detailed and accepted before its source implementation begins. There
+is no complete installed RRP product or ordinary operator command.
 
 ## Read authority before source
 
@@ -243,9 +243,12 @@ matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
 behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
 Stage 2 closed only after committed push run `35041493406` succeeded for
 revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded.
-Increments 3.A, 3.B, and 3.C are complete locally. The next action after human
-review and commit is Stage 3 hosted evidence and acceptance/reconciliation; it
-is not another implementation increment.
+Stage 3 closed only after committed push run `35116049077`, job
+`104861623678`, succeeded for revision
+`11fc44835c0d3862196e1af5d1ef691e781c9688` and final reconciliation found no
+deviation from True North or the architecture. The next lifecycle task is to
+detail Stage 4 — Independent Project Foundation from the accepted Stage 3
+baseline, not to begin Stage 4 source implementation.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

@@ -98,10 +98,11 @@ deployment, or release behavior.
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
 under read-only Ubuntu/R 4.4. Its first committed push run completed
-successfully for the accepted 2.C revision. Stage 2 and local Increments
-3.A–3.C are complete; Stage 3 still awaits committed hosted evidence and final
-acceptance/reconciliation. The prior narrow hosted evidence does not establish
-broader platform or support validity.
+successfully for the accepted 2.C revision. A later committed push run
+completed successfully for the complete Stage 3 revision, so Stages 1–3 are
+accepted and complete. This narrow hosted evidence does not establish broader
+platform or support validity; Stage 4 remains to be detailed before its source
+implementation can begin.
 
 ## License
 
