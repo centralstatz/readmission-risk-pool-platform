@@ -86,6 +86,12 @@ installation/loading, package-native tests, and exact `R CMD check --no-manual`
 results. It is maintainer evidence, not an installed product command or proof
 of runtime, installation, clinical, deployment, or release behavior.
 
+The [package-foundation workflow](.github/workflows/package-foundation.yml) is
+configured to run these same two human operations on pushes and pull requests
+under read-only Ubuntu/R 4.4. The workflow is implemented and locally
+validated, but no committed hosted run has yet established its result.
+Increment 2.C and Stage 2 therefore remain in progress.
+
 ## License
 
 Repository-authored material is licensed under the

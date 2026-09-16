@@ -18,8 +18,9 @@ repository_root <- normalizePath(
 )
 
 expected_files <- c(
-  ".editorconfig", ".gitignore", "AGENTS.md", "CONTRIBUTING.md", "LICENSE",
-  "NOTICE", "README.md", "RRP.yml", "SECURITY.md", "SUPPORT.md",
+  ".editorconfig", ".github/workflows/package-foundation.yml", ".gitignore",
+  "AGENTS.md", "CONTRIBUTING.md", "LICENSE", "NOTICE", "README.md",
+  "RRP.yml", "SECURITY.md", "SUPPORT.md",
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
@@ -36,7 +37,8 @@ expected_files <- c(
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
 expected_directories <- c(
-  "docs", "packages", "packages/rrpplatform", "packages/rrpplatform/R",
+  ".github", ".github/workflows", "docs", "packages",
+  "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
   "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",
   "packages/rrpruntime/tests", "tools"
@@ -44,7 +46,8 @@ expected_directories <- c(
 check_ids <- c(
   "foundational_files", "local_documentation_links",
   "metadata_parseability", "development_identity",
-  "legal_and_public_metadata", "path_and_text_hygiene",
+  "legal_and_public_metadata", "hosted_workflow_policy",
+  "path_and_text_hygiene",
   "generated_and_confidential_exclusions"
 )
 issues <- setNames(rep(list(character()), length(check_ids)), check_ids)
@@ -329,6 +332,55 @@ if (file.exists(ignore_path) && !identical(read_text(ignore_path), ".DS_Store"))
     "legal_and_public_metadata",
     ".gitignore must contain only the currently justified .DS_Store rule"
   )
+}
+
+workflow_path <- file.path(
+  repository_root, ".github", "workflows", "package-foundation.yml"
+)
+expected_workflow <- c(
+  "name: package-foundation",
+  "",
+  "\"on\":",
+  "  push:",
+  "  pull_request:",
+  "",
+  "permissions:",
+  "  contents: read",
+  "",
+  "jobs:",
+  "  validate:",
+  "    runs-on: ubuntu-latest",
+  "    steps:",
+  "      - name: Check out repository",
+  paste0(
+    "        uses: actions/checkout@",
+    "3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1"
+  ),
+  "        with:",
+  "          persist-credentials: false",
+  "      - name: Set up R 4.4",
+  paste0(
+    "        uses: r-lib/actions/setup-r@",
+    "d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2.12.1"
+  ),
+  "        with:",
+  "          r-version: '4.4'",
+  "      - name: Validate repository foundation",
+  "        run: Rscript --vanilla tools/validate-repository.R",
+  "      - name: Validate package foundation",
+  "        run: Rscript --vanilla tools/validate-packages.R"
+)
+if (file.exists(workflow_path)) {
+  workflow <- read_text(workflow_path)
+  if (!identical(workflow, expected_workflow)) {
+    add_issue(
+      "hosted_workflow_policy",
+      paste0(
+        "package-foundation workflow must retain the accepted push/pull-",
+        "request, read-only, pinned-action, Ubuntu/R 4.4, two-command shape"
+      )
+    )
+  }
 }
 
 for (path in source_entries$path[source_entries$is_link]) {

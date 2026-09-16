@@ -10,7 +10,8 @@ authorize a future stage, or claim that planned software exists.
 The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
 foundation validator, two deliberately behavior-free internal package owners,
-and one local package-foundation validator. There is no executable RRP product
+one local package-foundation validator, and one narrowly scoped hosted workflow
+whose first committed run remains pending. There is no executable RRP product
 behavior or installed RRP software.
 
 ## Read authority before source
@@ -102,6 +103,7 @@ closed to the following present paths:
 | `.editorconfig` | Basic text-format defaults. |
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
+| `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
 | `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and zero-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Behavior-free main-package source and human/package documentation. |
 | `packages/rrpplatform/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, runtime import, and absent exports. |
@@ -214,9 +216,18 @@ vanilla R process; and requires exact `Status: OK` from each package's
 `R CMD check --no-manual`. Temporary archives, libraries, check directories,
 and the local empty package repository are removed after the operation.
 
-There is no CI workflow, platform acceptance operation, or installed product
-validation yet. Neither local validator implies runtime, clinical,
-installation, deployment, or release validity.
+The package-foundation GitHub Actions workflow invokes these same two human
+operations on pushes and pull requests using read-only repository permission,
+Ubuntu, and R 4.4. Its external action revisions are pinned to full immutable
+commit SHAs and checkout credentials are not persisted. It has no secret,
+matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
+behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
+Stage 2 remain pending until a committed workflow run succeeds and its identity
+and result are recorded.
+
+There is no platform acceptance operation or installed product validation yet.
+Neither local validator nor this narrow hosted workflow implies runtime,
+clinical, installation, deployment, release, or final support-cell validity.
 
 Do not invent commands or restore historical validators to make an evidence
 list look complete. Hosted software verification begins no earlier than Stage

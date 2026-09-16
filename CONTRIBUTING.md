@@ -39,6 +39,11 @@ This package operation owns metadata, dependency/API boundary, build, isolated
 install/load, and package-native check evidence. It does not establish product
 runtime or installed-distribution behavior.
 
+Committed pushes and pull requests run those same two commands through the
+read-only Ubuntu/R 4.4 package-foundation workflow. A local workflow file is
+not hosted evidence; maintainers record the committed run identity and result
+before closing its implementation increment.
+
 ## Sign off contributions
 
 Contributions use Developer Certificate of Origin 1.1 certification. Sign every

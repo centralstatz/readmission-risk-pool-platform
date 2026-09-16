@@ -69,6 +69,9 @@ Rscript --vanilla tools/validate-packages.R
 
 It proves only package topology, one-way dependency, zero-export namespaces,
 builds, isolated install/load, and package-native checks. No dependency
-environment, CI workflow, platform operation, or release procedure exists on
-the clean line. Do not recreate historical validation commands or claim
-broader evidence.
+environment, platform operation, or release procedure exists on the clean
+line. The read-only package-foundation workflow invokes these same two commands
+on push and pull-request under Ubuntu/R 4.4. Its local presence is not hosted
+evidence; do not claim Increment 2.C or Stage 2 complete until a committed run
+succeeds and is recorded. Do not recreate historical validation commands or
+claim broader evidence.

@@ -383,3 +383,63 @@ distribution, deployment, or release capability.
 
 **Next task:** implement only Increment 2.C — Hosted package-foundation
 verification.
+
+### Increment 2.C — Hosted package-foundation verification (locally implemented; hosted evidence pending, 2026-09-15)
+
+Increment 2.C introduced one narrowly owned workflow at
+`.github/workflows/package-foundation.yml`. On push and pull-request events it
+runs one job on `ubuntu-latest`, installs R 4.4, and invokes exactly the two
+existing human operations:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+The workflow grants only `contents: read`, persists no checkout credentials,
+uses no repository secret, and contains no matrix, cache, dependency bootstrap,
+artifact handling, manual/legacy mode, registry/profile routing, changed-path
+selection, release, deployment, or remote mutation. External actions are
+pinned to full immutable revisions: `actions/checkout` v7.0.1 at
+`3d3c42e5aac5ba805825da76410c181273ba90b1` and `r-lib/actions` v2.12.1 at
+`d3c5be51b12e724e68f33216ca3c148b66d5f0b6`. The workflow's claim is only that
+the committed repository and two-package foundation reproduce their existing
+human validation in one independent hosted Ubuntu/R 4.4 environment.
+
+Historical reconnaissance inspected `.github/workflows/validation.yml` at
+pre-reset commits `d23e315` and `855a4b0` and at immutable tag `v0.1.0`.
+Push/pull-request triggers, explicit read-only contents permission, one Ubuntu
+job, R 4.4 setup, and calling maintained human validation operations were
+adapted. Floating action tags were replaced with verified full commit SHAs and
+checkout credential persistence was disabled. Historical `workflow_dispatch`,
+legacy profile choices, `ci-active`, validation registries, `renv` setup,
+Phase/checkpoint aggregates, and release/deployment vocabulary were rejected.
+
+The repository validator now owns the concrete `.github/` path and an eighth
+static policy check that requires the accepted workflow shape. Dependency-light
+local YAML parsing succeeded, and direct policy inspection confirmed the exact
+push/pull-request triggers, read-only permission, pinned actions, Ubuntu/R 4.4,
+two exact commands, and absence of secrets or excluded CI behavior. The
+repository and package validators both passed from the working repository;
+both packages again built, installed and loaded in dependency order, and
+completed `R CMD check --no-manual` with exact `Status: OK`. Normal inventory,
+link, path, text, symlink, generated-output, and `git diff --check` hygiene also
+passed. No portability defect was found during locally available inspection or
+execution, so no package or validation-operation correction was required.
+
+README, contribution guidance, human implementation guidance, the ownership
+map, agent guidance, and plan status now state that the workflow exists but has
+not yet produced hosted evidence. No commit, push, pull request, or GitHub
+Actions run was performed in this implementation task.
+
+**Current implementation state:** Increment 2.C is implemented and locally
+validated but remains incomplete; Stage 2 remains in progress. Completion
+requires a human to commit and push this exact workflow (or open a pull request),
+observe a successful `package-foundation` GitHub Actions run for that committed
+revision, and record the commit, run identity, and successful result. Only then
+may Increment 2.C close and the separate Stage 2 acceptance/reconciliation be
+performed.
+
+**Next task:** obtain and record successful committed hosted workflow evidence,
+then perform Stage 2 acceptance and reconciliation if every criterion remains
+satisfied.
