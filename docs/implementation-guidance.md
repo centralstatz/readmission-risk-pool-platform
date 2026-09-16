@@ -11,8 +11,8 @@ The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
 foundation validator, two deliberately behavior-free internal package owners,
 one local package-foundation validator, and one narrowly scoped hosted workflow
-whose first committed run remains pending. There is no executable RRP product
-behavior or installed RRP software.
+with a successful committed push run. Stage 2 is complete. There is no
+executable RRP product behavior or installed RRP software.
 
 ## Read authority before source
 
@@ -222,8 +222,9 @@ Ubuntu, and R 4.4. Its external action revisions are pinned to full immutable
 commit SHAs and checkout credentials are not persisted. It has no secret,
 matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
 behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
-Stage 2 remain pending until a committed workflow run succeeds and its identity
-and result are recorded.
+Stage 2 closed only after committed push run `35041493406` succeeded for
+revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded.
+The next task is to detail and accept Stage 3, not to implement it.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

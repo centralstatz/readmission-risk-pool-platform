@@ -2,9 +2,8 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stage 1 is complete and Stage 2
-implementation is in progress; Increment 2.C is locally implemented with
-hosted evidence pending
+**Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
+Stage 3 is the next stage to detail and accept before source implementation
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,9 +67,9 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 2 is the
-current detailed stage; completed Stage 1 detail remains as implementation
-lineage. After a stage is implemented:
+Only the current stage is decomposed into accepted increments. Stage 3 is the
+next stage to detail; completed Stage 1 and Stage 2 detail remains as
+implementation lineage. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -300,8 +299,7 @@ Stage 2 files and package APIs are decided during Stage 2 planning.
 
 ## Stage 2 — Internal installed-software package foundation
 
-**Planning status:** detailed and accepted; Increment 2.C is locally
-implemented with hosted evidence pending
+**Planning status:** complete; accepted and reconciled on 2026-09-15
 
 ### Objective
 

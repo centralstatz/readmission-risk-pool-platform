@@ -384,7 +384,7 @@ distribution, deployment, or release capability.
 **Next task:** implement only Increment 2.C — Hosted package-foundation
 verification.
 
-### Increment 2.C — Hosted package-foundation verification (locally implemented; hosted evidence pending, 2026-09-15)
+### Increment 2.C — Hosted package-foundation verification (complete, 2026-09-15)
 
 Increment 2.C introduced one narrowly owned workflow at
 `.github/workflows/package-foundation.yml`. On push and pull-request events it
@@ -427,19 +427,79 @@ link, path, text, symlink, generated-output, and `git diff --check` hygiene also
 passed. No portability defect was found during locally available inspection or
 execution, so no package or validation-operation correction was required.
 
-README, contribution guidance, human implementation guidance, the ownership
-map, agent guidance, and plan status now state that the workflow exists but has
-not yet produced hosted evidence. No commit, push, pull request, or GitHub
-Actions run was performed in this implementation task.
+During the local implementation task, README, contribution guidance, human
+implementation guidance, the ownership map, agent guidance, and plan status
+were aligned to the locally implemented workflow. No commit, push, pull
+request, or GitHub Actions run was performed by that task.
 
-**Current implementation state:** Increment 2.C is implemented and locally
-validated but remains incomplete; Stage 2 remains in progress. Completion
-requires a human to commit and push this exact workflow (or open a pull request),
-observe a successful `package-foundation` GitHub Actions run for that committed
-revision, and record the commit, run identity, and successful result. Only then
-may Increment 2.C close and the separate Stage 2 acceptance/reconciliation be
-performed.
+The workflow was subsequently committed and pushed as revision
+`eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` (`2.C workflow added`). GitHub
+Actions push run [`35041493406`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/35041493406),
+job `104622122884`, ran workflow `package-foundation` from
+`.github/workflows/package-foundation.yml` and completed successfully on its
+first attempt. GitHub's run and job evidence identifies that exact head SHA,
+the `push` event, Ubuntu runner, successful R 4.4 setup, and successful
+`Validate repository foundation` and `Validate package foundation` steps.
+This independently confirms that the committed 2.C workflow exercised the two
+existing human operations in the accepted hosted environment.
 
-**Next task:** obtain and record successful committed hosted workflow evidence,
-then perform Stage 2 acceptance and reconciliation if every criterion remains
-satisfied.
+Inspection of the committed workflow reconfirmed its `contents: read`
+permission, disabled checkout credential persistence, immutable action pins,
+and absence of secrets, matrices, dependency-environment setup, registry or
+profile routing, artifacts, release, deployment, publication, or remote-
+mutation behavior. The hosted result therefore satisfies the bounded 2.C
+claim without expanding it.
+
+**Current implementation state:** Increment 2.C complete. The successful
+hosted run establishes independent execution of the existing repository and
+package-foundation validation for the accepted committed revision.
+
+### Stage 2 acceptance and reconciliation (complete, 2026-09-15)
+
+The realized repository was evaluated against every accepted Stage 2
+criterion after Increment 2.C closed:
+
+- exactly `packages/rrpruntime/` and `packages/rrpplatform/` are package roots,
+  and each owns conventional metadata, namespace, source, documentation, and
+  a base-R package-native test;
+- `rrpplatform` depends only on and namespace-imports `rrpruntime`, while
+  `rrpruntime` has no `Imports`, `Suggests`, or `LinkingTo` dependency and no
+  reverse main-package reference;
+- package identities and development versions remain independent of the
+  `1.0.0-dev` RRP product identity in `RRP.yml`;
+- both namespaces export zero callable APIs and contain no premature product
+  or runtime behavior;
+- source and metadata parsing, source builds, isolated dependency-order
+  installation and loading, package-native tests, and exact
+  `R CMD check --no-manual` `Status: OK` results pass through the repeatable
+  human package-validation operation;
+- current ownership, closed repository inventory, links, metadata, path,
+  symlink, text, generated-output, and confidential-material safeguards pass
+  through the repository-validation operation; and
+- the committed read-only Ubuntu/R 4.4 workflow successfully ran those same
+  two human operations, with the concrete hosted identity recorded above.
+
+No installed-resource lookup, common structured operation result, hospital
+project, clinical contract, risk calculation, history, product, application,
+CLI, dependency closure, distribution, deployment, or release capability is
+present. No empty future scaffold or persistent validation output remains.
+
+This result is consistent with Platform True North: it advances a small,
+human-operable, testable open-source foundation without overstating clinical
+or production maturity. It is also consistent with Platform Architecture:
+the two final internal package owners and one-way dependency are established,
+while installed resources, explicit software context, projects, domain
+contracts, operations, and later lifecycles remain with their future owners.
+The package identities do not displace product identity, and the hosted check
+does not create a released support cell. No discrepancy, architectural
+conflict, acceptance blocker, or material deviation from the accepted Stage 2
+plan was found.
+
+**Current implementation state:** Stage 2 complete. RRP now has conventional
+internal software/package structure and enforced dependency direction, but it
+cannot yet resolve installed resources, recognize a project, or calculate
+anything.
+
+**Next task:** detail and accept Stage 3 — Installed resources and shared
+operation foundation. Do not begin Stage 3 source implementation before that
+detail is accepted.

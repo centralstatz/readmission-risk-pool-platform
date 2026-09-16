@@ -88,9 +88,9 @@ of runtime, installation, clinical, deployment, or release behavior.
 
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
-under read-only Ubuntu/R 4.4. The workflow is implemented and locally
-validated, but no committed hosted run has yet established its result.
-Increment 2.C and Stage 2 therefore remain in progress.
+under read-only Ubuntu/R 4.4. Its first committed push run completed
+successfully for the accepted 2.C revision. Stage 2 is complete; this narrow
+hosted evidence does not establish broader platform or support validity.
 
 ## License
 
