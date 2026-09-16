@@ -10,9 +10,11 @@ authorize a future stage, or claim that planned software exists.
 The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
 foundation validator, two deliberately behavior-free internal package owners,
-one local package-foundation validator, and one narrowly scoped hosted workflow
-with a successful committed push run. Stage 2 is complete. There is no
-executable RRP product behavior or installed RRP software.
+one closed source-resource authority with a temporary installed-projection
+proof, one local package/resource-foundation validator, and one narrowly scoped
+hosted workflow with a successful committed Stage 2 push run. Stage 2 is
+complete and Stage 3 is in progress. There is no executable RRP product
+behavior or installed RRP software.
 
 ## Read authority before source
 
@@ -110,7 +112,9 @@ closed to the following present paths:
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the complete local two-package foundation. |
+| `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
+| `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation and source-resource catalog/projection contract. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -202,19 +206,23 @@ cannot prove that content is free of patient or confidential information, so
 human review remains required.
 
 Each internal package owns one base-R package-foundation test. Run the complete
-local two-package evidence operation from the repository root:
+local package/resource-foundation evidence operation from the repository root:
 
 ```sh
 Rscript --vanilla tools/validate-packages.R
 ```
 
-It checks exact package layout, metadata, dependency direction, zero-export
-namespaces, and repository independence; builds both source packages; proves
-that the main package cannot install without the runtime dependency; installs
-them in dependency order into a fresh temporary library; loads each in a fresh
-vanilla R process; and requires exact `Status: OK` from each package's
-`R CMD check --no-manual`. Temporary archives, libraries, check directories,
-and the local empty package repository are removed after the operation.
+It validates the exact closed DCF catalog/schema, current source resource,
+safe paths and collisions, source closure, and deterministic byte-preserving
+installed projection with copied adversarial fixtures. It also checks exact
+package layout, metadata, dependency direction, zero-export namespaces, and
+repository independence; builds both source packages; proves that the main
+package cannot install without the runtime dependency; installs them in
+dependency order into a fresh temporary library; loads each in a fresh vanilla
+R process; and requires exact `Status: OK` from each package's
+`R CMD check --no-manual`. Projections, fixtures, archives, libraries, check
+directories, and the local empty package repository are temporary and removed
+after the operation.
 
 The package-foundation GitHub Actions workflow invokes these same two human
 operations on pushes and pull requests using read-only repository permission,
@@ -224,8 +232,8 @@ matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
 behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
 Stage 2 closed only after committed push run `35041493406` succeeded for
 revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded.
-Stage 3 is now detailed and accepted. The next task is only Increment 3.A —
-Closed source-resource catalog and installed projection contract.
+Increment 3.A is complete. The next task is only Increment 3.B — Explicit-root
+resource access.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

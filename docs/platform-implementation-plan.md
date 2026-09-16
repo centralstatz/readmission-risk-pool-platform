@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
-Stage 3 is detailed and accepted for implementation; Stage 3 source work has
-not started
+Stage 3 is detailed, accepted, and in progress; Increment 3.A is complete and
+Increment 3.B is the next accepted task
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -555,7 +555,7 @@ no unverified address is invented by this plan.
 ## Stage 3 — Installed resources and shared operation foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-15;
-source implementation not started
+Increment 3.A completed on 2026-09-16; Stage 3 implementation in progress
 
 ### Objective
 
@@ -757,6 +757,8 @@ resource-validation operation. Planning, documentation updates, hosted
 evidence, and stage acceptance are lifecycle work, not additional increments.
 
 ### Increment 3.A — Closed source-resource catalog and installed projection contract
+
+**Implementation status:** complete on 2026-09-16; Increment 3.B is next.
 
 Add `resources/source-catalog.dcf` and
 `resources/resource-catalog-schema.dcf`. The schema is also the first cataloged

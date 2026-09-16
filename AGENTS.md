@@ -61,18 +61,19 @@ Rscript --vanilla tools/validate-repository.R
 
 It proves only current repository structure and static policy. The behavior-
 free internal packages have package-native base-R foundation tests. Use the
-same local two-package operation documented for people:
+same local package/resource-foundation operation documented for people:
 
 ```sh
 Rscript --vanilla tools/validate-packages.R
 ```
 
-It proves only package topology, one-way dependency, zero-export namespaces,
-builds, isolated install/load, and package-native checks. No dependency
-environment, platform operation, or release procedure exists on the clean
-line. The read-only package-foundation workflow invokes these same two commands
-on push and pull-request under Ubuntu/R 4.4. Committed push run `35041493406`
-succeeded for revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing
-Increment 2.C and Stage 2. Stage 3 is detailed and accepted; the next authorized
-source task is only Increment 3.A. Do not claim broader evidence or begin a
-later Stage 3 increment.
+It proves the closed source-resource catalog, temporary deterministic installed
+projection, package topology, one-way dependency, zero-export namespaces,
+builds, isolated install/load, and package-native checks. No installed resource
+API, dependency environment, platform operation, or release procedure exists
+on the clean line. The read-only package-foundation workflow invokes these same
+two commands on push and pull-request under Ubuntu/R 4.4. Committed push run
+`35041493406` succeeded for revision
+`eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
+2. Increment 3.A is complete; the next authorized source task is only Increment
+3.B. Do not claim broader evidence or begin a later Stage 3 increment.

@@ -575,3 +575,82 @@ recognize a hospital project, or calculate risk.
 
 **Next task:** implement only Increment 3.A — Closed source-resource catalog
 and installed projection contract.
+
+## Increment 3.A — Closed source-resource catalog and installed projection contract (complete, 2026-09-16)
+
+Increment 3.A established the first software-resource authority without adding
+installed package behavior. `resources/source-catalog.dcf` is now the closed
+maintainer source catalog. It declares catalog identity
+`rrp.software-resources@0.1.0`, format `1.0.0`, product
+`readmission-risk-pool-platform`, development version `1.0.0-dev`, and status
+`development_unpublished`. Its sole resource is the required catalog schema,
+owned by `rrpplatform` as `rrp.contract.resource-catalog` with class `contract`
+and format `dcf`.
+
+`resources/resource-catalog-schema.dcf` defines the exact source and projected
+record fields, fixed source and installed catalog paths, logical-ID expression,
+controlled resource classes, package owners and format, and the accepted
+uniqueness, case-folding, safe-relative-path, file/directory-conflict, regular-
+file, non-link, source-closure, and projection-omission rules. Both authorities
+are strict multi-record DCF interpreted with base R. No YAML, JSON, package
+dependency, dependency environment, or executable resource content was added.
+
+The existing repository validator now owns the two concrete files and
+`resources/` directory and checks their base-R DCF parseability as part of the
+closed repository inventory and normal path, symlink, text, generated-output,
+and confidential-material hygiene. The ownership map, human guidance, public
+orientation, contribution guidance, agent agreement, and plan status were
+updated to describe the realized boundary and identify 3.B as next.
+
+The existing package/resource validator now performs substantive maintainer
+validation of the schema, source catalog, product-development identity,
+controlled values, initial logical mapping, source file state, closed resource
+inventory, path uniqueness/case folding and file/directory safety. It creates
+only temporary distribution-shaped roots, writes the installed catalog at
+`resources/resource-catalog.dcf`, removes only `Source-Path` from resource
+records, copies the schema byte-for-byte to its declared installed path, and
+revalidates catalog identity, mapping, resource state, closure, and
+containment. Two independent projections must have identical paths and bytes;
+all projections and fixtures are removed by the validator.
+
+Copied temporary adversarial fixtures prove rejection for missing and unknown
+schema/resource fields, unsupported schema/catalog/product identity, duplicate
+logical IDs and exact paths, unsafe absolute/drive/home/empty/dot/parent/
+backslash/control paths, source and installed case collisions, source and
+installed file/directory conflicts, missing/linked/non-regular sources,
+undeclared source files, installed-catalog drift, and projected-resource byte
+drift. These fixtures never mutate repository authority. Direct base-R parsing
+of the validator and both DCF files passed; repository validation passed all
+eight static checks; package/resource validation passed all positive and
+adversarial resource checks, both package builds, isolated dependency-order
+installation/loading, package-native tests, and both exact
+`R CMD check --no-manual` `Status: OK` results. Direct inspection reconfirmed
+that `rrpruntime` remains dependency-free and export-free and `rrpplatform`
+still imports only `rrpruntime` and exports nothing. Normal `git diff --check`,
+source-inventory, symlink, and generated-artifact hygiene passed with no
+persistent validation output.
+
+Historical reconnaissance used pre-reset revisions `a08cd8e`, `72f67fb`, and
+`c459f7d`. Stable logical IDs, explicit source-to-installed mapping, safe path
+and containment checks, symlink rejection, uniqueness/case/file-directory
+collision checks, deterministic source-path-stripping projection, byte
+preservation, and copied adversarial fixtures were adapted and simplified.
+The former 48-entry catalog, fixed expected count, compatibility annotations,
+exclusion and deferred-role ledgers, daily-hazard and synthetic resources,
+YAML representation/dependency, old product version, distribution authority,
+and Phase/registry integration were rejected.
+
+No package source, namespace, metadata, or package-native test changed. There
+is still no package resource-opening or lookup API, typed resource condition,
+structured operation result, persistent installed tree, distribution builder,
+hospital project, clinical/domain contract, runtime calculation, provider,
+history, product, application, CLI, dependency closure, deployment, or release
+capability. The existing hosted workflow was not changed or run; the local
+uncommitted 3.A result makes no new hosted claim.
+
+**Current implementation state:** Increment 3.A complete; Stage 3 remains in
+progress. The repository has a closed one-resource source catalog and a
+deterministic temporary installed-projection contract, while both packages
+remain behavior-free with zero exports.
+
+**Next task:** implement only Increment 3.B — Explicit-root resource access.

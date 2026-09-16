@@ -1,0 +1,15 @@
+Record-Type: catalog
+Catalog-ID: rrp.software-resources
+Catalog-Version: 0.1.0
+Format-Version: 1.0.0
+Product-ID: readmission-risk-pool-platform
+Development-Version: 1.0.0-dev
+Status: development_unpublished
+
+Record-Type: resource
+Resource-ID: rrp.contract.resource-catalog
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/resource-catalog-schema.dcf
+Installed-Path: resources/resource-catalog-schema.dcf
+Format: dcf

@@ -29,15 +29,16 @@ guide. Passing does not establish package, runtime, clinical, installation,
 deployment, or release validity, and automated screening does not replace
 privacy review.
 
-For the current two-package foundation, also run:
+For the current package and source-resource foundation, also run:
 
 ```sh
 Rscript --vanilla tools/validate-packages.R
 ```
 
-This package operation owns metadata, dependency/API boundary, build, isolated
-install/load, and package-native check evidence. It does not establish product
-runtime or installed-distribution behavior.
+This maintainer operation owns the closed catalog/schema, temporary installed
+projection, metadata, dependency/API boundary, build, isolated install/load,
+and package-native check evidence. It does not provide an installed resource
+API or establish product runtime or installed-distribution behavior.
 
 Committed pushes and pull requests run those same two commands through the
 read-only Ubuntu/R 4.4 package-foundation workflow. A local workflow file is

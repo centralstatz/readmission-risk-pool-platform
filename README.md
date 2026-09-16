@@ -16,11 +16,13 @@ machine-readable product-development identity authority.
 The repository presently contains product and architecture documentation,
 public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional but deliberately
-behavior-free internal package owners. `rrpplatform` depends only on
+behavior-free internal package owners. A closed base-R DCF source catalog now
+declares its schema as the first software-owned resource and has a temporary,
+deterministic installed-projection proof. `rrpplatform` depends only on
 `rrpruntime`; neither package exports a callable API. The repository has no
-installed RRP software, hospital project, clinical contract, runtime
-calculation, product, application, command-line interface, or deployment
-capability.
+installed resource-access API, persistent installed RRP software, hospital
+project, clinical contract, runtime calculation, product, application,
+command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -74,23 +76,27 @@ not validate package lifecycle behavior, a project, clinical contract, runtime,
 installation, deployment, or release. Automated screening cannot replace human
 review for patient-level or confidential information.
 
-Validate the complete local two-package foundation with:
+Validate the local package and source-resource foundation with:
 
 ```sh
 Rscript --vanilla tools/validate-packages.R
 ```
 
-This operation checks exact package topology, metadata, one-way dependency,
-zero-export namespaces, source independence, builds, dependency-order isolated
-installation/loading, package-native tests, and exact `R CMD check --no-manual`
-results. It is maintainer evidence, not an installed product command or proof
-of runtime, installation, clinical, deployment, or release behavior.
+This operation checks the closed source catalog/schema, resource/path safety,
+source closure, deterministic byte-preserving temporary installed projection,
+and adversarial rejection behavior. It also checks exact package topology,
+metadata, one-way dependency, zero-export namespaces, source independence,
+builds, dependency-order isolated installation/loading, package-native tests,
+and exact `R CMD check --no-manual` results. It is maintainer evidence, not an
+installed resource API, product command, distribution build, or proof of
+runtime, installation, clinical, deployment, or release behavior.
 
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
 under read-only Ubuntu/R 4.4. Its first committed push run completed
-successfully for the accepted 2.C revision. Stage 2 is complete; this narrow
-hosted evidence does not establish broader platform or support validity.
+successfully for the accepted 2.C revision. Stage 2 and local Increment 3.A are
+complete; no hosted claim is made for the uncommitted 3.A work, and the prior
+narrow hosted evidence does not establish broader platform or support validity.
 
 ## License
 

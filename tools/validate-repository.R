@@ -34,6 +34,7 @@ expected_files <- c(
   "packages/rrpruntime/README.md",
   "packages/rrpruntime/man/rrpruntime-package.Rd",
   "packages/rrpruntime/tests/package-foundation.R",
+  "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
 expected_directories <- c(
@@ -41,7 +42,7 @@ expected_directories <- c(
   "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
   "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",
-  "packages/rrpruntime/tests", "tools"
+  "packages/rrpruntime/tests", "resources", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",
@@ -218,6 +219,29 @@ if (file.exists(metadata_path)) {
 metadata_keys <- c("product_id", "development_version", "release_status")
 for (key in setdiff(metadata_keys, names(metadata))) {
   add_issue("metadata_parseability", paste0("missing metadata key: ", key))
+}
+
+for (relative_path in c(
+  "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
+)) {
+  path <- file.path(repository_root, relative_path)
+  if (!file.exists(path)) next
+  parsed <- tryCatch(
+    read.dcf(path, all = TRUE),
+    error = function(condition) {
+      add_issue(
+        "metadata_parseability",
+        paste0(relative_path, " is not valid DCF: ", conditionMessage(condition))
+      )
+      NULL
+    }
+  )
+  if (!is.null(parsed) && nrow(parsed) < 1L) {
+    add_issue(
+      "metadata_parseability",
+      paste0(relative_path, " must contain at least one DCF record")
+    )
+  }
 }
 for (key in setdiff(names(metadata), metadata_keys)) {
   add_issue("metadata_parseability", paste0("unexpected metadata key: ", key))
