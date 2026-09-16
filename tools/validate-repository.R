@@ -26,6 +26,7 @@ expected_files <- c(
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
   "packages/rrpplatform/R/operation-result.R",
+  "packages/rrpplatform/R/project-contracts.R",
   "packages/rrpplatform/R/resource-catalog.R",
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
@@ -36,6 +37,7 @@ expected_files <- c(
   "packages/rrpplatform/man/rrpplatform-package.Rd",
   "packages/rrpplatform/tests/operation-results.R",
   "packages/rrpplatform/tests/package-foundation.R",
+  "packages/rrpplatform/tests/project-contracts.R",
   "packages/rrpplatform/tests/resource-access.R",
   "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
   "packages/rrpruntime/R/rrpruntime-package.R",
@@ -44,6 +46,8 @@ expected_files <- c(
   "packages/rrpruntime/tests/package-foundation.R",
   "resources/contracts/diagnostic.dcf",
   "resources/contracts/operation-result.dcf",
+  "resources/contracts/project-manifest.dcf",
+  "resources/contracts/project-registration.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
@@ -234,6 +238,8 @@ for (key in setdiff(metadata_keys, names(metadata))) {
 for (relative_path in c(
   "resources/contracts/diagnostic.dcf",
   "resources/contracts/operation-result.dcf",
+  "resources/contracts/project-manifest.dcf",
+  "resources/contracts/project-registration.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
 )) {
   path <- file.path(repository_root, relative_path)

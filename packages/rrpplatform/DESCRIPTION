@@ -7,7 +7,9 @@ Description: Establishes the main internal implementation package for the
     Readmission Risk Pool software and its one-way dependency on the focused
     runtime package. It opens validated installed-resource catalogs from an
     explicit software root, resolves declared resources by logical identity,
-    and reports resource validation through a common privacy-safe result.
+    reports resource validation through a common privacy-safe result, and
+    internally validates the strict project-manifest and trusted-registration
+    structures without loading project code.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

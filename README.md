@@ -16,15 +16,16 @@ machine-readable product-development identity authority.
 The repository presently contains product and architecture documentation,
 public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional internal package owners.
-A closed base-R DCF source catalog now
-declares its schema plus the common operation-result and diagnostic contracts
-and has a temporary, deterministic installed-projection proof. `rrpplatform`
-depends only on `rrpruntime` and exports explicit-root catalog opening,
+A closed base-R DCF source catalog now declares its schema, the common
+operation-result and diagnostic contracts, and exact project-manifest and
+registration-result authorities, with a temporary deterministic installed-
+projection proof. `rrpplatform` internally validates candidate manifest and
+registration structures and exports only explicit-root catalog opening,
 logical resource resolution, structured software-resource validation, and a
 success predicate; `rrpruntime` remains export-free. The repository has no
 root selector, persistent installed RRP distribution, hospital project,
-clinical contract, risk calculation, product, application, command-line
-interface, or deployment capability.
+project loader, clinical contract, risk calculation, product, application,
+command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -87,8 +88,9 @@ Rscript --vanilla tools/validate-packages.R
 This operation checks the closed source catalog/schema/contracts,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
-common result/diagnostic behavior, privacy-safe resource failures, and
-adversarial rejection behavior. It also checks exact package topology,
+common result/diagnostic behavior, strict internal project-contract behavior,
+privacy-safe resource failures, and adversarial rejection behavior. It also
+checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
@@ -101,8 +103,8 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity. Stage 4 is detailed and accepted for
-implementation, but no hospital-project capability exists yet.
+platform or support validity. Increment 4.A is complete, but no hospital-
+project loading or operation capability exists yet.
 
 ## License
 

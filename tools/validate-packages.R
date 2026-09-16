@@ -163,7 +163,7 @@ validate_exact_fields <- function(record, expected_fields, code, label) {
   )
 }
 
-stage3_contract_resources <- function() {
+software_contract_resources <- function() {
   list(
     diagnostic = list(
       id = "rrp.contract.diagnostic",
@@ -216,16 +216,106 @@ stage3_contract_resources <- function() {
         "Failure-Value" = "null",
         "Additional-Fields" = "prohibited"
       )
+    ),
+    project_manifest = list(
+      id = "rrp.contract.project-manifest",
+      source_path = "resources/contracts/project-manifest.dcf",
+      installed_path = "resources/contracts/project-manifest.dcf",
+      document = c(
+        "Record-Type" = "project-manifest-contract",
+        "Contract-ID" = "rrp.project",
+        "Contract-Version" = "0.1.0",
+        "Format-Version" = "1.0.0",
+        "Product-ID" = "readmission-risk-pool-platform",
+        "Development-Version" = "1.0.0-dev",
+        "Status" = "development_unpublished",
+        "Owner-Package" = "rrpplatform",
+        "Manifest-Path" = "rrp-project.dcf",
+        "Registration-Path" = "R/register.R",
+        "Manifest-Record-Type" = "rrp-project",
+        "Project-API-ID" = "rrp.project-api",
+        "Project-API-Version" = "0.1.0",
+        "Fields" = paste(c(
+          "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
+          "Project-ID", "Project-Version", "Project-Scope",
+          "Supported-RRP-API-Version", "Producer-ID", "Producer-Version",
+          "Provider-ID", "Provider-Version", "Extension-Library-Path",
+          "State-Path"
+        ), collapse = ","),
+        "Optional-Fields" = "none",
+        "Identity-Fields" = "Project-ID,Producer-ID,Provider-ID",
+        "Project-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+        "Identity-Max-Bytes" = "96",
+        "Protected-Project-ID-Prefix" = "rrp.",
+        "Version-Fields" = paste(c(
+          "Project-Version", "Producer-Version", "Provider-Version"
+        ), collapse = ","),
+        "Version-Pattern" = paste0(
+          "^[0-9]+[.][0-9]+[.][0-9]+",
+          "(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+        ),
+        "Version-Max-Bytes" = "64",
+        "Project-Scope-Value" = "one_health_system",
+        "Path-Fields" = "Extension-Library-Path,State-Path",
+        "Path-Syntax" = "safe_relative_forward_segments",
+        "Path-Case-Folded-Conflicts" = "prohibited",
+        "Path-Overlap" = "prohibited",
+        "Fixed-Path-Conflicts" = "rrp-project.dcf,R/register.R",
+        "Unknown-Fields" = "prohibited",
+        "Additional-Records" = "prohibited",
+        "Multiline-Values" = "prohibited",
+        "Secret-Or-Arbitrary-Content" = "prohibited"
+      )
+    ),
+    project_registration = list(
+      id = "rrp.contract.project-registration",
+      source_path = "resources/contracts/project-registration.dcf",
+      installed_path = "resources/contracts/project-registration.dcf",
+      document = c(
+        "Record-Type" = "project-registration-contract",
+        "Contract-ID" = "rrp.project-registration",
+        "Contract-Version" = "0.1.0",
+        "Format-Version" = "1.0.0",
+        "Product-ID" = "readmission-risk-pool-platform",
+        "Development-Version" = "1.0.0-dev",
+        "Status" = "development_unpublished",
+        "Owner-Package" = "rrpplatform",
+        "Registration-Path" = "R/register.R",
+        "Registration-Function" = "rrp_register_project",
+        "Result-Fields" = paste(c(
+          "registration_contract_id", "registration_contract_version",
+          "project_id", "producers", "providers"
+        ), collapse = ","),
+        "Collection-Fields" = "producers,providers",
+        "Collection-Representation" = "ordered_unnamed_list",
+        "Empty-Collections" = "allowed",
+        "Component-Fields" = "component_id,component_version,callable",
+        "Project-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+        "Component-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+        "Identity-Max-Bytes" = "96",
+        "Protected-ID-Prefix" = "rrp.",
+        "Component-Version-Pattern" = paste0(
+          "^[0-9]+[.][0-9]+[.][0-9]+",
+          "(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+        ),
+        "Component-Version-Max-Bytes" = "64",
+        "Callable-Type" = "function",
+        "Duplicate-Kind-ID-Version" = "prohibited",
+        "Unknown-Component-Kinds" = "prohibited",
+        "Additional-Result-Fields" = "prohibited",
+        "Additional-Component-Fields" = "prohibited",
+        "Callable-Invocation-During-Validation" = "prohibited"
+      )
     )
   )
 }
 
-validate_stage3_contract_resources <- function(authority, root, projection) {
+validate_software_contract_resources <- function(authority, root, projection) {
   ids <- vapply(
     authority$entries, `[[`, character(1L), "Resource-ID"
   )
-  for (name in names(stage3_contract_resources())) {
-    specification <- stage3_contract_resources()[[name]]
+  for (name in names(software_contract_resources())) {
+    specification <- software_contract_resources()[[name]]
     matched <- which(ids == specification$id)
     resource_require(
       length(matched) == 1L, paste0(name, "_contract_catalog"),
@@ -650,7 +740,7 @@ validate_resource_authority <- function(root, projection = FALSE) {
   )
   records <- read_dcf_records(file.path(root, catalog_relative))
   authority <- validate_catalog_records(records, schema, root, projection)
-  validate_stage3_contract_resources(authority, root, projection)
+  validate_software_contract_resources(authority, root, projection)
   authority
 }
 
@@ -974,6 +1064,28 @@ run_resource_contract_validation <- function() {
     validate_resource_authority(root, projection = FALSE)
   }, "operation_result_contract_fields")
 
+  root <- fixture("invalid-project-manifest-contract")
+  manifest_path <- file.path(
+    root, "resources", "contracts", "project-manifest.dcf"
+  )
+  records <- read_dcf_records(manifest_path)
+  records[[1L]][["Project-API-Version"]] <- "9.9.9"
+  write_dcf_records(records, manifest_path)
+  expect_resource_failure("invalid project-manifest contract", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "project_manifest_contract_identity")
+
+  root <- fixture("invalid-project-registration-contract")
+  registration_path <- file.path(
+    root, "resources", "contracts", "project-registration.dcf"
+  )
+  records <- read_dcf_records(registration_path)
+  records[[1L]][["Callable-Type"]] <- NULL
+  write_dcf_records(records, registration_path)
+  expect_resource_failure("invalid project-registration contract", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "project_registration_contract_fields")
+
   drift_projection <- file.path(work_root, "projection-byte-drift")
   project_resource_authority(repository_root, drift_projection)
   schema_path <- file.path(
@@ -1009,12 +1121,14 @@ package_expected_files <- function(package_name) {
     files <- c(
       files,
       file.path("R", "operation-result.R"),
+      file.path("R", "project-contracts.R"),
       file.path("R", "resource-catalog.R"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
+      file.path("tests", "project-contracts.R"),
       file.path("tests", "resource-access.R")
     )
   }
@@ -1395,7 +1509,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
   expected_resources <- c(
     resource_catalog = "resources/resource-catalog-schema.dcf",
     diagnostic = "resources/contracts/diagnostic.dcf",
-    operation_result = "resources/contracts/operation-result.dcf"
+    operation_result = "resources/contracts/operation-result.dcf",
+    project_manifest = "resources/contracts/project-manifest.dcf",
+    project_registration = "resources/contracts/project-registration.dcf"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -1429,6 +1545,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["diagnostic"]], quote = "\""),
     ", operation_result = ",
     encodeString(expected_copies[["operation_result"]], quote = "\""),
+    ", project_manifest = ",
+    encodeString(expected_copies[["project_manifest"]], quote = "\""),
+    ", project_registration = ",
+    encodeString(expected_copies[["project_registration"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -1444,11 +1564,21 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "read_raw <- function(path) readBin(path, 'raw', n = file.info(path)$size); ",
     "ids <- c(resource_catalog = 'rrp.contract.resource-catalog', ",
     "diagnostic = 'rrp.contract.diagnostic', ",
-    "operation_result = 'rrp.contract.operation-result'); ",
+    "operation_result = 'rrp.contract.operation-result', ",
+    "project_manifest = 'rrp.contract.project-manifest', ",
+    "project_registration = 'rrp.contract.project-registration'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
     "logical(1L)))); ",
+    "manifest_contract <- getFromNamespace('rrp_project_manifest_contract', ",
+    "'rrpplatform')(catalog); registration_contract <- getFromNamespace(",
+    "'rrp_project_registration_contract', 'rrpplatform')(catalog); ",
+    "stopifnot(identical(manifest_contract[['Contract-ID']], 'rrp.project'), ",
+    "identical(manifest_contract[['Project-API-Version']], '0.1.0'), ",
+    "identical(registration_contract[['Contract-ID']], ",
+    "'rrp.project-registration'), identical(registration_contract[[",
+    "'Callable-Invocation-During-Validation']], 'prohibited')); ",
     "success <- rrp_validate_software_resources(root); ",
     "stopifnot(identical(class(success), c('rrp_operation_result', 'list')), ",
     "identical(names(success), c('operation_id', 'status', 'value', ",
@@ -1486,9 +1616,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
   )
   cat(
     paste0(
-      "PASS installed rrpplatform explicit-root resolution, byte equality, ",
-      "structured success/failure, safe diagnostics, and post-open mutation ",
-      "rejection\n"
+      "PASS installed rrpplatform explicit-root resolution, contract loading, ",
+      "byte equality, structured success/failure, safe diagnostics, and ",
+      "post-open mutation rejection\n"
     )
   )
 }
@@ -1604,11 +1734,11 @@ validate_packages <- function() {
 
   validate_installed_resource_access(library_root, work_root)
 
-  cat("\nResult: PASS (package, installed-resource, and operation-result foundation)\n")
+  cat("\nResult: PASS (package, resource, operation-result, and project-contract foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "contracts, resource-validation operation, package topology, metadata, ",
+    "and project-structure contracts, resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",
     "package-native check only.\n",
     sep = ""

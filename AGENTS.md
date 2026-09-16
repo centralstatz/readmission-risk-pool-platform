@@ -69,16 +69,19 @@ Rscript --vanilla tools/validate-packages.R
 
 It proves the closed source-resource catalog, temporary deterministic installed
 projection, explicit-root installed-package access, common resource-validation
-result and privacy-safe diagnostic behavior, package topology, one-way
-dependency, exact export posture, builds, isolated install/load, and package-
-native checks. No root selector, dependency environment, project/risk
-operation, or release procedure exists on the clean line. The read-only
+result and privacy-safe diagnostic behavior, strict internal project-manifest
+and registration-result validation, package topology, one-way dependency,
+exact export posture, builds, isolated install/load, and package-native checks.
+No root selector, dependency environment, project loader/risk operation, or
+release procedure exists on the clean line. The read-only
 package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
 `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
 2. Committed push run `35116049077`, job `104861623678`, succeeded for revision
 `11fc44835c0d3862196e1af5d1ef691e781c9688`, completing Stage 3 after final
-reconciliation. Stage 4 is detailed and accepted; the next authorized source
-task is only Increment 4.A — Project manifest and registration contracts. Do
-not begin a later Stage 4 increment.
+reconciliation. Increment 4.A added the cataloged project-manifest and
+registration-result authorities plus internal structural validation without
+adding a project loader or export. The next authorized source task is only
+Increment 4.B — Trusted registration and explicit project loading. Do not
+begin a later Stage 4 increment.

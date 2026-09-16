@@ -14,9 +14,10 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and one structured resource-validation
 operation in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2 and
-Stage 3 push evidence. Stages 1–3 are complete and Stage 4 is detailed and
-accepted; Increment 4.A is the next authorized source task. There is no
-hospital project, complete installed RRP product, or ordinary operator command.
+Stage 3 push evidence. Stages 1–3 and Increment 4.A are complete; Increment
+4.B is the next authorized source task. The software now owns strict project-
+manifest and registration-result contracts, but there is no hospital project,
+project loader, complete installed RRP product, or ordinary operator command.
 
 ## Read authority before source
 
@@ -113,15 +114,18 @@ closed to the following present paths:
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
+| `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict project-manifest and in-memory registration-result structural validation. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
+| `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
 | `resources/contracts/operation-result.dcf` and `resources/contracts/diagnostic.dcf` | Machine-readable exact common operation-result and privacy-safe diagnostic contracts cataloged under their stable logical IDs. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root access, and common result/diagnostic behavior. |
+| `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable Stage 4 authorities for the future strict project manifest and closed trusted-registration result. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root access, common result/diagnostic behavior, and internal project contracts. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -221,9 +225,10 @@ local package/resource-foundation evidence operation from the repository root:
 Rscript --vanilla tools/validate-packages.R
 ```
 
-It validates the exact closed DCF catalog/schema/contracts, current source
-resources, safe paths and collisions, source closure, and deterministic
-byte-preserving installed projection with copied adversarial fixtures. It also
+It validates the exact closed DCF catalog/schema/contracts, including the
+project-manifest and registration authorities, current source resources, safe
+paths and collisions, source closure, and deterministic byte-preserving
+installed projection with copied adversarial fixtures. It also
 checks exact package layout, metadata, dependency direction and exports, and
 repository independence; builds both source packages; proves that the main
 package cannot install without the runtime dependency; installs them in
@@ -246,8 +251,10 @@ revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded
 Stage 3 closed only after committed push run `35116049077`, job
 `104861623678`, succeeded for revision
 `11fc44835c0d3862196e1af5d1ef691e781c9688` and final reconciliation found no
-deviation from True North or the architecture. The next authorized source task
-is only Increment 4.A — Project manifest and registration contracts.
+deviation from True North or the architecture. Increment 4.A subsequently
+established the two project contract authorities and internal structural
+validators. The next authorized source task is only Increment 4.B — Trusted
+registration and explicit project loading.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

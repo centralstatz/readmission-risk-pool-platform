@@ -1109,3 +1109,107 @@ accepted for implementation; no Stage 4 source implementation has occurred.
 
 **Next task:** implement only Increment 4.A — Project manifest and registration
 contracts.
+
+## Increment 4.A — Project manifest and registration contracts (complete, 2026-09-16)
+
+Increment 4.A established two software-owned, versioned DCF authorities without
+creating or loading a hospital project. `resources/contracts/project-manifest.dcf`
+is cataloged exactly once as `rrp.contract.project-manifest` and defines the
+strict future `rrp-project.dcf` contract `rrp.project@0.1.0`.
+`resources/contracts/project-registration.dcf` is cataloged exactly once as
+`rrp.contract.project-registration` and defines the closed in-memory result
+contract `rrp.project-registration@0.1.0`. Both are `contract` resources owned
+by `rrpplatform`, projected byte-for-byte at their source-relative installed
+paths, and increase the naturally closed software-resource inventory from
+three to five entries without adding a fixed count assertion.
+
+The manifest authority permits exactly the 13 accepted required fields and no
+optional or unknown fields. Internal `rrpplatform` code strictly parses one
+single-line DCF record; validates the fixed record, contract, one-health-system,
+and exact `rrp.project-api@0.1.0` compatibility values; enforces bounded
+lowercase project/component identities, reserves the `rrp.` namespace against
+project identity and project registration while permitting a manifest to
+select a future installed `rrp.` component, and enforces the accepted bounded
+version grammar; and validates the two project-relative
+paths for portable forward-segment syntax, case-folded equality/overlap, and
+conflict with each other or `rrp-project.dcf` / `R/register.R`. This increment
+validates only syntax and declared relationships. It has no project root and
+therefore makes no containment, existence, ownership, or symlink claim about a
+real filesystem.
+
+The same internal owner validates a supplied in-memory registration candidate
+with exactly `registration_contract_id`, `registration_contract_version`,
+`project_id`, `producers`, and `providers`. Producer/provider collections are
+plain ordered unnamed lists and may be empty. Each entry has exactly
+`component_id`, `component_version`, and a function object; duplicate exact
+kind/ID/version identities, protected `rrp.` identities, malformed versions,
+named or otherwise malformed collections, extra/missing fields, and
+non-functions fail closed. Validation preserves collection order and callable
+objects but never invokes them. Cross-checking project identity against a
+manifest, executing `R/register.R`, composing installed/project entries, and
+resolving selections remain Increment 4.B responsibilities.
+
+The nonsecret boundary follows the accepted closed-contract strategy rather
+than introducing a general security scanner. The field vocabulary admits no
+credential, source, model, clinical, target, product, deployment, executable,
+or arbitrary-configuration field. Bounded obvious-pattern checks additionally
+reject patient/MRN, password/secret/credential/token/authorization/key,
+connection-string, private-key, remote-URL, and common executable-expression
+forms where flexible identity/path values could otherwise carry them. Tests
+and documentation state no claim of comprehensive secret or privacy
+classification.
+
+Historical implementation was revisited at immutable `v0.1.0`, especially
+`runtime/R/provider-registry.R`,
+`operations/lib/canonical-producer-operation.R`, producer/provider identity
+helpers, safe-path mechanics, and the independent-adopter evidence. Pre-reset
+project assessments at `f4a98a8`, `6c2ac3b`, `fd98c73`, and `c459f7d` were
+also rechecked. Exact ID/version keys, closed named structures, duplicate
+rejection, trusted function-object checks, fail-closed validation, forward
+relative-path checks, and nonsecret registration/selection separation were
+adapted. YAML/specification frameworks, estimand/daily-hazard and clinical
+fields, installed composition, generated Hospital repositories, repository-
+root and `.GlobalEnv` sourcing, Git validity, Phase validation, and
+distribution/release behavior were rejected.
+
+`packages/rrpplatform/tests/project-contracts.R` supplies focused positive and
+adversarial evidence for exact manifest parsing; missing, unknown, duplicate,
+malformed, multi-record, and multiline DCF; fixed identity/compatibility;
+bounded IDs and versions; protected namespaces; path syntax, overlap, case,
+and fixed-path conflicts; obvious unsafe content; exact registration/result
+shape; empty and multiple collections; callable structure; duplicates; and
+non-invocation. An initial strict check found two test/code issues: atomic test
+data could not remove a field by assigning `NULL`, and unqualified `setNames()`
+and `combn()` created avoidable package-check notes. The fixture now removes
+the field by selection, and the implementation uses direct base-R naming and
+pair construction. A subsequent adversarial test showed that the singular
+`credential` marker did not reject the plural path segment `credentials`; the
+bounded marker expression was corrected. No accepted contract changed.
+
+The complete local package/resource operation then passed. It proved exact
+five-resource catalog closure, both new contract identities and fields,
+malformed-contract rejection, deterministic byte-identical projection,
+installed copied-root lookup and internal authority loading, unchanged exact
+four/zero export posture, unchanged `rrpplatform -> rrpruntime` dependency,
+both package builds, isolated dependency-order installation/loading, all
+package-native tests, and exact `R CMD check --no-manual` `Status: OK` for both
+packages. Repository validation, direct R/DCF/Rd/namespace parsing, source and
+installed byte comparison, inventory, symlink/generated-output review, and
+`git diff --check` also passed. All validator output remained temporary and
+was removed. The hosted workflow was unchanged and no hosted claim was made.
+
+No `rrpplatform` export or third-party dependency was added, and `rrpruntime`
+was unchanged. There is no project directory or template, registration-file
+loading or invocation, project context/loader/initializer/doctor, filesystem
+project-root validation, installed/project composition, selection resolution,
+producer/provider execution or semantic conformance, dependency activation or
+restoration, state creation/history, source/canonical/target behavior, CLI,
+distribution, deployment, or release behavior. No discrepancy from the
+accepted plan, Platform Architecture, or True North was found.
+
+**Current implementation state:** Increment 4.A complete; Stage 4 remains in
+progress. RRP owns exact versioned project-manifest and trusted-registration
+contracts, but it cannot yet execute registration or load a project.
+
+**Next task:** review Increment 4.A and, if accepted, proceed to Increment 4.B
+— Trusted registration and explicit project loading.

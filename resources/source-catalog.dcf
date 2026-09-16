@@ -29,3 +29,19 @@ Owner-Package: rrpplatform
 Source-Path: resources/contracts/operation-result.dcf
 Installed-Path: resources/contracts/operation-result.dcf
 Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.project-manifest
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/project-manifest.dcf
+Installed-Path: resources/contracts/project-manifest.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.project-registration
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/project-registration.dcf
+Installed-Path: resources/contracts/project-registration.dcf
+Format: dcf
