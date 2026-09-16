@@ -3,7 +3,7 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stage 1 is complete and Stage 2
-implementation is in progress with Increment 2.A complete
+implementation is in progress with Increment 2.B complete
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -300,7 +300,7 @@ Stage 2 files and package APIs are decided during Stage 2 planning.
 ## Stage 2 — Internal installed-software package foundation
 
 **Planning status:** detailed and accepted; implementation in progress with
-Increment 2.A complete
+Increment 2.B complete
 
 ### Objective
 

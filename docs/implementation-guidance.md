@@ -9,8 +9,9 @@ authorize a future stage, or claim that planned software exists.
 
 The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
-foundation validator, and the deliberately behavior-free `rrpruntime` package
-owner. There is no executable RRP product behavior or installed RRP software.
+foundation validator, two deliberately behavior-free internal package owners,
+and one local package-foundation validator. There is no executable RRP product
+behavior or installed RRP software.
 
 ## Read authority before source
 
@@ -101,9 +102,13 @@ closed to the following present paths:
 | `.editorconfig` | Basic text-format defaults. |
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and zero-export namespace. |
+| `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Behavior-free main-package source and human/package documentation. |
+| `packages/rrpplatform/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, runtime import, and absent exports. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the complete local two-package foundation. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -160,10 +165,11 @@ owner is explicit. Keep these future dependency responsibilities distinct:
 - deployment-target closure.
 
 The `rrpruntime` package currently uses only base R package machinery and has
-no `Imports`, `Suggests`, or `LinkingTo`. No dependency environment exists yet.
-Do not introduce one by convenience, preselect its physical layout here, or
-treat a future development lock as the installed, project, provider, or
-deployment authority.
+no `Imports`, `Suggests`, or `LinkingTo`. `rrpplatform` imports only
+`rrpruntime`; neither package exports a callable API. No dependency environment
+exists yet. Do not introduce one by convenience, preselect its physical layout
+here, or treat a future development lock as the installed, project, provider,
+or deployment authority.
 
 ## Privacy and committed evidence
 
@@ -193,13 +199,24 @@ has a human-readable result and nonzero status on failure. Automated checks
 cannot prove that content is free of patient or confidential information, so
 human review remains required.
 
-The `rrpruntime` package owns one base-R package-foundation test, which runs
-during its standard `R CMD check`. Until Increment 2.B introduces the joint
-human package-validation operation, focused package build, temporary-library
-install/load, and check evidence is recorded directly in the implementation
-record. There is no CI workflow, platform acceptance operation, or installed
-product validation yet. Do not use the repository source check to imply
-package, runtime, clinical, installation, deployment, or release validity.
+Each internal package owns one base-R package-foundation test. Run the complete
+local two-package evidence operation from the repository root:
+
+```sh
+Rscript --vanilla tools/validate-packages.R
+```
+
+It checks exact package layout, metadata, dependency direction, zero-export
+namespaces, and repository independence; builds both source packages; proves
+that the main package cannot install without the runtime dependency; installs
+them in dependency order into a fresh temporary library; loads each in a fresh
+vanilla R process; and requires exact `Status: OK` from each package's
+`R CMD check --no-manual`. Temporary archives, libraries, check directories,
+and the local empty package repository are removed after the operation.
+
+There is no CI workflow, platform acceptance operation, or installed product
+validation yet. Neither local validator implies runtime, clinical,
+installation, deployment, or release validity.
 
 Do not invent commands or restore historical validators to make an evidence
 list look complete. Hosted software verification begins no earlier than Stage

@@ -15,10 +15,12 @@ machine-readable product-development identity authority.
 
 The repository presently contains product and architecture documentation,
 public repository essentials, human development guidance, one local
-repository-foundation validator, and a conventional but deliberately behavior-
-free internal `rrpruntime` package owner. It has no installed RRP software,
-hospital project, clinical contract, runtime calculation, product,
-application, command-line interface, or deployment capability.
+repository-foundation validator, and two conventional but deliberately
+behavior-free internal package owners. `rrpplatform` depends only on
+`rrpruntime`; neither package exports a callable API. The repository has no
+installed RRP software, hospital project, clinical contract, runtime
+calculation, product, application, command-line interface, or deployment
+capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -56,7 +58,7 @@ Contributions are welcome when they follow that guidance and the current
 accepted increment; see [CONTRIBUTING.md](CONTRIBUTING.md). Coding agents must
 also follow the derived [working agreement](AGENTS.md).
 
-## Repository validation
+## Local validation
 
 From the repository root, a human can validate the current source-foundation
 claims with:
@@ -71,6 +73,18 @@ path and text hygiene, and obvious generated or confidential content. It does
 not validate package lifecycle behavior, a project, clinical contract, runtime,
 installation, deployment, or release. Automated screening cannot replace human
 review for patient-level or confidential information.
+
+Validate the complete local two-package foundation with:
+
+```sh
+Rscript --vanilla tools/validate-packages.R
+```
+
+This operation checks exact package topology, metadata, one-way dependency,
+zero-export namespaces, source independence, builds, dependency-order isolated
+installation/loading, package-native tests, and exact `R CMD check --no-manual`
+results. It is maintainer evidence, not an installed product command or proof
+of runtime, installation, clinical, deployment, or release behavior.
 
 ## License
 

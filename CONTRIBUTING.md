@@ -23,10 +23,21 @@ the repository root:
 Rscript --vanilla tools/validate-repository.R
 ```
 
-Its human-readable result and process exit status cover only the Stage 1
-source-foundation claims documented by the implementation guide. Passing does
-not establish package, runtime, clinical, installation, deployment, or release
-validity, and automated screening does not replace privacy review.
+Its human-readable result and process exit status cover only the current
+repository-structure and static-policy claims documented by the implementation
+guide. Passing does not establish package, runtime, clinical, installation,
+deployment, or release validity, and automated screening does not replace
+privacy review.
+
+For the current two-package foundation, also run:
+
+```sh
+Rscript --vanilla tools/validate-packages.R
+```
+
+This package operation owns metadata, dependency/API boundary, build, isolated
+install/load, and package-native check evidence. It does not establish product
+runtime or installed-distribution behavior.
 
 ## Sign off contributions
 

@@ -60,8 +60,15 @@ Rscript --vanilla tools/validate-repository.R
 ```
 
 It proves only current repository structure and static policy. The behavior-
-free `rrpruntime` package has one package-native base-R foundation test and
-direct temporary build/install/load/check evidence; the joint human package
-operation is deferred to Increment 2.B. No dependency environment, CI workflow,
-platform operation, or release procedure exists on the clean line. Do not
-recreate historical validation commands or claim broader evidence.
+free internal packages have package-native base-R foundation tests. Use the
+same local two-package operation documented for people:
+
+```sh
+Rscript --vanilla tools/validate-packages.R
+```
+
+It proves only package topology, one-way dependency, zero-export namespaces,
+builds, isolated install/load, and package-native checks. No dependency
+environment, CI workflow, platform operation, or release procedure exists on
+the clean line. Do not recreate historical validation commands or claim
+broader evidence.

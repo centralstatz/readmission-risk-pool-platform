@@ -23,16 +23,23 @@ expected_files <- c(
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
+  "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
+  "packages/rrpplatform/R/rrpplatform-package.R",
+  "packages/rrpplatform/README.md",
+  "packages/rrpplatform/man/rrpplatform-package.Rd",
+  "packages/rrpplatform/tests/package-foundation.R",
   "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
   "packages/rrpruntime/R/rrpruntime-package.R",
   "packages/rrpruntime/README.md",
   "packages/rrpruntime/man/rrpruntime-package.Rd",
   "packages/rrpruntime/tests/package-foundation.R",
-  "tools/validate-repository.R"
+  "tools/validate-packages.R", "tools/validate-repository.R"
 )
 expected_directories <- c(
-  "docs", "packages", "packages/rrpruntime", "packages/rrpruntime/R",
-  "packages/rrpruntime/man", "packages/rrpruntime/tests", "tools"
+  "docs", "packages", "packages/rrpplatform", "packages/rrpplatform/R",
+  "packages/rrpplatform/man", "packages/rrpplatform/tests",
+  "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",
+  "packages/rrpruntime/tests", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",
@@ -293,7 +300,8 @@ public_requirements <- list(
   "README.md" = c("Apache License 2.0", "SECURITY.md", "SUPPORT.md"),
   "CONTRIBUTING.md" = c(
     "Developer Certificate of Origin 1.1", "SECURITY.md",
-    "Rscript --vanilla tools/validate-repository.R"
+    "Rscript --vanilla tools/validate-repository.R",
+    "Rscript --vanilla tools/validate-packages.R"
   ),
   "SECURITY.md" = c("GitHub private vulnerability", "no security response SLA"),
   "SUPPORT.md" = c("best effort", "There is no support or response-time SLA"),

@@ -1,0 +1,15 @@
+Package: rrpplatform
+Type: Package
+Title: Internal Readmission Risk Pool Implementation
+Version: 0.1.0.9000
+Authors@R: c(person("Alex", "Zajichek", email = "alexzajichek@gmail.com", role = c("aut", "cre")), person("CentralStatz Statistical & Data Sciences LLC", role = "cph"))
+Description: Establishes the main internal implementation package for the
+    Readmission Risk Pool software and its one-way dependency on the focused
+    runtime package. The package intentionally provides no callable behavior
+    during the package-foundation stage.
+License: Apache License (>= 2)
+URL: https://github.com/centralstatz/readmission-risk-pool-platform
+BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues
+Encoding: UTF-8
+Depends: R (>= 4.4.0)
+Imports: rrpruntime

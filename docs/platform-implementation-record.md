@@ -309,3 +309,77 @@ dependency environment, distribution, deployment, or release capability.
 
 **Next task:** implement only Increment 2.B — Main package and local package-
 boundary proof.
+
+### Increment 2.B — Main package and local package-boundary proof (complete, 2026-09-15)
+
+Increment 2.B created `packages/rrpplatform/` as the conventional, behavior-
+free main internal implementation package at version `0.1.0.9000`. Its
+metadata, manual package documentation, README, minimal source, and one base-R
+package-foundation test establish only its package identity and the accepted
+one-way dependency on `rrpruntime` `0.3.0.9000`. `rrpplatform` declares only
+`rrpruntime` in `Imports` and imports its namespace; `rrpruntime` retains no
+`Imports`, `Suggests`, or `LinkingTo` and no reverse reference. Both packages
+require R 4.4.0 or newer and export no callable API. Their versions remain
+independent internal identities; `RRP.yml` remains the sole product-development
+identity authority at `1.0.0-dev` and `not_released`.
+
+The new base-R maintainer operation `tools/validate-packages.R` is the single
+human-callable local proof for the current two-package foundation. It requires
+exactly the two accepted package roots and each package's six conventional
+files; parses R, DCF, namespace, and manual sources; checks exact identities,
+versions, R requirements, licensing, repository metadata, dependencies, and
+zero-export namespaces; rejects package-source repository discovery and the
+reverse dependency; builds both source archives in temporary space; confirms
+that `rrpplatform` cannot install into an isolated library without
+`rrpruntime`; installs the packages in dependency order into a fresh temporary
+library; loads each from a fresh vanilla R process; runs both package-native
+tests through `R CMD check --no-manual`; and requires exact `Status: OK` in
+both check logs. It reports package-by-package outcomes, returns nonzero on
+failure, and removes its archives, libraries, check directories, profiles, and
+empty local package repository. It is not an installed command, dispatcher,
+release check, or product operation.
+
+Historical reconnaissance re-inspected pre-reset commit `d31534a` main-package
+metadata, namespace, documentation, source shell, package test, package-
+boundary assertions, and build/check harness. The `rrpplatform` name and
+version, conventional layout, one-way package topology, base-R tests,
+dependency-order temporary installation, fresh-process loading, offline check
+profile, exact check-log status, and actionable failure mechanics were adapted.
+The historical import and invocation of `runtime_conforms`, old runtime version
+expectation, behavior-specific test, placeholder maintainer address,
+repository-root source composition, compatibility loading, Phase validation,
+and broader registry/profile machinery were rejected. The current namespace
+uses only `import(rrpruntime)`, establishing the dependency without inventing
+an exported runtime function.
+
+Successful evidence on R 4.4.1 for macOS arm64 passed the documented operation
+`Rscript --vanilla tools/validate-packages.R`. Both packages passed source and
+documentation parsing, exact static topology and dependency/API checks, source
+builds, dependency-order installation into a fresh library, fresh-process
+loads, their package-native tests, and `R CMD check --no-manual` with exact
+`Status: OK`. The operation also observed a nonzero package-manager failure
+when installing `rrpplatform` into a separate empty library where `rrpruntime`
+was unavailable.
+
+Three additional copied temporary source trees demonstrated status 1 and the
+expected actionable diagnostic for a missing `rrpplatform/NAMESPACE`, a
+reverse `rrpruntime -> rrpplatform` `Imports` declaration, and an unexpected
+`rrpplatform` export. Those fixtures and all successful-path artifacts were
+removed. The expanded repository validator recognizes only the six realized
+`rrpplatform` files, its three directories, and the package-validation tool.
+The README, contribution guide, human implementation guide, agent agreement,
+ownership map, and plan status now describe the same two-package state and
+document the exact human command. Final repository validation and normal
+path/text/generated-output hygiene passed. No accepted plan or architecture
+discrepancy was found.
+
+**Current implementation state:** Increment 2.B complete; Stage 2 remains in
+progress. RRP has two conventional, behavior-free internal package owners with
+an enforced `rrpplatform -> rrpruntime` dependency, zero exported APIs, and a
+repeatable local package-foundation proof. It still has no hosted CI, installed
+resource access, common operation result, project, clinical contract, runtime
+calculation, history, product, application, CLI, dependency environment,
+distribution, deployment, or release capability.
+
+**Next task:** implement only Increment 2.C — Hosted package-foundation
+verification.
