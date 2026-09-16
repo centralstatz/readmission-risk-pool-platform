@@ -101,8 +101,8 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity; Stage 4 remains to be detailed before its source
-implementation can begin.
+platform or support validity. Stage 4 is detailed and accepted for
+implementation, but no hospital-project capability exists yet.
 
 ## License
 

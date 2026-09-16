@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stages 1–3 are complete. The next
-lifecycle step is to detail Stage 4 — Independent Project Foundation from the
-accepted Stage 3 baseline; Stage 4 source implementation is not yet authorized.
+**Status:** authoritative high-level roadmap; Stages 1–3 are complete; Stage 4
+is detailed and accepted for implementation. Increment 4.A is the next
+authorized source task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,10 +68,9 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 3 is the
-most recently completed detailed stage; completed Stage 1–3 detail remains as
-implementation lineage. Stage 4 remains high-level until its separate planning
-and acceptance task. After a stage is implemented:
+Only the current stage is decomposed into accepted increments. Stage 4 is the
+current detailed stage; completed Stage 1–3 detail remains as implementation
+lineage. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -906,9 +905,10 @@ deviation. Stage acceptance is a lifecycle action, not Increment 3.D.
 **Acceptance result:** complete on 2026-09-16. All criteria above passed for
 committed revision `11fc44835c0d3862196e1af5d1ef691e781c9688`, including
 read-only hosted push run `35116049077` / job `104861623678`. Reconciliation
-found no deviation from Platform True North or Platform Architecture. The next
-lifecycle step is to detail Stage 4 — Independent Project Foundation from the
-accepted Stage 3 baseline; no Stage 4 source work is yet authorized.
+found no deviation from Platform True North or Platform Architecture. At that
+acceptance point, the next lifecycle step was to detail Stage 4 — Independent
+Project Foundation from the accepted Stage 3 baseline; Stage 4 source work had
+not yet been authorized.
 
 ### Plain-language exit state
 
@@ -959,20 +959,640 @@ their privacy, retention, trust, and dependency boundaries.
 
 ## Stage 4 — Independent project foundation
 
-### Objective and responsibilities
+**Planning status:** detailed and accepted for implementation on 2026-09-16;
+source implementation has not started; Increment 4.A is next.
 
-Define and implement the public project contract: explicit root, versioned
-nonsecret manifest, fixed trusted registration entry point, safe paths,
-software/API compatibility, separate extension dependencies, exact producer
-and provider selection, project state location, initializer, loader, doctor,
-and failure behavior. RRP defaults remain installed code; only producers and
-providers are registrable project extensions.
+### Objective
 
-### Why here and dependencies
+Introduce the smallest durable public contract that makes one explicit
+directory an independent hospital-owned RRP project. Installed `rrpplatform`
+must be able to initialize, recognize, safely load, and diagnose that project;
+validate its nonsecret manifest, software/API compatibility, trusted
+producer/provider registration, exact selections, extension-dependency
+boundary, and state-location declaration; and fail safely before any source,
+provider, or state behavior runs.
 
-Every source, provider, state, and product operation requires unambiguous
-project ownership. The project boundary therefore precedes canonical and
-runtime code and uses Stage 3's resource and operation primitives.
+Stage 4 creates project structure and trust context, not a hospital workflow.
+It uses Stage 3's explicit software-resource context and structured operation
+results without weakening the rule that software and project roots are always
+separate caller-supplied inputs.
+
+### Stage 3 reconciliation and inherited constraints
+
+Stages 1–3 are accepted and complete at baseline
+`16a7cd1651b28a93e223ae4389135ed8558f2ccc`. No corrective change is required
+before Stage 4. The realized tree establishes these constraints:
+
+- one validated `rrp_resource_catalog` created from an explicit software root
+  is the only current installed-software context;
+- `rrpplatform` owns resource access, stable operations, diagnostics, and
+  orchestration; it imports only `rrpruntime` and currently exports four
+  resource/result interfaces;
+- `rrpruntime` remains dependency-light, export-free, and independent upward;
+  project ownership does not move into it;
+- the source resource catalog is closed and can add only real Stage 4 contract
+  or template resources with exact source/installed ownership;
+- common operation results and diagnostics are small, machine-inspectable, and
+  privacy-safe; low-level resource failures remain typed errors;
+- the two existing human validators and read-only hosted workflow already own
+  repository, package, resource, copied-root, build/install/load, and strict
+  package-check evidence; and
+- there is no installed distribution, launcher, CLI, root selector, dependency
+  environment, project, clinical contract, runtime behavior, or writable
+  state implementation to discover implicitly.
+
+### Scope test and settled Stage 4 decisions
+
+Every responsibility was tested against one question: is it necessary for
+installed RRP to initialize, recognize, load, and structurally validate an
+independent project before source admission begins?
+
+| Responsibility | Accepted Stage 4 boundary |
+|---|---|
+| Project root | One caller-supplied directory, canonicalized immediately. No working-directory default, parent search, Git, environment variable, sibling, package, or software-root inference enters package behavior. |
+| Software context | Project APIs receive an already validated `rrp_resource_catalog` plus the explicit project root. They never reinterpret the project as a software root or vice versa. |
+| Project physical contract | Exactly one root manifest at `rrp-project.dcf` and one trusted registration file at `R/register.R`; these fixed paths are public project-contract version `0.1.0`. Other project layout remains private unless a later contract owns it. |
+| Manifest representation | Strict one-record DCF parsed with base R. Unknown, duplicate, missing, multiline continuation, or unsupported fields fail closed. No YAML/JSON dependency or executable configuration enters. |
+| Compatibility | The manifest declares exact project contract `rrp.project@0.1.0` and exact supported project API `rrp.project-api@0.1.0`. Exact equality is the first compatibility rule; product and internal-package versions remain separate identities, and no speculative range/semver negotiation or migration machinery is added. |
+| Registration | Installed RRP evaluates only `R/register.R`, once per project load, in a fresh controlled environment and invokes exactly one `rrp_register_project(project_root)` function. The result is closed to project identity plus producer/provider records. The environment is containment against accidental global coupling, not a security sandbox. |
+| Registration records | Producer and provider collections contain exact component ID, version, and trusted callable fields. Stage 4 validates structure, identity, duplicates, protected namespaces, and availability only; it never invokes the callables or claims producer/provider conformance. |
+| Selection | The manifest selects one exact producer ID/version and one exact provider ID/version. Resolution is deterministic and requires exactly one match; there is no alias, latest, priority, fallback, ensemble, or data-dependent selection. |
+| Defaults | Future RRP-provided components remain installed software entries under protected `rrp.` identities. Project entries cannot shadow them, and the initializer never copies an installed default into a project. No installed producer/provider default is invented in Stage 4. |
+| Extension dependencies | The manifest declares one safe project-relative extension-library path. Loading places installed RRP libraries before that project library and excludes ambient user libraries from declared project resolution. Stage 4 validates separation and protected-package conflicts only; it does not restore, install, lock, or close dependencies and does not introduce `renv`. |
+| Project state | The manifest declares one safe project-relative state path. Stage 4 resolves and validates the intended location without creating history, adapters, schemas, locks, transactions, retention, backup, or migration behavior. |
+| Initializer | One stable programmatic operation creates only the two required project files in a previously absent destination, verifies them through the loader, and promotes them atomically. It does not create Git, state, dependency-library, source, mapping, provider, model, test, documentation, product, or deployment scaffolding. |
+| Loader | One low-level technical interface validates manifest and paths before trusted code, loads registration once, resolves exact selections, and returns one immutable project context. Expected project failures are typed; no operation result is forced onto low-level callers. |
+| Doctor | One read-only project-validation operation calls the same loader and translates expected typed project failures into the existing operation-result/diagnostic contract. It does not execute extensions, access source data, initialize state, install dependencies, or perform production security validation. |
+
+Full extension dependency management, producer/provider behavior, state
+management, CLI convenience, project migration/upgrade, secret management, and
+environment restoration fail the scope test and remain deferred. Stage 4
+settles the contracts and ownership needed by later owners without simulating
+their behavior.
+
+### Software context and project context
+
+The two explicit contexts remain distinct:
+
+```text
+validated rrp_resource_catalog
+    → installed RRP contracts/templates and current software identity
+
+explicit project root
+    → hospital-owned manifest, trusted registration, extension boundary,
+      and intended state location
+```
+
+The loader receives both. It first revalidates the software resources needed
+for the project contract, then canonicalizes the project root independently.
+It does not compare their physical ancestry, search from one to find the other,
+or require either to be a development repository. A project may be copied or
+moved without changing semantic identity because no stored absolute root is
+part of its contract.
+
+The returned `rrp_project_context` is an exact immutable list containing only:
+
+- the validated software catalog context;
+- normalized project root;
+- validated manifest/project identity and compatibility;
+- validated registration result;
+- exact resolved producer and provider records with origin;
+- normalized intended extension-library location; and
+- normalized intended state location.
+
+It contains no patient data, credential, open source connection, producer or
+provider result, model object, analytical run identity, persistence session,
+product, application, arbitrary configuration, or ambient environment state.
+New operations load a new context; Stage 4 does not serialize executable
+contexts or re-source registration during one operation.
+
+### Minimum project manifest
+
+The public root manifest is `rrp-project.dcf`. Its logical contract identity is
+`rrp.project@0.1.0`, its format is strict DCF, and it contains exactly these
+required fields in the first contract version:
+
+| Field | Meaning and rule |
+|---|---|
+| `Record-Type` | Exact value `rrp-project`. |
+| `Project-Contract-ID` | Exact value `rrp.project`. |
+| `Project-Contract-Version` | Exact value `0.1.0`. |
+| `Project-ID` | Stable non-patient project identity, at most 96 bytes, matching `^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$`; the protected `rrp.` prefix is prohibited. |
+| `Project-Version` | One exact version, at most 64 bytes, matching `^[0-9]+[.][0-9]+[.][0-9]+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$`. It is project source/config identity, not RRP software or state version. |
+| `Project-Scope` | Exact value `one_health_system`. |
+| `Supported-RRP-API-Version` | Exact value `0.1.0`, meaning compatibility with `rrp.project-api@0.1.0`. |
+| `Producer-ID` / `Producer-Version` | One exact selected producer registration identity. |
+| `Provider-ID` / `Provider-Version` | One exact selected provider registration identity. |
+| `Extension-Library-Path` | One safe project-relative intended library location owned by project extensions. |
+| `State-Path` | One safe project-relative intended writable-state location owned by the project. |
+
+There are no optional or extension fields. Component IDs follow the same
+bounded lowercase dot/hyphen identity discipline and component versions use
+the same version grammar and limit as `Project-Version`. Safe
+paths reuse Stage 3's forward-segment rules: no absolute, drive, home, empty,
+dot, parent, control, or backslash segments. State and extension-library paths
+must be distinct, non-overlapping, contained, case-safe, non-linked through
+every existing segment, and unable to conflict with the manifest or fixed
+registration path. If either location already exists it must be a contained,
+non-linked directory; absence is valid because Stage 4 declares ownership but
+does not initialize dependencies or state.
+
+The manifest contains no executable code, function or package-install name,
+arbitrary path, remote URL, source connection, credential, secret, clinical
+mapping, model declaration, raw record, canonical-profile placeholder, target,
+product/app/deployment setting, or free-form operation configuration. Unknown
+fields fail rather than becoming an accidental plugin/configuration surface.
+Canonical profile, producer/provider semantic declarations, models, and state
+profiles enter only when their owning later contracts exist; schema versioning
+supports that evolution without reserving empty fields now.
+
+The exact project API version is the Stage 4 software-compatibility surface.
+The installed software catalog still identifies the development product, but
+the manifest does not couple a project to one product release when exact API
+compatibility is sufficient. Thus `0.1.0` is the initial one-point supported
+API range, not the package version, product version, project version, state
+version, or a promise of semantic-version negotiation. Later architecture
+fields such as canonical-profile support, model/dependency evidence,
+persistence profile, and operation settings enter the manifest only when their
+owning stages supply real contracts to validate.
+
+`resources/contracts/project-manifest.dcf` becomes the software-owned,
+cataloged machine-readable authority for the manifest identity, fixed paths,
+exact fields, controlled values, identity/version rules, safe-path rules, and
+unknown-field prohibition. Its logical resource identity is
+`rrp.contract.project-manifest`.
+
+### Fixed trusted registration
+
+The second required project artifact is exactly `R/register.R`. It is a
+regular non-linked file beneath the explicit root; the path is fixed by the
+project contract and never read from the manifest. Installed RRP evaluates it
+without changing the working directory in a new environment whose parent is
+the base environment, requires the environment to expose exactly one function
+named `rrp_register_project`, and calls that function with the normalized
+project root.
+
+The callable returns one closed registration result with exact fields:
+
+```text
+registration_contract_id
+registration_contract_version
+project_id
+producers
+providers
+```
+
+The identity is `rrp.project-registration@0.1.0`; `project_id` must equal the
+already validated manifest. `producers` and `providers` are ordered lists of
+records containing exactly `component_id`, `component_version`, and `callable`.
+The callable must be an R function but is never invoked in Stage 4. Collections
+may be empty in the abstract contract so future installed defaults remain
+possible, but the selected producer/provider must each resolve exactly once
+from the combined installed/project catalog for a project to load.
+
+Project entries retain `project` origin, cannot use the protected `rrp.`
+namespace, cannot duplicate kind+ID+version, and cannot override or shadow an
+installed exact identity. Different exact versions remain distinct and never
+create an implicit preference. The resolver canonicalizes ordering by
+kind/ID/version, then performs exact selection. Registration does not select;
+the manifest does not name functions or files.
+
+`resources/contracts/project-registration.dcf` becomes the cataloged
+machine-readable authority for this closed result and entry shape under
+logical ID `rrp.contract.project-registration`. It defines no producer or
+provider execution signature. Those kind-specific semantic contracts belong
+to Stages 5 and 6.
+
+Registration is trusted local R code, not a sandbox. It may create closures or
+load explicitly reviewed project packages through the declared extension
+library, but RRP does not scan directories, recursively source code, discover
+plugins/packages, download remote code, or mutate `.GlobalEnv`. RRP can
+validate the returned boundary and its own ordering, not prove arbitrary local
+code harmless or deterministic. Documentation must preserve that honest trust
+model.
+
+### RRP defaults and project extensions
+
+Resolution is one closed composition step:
+
+```text
+installed RRP component catalog (protected `rrp.` identities)
+        +
+validated project producer/provider registration
+        ↓ reject collisions; retain origin
+exact manifest producer/provider selections
+        ↓ require exactly one match each
+immutable selected records in project context
+```
+
+Stage 4 contains no real installed producer or provider, so it does not invent
+one. The resolver contract nevertheless ensures that a later RRP-provided
+default remains installed and can be selected exactly without being copied
+into a project. A project-selected extension resolves from trusted project
+registration. A missing selection, duplicate, protected-name attempt, or
+collision fails closed. There is no implicit fallback from a missing project
+component to an installed default.
+
+The Stage 4 initializer creates minimal project-owned structural producer and
+provider registrations so its output can exercise registration and exact
+selection honestly. Their callables have no supported execution semantics and
+are never invoked by any Stage 4 interface. They are not RRP defaults,
+clinical implementations, or evidence of producer/provider conformance.
+
+### Extension dependency and state boundaries
+
+`Extension-Library-Path` is the minimum dependency contract. It names where
+project-owned extension packages may be made available, separate from the
+immutable RRP libraries. During registration loading, the controlled library
+order is RRP-owned package libraries first, the declared project extension
+library second if present, and base/recommended R libraries as required. An
+ambient user library is not accepted as declared project closure. The loader
+rejects a project library that contains or attempts to override RRP-owned
+packages.
+
+No dependency lock/manifest is created while the initialized project has no
+external package dependency. Stage 4 neither chooses `renv` nor promises full
+dependency reproduction. Restore/install, transitive closure, package-source
+evidence, model dependencies, and deployment closure enter when a real
+extension requires them. The fixed project library identity is enough to
+prevent project dependencies from silently becoming software dependencies.
+
+`State-Path` establishes only a contained project-owned location. The
+initializer does not create an empty state directory, and a missing location is
+a valid `not_initialized` state reported safely by doctor. If present, the
+loader checks only structural containment, link, directory, and ownership
+rules. Stage 7 owns state initialization, schemas, persistence adapters,
+transactions, history, locking, backup, recovery, retention, and migration.
+
+### Component ownership
+
+| Component | Stage 4 responsibility |
+|---|---|
+| `rrpplatform` | Owns contract parsing, typed project errors, controlled registration, installed/project composition, exact selection, project context, loader, initializer, and doctor. It is the only package gaining project APIs. |
+| `rrpruntime` | Gains no project responsibility, dependency, resource, or export. It remains the downward-only behavior-free leaf until computational runtime work has an accepted owner. |
+| Installed software resources | Own the two contract authorities, the two initialization templates, and later installed default component registrations. They never contain hospital configuration or writable state. |
+| Hospital project | Owns the manifest values, trusted registration and project extensions, declared extension-library boundary, and declared writable-state location. It contains no RRP implementation source. |
+| Maintainer tooling | Extends the existing repository/package validators only to prove realized resources, exports, packages, and independent/adversarial projects; it creates no runtime-only interpretation. |
+| Future CLI/launcher | Will select software/project roots and render operations for people. Stage 4 package APIs require explicit contexts and provide no ambient selection convenience. |
+| Future readmit interface | Will orchestrate later source/runtime/product operations through stable platform APIs. It owns nothing and exposes no public workflow in Stage 4. |
+
+### Package APIs, operations, and failures
+
+All Stage 4 behavior belongs to `rrpplatform`; `rrpruntime` remains unchanged.
+The planned technical interfaces are:
+
+- `rrp_load_project(software_catalog, project_root)`: read-only low-level load
+  returning one validated `rrp_project_context` or raising a typed project
+  condition;
+- `rrp_initialize_project(software_catalog, project_root, project_id,
+  project_version)`: mutating operation that instantiates the two software-
+  owned project templates in a previously absent destination and returns one
+  common operation result; and
+- `rrp_validate_project(software_catalog, project_root)`: read-only project
+  doctor operation returning one common operation result.
+
+The initializer derives protected-safe project producer/provider IDs from the
+validated project ID and uses the project version for their initial exact
+versions. Success reports only safe project identity/version and created
+relative paths. It creates a sibling staging directory, validates the complete
+staged project through `rrp_load_project()`, atomically promotes only to a
+still-absent destination, and removes only its owned staging state on failure.
+It never overwrites, merges with, or repairs an existing path.
+
+The doctor uses operation ID `rrp.validate-project`. Success summarizes safe
+project/contract/API identity, selected component IDs/versions/origins, and
+extension/state boundary status. A declared but absent state location is a
+successful structural result with a fixed warning, not hidden initialization.
+Expected typed project errors become one failure result with the same stable
+code and fixed message `RRP project validation failed.` Unexpected programming
+errors are not hidden. Doctor executes registration because that is necessary
+to validate the trusted boundary, but it never invokes a selected extension,
+opens a source, creates state, restores dependencies, or performs production
+security checks.
+
+Low-level failures inherit from `rrp_project_error` and contain one bounded
+safe machine code, one fixed maintainer message, and no arbitrary call/path/
+parser/project content. The finite failure families cover invalid root,
+missing/malformed/unsupported manifest, project/API incompatibility, unsafe
+project paths, missing/malformed registration, duplicate or protected
+registration, unknown/ambiguous selection, invalid extension-library boundary,
+and invalid state location. Implementation may refine a family only when a
+caller needs stable recovery; it must not generate a speculative code catalog.
+
+The three exports remain technical internal-platform interfaces used by later
+CLI/tests/automation. They are not the eventual ordinary operator surface and
+do not make either internal R package the RRP product boundary.
+
+### Implementation sequence
+
+```text
+4.A — Project manifest and registration contracts
+        ↓
+4.B — Trusted registration and explicit project loading
+        ↓
+4.C — Minimal independent-project initialization
+        ↓
+4.D — Structured project doctor and independent-project proof
+        ↓
+Stage 4 acceptance and reconciliation
+        ↓
+Detail Stage 5
+```
+
+Four increments are the smallest useful sequence. Contract authority must
+precede executable loading; loading must exist before initialization can prove
+its output; initialization must exist before doctor and copied-project evidence
+can exercise the normal lifecycle. Doctor/integration remains separate from
+the mutating initializer so each operation has one reviewable side-effect
+boundary.
+
+### Increment 4.A — Project manifest and registration contracts
+
+**Objective:** make the exact Stage 4 project and registration structures
+software-owned, versioned, cataloged, and internally parseable without loading
+project code.
+
+**Why here:** the loader and initializer require one fixed authority for every
+field, path, identity, compatibility value, and closed registration shape.
+
+**Implementation scope:** add the manifest and registration DCF contract
+resources under the logical IDs above; add them to the closed source catalog;
+implement cohesive internal `rrpplatform` parsing/validation for the manifest
+and non-callable portions of a registration candidate; and add focused package-
+native tests, manual package-orientation updates, ownership-map entries, exact
+repository inventory, and package/resource validator coverage. No callable API
+need be exported yet. Base R remains sufficient.
+
+**Non-scope:** no project directory, registration execution, context, loader,
+initializer, doctor, dependency library, state directory, CLI, clinical field,
+or producer/provider behavior.
+
+**Historical reuse:** adapt strict closed-envelope and identity/version checks
+from the `v0.1.0` producer/provider contracts and pre-reset project-contract
+assessments. Reject YAML dependency, estimand/clinical fields, repository root,
+installed-producer composition, and broad specification machinery.
+
+**Evidence:** exact DCF/resource identity and projection checks; strict field,
+value, ID/version/path, compatibility, secret-exclusion, and unknown-field
+tests; malformed/missing/duplicate/control/case/path adversarial cases; source
+closure; package parsing and native tests; both existing validators, builds,
+isolated install/load, and strict package checks.
+
+**Completion statement:** RRP owns exact versioned project-manifest and trusted-
+registration contracts, but it cannot yet execute registration or load a
+project.
+
+### Increment 4.B — Trusted registration and explicit project loading
+
+**Objective:** load one hand-authored project from explicit software and
+project contexts, execute only its fixed registration boundary, resolve exact
+selections, and return a minimal immutable project context.
+
+**Why here:** initialization and doctor must reuse one proven loader rather
+than independently interpreting projects.
+
+**Implementation scope:** implement typed project errors, controlled
+registration evaluation, closed-result validation, protected namespace and
+duplicate/collision policy, deterministic installed/project composition, exact
+selection, extension-library ordering/separation, structural state-path
+resolution, the exact `rrp_project_context`, and exported
+`rrp_load_project()`. Add one focused manual and package-native loader tests.
+Temporary hand-authored project fixtures live only under test/validation temp
+roots; no repository project scaffold is added.
+
+**Non-scope:** no producer/provider invocation or semantic conformance, source
+access, initializer, doctor/result translation, dependency restore/lock,
+state creation, CLI, migration, or ambient root selection.
+
+**Historical reuse:** directly reuse the proven exact ID/version key,
+duplicate rejection, trusted-function requirement, and fail-closed lookup
+mechanics from `v0.1.0` producer/provider registries where they fit. Adapt the
+pre-reset closed registration-result, controlled-environment, origin/collision,
+and exact-selection design. Reject `.GlobalEnv`, recursive fixed-order source
+chains, repository paths, and hard-coded reference composition.
+
+**Evidence:** successful load from unrelated working directories and copied
+roots; exact context shape; registration called once; no selected callable
+invoked; installed/project origin preserved; deterministic result independent
+of returned order; and adversarial missing/malformed/linked entry point,
+unknown fields, wrong project identity, duplicate/protected/colliding entries,
+unknown/ambiguous selections, unsafe state/library paths, RRP-package shadowing,
+ambient-library dependence and working-directory/Git/root discovery rejection,
+plus evidence that RRP itself neither uses nor mutates `.GlobalEnv`. Because
+trusted project R code is not sandboxed, the loader does not claim that it can
+prevent deliberately written registration code from mutating external state.
+Retain all 4.A and Stage 1–3 evidence.
+
+**Completion statement:** installed `rrpplatform` can safely load a manually
+authored independent project and resolve its declared structural extensions,
+but it cannot create or diagnose a project through a structured operation.
+
+### Increment 4.C — Minimal independent-project initialization
+
+**Objective:** create the smallest valid portable Stage 4 project through one
+transactional programmatic operation.
+
+**Why here:** the initializer can be trusted only after the loader defines and
+validates its exact output.
+
+**Implementation scope:** add cataloged software-owned templates at
+`resources/templates/project/rrp-project.dcf` and
+`resources/templates/project/R/register.R` under logical identities
+`rrp.template.project-manifest` and `rrp.template.project-registration`;
+implement exported `rrp_initialize_project()` with strict identity/version
+inputs, safe rendering, sibling staging, load-before-promotion,
+absent-destination enforcement, rollback, and existing operation-result
+translation. The instantiated project contains exactly `rrp-project.dcf` and
+`R/register.R`; the registration exposes one project-owned structural producer
+named `<project-id>.producer` and one provider named `<project-id>.provider`,
+both at the supplied project version and matching the manifest selections. Add
+focused manuals and package-native initialization/rollback tests.
+
+The manifest template writes `extensions/library` as the declared extension
+library and `state` as the declared state location. Both locations remain
+absent after initialization; their explicit values establish portable
+ownership without speculative empty directories.
+
+**Non-scope:** no `.gitignore`, Git repository, README, lockfile, extension
+library, state directory, source/mapping/provider/model directory, tests,
+clinical example, fictional data, products, deployment files, overwrite,
+repair, upgrade, migration, or CLI.
+
+**Historical reuse:** adapt destination ownership, staging, rollback, and
+idempotency/failure-test mechanics from historical initialization/build code.
+Reject embedded Platform extraction, Hospital distribution inventory, wrapper
+scripts, top-level `renv`, ignored `build/`, and Git realization.
+
+**Evidence:** initialize under an unrelated temporary parent; inspect exact
+two-file inventory and bytes/fields; load the result through installed
+`rrpplatform`; prove no repository/Git/software source copied; copy/move and
+reload; and reject existing destination, symlink/unsafe destination, invalid
+identity/version, token/render drift, interrupted staging, partial promotion,
+and unsafe failure text. No generated project remains in repository source.
+
+**Completion statement:** RRP can transactionally initialize and load the
+smallest independent hospital-owned project, but it has no structured project
+doctor yet.
+
+### Increment 4.D — Structured project doctor and independent-project proof
+
+**Objective:** expose project health through the common operation-result
+contract and prove the complete Stage 4 lifecycle outside repository/Git
+context.
+
+**Why here:** doctor is meaningful only after normal initialization and loading
+exist; the final proof integrates rather than duplicates those operations.
+
+**Implementation scope:** implement exported `rrp_validate_project()` as the
+read-only project doctor; translate only expected project errors to safe
+diagnostics; add focused manual/package-native tests; and extend
+`tools/validate-packages.R` for the full initialized/copied/adversarial project
+scenario while retaining package/resource evidence. Update current ownership,
+repository inventory, package README, public/human guidance, and exact export
+expectations only for realized Stage 4 paths and operations.
+
+**Non-scope:** no new validator command or framework, CLI renderer, project
+root selection, producer/provider execution, source/canonical validation,
+dependency installation, state initialization, production permissions or
+security assessment, persistence, run identity, products, app, distribution,
+deployment, or release.
+
+**Historical reuse:** adapt structured doctor status/recovery intent and
+independent-adopter/copy fixtures. Reject Hospital wrapper delegation,
+repository inventory/Git-state health, fixed reference database/product paths,
+temporary runtime installation, Phase aggregates, and broad observability.
+
+**Evidence:** exact doctor success/failure shape and predicate behavior;
+privacy-safe codes/messages; warnings for declared-but-uninitialized state;
+unexpected-error propagation; no callable execution or mutation; the complete
+independent-project proof below; all package-native tests, builds, isolated
+install/load, exact strict checks, repository validation, and generated-output
+hygiene. The unchanged read-only hosted workflow must later pass for the
+committed complete Stage 4 tree before stage acceptance.
+
+**Completion statement:** RRP can initialize, recognize, safely load, and
+diagnose an independent project and its selected structural registrations, but
+it cannot admit source data or calculate risk.
+
+### Validation and hosted evidence
+
+No new maintainer command or validation framework is justified. The existing
+human operations remain:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+Repository validation grows only for real contract/template/package/manual/test
+paths, links, metadata, ownership, and hygiene. Package validation grows
+incrementally from Stage 3 to cover contract resources, installed parsing,
+explicit-root loading, initialization, doctor, copied projects, and adversarial
+project behavior while retaining exact package topology, builds, isolated
+dependency-order install/load, package-native tests, and both strict package
+checks.
+
+The existing `package-foundation` workflow already invokes both operations on
+push and pull request under read-only Ubuntu/R 4.4. It needs no behavior change
+solely because their owned claims grow. Final Stage 4 acceptance requires one
+successful hosted run for the committed complete Stage 4 tree and records the
+run/job/SHA/ref/event. That remains narrow package/project-foundation evidence,
+not installed-distribution, clinical, production, or OS support.
+
+### Independent-project acceptance proof
+
+The final local/hosted operation constructs all evidence in temporary space:
+
+```text
+build and isolate-install rrpruntime then rrpplatform
+        ↓
+construct an explicit temporary software-resource root
+        ↓
+from an unrelated working directory with no Git context,
+initialize a project at an unrelated absent destination
+        ↓
+assert its exact two-file inventory and absence of RRP source/default copies
+        ↓
+load it with the explicit software catalog + project root
+        ↓
+resolve the exact structural producer/provider selections without invoking them
+        ↓
+run project doctor and inspect structured success/warning evidence
+        ↓
+copy the project somewhere else; load and doctor it successfully
+        ↓
+mutate independent copies one condition at a time
+        ↓
+prove safe fail-closed behavior and complete cleanup
+```
+
+Adversarial copies cover missing/linked/malformed/unknown-field/incompatible
+manifest; unsafe, colliding, case-conflicting, linked, or escaping state/library
+paths; missing/linked/malformed registration; wrong project identity; extra
+top-level bindings/fields/kinds; non-callables; duplicates; protected RRP
+identities; installed/project collisions; unknown/ambiguous selections;
+extension-library RRP-package shadowing; ambient user-library dependence;
+post-copy absolute-path leakage; unsafe diagnostic content; unexpected error
+propagation; and destination/staging mutation failures.
+
+The proof has no source/sibling repository access from installed child
+processes, Git requirement, original absolute project path, working-directory
+assumption, network, secret, real/patient-like data, `renv`, copied RRP source,
+producer/provider execution, or persistent repository output.
+
+### Stage 4 acceptance
+
+Stage 4 is complete only when:
+
+1. a minimal project initializes outside the source repository through one
+   supported programmatic operation;
+2. initialized output contains exactly the currently justified root manifest
+   and fixed registration file, with no speculative tree or copied RRP source;
+3. recognition/loading requires one explicit project root plus a separately
+   validated explicit software context;
+4. project, project-contract, and exact project-API compatibility identities
+   are validated before trusted code executes;
+5. the manifest is versioned, strict, nonsecret, declarative, safe, and rejects
+   missing/unknown fields or executable/arbitrary configuration;
+6. project-relative extension/state paths are portable, case-safe,
+   non-conflicting, non-linked, contained, and unable to escape the project;
+7. exactly the fixed registration entry point is loaded in a controlled
+   environment and its closed result admits only producer/provider records;
+8. installed defaults remain software-owned, are never copied by initialization,
+   and retain protected origin/identity during resolution;
+9. producer/provider selection uses exact ID/version and fails on missing,
+   duplicate, ambiguous, or implicit-fallback states;
+10. project extensions cannot shadow, override, or collide with protected RRP
+    identities;
+11. the project extension-library boundary remains structurally separate from
+    installed RRP and ambient user libraries without claiming restore/closure;
+12. one contained project state location is established without implementing
+    state/history behavior or creating placeholder state;
+13. installed package code loads the project from an unrelated working
+    directory with no repository, Git, sibling, environment, or parent search;
+14. an independently copied/moved initialized project loads and doctors
+    successfully without its original absolute path;
+15. malformed, unsafe, incompatible, changed, or ambiguous projects fail
+    predictably through bounded typed project errors;
+16. doctor returns exact common structured success/failure evidence, reports
+    absent state honestly, and never parses prose for status;
+17. failures and diagnostics retain the accepted privacy posture and never echo
+    arbitrary project paths, parser content, secrets, registration code, or
+    project data;
+18. `rrpplatform` remains the sole project owner, imports only `rrpruntime`,
+    and `rrpruntime` remains dependency-light, export-free, and independent;
+19. repository validation, expanded package validation, DCF/R/Rd parsing,
+    package-native tests, builds, isolated install/load, copied-project proof,
+    strict package checks, hygiene, and committed read-only hosted evidence all
+    pass without persistent generated output; and
+20. no source admission, canonical/clinical semantics, readmission target,
+    producer/provider execution, risk calculation, analytical run identity,
+    history/state persistence, product, application, CLI/root selection,
+    dependency restore, distribution, deployment, or release behavior enters.
+
+After implementation and committed hosted evidence pass, reconcile the
+realized project boundary with True North and Platform Architecture and record
+any deviation. Stage acceptance is a lifecycle action, not Increment 4.E.
 
 ### Plain-language exit state
 
@@ -980,20 +1600,73 @@ runtime code and uses Stage 3's resource and operation primitives.
 > hospital-owned project and its declared producer/provider registrations, but
 > it cannot yet admit source data or calculate readmission risk.
 
-### Expected historical reuse
+### Historical reuse disposition
 
-Inspect `v0.1.0` producer registration/result boundary and isolated adopter
-fixtures plus the pre-reset project architecture experiments, if any. Reuse
-fail-closed selection, safe-path, secret-exclusion, and independent-copy test
-ideas. Generated Hospital Implementation repositories, copied RRP source,
-Git-state validity, free-form composition sourcing, and runtime hospital
-selectors are specifically excluded.
+| Classification | Historical finding and disposition |
+|---|---|
+| Reuse directly | Exact kind/ID/version registry keys, duplicate rejection, trusted function-object checks, and fail-closed exact lookup from the `v0.1.0` producer/provider registries, after only owner/name and safe-error integration changes. |
+| Adapt concept/mechanic | Explicit roots, fixed manifest and registration, manifest-before-code validation, controlled evaluation, closed results, installed/project origin, protected namespace, dependency/state separation, transactional initialization, and independent-copy/adversarial tests. |
+| Reject for 1.0 | Generated Hospital repositories, copied Platform source, editable-tree closed inventories, pristine Git/branch/remote rules, root `renv`, repository-root operations, `.GlobalEnv` composition, recursive sourcing, runtime hospital selectors, Phase/distribution/release machinery, and source-relative behavior. |
+| Not relevant | Daily-hazard/estimand identities, canonical execution, clinical contracts, provider computation, history, products, application, artifact, and deployment behavior; their eventual owners assess them just in time. |
 
-### Major deferrals
+Reconnaissance inspected immutable `v0.1.0`, especially
+`operations/compositions/installed-producers.R`,
+`operations/lib/canonical-producer-operation.R`,
+`runtime/R/provider-registry.R`, the Phase 10 independent-adopter fixture/tests,
+and the generated Hospital initialization, doctor, manifest, and composition
+files. Exact ID/version registry keys, trusted function objects, duplicate
+rejection, fail-closed lookup, one-health-system selection, structured
+outcomes, materially different adopter composition, and independent-copy/
+privacy failure ideas are useful.
 
-Canonical profile details, producer execution/admission, target semantics,
-runtime, persistence, project migration, and production identity/access
-controls remain later work.
+Pre-reset revisions `f4a98a8`, `6c2ac3b`, `fd98c73`, and `c459f7d` were
+inspected through the adoption assessment, installed-software/project-model
+assessment, estimand-composition/project-registration assessment, and minimum
+project-contract assessment. Explicit root, fixed manifest/registration,
+manifest-before-code ordering, controlled evaluation, closed registration
+results, installed/project origin, protected namespace, exact selection,
+dependency separation, state-location declaration, and copied-project proof
+are adapted conceptually to the current singular-target architecture.
+
+The exact historical registry insertion/resolution mechanics are candidates
+for direct reuse after renaming and safe-error adaptation. Historical YAML
+schemas, estimand registration, daily-hazard identities, source/profile/model
+semantics, history/product/app execution, and broad specification envelopes are
+not relevant to Stage 4 and remain with later owners.
+
+Generated Hospital repositories, embedded/copied Platform source, closed
+inventories over editable hospital content, pristine/clean Git requirements,
+branch/remote rules, top-level `renv`, temporary runtime installation,
+repository-root operations, `.GlobalEnv` composition, recursive/fixed-order
+sourcing, hard-coded synthetic/reference selection, runtime hospital selectors,
+Phase suites, distribution validators, release wrappers, and candidate-era
+status are rejected. Historical code is evidence, not a runtime dependency or
+compatibility obligation.
+
+### Major deferrals and deliberately open decisions
+
+Stage 5 owns canonical profile identities and schemas, producer declarations,
+callable execution/result semantics, source mapping, canonical admission, and
+actual profile/capability compatibility. Stage 6 owns the singular target,
+request, provider declaration/conformance/execution, model semantics, and any
+real installed default provider. Stage 7 owns state initialization,
+persistence/history, adapters, locking, backup/recovery, and state migration.
+
+Full project dependency restoration, transitive closure, lock format, package
+acquisition, reproducibility evidence, and model artifacts remain open until a
+real extension requires them; `renv` is neither required nor prohibited as a
+future mechanism. CLI syntax and project selection, installed-software root
+selection, distribution placement, project migration/upgrade, production
+identity/access control, secrets service/environment contracts, approved
+external/mounted state, product/app overrides, deployment, and release remain
+later work.
+
+No project API version range negotiation is needed while only
+`rrp.project-api@0.1.0` exists. Later support for more than one exact project
+contract/API version must be evidence-driven and must not silently migrate
+projects. The Stage 4 registration callable shape is structural only; producer
+and provider semantic conformance remains deliberately unresolved until their
+own stages.
 
 ## Stage 5 — Canonical handoff and producer boundary
 

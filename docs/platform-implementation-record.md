@@ -1047,3 +1047,65 @@ still no hospital project or risk behavior.
 **Next task:** detail Stage 4 — Independent Project Foundation from the accepted
 Stage 3 baseline. Do not begin Stage 4 source implementation before that
 separate planning and acceptance action.
+
+## Stage 4 detailed-plan acceptance — 2026-09-16
+
+Stage 4 was detailed from clean committed Stage 3 baseline
+`16a7cd1651b28a93e223ae4389135ed8558f2ccc`. Stages 1–3 remain accepted and no
+corrective implementation change was needed. This planning action introduced
+no project file, contract resource, package API, test, fixture, validator,
+dependency environment, CLI, or other Stage 4 implementation.
+
+The detailed plan answers the minimum-project question with two fixed public
+artifacts beneath one explicit project root: strict nonsecret
+`rrp-project.dcf` and trusted `R/register.R`. The manifest declares exact
+project/contract/API identity, one-health-system scope, exact producer/provider
+selection, and safe project-relative extension-library and state locations.
+The registration entry point returns a closed project identity plus structural
+producer/provider ID, version, and callable records. Registration is evaluated
+once in a controlled environment after manifest/path compatibility checks;
+selection is exact, collisions and protected `rrp.` identities fail closed,
+and Stage 4 never executes or semantically conforms an extension.
+
+The plan assigns project contracts, loading, initialization, doctor, errors,
+and context to `rrpplatform`; `rrpruntime` remains unchanged. Project APIs take
+the validated Stage 3 software catalog and a separate explicit project root.
+The project library may follow installed RRP libraries but cannot replace them;
+no ambient library, restore, lock, or `renv` contract is introduced. State is
+only a safe declared location and remains uninitialized until its owning stage.
+Initialization creates exactly the manifest and registration file in a new
+destination through staging/load-before-promotion; doctor reuses the loader and
+the common Stage 3 operation-result/diagnostic boundary.
+
+Four implementation increments were accepted: 4.A project manifest and
+registration contracts; 4.B trusted registration and explicit project loading;
+4.C minimal independent-project initialization; and 4.D structured project
+doctor plus the copied/adversarial independent-project proof. This ordering
+keeps declarative authority, trusted loading, mutation, and health/integration
+evidence independently reviewable.
+
+Historical reconnaissance inspected `v0.1.0` producer composition and registry,
+provider registry, independent-adopter fixtures/tests, and generated Hospital
+initialization/doctor/composition, plus pre-reset revisions `f4a98a8`,
+`6c2ac3b`, `fd98c73`, and `c459f7d`. Exact selection, duplicate rejection,
+trusted callable pairing, fail-closed resolution, explicit roots, closed
+registration results, controlled environments, dependency/state separation,
+and copied-project tests were selected for direct reuse or adaptation.
+Repository/global source chains, generated Hospital delivery, copied Platform
+source, editable closed inventories, pristine Git rules, runtime hospital
+selectors, root `renv`, Phase machinery, daily-hazard/estimand semantics, and
+distribution/release behavior were rejected.
+
+Canonical profiles, producer execution/admission, target/provider semantics,
+risk computation, state/history, full dependency restoration, CLI/root
+selection, project migration, secrets and production access control, products,
+application, distribution, deployment, and release remain deferred. No
+contradiction with Platform True North or Platform Architecture was found; the
+plan narrows final target responsibilities to the structural facts that exist
+before Stage 5 rather than reserving placeholder fields or behaviors.
+
+**Current implementation state:** Stages 1–3 complete; Stage 4 detailed and
+accepted for implementation; no Stage 4 source implementation has occurred.
+
+**Next task:** implement only Increment 4.A — Project manifest and registration
+contracts.

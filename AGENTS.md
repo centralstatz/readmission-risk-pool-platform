@@ -79,6 +79,6 @@ request under Ubuntu/R 4.4. Committed push run
 `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
 2. Committed push run `35116049077`, job `104861623678`, succeeded for revision
 `11fc44835c0d3862196e1af5d1ef691e781c9688`, completing Stage 3 after final
-reconciliation. The next authorized task is only to detail Stage 4 — Independent
-Project Foundation from the accepted Stage 3 baseline; do not begin Stage 4
-source implementation.
+reconciliation. Stage 4 is detailed and accepted; the next authorized source
+task is only Increment 4.A — Project manifest and registration contracts. Do
+not begin a later Stage 4 increment.
