@@ -13,3 +13,19 @@ Owner-Package: rrpplatform
 Source-Path: resources/resource-catalog-schema.dcf
 Installed-Path: resources/resource-catalog-schema.dcf
 Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.diagnostic
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/diagnostic.dcf
+Installed-Path: resources/contracts/diagnostic.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.operation-result
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/operation-result.dcf
+Installed-Path: resources/contracts/operation-result.dcf
+Format: dcf

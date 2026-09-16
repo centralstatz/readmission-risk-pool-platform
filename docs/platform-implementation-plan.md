@@ -3,8 +3,9 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
-Stage 3 is detailed, accepted, and in progress; Increments 3.A and 3.B are
-complete and Increment 3.C is the next accepted task
+Stage 3 is detailed, accepted, and in progress; Increments 3.A–3.C are complete
+locally and Stage 3 awaits committed hosted evidence plus final acceptance and
+reconciliation
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -555,8 +556,8 @@ no unverified address is invented by this plan.
 ## Stage 3 — Installed resources and shared operation foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-15;
-Increments 3.A and 3.B completed on 2026-09-16; Stage 3 implementation in
-progress
+Increments 3.A–3.C completed locally on 2026-09-16; Stage 3 implementation
+awaits committed hosted evidence and final acceptance/reconciliation
 
 ### Objective
 
@@ -810,6 +811,9 @@ distribution assumptions are rejected. Increment 3.B stops before structured
 operation results, projects, CLI, installation, or domain resources.
 
 ### Increment 3.C — Common operation result and privacy-safe diagnostics
+
+**Implementation status:** complete locally on 2026-09-16; Stage 3 remains in
+progress pending committed hosted evidence and final acceptance/reconciliation.
 
 Add the operation-result and diagnostic contracts as
 `resources/contracts/operation-result.dcf` and

@@ -163,6 +163,124 @@ validate_exact_fields <- function(record, expected_fields, code, label) {
   )
 }
 
+stage3_contract_resources <- function() {
+  list(
+    diagnostic = list(
+      id = "rrp.contract.diagnostic",
+      source_path = "resources/contracts/diagnostic.dcf",
+      installed_path = "resources/contracts/diagnostic.dcf",
+      document = c(
+        "Record-Type" = "contract",
+        "Contract-ID" = "rrp.contract.diagnostic",
+        "Contract-Version" = "0.1.0",
+        "Format-Version" = "1.0.0",
+        "Product-ID" = "readmission-risk-pool-platform",
+        "Development-Version" = "1.0.0-dev",
+        "Status" = "development_unpublished",
+        "Owner-Package" = "rrpplatform",
+        "Object-Class" = "rrp_diagnostic,list",
+        "Fields" = "code,severity,message",
+        "Code-Pattern" = "^[a-z][a-z0-9_]*$",
+        "Code-Max-Bytes" = "64",
+        "Severity-Values" = "info,warning,error",
+        "Message-Max-Bytes" = "240",
+        "Message-Empty" = "prohibited",
+        "Message-Control-Characters" = "prohibited",
+        "Message-Sensitive-Text" = "prohibited",
+        "Message-Path-Like-Text" = "prohibited",
+        "Additional-Fields" = "prohibited"
+      )
+    ),
+    operation_result = list(
+      id = "rrp.contract.operation-result",
+      source_path = "resources/contracts/operation-result.dcf",
+      installed_path = "resources/contracts/operation-result.dcf",
+      document = c(
+        "Record-Type" = "contract",
+        "Contract-ID" = "rrp.contract.operation-result",
+        "Contract-Version" = "0.1.0",
+        "Format-Version" = "1.0.0",
+        "Product-ID" = "readmission-risk-pool-platform",
+        "Development-Version" = "1.0.0-dev",
+        "Status" = "development_unpublished",
+        "Owner-Package" = "rrpplatform",
+        "Object-Class" = "rrp_operation_result,list",
+        "Fields" = "operation_id,status,value,diagnostics",
+        "Operation-ID-Pattern" = "^rrp[.][a-z0-9]+(?:[.-][a-z0-9]+)*$",
+        "Operation-ID-Max-Bytes" = "96",
+        "Status-Values" = "success,failure",
+        "Diagnostic-Contract" = "rrp.contract.diagnostic@0.1.0",
+        "Diagnostics-Ordering" = "preserved",
+        "Success-Error-Diagnostics" = "prohibited",
+        "Failure-Error-Diagnostics" = "one_or_more",
+        "Failure-Value" = "null",
+        "Additional-Fields" = "prohibited"
+      )
+    )
+  )
+}
+
+validate_stage3_contract_resources <- function(authority, root, projection) {
+  ids <- vapply(
+    authority$entries, `[[`, character(1L), "Resource-ID"
+  )
+  for (name in names(stage3_contract_resources())) {
+    specification <- stage3_contract_resources()[[name]]
+    matched <- which(ids == specification$id)
+    resource_require(
+      length(matched) == 1L, paste0(name, "_contract_catalog"),
+      paste0(specification$id, " must be cataloged exactly once.")
+    )
+    entry <- authority$entries[[matched]]
+    expected_entry <- c(
+      "Resource-ID" = specification$id,
+      "Resource-Class" = "contract",
+      "Owner-Package" = "rrpplatform",
+      "Installed-Path" = specification$installed_path,
+      "Format" = "dcf"
+    )
+    if (!projection) {
+      expected_entry <- append(
+        expected_entry,
+        c("Source-Path" = specification$source_path),
+        after = 3L
+      )
+    }
+    for (field in names(expected_entry)) {
+      resource_require(
+        identical(entry[[field]], unname(expected_entry[[field]])),
+        paste0(name, "_contract_catalog"),
+        paste0(specification$id, " has an unsupported catalog mapping.")
+      )
+    }
+
+    relative_path <- if (projection) {
+      specification$installed_path
+    } else {
+      specification$source_path
+    }
+    records <- read_dcf_records(file.path(root, relative_path))
+    resource_require(
+      length(records) == 1L, paste0(name, "_contract_records"),
+      paste0(specification$id, " must contain exactly one DCF record.")
+    )
+    record <- records[[1L]]
+    expected <- specification$document
+    validate_exact_fields(
+      record, names(expected), paste0(name, "_contract_fields"),
+      specification$id
+    )
+    for (field in names(expected)) {
+      resource_require(
+        identical(record[[field]], unname(expected[[field]])),
+        paste0(name, "_contract_identity"),
+        paste0(specification$id, " field ", field, " is unsupported.")
+      )
+    }
+  }
+  invisible(authority)
+}
+
 validate_resource_schema <- function(record) {
   expected <- resource_schema_expected()
   validate_exact_fields(record, names(expected), "schema_fields", "Schema")
@@ -531,7 +649,9 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "catalog_path", "The fixed catalog path differs from the schema."
   )
   records <- read_dcf_records(file.path(root, catalog_relative))
-  validate_catalog_records(records, schema, root, projection)
+  authority <- validate_catalog_records(records, schema, root, projection)
+  validate_stage3_contract_resources(authority, root, projection)
+  authority
 }
 
 raw_file <- function(path) {
@@ -604,11 +724,8 @@ trees_identical <- function(left_root, right_root) {
 
 copy_resource_fixture <- function(parent, label) {
   root <- file.path(parent, label)
-  dir.create(file.path(root, "resources"), recursive = TRUE)
-  for (relative_path in c(
-    "RRP.yml", "resources/source-catalog.dcf",
-    "resources/resource-catalog-schema.dcf"
-  )) {
+  dir.create(root, recursive = TRUE)
+  for (relative_path in c("RRP.yml", resource_tree_files(repository_root))) {
     destination <- file.path(root, relative_path)
     if (!dir.exists(dirname(destination))) dir.create(dirname(destination), recursive = TRUE)
     copied <- file.copy(
@@ -650,7 +767,12 @@ expect_resource_failure <- function(label, callback, code) {
 
 run_resource_contract_validation <- function() {
   validate_resource_authority(repository_root, projection = FALSE)
-  cat("PASS source catalog/schema identity, fields, closure, and safety\n")
+  cat(
+    paste0(
+      "PASS source catalog/schema/contracts identity, fields, closure, ",
+      "and safety\n"
+    )
+  )
 
   work_root <- tempfile("rrp-resource-validation-")
   dir.create(work_root)
@@ -832,6 +954,26 @@ run_resource_contract_validation <- function() {
     validate_resource_authority(root, projection = FALSE)
   }, "source_closure")
 
+  root <- fixture("invalid-diagnostic-contract")
+  diagnostic_path <- file.path(root, "resources", "contracts", "diagnostic.dcf")
+  records <- read_dcf_records(diagnostic_path)
+  records[[1L]][["Severity-Values"]] <- "debug,info,error"
+  write_dcf_records(records, diagnostic_path)
+  expect_resource_failure("invalid diagnostic contract", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "diagnostic_contract_identity")
+
+  root <- fixture("invalid-operation-result-contract")
+  result_path <- file.path(
+    root, "resources", "contracts", "operation-result.dcf"
+  )
+  records <- read_dcf_records(result_path)
+  records[[1L]][["Failure-Value"]] <- NULL
+  write_dcf_records(records, result_path)
+  expect_resource_failure("invalid operation-result contract", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "operation_result_contract_fields")
+
   drift_projection <- file.path(work_root, "projection-byte-drift")
   project_resource_authority(repository_root, drift_projection)
   schema_path <- file.path(
@@ -866,9 +1008,13 @@ package_expected_files <- function(package_name) {
   if (identical(package_name, "rrpplatform")) {
     files <- c(
       files,
+      file.path("R", "operation-result.R"),
       file.path("R", "resource-catalog.R"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
+      file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
+      file.path("man", "rrp_validate_software_resources.Rd"),
+      file.path("tests", "operation-results.R"),
       file.path("tests", "resource-access.R")
     )
   }
@@ -1018,7 +1164,10 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     )
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
-    c("rrp_open_resource_catalog", "rrp_resource_path")
+    c(
+      "rrp_open_resource_catalog", "rrp_operation_succeeded",
+      "rrp_resource_path", "rrp_validate_software_resources"
+    )
   } else {
     character()
   }
@@ -1039,7 +1188,9 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
       "export(rrp_open_resource_catalog)",
+      "export(rrp_operation_succeeded)",
       "export(rrp_resource_path)",
+      "export(rrp_validate_software_resources)",
       "import(rrpruntime)"
     )
   } else {
@@ -1171,7 +1322,10 @@ install_package <- function(package_name, archive, library_root, environment) {
 load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
-    "c(\"rrp_open_resource_catalog\", \"rrp_resource_path\")"
+    paste0(
+      "c(\"rrp_open_resource_catalog\", \"rrp_operation_succeeded\", ",
+      "\"rrp_resource_path\", \"rrp_validate_software_resources\")"
+    )
   } else {
     "character()"
   }
@@ -1233,12 +1387,28 @@ check_package <- function(
 validate_installed_resource_access <- function(library_root, work_root) {
   projection_root <- file.path(work_root, "projected-software-root")
   project_resource_authority(repository_root, projection_root)
-  expected_schema <- file.path(work_root, "expected-resource-catalog-schema.dcf")
-  copied <- file.copy(
-    file.path(repository_root, "resources", "resource-catalog-schema.dcf"),
-    expected_schema, copy.mode = FALSE, copy.date = FALSE
+  failed_projection_root <- file.path(work_root, "invalid-projected-software-root")
+  project_resource_authority(repository_root, failed_projection_root)
+  unlink(file.path(
+    failed_projection_root, "resources", "resource-catalog-schema.dcf"
+  ))
+  expected_resources <- c(
+    resource_catalog = "resources/resource-catalog-schema.dcf",
+    diagnostic = "resources/contracts/diagnostic.dcf",
+    operation_result = "resources/contracts/operation-result.dcf"
   )
-  require_true(copied, "Could not create expected schema-byte evidence.")
+  expected_copies <- vapply(names(expected_resources), function(name) {
+    destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
+    copied <- file.copy(
+      file.path(repository_root, expected_resources[[name]]),
+      destination, copy.mode = FALSE, copy.date = FALSE
+    )
+    require_true(copied, paste0("Could not create expected ", name, " evidence."))
+    normalizePath(destination, winslash = "/", mustWork = TRUE)
+  }, character(1L))
+  expected_resource_count <- length(
+    validate_resource_authority(repository_root, projection = FALSE)$entries
+  )
   unrelated_root <- file.path(work_root, "unrelated-working-directory")
   dir.create(unrelated_root)
 
@@ -1249,23 +1419,61 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(normalizePath(unrelated_root, mustWork = TRUE), quote = "\""),
     "); on.exit(setwd(old), add = TRUE); library(rrpplatform); root <- ",
     encodeString(normalizePath(projection_root, mustWork = TRUE), quote = "\""),
-    "; expected <- ",
-    encodeString(normalizePath(expected_schema, mustWork = TRUE), quote = "\""),
-    "; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
+    "; invalid_root <- ",
+    encodeString(
+      normalizePath(failed_projection_root, mustWork = TRUE), quote = "\""
+    ),
+    "; expected <- c(resource_catalog = ",
+    encodeString(expected_copies[["resource_catalog"]], quote = "\""),
+    ", diagnostic = ",
+    encodeString(expected_copies[["diagnostic"]], quote = "\""),
+    ", operation_result = ",
+    encodeString(expected_copies[["operation_result"]], quote = "\""),
+    "); expected_count <- ", expected_resource_count,
+    "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_open_resource_catalog', 'rrp_resource_path'))); ",
+    "c('rrp_open_resource_catalog', 'rrp_operation_succeeded', ",
+    "'rrp_resource_path', 'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
     "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
     "identical(names(catalog), c('software_root', 'catalog_path', ",
     "'schema_path', 'catalog')), ",
     "!'Source-Path' %in% names(catalog$catalog$entries[[1L]])); ",
-    "resolved <- rrp_resource_path(catalog, ",
-    "'rrp.contract.resource-catalog'); ",
     "read_raw <- function(path) readBin(path, 'raw', n = file.info(path)$size); ",
-    "stopifnot(identical(read_raw(resolved), read_raw(expected))); ",
-    "unlink(resolved); condition <- tryCatch({rrp_resource_path(catalog, ",
+    "ids <- c(resource_catalog = 'rrp.contract.resource-catalog', ",
+    "diagnostic = 'rrp.contract.diagnostic', ",
+    "operation_result = 'rrp.contract.operation-result'); ",
+    "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
+    "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
+    "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
+    "logical(1L)))); ",
+    "success <- rrp_validate_software_resources(root); ",
+    "stopifnot(identical(class(success), c('rrp_operation_result', 'list')), ",
+    "identical(names(success), c('operation_id', 'status', 'value', ",
+    "'diagnostics')), identical(success$operation_id, ",
+    "'rrp.validate-software-resources'), identical(success$status, 'success'), ",
+    "identical(success$value, list(catalog_id = 'rrp.software-resources', ",
+    "catalog_version = '0.1.0', resource_count = expected_count)), ",
+    "identical(success$diagnostics, list()), ",
+    "identical(rrp_operation_succeeded(success), TRUE)); ",
+    "failure <- rrp_validate_software_resources(invalid_root); ",
+    "diagnostic <- failure$diagnostics[[1L]]; stopifnot(",
+    "identical(class(failure), c('rrp_operation_result', 'list')), ",
+    "identical(failure$operation_id, 'rrp.validate-software-resources'), ",
+    "identical(failure$status, 'failure'), is.null(failure$value), ",
+    "length(failure$diagnostics) == 1L, ",
+    "identical(class(diagnostic), c('rrp_diagnostic', 'list')), ",
+    "identical(names(diagnostic), c('code', 'severity', 'message')), ",
+    "identical(diagnostic$code, 'missing_schema'), ",
+    "identical(diagnostic$severity, 'error'), ",
+    "identical(diagnostic$message, 'Software resource validation failed.'), ",
+    "!grepl(invalid_root, diagnostic$message, fixed = TRUE), ",
+    "!grepl('/', diagnostic$message, fixed = TRUE), ",
+    "!grepl(intToUtf8(92L), diagnostic$message, fixed = TRUE), ",
+    "identical(rrp_operation_succeeded(failure), FALSE)); ",
+    "unlink(resolved[['resource_catalog']]); condition <- tryCatch({rrp_resource_path(catalog, ",
     "'rrp.contract.resource-catalog'); NULL}, error = identity); ",
     "stopifnot(inherits(condition, 'rrp_resource_error'), ",
     "identical(condition$code, 'missing_schema'), ",
@@ -1279,7 +1487,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
   cat(
     paste0(
       "PASS installed rrpplatform explicit-root resolution, byte equality, ",
-      "and post-open mutation rejection\n"
+      "structured success/failure, safe diagnostics, and post-open mutation ",
+      "rejection\n"
     )
   )
 }
@@ -1395,12 +1604,13 @@ validate_packages <- function() {
 
   validate_installed_resource_access(library_root, work_root)
 
-  cat("\nResult: PASS (package and installed-resource foundation)\n")
+  cat("\nResult: PASS (package, installed-resource, and operation-result foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
-    "projection, explicit-root installed-package access, package topology, ",
-    "metadata, dependency direction, exact exports, build, isolated install/load, ",
-    "and package-native check only.\n",
+    "projection, explicit-root installed-package access, common result/diagnostic ",
+    "contracts, resource-validation operation, package topology, metadata, ",
+    "dependency direction, exact exports, build, isolated install/load, and ",
+    "package-native check only.\n",
     sep = ""
   )
 }

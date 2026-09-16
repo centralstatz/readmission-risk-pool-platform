@@ -1,3 +1,5 @@
 export(rrp_open_resource_catalog)
+export(rrp_operation_succeeded)
 export(rrp_resource_path)
+export(rrp_validate_software_resources)
 import(rrpruntime)

@@ -25,12 +25,16 @@ expected_files <- c(
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
+  "packages/rrpplatform/R/operation-result.R",
   "packages/rrpplatform/R/resource-catalog.R",
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
   "packages/rrpplatform/man/rrp_open_resource_catalog.Rd",
+  "packages/rrpplatform/man/rrp_operation_succeeded.Rd",
   "packages/rrpplatform/man/rrp_resource_path.Rd",
+  "packages/rrpplatform/man/rrp_validate_software_resources.Rd",
   "packages/rrpplatform/man/rrpplatform-package.Rd",
+  "packages/rrpplatform/tests/operation-results.R",
   "packages/rrpplatform/tests/package-foundation.R",
   "packages/rrpplatform/tests/resource-access.R",
   "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
@@ -38,6 +42,8 @@ expected_files <- c(
   "packages/rrpruntime/README.md",
   "packages/rrpruntime/man/rrpruntime-package.Rd",
   "packages/rrpruntime/tests/package-foundation.R",
+  "resources/contracts/diagnostic.dcf",
+  "resources/contracts/operation-result.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
@@ -46,7 +52,7 @@ expected_directories <- c(
   "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
   "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",
-  "packages/rrpruntime/tests", "resources", "tools"
+  "packages/rrpruntime/tests", "resources", "resources/contracts", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",
@@ -226,6 +232,8 @@ for (key in setdiff(metadata_keys, names(metadata))) {
 }
 
 for (relative_path in c(
+  "resources/contracts/diagnostic.dcf",
+  "resources/contracts/operation-result.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
 )) {
   path <- file.path(repository_root, relative_path)

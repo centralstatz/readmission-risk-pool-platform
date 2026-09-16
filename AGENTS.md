@@ -68,13 +68,15 @@ Rscript --vanilla tools/validate-packages.R
 ```
 
 It proves the closed source-resource catalog, temporary deterministic installed
-projection, explicit-root installed-package access, package topology, one-way
+projection, explicit-root installed-package access, common resource-validation
+result and privacy-safe diagnostic behavior, package topology, one-way
 dependency, exact export posture, builds, isolated install/load, and package-
-native checks. No root selector, dependency environment, platform operation,
-or release procedure exists on the clean line. The read-only package-foundation
-workflow invokes these same two commands on push and pull-request under Ubuntu/
-R 4.4. Committed push run
+native checks. No root selector, dependency environment, project/risk
+operation, or release procedure exists on the clean line. The read-only
+package-foundation workflow invokes these same two commands on push and pull-
+request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
 `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
-2. Increments 3.A and 3.B are complete; the next authorized source task is only
-Increment 3.C. Do not claim broader evidence or begin a later stage.
+2. Increments 3.A–3.C are complete locally; Stage 3 still requires committed
+hosted evidence and final acceptance/reconciliation. Do not claim that evidence,
+begin another implementation increment, or begin a later stage.

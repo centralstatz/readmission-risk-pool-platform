@@ -760,3 +760,119 @@ but it cannot select that root or return a common structured operation result.
 
 **Next task:** implement only Increment 3.C — Common operation result and
 privacy-safe diagnostics.
+
+## Increment 3.C — Common operation result and privacy-safe diagnostics (complete locally, 2026-09-16)
+
+Increment 3.C added the final local implementation increment of Stage 3 while
+leaving stage acceptance open. The closed source catalog now declares
+`resources/contracts/operation-result.dcf` as
+`rrp.contract.operation-result` and `resources/contracts/diagnostic.dcf` as
+`rrp.contract.diagnostic`. Both are `dcf` contract resources owned by
+`rrpplatform`, retain identical source and intended installed paths, and pass
+the established source-closure, path, deterministic projection, and projected
+byte-equality rules. No fixed resource-count constant replaced catalog
+closure.
+
+The diagnostic contract has exact class
+`c("rrp_diagnostic", "list")` and exact fields `code`, `severity`, and
+`message`. Internal package construction and validation require a bounded
+lowercase machine code, exactly one of `info`, `warning`, or `error`, and a
+nonempty trimmed single-line maintainer-authored message of at most 240 bytes.
+Diagnostics have no arbitrary details/context field. Obvious patient
+identifiers, credentials, passwords, secrets, authorization/bearer material,
+access tokens/keys, connection strings, private keys, raw input/content, and
+filesystem-path-like text are rejected.
+
+The operation-result contract has exact class
+`c("rrp_operation_result", "list")` and exact fields `operation_id`,
+`status`, `value`, and `diagnostics`. One controlled operation ID describes one
+operation; status is exactly `success` or `failure`; diagnostics are an unnamed
+ordered list of exact diagnostics. Success permits zero, informational, or
+warning diagnostics but no error. Failure requires at least one error
+diagnostic and a `NULL` value. No timestamp, run/correlation identity, stage,
+duration, metric, provenance, arbitrary metadata, persistence, log, or audit
+field was introduced. Constructors and general validators remain internal.
+
+`rrpplatform` now exports exactly `rrp_open_resource_catalog()`,
+`rrp_operation_succeeded()`, `rrp_resource_path()`, and
+`rrp_validate_software_resources()`. The success predicate validates the full
+result contract and returns one exact logical value; malformed result-like
+lists are rejected rather than interpreted. The resource-validation operation
+uses only the existing explicit caller-supplied root behavior. Success returns
+operation ID `rrp.validate-software-resources`, status `success`, no
+diagnostics, and only catalog ID, catalog version, and catalog-derived resource
+count. Expected `rrp_resource_error` failures are translated narrowly to
+status `failure`, `NULL` value, and one error diagnostic that retains the stable
+resource code but uses the fixed message `Software resource validation
+failed.` It does not copy the condition message, caller path, parser detail,
+resource ID/content, or unsafe input; unexpected internal errors are not
+hidden by a general condition translator. The two established low-level
+resource APIs retain their typed-error behavior unchanged.
+
+Package-native tests cover exact class/field shapes, all accepted severities,
+code and text bounds, single-line/trimmed messages, sensitive and path-like
+text, malformed and extra fields, ordered diagnostics, exact status and
+operation identity, zero/info/warning success, error-free success, required
+failure evidence and `NULL` value, malformed predicate inputs, explicit-root
+copied fixtures, safe representative resource-error translation, and exact
+success-predicate results. The maintainer validator also validates both DCF
+contracts exactly, preserves the complete 3.A/3.B adversarial catalog/access
+evidence, resolves all three current resources with projected byte equality,
+and exercises successful and failed results through installed `rrpplatform`
+from an unrelated working directory without repository or Git context. An
+initial strict package check exposed a test-fixture ordering error: replacing
+the whole catalog produced the earlier `malformed_catalog` failure before the
+intended field check. The fixture was corrected to inject unsafe fields into a
+complete catalog so it now proves `invalid_catalog_fields` translation without
+weakening either contract. A subsequent copied-root harness run exposed an
+over-escaped backslash assertion in its generated child-process expression;
+the assertion was replaced with an explicit literal-character check. Both
+findings were evidence-harness defects and required no package-behavior change.
+
+Historical reconnaissance inspected `v0.1.0` and pre-reset revision `c459f7d`,
+principally `operations/lib/conformance-result.R`,
+`operations/lib/validation-result.R`,
+`operations/lib/observability-operation.R`, the runtime/estimation operation
+wrappers, and related diagnostic/privacy evidence. Machine-inspectable status,
+predicate inspection, severity-derived success, stable safe codes, bounded
+messages, ordering, and adversarial privacy checks were adapted. Candidate and
+specification issue tables, domain/analytical result identities, operation-run
+correlation, timestamps, attempts, lifecycle events, emitters, sinks,
+retention, safe-context/detail taxonomies, console verbosity, persistence,
+metrics, tracing, audit, Phase/registry integration, and historical operation
+composition were rejected.
+
+The complete local human surface passed after those focused harness corrections.
+Repository validation reported eight checks and zero issues. Package/resource
+validation proved the exact catalog/schema/contracts, source closure,
+deterministic byte-preserving projection, all positive and adversarial
+resource cases, exact four/zero export sets, unchanged one-way dependency,
+both package builds, rejection of main-package installation without
+`rrpruntime`, isolated dependency-order installation/loading, package-native
+tests, copied-root success/failure and privacy evidence, and exact
+`R CMD check --no-manual` `Status: OK` for both packages. Direct R source,
+namespace, DCF, and Rd parsing, `git diff --check`, source inventory, symlink,
+path, and persistent generated-artifact hygiene also passed. `rrpruntime`
+remains unchanged, dependency-free, and export-free; `rrpplatform` still
+imports only `rrpruntime`; the hosted workflow was unchanged and no new hosted
+claim was made.
+
+No installed-root discovery/selection, installation identity, CLI, hospital
+project/context, canonical or clinical contract, readmission target, risk
+runtime/provider/model behavior, analytical run identity, history, product,
+application, dependency closure, distribution, deployment, persistent
+diagnostic sink, event/logging/metrics/audit framework, or release machinery
+was added.
+
+**Current implementation state:** Increment 3.C is complete locally and all
+three Stage 3 implementation increments are present. RRP package code can find
+declared installed resources and return one small machine-readable,
+privacy-safe operation outcome from an explicit software context. Stage 3 is
+not yet accepted or complete because the committed hosted evidence and final
+True North/Architecture reconciliation have not occurred.
+
+**Next action:** after human review and commit, obtain the successful hosted
+`package-foundation` evidence for the committed complete Stage 3 tree, record
+its run identity, reconcile the realized Stage 3 boundary with Platform True
+North and Platform Architecture, and then accept/close Stage 3. There is no
+Increment 3.D, and Stage 4 must not begin before that lifecycle action.

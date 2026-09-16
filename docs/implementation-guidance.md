@@ -11,11 +11,12 @@ The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
 foundation validator, two conventional internal package owners,
 one closed source-resource authority with a temporary installed-projection
-proof, explicit-root resource access in the main package, one local package/
-resource-foundation validator, and one narrowly scoped hosted workflow with a
-successful committed Stage 2 push run. Stage 2 is complete and Stage 3 is in
-progress. There is no complete installed RRP product or ordinary operator
-operation.
+proof, explicit-root resource access and one structured resource-validation
+operation in the main package, one local package/resource-foundation validator,
+and one narrowly scoped hosted workflow with a successful committed Stage 2
+push run. Stage 2 is complete and Stage 3 is in progress pending committed
+hosted evidence and final acceptance. There is no complete installed RRP
+product or ordinary operator command.
 
 ## Read authority before source
 
@@ -107,17 +108,20 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact two-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact four-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
-| `packages/rrpplatform/tests/package-foundation.R` and `packages/rrpplatform/tests/resource-access.R` | Base-R package-native evidence for package identity/dependency/export posture and installed resource-access behavior. |
+| `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
+| `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
+| `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, and installed explicit-root access. |
+| `resources/contracts/operation-result.dcf` and `resources/contracts/diagnostic.dcf` | Machine-readable exact common operation-result and privacy-safe diagnostic contracts cataloged under their stable logical IDs. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root access, and common result/diagnostic behavior. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -175,11 +179,12 @@ owner is explicit. Keep these future dependency responsibilities distinct:
 
 The `rrpruntime` package currently uses only base R package machinery and has
 no `Imports`, `Suggests`, or `LinkingTo`. `rrpplatform` imports only
-`rrpruntime` and exports exactly `rrp_open_resource_catalog()` and
-`rrp_resource_path()`; `rrpruntime` remains export-free. No dependency
-environment exists yet. Do not introduce one by convenience, preselect its
-physical layout here, or treat a future development lock as the installed,
-project, provider, or deployment authority.
+`rrpruntime` and exports exactly `rrp_open_resource_catalog()`,
+`rrp_operation_succeeded()`, `rrp_resource_path()`, and
+`rrp_validate_software_resources()`; `rrpruntime` remains export-free. No
+dependency environment exists yet. Do not introduce one by convenience,
+preselect its physical layout here, or treat a future development lock as the
+installed, project, provider, or deployment authority.
 
 ## Privacy and committed evidence
 
@@ -216,18 +221,19 @@ local package/resource-foundation evidence operation from the repository root:
 Rscript --vanilla tools/validate-packages.R
 ```
 
-It validates the exact closed DCF catalog/schema, current source resource,
-safe paths and collisions, source closure, and deterministic byte-preserving
-installed projection with copied adversarial fixtures. It also checks exact
-package layout, metadata, dependency direction and exports, and repository
-independence; builds both source packages; proves that the main package cannot
-install without the runtime dependency; installs them in dependency order into
-a fresh temporary library; loads each in a fresh vanilla R process; exercises
-the installed main package against an explicit projected root from an unrelated
-working directory; and requires exact `Status: OK` from each package's
-`R CMD check --no-manual`. Projections, fixtures, archives, libraries, check
-directories, and the local empty package repository are temporary and removed
-after the operation.
+It validates the exact closed DCF catalog/schema/contracts, current source
+resources, safe paths and collisions, source closure, and deterministic
+byte-preserving installed projection with copied adversarial fixtures. It also
+checks exact package layout, metadata, dependency direction and exports, and
+repository independence; builds both source packages; proves that the main
+package cannot install without the runtime dependency; installs them in
+dependency order into a fresh temporary library; loads each in a fresh vanilla
+R process; exercises installed resource resolution plus successful and failed
+common resource-validation results against explicit copied roots from an
+unrelated working directory; and requires exact `Status: OK` from each
+package's `R CMD check --no-manual`. Projections, fixtures, archives, libraries,
+check directories, and the local empty package repository are temporary and
+removed after the operation.
 
 The package-foundation GitHub Actions workflow invokes these same two human
 operations on pushes and pull requests using read-only repository permission,
@@ -237,8 +243,9 @@ matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
 behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
 Stage 2 closed only after committed push run `35041493406` succeeded for
 revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded.
-Increments 3.A and 3.B are complete. The next task is only Increment 3.C —
-Common operation result and privacy-safe diagnostics.
+Increments 3.A, 3.B, and 3.C are complete locally. The next action after human
+review and commit is Stage 3 hosted evidence and acceptance/reconciliation; it
+is not another implementation increment.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,
