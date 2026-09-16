@@ -73,5 +73,6 @@ environment, platform operation, or release procedure exists on the clean
 line. The read-only package-foundation workflow invokes these same two commands
 on push and pull-request under Ubuntu/R 4.4. Committed push run `35041493406`
 succeeded for revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing
-Increment 2.C and Stage 2. Do not claim broader evidence or begin Stage 3
-implementation before that stage is detailed and accepted.
+Increment 2.C and Stage 2. Stage 3 is detailed and accepted; the next authorized
+source task is only Increment 3.A. Do not claim broader evidence or begin a
+later Stage 3 increment.

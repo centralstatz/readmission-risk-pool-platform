@@ -503,3 +503,75 @@ anything.
 **Next task:** detail and accept Stage 3 — Installed resources and shared
 operation foundation. Do not begin Stage 3 source implementation before that
 detail is accepted.
+
+## Stage 3 detailed-plan acceptance — 2026-09-15
+
+Stages 1 and 2 remain complete. The realized two-package foundation, exact
+`rrpplatform -> rrpruntime` dependency, zero-export starting posture, local
+repository/package validators, successful hosted package-foundation run, and
+closed ownership map were reconciled as Stage 3's starting constraints. No
+architectural inconsistency or corrective Stage 1/2 change was found. The tree
+still contains no resource catalog, installed resource, explicit software-root
+API, project, CLI, dependency environment, or domain behavior.
+
+The high-level Stage 3 objective was detailed and accepted as three increments:
+establish a closed base-R DCF source catalog and deterministic installed
+projection; add main-package explicit-root catalog opening and logical resource
+resolution; then add the minimal common operation-result and privacy-safe
+diagnostic contracts and exercise them through a read-only software-resource
+validation operation. This is the smallest dependency-ordered sequence that
+keeps declaration, access, and operation evidence independently reviewable.
+
+The plan assigns all Stage 3 behavior to `rrpplatform`, consistent with the
+architecture's main-package ownership of resource access, stable operations,
+and diagnostics. `rrpruntime` remains dependency-light, export-free, and does
+not depend upward. The accepted main-package APIs require an explicit software
+root and do no current-directory, Git, parent, sibling, environment, launcher,
+or installed-version discovery. No new package dependency is planned: base R
+DCF, filesystem, condition, and list facilities are sufficient.
+
+The source catalog is intentionally not a distribution manifest. It records
+only current logical resources, classes, package owners, formats, source paths,
+and intended installed relative paths. A temporary installed projection strips
+repository-only source paths for copied-root tests. Complete payload closure,
+packages, dependencies, sizes, digests, build provenance, installation, and
+release inventory remain later work. The catalog schema itself is the first
+truthful resource needed by this boundary; operation-result and diagnostic
+contracts enter only with Increment 3.C. No clinical or placeholder resource
+is authorized.
+
+Historical reconnaissance inspected pre-reset resource work at `a08cd8e`,
+`72f67fb`, and `c459f7d`, including the former catalog/schema, projection,
+explicit-root APIs, package-boundary checks, and copied/adversarial tests.
+Logical IDs, source/installed separation, explicit-root semantics,
+path/link/containment and collision rules, revalidation, typed failure, and
+copy independence informed the plan. The 48-entry transitional catalog,
+daily-hazard/synthetic resources, compatibility and exclusion ledgers, fixed
+count, YAML dependency, old product identity, distribution assumptions, and
+Phase/registry integration were rejected.
+
+Reconnaissance also inspected `v0.1.0` conformance/validation and
+runtime/estimation result shapes plus the operational-event contracts,
+implementation, and privacy tests. Machine-inspectable status, success
+inspection, stable codes/severity, ordered diagnostics, bounded messages, and
+sensitive-detail rejection were adapted conceptually. Domain-specific issue
+tables, operation-run identity, timestamps, lifecycle events, emitters, sinks,
+context taxonomies, persistence, metrics, audit, and console frameworks remain
+outside Stage 3.
+
+Validation will extend the existing two human operations rather than add a
+framework or command. Package-native tests own focused contracts;
+`tools/validate-packages.R` owns catalog projection, copied-root/adversarial
+access, result/privacy behavior, builds, isolated installation/loading, and
+strict checks; and `tools/validate-repository.R` owns the expanded source
+inventory and hygiene. The existing read-only hosted workflow needs no design
+change and must successfully run those expanded operations for the committed
+complete Stage 3 implementation before stage acceptance.
+
+**Current implementation state:** Stages 1 and 2 complete; Stage 3 detailed and
+accepted for implementation; Stage 3 source implementation not started. RRP
+still cannot resolve a software resource, return a common operation result,
+recognize a hospital project, or calculate risk.
+
+**Next task:** implement only Increment 3.A — Closed source-resource catalog
+and installed projection contract.

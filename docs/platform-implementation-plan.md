@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
-Stage 3 is the next stage to detail and accept before source implementation
+Stage 3 is detailed and accepted for implementation; Stage 3 source work has
+not started
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,7 +69,7 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current stage is decomposed into accepted increments. Stage 3 is the
-next stage to detail; completed Stage 1 and Stage 2 detail remains as
+current detailed stage; completed Stage 1 and Stage 2 detail remains as
 implementation lineage. After a stage is implemented:
 
 1. validate its stated exit claim;
@@ -553,21 +554,344 @@ no unverified address is invented by this plan.
 
 ## Stage 3 — Installed resources and shared operation foundation
 
-### Objective and responsibilities
+**Planning status:** detailed and accepted for implementation on 2026-09-15;
+source implementation not started
 
-Define how software-owned contracts, defaults, templates, documentation, and
-static application assets are cataloged, projected into a future distribution,
-and resolved by logical ID from an explicit software root. Add the minimal
-common structured operation result and privacy-safe diagnostic vocabulary used
-by later programmatic operations. Keep source catalogs distinct from a future
-distribution manifest.
+### Objective
 
-### Why here and dependencies
+Define how current software-owned contracts, defaults, templates,
+documentation, and static application assets are declared in a closed source
+catalog, projected into an installed-resource catalog, and resolved by logical
+ID from an explicitly supplied software root. Add one minimal structured
+operation-result contract and a privacy-safe diagnostic record used by later
+programmatic operations. Stop before root selection, a hospital project, any
+clinical/domain resource, or a distribution lifecycle exists.
 
-Projects and analytical packages need stable resource and result boundaries;
-implementing them first avoids repository-path discovery and incompatible
-one-off operation return shapes. This stage depends on the package owners but
-not on any clinical resource existing yet.
+### Stage 2 reconciliation and inherited constraints
+
+Stages 1 and 2 are complete and require no corrective change before Stage 3.
+The realized repository establishes these starting constraints:
+
+- `rrpruntime` remains the dependency-light leaf package at `0.3.0.9000`;
+  `rrpplatform` at `0.1.0.9000` is its sole dependent;
+- both namespaces currently export zero callable APIs and neither package owns
+  product or domain behavior;
+- `tools/validate-packages.R` proves exact package topology, source parsing,
+  dependency direction, builds, isolated dependency-order installation and
+  loading, package-native tests, and strict package checks;
+- `tools/validate-repository.R` owns the closed current repository inventory,
+  documentation, identity, metadata, policy, and hygiene claims;
+- the read-only `package-foundation` workflow runs those same two human
+  operations on push and pull request under hosted Ubuntu/R 4.4, with its
+  first committed successful run recorded in the implementation record;
+- `docs/implementation-guidance.md` owns the current source map and must grow
+  atomically with concrete package, resource, test, or tooling paths;
+- no resource catalog, installed resource, software-root abstraction, project
+  context, CLI, distribution manifest, dependency environment, or domain
+  behavior exists; and
+- new paths, exports, and dependencies require a current responsibility and
+  evidence. Generated projections and copied-root fixtures remain temporary
+  evidence outside the repository.
+
+Repository-relative lookup remains limited to maintainer validation of source
+assets. Package behavior cannot infer a repository, Git checkout, sibling,
+current working directory, environment variable, or installed version.
+
+### Settled Stage 3 decisions
+
+| Decision | Accepted Stage 3 choice |
+|---|---|
+| Source-resource authority | Repository-owned `resources/source-catalog.dcf` and its schema declare current source resources; maintainer validation owns source interpretation and temporary projection. |
+| Package behavior owner | `rrpplatform` owns projected installed-catalog access, resource errors, operation results, diagnostics, and the first stable programmatic operations. It never consumes repository-only source paths. |
+| Runtime boundary | `rrpruntime` gains no Stage 3 behavior or dependency and retains zero exports. Later runtime primitives return domain values to main-package orchestration rather than depending upward on operation or resource APIs. |
+| Catalog representation | Use strict multi-record DCF parsed with base R. No YAML/JSON dependency or custom executable data format is justified. |
+| Source catalog | `resources/source-catalog.dcf` is the closed maintainer authority for current software-owned resources and their source-to-installed path mapping. |
+| Catalog schema | `resources/resource-catalog-schema.dcf` defines the exact catalog identities, source/projected fields, logical-ID rule, controlled resource classes, and path/collision invariants. |
+| Initial identities | The catalog is `rrp.software-resources@0.1.0` with format `1.0.0`, product `readmission-risk-pool-platform`, development version `1.0.0-dev`, and status `development_unpublished`. |
+| Logical IDs | IDs are lowercase, dot-separated stable names matching `^rrp[.][a-z0-9]+(?:[.][a-z0-9-]+)+$`; an ID never embeds a repository or installation path. |
+| Resource entry fields | A source entry contains exactly record type, resource ID, resource class, owner package, source path, installed path, and format. The installed projection removes only the source path. |
+| Resource classes | The schema represents `contract`, `default`, `template`, `documentation`, and `static_application_asset`; the catalog uses only classes backed by current resources. |
+| First resource | The catalog schema itself is the first real `contract` resource, under logical ID `rrp.contract.resource-catalog`. It is required by installed catalog validation, not a placeholder for later domain work. |
+| Installed projection | A deterministic in-memory/temporary projection writes `resources/resource-catalog.dcf`, the schema, and declared resources beneath a distribution-shaped explicit root. It is evidence and a future build input, not a distribution build or manifest. |
+| Explicit root | Resource APIs require one caller-supplied software root, immediately canonicalize it, and never discover or select a root. The validated catalog object is the minimum Stage 3 software context. |
+| Dependencies | Both packages retain their Stage 2 dependency posture. Base R DCF, filesystem, condition, and list facilities are sufficient; no third-party dependency or `renv` enters. |
+
+The schema controls representation, not future content. Allowing a resource
+class does not create an instance of that class or authorize its future
+contract. All current entries are required; optional-resource semantics are
+deferred until a real optional resource exists.
+
+### Resource safety and catalog closure
+
+A software-owned resource is a non-executable file that installed RRP must
+locate by stable logical identity to support a capability RRP actually owns.
+Package source, tests, maintainer-only planning/evidence, generated validation
+output, hospital project content or state, credentials, and secrets are not
+software-owned resources.
+
+The source catalog is closed over the current `resources/` payload. The fixed
+source catalog and schema bootstrap paths are known to validation; every other
+file beneath that source resource root must have exactly one catalog entry.
+Each entry names one regular, non-linked source file and one safe relative
+installed path. IDs, source paths, and installed paths are unique, and paths
+must also be unique after case folding and free of file/directory conflicts.
+
+Safe relative paths use forward logical segments, contain no absolute, drive,
+home, empty, dot, parent, control, or backslash segments, and remain beneath
+the supplied root after canonicalization. Catalog opening rejects a missing or
+linked root; malformed or unsupported catalog/schema identity; missing,
+linked, non-regular, undeclared, or extra resources; duplicate IDs or paths;
+case collisions; and paths that escape or conflict. Lookup rejects malformed
+or unknown logical IDs and revalidates the relevant catalog/resource state so
+post-open deletion, link substitution, or catalog replacement fails closed.
+
+The schema and catalog contain no command, callable name, remote URL,
+credential, project setting, clinical value, or arbitrary extension mapping.
+
+### Source catalog, installed catalog, and distribution manifest
+
+Three authorities remain distinct:
+
+```text
+source catalog
+    declares current logical resources, source ownership, and intended
+    installed relative paths
+        ↓ deterministic projection
+installed-resource catalog
+    omits repository source paths and supports logical lookup beneath one
+    explicit software root
+        ↓ future distribution build, not Stage 3
+distribution manifest
+    closes the complete installed payload, packages, dependency closure,
+    inventory, sizes, digests, provenance, and build evidence
+```
+
+Stage 3 proves only the first arrow in temporary fixtures. It does not create a
+persistent installed tree, choose a final installation layout, enumerate the
+complete software payload, calculate digests, classify repository exclusions,
+or declare build/release identity. The future distribution manifest may use
+the source catalog as one input but cannot be replaced by it.
+
+### Package APIs and visibility
+
+Increment 3.B introduces the first `rrpplatform` exports:
+
+- `rrp_open_resource_catalog(software_root)` validates the fixed schema,
+  projected catalog, and closed declared resources below exactly the supplied
+  root, then returns a validated `rrp_resource_catalog` object; and
+- `rrp_resource_path(catalog, resource_id)` resolves one exact declared ID to
+  a normalized contained regular-file path after revalidation.
+
+These are stable technical programmatic interfaces for RRP package code, not a
+human CLI, installer, root selector, or project API. Invalid input or resource
+state raises `rrp_resource_error`, a typed condition with a stable safe code
+and bounded non-sensitive message. The condition never copies arbitrary parser
+errors, resource contents, credentials, or caller paths into its message.
+Constructors and lower-level validators remain package-internal.
+
+Increment 3.C adds:
+
+- `rrp_validate_software_resources(software_root)`, a read-only programmatic
+  operation that returns the common result shape for one explicit root; and
+- `rrp_operation_succeeded(result)`, the supported predicate for inspecting
+  success without parsing class names or prose.
+
+The resource catalog and condition classes are observable return/failure
+contracts, but callers do not construct or mutate them through public helper
+APIs. No ordinary operator command is introduced.
+
+### Structured operation result and diagnostics
+
+`rrpplatform` owns the operation boundary because the architecture assigns
+stable operations, resource access, and diagnostics to the main package.
+`rrpruntime` will own dependency-light domain computation, not orchestration
+or presentation of operation outcomes.
+
+One `rrp_operation_result` represents one operation, never an aggregate or
+event stream. Its exact fields are:
+
+- `operation_id`: one stable machine-readable operation identity;
+- `status`: exactly `success` or `failure`;
+- `value`: the operation-specific value on success and `NULL` on failure; and
+- `diagnostics`: an ordered list of validated `rrp_diagnostic` records.
+
+A successful result cannot contain an error diagnostic. A failed result must
+contain at least one error diagnostic and no value. Constructors validate the
+whole object; downstream code must use the predicate rather than parse printed
+text. The initial resource-validation success value is only a safe catalog
+identity/version/resource-count summary.
+
+Each `rrp_diagnostic` has exactly `code`, `severity`, and `message`. Codes are
+stable lowercase machine identifiers. Severity is the deliberately small
+vocabulary `info`, `warning`, or `error`. Messages are bounded, non-empty,
+single-line, maintainer-authored text and reject obvious credentials, secrets,
+authorization material, connection strings, private keys, patient identifiers,
+and filesystem-path disclosure. Arbitrary context/details are intentionally
+absent; later work may add a closed safe context only when a real operation
+requires it.
+
+Results and diagnostics have no operation-run identity, timestamp, attempt,
+stage lifecycle, sink, routing, retention, metric, trace, provenance, audit,
+or analytical semantics. Printing may be concise for development, but console
+rendering is not the contract.
+
+### Implementation sequence
+
+```text
+3.A — Closed source-resource catalog and installed projection contract
+        ↓
+3.B — Explicit-root resource access
+        ↓
+3.C — Common operation result and privacy-safe diagnostics
+        ↓
+Stage 3 acceptance and reconciliation
+        ↓
+Detail Stage 4
+```
+
+The sequence follows the dependency graph: declare and validate current
+resources before package code resolves them; prove access independently of the
+repository before using that boundary in a real structured operation; then
+add the smallest common result/diagnostic contract and exercise it through the
+resource-validation operation. Planning, documentation updates, hosted
+evidence, and stage acceptance are lifecycle work, not additional increments.
+
+### Increment 3.A — Closed source-resource catalog and installed projection contract
+
+Add `resources/source-catalog.dcf` and
+`resources/resource-catalog-schema.dcf`. The schema is also the first cataloged
+resource under `rrp.contract.resource-catalog`. Extend the ownership map and
+repository validator only for these concrete paths. Extend
+`tools/validate-packages.R` to validate the closed schema/catalog, source
+files, path and collision invariants, and deterministic installed projection
+using only base R and temporary directories.
+
+Evidence must parse every DCF record; verify exact identities, field sets,
+controlled values, product-development identity, unique logical IDs and paths,
+source closure, regular-file/link/containment rules, and byte-preserving
+projection; and demonstrate rejection of missing/unknown fields, duplicate
+IDs/paths, unsafe/traversing paths, case collisions, file/directory conflicts,
+missing or linked sources, undeclared source files, and projection drift.
+
+Historical catalog shape, logical IDs, path checks, source-to-installed
+projection, and adversarial fixtures are adaptable after simplification. The
+former 48 entries, expected-count constant, compatibility notes, exclusion
+families, daily-hazard content, YAML dependency, and claimed distribution
+inventory are rejected. Increment 3.A adds no package export, resource lookup,
+operation result, installed tree, or distribution builder.
+
+### Increment 3.B — Explicit-root resource access
+
+Implement `rrp_open_resource_catalog()` and `rrp_resource_path()` in
+`packages/rrpplatform/`, with focused manual pages and package-native tests.
+Update package documentation, exact namespace expectations, package validator,
+repository inventory, and ownership map atomically. `rrpruntime` remains
+unchanged and export-free; `rrpplatform` retains `rrpruntime` as its only
+import.
+
+Maintainer evidence builds and installs both packages, constructs the
+projected root in temporary space, changes to an unrelated working directory,
+and invokes the installed `rrpplatform` package against that copied root with
+no repository or Git context. Success resolves the schema resource by logical
+ID with byte equality. Adversarial copies must cover invalid/missing/linked
+roots; malformed, missing, changed, or unsupported catalog/schema; unknown or
+malformed IDs; missing, linked, non-regular, escaping, case-conflicting, and
+undeclared resources; closed-inventory mismatch; and post-open mutation.
+
+The historical explicit-root APIs, typed failures, revalidation, copied-root
+proof, and containment tests are adapted. Repository discovery, installed-root
+selection, source-path fallback, `getwd()` inference, Git/sibling lookup, and
+distribution assumptions are rejected. Increment 3.B stops before structured
+operation results, projects, CLI, installation, or domain resources.
+
+### Increment 3.C — Common operation result and privacy-safe diagnostics
+
+Add the operation-result and diagnostic contracts as
+`resources/contracts/operation-result.dcf` and
+`resources/contracts/diagnostic.dcf`, catalog them as
+`rrp.contract.operation-result` and `rrp.contract.diagnostic`, and implement
+their internal constructors/validators plus the two exported interfaces
+`rrp_validate_software_resources()` and `rrp_operation_succeeded()` in
+`rrpplatform`. Add focused manual pages and package-native contract tests, then
+expand copied-root validation so the installed package returns both successful
+and failed resource-validation results without leaking unsafe detail.
+
+Tests cover exact field/class shape, status/predicate behavior, success with
+zero or warning diagnostics, failure/error/value invariants, ordering,
+malformed objects, code/severity/message rules, bounded single-line text,
+sensitive/path-like text rejection, one-result-per-operation semantics, and
+safe translation of resource errors. The source catalog/projection tests prove
+the two new contracts are closed current resources.
+
+The small status/predicate pattern from historical validation/conformance
+results and the safe-code, severity, bounded-message invariants from
+`v0.1.0` diagnostics are adapted. Candidate/specification-specific issue
+tables, analytical identities, operation-run correlation, timestamps, event
+lifecycle, emitters, sinks, safe-detail taxonomies, metrics, persistence, and
+console framework are rejected. Increment 3.C adds no CLI or generalized
+workflow/logging system.
+
+### Validation and hosted evidence
+
+The existing human operations remain the complete Stage 3 maintainer surface:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+Repository validation grows only for the accepted resource/package files,
+links, metadata parseability, source ownership, and hygiene. Package validation
+grows from Stage 2 to cover the exact new exports, contracts, catalog/projection
+invariants, package-native tests, copied-root success, and adversarial resource
+and result behavior while retaining build, isolated install/load, dependency,
+and exact `R CMD check --no-manual` evidence. No new validation framework or
+maintainer command is justified.
+
+The existing read-only `package-foundation` workflow needs no behavioral
+change: it already invokes both human operations, so committed Stage 3 source
+automatically exercises their expanded claims on Ubuntu/R 4.4. Final Stage 3
+acceptance requires one successful hosted push or pull-request run for the
+committed complete Stage 3 implementation and records its identity. That run
+does not establish a distribution support cell or broader release claim.
+
+### Stage 3 acceptance
+
+Stage 3 is complete only when:
+
+- the closed source catalog contains only real current resources and conforms
+  to its versioned machine-readable schema;
+- catalog IDs, classes, owners, formats, source paths, and installed paths are
+  exact, unique, portable, case-safe, non-conflicting, and fully classified;
+- deterministic projection removes repository-only source paths, preserves
+  declared resource bytes and identities, and remains distinct from a future
+  full distribution manifest;
+- installed `rrpplatform` code opens the projected catalog from one explicit
+  root and resolves an exact logical ID without repository, Git, sibling,
+  environment, or working-directory discovery;
+- copied/non-repository roots work and undeclared, missing, malformed, unsafe,
+  escaping, linked, changed, case-conflicting, or otherwise invalid states fail
+  closed with stable safe resource errors;
+- `rrpplatform` owns only the exact accepted exports while `rrpruntime` remains
+  dependency-light, export-free, and independent of `rrpplatform`;
+- operation results expose exact machine-inspectable success/failure and value
+  invariants for one operation, and callers can inspect success without prose;
+- diagnostics use the small accepted code/severity/message contract and tests
+  reject arbitrary, patient-level, credential, secret, connection, raw, or
+  path-leaking content;
+- repository validation, expanded package validation, parsing, builds,
+  isolated dependency-order install/load, package-native tests, and strict
+  package checks all pass without persistent generated output;
+- the unchanged read-only hosted workflow successfully runs those same human
+  operations for the committed Stage 3 implementation; and
+- no installed-root selection, launcher, CLI, final distribution inventory or
+  digest, project, canonical/clinical contract, risk calculation, analytical
+  run identity, persistent diagnostics, log/metric/audit system, product,
+  deployment, or release behavior has entered.
+
+After the increments and hosted evidence pass, reconcile the realized resource
+and result boundaries with True North and Platform Architecture and record any
+deviation. Stage acceptance is a lifecycle action, not Increment 3.D.
 
 ### Plain-language exit state
 
@@ -575,20 +899,46 @@ not on any clinical resource existing yet.
 > structured operation outcome from an explicit software context, but there is
 > still no hospital project or risk behavior.
 
-### Expected historical reuse
+### Historical reuse disposition
 
-Inspect pre-reset Increment 2.B's closed resource catalog/schema,
-explicit-root `rrp_open_resource_catalog()` and `rrp_resource_path()` design,
-copied-root adversarial tests, and `v0.1.0` conformance/operation-event
-primitives. The access safety and tests are likely adaptable; the old 48-entry
-catalog and transitional daily-hazard inventory are not current content and
-must be rebuilt incrementally from actual 1.0 resources.
+Reconnaissance inspected pre-reset Increment 2.B at commits `a08cd8e`,
+`72f67fb`, and `c459f7d`, especially its catalog/schema, source projection,
+`rrp_open_resource_catalog()`, `rrp_resource_path()`, package boundary tests,
+copied-root fixtures, and adversarial path/resource tests. Stable logical IDs,
+explicit-root behavior, source/installed field separation, uniqueness,
+case/path/link/containment checks, catalog-change detection, typed errors, and
+copy independence are substantially adaptable.
 
-### Major deferrals
+The former 48-entry inventory, daily-hazard and synthetic assets,
+compatibility statuses, excluded-family ledger, fixed expected count,
+repository-wide distribution classification, `distribution/software/`
+authority, YAML dependency, `0.2.0-dev` identity, and validation-registry/Phase
+integration are rejected. Current resources enter only with their current 1.0
+owner.
 
-Installed-root selection, the final distribution inventory/digests, launcher,
-project context, analytical run identity, persistent diagnostic sinks, metrics,
-and audit remain out of scope.
+Reconnaissance also inspected `v0.1.0` conformance/validation results,
+runtime/estimation result wrappers, operational-event contracts and code, and
+privacy/adversarial tests. Machine-readable status, a success predicate,
+ordered issues/diagnostics, controlled codes and severities, bounded text, and
+sensitive-detail rejection inform the clean contracts. Domain-specific result
+fields, operation-run/event identity, timestamps, stage lifecycle, emitters,
+sinks, retention, console verbosity, large context allowlists, and historical
+operation composition do not return in Stage 3.
+
+### Major deferrals and deliberately open decisions
+
+Installed-root discovery/selection, installation identity, launcher and CLI,
+final resource locations beyond the current projection, complete distribution
+inventory and SHA-256 digests, distribution build/install/upgrade, final
+dependency closure, and release packaging remain later lifecycle decisions.
+
+Stage 4 owns explicit hospital-project context, manifest, trusted registration,
+project initialization, and project health. Later stages own canonical and
+clinical contracts, target/runtime/provider behavior, analytical run identity,
+history, products/application, deployment, and release. Persistent diagnostic
+sinks, logging, tracing, metrics, audit, arbitrary diagnostic context, and
+remote resource services remain deferred until concrete requirements establish
+their privacy, retention, trust, and dependency boundaries.
 
 ## Stage 4 — Independent project foundation
 
@@ -1046,13 +1396,14 @@ context. Exclusion from this design is not alteration of that release.
 The architecture settles responsibilities; later detailed plans will settle
 mechanisms when evidence is available. Deliberately open items include:
 
-- exact internal main-package name, exported API, and initial source files;
+- later exported APIs and package source files beyond the accepted Stage 3
+  resource/result boundary;
 - installed layout, launcher/installer technology, activation location, and
   exact host-R discovery mechanics;
-- final resource, project, canonical, target/request, provider, history,
+- later domain resource, project, canonical, target/request, provider, history,
   product, artifact, and realization identifiers and schemas;
 - project registration file syntax and extension dependency/conflict mechanics;
-- the physical split between packages and ordinary installed resources;
+- final distribution placement of packages and ordinary installed resources;
 - final distribution manifest, dependency resolution, reproducibility,
   archive, signature/authenticity, and acquisition mechanisms;
 - migration and any separately typed legacy-history archive contract;

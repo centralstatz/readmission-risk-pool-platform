@@ -224,7 +224,8 @@ matrix, cache, dependency bootstrap, artifact, release, deployment, or mutation
 behavior. A locally valid workflow is not hosted evidence: Increment 2.C and
 Stage 2 closed only after committed push run `35041493406` succeeded for
 revision `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa` and that result was recorded.
-The next task is to detail and accept Stage 3, not to implement it.
+Stage 3 is now detailed and accepted. The next task is only Increment 3.A —
+Closed source-resource catalog and installed projection contract.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,
