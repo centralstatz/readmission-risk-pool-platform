@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-# Prove the local package foundation and the maintainer-owned source-resource
-# catalog/projection contract. This is not an installed RRP operation or a
-# general validation dispatcher.
+# Prove the local package foundation, maintainer-owned source-resource
+# catalog/projection contract, and explicit-root installed-package access. This
+# is not an installed RRP operation or a general validation dispatcher.
 
 script_argument <- grep(
   "^--file=", commandArgs(trailingOnly = FALSE), value = TRUE
@@ -856,13 +856,23 @@ run_resource_contract_validation <- function() {
 }
 
 package_expected_files <- function(package_name) {
-  c(
+  files <- c(
     "DESCRIPTION", "NAMESPACE",
     file.path("R", paste0(package_name, "-package.R")),
     "README.md",
     file.path("man", paste0(package_name, "-package.Rd")),
     file.path("tests", "package-foundation.R")
   )
+  if (identical(package_name, "rrpplatform")) {
+    files <- c(
+      files,
+      file.path("R", "resource-catalog.R"),
+      file.path("man", "rrp_open_resource_catalog.Rd"),
+      file.path("man", "rrp_resource_path.Rd"),
+      file.path("tests", "resource-access.R")
+    )
+  }
+  files
 }
 
 package_dependency_names <- function(description, field) {
@@ -988,15 +998,18 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       )
     )
   }
-  tryCatch(
-    invisible(tools::parse_Rd(file.path(
-      package_root, "man", paste0(package_name, "-package.Rd")
-    ))),
-    error = function(condition) fail(
-      package_name, " package documentation does not parse: ",
-      conditionMessage(condition)
-    )
+  documentation_files <- list.files(
+    file.path(package_root, "man"), pattern = "[.]Rd$", full.names = TRUE
   )
+  for (documentation_file in documentation_files) {
+    tryCatch(
+      invisible(tools::parse_Rd(documentation_file)),
+      error = function(condition) fail(
+        package_name, " package documentation does not parse: ",
+        basename(documentation_file), ": ", conditionMessage(condition)
+      )
+    )
+  }
 
   namespace <- tryCatch(
     base::parseNamespaceFile(package_name, dirname(package_root)),
@@ -1004,9 +1017,18 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       package_name, " NAMESPACE does not parse: ", conditionMessage(condition)
     )
   )
+  expected_exports <- if (identical(package_name, "rrpplatform")) {
+    c("rrp_open_resource_catalog", "rrp_resource_path")
+  } else {
+    character()
+  }
   require_true(
-    length(namespace$exports) == 0L,
-    paste0(package_name, " must export no callable API.")
+    identical(sort(namespace$exports, method = "radix"), expected_exports),
+    paste0(
+      package_name, " exports must be exactly: ",
+      if (length(expected_exports)) paste(expected_exports, collapse = ", ") else "none",
+      "."
+    )
   )
   namespace_lines <- trimws(readLines(
     file.path(package_root, "NAMESPACE"), warn = FALSE, encoding = "UTF-8"
@@ -1015,7 +1037,11 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     nzchar(namespace_lines) & !startsWith(namespace_lines, "#")
   ]
   expected_directives <- if (identical(package_name, "rrpplatform")) {
-    "import(rrpruntime)"
+    c(
+      "export(rrp_open_resource_catalog)",
+      "export(rrp_resource_path)",
+      "import(rrpruntime)"
+    )
   } else {
     character()
   }
@@ -1144,6 +1170,11 @@ install_package <- function(package_name, archive, library_root, environment) {
 
 load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
+  expected_exports <- if (identical(package_name, "rrpplatform")) {
+    "c(\"rrp_open_resource_catalog\", \"rrp_resource_path\")"
+  } else {
+    "character()"
+  }
   expression <- paste0(
     "library_root <- ",
     encodeString(normalizePath(library_root, mustWork = TRUE), quote = "\""),
@@ -1154,7 +1185,8 @@ load_package_fresh <- function(package_name, library_root) {
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(as.character(packageVersion(package_name)), ",
     encodeString(spec$version, quote = "\""),
-    "), length(getNamespaceExports(package_name)) == 0L)",
+    "), identical(sort(getNamespaceExports(package_name)), ",
+    expected_exports, "))",
     if (identical(package_name, "rrpplatform")) {
       "; stopifnot(\"rrpruntime\" %in% loadedNamespaces())"
     } else {
@@ -1194,6 +1226,60 @@ check_package <- function(
     paste0(
       package_name, " check must end with exact `Status: OK`; found: ",
       if (length(status) == 0L) "no status" else paste(status, collapse = " | ")
+    )
+  )
+}
+
+validate_installed_resource_access <- function(library_root, work_root) {
+  projection_root <- file.path(work_root, "projected-software-root")
+  project_resource_authority(repository_root, projection_root)
+  expected_schema <- file.path(work_root, "expected-resource-catalog-schema.dcf")
+  copied <- file.copy(
+    file.path(repository_root, "resources", "resource-catalog-schema.dcf"),
+    expected_schema, copy.mode = FALSE, copy.date = FALSE
+  )
+  require_true(copied, "Could not create expected schema-byte evidence.")
+  unrelated_root <- file.path(work_root, "unrelated-working-directory")
+  dir.create(unrelated_root)
+
+  expression <- paste0(
+    "library_root <- ",
+    encodeString(normalizePath(library_root, mustWork = TRUE), quote = "\""),
+    "; .libPaths(c(library_root, .Library)); old <- setwd(",
+    encodeString(normalizePath(unrelated_root, mustWork = TRUE), quote = "\""),
+    "); on.exit(setwd(old), add = TRUE); library(rrpplatform); root <- ",
+    encodeString(normalizePath(projection_root, mustWork = TRUE), quote = "\""),
+    "; expected <- ",
+    encodeString(normalizePath(expected_schema, mustWork = TRUE), quote = "\""),
+    "; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
+    "startsWith(normalizePath(find.package('rrpplatform')), ",
+    "paste0(library_root, .Platform$file.sep)), ",
+    "identical(sort(getNamespaceExports('rrpplatform')), ",
+    "c('rrp_open_resource_catalog', 'rrp_resource_path'))); ",
+    "catalog <- rrp_open_resource_catalog(root); ",
+    "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
+    "identical(names(catalog), c('software_root', 'catalog_path', ",
+    "'schema_path', 'catalog')), ",
+    "!'Source-Path' %in% names(catalog$catalog$entries[[1L]])); ",
+    "resolved <- rrp_resource_path(catalog, ",
+    "'rrp.contract.resource-catalog'); ",
+    "read_raw <- function(path) readBin(path, 'raw', n = file.info(path)$size); ",
+    "stopifnot(identical(read_raw(resolved), read_raw(expected))); ",
+    "unlink(resolved); condition <- tryCatch({rrp_resource_path(catalog, ",
+    "'rrp.contract.resource-catalog'); NULL}, error = identity); ",
+    "stopifnot(inherits(condition, 'rrp_resource_error'), ",
+    "identical(condition$code, 'missing_schema'), ",
+    "!grepl(root, condition$message, fixed = TRUE))"
+  )
+  require_command_success(
+    "installed rrpplatform copied-root resource access",
+    file.path(R.home("bin"), "Rscript"),
+    c("--vanilla", "-e", shQuote(expression))
+  )
+  cat(
+    paste0(
+      "PASS installed rrpplatform explicit-root resolution, byte equality, ",
+      "and post-open mutation rejection\n"
     )
   )
 }
@@ -1307,11 +1393,14 @@ validate_packages <- function() {
     ))
   }
 
-  cat("\nResult: PASS (package and source-resource foundation)\n")
+  validate_installed_resource_access(library_root, work_root)
+
+  cat("\nResult: PASS (package and installed-resource foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
-    "projection, package topology, metadata, dependency direction, zero-export ",
-    "namespaces, build, isolated install/load, and package-native check only.\n",
+    "projection, explicit-root installed-package access, package topology, ",
+    "metadata, dependency direction, exact exports, build, isolated install/load, ",
+    "and package-native check only.\n",
     sep = ""
   )
 }

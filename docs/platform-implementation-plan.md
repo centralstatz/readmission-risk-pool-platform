@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stages 1 and 2 are complete;
-Stage 3 is detailed, accepted, and in progress; Increment 3.A is complete and
-Increment 3.B is the next accepted task
+Stage 3 is detailed, accepted, and in progress; Increments 3.A and 3.B are
+complete and Increment 3.C is the next accepted task
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -555,7 +555,8 @@ no unverified address is invented by this plan.
 ## Stage 3 — Installed resources and shared operation foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-15;
-Increment 3.A completed on 2026-09-16; Stage 3 implementation in progress
+Increments 3.A and 3.B completed on 2026-09-16; Stage 3 implementation in
+progress
 
 ### Objective
 
@@ -783,6 +784,8 @@ inventory are rejected. Increment 3.A adds no package export, resource lookup,
 operation result, installed tree, or distribution builder.
 
 ### Increment 3.B — Explicit-root resource access
+
+**Implementation status:** complete on 2026-09-16; Increment 3.C is next.
 
 Implement `rrp_open_resource_catalog()` and `rrp_resource_path()` in
 `packages/rrpplatform/`, with focused manual pages and package-native tests.

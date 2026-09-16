@@ -12,5 +12,10 @@ stopifnot(
   is.null(description[["LinkingTo"]]),
   "rrpruntime" %in% names(namespace_imports),
   identical(as.character(utils::packageVersion("rrpruntime")), "0.3.0.9000"),
-  length(getNamespaceExports("rrpplatform")) == 0L
+  identical(
+    sort(getNamespaceExports("rrpplatform")),
+    c("rrp_open_resource_catalog", "rrp_resource_path")
+  ),
+  is.function(rrp_open_resource_catalog),
+  is.function(rrp_resource_path)
 )

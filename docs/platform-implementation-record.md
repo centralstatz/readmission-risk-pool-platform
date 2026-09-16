@@ -654,3 +654,109 @@ deterministic temporary installed-projection contract, while both packages
 remain behavior-free with zero exports.
 
 **Next task:** implement only Increment 3.B — Explicit-root resource access.
+
+## Increment 3.B — Explicit-root resource access (complete, 2026-09-16)
+
+Increment 3.B made the installed projection established by 3.A consumable by
+installed `rrpplatform` code. The main package now exports exactly
+`rrp_open_resource_catalog(software_root)` and
+`rrp_resource_path(catalog, resource_id)`. `rrpruntime` is unchanged,
+dependency-free, and export-free; `rrpplatform` continues to import only
+`rrpruntime` and has no new package dependency.
+
+`packages/rrpplatform/R/resource-catalog.R` owns strict installed DCF parsing,
+the exact 3.A schema and projected-catalog contract, safe path and link checks,
+closed installed-resource validation, catalog opening, logical resolution, and
+typed resource failures. Opening accepts exactly one caller-supplied software
+root, rejects missing or linked roots, canonicalizes that root, and reads only
+the fixed installed schema and catalog beneath it. It performs no current-
+directory, parent, Git, sibling, environment-variable, repository, package-
+installation, or installed-version discovery and has no source-catalog or
+`Source-Path` fallback.
+
+A successful open returns a list with exact class
+`c("rrp_resource_catalog", "list")` and fields `software_root`,
+`catalog_path`, `schema_path`, and `catalog`. The stored root and fixed paths are
+normalized; the catalog contains only its installed header and installed
+resource records. The object is the minimum validated software context needed
+for lookup, not mutable general configuration and not an installed-root
+selector.
+
+`rrp_resource_path()` accepts only that exact catalog shape and a logical ID
+matching the accepted pattern. It reopens and revalidates the schema, catalog,
+closed inventory, and resource files beneath the stored explicit root before
+each lookup, compares the current validated catalog with the opened state, and
+returns only a normalized contained regular-file path for one exact declared
+ID. Unknown and malformed IDs, caller mutation, catalog replacement, resource
+deletion or link substitution, and invalidated schema/resource state fail
+closed rather than returning a stale path.
+
+All resource-access failures inherit from `rrp_resource_error` and contain
+exactly a bounded single-line maintainer message, `NULL` call, and stable
+lowercase machine code. Root, catalog/schema, catalog-contract, resource-state,
+lookup, closed-inventory, and post-open change failures have distinct codes.
+Messages do not copy parser conditions, supplied paths or IDs, resource
+contents, credentials, secrets, authorization material, connection strings,
+or patient-level content. The condition constructor and all parsers,
+validators, and path helpers remain internal.
+
+Package-native evidence was added in
+`packages/rrpplatform/tests/resource-access.R`. Twelve focused base-R test
+groups construct their own temporary installed fixtures and cover successful
+open/resolve behavior from an unrelated directory; exact catalog class/shape;
+missing, malformed, linked, and unsupported roots/catalogs/schemas; exact field
+sets; malformed and unknown IDs; missing, linked, and non-regular resources;
+unsafe, case-conflicting, and file/directory-conflicting paths; undeclared
+files; malformed or caller-mutated catalog objects; safe error shape and
+non-disclosure; and post-open catalog, schema, deletion, and link mutation.
+These tests depend only on the installed package and temporary fixture state,
+not the repository working directory.
+
+The maintainer package validator now expects exactly the two main-package
+exports and all new source, manual, and test files. It builds and installs both
+packages in dependency order, projects the source resources into temporary
+installed form, changes an independent R process to an unrelated directory
+with no Git context, loads `rrpplatform` from the isolated library, opens only
+the supplied projected root, resolves `rrp.contract.resource-catalog`, and
+compares the resolved bytes with a separately copied expected source. It then
+deletes the projected schema after opening and proves lookup returns the typed
+`missing_schema` failure without path disclosure or fallback. All temporary
+roots, copies, archives, libraries, profiles, and check directories are
+removed.
+
+Historical reconnaissance inspected the former implementation and evidence at
+pre-reset revision `c459f7d`, principally
+`packages/rrpplatform/R/resource-catalog.R`, its two manual pages, and
+`tests/software/installed-resource-access.R`. Explicit caller-supplied root
+handling, immediate canonicalization, logical lookup, typed conditions,
+path/link/containment and closure checks, reopening before lookup, copied-root
+proof, and post-open mutation fixtures were adapted. YAML parsing and
+dependency, the 48-resource/fixed-count model, distribution-root terminology
+and assumptions, compatibility metadata, source-path fallback, old product
+identity, repository/Git discovery, parser/path detail in error messages, and
+Phase/registry machinery were rejected.
+
+Direct source, namespace, and manual parsing passed. Focused installation and
+package-native execution passed all twelve resource-access groups. The complete
+human package/resource operation retained every 3.A positive and adversarial
+claim; both packages built and installed in dependency order; fresh-process
+loads observed the exact export sets; both package checks ended with exact
+`Status: OK`; and the installed copied-root, byte-equality, and post-open
+mutation proof passed. Repository validation passed all eight checks, and
+normal `git diff --check`, source-inventory, path, symlink, and generated-
+artifact hygiene passed. The existing hosted workflow was unchanged and no
+hosted 3.B claim was made.
+
+No automatic root discovery/selection, CLI, installer, persistent installed
+tree, distribution manifest, digest verification, dependency environment,
+common operation result, diagnostic record, hospital project, canonical or
+clinical contract, risk runtime/provider, history, product, application,
+deployment, or release behavior was added.
+
+**Current implementation state:** Increment 3.B complete; Stage 3 remains in
+progress. Installed `rrpplatform` code can consume one explicitly supplied
+validated installed-resource root and resolve current resources by logical ID,
+but it cannot select that root or return a common structured operation result.
+
+**Next task:** implement only Increment 3.C — Common operation result and
+privacy-safe diagnostics.
