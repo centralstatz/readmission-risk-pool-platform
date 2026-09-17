@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–4 are accepted and complete, and
-Stage 5 is in progress under its accepted detail. Increments 5.A and 5.B are
-complete; Increment 5.C is the next implementation task.
+Stage 5 is in progress under its accepted detail. Increments 5.A–5.C are
+complete; formal Stage 5 acceptance and reconciliation is the next task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -1690,9 +1690,10 @@ own stages.
 
 ## Stage 5 — Canonical handoff and producer boundary
 
-**Status:** detailed and accepted for implementation on 2026-09-17. Increment
-Increments 5.A and 5.B are complete and 5.C is next. This section authorizes
-only the three Stage 5 increments below; producer execution does not yet exist.
+**Status:** detailed and accepted for implementation on 2026-09-17. Increments
+5.A–5.C are complete; Stage 5 remains in progress pending its separate formal
+acceptance and reconciliation. This section authorizes only the three Stage 5
+increments below.
 
 ### Objective
 
@@ -2021,7 +2022,7 @@ evidence and stops before the next responsibility.
 ### Increment 5.A — Canonical contract authority and semantic producer declaration
 
 **Implementation status:** complete on 2026-09-17; Increment 5.B subsequently
-completed and Increment 5.C is next.
+completed, followed by Increment 5.C.
 
 **Objective:** establish the complete language-neutral Stage 5 handoff contract
 and make a loaded project declare an exact compatible producer without
@@ -2073,7 +2074,8 @@ cannot yet validate or admit a candidate bundle.
 
 ### Increment 5.B — Dependency-light canonical bundle admission
 
-**Implementation status:** complete on 2026-09-17; Increment 5.C is next.
+**Implementation status:** complete on 2026-09-17; Increment 5.C subsequently
+completed.
 
 **Objective:** implement the pure post-handoff validator that turns one valid
 candidate into an admitted canonical bundle without knowing any source or
@@ -2122,6 +2124,9 @@ minimum source-independent canonical candidate, but no supported project
 operation executes a producer yet.
 
 ### Increment 5.C — Selected producer execution and canonical handoff proof
+
+**Implementation status:** complete on 2026-09-17; formal Stage 5 acceptance
+and reconciliation is next.
 
 **Objective:** execute exactly the selected project producer through the closed
 request/result contract, admit its successful candidate, and prove hospital-

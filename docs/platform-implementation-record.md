@@ -2104,3 +2104,138 @@ candidate, but no supported project operation executes a producer yet.
 
 **Next task:** implement only Increment 5.C — Selected producer execution and
 canonical handoff proof. Do not begin Stage 6 or Stage 5 acceptance.
+
+## Stage 5 / Increment 5.C — Selected producer execution and canonical handoff proof — 2026-09-17
+
+Increment 5.C is complete. `rrpplatform` now exports
+`rrp_execute_producer(software_catalog, project_root, as_of_time)` as its eighth
+and only new interface. The operation validates the explicit-offset RFC 3339
+as-of value before project code, loads the explicit project only through
+`rrp_load_project()`, obtains the exact selected semantic producer, invokes that
+callable exactly once, validates its closed result, and delegates the candidate
+to `rrpruntime::rrp_admit_canonical_bundle()`. Its operation identity is
+`rrp.execute-producer`. `rrpruntime` remains dependency-free with exactly its
+one admission export, and `rrpplatform` continues to import only `rrpruntime`.
+
+The producer request is a plain closed named list in the exact installed-
+contract order: `producer_api_id`, `producer_api_version`, `project_id`,
+`project_version`, `producer_id`, `producer_version`, `canonical_bundle_id`,
+`canonical_bundle_version`, `canonical_profile_id`,
+`canonical_profile_version`, and `as_of_time`. It contains no root, catalog,
+project context, provider, state or extension path, source configuration or
+data, connection, credential, SQL, callback, persistence handle, arbitrary
+metadata, or `...`. Hospital source access remains entirely inside the trusted
+project closure created when registration receives the normalized project
+root.
+
+The accepted producer result is likewise one exact plain closed list containing
+producer-contract identity/version, status, producer identity/version,
+implementation identity/version, mapping identity/version, canonical-profile
+identity/version, authoritative canonical as-of time, capabilities, candidate,
+and failure code. Every declaration and request fact must agree exactly. A
+successful result has one non-null candidate and no failure code; a failed
+result has no candidate and exactly one of `producer_unavailable`,
+`producer_source_failed`, or `producer_mapping_failed`. Unknown, missing,
+additional, classed, malformed, inconsistent, executable, environment,
+connection, language, or other reference-bearing result content fails closed
+as `invalid_producer_result`; no coercion or repair occurs.
+
+Selected-producer invocation reuses the accepted project extension-library
+policy: installed RRP package libraries precede an existing project extension
+library, permitted base/recommended libraries follow, and ambient user/site
+libraries are excluded. The caller's `.libPaths()` and working directory are
+restored even when trusted producer code changes them. The request itself does
+not change the working directory, and no `.GlobalEnv` mutation is required.
+This is controlled trusted-extension execution, not a sandbox. The selected
+provider remains structurally present but is never invoked; there is no retry,
+fallback, alternate selection, source-layout search, or installed default.
+
+Producer-thrown errors are contained only around the hospital-owned callable
+and become `producer_execution_failed` without their text. Valid declared
+producer failures retain their fixed codes. Expected project failures use the
+existing project codes with a fixed loading message, producer-result failures
+use fixed producer messages, and runtime-owned `rrp_canonical_error` codes are
+translated with a fixed canonical-admission message. All become the existing
+common operation-result failure with one bounded error diagnostic. Unexpected
+defects in generic RRP code and resource-authority failures are not broadly
+relabeled. Success contains the detached admitted canonical bundle directly and
+an empty diagnostic list; that value may contain sensitive analytical data and
+is not safe diagnostic/logging content.
+
+Focused package-native evidence uses temporary fictional independent projects.
+Hospital A reads `incoming/encounters.csv` through encounter-oriented local
+fields and maps them to the two canonical domains. Hospital B uses separate
+`stays/`, `events/returns.csv`, and `events/deaths.csv` files with materially
+different local field vocabulary and mapping code. Both pass through the same
+unchanged generic operation and are admitted through the same installed
+canonical authority. Those filenames, fields, rows, and mappings occur only in
+the temporary test implementation; validator evidence rejects their presence
+in generic package source/manuals or installed resources.
+
+The same evidence copies Hospital A to an unrelated location, deletes the
+original, and obtains the same admitted semantics through the copied closure's
+captured root. It runs from an unrelated non-Git working directory. Successful
+execution plus an internal repeat guard proves exactly one producer call; an
+instrumented provider that would fail if called proves zero provider calls.
+File inventory and digests prove that manifests, registration, and fictional
+source files are unchanged. An existing extension library remains empty and an
+absent extension library and state directory remain absent, proving that the
+operation creates neither and writes no persistent output.
+
+Adversarial orchestration evidence covers all three controlled producer
+failures; producer-thrown private condition text; missing, additional, classed,
+unsafe, unsupported-status, and inconsistent results; producer,
+implementation, mapping, profile, capability, and as-of disagreement at both
+result and candidate boundaries; an invalid private canonical value; invalid
+as-of short-circuiting before even a project-root check; and bounded project
+loading failure. The full Stage 5.B canonical adversarial matrix remains owned
+by `rrpruntime` and was not duplicated.
+
+Targeted historical reconnaissance inspected immutable `v0.1.0`
+`operations/lib/canonical-producer-operation.R`,
+`operations/compositions/installed-producers.R`, and
+`tests/phase10/test-independent-adopter-producer.R`. Exact selected-callable
+execution, single invocation, short-circuiting, fixed safe failure translation,
+result/candidate/admission separation, and materially different adopter
+producer proof were adapted to the current explicit-project and package-owned
+boundaries. Installed producer composition, producer-supplied arbitrary
+configuration, source flags, operation events, platform-instance files,
+repository-root execution, synthetic defaults, downstream history/products,
+and Phase suites were rejected.
+
+Focused fresh build, dependency-order isolated install, and producer-execution
+tests passed. During final validation, the expanded namespace exposed stale
+seven-export assertions in three inherited package tests and one installed
+resource-access child-process check. Only those assertions were updated to the
+current exact eight-export posture; the affected project-contract, loader, and
+initializer suites then passed in a fresh isolated installation.
+
+Final local evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks,
+  zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: exact source catalog and all
+  13 resources, deterministic projection, inherited resource/project/canonical
+  adversarial evidence, both source builds, missing-dependency rejection,
+  dependency-order isolated install/load, exact `Status: OK` for both strict
+  `R CMD check --no-manual` runs, installed resource/loading/initialization
+  proofs, and the installed two-hospital/copy producer handoff proof; and
+- R/Rd parsing, exact dependency/export inspection, targeted artifact and
+  interruption-residue review, repository hygiene, and `git diff --check`
+  completed without a retained archive, check tree, temporary library,
+  projected root, project fixture, staging directory, or generated source
+  artifact.
+
+No shipped producer, source connector/configuration framework, provider
+execution, eligibility, target, risk estimate, retry, scheduling, run/history
+identity, state initialization, persistence, cache, product, application, CLI,
+distribution, deployment, or release behavior was introduced. No
+contradiction or deviation from the accepted 5.C plan, Platform Architecture,
+or True North was found.
+
+**Current implementation state:** Stages 1–4 remain accepted and complete.
+Stage 5 remains in progress; Increments 5.A, 5.B, and 5.C are complete. Stage 5
+has not yet undergone formal acceptance and reconciliation.
+
+**Next task:** perform only formal Stage 5 acceptance and reconciliation. Do not
+begin Stage 6 without separate authorization.

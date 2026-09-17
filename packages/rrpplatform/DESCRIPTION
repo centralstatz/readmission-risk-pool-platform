@@ -9,11 +9,12 @@ Description: Establishes the main internal implementation package for the
     explicit software root, resolves declared resources by logical identity,
     reports resource validation through a common privacy-safe result,
     normalizes installed canonical authority into exact runtime admission
-    context, and loads one explicit independent project through strict
-    project-manifest and trusted-registration boundaries without executing
-    selected components, transactionally initializes the smallest valid
-    project, and reports its structural health through a bounded operation
-    result.
+    context, loads one explicit independent project through strict
+    project-manifest and trusted-registration boundaries, executes its exact
+    selected producer through a closed request/result boundary, delegates
+    successful canonical admission to the runtime package, transactionally
+    initializes the smallest valid project, and reports bounded operation
+    results.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

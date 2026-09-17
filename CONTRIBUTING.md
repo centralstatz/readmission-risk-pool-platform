@@ -38,9 +38,9 @@ Rscript --vanilla tools/validate-packages.R
 This maintainer operation owns the closed catalog/schema, temporary installed
 projection, explicit-root installed-package access, common operation-result and
 diagnostic contracts, canonical admission, metadata, dependency/API boundary,
-build, isolated install/load, and package-native check evidence. It does not
-select a software root, execute a project producer/provider, calculate risk, or
-establish installed-distribution behavior.
+selected producer execution and handoff, build, isolated install/load, and
+package-native check evidence. It does not select a software root, execute a
+provider, calculate risk, or establish installed-distribution behavior.
 
 Committed pushes and pull requests run those same two commands through the
 read-only Ubuntu/R 4.4 package-foundation workflow. A local workflow file is

@@ -1,8 +1,9 @@
 #!/usr/bin/env Rscript
 
-# Prove the local package/resource/project foundation, including explicit-root
-# installed-resource access, pure canonical admission, and trusted project
-# loading. This is not an installed RRP operation or a general validator.
+# Prove the local package/resource/project and canonical-handoff foundation,
+# including explicit-root installed-resource access, pure canonical admission,
+# trusted project loading, and selected producer execution. This is not an
+# installed RRP operation or a general validator.
 
 script_argument <- grep(
   "^--file=", commandArgs(trailingOnly = FALSE), value = TRUE
@@ -1467,6 +1468,7 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "canonical-contracts.R"),
       file.path("R", "operation-result.R"),
+      file.path("R", "producer-execution.R"),
       file.path("R", "project-contracts.R"),
       file.path("R", "project-doctor.R"),
       file.path("R", "project-initializer.R"),
@@ -1476,6 +1478,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_load_project.Rd"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
+      file.path("man", "rrp_execute_producer.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
@@ -1485,6 +1488,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-doctor.R"),
       file.path("tests", "project-initializer.R"),
       file.path("tests", "project-loader.R"),
+      file.path("tests", "producer-execution.R"),
       file.path("tests", "resource-access.R")
     )
   } else {
@@ -1642,7 +1646,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
+      "rrp_execute_producer", "rrp_initialize_project", "rrp_load_project",
+      "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
       "rrp_resource_path", "rrp_validate_project",
       "rrp_validate_software_resources"
@@ -1665,6 +1670,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
       "export(rrp_initialize_project)",
+      "export(rrp_execute_producer)",
       "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
@@ -1702,7 +1708,7 @@ validate_source_boundaries <- function(package_roots) {
   )
 
   forbidden_source_patterns <- c(
-    "\\.GlobalEnv", "getwd\\s*\\(", "Sys\\.getenv\\s*\\(",
+    "\\.GlobalEnv", "Sys\\.getenv\\s*\\(",
     "repository_root", "[.]git(?:/|\\\\|\"|')",
     "readmission-risk-pool(?:/|\\\\)"
   )
@@ -1724,11 +1730,49 @@ validate_source_boundaries <- function(package_roots) {
     )
   }
 
-  source_pattern <- "(?:^|[^[:alnum:]_.])(?:sys[.])?source[[:space:]]*[(]"
   platform_source_files <- list.files(
     file.path(package_roots[["rrpplatform"]], "R"),
     pattern = "[.]R$", full.names = TRUE
   )
+  getwd_calls <- lapply(platform_source_files, function(path) {
+    lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+    grep("getwd[[:space:]]*[(]", lines, value = TRUE, perl = TRUE)
+  })
+  names(getwd_calls) <- basename(platform_source_files)
+  files_with_getwd <- names(getwd_calls)[lengths(getwd_calls) > 0L]
+  require_true(
+    identical(files_with_getwd, "producer-execution.R") &&
+      length(getwd_calls[["producer-execution.R"]]) == 2L,
+    paste0(
+      "rrpplatform may inspect the working directory only to save and restore ",
+      "it around selected producer execution."
+    )
+  )
+
+  generic_text <- paste(unlist(lapply(c(
+    platform_source_files,
+    list.files(
+      file.path(package_roots[["rrpplatform"]], "man"),
+      pattern = "[.]Rd$", full.names = TRUE
+    ),
+    list.files(
+      file.path(repository_root, "resources"),
+      recursive = TRUE, full.names = TRUE, include.dirs = FALSE
+    )
+  ), readLines, warn = FALSE, encoding = "UTF-8"), use.names = FALSE),
+  collapse = "\n")
+  hospital_vocabulary <- c(
+    "visit_key", "person_key", "unit_case", "member_token",
+    "encounters.csv", "stays.csv", "returns.csv", "deaths.csv"
+  )
+  require_true(
+    !any(vapply(
+      hospital_vocabulary, grepl, logical(1L), x = generic_text, fixed = TRUE
+    )),
+    "Generic package source and documentation must not embed hospital mappings."
+  )
+
+  source_pattern <- "(?:^|[^[:alnum:]_.])(?:sys[.])?source[[:space:]]*[(]"
   source_calls <- lapply(platform_source_files, function(path) {
     lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
     grep(source_pattern, lines, value = TRUE, perl = TRUE, ignore.case = TRUE)
@@ -1824,7 +1868,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_initialize_project\", \"rrp_load_project\", ",
+      "c(\"rrp_execute_producer\", \"rrp_initialize_project\", ",
+      "\"rrp_load_project\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
       "\"rrp_resource_path\", \"rrp_validate_project\", ",
@@ -1966,7 +2011,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_initialize_project', 'rrp_load_project', 'rrp_open_resource_catalog', ",
+    "c('rrp_execute_producer', 'rrp_initialize_project', 'rrp_load_project', ",
+    "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
     "'rrp_resource_path', 'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
@@ -2259,9 +2305,44 @@ validate_installed_project_initialization <- function(library_root, work_root) {
   )
 }
 
+validate_installed_producer_execution <- function(
+  library_root,
+  work_root,
+  environment
+) {
+  software_root <- file.path(work_root, "producer-execution-software-root")
+  project_resource_authority(repository_root, software_root)
+  script_path <- file.path(work_root, "validate-installed-producer-execution.R")
+  copied <- file.copy(
+    file.path(
+      repository_root, "packages", "rrpplatform", "tests",
+      "producer-execution.R"
+    ),
+    script_path,
+    overwrite = FALSE,
+    copy.mode = FALSE,
+    copy.date = FALSE
+  )
+  require_true(copied, "Could not copy installed producer-execution proof.")
+  require_command_success(
+    "installed rrpplatform selected producer execution",
+    file.path(R.home("bin"), "Rscript"),
+    c("--vanilla", shQuote(script_path), shQuote(software_root)),
+    environment
+  )
+  cat(
+    paste0(
+      "PASS installed selected producer execution for two fictional hospital ",
+      "mappings, copied-project portability, exact one-call/zero-provider ",
+      "behavior, bounded failures, admission delegation, process restoration, ",
+      "and no project/state mutation\n"
+    )
+  )
+}
+
 validate_packages <- function() {
-  cat("RRP local package, resource, canonical-contract, and project validation\n")
-  cat("=============================================================\n")
+  cat("RRP local package, project, and canonical-handoff validation\n")
+  cat("===========================================================\n")
 
   run_resource_contract_validation()
 
@@ -2371,8 +2452,9 @@ validate_packages <- function() {
   validate_installed_resource_access(library_root, work_root)
   validate_installed_project_loading(library_root, work_root)
   validate_installed_project_initialization(library_root, work_root)
+  validate_installed_producer_execution(library_root, work_root, environment)
 
-  cat("\nResult: PASS (package, resource, canonical-admission, and project foundation)\n")
+  cat("\nResult: PASS (package, project, and canonical-handoff foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
@@ -2380,6 +2462,9 @@ validate_packages <- function() {
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and structural ",
     "provider selection, transactional minimal-project initialization, ",
+    "selected producer execution, closed request/result validation, exact ",
+    "one-call and zero-provider behavior, admission delegation, two distinct ",
+    "hospital mapping fixtures, ",
     "loader-backed project diagnosis, copied-project portability, bounded ",
     "adversarial translation, resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",

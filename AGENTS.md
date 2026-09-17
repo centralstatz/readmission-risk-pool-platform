@@ -73,10 +73,12 @@ result and privacy-safe diagnostic behavior, the exact canonical specification
 family and relationships, strict 0.2.0 project contracts, explicit trusted
 project loading, transactional minimal-project initialization, exact semantic
 producer and structural provider selection, loader-backed structured project diagnosis, copied-
-project portability, package topology, one-way
+project portability, selected producer execution, closed request/result
+validation, two distinct fictional hospital mappings, exact one-call and zero-
+provider behavior, canonical admission delegation, package topology, one-way
 dependency, dependency-light canonical admission, exact export posture, builds,
 isolated install/load, and package-
-native checks. No root selector, dependency environment, source/risk
+native checks. No root selector, dependency environment, provider/risk
 operation, or release procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
@@ -95,6 +97,7 @@ Committed push run `35221028009`, job `105200921084`, succeeded for revision
 reconciliation. Increment 5.A adds the installed canonical contract authority,
 semantic producer declarations, and the 0.2.0 project line without invoking a
 component. Increment 5.B adds the sole `rrpruntime` export for pure canonical
-admission without invoking project code. The next task is Increment 5.C —
-Selected producer execution and canonical handoff proof. Do not begin Increment
-5.C or later work without explicit authorization.
+admission without invoking project code. Increment 5.C adds the eighth
+`rrpplatform` export for exact selected-producer execution and the full local
+canonical handoff proof. The next task is formal Stage 5 acceptance and
+reconciliation. Do not begin Stage 6 without explicit authorization.

@@ -423,7 +423,8 @@ stopifnot(
 
 stopifnot(
   identical(sort(getNamespaceExports("rrpplatform")), c(
-    "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
+    "rrp_execute_producer", "rrp_initialize_project", "rrp_load_project",
+    "rrp_open_resource_catalog",
     "rrp_operation_succeeded", "rrp_resource_path",
     "rrp_validate_project",
     "rrp_validate_software_resources"

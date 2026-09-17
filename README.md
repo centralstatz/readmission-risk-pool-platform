@@ -23,18 +23,19 @@ deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
 its fixed trusted registration boundary and resolving exact structural
-producer/provider selections without invoking them. It reports the same
+producer/provider selections without invoking them during loading. It reports the same
 loader-owned assessment through a bounded project doctor. Producer declarations
 now identify the exact canonical profile, bundle, implementation, mapping, and
 required available capabilities, while providers retain their structural
-shape; neither callable is invoked during initialization, loading, or doctor.
+shape. One supported operation now executes exactly the selected producer once
+through a closed request/result contract and delegates a successful detached
+candidate to runtime admission; the selected provider remains inert.
 `rrpruntime` now exports one pure dependency-light canonical admission
 primitive. It validates exact identity, capability, closed-domain, key,
 relationship, explicit-offset time, dual-time, and 30-elapsed-day rules and
-returns a detached in-memory admitted bundle or a bounded typed failure. No
-supported project operation executes a producer or calls admission yet. The
-repository has no producer-execution operation, root selector, persistent
-installed RRP distribution, risk calculation, product, application,
+returns a detached in-memory admitted bundle or a bounded typed failure. The
+repository has no root selector, persistent installed RRP distribution,
+provider execution, risk calculation, product, application,
 command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
@@ -102,16 +103,17 @@ installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
 trusted project loading, transactional minimal-project initialization, exact
 semantic producer and structural provider selection, structured project
-diagnosis, copied-project
-portability, typed privacy-safe
+diagnosis, selected producer execution through two materially different
+fictional hospital mappings, copied-project portability, typed privacy-safe
 project/resource failures, adversarial rejection behavior, and direct
-installed-authority/runtime canonical admission. It also checks exact package topology,
+installed-authority/runtime canonical admission, exact single producer
+invocation, zero provider calls, process restoration, and no project/state
+mutation. It also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
-selector, product command, distribution build, or proof of producer/provider
-execution, risk calculation, clinical validity, deployment, or release
-behavior.
+selector, product command, distribution build, or proof of provider execution,
+risk calculation, clinical validity, deployment, or release behavior.
 
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
@@ -122,9 +124,9 @@ accepted and complete. This narrow hosted evidence does not establish broader
 platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
 The initializer, loader, and doctor are internal technical interfaces; ordinary
-operator commands remain absent. Stage 5 is in progress: Increment 5.A is
-complete and Increment 5.B provides pure runtime canonical admission, while
-selected producer execution remains deferred to Increment 5.C.
+operator commands remain absent. Stage 5 is in progress: its three
+implementation increments are complete, and formal Stage 5 acceptance and
+reconciliation remains a separate next task.
 
 ## License
 

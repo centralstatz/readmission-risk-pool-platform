@@ -10,11 +10,15 @@ manifest and `rrp.project-registration@0.2.0` registration-result structures,
 the installed canonical specification family, one explicit project-loading
 boundary, and transactional minimal-project initialization from cataloged
 software-owned templates. Contract parsers, registration evaluation,
-rendering, staging, path checks, composition, resolution, and error
-construction remain internal.
+rendering, staging, path checks, composition, resolution, producer request and
+result validation, and error construction remain internal.
 
 Its current callable interfaces are:
 
+- `rrp_execute_producer(software_catalog, project_root, as_of_time)` loads one
+  explicit project, invokes exactly its selected producer once through the
+  closed request/result contract, and delegates its candidate to runtime
+  admission;
 - `rrp_open_resource_catalog(software_root)` validates the fixed installed DCF
   schema, catalog, and closed declared resource set beneath exactly the supplied
   root; and
@@ -54,6 +58,16 @@ or provider. Producer records declare exact producer API, canonical bundle and
 profile, implementation, mapping, and available-capability identities;
 providers retain their Stage 4 structural shape.
 
+Producer execution validates the authoritative as-of time before project code,
+reuses the loader and its software-first extension-library policy, and passes
+only closed contract and identity facts. It does not pass paths, source
+configuration, credentials, provider/state handles, callbacks, or arbitrary
+options. Expected project, producer-result, and canonical-admission failures
+become bounded common results. Arbitrary producer error text is discarded;
+unexpected defects in RRP code remain visible. Success returns the admitted
+in-memory canonical bundle, which can contain sensitive analytical data and
+must not be logged or rendered as diagnostic output.
+
 Opening may report root codes `invalid_software_root`,
 `missing_software_root`, or `linked_software_root`; catalog/schema state codes
 such as `missing_catalog`, `linked_catalog`, `nonregular_catalog`,
@@ -77,11 +91,12 @@ provider remains a non-executable structural placeholder. The declared
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. The package does not yet provide root selection,
 an ordinary operator command, dependency restoration, state creation,
-producer execution, runtime orchestration, products, applications,
-installation, or deployment. It can internally normalize the installed
-canonical authority into the exact context accepted by `rrpruntime`, whose one
-export can admit a directly supplied candidate; no supported project operation
-invokes that primitive yet.
+provider execution, risk calculation, runtime history, products, applications,
+installation, or deployment. It normalizes installed canonical authority into
+the exact context accepted by `rrpruntime` and invokes its sole admission
+export only after one selected project producer returns a conforming result.
+Execution performs no retry, scheduling, state initialization, persistence, or
+retention.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.

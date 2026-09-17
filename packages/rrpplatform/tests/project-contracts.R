@@ -346,12 +346,12 @@ rrp_test_cases <- list(
       is.function(result$providers[[1L]]$callable)
     )
   },
-  "5.A adds no public API" = function() {
+  "contract validation exposes only the current public API" = function() {
     namespace <- asNamespace("rrpplatform")
-    deferred <- c("rrp_register_project", "rrp_execute_producer")
+    deferred <- "rrp_register_project"
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
-        "rrp_initialize_project", "rrp_load_project",
+        "rrp_execute_producer", "rrp_initialize_project", "rrp_load_project",
         "rrp_open_resource_catalog", "rrp_operation_succeeded",
         "rrp_resource_path", "rrp_validate_project",
         "rrp_validate_software_resources"
