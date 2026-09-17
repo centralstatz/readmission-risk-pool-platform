@@ -1729,3 +1729,138 @@ baseline above.
 **Next task:** detail Stage 5 — Canonical Handoff and Producer Boundary from
 the accepted Stage 4 baseline. Do not begin Stage 5 source implementation
 before that plan is reviewed and accepted.
+
+### Post-acceptance Stage 4 hands-on observation — 2026-09-17
+
+A separate manual exercise used a simulated installed RRP environment to
+initialize an independent hospital-owned project outside the source repository,
+load it, run the project doctor, copy it to a different filesystem location,
+and load and doctor the copy. Every supported operation succeeded. The copied
+project resolved its project-owned paths from the copied root and retained no
+operational dependence on the original location, confirming the portability
+already established by automated Stage 4 evidence.
+
+The exercise also found one nonblocking usability consideration:
+`rrp_initialize_project()` rejects a destination beginning with `~`, while the
+equivalent absolute destination succeeds. This is consistent with the accepted
+strict internal path contract and is not a Stage 4 acceptance defect. No Stage
+4 source or test was changed. A later user-facing interface, such as the Stage
+11 CLI, may normalize an explicitly supplied home-relative path before calling
+the strict internal API if human evidence justifies that convenience.
+
+## Stage 5 detailed-plan acceptance — 2026-09-17
+
+Stage 5 — Canonical Handoff and Producer Boundary was detailed from the
+accepted Stage 4 baseline without implementing source behavior. The planning
+pass began from clean synchronized `main` at `c91a641` (`Stage 4 complete`),
+which records the accepted implementation baseline at `f5c1fb0`. It read
+Platform True North, Platform Architecture, the current plan and record, human
+implementation guidance, and the coding-agent agreement, then inspected the
+realized resource/result/project contracts, trusted loader, initializer,
+doctor, package topology, exports, templates, and validation boundary. No
+contradiction requires reopening Stages 1–4.
+
+The accepted Stage 5 objective is to make exactly the selected project
+producer executable under one closed request/result contract and admit or
+reject its minimum source-independent canonical candidate. The provider stays
+structurally selected and completely inert. Successful canonical information
+stays in memory; no state or history is initialized.
+
+The accepted construction sequence is:
+
+1. **Increment 5.A — Canonical contract authority and semantic producer
+   declaration:** add the closed installed DCF specification family, advance
+   the unreleased project/API/registration contracts coherently to `0.2.0`,
+   and validate exact producer semantics without invoking either extension;
+2. **Increment 5.B — Dependency-light canonical bundle admission:** add the
+   first `rrpruntime` export and pure detached candidate admission for the
+   minimum profile without executing project code; and
+3. **Increment 5.C — Selected producer execution and canonical handoff proof:**
+   add the one `rrpplatform` producer operation, common bounded outcomes, and
+   the installed independent/copy/substitution proof.
+
+Stage acceptance follows those increments and requires committed success from
+the existing read-only hosted package-foundation workflow. It is a lifecycle
+reconciliation, not a fourth implementation increment.
+
+The minimum profile is deliberately smaller than the historical clinical
+profile. It contains only a discharge-episode root and required terminal-event
+capability. The root supplies episode/patient/index-encounter identity,
+admission/discharge instants, and an exact follow-up end equal to 30 elapsed
+days after discharge. The child domain supplies at most one first readmission
+and one death per episode with separate occurrence and availability instants.
+Both domain payloads may contain zero rows while their required capabilities
+remain available; final acceptance must also pass a nonempty bundle so real
+relationship and temporal behavior is proven. Baseline scores, generic events,
+features, demographics, diagnoses, medications, tasks, interventions,
+measures, and provider-specific inputs remain absent.
+
+The first executable representation is a closed in-memory base-R adapter to a
+representation-independent semantic contract. `rrpruntime` owns pure canonical
+validation and admitted values; `rrpplatform` owns installed-resource loading,
+project/producer orchestration, request/result validation, extension-condition
+containment, and common result translation. The one-way dependency remains
+unchanged. The producer request carries only exact project, producer, bundle,
+profile, and as-of facts. Hospital source access, configuration, secrets,
+connections, local validation, mapping, and dependencies remain behind the
+trusted project closure; none is passed through generic RRP.
+
+The project manifest will add exact canonical-profile ID/version fields and
+the producer registration record will add exact producer API, bundle/profile,
+implementation, mapping, and capability declarations. This incompatible
+required-field change advances the development project contract, project API,
+and registration contract from `0.1.0` to `0.2.0`. The current tree is
+unreleased and supports one exact line, so old Stage 4 structural projects will
+fail explicitly rather than receive a compatibility bridge or silent rewrite.
+The initializer will continue to create exactly two files and will register a
+semantically conforming producer that returns a controlled unavailable result
+until hospital code implements it. Provider registration semantics do not
+change.
+
+Historical reconnaissance inspected immutable `v0.1.0` specification,
+canonical bundle/profile/domain, producer declaration/result/admission,
+synthetic adapter, installed producer composition, Phase 2/10 tests, and the
+independent adopter-producer fixture. The pre-reset fixed-target assessment at
+revision `1e7b95c` was also revisited. Useful concepts are the exact identity
+envelope, declaration/callable separation, implementation and mapping
+identity, capability/cardinality distinction, candidate non-coercion,
+primary/foreign-key and closed-field rules, dual-time availability,
+short-circuit failure, and materially different source-substitution proof.
+
+Those concepts are adapted to installed DCF resources, current package owners,
+project registration, the singular fixed endpoint, explicit terminal-event
+availability, common bounded operation results, and two temporary independent
+producer fixtures. Historical YAML/parser dependency, broad baseline/event
+model, generic dependency graph, installed/platform-instance producer
+composition, producer configuration payload, synthetic default, source-
+specific flags, Phase validators, operation-event/logging machinery,
+daily-hazard/estimand semantics, downstream runtime/history/products/app, and
+generated Hospital delivery are rejected for Stage 5.
+
+The detailed acceptance criteria require two differently shaped temporary
+hospital-source implementations to cross the same generic boundary without a
+source or producer-ID branch, copied-project execution to use the copied root,
+zero provider calls, fixed privacy-safe failures, no state writes, and complete
+resource/package/build/check/hosted evidence. Admission remains software
+conformance only; it does not claim source truth, clinical validity,
+calibration, production authorization, or release readiness.
+
+Planning/repository validation passed the human repository-foundation command,
+local Markdown-link and status review, R/YAML parsing owned by that validator,
+`git diff --check`, and working-tree inventory/hygiene review. Package
+validation was not rerun because this task changed only planning and current-
+status documentation and introduced no resource, package, export, dependency,
+test, or workflow behavior.
+
+No genuine unresolved architectural decision blocks implementation. Decisions
+about target/provider execution, durable run/history identity, the maintained
+fictional producer, dependency restoration, remote transports, additional
+canonical domains, large-bundle/storage mechanics, products, app, CLI,
+distribution, deployment, and release remain deliberately with later stages.
+
+**Current implementation state:** Stages 1–4 remain accepted and complete.
+Stage 5 is detailed and accepted, but no Stage 5 source behavior exists.
+
+**Next task:** implement only Increment 5.A — Canonical contract authority and
+semantic producer declaration. Do not begin Increment 5.B, Increment 5.C, or
+Stage 6.

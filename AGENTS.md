@@ -90,5 +90,6 @@ sixth `rrpplatform` export. Increment 4.D added the seventh export,
 `rrp_validate_project()`, and the complete local independent-project proof.
 Committed push run `35221028009`, job `105200921084`, succeeded for revision
 `f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`, completing Stage 4 after final
-reconciliation. The next task is to detail Stage 5 — Canonical Handoff and
-Producer Boundary. Do not begin Stage 5 source implementation.
+reconciliation. Stage 5 — Canonical Handoff and Producer Boundary is detailed
+and accepted. The next task is Increment 5.A — Canonical contract authority and
+semantic producer declaration. Do not begin Increment 5.B or later work.

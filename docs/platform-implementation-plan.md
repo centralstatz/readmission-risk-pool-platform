@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stages 1–4 are accepted and
-complete. The next planning task is to detail Stage 5 from the accepted Stage
-4 baseline; Stage 5 source implementation is not yet authorized.
+**Status:** authoritative roadmap; Stages 1–4 are accepted and complete, and
+Stage 5 is detailed and accepted for implementation. Increment 5.A is the next
+implementation task; no Stage 5 source has been implemented yet.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,9 +68,9 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 4 is the
-most recently detailed and accepted stage; completed Stage 1–3 detail remains
-as implementation lineage. Stage 5 remains high-level until its separate
+Only the current stage is decomposed into accepted increments. Stage 5 is the
+current detailed and accepted stage; completed Stage 1–4 detail remains as
+implementation lineage. Stage 6 remains high-level until its separate
 planning task. After a stage is implemented:
 
 1. validate its stated exit claim;
@@ -1690,39 +1690,671 @@ own stages.
 
 ## Stage 5 — Canonical handoff and producer boundary
 
-### Objective and responsibilities
+**Status:** detailed and accepted for implementation on 2026-09-17. Increment
+5.A is next. This section authorizes only the three Stage 5 increments below;
+it does not claim that producer execution or canonical admission exists.
 
-Define the 1.0 specification envelope, canonical bundle/profile and domains,
-temporal availability rules, capabilities, producer declaration/result, and
-admission operation. Execute exactly the selected trusted producer and admit
-or reject its representation-independent candidate before generic behavior.
+### Objective
 
-### Why here and dependencies
+Establish the exact supported boundary at which hospital-owned source
+interpretation ends and generic RRP behavior begins. Installed RRP must be able
+to construct one closed producer request, execute exactly the producer already
+selected by an explicit loaded project, validate its closed result, and admit
+or reject a minimum source-independent canonical bundle through versioned
+identity, profile, relationship, capability, and temporal rules.
 
-The generic runtime cannot be designed or tested honestly until project-owned
-source interpretation stops at a precise admitted boundary. Stage 4 supplies
-the trust and selection context; Stage 3 supplies resource lookup and results.
+Stage 5 makes the producer executable under one supported contract. The
+selected provider remains structurally registered and resolvable but is never
+invoked. Successful admission remains in memory and does not initialize or
+write project state.
+
+### Stage 4 reconciliation and inherited constraints
+
+Stages 1–4 are accepted and complete at committed baseline
+`f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`. No corrective source change is
+required before Stage 5. The realized tree establishes these constraints:
+
+- every project operation receives one validated explicit software-resource
+  catalog and one explicit project root; no working-directory, parent, Git,
+  sibling, environment-variable, or source-tree discovery is allowed;
+- the project loader is the sole authority for manifest validation, trusted
+  registration, installed/project composition, exact producer/provider
+  selection, library separation, and immutable project-context construction;
+- the selected producer and provider are trusted function objects but their
+  Stage 4 callable shapes are deliberately inert and semantically unvalidated;
+- `rrpplatform` owns project loading, operation orchestration, installed
+  resources, and common results/diagnostics and imports only `rrpruntime`;
+- `rrpruntime` is dependency-free and export-free, but its target architecture
+  makes it the owner of admitted canonical types and post-handoff computation;
+- project registration is trusted hospital code evaluated in a controlled
+  environment, not a security sandbox; project dependencies may be used only
+  through the already declared extension library after RRP-owned libraries;
+- initialization still creates exactly `rrp-project.dcf` and `R/register.R`;
+  it creates no source, configuration, dependency, state, test, or model tree;
+- the common operation-result and diagnostic contracts allow bounded
+  machine-readable results while prohibiting unsafe diagnostic content; and
+- the existing repository/package validators and read-only hosted workflow are
+  the evidence path to extend. No new validation framework is justified.
+
+A post-acceptance manual installed-software exercise independently initialized,
+loaded, doctored, copied, reloaded, and re-doctored a project successfully.
+The copy resolved its own project paths. A leading `~` in the initializer
+destination was rejected while the equivalent absolute path succeeded. That
+is a deferred user-interface convenience concern, not a Stage 4 defect and not
+a reason for Stage 5 to change path safety.
+
+### Scope test and settled Stage 5 decisions
+
+Every responsibility is tested against one question: is it required to execute
+one selected hospital producer and turn its minimum candidate into admitted
+canonical input without beginning provider execution, risk calculation, or
+persistence?
+
+| Responsibility | Accepted Stage 5 boundary |
+|---|---|
+| Semantic authority | Cataloged, installed, versioned DCF resources define one small specification envelope, producer contract, canonical bundle, readmission profile, and two domain contracts. DCF preserves the current dependency-light installed-resource model; Stage 5 does not restore YAML or create a general schema engine. |
+| Current realization | The semantic handoff is representation-independent. The first executable adapter accepts one closed in-memory base-R realization. Files, tables, databases, or services may later adapt to the same semantics but are not separate Stage 5 transports. |
+| Project compatibility | The project manifest gains the exact supported canonical profile ID/version. Because this is a new required public field and producer registration gains semantic fields, the development project contract, project API, and registration contract advance together from `0.1.0` to `0.2.0`. There is no silent acceptance or migration of the structural `0.1.0` form. |
+| Producer declaration | The selected producer record declares exact producer, implementation, mapping, producer-API, canonical-bundle, canonical-profile, and capability identities beside its trusted callable. The provider record remains the Stage 4 structural ID/version/callable only. |
+| Producer request | RRP supplies one exact immutable request containing only project and producer identity, requested bundle/profile identity, and caller-supplied as-of time. It supplies no source payload, configuration, credential, connection, project path, provider, state handle, or arbitrary options. |
+| Source access | Hospital code obtains source information through its trusted producer closure and project-owned dependencies/configuration or an approved external secret/source environment. Registration already receives the explicit project root and may capture it. Generic RRP neither understands nor forwards source-system details. |
+| Invocation | RRP invokes exactly the selected producer once, with exactly one request, under the accepted library ordering and without changing the working directory. There is no fallback, retry, discovery, parallel producer, or identity-specific branch. |
+| Producer result | The callable returns one closed success/failure result. Success carries identities, capabilities, as-of agreement, and exactly one candidate bundle. Failure carries one controlled failure code and no bundle. Arbitrary messages, source rows, paths, exceptions, SQL, configuration, and connection details cannot cross this result boundary. |
+| Canonical admission | `rrpruntime` owns one pure dependency-light admission primitive. It validates a detached candidate against the exact expected context and minimum profile, returns one validated admitted-bundle value, or raises bounded typed canonical failures for `rrpplatform` to translate. It never reads a source, project, resource path, provider, or state. |
+| Operation result | `rrpplatform` owns one stable producer-execution operation returning the existing common operation result. Success contains the admitted in-memory bundle. Expected project/producer/canonical failures become fixed privacy-safe diagnostics; unexpected producer conditions are contained at the extension boundary without echoing them. Unexpected defects in RRP code remain visible rather than being relabeled as producer failures. |
+| Provider boundary | The provider remains selected in project context only. Stage 5 does not validate provider semantics, construct provider input, invoke it, catch its errors, register an installed default, or interpret a model. Instrumented evidence must prove zero provider calls. |
+| State boundary | Admission is in memory. No state directory, database, cache, history, run ledger, audit log, retained canonical bundle, lock, migration, or product is created or written. |
+| Clinical claim | Canonical admission proves software-contract conformance only. It does not prove source correctness, clinical validity, completeness, calibration, production approval, privacy authorization, or fitness for care decisions. |
+
+### Versioned specification and installed-resource authority
+
+Stage 5 introduces a deliberately small closed specification family. Each
+resource uses the same exact DCF envelope: specification kind, ID, version,
+format version, identity scope, lifecycle status, product/development identity,
+and owning package. The first specification format version is `1.0.0`; the
+first semantic contract/profile/domain versions are `0.1.0`. Exact version
+equality is the only supported compatibility rule in this development
+generation. Unknown kinds, fields, records, IDs, versions, formats, or status
+values fail closed.
+
+The cataloged source resources and logical identities are:
+
+| Resource | Logical identity | Semantic owner |
+|---|---|---|
+| `resources/contracts/canonical/specification-envelope.dcf` | `rrp.contract.specification-envelope` | Common exact metadata shared by the Stage 5 specifications. |
+| `resources/contracts/canonical/canonical-producer.dcf` | `rrp.contract.canonical-producer` | Producer declaration, request, result, failure, and invocation semantics owned by `rrpplatform`. |
+| `resources/contracts/canonical/canonical-bundle.dcf` | `rrp.contract.canonical-bundle` | `rrp.canonical-bundle@0.1.0` identity, exact in-memory adapter shape, capability/domain registration, and admission rules owned semantically by `rrpruntime`. |
+| `resources/contracts/canonical/profiles/readmission.dcf` | `rrp.profile.readmission` | `rrp.canonical-profile.readmission@0.1.0`, the only profile supported in Stage 5. |
+| `resources/contracts/canonical/domains/discharge-episode.dcf` | `rrp.domain.discharge-episode` | Exact root-domain fields, keys, cardinality, and temporal rules. |
+| `resources/contracts/canonical/domains/terminal-event.dcf` | `rrp.domain.terminal-event` | Exact readmission/death event fields, vocabulary, relationship, cardinality, and dual-time rules. |
+
+These are ordinary installed resources reached through the existing explicit
+catalog. They are public semantic authorities, not executable configuration.
+They name no R function, package install command, local path, source system,
+hospital, provider, model, secret, or storage location. Executable package code
+and tests must prove exact agreement with them. The resource catalog remains
+closed; adding these resources does not turn it into dynamic discovery.
+
+This Stage 5 envelope is intentionally not a universal specification language.
+It supports only the exact kinds now required. General dependency graphs,
+arbitrary conditional rules, compatibility ranges, custom validators, embedded
+code, multiple profiles, and extension fields remain absent.
+
+### Minimum readmission canonical representation
+
+The first profile contains only an episode root and terminal outcome evidence:
+
+```text
+rrp.canonical-profile.readmission@0.1.0
+├── discharge_episode   required capability; zero or more rows
+└── terminal_event      required capability; zero or more rows
+                         event_type = readmission | death
+```
+
+Zero rows is a valid available domain state; it is not `unavailable` or
+`unsupported`. The Stage 5 acceptance scenario must nevertheless admit a
+nonempty bundle so the boundary is proven with actual relationships and time
+semantics rather than an empty structural object. Both capabilities are
+required and `available`. A producer that cannot supply terminal-event
+coverage cannot conform to this profile and may not fabricate an empty domain
+while declaring the capability unavailable.
+
+The exact logical fields are:
+
+| Domain | Fields |
+|---|---|
+| `discharge_episode` | `episode_id`, `patient_id`, `index_encounter_id`, `admission_time`, `discharge_time`, `followup_window_end` |
+| `terminal_event` | `terminal_event_id`, `episode_id`, `event_type`, `occurred_at`, `available_at` |
+
+`episode_id` is the root key. A patient may have multiple episodes.
+`terminal_event.episode_id` must resolve exactly one root. Identifier
+construction remains producer-owned; admitted identifiers are bounded,
+nonempty values but never appear in ordinary diagnostics. Unknown fields and
+non-plain/reference-bearing R values fail closed.
+
+The profile enforces:
+
+- explicit-offset RFC 3339 instants normalized for elapsed-time comparison;
+- `admission_time < discharge_time <= bundle as_of_time`;
+- `followup_window_end == discharge_time + 30 * 86,400` elapsed seconds;
+- at most one first `readmission` and one `death` event per episode;
+- `discharge_time < occurred_at <= followup_window_end`;
+- `occurred_at <= available_at <= bundle as_of_time`;
+- no duplicate root or terminal-event keys and no orphan event relationship;
+- death before readmission prohibits a later readmission, while equal
+  occurrence instants remain valid so Stage 6 can apply the architecture's
+  readmission-precedence target rule; and
+- candidate/result/project/producer/profile/capability/as-of identities agree
+  exactly before the value becomes admitted input.
+
+`followup_window_end` is not a producer-selected risk horizon. The profile
+requires the producer to represent coverage through the RRP-owned fixed day-30
+boundary and RRP validates the exact elapsed-time equality. Stage 6 still owns
+eligibility, target meaning, terminal conditioning, request construction, and
+same-instant target precedence.
+
+The two domains are sufficient because Stage 6 can identify discharged
+episodes and the first known readmission/death evidence without a broad
+clinical model. Baseline scores, diagnoses, medications, facilities, services,
+dispositions, demographics, generic events, features, tasks, interventions,
+measures, and provider-specific inputs are not required to prove the handoff.
+They must not be added speculatively. A later profile revision may add a domain
+only with a demonstrated runtime/provider need and its own compatibility and
+conformance evidence.
+
+### Canonical bundle and producer result
+
+The first in-memory candidate is one exact plain named list containing:
+
+- bundle contract ID/version and one non-patient bundle instance ID;
+- project ID/version;
+- selected producer ID/version;
+- implementation ID/version and mapping ID/version;
+- canonical profile ID/version;
+- the exact authoritative as-of time;
+- the exact two required capability declarations; and
+- an exact named domain collection containing the two data-frame realizations
+  above.
+
+Sequence position, filename, table name, working directory, object name, or
+source-system identity never supplies logical identity. A candidate contains
+no functions, environments, external pointers, connections, arbitrary
+attributes, executable code, source configuration, credentials, provider,
+state handle, conformance flag, or free-form metadata. Admission copies and
+validates the value so later producer mutation cannot alter the admitted
+object.
+
+The producer callable returns an exact plain result with contract identity,
+`succeeded` or `failed` status, producer/implementation/mapping/profile/as-of/
+capability agreement, one candidate bundle on success, and one controlled
+failure code on failure. Success prohibits a failure code; failure prohibits a
+candidate. RRP derives admission success itself and never trusts a producer-
+supplied conformance flag.
+
+The initial producer failure vocabulary is intentionally narrow:
+`producer_unavailable`, `producer_source_failed`, and
+`producer_mapping_failed`. It conveys which producer-owned stage stopped
+without transporting local exceptions or payloads. A malformed result is an
+RRP-detected `invalid_producer_result`; a condition thrown by project code is
+reported as `producer_execution_failed`. Canonical issue codes identify the
+failed invariant without including row values or identifiers. No generalized
+logging, event stream, audit trail, or run history is introduced.
+
+### Project-contract evolution and producer declaration
+
+Stage 5 advances the unreleased development project contract/API and project-
+registration contract to `0.2.0`. The manifest adds exactly:
+
+- `Canonical-Profile-ID: rrp.canonical-profile.readmission`; and
+- `Canonical-Profile-Version: 0.1.0`.
+
+The trusted registration result remains closed to project identity, producers,
+and providers, but records become kind-specific. A provider record retains
+only `component_id`, `component_version`, and `callable`. A producer record
+adds exact producer-API, canonical-bundle/profile, implementation, mapping, and
+capability declarations. Registration validation checks those declarations
+and exact manifest agreement without invoking the callable.
+
+The initializer retains its exact two-file output and create-only transactional
+behavior. Its generated producer record conforms semantically and its callable
+returns the controlled `producer_unavailable` failure until the hospital
+implements it. Its provider remains the structural unavailable callable from
+Stage 4. Initialization therefore remains honest: a new project is valid
+structure, not a fictional source integration or risk implementation.
+
+Changing required fields is incompatible by design. Current source, templates,
+tests, and documentation move atomically to the one supported `0.2.0` line.
+The prior `0.1.0` structural contract remains accepted historical Stage 4
+evidence but is not supported concurrently and is not silently upgraded.
+Migration tooling, compatibility ranges, multi-version dispatch, and project
+rewriting are deferred. This is planned forward development before a 1.0
+release, not a reopening of Stage 4 acceptance.
+
+### Producer request, execution, and admission operation
+
+`rrpplatform` introduces one exported technical operation,
+`rrp_execute_producer(software_catalog, project_root, as_of_time)`, with
+operation ID `rrp.execute-producer`. It performs one readable sequence:
+
+```text
+revalidate explicit software context
+        ↓
+load explicit project through the authoritative loader
+        ↓
+resolve and revalidate the selected producer declaration
+        ↓
+construct one closed rrp_producer_request
+        ↓
+invoke its trusted callable once under controlled libraries
+        ↓
+validate the closed producer result and identity agreement
+        ↓
+admit the candidate through rrpruntime
+        ↓
+return common structured success or bounded failure
+```
+
+The request contains exactly producer API ID/version, project ID/version,
+selected producer ID/version, canonical bundle/profile ID/version, and the
+strict caller-supplied as-of time. It does not include the project context,
+root, software catalog, provider, state path, extension-library path, source
+data, configuration, credentials, connection, arbitrary `...`, or callback.
+
+The trusted registration function already receives the normalized project
+root. A producer may return a closure that captures that root and reads
+hospital-owned configuration or source material. It may use declared project
+dependencies because invocation repeats the established library ordering:
+RRP-owned libraries first, the declared project extension library second, base
+R last, and ambient user/site libraries excluded from declared resolution.
+RRP does not change the working directory and restores library state after the
+call.
+
+The operation catches conditions only around the project extension call and
+maps them to one fixed safe diagnostic. It validates returned content before
+using it. Expected project, producer-result, and canonical-admission failures
+become common failure results with `NULL` value and bounded diagnostics.
+Resource-authority failures retain resource ownership, and unexpected internal
+RRP conditions propagate. Success returns the validated admitted bundle as a
+closed typed in-memory value; callers must treat that value as sensitive data,
+not console/log output. The operation itself emits no rows or identifiers and
+has no persistent side effect.
+
+`rrpruntime` gains its first exported internal-package interface,
+`rrp_admit_canonical_bundle()`. It receives the detached candidate and exact
+expected identity/profile/as-of contract context assembled by `rrpplatform`.
+It has no filesystem, resource-catalog, project, source, provider, operation-
+result, or persistence responsibility. The one-way dependency remains
+`rrpplatform` to `rrpruntime`; runtime never imports upward.
+
+Stage 5 does not create a unique analytical-run or provider-execution identity.
+The operation identity is stable, while durable run/attempt identity and
+history attribution begin in Stage 7 after Stage 6 supplies an analytical
+request/estimate lifecycle. Bundle instance identity remains part of the
+handoff but is not persisted here.
+
+### Component ownership
+
+| Owner | Stage 5 responsibility |
+|---|---|
+| Installed resources | Own the language-neutral exact specification, producer, bundle, profile, and domain authorities. They contain no hospital instance, source configuration, data, or executable code. |
+| `rrpruntime` | Owns pure canonical candidate/domain/relationship/temporal validation, typed canonical failures, detached admitted-bundle construction, and its single admission export. It gains no project, producer execution, provider, result, resource-path, or state responsibility. |
+| `rrpplatform` | Owns resource loading/agreement, project-contract evolution, producer declaration/request/result validation, controlled invocation, admission orchestration, common result translation, and the producer-execution export. |
+| Hospital project | Owns source access, local source validation, identifier construction, mapping, implementation/mapping identities, producer callable, project dependencies/configuration, and all sensitive source details below the boundary. |
+| Provider registration | Remains structurally selected but semantically inert; Stage 5 adds no provider-owned contract or behavior. |
+| Maintainer tooling | Extends current catalog, package, installed-copy, project-copy, boundary, failure, build/check, and hygiene evidence. It does not become runtime authority. |
+
+### Implementation sequence
+
+```text
+5.A contract/profile and semantic producer declaration
+        ↓
+5.B dependency-light canonical admission
+        ↓
+5.C selected producer execution and full boundary proof
+        ↓
+Stage 5 acceptance and reconciliation
+```
+
+Each increment preserves all earlier repository/package/resource/project
+evidence and stops before the next responsibility.
+
+### Increment 5.A — Canonical contract authority and semantic producer declaration
+
+**Objective:** establish the complete language-neutral Stage 5 handoff contract
+and make a loaded project declare an exact compatible producer without
+executing it.
+
+**Why here:** runtime admission and producer invocation need one accepted set
+of identities, shapes, profile semantics, and project compatibility facts.
+
+**Implementation scope:** add and catalog the six exact DCF resources above;
+extend catalog/resource validators for their exact closure; advance project
+manifest, API, and registration contracts to `0.2.0`; add manifest profile
+selection and kind-specific producer declaration validation; update the
+initializer template, loader context, doctor summary, manuals, package tests,
+ownership map, inventory, and exact export/resource expectations only as
+required. The loader must still invoke no producer or provider callable.
+
+The generated producer declaration uses project-derived implementation and
+mapping identities, selects the one Stage 5 profile/capability set, and returns
+the controlled unavailable result if later executed. The initialized project
+inventory remains exactly two files and both declared library/state locations
+remain absent.
+
+**Public/internal interfaces changed:** no new export. Existing initialization,
+loading, and doctor interfaces now recognize only the exact `0.2.0` project
+contract/API and expose the selected canonical profile in their closed context/
+summary. Producer records gain semantic declarations; provider records do not.
+
+**Historical reuse:** adapt `v0.1.0` specification-envelope identity fields,
+producer declaration/callable separation, exact profile/capability agreement,
+canonical bundle/profile/domain vocabulary, and strict closed-field tests.
+Reject YAML/parser dependency, installed-composition selection, configuration
+payloads, broad generic dependency graphs, baseline-risk and generic-event
+domains, estimands, and repository-root loading.
+
+**Evidence:** exact DCF parsing, identities, versions, fields, cross-resource
+references, catalog projection, and code/resource agreement; valid initialized
+and hand-authored `0.2.0` projects; copied-project portability; no callable
+invocation; exact producer/provider kind shapes; profile/producer/manifest
+agreement; and adversarial missing/unknown/duplicate/old-version/profile/
+capability/identity/declaration cases. Retain all Stage 1–4 evidence.
+
+**Explicit exclusions:** no canonical R type or admission, producer execution,
+source data or mapping, provider semantics, state write, compatibility bridge,
+migration operation, YAML, dependency restore, or new validator command.
+
+**Completion statement:** installed RRP can load a project whose selected
+producer declares the exact Stage 5 handoff it intends to implement, but it
+cannot yet validate or admit a candidate bundle.
+
+### Increment 5.B — Dependency-light canonical bundle admission
+
+**Objective:** implement the pure post-handoff validator that turns one valid
+candidate into an admitted canonical bundle without knowing any source or
+project implementation detail.
+
+**Why here:** admission semantics should be independently proven before trusted
+project execution and orchestration can depend on them.
+
+**Implementation scope:** add the dependency-free `rrpruntime` canonical types,
+strict timestamp/identifier/shape validators, domain and cross-domain rules,
+typed canonical failures, detached admitted-bundle construction, and exported
+`rrp_admit_canonical_bundle()`. Add focused runtime-package documentation and
+base-R tests. Extend `rrpplatform` only enough to load/normalize the exact
+installed canonical resources and supply the expected context in direct
+integration tests; do not invoke project code.
+
+**Public/internal interfaces changed:** `rrpruntime` moves from zero exports to
+exactly one internal-package export. `rrpplatform` gains no export in this
+increment. The admitted type is a closed in-memory analytical input, not a
+storage format or user-facing data model.
+
+**Historical reuse:** adapt identity agreement, closed shapes, primary-key and
+foreign-key rules, exact field rejection, elapsed-time comparisons, capability
+agreement, multi-issue adversarial ideas, and dual occurrence/availability
+semantics from `v0.1.0`. Replace root terminal timestamps with the explicit
+dual-time terminal domain and require exact day-30 follow-up. Reject YAML/R-list
+test-realization coupling, baseline score and broad event semantics, daily-
+hazard logic, runtime eligibility, and repository-source resource access.
+
+**Evidence:** valid nonempty and empty-domain candidates; detached-copy and
+input-nonmutation proof; exact identity/profile/capability/as-of agreement;
+multiple episodes per patient; relationship/key/cardinality rules; explicit-
+offset and elapsed-day behavior including timezone offsets; endpoint inclusion;
+late availability; equal readmission/death time; and adversarial unknown fields,
+types, classes, reference values, duplicates, orphans, bad order, shortened/
+extended follow-up, future occurrence/availability, death-before-later-
+readmission, unsupported versions, and unsafe failure rendering. Retain all
+prior package/build/check evidence and prove the one-way package dependency.
+
+**Explicit exclusions:** no producer or provider call, project root, source
+mapping, eligibility, risk request, state, history, products, persistence,
+serialization format, transport adapter, or clinical-validity claim.
+
+**Completion statement:** dependency-light runtime code can admit or reject the
+minimum source-independent canonical candidate, but no supported project
+operation executes a producer yet.
+
+### Increment 5.C — Selected producer execution and canonical handoff proof
+
+**Objective:** execute exactly the selected project producer through the closed
+request/result contract, admit its successful candidate, and prove hospital-
+specific source logic stops at that boundary.
+
+**Why here:** orchestration can be added only after both project declaration
+and pure admission behavior have independent evidence.
+
+**Implementation scope:** implement exported
+`rrp_execute_producer(software_catalog, project_root, as_of_time)` and its exact
+request/result validators, controlled library/working-directory behavior,
+producer-condition containment, canonical admission delegation, common-result
+translation, manual, package-native tests, and full installed independent-
+project proof. Update package README, current ownership, repository inventory,
+validator expectations, and public capability wording only for realized Stage
+5 behavior.
+
+**Public/internal interfaces changed:** `rrpplatform` gains exactly one export
+and operation ID `rrp.execute-producer`; `rrpruntime` retains its one admission
+export. No provider interface changes.
+
+**Historical reuse:** adapt the `v0.1.0` declaration → trusted callable → exact
+selection → execution → admission sequence, short-circuit behavior, fixed safe
+failure results, and the materially different adopter-producer proof. Replace
+installed producer composition with the already selected project producer;
+replace producer-supplied arbitrary configuration with a closed RRP request;
+and reject operation events, platform-instance files, synthetic default
+selection, source-specific command flags, downstream runtime/history/product
+execution, and Phase suites.
+
+**Evidence:** installed packages/resources in temporary roots; unrelated
+non-Git working directory; one project producer reading only project-owned
+fictional source through its captured root; a second materially different
+temporary source layout/field vocabulary admitted by the unchanged generic
+operation; exact single invocation; correct request shape; result and candidate
+identity agreement; copied-project execution resolving the copied root; safe
+expected failure, malformed result, thrown-condition, and invalid-canonical
+paths; library/global/working-directory restoration; zero provider calls; no
+state/library creation or write; no source field names/rows/configuration in
+generic package code, results, diagnostics, or installed resources; and no
+persistent generated output. Retain all repository, resource, project,
+package-native, build/install/load/check, and adversarial evidence.
+
+**Explicit exclusions:** no fictional shipped producer, source connector,
+provider execution, target eligibility/request, risk estimate, retries,
+scheduling, run/history identity, persistence, state initialization, products,
+app, CLI, distribution, deployment, or release behavior.
+
+**Completion statement:** installed RRP can execute the exact selected
+hospital-owned producer and return either an admitted canonical bundle or a
+bounded structured failure, while the provider remains inert and nothing is
+persisted.
+
+### Validation and hosted evidence
+
+No new maintainer command or workflow is planned. The human operations remain:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+Repository validation grows only for realized resources, package files,
+manuals, tests, exports, links, ownership, and hygiene. Package validation
+grows incrementally across 5.A–5.C for exact resource projection, project
+contract evolution, runtime admission, installed producer execution, two
+independent temporary producer compositions, copied-project behavior, privacy-
+safe failures, package topology, source builds, dependency-order isolated
+installation/loading, package-native tests, and exact package checks.
+
+The existing read-only Ubuntu/R 4.4 `package-foundation` workflow already calls
+both commands on push and pull request. It requires no behavioral change unless
+implementation evidence demonstrates one. Final Stage 5 acceptance requires a
+successful hosted run for the committed complete Stage 5 tree and records the
+run/job/SHA/ref/event. Hosted success remains package/project/canonical-boundary
+evidence, not clinical, production, distribution, deployment, release, or
+general operating-system support.
+
+### Human-readable Stage 5 acceptance scenario
+
+The final proof makes the boundary tangible in temporary space:
+
+```text
+build and isolate-install rrpruntime then rrpplatform
+        ↓
+project an explicit installed software-resource root
+        ↓
+initialize an independent project outside repository/Git context
+        ↓
+replace only hospital-owned trusted registration/source implementation
+        ↓
+load and structurally validate the project
+        ↓
+execute its exact selected producer once with profile + as-of request
+        ↓
+map fictional local source fields inside project code
+        ↓
+return one closed candidate bundle
+        ↓
+admit episode + terminal-event information through rrpruntime
+        ↓
+inspect one common structured success result
+        ↓
+copy project and repeat from the copied root
+        ↓
+exercise a second differently shaped source producer and failure cases
+        ↓
+STOP
+
+No provider execution
+No risk request or estimate
+No state initialization or persistence
+```
+
+The source fixtures are temporary, deterministic, visibly fictional, and have
+different local names/layouts. Generic package code and installed contracts
+contain neither source vocabulary. Both producers traverse the same request,
+result, and admission path without a producer-ID branch.
+
+### Stage 5 acceptance
+
+Stage 5 is complete only when:
+
+1. all Stage 5 semantic authorities are versioned, cataloged, closed,
+   parseable DCF resources and executable code proves exact agreement;
+2. the project manifest, API, and registration contracts advance coherently to
+   `0.2.0`, and unsupported structural `0.1.0` projects fail explicitly rather
+   than being guessed, mutated, or silently migrated;
+3. initialization still creates exactly the two justified project files and a
+   structurally/semantically declared unavailable producer plus inert provider;
+4. project loading validates exact canonical profile and producer declaration
+   agreement before invoking any selected callable;
+5. provider records and behavior remain unchanged and no provider callable is
+   invoked by initialization, loading, doctor, producer execution, or admission;
+6. RRP constructs one closed producer request from explicit software/project
+   context and strict caller-supplied as-of time;
+7. the request contains no source payload, arbitrary configuration, secret,
+   connection, project path, provider, state, or unrestricted option surface;
+8. the selected producer is invoked exactly once under controlled library
+   ordering with no fallback, discovery, retry, working-directory mutation, or
+   identity-specific branch;
+9. hospital code can obtain source information through its captured project
+   context or approved external environment without generic RRP knowing source
+   names, fields, tables, connections, or mapping rules;
+10. successful producer results agree exactly with trusted declaration,
+    request, project, profile, capability, mapping, implementation, and as-of
+    identities and contain exactly one candidate;
+11. failed producer results contain no candidate and only a controlled failure
+    code; malformed results and thrown conditions become fixed bounded failures
+    without echoing source or exception content;
+12. the minimum profile contains only discharge episodes and dual-time first
+    readmission/death evidence with exact closed fields and required available
+    capabilities;
+13. canonical admission validates shapes, types, identifiers, keys,
+    relationships, capabilities, exact versions, and detached value semantics;
+14. admission enforces admission/discharge order, exact 30-elapsed-day coverage,
+    episode-relative terminal windows, occurrence/availability order, the as-of
+    cutoff, terminal uniqueness, and death/readmission consistency;
+15. an admitted result is an in-memory detached typed bundle and cannot be
+    changed by later mutation of the producer candidate;
+16. `rrpruntime` remains dependency-free and independent upward while gaining
+    exactly one canonical-admission export; `rrpplatform` remains the only
+    project/operation owner and gains exactly one producer-execution export;
+17. two materially different temporary hospital-specific source realizations
+    pass the same generic producer/admission operation without generic source-
+    or producer-identity conditionals;
+18. copied-project execution resolves the copy's project-owned source paths and
+    retains no original-root or repository/Git dependence;
+19. success/failure evidence and diagnostics do not expose patient/episode
+    identifiers, source rows, field values, paths, SQL, configuration,
+    credentials, connections, arbitrary exceptions, or raw payloads;
+20. producer execution and admission create/write no state, history, cache,
+    audit, product, application, extension library, or other persistent output;
+21. repository validation, expanded package validation, DCF/R/Rd parsing,
+    package-native tests, builds, isolated install/load, strict package checks,
+    hygiene, and committed read-only hosted evidence all pass without retained
+    generated output; and
+22. no target eligibility/request, provider semantics/execution, risk
+    calculation, run/history persistence, supplied fictional implementation,
+    product, application, CLI, distribution, deployment, or release behavior
+    enters.
+
+After implementation and committed hosted evidence pass, reconcile the
+realized boundary with True North and Platform Architecture and record any
+deviation. Stage acceptance is a lifecycle action, not Increment 5.D.
 
 ### Plain-language exit state
 
-> A project-selected producer can submit source-independent episode data that
-> RRP validates and admits with identity, relationship, capability, and
-> temporal evidence. RRP still does not construct a risk request or estimate.
+> A project-selected producer can submit source-independent discharge episodes
+> and dual-time readmission/death evidence that RRP validates and admits through
+> a versioned canonical boundary. RRP still does not construct a risk request,
+> invoke a provider, calculate risk, or retain operational state.
 
-### Expected historical reuse
+### Historical reuse disposition
 
-Inspect `v0.1.0` specification envelope, canonical bundle and readmission
-profile contracts, validation code, producer result/admission sequence, and
-their success/adversarial tests. Substantial vocabulary and relationship logic
-are likely adaptable. Revise profile coverage and terminal occurrence/
-availability semantics for the fixed 1.0 endpoint; keep all source-specific
-tables and mapping assumptions below the handoff.
+| Classification | Historical finding and disposition |
+|---|---|
+| Reuse directly | Exact producer ID/version selection already recovered in Stage 4; closed trusted callable validation; primary/foreign-key, field closure, bounded timestamp, and deterministic issue-test mechanics where their code remains independently suitable. |
+| Adapt concept/mechanic | `v0.1.0` specification envelope, producer declaration → callable → execution → admission sequence, producer/result identity agreement, capability versus row-cardinality distinction, bundle/profile/domain separation, implementation/mapping identity, dual occurrence/availability time, candidate non-coercion, short-circuit failure, and independent-adopter substitution proof. |
+| Replace for 1.0 | YAML specifications and repository parsers become DCF installed resources plus package-owned validation; root terminal timestamps become a dual-time terminal-event domain; variable/shortened follow-up becomes exact fixed day-30 coverage; installed producer composition becomes project registration; broad conformance results become bounded common operation diagnostics. |
+| Reject for Stage 5 | Baseline-risk and broad episode-event domains/vocabularies, generic dependency graph/expression machinery, source configuration payloads, platform-instance selection, source-specific CLI flags, synthetic installed default, repository-root sourcing, temporary runtime installation, Phase validation, operation-event/logging system, daily-hazard/estimand logic, downstream runtime/provider/history/product/app behavior, and generated Hospital delivery. |
 
-### Major deferrals
+Reconnaissance inspected immutable `v0.1.0`, especially
+`docs/architecture/specification-foundation.md`,
+`canonical-bundle-foundation.md`, `canonical-clinical-profile.md`, and
+`canonical-producer-foundation.md`; `contracts/canonical/`; producer, bundle,
+and clinical validators under `operations/lib/`; installed producer
+composition; the synthetic producer adapter; Phase 2/10 tests; and the
+independent adopter-producer fixture. It also revisited the pre-reset
+`readmission-risk-target-assessment.md` at revision `1e7b95c`, whose fixed
+elapsed day-30 coverage and unresolved terminal-availability finding directly
+inform this Stage 5 profile.
 
-The singular target request, provider invocation, durable history, source
-implementations, products, and application remain absent. Admission alone
-makes no clinical-validity claim.
+The old code is not restored wholesale. Reuse is limited to invariant-level
+logic and test ideas that fit the current installed-resource, package,
+independent-project, singular-target, and privacy boundaries.
+
+### Major deferrals and deliberately open decisions
+
+Stage 6 owns the singular target contract, eligibility, immutable as-of state,
+standard request, provider declaration/conformance/invocation, model semantics,
+accepted estimate, and any transparent fictional provider. Same-time terminal
+precedence becomes analytical behavior there; Stage 5 only preserves the facts.
+
+Stage 7 owns operation/analytical run and execution-attempt identity, durable
+state/history, canonical-input attribution, adapters, atomic append/retry,
+locking, invalidation/restatement, backup/recovery, and migration. Stage 8 owns
+the maintained fictional source generator/mapping/producer and normal complete
+reference path. Products, app, CLI, distribution, deployment, and release stay
+with later stages.
+
+Stage 5 does not settle project dependency restoration/closure, secrets
+providers, remote/non-R producer transports, production source connection
+interfaces, additional profiles/domains/capabilities, performance/streaming,
+large-bundle storage, approved record-level debugging, migration from the
+development `0.1.0` project contract, or the future CLI's normalization of
+home-relative paths. Those decisions require later concrete evidence and must
+preserve this boundary.
 
 ## Stage 6 — Singular target, runtime, and provider execution
 

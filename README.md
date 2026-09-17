@@ -111,7 +111,9 @@ accepted and complete. This narrow hosted evidence does not establish broader
 platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
 The initializer, loader, and doctor are internal technical interfaces; ordinary
-operator commands remain absent. Stage 5 has not been detailed or implemented.
+operator commands remain absent. Stage 5 is detailed and accepted for
+incremental implementation, but no Stage 5 producer-execution or canonical-
+admission source has been implemented.
 
 ## License
 
