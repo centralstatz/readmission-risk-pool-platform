@@ -22,9 +22,10 @@ templates, with a temporary deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
 its fixed trusted registration boundary and resolving exact structural
-producer/provider selections without invoking them; `rrpruntime` remains
-export-free. The repository has no root selector, persistent installed RRP
-distribution, project doctor, clinical contract, risk
+producer/provider selections without invoking them. It reports the same
+loader-owned structural assessment through a bounded project doctor;
+`rrpruntime` remains export-free. The repository has no root selector,
+persistent installed RRP distribution, clinical contract, risk
 calculation, product, application, command-line interface, or deployment
 capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
@@ -91,7 +92,8 @@ resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
 trusted project loading, transactional minimal-project initialization, exact
-structural selection, typed privacy-safe
+structural selection, structured project diagnosis, copied-project
+portability, typed privacy-safe
 project/resource failures, and adversarial rejection behavior. It also
 checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
@@ -106,9 +108,10 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity. Increments 4.A–4.C are complete; the loader and
-initializer are internal technical interfaces, while structured project-doctor
-behavior and ordinary operator commands remain absent.
+platform or support validity. Increments 4.A–4.D are implemented locally; the
+complete Stage 4 tree still requires committed hosted evidence and formal
+acceptance/reconciliation. The initializer, loader, and doctor are internal
+technical interfaces; ordinary operator commands remain absent.
 
 ## License
 

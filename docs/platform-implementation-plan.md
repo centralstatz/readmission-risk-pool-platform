@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stages 1–3 and Increments 4.A–4.B
-are complete. Stage 4 remains in progress; Increment 4.D is the next authorized
-source task.
+**Status:** authoritative high-level roadmap; Stages 1–3 and all four Stage 4
+implementation increments are complete. Stage 4 remains in progress pending
+committed hosted evidence and formal acceptance/reconciliation.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -960,7 +960,8 @@ their privacy, retention, trust, and dependency boundaries.
 ## Stage 4 — Independent project foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-16;
-Increments 4.A–4.C are complete; Increment 4.D is next.
+Increments 4.A–4.D are implemented; committed hosted evidence and formal Stage
+4 acceptance/reconciliation remain.
 
 ### Objective
 
@@ -1441,6 +1442,9 @@ smallest independent hospital-owned project, but it has no structured project
 doctor yet.
 
 ### Increment 4.D — Structured project doctor and independent-project proof
+
+**Implementation status:** complete on 2026-09-17; formal Stage 4
+acceptance/reconciliation is next after committed hosted evidence.
 
 **Objective:** expose project health through the common operation-result
 contract and prove the complete Stage 4 lifecycle outside repository/Git

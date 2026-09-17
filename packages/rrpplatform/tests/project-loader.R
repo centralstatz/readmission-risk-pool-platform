@@ -727,15 +727,14 @@ rrp_loader_tests <- list(
     })
   },
 
-  "4.C retains loader behavior and adds only initialization" = function() {
-    namespace <- asNamespace("rrpplatform")
+  "4.D retains loader behavior and adds only the doctor" = function() {
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
         "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
         "rrp_operation_succeeded", "rrp_resource_path",
+        "rrp_validate_project",
         "rrp_validate_software_resources"
-      )),
-      !exists("rrp_validate_project", envir = namespace, inherits = FALSE)
+      ))
     )
   }
 )

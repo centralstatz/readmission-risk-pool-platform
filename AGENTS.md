@@ -71,9 +71,10 @@ It proves the closed source-resource catalog, temporary deterministic installed
 projection, explicit-root installed-package access, common resource-validation
 result and privacy-safe diagnostic behavior, strict project contracts, explicit
 trusted project loading, transactional minimal-project initialization, exact
-structural selection, package topology, one-way
+structural selection, loader-backed structured project diagnosis, copied-
+project portability, package topology, one-way
 dependency, exact export posture, builds, isolated install/load, and package-
-native checks. No root selector, dependency environment, project doctor/risk
+native checks. No root selector, dependency environment, source/risk
 operation, or release procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
@@ -85,6 +86,7 @@ reconciliation. Increment 4.A added the cataloged project-manifest and
 registration-result authorities plus internal structural validation. Increment
 4.B added the sole explicit trusted project loader. Increment 4.C added the
 cataloged minimal-project templates, create-only transactional initializer, and
-sixth `rrpplatform` export. The next authorized source task is only Increment
-4.D — Structured project doctor and independent-project proof. Do not
-begin a later Stage 4 increment.
+sixth `rrpplatform` export. Increment 4.D added the seventh export,
+`rrp_validate_project()`, and the complete local independent-project proof.
+The next task is committed hosted evidence and a separate formal Stage 4
+acceptance/reconciliation pass. Do not begin Stage 5.

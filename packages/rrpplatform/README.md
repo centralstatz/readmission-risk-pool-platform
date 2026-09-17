@@ -25,6 +25,9 @@ Its current callable interfaces are:
   project_version)` creates exactly the manifest and registration file in a
   previously absent destination, validates staged and promoted output through
   the loader, and returns one common operation result;
+- `rrp_validate_project(software_catalog, project_root)` reuses the loader and
+  returns one bounded structural success/failure result, including declared
+  extension-library and state status and a fixed warning when state is absent;
 - `rrp_resource_path(catalog, resource_id)` resolves one declared logical ID
   after reopening and revalidating the installed resource boundary;
 - `rrp_validate_software_resources(software_root)` returns one common
@@ -69,8 +72,8 @@ absent.
 
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. The package does not yet provide root selection,
-an ordinary operator command, a structured project doctor, dependency
-restoration, state creation, clinical contracts, runtime
+an ordinary operator command, dependency restoration, state creation,
+clinical contracts, runtime
 orchestration, products, applications, installation, or deployment.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,

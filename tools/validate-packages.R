@@ -1188,6 +1188,7 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "operation-result.R"),
       file.path("R", "project-contracts.R"),
+      file.path("R", "project-doctor.R"),
       file.path("R", "project-initializer.R"),
       file.path("R", "project-loader.R"),
       file.path("R", "resource-catalog.R"),
@@ -1196,9 +1197,11 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
+      file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
       file.path("tests", "project-contracts.R"),
+      file.path("tests", "project-doctor.R"),
       file.path("tests", "project-initializer.R"),
       file.path("tests", "project-loader.R"),
       file.path("tests", "resource-access.R")
@@ -1353,7 +1356,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     c(
       "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
-      "rrp_resource_path", "rrp_validate_software_resources"
+      "rrp_resource_path", "rrp_validate_project",
+      "rrp_validate_software_resources"
     )
   } else {
     character()
@@ -1379,6 +1383,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
       "export(rrp_resource_path)",
+      "export(rrp_validate_project)",
       "export(rrp_validate_software_resources)",
       "import(rrpruntime)"
     )
@@ -1538,7 +1543,8 @@ load_package_fresh <- function(package_name, library_root) {
       "c(\"rrp_initialize_project\", \"rrp_load_project\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
-      "\"rrp_resource_path\", \"rrp_validate_software_resources\")"
+      "\"rrp_resource_path\", \"rrp_validate_project\", ",
+      "\"rrp_validate_software_resources\")"
     )
   } else {
     "character()"
@@ -1662,7 +1668,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "identical(sort(getNamespaceExports('rrpplatform')), ",
     "c('rrp_initialize_project', 'rrp_load_project', 'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
-    "'rrp_resource_path', 'rrp_validate_software_resources'))); ",
+    "'rrp_resource_path', 'rrp_validate_project', ",
+    "'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
     "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
     "identical(names(catalog), c('software_root', 'catalog_path', ",
@@ -1900,11 +1907,17 @@ validate_installed_project_initialization <- function(library_root, work_root) {
     "  result <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
     "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', created_paths = c('rrp-project.dcf', 'R/register.R'))",
     "  context <- rrp_load_project(catalog, destination)",
-    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/register.R', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'))",
+    "  doctor <- rrp_validate_project(catalog, destination)",
+    "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.1.0', supported_rrp_api_version = '0.1.0', producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
+    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/register.R', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
     "  stopifnot(file.copy(destination, copy_parent, recursive = TRUE, copy.mode = FALSE))",
-    "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root)",
+    "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root); copied_doctor <- rrp_validate_project(catalog, copied_root)",
     "  text <- paste(unlist(lapply(c(file.path(destination, 'rrp-project.dcf'), file.path(destination, 'R', 'register.R')), readLines, warn = FALSE)), collapse = '\\n')",
-    "  stopifnot(identical(copied$manifest, context$manifest), identical(copied$producer$component_id, context$producer$component_id), identical(copied$provider$component_id, context$provider$component_id), !identical(copied$project_root, context$project_root), !grepl(destination, text, fixed = TRUE), !grepl('rrp-staging', text, fixed = TRUE))",
+    "  stopifnot(identical(copied$manifest, context$manifest), identical(copied$producer$component_id, context$producer$component_id), identical(copied$provider$component_id, context$provider$component_id), !identical(copied$project_root, context$project_root), identical(copied_doctor, doctor), !grepl(destination, paste(capture.output(str(copied_doctor)), collapse = ' '), fixed = TRUE), !grepl(destination, text, fixed = TRUE), !grepl('rrp-staging', text, fixed = TRUE))",
+    "  dir.create(file.path(copied_root, 'extensions', 'library'), recursive = TRUE); dir.create(file.path(copied_root, 'state')); writeLines('opaque', file.path(copied_root, 'state', 'sentinel')); available <- rrp_validate_project(catalog, copied_root)",
+    "  stopifnot(identical(available$status, 'success'), identical(available$value$extension_library_status, 'available'), identical(available$value$state_status, 'available'), identical(available$diagnostics, list()), identical(readLines(file.path(copied_root, 'state', 'sentinel')), 'opaque'))",
+    "  invalid_parent <- file.path(dirname(copy_parent), 'doctor-invalid-parent'); dir.create(invalid_parent); stopifnot(file.copy(destination, invalid_parent, recursive = TRUE, copy.mode = FALSE)); invalid_root <- file.path(invalid_parent, basename(destination)); invalid_manifest <- readLines(file.path(invalid_root, 'rrp-project.dcf')); invalid_manifest <- sub('^Provider-ID:.*$', 'Provider-ID: missing.provider', invalid_manifest); writeLines(invalid_manifest, file.path(invalid_root, 'rrp-project.dcf')); invalid_doctor <- rrp_validate_project(catalog, invalid_root)",
+    "  stopifnot(identical(invalid_doctor$operation_id, 'rrp.validate-project'), identical(invalid_doctor$status, 'failure'), is.null(invalid_doctor$value), length(invalid_doctor$diagnostics) == 1L, identical(invalid_doctor$diagnostics[[1L]]$code, 'unknown_provider_selection'), identical(invalid_doctor$diagnostics[[1L]]$severity, 'error'), identical(invalid_doctor$diagnostics[[1L]]$message, 'RRP project validation failed.'), !grepl(invalid_root, paste(capture.output(str(invalid_doctor)), collapse = ' '), fixed = TRUE))",
     "  existing <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
     "  invalid_destination <- file.path(dirname(destination), 'invalid-project'); invalid <- rrp_initialize_project(catalog, invalid_destination, 'rrp.protected', 'bad-version')",
     "  stopifnot(identical(existing$status, 'failure'), identical(existing$diagnostics[[1L]]$code, 'project_destination_exists'), identical(invalid$status, 'failure'), identical(invalid$diagnostics[[1L]]$code, 'invalid_project_id'), !file.exists(invalid_destination), !dir.exists(invalid_destination), !any(grepl('rrp-staging', list.files(dirname(destination)))), identical(.libPaths(), before_libraries), identical(getwd(), unrelated_root), identical(ls(.GlobalEnv, all.names = TRUE), before_globals))",
@@ -1922,8 +1935,9 @@ validate_installed_project_initialization <- function(library_root, work_root) {
   cat(
     paste0(
       "PASS installed rrpplatform transactional initialization, exact ",
-      "inventory, final-location load, copied portability, create-only ",
-      "failure, state isolation, and staging cleanup\n"
+      "inventory, final-location load/doctor, copied portability, state and ",
+      "extension status, bounded adversarial failure, create-only failure, ",
+      "state isolation, and staging cleanup\n"
     )
   )
 }
@@ -2047,7 +2061,8 @@ validate_packages <- function() {
     "projection, explicit-root installed-package access, common result/diagnostic ",
     "and project-structure contracts, explicit trusted project loading, exact ",
     "structural selection, transactional minimal-project initialization, ",
-    "resource-validation operation, package topology, metadata, ",
+    "loader-backed project diagnosis, copied-project portability, bounded ",
+    "adversarial translation, resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",
     "package-native check only.\n",
     sep = ""

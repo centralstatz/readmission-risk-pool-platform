@@ -10,7 +10,8 @@ Description: Establishes the main internal implementation package for the
     reports resource validation through a common privacy-safe result, and
     loads one explicit independent project through strict project-manifest and
     trusted-registration boundaries without executing selected components,
-    and transactionally initializes the smallest valid project.
+    transactionally initializes the smallest valid project, and reports its
+    structural health through a bounded operation result.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

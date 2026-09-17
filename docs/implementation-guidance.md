@@ -11,14 +11,15 @@ The current repository contains governing and public documentation,
 development identity, repository working guidance, one local repository-
 foundation validator, two conventional internal package owners,
 one closed source-resource authority with a temporary installed-projection
-proof, explicit-root resource access and one structured resource-validation
-operation in the main package, one local package/resource-foundation validator,
+proof, explicit-root resource access and structured resource/project validation
+operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2 and
-Stage 3 push evidence. Stages 1–3 and Increments 4.A–4.C are complete;
-Increment 4.D is the next authorized source task. The software now owns strict
-project contracts, an explicit trusted loader, and transactional minimal-
-project initialization, but there is no structured project doctor, complete
-installed RRP product, or ordinary operator command.
+Stage 3 push evidence. Stages 1–3 are accepted and all four Stage 4
+implementation increments are complete; committed hosted Stage 4 evidence and
+formal acceptance/reconciliation are next. The software now owns strict
+project contracts, an explicit trusted loader, transactional minimal-project
+initialization, and a bounded project doctor, but there is no complete installed
+RRP product or ordinary operator command.
 
 ## Read authority before source
 
@@ -110,7 +111,7 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact six-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact seven-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
@@ -118,13 +119,16 @@ closed to the following present paths:
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict project-manifest and in-memory registration-result structural validation. |
 | `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe template rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
 | `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
+| `packages/rrpplatform/R/project-doctor.R` | Thin loader-backed structural project diagnosis, closed privacy-safe summary construction, declared-location status, absent-state warning, and expected project-error translation. |
 | `packages/rrpplatform/man/rrp_initialize_project.Rd` | Focused technical API contract for transactional minimal-project initialization and its exact limits. |
 | `packages/rrpplatform/man/rrp_load_project.Rd` | Focused technical API contract and honest trusted-code/immutability limits for explicit project loading. |
+| `packages/rrpplatform/man/rrp_validate_project.Rd` | Focused technical API contract and limits for explicit structured project diagnosis. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R exact-inventory, rendering, create-only ownership, staging/rollback, portability, privacy, and non-invocation evidence for project initialization. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
+| `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
@@ -194,8 +198,9 @@ no `Imports`, `Suggests`, or `LinkingTo`. `rrpplatform` imports only
 `rrpruntime` and exports exactly `rrp_initialize_project()`,
 `rrp_load_project()`,
 `rrp_open_resource_catalog()`,
-`rrp_operation_succeeded()`, `rrp_resource_path()`, and
-`rrp_validate_software_resources()`; `rrpruntime` remains export-free. No
+`rrp_operation_succeeded()`, `rrp_resource_path()`,
+`rrp_validate_project()`, and `rrp_validate_software_resources()`;
+`rrpruntime` remains export-free. No
 dependency environment exists yet. Do not introduce one by convenience,
 preselect its physical layout here, or treat a future development lock as the
 installed, project, provider, or deployment authority.
@@ -240,7 +245,8 @@ project-manifest and registration authorities, current source resources, safe
 paths and collisions, source closure, and deterministic byte-preserving
 installed projection with copied adversarial fixtures. It also
 proves explicit and copied project loading, transactional minimal-project
-initialization, controlled registration, exact selection, selected-callable
+initialization, structured loader-backed diagnosis, absent/available declared
+location status, controlled registration, exact selection, selected-callable
 non-invocation, context separation, typed failures, and library/global/working-
 directory restoration. It checks exact
 package layout, metadata, dependency direction and exports, and
@@ -268,9 +274,11 @@ Stage 3 closed only after committed push run `35116049077`, job
 deviation from True North or the architecture. Increment 4.A established the
 two project contract authorities and internal structural validators. Increment
 4.B added the explicit trusted project-loading API. Increment 4.C added the two
-cataloged templates and transactional create-only initializer. The next
-authorized source task is only Increment 4.D — Structured project doctor and
-independent-project proof.
+cataloged templates and transactional create-only initializer. Increment 4.D
+added the thin structured project doctor and complete installed independent-
+project proof. The next task is committed hosted evidence followed by the
+separate formal Stage 4 acceptance/reconciliation pass; no Stage 5 source work
+is authorized yet.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

@@ -1470,3 +1470,110 @@ hospital-owned project, but it has no structured project doctor yet.
 
 **Next task:** review Increment 4.C and, if accepted, proceed to Increment 4.D
 — Structured project doctor and independent-project proof.
+
+## Increment 4.D — Structured project doctor and independent-project proof (complete, 2026-09-17)
+
+Increment 4.D began from clean synchronized commit
+`4de7bd1` (`4.C complete`) on `main`. It added exactly one exported technical
+interface, `rrp_validate_project(software_catalog, project_root)`, with operation
+ID `rrp.validate-project`. `rrpplatform` now exports exactly seven interfaces,
+still imports only `rrpruntime`, and gained no third-party dependency;
+`rrpruntime` remained dependency-free, export-free, and otherwise unchanged.
+
+`packages/rrpplatform/R/project-doctor.R` is deliberately a thin translation
+layer over one call to the authoritative `rrp_load_project()` boundary. It does
+not repeat manifest, compatibility, identity, selection, registration, path,
+symlink, collision, protected-name, library-shadowing, or filesystem rules.
+Successful validation returns an exact closed value with fields
+`project_id`, `project_version`, `project_contract_id`,
+`project_contract_version`, `supported_rrp_api_version`, `producer`, `provider`,
+`extension_library_status`, and `state_status`. Producer and provider each
+contain only `component_id`, `component_version`, and `origin`; no context,
+callable, registration data, absolute path, source, template, Git, timestamp,
+run, patient, credential, or arbitrary metadata is exposed.
+
+Declared extension-library and state locations use only `not_initialized` and
+`available`. An absent extension library is valid and produces no diagnostic.
+An absent state directory is also a structurally valid Stage 4 condition: the
+operation remains successful and returns exactly one warning with code
+`project_state_not_initialized` and fixed message `Project state has not been
+initialized.` Existing ordinary locations report `available`; the doctor does
+not create either location, initialize state, install dependencies, or
+interpret their contents beyond the loader's existing structural rules.
+
+Expected `rrp_project_error` conditions become one failed common result with
+the originating stable code, `NULL` value, one error diagnostic, and fixed
+message `RRP project validation failed.` Invalid or changed software-resource
+authority remains an `rrp_resource_error` rather than being relabeled as a
+project defect. No generic error handler was added, so unexpected programming
+errors propagate. Doctor execution evaluates and calls the trusted registration
+boundary once through the loader and never invokes selected producer/provider
+callables. Trusted registration remains code rather than a security sandbox,
+but the RRP doctor itself does not mutate project files, declared locations,
+the working directory, global environment, or caller library paths.
+
+Focused package-native evidence covers the exact initialized-project result,
+one fixed state warning, absent extension behavior, available state/extension
+behavior without content interpretation or mutation, exact predicate behavior,
+privacy-safe serialization, unrelated working directory, global/library
+restoration, copied-project semantic identity, and original-root independence.
+An instrumented trusted registration proves one source/function execution per
+doctor load and zero selected-callable invocations. Representative translated
+failures cover malformed manifest, incompatible API, unsafe path, missing and
+malformed registration, project identity mismatch, protected and duplicate
+registration, unknown producer/provider selection, and invalid or linked
+extension/state locations. Separate evidence proves resource-error ownership
+and unexpected-error visibility.
+
+The maintainer package operation now owns the doctor source, manual, focused
+test, seventh export, and installed Stage 4 lifecycle proof. From isolated
+installed packages and a temporary projected software-resource root, it works
+in an unrelated non-Git directory, initializes the exact two-file project,
+loads and doctors it, copies it elsewhere, loads and doctors the copy, observes
+absent then available state/extension statuses without interpreting contents,
+and translates an adversarial selection failure through the bounded doctor
+result. It retains the complete source-resource catalog/schema/contract/template
+and projection regressions, hand-authored project loading, create-only/staging
+evidence, package topology, dependency-order installation, and package checks.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`operations/lib/operator-operation.R`, `operations/doctor.R`, the Hospital
+doctor/proof wrappers, and the Phase 10 independent-adopter fixtures/tests.
+Structured status/warning intent, temporary independent/copy fixtures,
+installed-package acceptance, and adversarial fail-closed mechanics were
+adapted. Generated Hospital repositories, wrapper delegation, Git/repository
+health, copied Platform source, fixed database/product paths, temporary runtime
+installation, Phase aggregates, source/provider execution, clinical semantics,
+deployment/release state, and broad observability were rejected.
+
+Final validation passed `Rscript --vanilla tools/validate-repository.R` with
+all eight checks and zero issues and passed
+`Rscript --vanilla tools/validate-packages.R`. The latter passed complete
+catalog/projection regressions, static package boundaries, both source builds,
+isolated dependency-order installation/loading, all package-native tests, the
+installed initialization/load/doctor/copy/adversarial proof, and exact
+`R CMD check --no-manual` `Status: OK` for both packages. Direct R/Rd parsing,
+`git diff --check`, tracked inventory/symlink/generated-output review, and
+working-tree artifact inspection also passed. Generated archives, check
+directories, libraries, projections, projects, extension/state locations, and
+staging directories were temporary and did not enter repository source.
+
+No root selection/discovery, CLI, dependency restore/lock, state initialization
+or persistence, source access/mapping, producer/provider execution or semantic
+conformance, canonical admission, clinical contract, target/runtime/risk
+calculation, product/application, distribution, deployment, or release behavior
+was introduced. Structural project validity therefore remains distinct from
+source mapping, producer semantics, provider/model validity, clinical risk
+validity, and production readiness. No discrepancy from the accepted 4.D plan,
+Platform Architecture, or True North was found.
+
+**Current implementation state:** Increment 4.D complete; all four Stage 4
+implementation increments are implemented. RRP can initialize, recognize,
+safely load, and structurally diagnose an independent hospital-owned project
+and its declared producer/provider registrations, but it cannot yet admit
+source data or calculate readmission risk.
+
+**Next task:** commit the complete Stage 4 tree, obtain successful evidence
+from the unchanged hosted package-foundation workflow, and perform the separate
+human-directed Stage 4 acceptance/reconciliation pass. Stage 5 is not yet
+authorized.
