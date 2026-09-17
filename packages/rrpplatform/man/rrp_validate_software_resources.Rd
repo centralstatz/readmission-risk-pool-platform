@@ -15,9 +15,10 @@ A failed result has a \code{NULL} value and at least one privacy-safe error
 diagnostic.
 }
 \description{
-Uses the installed resource-catalog boundary beneath exactly the supplied root
-and returns one common structured operation result. It does not discover or
-select a software root.
+Uses the installed resource-catalog boundary beneath exactly the supplied root,
+validates the current canonical and project contract authorities, and returns
+one common structured operation result. It does not discover or select a
+software root.
 }
 \section{Failures}{
 Expected \code{rrp_resource_error} conditions are translated narrowly into

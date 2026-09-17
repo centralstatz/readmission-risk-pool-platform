@@ -15,12 +15,13 @@ proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2,
 Stage 3, and Stage 4 push evidence. Stages 1–4 are accepted and complete;
-Stage 5 is detailed and accepted, and the next task is to implement only
-Increment 5.A.
+Stage 5 is in progress, Increment 5.A is complete, and the next task is to
+implement only Increment 5.B.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
-initialization, and a bounded project doctor, but there is no complete installed
-RRP product or ordinary operator command.
+initialization, a bounded project doctor, and the closed installed canonical
+contract family. Producer execution and canonical admission remain absent, and
+there is no complete installed RRP product or ordinary operator command.
 
 ## Read authority before source
 
@@ -117,7 +118,8 @@ closed to the following present paths:
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
-| `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict project-manifest and in-memory registration-result structural validation. |
+| `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities. |
+| `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict 0.2.0 project-manifest and kind-specific in-memory registration-result validation. |
 | `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe template rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
 | `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
 | `packages/rrpplatform/R/project-doctor.R` | Thin loader-backed structural project diagnosis, closed privacy-safe summary construction, declared-location status, absent-state warning, and expected project-error translation. |
@@ -126,7 +128,8 @@ closed to the following present paths:
 | `packages/rrpplatform/man/rrp_validate_project.Rd` | Focused technical API contract and limits for explicit structured project diagnosis. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
-| `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, duplicate, and non-invocation evidence for the internal project contracts. |
+| `packages/rrpplatform/tests/canonical-contracts.R` | Base-R exact-field, installed-loading, relationship, and adversarial evidence for the canonical specification family. |
+| `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R exact-inventory, rendering, create-only ownership, staging/rollback, portability, privacy, and non-invocation evidence for project initialization. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
@@ -136,9 +139,11 @@ closed to the following present paths:
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
 | `resources/contracts/operation-result.dcf` and `resources/contracts/diagnostic.dcf` | Machine-readable exact common operation-result and privacy-safe diagnostic contracts cataloged under their stable logical IDs. |
-| `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable Stage 4 authorities for the strict project manifest and closed trusted-registration result. |
-| `resources/templates/project/rrp-project.dcf` and `resources/templates/project/R/register.R` | Cataloged software-owned templates for exactly the two files in a minimal initialized project. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, and transactional minimal-project initialization. |
+| `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable 0.2.0 authorities for the strict project manifest and kind-specific trusted-registration result. |
+| `resources/contracts/canonical/specification-envelope.dcf` and `resources/contracts/canonical/canonical-producer.dcf` | Exact installed specification envelope and platform-owned semantic producer contract. |
+| `resources/contracts/canonical/canonical-bundle.dcf`, `resources/contracts/canonical/profiles/readmission.dcf`, and `resources/contracts/canonical/domains/*.dcf` | Runtime-owned canonical bundle, initial readmission profile, and discharge-episode/terminal-event semantic authorities. |
+| `resources/templates/project/rrp-project.dcf` and `resources/templates/project/R/register.R` | Cataloged software-owned templates for exactly the two files in a minimal initialized 0.2.0 project, including an honest unavailable producer declaration. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection and canonical contract family, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, and transactional minimal-project initialization. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -242,13 +247,15 @@ Rscript --vanilla tools/validate-packages.R
 ```
 
 It validates the exact closed DCF catalog/schema/contracts, including the
-project-manifest and registration authorities, current source resources, safe
-paths and collisions, source closure, and deterministic byte-preserving
+canonical specification family and relationships plus the 0.2.0 project-
+manifest and registration authorities, current source resources, safe paths
+and collisions, source closure, and deterministic byte-preserving
 installed projection with copied adversarial fixtures. It also
 proves explicit and copied project loading, transactional minimal-project
 initialization, structured loader-backed diagnosis, absent/available declared
-location status, controlled registration, exact selection, selected-callable
-non-invocation, context separation, typed failures, and library/global/working-
+location status, controlled registration, semantic producer declaration,
+exact selection, selected-callable non-invocation, context separation, typed
+failures, and library/global/working-
 directory restoration. It checks exact
 package layout, metadata, dependency direction and exports, and
 repository independence; builds both source packages; proves that the main

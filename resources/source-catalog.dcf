@@ -47,6 +47,54 @@ Installed-Path: resources/contracts/project-registration.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.specification-envelope
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/canonical/specification-envelope.dcf
+Installed-Path: resources/contracts/canonical/specification-envelope.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.canonical-producer
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/canonical/canonical-producer.dcf
+Installed-Path: resources/contracts/canonical/canonical-producer.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.canonical-bundle
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/canonical/canonical-bundle.dcf
+Installed-Path: resources/contracts/canonical/canonical-bundle.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.profile.readmission
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/canonical/profiles/readmission.dcf
+Installed-Path: resources/contracts/canonical/profiles/readmission.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.domain.discharge-episode
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/canonical/domains/discharge-episode.dcf
+Installed-Path: resources/contracts/canonical/domains/discharge-episode.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.domain.terminal-event
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/canonical/domains/terminal-event.dcf
+Installed-Path: resources/contracts/canonical/domains/terminal-event.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

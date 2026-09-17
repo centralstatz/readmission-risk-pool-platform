@@ -69,9 +69,10 @@ Rscript --vanilla tools/validate-packages.R
 
 It proves the closed source-resource catalog, temporary deterministic installed
 projection, explicit-root installed-package access, common resource-validation
-result and privacy-safe diagnostic behavior, strict project contracts, explicit
-trusted project loading, transactional minimal-project initialization, exact
-structural selection, loader-backed structured project diagnosis, copied-
+result and privacy-safe diagnostic behavior, the exact canonical specification
+family and relationships, strict 0.2.0 project contracts, explicit trusted
+project loading, transactional minimal-project initialization, exact semantic
+producer and structural provider selection, loader-backed structured project diagnosis, copied-
 project portability, package topology, one-way
 dependency, exact export posture, builds, isolated install/load, and package-
 native checks. No root selector, dependency environment, source/risk
@@ -90,6 +91,7 @@ sixth `rrpplatform` export. Increment 4.D added the seventh export,
 `rrp_validate_project()`, and the complete local independent-project proof.
 Committed push run `35221028009`, job `105200921084`, succeeded for revision
 `f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`, completing Stage 4 after final
-reconciliation. Stage 5 — Canonical Handoff and Producer Boundary is detailed
-and accepted. The next task is Increment 5.A — Canonical contract authority and
-semantic producer declaration. Do not begin Increment 5.B or later work.
+reconciliation. Increment 5.A adds the installed canonical contract authority,
+semantic producer declarations, and the 0.2.0 project line without invoking a
+component. The next task is Increment 5.B — Runtime canonical admission. Do not
+begin Increment 5.B or later work without explicit authorization.

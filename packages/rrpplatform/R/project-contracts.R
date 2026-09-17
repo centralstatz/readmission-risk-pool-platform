@@ -2,7 +2,7 @@ rrp_project_manifest_contract_expected <- function() {
   c(
     "Record-Type" = "project-manifest-contract",
     "Contract-ID" = "rrp.project",
-    "Contract-Version" = "0.1.0",
+    "Contract-Version" = "0.2.0",
     "Format-Version" = "1.0.0",
     "Product-ID" = "readmission-risk-pool-platform",
     "Development-Version" = "1.0.0-dev",
@@ -12,26 +12,31 @@ rrp_project_manifest_contract_expected <- function() {
     "Registration-Path" = "R/register.R",
     "Manifest-Record-Type" = "rrp-project",
     "Project-API-ID" = "rrp.project-api",
-    "Project-API-Version" = "0.1.0",
+    "Project-API-Version" = "0.2.0",
     "Fields" = paste(c(
       "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
       "Project-ID", "Project-Version", "Project-Scope",
-      "Supported-RRP-API-Version", "Producer-ID", "Producer-Version",
-      "Provider-ID", "Provider-Version", "Extension-Library-Path",
-      "State-Path"
+      "Supported-RRP-API-Version", "Canonical-Profile-ID",
+      "Canonical-Profile-Version", "Producer-ID", "Producer-Version",
+      "Provider-ID", "Provider-Version", "Extension-Library-Path", "State-Path"
     ), collapse = ","),
     "Optional-Fields" = "none",
     "Identity-Fields" = "Project-ID,Producer-ID,Provider-ID",
     "Project-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
     "Identity-Max-Bytes" = "96",
     "Protected-Project-ID-Prefix" = "rrp.",
-    "Version-Fields" = "Project-Version,Producer-Version,Provider-Version",
+    "Version-Fields" = paste(c(
+      "Project-Version", "Canonical-Profile-Version", "Producer-Version",
+      "Provider-Version"
+    ), collapse = ","),
     "Version-Pattern" = paste0(
       "^[0-9]+[.][0-9]+[.][0-9]+",
       "(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
     ),
     "Version-Max-Bytes" = "64",
     "Project-Scope-Value" = "one_health_system",
+    "Canonical-Profile-ID-Value" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version-Value" = "0.1.0",
     "Path-Fields" = "Extension-Library-Path,State-Path",
     "Path-Syntax" = "safe_relative_forward_segments",
     "Path-Case-Folded-Conflicts" = "prohibited",
@@ -48,7 +53,7 @@ rrp_project_registration_contract_expected <- function() {
   c(
     "Record-Type" = "project-registration-contract",
     "Contract-ID" = "rrp.project-registration",
-    "Contract-Version" = "0.1.0",
+    "Contract-Version" = "0.2.0",
     "Format-Version" = "1.0.0",
     "Product-ID" = "readmission-risk-pool-platform",
     "Development-Version" = "1.0.0-dev",
@@ -63,7 +68,26 @@ rrp_project_registration_contract_expected <- function() {
     "Collection-Fields" = "producers,providers",
     "Collection-Representation" = "ordered_unnamed_list",
     "Empty-Collections" = "allowed",
-    "Component-Fields" = "component_id,component_version,callable",
+    "Producer-Fields" = paste(c(
+      "component_id", "component_version", "producer_api_id",
+      "producer_api_version", "canonical_bundle_id",
+      "canonical_bundle_version", "canonical_profile_id",
+      "canonical_profile_version", "implementation_id",
+      "implementation_version", "mapping_id", "mapping_version",
+      "capabilities", "callable"
+    ), collapse = ","),
+    "Provider-Fields" = "component_id,component_version,callable",
+    "Capability-Fields" = "capability_id,status",
+    "Producer-API-ID" = "rrp.producer-api",
+    "Producer-API-Version" = "0.1.0",
+    "Canonical-Bundle-ID" = "rrp.canonical-bundle",
+    "Canonical-Bundle-Version" = "0.1.0",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
+    "Required-Capability-IDs" = paste(c(
+      "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
+    ), collapse = ","),
+    "Capability-Status-Value" = "available",
     "Project-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
     "Component-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
     "Identity-Max-Bytes" = "96",
@@ -77,7 +101,8 @@ rrp_project_registration_contract_expected <- function() {
     "Duplicate-Kind-ID-Version" = "prohibited",
     "Unknown-Component-Kinds" = "prohibited",
     "Additional-Result-Fields" = "prohibited",
-    "Additional-Component-Fields" = "prohibited",
+    "Additional-Producer-Fields" = "prohibited",
+    "Additional-Provider-Fields" = "prohibited",
     "Callable-Invocation-During-Validation" = "prohibited"
   )
 }
@@ -259,7 +284,9 @@ rrp_project_validate_manifest <- function(lines, contract) {
     "Record-Type" = contract[["Manifest-Record-Type"]],
     "Project-Contract-ID" = contract[["Contract-ID"]],
     "Project-Contract-Version" = contract[["Contract-Version"]],
-    "Project-Scope" = contract[["Project-Scope-Value"]]
+    "Project-Scope" = contract[["Project-Scope-Value"]],
+    "Canonical-Profile-ID" = contract[["Canonical-Profile-ID-Value"]],
+    "Canonical-Profile-Version" = contract[["Canonical-Profile-Version-Value"]]
   )
   if (any(!vapply(names(contract_fixed), function(field) {
     identical(record[[field]], unname(contract_fixed[[field]]))
@@ -332,7 +359,159 @@ rrp_project_validate_manifest <- function(lines, contract) {
   record
 }
 
-rrp_project_validate_registration <- function(candidate, contract) {
+rrp_project_validate_component_identity <- function(entry, contract) {
+  identity_limit <- as.integer(contract[["Identity-Max-Bytes"]])
+  if (!rrp_project_valid_identity(
+    entry$component_id, contract[["Component-ID-Pattern"]], identity_limit
+  ) || startsWith(entry$component_id, contract[["Protected-ID-Prefix"]])) {
+    code <- if (rrp_project_scalar_string(entry$component_id) &&
+                startsWith(entry$component_id, contract[["Protected-ID-Prefix"]])) {
+      "protected_registration"
+    } else {
+      "invalid_registration_result"
+    }
+    rrp_project_stop("Project registration identity is invalid.", code)
+  }
+  if (!rrp_project_valid_version(
+    entry$component_version,
+    contract[["Component-Version-Pattern"]],
+    as.integer(contract[["Component-Version-Max-Bytes"]])
+  )) {
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
+  }
+  if (!is.function(entry$callable)) {
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
+  }
+  entry
+}
+
+rrp_project_validate_capabilities <- function(capabilities, contract) {
+  if (!is.list(capabilities) || !is.null(attributes(capabilities))) {
+    rrp_project_stop(
+      "Producer capability declaration is invalid.",
+      "invalid_producer_declaration"
+    )
+  }
+  fields <- rrp_project_split_fields(contract[["Capability-Fields"]])
+  validated <- lapply(capabilities, function(capability) {
+    if (!rrp_project_plain_named_list(capability, fields)) {
+      rrp_project_stop(
+        "Producer capability declaration is invalid.",
+        "invalid_producer_declaration"
+      )
+    }
+    capability <- capability[fields]
+    if (!rrp_project_scalar_string(capability$capability_id) ||
+        !identical(
+          capability$status, contract[["Capability-Status-Value"]]
+        )) {
+      rrp_project_stop(
+        "Producer capability declaration is invalid.",
+        "invalid_producer_declaration"
+      )
+    }
+    capability
+  })
+  ids <- vapply(validated, `[[`, character(1L), "capability_id")
+  if (anyDuplicated(ids)) {
+    rrp_project_stop(
+      "Producer capability declaration is duplicated.",
+      "duplicate_capability_declaration"
+    )
+  }
+  required <- rrp_project_split_fields(contract[["Required-Capability-IDs"]])
+  if (!setequal(ids, required)) {
+    rrp_project_stop(
+      "Producer capability declaration is incompatible.",
+      "incompatible_producer_capabilities"
+    )
+  }
+  validated[match(required, ids)]
+}
+
+rrp_project_validate_producer <- function(entry, contract, manifest) {
+  fields <- rrp_project_split_fields(contract[["Producer-Fields"]])
+  if (!rrp_project_plain_named_list(entry, fields)) {
+    rrp_project_stop(
+      "Producer declaration is invalid.", "invalid_producer_declaration"
+    )
+  }
+  entry <- entry[fields]
+  entry <- rrp_project_validate_component_identity(entry, contract)
+  fixed <- c(
+    "producer_api_id" = contract[["Producer-API-ID"]],
+    "producer_api_version" = contract[["Producer-API-Version"]],
+    "canonical_bundle_id" = contract[["Canonical-Bundle-ID"]],
+    "canonical_bundle_version" = contract[["Canonical-Bundle-Version"]],
+    "canonical_profile_id" = contract[["Canonical-Profile-ID"]],
+    "canonical_profile_version" = contract[["Canonical-Profile-Version"]]
+  )
+  if (any(!vapply(names(fixed), function(field) {
+    identical(entry[[field]], unname(fixed[[field]]))
+  }, logical(1L)))) {
+    rrp_project_stop(
+      "Producer declaration is incompatible.",
+      "incompatible_producer_declaration"
+    )
+  }
+  if (!is.null(manifest) && (!identical(
+    entry$canonical_profile_id, manifest[["Canonical-Profile-ID"]]
+  ) || !identical(
+    entry$canonical_profile_version, manifest[["Canonical-Profile-Version"]]
+  ))) {
+    rrp_project_stop(
+      "Producer canonical profile does not match the manifest.",
+      "producer_profile_mismatch"
+    )
+  }
+  identity_limit <- as.integer(contract[["Identity-Max-Bytes"]])
+  version_limit <- as.integer(contract[["Component-Version-Max-Bytes"]])
+  for (field in c("implementation_id", "mapping_id")) {
+    if (!rrp_project_valid_identity(
+      entry[[field]], contract[["Component-ID-Pattern"]], identity_limit
+    ) || startsWith(entry[[field]], contract[["Protected-ID-Prefix"]])) {
+      rrp_project_stop(
+        "Producer implementation or mapping identity is invalid.",
+        "invalid_producer_declaration"
+      )
+    }
+  }
+  for (field in c("implementation_version", "mapping_version")) {
+    if (!rrp_project_valid_version(
+      entry[[field]], contract[["Component-Version-Pattern"]], version_limit
+    )) {
+      rrp_project_stop(
+        "Producer implementation or mapping version is invalid.",
+        "invalid_producer_declaration"
+      )
+    }
+  }
+  entry$capabilities <- rrp_project_validate_capabilities(
+    entry$capabilities, contract
+  )
+  entry
+}
+
+rrp_project_validate_provider <- function(entry, contract) {
+  fields <- rrp_project_split_fields(contract[["Provider-Fields"]])
+  if (!rrp_project_plain_named_list(entry, fields)) {
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
+  }
+  rrp_project_validate_component_identity(entry[fields], contract)
+}
+
+rrp_project_validate_registration <- function(
+  candidate,
+  contract,
+  canonical_contracts,
+  manifest = NULL
+) {
   expected_contract <- rrp_project_registration_contract_expected()
   if (!is.list(contract) || !identical(names(contract), names(expected_contract)) ||
       !identical(unlist(contract, use.names = TRUE), expected_contract)) {
@@ -365,7 +544,6 @@ rrp_project_validate_registration <- function(candidate, contract) {
     )
   }
 
-  component_fields <- rrp_project_split_fields(contract[["Component-Fields"]])
   for (kind in rrp_project_split_fields(contract[["Collection-Fields"]])) {
     entries <- candidate[[kind]]
     if (!is.list(entries) || !is.null(attributes(entries))) {
@@ -373,47 +551,12 @@ rrp_project_validate_registration <- function(candidate, contract) {
         "Project registration result is invalid.", "invalid_registration_result"
       )
     }
-    validated_entries <- lapply(entries, function(entry) {
-      if (!rrp_project_plain_named_list(entry, component_fields)) {
-        rrp_project_stop(
-          "Project registration result is invalid.",
-          "invalid_registration_result"
-        )
-      }
-      entry <- entry[component_fields]
-      if (!rrp_project_valid_identity(
-        entry$component_id, contract[["Component-ID-Pattern"]], identity_limit
-      ) || startsWith(
-        entry$component_id, contract[["Protected-ID-Prefix"]]
-      )) {
-        code <- if (rrp_project_scalar_string(entry$component_id) &&
-                    startsWith(
-                      entry$component_id, contract[["Protected-ID-Prefix"]]
-                    )) {
-          "protected_registration"
-        } else {
-          "invalid_registration_result"
-        }
-        rrp_project_stop("Project registration identity is invalid.", code)
-      }
-      if (!rrp_project_valid_version(
-        entry$component_version,
-        contract[["Component-Version-Pattern"]],
-        as.integer(contract[["Component-Version-Max-Bytes"]])
-      )) {
-        rrp_project_stop(
-          "Project registration result is invalid.",
-          "invalid_registration_result"
-        )
-      }
-      if (!is.function(entry$callable)) {
-        rrp_project_stop(
-          "Project registration result is invalid.",
-          "invalid_registration_result"
-        )
-      }
-      entry
-    })
+    validated_entries <- if (identical(kind, "producers")) {
+      lapply(entries, rrp_project_validate_producer,
+             contract = contract, manifest = manifest)
+    } else {
+      lapply(entries, rrp_project_validate_provider, contract = contract)
+    }
     keys <- vapply(validated_entries, function(entry) {
       paste(entry$component_id, entry$component_version, sep = "@")
     }, character(1L))
@@ -424,6 +567,33 @@ rrp_project_validate_registration <- function(candidate, contract) {
       )
     }
     candidate[[kind]] <- validated_entries
+  }
+  if (!is.list(canonical_contracts) || !identical(
+    canonical_contracts$canonical_producer[["Producer-API-ID"]],
+    contract[["Producer-API-ID"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Producer-API-Version"]],
+    contract[["Producer-API-Version"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Canonical-Bundle-ID"]],
+    contract[["Canonical-Bundle-ID"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Canonical-Bundle-Version"]],
+    contract[["Canonical-Bundle-Version"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Canonical-Profile-ID"]],
+    contract[["Canonical-Profile-ID"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Canonical-Profile-Version"]],
+    contract[["Canonical-Profile-Version"]]
+  ) || !identical(
+    canonical_contracts$canonical_producer[["Required-Capability-IDs"]],
+    contract[["Required-Capability-IDs"]]
+  )) {
+    rrp_project_stop(
+      "Producer declaration contract is incompatible.",
+      "incompatible_producer_declaration"
+    )
   }
   candidate
 }

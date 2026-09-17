@@ -12,11 +12,13 @@ rrp_init_write_record <- function(record, path) {
 rrp_init_manifest_template <- c(
   "Record-Type: rrp-project",
   "Project-Contract-ID: rrp.project",
-  "Project-Contract-Version: 0.1.0",
+  "Project-Contract-Version: 0.2.0",
   "Project-ID: @@RRP_PROJECT_ID@@",
   "Project-Version: @@RRP_PROJECT_VERSION@@",
   "Project-Scope: one_health_system",
-  "Supported-RRP-API-Version: 0.1.0",
+  "Supported-RRP-API-Version: 0.2.0",
+  "Canonical-Profile-ID: rrp.canonical-profile.readmission",
+  "Canonical-Profile-Version: 0.1.0",
   "Producer-ID: @@RRP_PRODUCER_ID@@",
   "Producer-Version: @@RRP_PROJECT_VERSION@@",
   "Provider-ID: @@RRP_PROVIDER_ID@@",
@@ -31,22 +33,49 @@ rrp_init_registration_template <- c(
   "      is.na(project_root) || !nzchar(project_root)) {",
   "    stop(\"Project root is invalid.\", call. = FALSE)",
   "  }",
-  "  unavailable <- function(...) {",
+  "  capabilities <- list(",
+  "    list(capability_id = \"rrp.capability.discharge-episode\", status = \"available\"),",
+  "    list(capability_id = \"rrp.capability.terminal-event\", status = \"available\")",
+  "  )",
+  "  unavailable_producer <- function(request) {",
+  "    Sys.setenv(RRP_INIT_SELECTED_CALLED = \"yes\")",
+  "    list(producer_contract_id = \"rrp.canonical-producer\",",
+  "         producer_contract_version = \"0.1.0\", status = \"failed\",",
+  "         producer_id = \"@@RRP_PRODUCER_ID@@\", producer_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "         implementation_id = \"@@RRP_IMPLEMENTATION_ID@@\", implementation_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "         mapping_id = \"@@RRP_MAPPING_ID@@\", mapping_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "         canonical_profile_id = \"rrp.canonical-profile.readmission\", canonical_profile_version = \"0.1.0\",",
+  "         canonical_as_of_time = request$as_of_time, capabilities = capabilities,",
+  "         candidate_bundle = NULL, failure_code = \"producer_unavailable\")",
+  "  }",
+  "  unavailable_provider <- function(...) {",
+  "    Sys.setenv(RRP_INIT_SELECTED_CALLED = \"yes\")",
   "    stop(\"Initialized structural component has no execution behavior.\", call. = FALSE)",
   "  }",
   "  list(",
   "    registration_contract_id = \"rrp.project-registration\",",
-  "    registration_contract_version = \"0.1.0\",",
+  "    registration_contract_version = \"0.2.0\",",
   "    project_id = \"@@RRP_PROJECT_ID@@\",",
   "    producers = list(list(",
   "      component_id = \"@@RRP_PRODUCER_ID@@\",",
   "      component_version = \"@@RRP_PROJECT_VERSION@@\",",
-  "      callable = unavailable",
+  "      producer_api_id = \"rrp.producer-api\",",
+  "      producer_api_version = \"0.1.0\",",
+  "      canonical_bundle_id = \"rrp.canonical-bundle\",",
+  "      canonical_bundle_version = \"0.1.0\",",
+  "      canonical_profile_id = \"rrp.canonical-profile.readmission\",",
+  "      canonical_profile_version = \"0.1.0\",",
+  "      implementation_id = \"@@RRP_IMPLEMENTATION_ID@@\",",
+  "      implementation_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "      mapping_id = \"@@RRP_MAPPING_ID@@\",",
+  "      mapping_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "      capabilities = capabilities,",
+  "      callable = unavailable_producer",
   "    )),",
   "    providers = list(list(",
   "      component_id = \"@@RRP_PROVIDER_ID@@\",",
   "      component_version = \"@@RRP_PROJECT_VERSION@@\",",
-  "      callable = unavailable",
+  "      callable = unavailable_provider",
   "    ))",
   "  )",
   "}"
@@ -63,10 +92,18 @@ rrp_init_software_root <- function(root) {
   registration_contract <- rrp_init_internal(
     "rrp_project_registration_contract_expected"
   )()
+  canonical_definitions <- rrp_init_internal(
+    "rrp_canonical_contract_definitions"
+  )()
   rrp_init_write_record(
     manifest_contract,
     file.path(root, "resources", "contracts", "project-manifest.dcf")
   )
+  for (definition in canonical_definitions) {
+    rrp_init_write_record(
+      definition$expected, file.path(root, definition$path)
+    )
+  }
   rrp_init_write_record(
     registration_contract,
     file.path(root, "resources", "contracts", "project-registration.dcf")
@@ -95,14 +132,17 @@ rrp_init_software_root <- function(root) {
   writeLines(rrp_init_registration_template, registration_path, useBytes = TRUE)
 
   entries <- list(
-    c("rrp.contract.resource-catalog", "contract", "resources/resource-catalog-schema.dcf", "dcf"),
-    c("rrp.contract.diagnostic", "contract", "resources/contracts/diagnostic.dcf", "dcf"),
-    c("rrp.contract.operation-result", "contract", "resources/contracts/operation-result.dcf", "dcf"),
-    c("rrp.contract.project-manifest", "contract", "resources/contracts/project-manifest.dcf", "dcf"),
-    c("rrp.contract.project-registration", "contract", "resources/contracts/project-registration.dcf", "dcf"),
-    c("rrp.template.project-manifest", "template", "resources/templates/project/rrp-project.dcf", "dcf"),
-    c("rrp.template.project-registration", "template", "resources/templates/project/R/register.R", "r")
+    c("rrp.contract.resource-catalog", "contract", "resources/resource-catalog-schema.dcf", "dcf", "rrpplatform"),
+    c("rrp.contract.diagnostic", "contract", "resources/contracts/diagnostic.dcf", "dcf", "rrpplatform"),
+    c("rrp.contract.operation-result", "contract", "resources/contracts/operation-result.dcf", "dcf", "rrpplatform"),
+    c("rrp.contract.project-manifest", "contract", "resources/contracts/project-manifest.dcf", "dcf", "rrpplatform"),
+    c("rrp.contract.project-registration", "contract", "resources/contracts/project-registration.dcf", "dcf", "rrpplatform"),
+    c("rrp.template.project-manifest", "template", "resources/templates/project/rrp-project.dcf", "dcf", "rrpplatform"),
+    c("rrp.template.project-registration", "template", "resources/templates/project/R/register.R", "r", "rrpplatform")
   )
+  entries <- c(entries, lapply(canonical_definitions, function(definition) c(
+    definition$resource_id, "contract", definition$path, "dcf", definition$owner
+  )))
   header <- c(
     "Record-Type" = "catalog", "Catalog-ID" = "rrp.software-resources",
     "Catalog-Version" = "0.1.0", "Format-Version" = "1.0.0",
@@ -112,7 +152,7 @@ rrp_init_software_root <- function(root) {
   )
   records <- c(list(header), lapply(entries, function(entry) c(
     "Record-Type" = "resource", "Resource-ID" = entry[[1L]],
-    "Resource-Class" = entry[[2L]], "Owner-Package" = "rrpplatform",
+    "Resource-Class" = entry[[2L]], "Owner-Package" = entry[[5L]],
     "Installed-Path" = entry[[3L]], "Format" = entry[[4L]]
   )))
   lines <- unlist(lapply(seq_along(records), function(index) {
@@ -154,6 +194,8 @@ dir.create(suite_root)
 on.exit(unlink(suite_root, recursive = TRUE, force = TRUE), add = TRUE)
 software_root <- rrp_init_software_root(file.path(suite_root, "software"))
 catalog <- rrp_open_resource_catalog(software_root)
+Sys.setenv(RRP_INIT_SELECTED_CALLED = "no")
+on.exit(Sys.unsetenv("RRP_INIT_SELECTED_CALLED"), add = TRUE)
 
 destination <- file.path(suite_root, "independent-project")
 result <- rrp_initialize_project(
@@ -163,6 +205,12 @@ expected_value <- list(
   project_id = "example-health", project_version = "2.3.4-rc.1",
   producer_id = "example-health.producer",
   producer_version = "2.3.4-rc.1",
+  implementation_id = "example-health.implementation",
+  implementation_version = "2.3.4-rc.1",
+  mapping_id = "example-health.mapping",
+  mapping_version = "2.3.4-rc.1",
+  canonical_profile_id = "rrp.canonical-profile.readmission",
+  canonical_profile_version = "0.1.0",
   provider_id = "example-health.provider",
   provider_version = "2.3.4-rc.1",
   created_paths = c("rrp-project.dcf", "R/register.R")
@@ -174,6 +222,7 @@ stopifnot(
   identical(result$status, "success"), identical(result$value, expected_value),
   identical(result$diagnostics, list()),
   identical(rrp_operation_succeeded(result), TRUE),
+  identical(Sys.getenv("RRP_INIT_SELECTED_CALLED"), "no"),
   identical(sort(list.files(
     destination, recursive = TRUE, all.files = TRUE, no.. = TRUE,
     include.dirs = FALSE
@@ -188,11 +237,16 @@ stopifnot(
   identical(colnames(manifest), c(
     "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
     "Project-ID", "Project-Version", "Project-Scope",
-    "Supported-RRP-API-Version", "Producer-ID", "Producer-Version",
+    "Supported-RRP-API-Version", "Canonical-Profile-ID",
+    "Canonical-Profile-Version", "Producer-ID", "Producer-Version",
     "Provider-ID", "Provider-Version", "Extension-Library-Path", "State-Path"
   )),
   identical(manifest[[1L, "Project-ID"]], "example-health"),
   identical(manifest[[1L, "Project-Version"]], "2.3.4-rc.1"),
+  identical(
+    manifest[[1L, "Canonical-Profile-ID"]],
+    "rrp.canonical-profile.readmission"
+  ),
   identical(manifest[[1L, "Producer-ID"]], "example-health.producer"),
   identical(manifest[[1L, "Provider-ID"]], "example-health.provider"),
   identical(manifest[[1L, "Producer-Version"]], "2.3.4-rc.1"),
@@ -201,13 +255,27 @@ stopifnot(
   identical(manifest[[1L, "State-Path"]], "state")
 )
 context <- rrp_load_project(catalog, destination)
+producer_result <- context$producer$callable(list(
+  as_of_time = "2026-09-17T12:00:00Z"
+))
 stopifnot(
+  identical(Sys.getenv("RRP_INIT_SELECTED_CALLED"), "yes"),
   identical(context$registration$project_id, "example-health"),
   identical(context$producer$component_id, "example-health.producer"),
+  identical(context$producer$implementation_id, "example-health.implementation"),
+  identical(context$producer$mapping_id, "example-health.mapping"),
+  identical(context$producer$capabilities, rrp_init_internal(
+    "rrp_canonical_required_capabilities"
+  )(rrp_init_internal("rrp_canonical_contracts")(catalog))),
   identical(context$provider$component_id, "example-health.provider"),
   identical(context$producer$origin, "project"),
   identical(context$provider$origin, "project"),
-  inherits(try(context$producer$callable(), silent = TRUE), "try-error"),
+  identical(producer_result$status, "failed"),
+  identical(producer_result$failure_code, "producer_unavailable"),
+  identical(
+    producer_result$canonical_as_of_time, "2026-09-17T12:00:00Z"
+  ),
+  is.null(producer_result$candidate_bundle),
   inherits(try(context$provider$callable(), silent = TRUE), "try-error")
 )
 

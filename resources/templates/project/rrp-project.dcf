@@ -1,10 +1,12 @@
 Record-Type: rrp-project
 Project-Contract-ID: rrp.project
-Project-Contract-Version: 0.1.0
+Project-Contract-Version: 0.2.0
 Project-ID: @@RRP_PROJECT_ID@@
 Project-Version: @@RRP_PROJECT_VERSION@@
 Project-Scope: one_health_system
-Supported-RRP-API-Version: 0.1.0
+Supported-RRP-API-Version: 0.2.0
+Canonical-Profile-ID: rrp.canonical-profile.readmission
+Canonical-Profile-Version: 0.1.0
 Producer-ID: @@RRP_PRODUCER_ID@@
 Producer-Version: @@RRP_PROJECT_VERSION@@
 Provider-ID: @@RRP_PROVIDER_ID@@

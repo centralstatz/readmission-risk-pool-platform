@@ -1864,3 +1864,102 @@ Stage 5 is detailed and accepted, but no Stage 5 source behavior exists.
 **Next task:** implement only Increment 5.A — Canonical contract authority and
 semantic producer declaration. Do not begin Increment 5.B, Increment 5.C, or
 Stage 6.
+
+## Stage 5 / Increment 5.A — Canonical contract authority and semantic producer declaration — 2026-09-17
+
+Increment 5.A is complete. The clean line now contains one cataloged, installed,
+closed DCF specification family for the canonical handoff: the common
+specification envelope, canonical producer contract, canonical bundle contract,
+readmission profile, discharge-episode domain, and terminal-event domain. The
+resources use specification format `1.0.0` and semantic version `0.1.0`, retain
+their `rrpplatform` or `rrpruntime` semantic owners, and establish exact bundle,
+profile, domain, capability, key, relationship, dual-time, and fixed day-30
+follow-up facts. They contain no executable configuration, source-system
+identity, hospital data, provider/model input, state, or storage location.
+
+`rrpplatform` now owns one internal canonical-contract loader that reaches all
+six resources only through the explicit validated software catalog, requires
+their exact fields and values, and validates the producer/bundle/profile/domain/
+capability references as one coherent set. The existing structured software-
+resource validation operation also loads the canonical and project authorities,
+so its successful result now proves more than catalog shape while retaining the
+same bounded result surface. No canonical value or admission implementation was
+added to `rrpruntime`; it remains dependency-free and export-free.
+
+The unreleased project manifest contract, project API, and registration
+contract advanced atomically from `0.1.0` to `0.2.0`. The manifest now requires
+the exact `rrp.canonical-profile.readmission@0.1.0` identity. Producer records
+are kind-specific and declare exact component, producer-API, canonical-bundle,
+canonical-profile, implementation, mapping, capability, and callable facts.
+Both discharge-episode and terminal-event capabilities must be present exactly
+once with status `available`. Provider records deliberately retain only
+component ID, component version, and callable. Validation rejects old,
+unknown, missing, additional, duplicated, incompatible, protected, or malformed
+declarations without invoking a selected callable.
+
+The loader validates the canonical authority before trusted project
+registration and includes the selected canonical profile plus the complete
+semantic producer record in its closed context. The doctor reports the profile
+and bounded producer implementation/mapping identities but no callable,
+capability payload, path, or arbitrary registration content. Initialization
+still creates exactly `rrp-project.dcf` and `R/register.R`, leaves extension and
+state locations absent, and remains create-only and transactional. Its generated
+producer declares the exact 5.A semantics and, only if invoked later with a
+request, returns the controlled `producer_unavailable` result with no candidate.
+Its provider retains the structural unavailable callable. Initialization,
+loading, and doctor invoke neither component.
+
+The implementation required two small corrections exposed by the evolved
+contract. Template rendering now supplies the four manifest tokens separately
+from the six registration tokens, preserving strict token closure without
+requiring implementation/mapping placeholders in the manifest. Test fixture
+source paths are rendered with explicit ASCII quoting instead of locale-
+dependent fancy quotes. Neither correction expands product behavior.
+
+Historical reconnaissance reused only concepts already accepted during Stage 5
+planning from immutable `v0.1.0`: exact specification identity, producer
+declaration/callable separation, implementation and mapping identity,
+capability agreement, closed bundle/profile/domain vocabulary, relationship
+rules, and adversarial exact-field evidence. Those concepts were adapted to
+installed DCF resources, the current explicit-root catalog, the independent
+project contract, the smaller two-domain readmission profile, and current
+package ownership. Historical YAML/parser dependencies, generic dependency
+graphs, producer configuration payloads, installed default selection,
+baseline-risk/generic-event domains, estimands, repository-root loading, Phase
+validation, generated Hospital delivery, and downstream runtime/history/
+product/application behavior were rejected.
+
+Evidence added or extended includes exact canonical-resource loading and
+installed byte equality, cross-reference and owner agreement, unknown-field and
+unsupported-version rejection, `0.2.0` hand-authored and initialized projects,
+old-version/profile/API/declaration/capability/identity/duplicate rejection,
+kind-specific producer/provider shapes, copied-project portability, controlled
+unavailable-producer behavior, and instrumented zero-call proof for load and
+doctor. The exact public namespace remains seven `rrpplatform` exports and zero
+`rrpruntime` exports; the package dependency remains one-way.
+
+Final local evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks,
+  zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: exact source catalog and all
+  13 resources, canonical/project contracts, adversarial fixtures,
+  deterministic installed projection, package-native tests, both source builds,
+  missing-dependency rejection, isolated dependency-order install/load,
+  explicit installed-resource access, independent/copy project loading,
+  transactional initialization and doctor proof, and exact `Status: OK` from
+  both `R CMD check --no-manual` runs; and
+- focused package tests, R/Rd/DCF parsing, repository inventory/hygiene, and
+  `git diff --check` completed without a retained generated source artifact.
+
+The completion statement is literal: installed RRP can load and diagnose an
+independent `0.2.0` project whose selected producer declares the exact Stage 5
+handoff it intends to implement. RRP still cannot admit a candidate canonical
+bundle or execute the selected producer. There is no compatibility bridge or
+migration operation for the historical structural `0.1.0` project form.
+
+**Current implementation state:** Stages 1–4 remain accepted and complete.
+Stage 5 is in progress; Increment 5.A is complete.
+
+**Next task:** implement only Increment 5.B — Dependency-light canonical bundle
+admission. Do not begin Increment 5.C, Stage 6, or Stage 5 acceptance.

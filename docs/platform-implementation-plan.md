@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–4 are accepted and complete, and
-Stage 5 is detailed and accepted for implementation. Increment 5.A is the next
-implementation task; no Stage 5 source has been implemented yet.
+Stage 5 is in progress under its accepted detail. Increment 5.A is complete;
+Increment 5.B is the next implementation task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -1691,8 +1691,8 @@ own stages.
 ## Stage 5 — Canonical handoff and producer boundary
 
 **Status:** detailed and accepted for implementation on 2026-09-17. Increment
-5.A is next. This section authorizes only the three Stage 5 increments below;
-it does not claim that producer execution or canonical admission exists.
+5.A is complete and 5.B is next. This section authorizes only the three Stage 5
+increments below; producer execution and canonical admission do not yet exist.
 
 ### Objective
 
@@ -2019,6 +2019,8 @@ Each increment preserves all earlier repository/package/resource/project
 evidence and stops before the next responsibility.
 
 ### Increment 5.A — Canonical contract authority and semantic producer declaration
+
+**Implementation status:** complete on 2026-09-17; Increment 5.B is next.
 
 **Objective:** establish the complete language-neutral Stage 5 handoff contract
 and make a loaded project declare an exact compatible producer without

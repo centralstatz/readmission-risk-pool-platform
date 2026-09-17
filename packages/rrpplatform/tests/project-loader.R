@@ -13,12 +13,12 @@ rrp_loader_write_records <- function(records, path) {
   writeLines(lines, path, useBytes = TRUE)
 }
 
-rrp_loader_resource_entry <- function(id, path) {
+rrp_loader_resource_entry <- function(id, path, owner = "rrpplatform") {
   list(
     "Record-Type" = "resource",
     "Resource-ID" = id,
     "Resource-Class" = "contract",
-    "Owner-Package" = "rrpplatform",
+    "Owner-Package" = owner,
     "Installed-Path" = path,
     "Format" = "dcf"
   )
@@ -34,11 +34,22 @@ rrp_loader_software_fixture <- function() {
   registration_contract <- rrp_loader_internal(
     "rrp_project_registration_contract_expected"
   )()
+  canonical_definitions <- rrp_loader_internal(
+    "rrp_canonical_contract_definitions"
+  )()
   writeLines(
     paste0(names(schema), ": ", unname(schema)),
     file.path(root, "resources", "resource-catalog-schema.dcf"),
     useBytes = TRUE
   )
+  for (definition in canonical_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(definition$expected), ": ", unname(definition$expected)),
+      path, useBytes = TRUE
+    )
+  }
   writeLines(
     paste0(names(manifest_contract), ": ", unname(manifest_contract)),
     file.path(root, "resources", "contracts", "project-manifest.dcf"),
@@ -58,7 +69,7 @@ rrp_loader_software_fixture <- function() {
     "Development-Version" = "1.0.0-dev",
     "Status" = "development_unpublished"
   )
-  rrp_loader_write_records(list(
+  records <- list(
     header,
     rrp_loader_resource_entry(
       "rrp.contract.resource-catalog",
@@ -72,7 +83,15 @@ rrp_loader_software_fixture <- function() {
       "rrp.contract.project-registration",
       "resources/contracts/project-registration.dcf"
     )
-  ), file.path(root, "resources", "resource-catalog.dcf"))
+  )
+  records <- c(records, lapply(canonical_definitions, function(definition) {
+    rrp_loader_resource_entry(
+      definition$resource_id, definition$path, definition$owner
+    )
+  }))
+  rrp_loader_write_records(
+    records, file.path(root, "resources", "resource-catalog.dcf")
+  )
   root
 }
 
@@ -80,11 +99,13 @@ rrp_loader_manifest <- function() {
   c(
     "Record-Type" = "rrp-project",
     "Project-Contract-ID" = "rrp.project",
-    "Project-Contract-Version" = "0.1.0",
+    "Project-Contract-Version" = "0.2.0",
     "Project-ID" = "fictional-health-system",
     "Project-Version" = "1.0.0",
     "Project-Scope" = "one_health_system",
-    "Supported-RRP-API-Version" = "0.1.0",
+    "Supported-RRP-API-Version" = "0.2.0",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
     "Producer-ID" = "fictional.producer",
     "Producer-Version" = "1.0.0",
     "Provider-ID" = "fictional.provider",
@@ -102,8 +123,8 @@ rrp_loader_registration <- function(
     "component('fictional.producer', '1.0.0')"
   ),
   provider_entries = c(
-    "component('zeta.provider', '2.0.0')",
-    "component('fictional.provider', '1.0.0')"
+    "component('zeta.provider', '2.0.0', 'provider')",
+    "component('fictional.provider', '1.0.0', 'provider')"
   )
 ) {
   c(
@@ -111,20 +132,26 @@ rrp_loader_registration <- function(
     "  calls <- 0L",
     "  function(project_root) {",
     "    calls <<- calls + 1L",
-    "    component <- function(id, version) {",
+    "    component <- function(id, version, kind = 'producer') {",
     paste0(
       "      callable <- function(...) stop('selected callable executed', ",
       "call. = FALSE)"
     ),
     "      attr(callable, 'registration_calls') <- calls",
-    paste0(
-      "      list(component_id = id, component_version = version, ",
-      "callable = callable)"
-    ),
+    "      if (identical(kind, 'provider')) return(list(component_id = id, component_version = version, callable = callable))",
+    "      prefix <- sub('[.]producer$', '', id)",
+    "      list(component_id = id, component_version = version,",
+    "           producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0',",
+    "           canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0',",
+    "           canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0',",
+    "           implementation_id = paste0(prefix, '.implementation'), implementation_version = version,",
+    "           mapping_id = paste0(prefix, '.mapping'), mapping_version = version,",
+    "           capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')),",
+    "           callable = callable)",
     "    }",
     "    list(",
     paste0("      registration_contract_id = '", contract_id, "',"),
-    "      registration_contract_version = '0.1.0',",
+    "      registration_contract_version = '0.2.0',",
     paste0("      project_id = '", project_id, "',"),
     paste0("      producers = list(", paste(producer_entries, collapse = ", "), "),"),
     paste0("      providers = list(", paste(provider_entries, collapse = ", "), ")"),
@@ -235,7 +262,8 @@ rrp_loader_tests <- list(
         identical(class(context), c("rrp_project_context", "list")),
         identical(names(context), c(
           "software_catalog", "project_root", "manifest", "registration",
-          "producer", "provider", "extension_library_path", "state_path"
+          "canonical_profile", "producer", "provider",
+          "extension_library_path", "state_path"
         )),
         identical(context$software_catalog, catalog),
         identical(
@@ -254,7 +282,16 @@ rrp_loader_tests <- list(
           c("fictional.provider", "zeta.provider")
         ),
         identical(names(context$producer), c(
-          "component_id", "component_version", "callable", "origin"
+          "component_id", "component_version", "producer_api_id",
+          "producer_api_version", "canonical_bundle_id",
+          "canonical_bundle_version", "canonical_profile_id",
+          "canonical_profile_version", "implementation_id",
+          "implementation_version", "mapping_id", "mapping_version",
+          "capabilities", "callable", "origin"
+        )),
+        identical(context$canonical_profile, list(
+          profile_id = "rrp.canonical-profile.readmission",
+          profile_version = "0.1.0"
         )),
         identical(context$producer$origin, "project"),
         identical(context$provider$origin, "project"),
@@ -302,7 +339,8 @@ rrp_loader_tests <- list(
       on.exit(unlink(evaluation_marker), add = TRUE)
       writeLines(c(
         paste0(
-          "cat('evaluated\\n', file = ", dQuote(evaluation_marker),
+          "cat('evaluated\\n', file = ",
+          encodeString(evaluation_marker, quote = "\""),
           ", append = TRUE)"
         ),
         rrp_loader_registration()
@@ -372,7 +410,10 @@ rrp_loader_tests <- list(
       project_root <- rrp_loader_project_fixture()
       sentinel <- tempfile("rrp-registration-sentinel-")
       writeLines(c(
-        paste0("writeLines('executed', ", dQuote(sentinel), ")"),
+        paste0(
+          "writeLines('executed', ",
+          encodeString(sentinel, quote = "\""), ")"
+        ),
         rrp_loader_registration()
       ), file.path(project_root, "R", "register.R"))
       writeLines(cases[[code]], file.path(project_root, "rrp-project.dcf"))
@@ -455,7 +496,7 @@ rrp_loader_tests <- list(
       non_callable = list(c(
         "rrp_register_project <- function(project_root) list(",
         "  registration_contract_id = 'rrp.project-registration',",
-        "  registration_contract_version = '0.1.0',",
+        "  registration_contract_version = '0.2.0',",
         "  project_id = 'fictional-health-system',",
         paste0(
           "  producers = list(list(component_id = 'fictional.producer', ",
@@ -466,7 +507,7 @@ rrp_loader_tests <- list(
           "component_version = '1.0.0', callable = function(...) NULL))"
         ),
         ")"
-      ), "invalid_registration_result")
+      ), "invalid_producer_declaration")
     )
     for (case in cases) {
       rrp_loader_with_fixtures(function(catalog, project_root) {
@@ -487,8 +528,8 @@ rrp_loader_tests <- list(
           "component('zeta.producer', '2.0.0')"
         ),
         provider_entries = c(
-          "component('fictional.provider', '1.0.0')",
-          "component('zeta.provider', '2.0.0')"
+          "component('fictional.provider', '1.0.0', 'provider')",
+          "component('zeta.provider', '2.0.0', 'provider')"
         )
       )
       writeLines(reversed, file.path(project_root, "R", "register.R"))
@@ -645,12 +686,15 @@ rrp_loader_tests <- list(
         "rrp_register_project <- function(project_root) {",
         "  callable <- getExportedValue('rrpfixtureextension', 'fixture_callable')",
         "  attr(callable, 'observed_libraries') <- .libPaths()",
-        "  component <- function(id) list(component_id = id, component_version = '1.0.0', callable = callable)",
+        "  component <- function(id, kind) {",
+        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', callable = callable))",
+        "    list(component_id = id, component_version = '1.0.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', mapping_id = 'fictional.mapping', mapping_version = '1.0.0', capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')), callable = callable)",
+        "  }",
         "  list(registration_contract_id = 'rrp.project-registration',",
-        "       registration_contract_version = '0.1.0',",
+        "       registration_contract_version = '0.2.0',",
         "       project_id = 'fictional-health-system',",
-        "       producers = list(component('fictional.producer')),",
-        "       providers = list(component('fictional.provider')))",
+        "       producers = list(component('fictional.producer', 'producer')),",
+        "       providers = list(component('fictional.provider', 'provider')))",
         "}"
       )
       writeLines(registration, file.path(project_root, "R", "register.R"))
@@ -684,12 +728,15 @@ rrp_loader_tests <- list(
       registration <- c(
         "rrp_register_project <- function(project_root) {",
         "  callable <- getExportedValue('rrpambientfixture', 'fixture_callable')",
-        "  component <- function(id) list(component_id = id, component_version = '1.0.0', callable = callable)",
+        "  component <- function(id, kind) {",
+        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', callable = callable))",
+        "    list(component_id = id, component_version = '1.0.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', mapping_id = 'fictional.mapping', mapping_version = '1.0.0', capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')), callable = callable)",
+        "  }",
         "  list(registration_contract_id = 'rrp.project-registration',",
-        "       registration_contract_version = '0.1.0',",
+        "       registration_contract_version = '0.2.0',",
         "       project_id = 'fictional-health-system',",
-        "       producers = list(component('fictional.producer')),",
-        "       providers = list(component('fictional.provider')))",
+        "       producers = list(component('fictional.producer', 'producer')),",
+        "       providers = list(component('fictional.provider', 'provider')))",
         "}"
       )
       writeLines(registration, file.path(project_root, "R", "register.R"))
@@ -709,7 +756,10 @@ rrp_loader_tests <- list(
     rrp_loader_with_fixtures(function(catalog, project_root) {
       sentinel <- tempfile("rrp-software-revalidation-sentinel-")
       writeLines(c(
-        paste0("writeLines('executed', ", dQuote(sentinel), ")"),
+        paste0(
+          "writeLines('executed', ",
+          encodeString(sentinel, quote = "\""), ")"
+        ),
         rrp_loader_registration()
       ), file.path(project_root, "R", "register.R"))
       unlink(file.path(
@@ -727,7 +777,7 @@ rrp_loader_tests <- list(
     })
   },
 
-  "4.D retains loader behavior and adds only the doctor" = function() {
+  "5.A retains the existing public API" = function() {
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
         "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",

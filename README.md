@@ -17,17 +17,21 @@ The repository presently contains product and architecture documentation,
 public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional internal package owners.
 A closed base-R DCF source catalog now declares its schema, common result and
-diagnostic contracts, exact project contracts, and the two minimal-project
-templates, with a temporary deterministic installed-projection proof.
+diagnostic contracts, exact project contracts, the initial canonical
+specification family, and the two minimal-project templates, with a temporary
+deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
 its fixed trusted registration boundary and resolving exact structural
 producer/provider selections without invoking them. It reports the same
-loader-owned structural assessment through a bounded project doctor;
-`rrpruntime` remains export-free. The repository has no root selector,
-persistent installed RRP distribution, clinical contract, risk
-calculation, product, application, command-line interface, or deployment
-capability.
+loader-owned assessment through a bounded project doctor. Producer declarations
+now identify the exact canonical profile, bundle, implementation, mapping, and
+required available capabilities, while providers retain their structural
+shape; neither callable is invoked during initialization, loading, or doctor.
+`rrpruntime` remains export-free. The repository has no producer-execution or
+canonical-admission operation, root selector, persistent installed RRP
+distribution, risk calculation, product, application, command-line interface,
+or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -87,12 +91,14 @@ Validate the local package and source-resource foundation with:
 Rscript --vanilla tools/validate-packages.R
 ```
 
-This operation checks the closed source catalog/schema/contracts,
+This operation checks the closed source catalog/schema/contracts, including
+the exact canonical specification family and its cross-references,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
 trusted project loading, transactional minimal-project initialization, exact
-structural selection, structured project diagnosis, copied-project
+semantic producer and structural provider selection, structured project
+diagnosis, copied-project
 portability, typed privacy-safe
 project/resource failures, and adversarial rejection behavior. It also
 checks exact package topology,
@@ -111,9 +117,9 @@ accepted and complete. This narrow hosted evidence does not establish broader
 platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
 The initializer, loader, and doctor are internal technical interfaces; ordinary
-operator commands remain absent. Stage 5 is detailed and accepted for
-incremental implementation, but no Stage 5 producer-execution or canonical-
-admission source has been implemented.
+operator commands remain absent. Stage 5 is in progress: Increment 5.A is
+complete, while producer execution and canonical admission remain deferred to
+the accepted later Stage 5 increments.
 
 ## License
 

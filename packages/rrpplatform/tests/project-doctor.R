@@ -12,11 +12,13 @@ rrp_doctor_write_record <- function(record, path) {
 rrp_doctor_manifest_template <- c(
   "Record-Type: rrp-project",
   "Project-Contract-ID: rrp.project",
-  "Project-Contract-Version: 0.1.0",
+  "Project-Contract-Version: 0.2.0",
   "Project-ID: @@RRP_PROJECT_ID@@",
   "Project-Version: @@RRP_PROJECT_VERSION@@",
   "Project-Scope: one_health_system",
-  "Supported-RRP-API-Version: 0.1.0",
+  "Supported-RRP-API-Version: 0.2.0",
+  "Canonical-Profile-ID: rrp.canonical-profile.readmission",
+  "Canonical-Profile-Version: 0.1.0",
   "Producer-ID: @@RRP_PRODUCER_ID@@",
   "Producer-Version: @@RRP_PROJECT_VERSION@@",
   "Provider-ID: @@RRP_PROVIDER_ID@@",
@@ -28,14 +30,15 @@ rrp_doctor_manifest_template <- c(
 rrp_doctor_registration_template <- c(
   "rrp_register_project <- function(project_root) {",
   "  unavailable <- function(...) stop('selected callable executed', call. = FALSE)",
+  "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
+  "  producer <- function() list(component_id = '@@RRP_PRODUCER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', mapping_id = '@@RRP_MAPPING_ID@@', mapping_version = '@@RRP_PROJECT_VERSION@@', capabilities = capabilities, callable = unavailable)",
+  "  provider <- function() list(component_id = '@@RRP_PROVIDER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', callable = unavailable)",
   "  list(",
   "    registration_contract_id = 'rrp.project-registration',",
-  "    registration_contract_version = '0.1.0',",
+  "    registration_contract_version = '0.2.0',",
   "    project_id = '@@RRP_PROJECT_ID@@',",
-  "    producers = list(list(component_id = '@@RRP_PRODUCER_ID@@',",
-  "      component_version = '@@RRP_PROJECT_VERSION@@', callable = unavailable)),",
-  "    providers = list(list(component_id = '@@RRP_PROVIDER_ID@@',",
-  "      component_version = '@@RRP_PROJECT_VERSION@@', callable = unavailable))",
+  "    producers = list(producer()),",
+  "    providers = list(provider())",
   "  )",
   "}"
 )
@@ -78,6 +81,16 @@ rrp_doctor_software_root <- function(root) {
       value = rrp_doctor_registration_template
     )
   )
+  canonical_definitions <- rrp_doctor_internal(
+    "rrp_canonical_contract_definitions"
+  )()
+  resources <- c(resources, lapply(canonical_definitions, function(definition) {
+    list(
+      id = definition$resource_id, class = "contract", format = "dcf",
+      owner = definition$owner, path = definition$path,
+      value = definition$expected
+    )
+  }))
   for (resource in resources) {
     path <- file.path(root, resource$path)
     if (identical(resource$format, "dcf") && !is.null(names(resource$value))) {
@@ -96,7 +109,8 @@ rrp_doctor_software_root <- function(root) {
   )
   entries <- lapply(resources, function(resource) c(
     "Record-Type" = "resource", "Resource-ID" = resource$id,
-    "Resource-Class" = resource$class, "Owner-Package" = "rrpplatform",
+    "Resource-Class" = resource$class,
+    "Owner-Package" = if (is.null(resource$owner)) "rrpplatform" else resource$owner,
     "Installed-Path" = resource$path, "Format" = resource$format
   ))
   records <- c(list(header), entries)
@@ -161,11 +175,19 @@ expected_value <- list(
   project_id = "doctor-project",
   project_version = "2.4.0",
   project_contract_id = "rrp.project",
-  project_contract_version = "0.1.0",
-  supported_rrp_api_version = "0.1.0",
+  project_contract_version = "0.2.0",
+  supported_rrp_api_version = "0.2.0",
+  canonical_profile = list(
+    profile_id = "rrp.canonical-profile.readmission",
+    profile_version = "0.1.0"
+  ),
   producer = list(
     component_id = "doctor-project.producer",
     component_version = "2.4.0",
+    implementation_id = "doctor-project.implementation",
+    implementation_version = "2.4.0",
+    mapping_id = "doctor-project.mapping",
+    mapping_version = "2.4.0",
     origin = "project"
   ),
   provider = list(
@@ -278,11 +300,12 @@ instrumented <- c(
   "  count <- if (file.exists(count_path)) as.integer(readLines(count_path)) else 0L",
   "  writeLines(as.character(count + 1L), count_path)",
   "  unavailable <- function(...) { Sys.setenv(RRP_DOCTOR_SELECTED_CALLED = 'yes') }",
-  "  component <- function(id) list(component_id = id, component_version = '2.4.0', callable = unavailable)",
+  "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
+  "  producer <- list(component_id = 'doctor-project.producer', component_version = '2.4.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'doctor-project.implementation', implementation_version = '2.4.0', mapping_id = 'doctor-project.mapping', mapping_version = '2.4.0', capabilities = capabilities, callable = unavailable)",
+  "  provider <- list(component_id = 'doctor-project.provider', component_version = '2.4.0', callable = unavailable)",
   "  list(registration_contract_id = 'rrp.project-registration',",
-  "    registration_contract_version = '0.1.0', project_id = 'doctor-project',",
-  "    producers = list(component('doctor-project.producer')),",
-  "    providers = list(component('doctor-project.provider'))) ",
+  "    registration_contract_version = '0.2.0', project_id = 'doctor-project',",
+  "    producers = list(producer), providers = list(provider)) ",
   "}"
 )
 writeLines(instrumented, file.path(project_root, "R", "register.R"), useBytes = TRUE)
@@ -373,10 +396,10 @@ check_case(case, "protected_registration")
 
 case <- new_case()
 registration <- readLines(file.path(case, "R", "register.R"), warn = FALSE)
-producer_close <- grep("providers = list", registration, fixed = TRUE)[[1L]] - 1L
-registration[[producer_close]] <- sub(
-  "[)][)],$", "), list(component_id = 'adversarial-project.producer', component_version = '1.0.0', callable = unavailable)),",
-  registration[[producer_close]]
+registration <- sub(
+  "producers = list(producer())",
+  "producers = list(producer(), producer())",
+  registration, fixed = TRUE
 )
 writeLines(registration, file.path(case, "R", "register.R"), useBytes = TRUE)
 check_case(case, "duplicate_registration")

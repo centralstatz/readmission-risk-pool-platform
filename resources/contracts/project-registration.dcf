@@ -1,6 +1,6 @@
 Record-Type: project-registration-contract
 Contract-ID: rrp.project-registration
-Contract-Version: 0.1.0
+Contract-Version: 0.2.0
 Format-Version: 1.0.0
 Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
@@ -12,7 +12,17 @@ Result-Fields: registration_contract_id,registration_contract_version,project_id
 Collection-Fields: producers,providers
 Collection-Representation: ordered_unnamed_list
 Empty-Collections: allowed
-Component-Fields: component_id,component_version,callable
+Producer-Fields: component_id,component_version,producer_api_id,producer_api_version,canonical_bundle_id,canonical_bundle_version,canonical_profile_id,canonical_profile_version,implementation_id,implementation_version,mapping_id,mapping_version,capabilities,callable
+Provider-Fields: component_id,component_version,callable
+Capability-Fields: capability_id,status
+Producer-API-ID: rrp.producer-api
+Producer-API-Version: 0.1.0
+Canonical-Bundle-ID: rrp.canonical-bundle
+Canonical-Bundle-Version: 0.1.0
+Canonical-Profile-ID: rrp.canonical-profile.readmission
+Canonical-Profile-Version: 0.1.0
+Required-Capability-IDs: rrp.capability.discharge-episode,rrp.capability.terminal-event
+Capability-Status-Value: available
 Project-ID-Pattern: ^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$
 Component-ID-Pattern: ^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$
 Identity-Max-Bytes: 96
@@ -23,5 +33,6 @@ Callable-Type: function
 Duplicate-Kind-ID-Version: prohibited
 Unknown-Component-Kinds: prohibited
 Additional-Result-Fields: prohibited
-Additional-Component-Fields: prohibited
+Additional-Producer-Fields: prohibited
+Additional-Provider-Fields: prohibited
 Callable-Invocation-During-Validation: prohibited

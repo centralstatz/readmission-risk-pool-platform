@@ -45,8 +45,12 @@ rrp_project_initialization_inputs <- function(
 
   producer_id <- paste0(project_id, ".producer")
   provider_id <- paste0(project_id, ".provider")
+  implementation_id <- paste0(project_id, ".implementation")
+  mapping_id <- paste0(project_id, ".mapping")
   component_max <- as.integer(registration_contract[["Identity-Max-Bytes"]])
-  valid_component <- vapply(c(producer_id, provider_id), function(value) {
+  valid_component <- vapply(c(
+    producer_id, provider_id, implementation_id, mapping_id
+  ), function(value) {
     rrp_project_valid_identity(
       value, registration_contract[["Component-ID-Pattern"]], component_max
     ) && !startsWith(
@@ -63,7 +67,9 @@ rrp_project_initialization_inputs <- function(
     project_id = project_id,
     project_version = project_version,
     producer_id = producer_id,
-    provider_id = provider_id
+    provider_id = provider_id,
+    implementation_id = implementation_id,
+    mapping_id = mapping_id
   )
 }
 
@@ -169,8 +175,19 @@ rrp_project_initialization_assert_context <- function(context, inputs, root) {
   valid <- identical(context$project_root, expected_root) &&
     identical(context$manifest[["Project-ID"]], inputs$project_id) &&
     identical(context$manifest[["Project-Version"]], inputs$project_version) &&
+    identical(
+      context$canonical_profile,
+      list(
+        profile_id = "rrp.canonical-profile.readmission",
+        profile_version = "0.1.0"
+      )
+    ) &&
     identical(context$producer$component_id, inputs$producer_id) &&
     identical(context$producer$component_version, inputs$project_version) &&
+    identical(context$producer$implementation_id, inputs$implementation_id) &&
+    identical(context$producer$implementation_version, inputs$project_version) &&
+    identical(context$producer$mapping_id, inputs$mapping_id) &&
+    identical(context$producer$mapping_version, inputs$project_version) &&
     identical(context$producer$origin, "project") &&
     identical(context$provider$component_id, inputs$provider_id) &&
     identical(context$provider$component_version, inputs$project_version) &&
@@ -216,17 +233,24 @@ rrp_project_initialize <- function(
   )
   destination <- rrp_project_initialization_destination(project_root)
 
-  values <- c(
+  manifest_values <- c(
     PROJECT_ID = inputs$project_id,
     PROJECT_VERSION = inputs$project_version,
     PRODUCER_ID = inputs$producer_id,
     PROVIDER_ID = inputs$provider_id
   )
+  registration_values <- c(
+    manifest_values,
+    IMPLEMENTATION_ID = inputs$implementation_id,
+    MAPPING_ID = inputs$mapping_id
+  )
   manifest <- rrp_project_render_template(
-    readLines(manifest_template, warn = FALSE, encoding = "UTF-8"), values
+    readLines(manifest_template, warn = FALSE, encoding = "UTF-8"),
+    manifest_values
   )
   registration <- rrp_project_render_template(
-    readLines(registration_template, warn = FALSE, encoding = "UTF-8"), values
+    readLines(registration_template, warn = FALSE, encoding = "UTF-8"),
+    registration_values
   )
 
   staging <- rrp_project_initialization_stage(destination)
@@ -287,6 +311,12 @@ rrp_project_initialize <- function(
     project_version = inputs$project_version,
     producer_id = inputs$producer_id,
     producer_version = inputs$project_version,
+    implementation_id = inputs$implementation_id,
+    implementation_version = inputs$project_version,
+    mapping_id = inputs$mapping_id,
+    mapping_version = inputs$project_version,
+    canonical_profile_id = "rrp.canonical-profile.readmission",
+    canonical_profile_version = "0.1.0",
     provider_id = inputs$provider_id,
     provider_version = inputs$project_version,
     created_paths = c("rrp-project.dcf", "R/register.R")

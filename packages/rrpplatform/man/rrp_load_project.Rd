@@ -12,13 +12,14 @@ rrp_load_project(software_catalog, project_root)
 \value{
 One closed \code{rrp_project_context} list containing the validated software
 catalog, normalized project root, manifest, registration result, exact selected
-producer and provider records with origin, and normalized intended extension-
-library and state locations.
+canonical-profile identity, semantic producer and structural provider records
+with origin, and normalized intended extension-library and state locations.
 }
 \description{
 Validates one caller-supplied project against an explicit software-resource
-context, executes only \file{R/register.R}, and resolves exact structural
-producer and provider selections without invoking their callables.
+context, validates the installed canonical contract family, executes only
+\file{R/register.R}, and resolves exact semantic producer and structural
+provider selections without invoking their callables.
 }
 \details{
 The manifest and real project paths are validated before project code executes.

@@ -9,8 +9,9 @@ its one-way dependency on the focused runtime package. It provides explicit-
 root installed-resource catalog opening, logical resource resolution, and a
 minimal common operation-result boundary with privacy-safe diagnostics. It
 also owns strict project-manifest and trusted-registration validation, one
-explicit project-loading boundary, and transactional minimal-project
-initialization plus a bounded structured project doctor.
+exact installed canonical specification authority, an explicit project-loading
+boundary, and transactional minimal-project initialization plus a bounded
+structured project doctor.
 }
 \details{
 The package imports the \pkg{rrpruntime} namespace and exports exactly
@@ -23,8 +24,9 @@ software or project root. The loader evaluates trusted project registration in
 a controlled environment that is not a security sandbox and never invokes the
 selected producer or provider. Initialization is create-only, uses the loader
 as its acceptance gate, and creates no state or dependency directories. No
-source admission, component execution, risk calculation, or state behavior
-exists yet.
+The selected producer is semantically declared but neither selected component
+is invoked. No canonical admission, producer execution, risk calculation, or
+state behavior exists yet.
 }
 \author{RRP maintainers}
 \keyword{internal}

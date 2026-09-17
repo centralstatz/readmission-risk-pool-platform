@@ -259,12 +259,7 @@ rrp_project_installed_components <- function() {
 }
 
 rrp_project_origin_entry <- function(entry, origin) {
-  list(
-    component_id = entry$component_id,
-    component_version = entry$component_version,
-    callable = entry$callable,
-    origin = origin
-  )
+  c(entry, list(origin = origin))
 }
 
 rrp_project_compose_kind <- function(installed, project) {
@@ -327,6 +322,7 @@ rrp_project_new_context <- function(
   project_root,
   manifest,
   registration,
+  canonical_profile,
   producer,
   provider,
   extension_library_path,
@@ -338,6 +334,7 @@ rrp_project_new_context <- function(
       project_root = project_root,
       manifest = manifest,
       registration = registration,
+      canonical_profile = canonical_profile,
       producer = producer,
       provider = provider,
       extension_library_path = extension_library_path,
@@ -351,7 +348,8 @@ rrp_project_new_context <- function(
 #'
 #' Validate one caller-supplied project against an already validated software
 #' resource catalog, execute only its fixed trusted registration boundary, and
-#' resolve its exact structural producer and provider selections. Registration
+#' validate its canonical-profile and semantic producer declarations, and
+#' resolve its exact producer and provider selections. Registration
 #' is trusted local R code and controlled evaluation is not a security sandbox.
 #' The selected producer and provider callables are never invoked.
 #'
@@ -361,6 +359,7 @@ rrp_project_new_context <- function(
 #' @return One validated `rrp_project_context` snapshot.
 #' @export
 rrp_load_project <- function(software_catalog, project_root) {
+  canonical_contracts <- rrp_canonical_contracts(software_catalog)
   manifest_contract <- rrp_project_manifest_contract(software_catalog)
   registration_contract <- rrp_project_registration_contract(software_catalog)
   root <- rrp_project_validate_root(project_root)
@@ -387,7 +386,7 @@ rrp_load_project <- function(software_catalog, project_root) {
     registration_path, registration_contract, root, extension_library_path
   )
   registration <- rrp_project_validate_registration(
-    candidate, registration_contract
+    candidate, registration_contract, canonical_contracts, manifest
   )
   if (!identical(registration$project_id, manifest[["Project-ID"]])) {
     rrp_project_abort(
@@ -415,6 +414,10 @@ rrp_load_project <- function(software_catalog, project_root) {
     project_root = root,
     manifest = manifest,
     registration = registration,
+    canonical_profile = list(
+      profile_id = manifest[["Canonical-Profile-ID"]],
+      profile_version = manifest[["Canonical-Profile-Version"]]
+    ),
     producer = producer,
     provider = provider,
     extension_library_path = extension_library_path,

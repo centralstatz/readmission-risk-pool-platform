@@ -42,6 +42,40 @@ rrp_test_operation_fixture <- function() {
     file.path(root, "resources", "resource-catalog-schema.dcf"),
     useBytes = TRUE
   )
+  manifest_contract <- rrp_test_internal(
+    "rrp_project_manifest_contract_expected"
+  )()
+  registration_contract <- rrp_test_internal(
+    "rrp_project_registration_contract_expected"
+  )()
+  canonical_definitions <- rrp_test_internal(
+    "rrp_canonical_contract_definitions"
+  )()
+  for (item in list(
+    list(
+      value = manifest_contract,
+      path = "resources/contracts/project-manifest.dcf"
+    ),
+    list(
+      value = registration_contract,
+      path = "resources/contracts/project-registration.dcf"
+    )
+  )) {
+    path <- file.path(root, item$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(item$value), ": ", unname(item$value)), path,
+      useBytes = TRUE
+    )
+  }
+  for (definition in canonical_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(definition$expected), ": ", unname(definition$expected)),
+      path, useBytes = TRUE
+    )
+  }
   entries <- list(
     list(
       "Record-Type" = "resource",
@@ -66,8 +100,27 @@ rrp_test_operation_fixture <- function() {
       "Owner-Package" = "rrpplatform",
       "Installed-Path" = "resources/contracts/operation-result.dcf",
       "Format" = "dcf"
+    ),
+    list(
+      "Record-Type" = "resource",
+      "Resource-ID" = "rrp.contract.project-manifest",
+      "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
+      "Installed-Path" = "resources/contracts/project-manifest.dcf",
+      "Format" = "dcf"
+    ),
+    list(
+      "Record-Type" = "resource",
+      "Resource-ID" = "rrp.contract.project-registration",
+      "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
+      "Installed-Path" = "resources/contracts/project-registration.dcf",
+      "Format" = "dcf"
     )
   )
+  entries <- c(entries, lapply(canonical_definitions, function(definition) list(
+    "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
+    "Resource-Class" = "contract", "Owner-Package" = definition$owner,
+    "Installed-Path" = definition$path, "Format" = "dcf"
+  )))
   header <- list(
     "Record-Type" = "catalog",
     "Catalog-ID" = "rrp.software-resources",
@@ -273,7 +326,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 3L
+          resource_count = 11L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)

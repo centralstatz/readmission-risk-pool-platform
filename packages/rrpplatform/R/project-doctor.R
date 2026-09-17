@@ -37,9 +37,14 @@ rrp_project_validation_success <- function(context) {
     project_contract_id = context$manifest[["Project-Contract-ID"]],
     project_contract_version = context$manifest[["Project-Contract-Version"]],
     supported_rrp_api_version = context$manifest[["Supported-RRP-API-Version"]],
+    canonical_profile = context$canonical_profile,
     producer = list(
       component_id = context$producer$component_id,
       component_version = context$producer$component_version,
+      implementation_id = context$producer$implementation_id,
+      implementation_version = context$producer$implementation_version,
+      mapping_id = context$producer$mapping_id,
+      mapping_version = context$producer$mapping_version,
       origin = context$producer$origin
     ),
     provider = list(
@@ -61,7 +66,7 @@ rrp_project_validation_success <- function(context) {
 #' Validate an explicit independent RRP project
 #'
 #' Load one explicit project through the authoritative project loader and
-#' translate its structural identity and declared location status into a
+#' translate its validated identity and declared location status into a
 #' bounded operation result. This operation executes the trusted registration
 #' boundary but never invokes the selected producer or provider.
 #'

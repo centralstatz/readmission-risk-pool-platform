@@ -163,8 +163,230 @@ validate_exact_fields <- function(record, expected_fields, code, label) {
   )
 }
 
+canonical_contract_resources <- function() {
+  envelope <- c(
+    "Record-Type" = "specification",
+    "Specification-Kind" = "specification-envelope",
+    "Specification-ID" = "rrp.specification-envelope",
+    "Specification-Version" = "0.1.0",
+    "Specification-Format-Version" = "1.0.0",
+    "Identity-Scope" = "platform", "Status" = "development_unpublished",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev", "Owner-Package" = "rrpplatform",
+    "Required-Envelope-Fields" = paste(c(
+      "Record-Type", "Specification-Kind", "Specification-ID",
+      "Specification-Version", "Specification-Format-Version",
+      "Identity-Scope", "Status", "Product-ID", "Development-Version",
+      "Owner-Package"
+    ), collapse = ","),
+    "Allowed-Specification-Kinds" = paste(c(
+      "specification-envelope", "canonical-producer-contract",
+      "canonical-bundle-contract", "canonical-profile", "canonical-domain"
+    ), collapse = ","),
+    "Specification-ID-Pattern" = "^rrp[.][a-z0-9]+(?:[.-][a-z0-9]+)+$",
+    "Specification-Version-Pattern" = paste0(
+      "^[0-9]+[.][0-9]+[.][0-9]+",
+      "(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+    ),
+    "Compatibility-Rule" = "exact_version", "Unknown-Fields" = "prohibited",
+    "Additional-Records" = "prohibited", "Executable-Content" = "prohibited"
+  )
+  producer <- c(
+    envelope[c(
+      "Record-Type", "Specification-Kind", "Specification-ID",
+      "Specification-Version", "Specification-Format-Version",
+      "Identity-Scope", "Status", "Product-ID", "Development-Version",
+      "Owner-Package"
+    )],
+    "Producer-API-ID" = "rrp.producer-api",
+    "Producer-API-Version" = "0.1.0",
+    "Canonical-Bundle-ID" = "rrp.canonical-bundle",
+    "Canonical-Bundle-Version" = "0.1.0",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
+    "Producer-Declaration-Fields" = paste(c(
+      "component_id", "component_version", "producer_api_id",
+      "producer_api_version", "canonical_bundle_id",
+      "canonical_bundle_version", "canonical_profile_id",
+      "canonical_profile_version", "implementation_id",
+      "implementation_version", "mapping_id", "mapping_version",
+      "capabilities", "callable"
+    ), collapse = ","),
+    "Capability-Record-Fields" = "capability_id,status",
+    "Required-Capability-IDs" = paste(c(
+      "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
+    ), collapse = ","),
+    "Capability-Status-Values" = "available",
+    "Callable-Semantics" = "trusted_not_invoked_during_validation",
+    "Request-Fields" = paste(c(
+      "producer_api_id", "producer_api_version", "project_id",
+      "project_version", "producer_id", "producer_version",
+      "canonical_bundle_id", "canonical_bundle_version",
+      "canonical_profile_id", "canonical_profile_version", "as_of_time"
+    ), collapse = ","),
+    "Result-Fields" = paste(c(
+      "producer_contract_id", "producer_contract_version", "status",
+      "producer_id", "producer_version", "implementation_id",
+      "implementation_version", "mapping_id", "mapping_version",
+      "canonical_profile_id", "canonical_profile_version",
+      "canonical_as_of_time", "capabilities", "candidate_bundle",
+      "failure_code"
+    ), collapse = ","),
+    "Result-Status-Values" = "succeeded,failed",
+    "Failure-Codes" = paste(c(
+      "producer_unavailable", "producer_source_failed", "producer_mapping_failed"
+    ), collapse = ","),
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+    "Executable-Configuration" = "prohibited"
+  )
+  producer[["Specification-Kind"]] <- "canonical-producer-contract"
+  producer[["Specification-ID"]] <- "rrp.canonical-producer"
+  bundle <- c(
+    producer[c(
+      "Record-Type", "Specification-Kind", "Specification-ID",
+      "Specification-Version", "Specification-Format-Version",
+      "Identity-Scope", "Status", "Product-ID", "Development-Version",
+      "Owner-Package"
+    )],
+    "Bundle-Fields" = paste(c(
+      "bundle_contract_id", "bundle_contract_version", "bundle_instance_id",
+      "project_id", "project_version", "producer_id", "producer_version",
+      "implementation_id", "implementation_version", "mapping_id",
+      "mapping_version", "canonical_profile_id",
+      "canonical_profile_version", "as_of_time", "capabilities", "domains"
+    ), collapse = ","),
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
+    "Domain-IDs" = "discharge_episode,terminal_event",
+    "Capability-IDs" = paste(c(
+      "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
+    ), collapse = ","),
+    "Capability-Record-Fields" = "capability_id,status",
+    "Capability-Status-Values" = "available",
+    "As-Of-Representation" = "rfc3339_explicit_offset",
+    "Identity-Agreement" = "project,producer,implementation,mapping,profile,capabilities,as_of",
+    "Initial-Adapter" = "closed_named_record_with_tabular_domains",
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+    "Executable-Content" = "prohibited"
+  )
+  bundle[["Specification-Kind"]] <- "canonical-bundle-contract"
+  bundle[["Specification-ID"]] <- "rrp.canonical-bundle"
+  bundle[["Owner-Package"]] <- "rrpruntime"
+  profile <- c(
+    bundle[c(
+      "Record-Type", "Specification-Kind", "Specification-ID",
+      "Specification-Version", "Specification-Format-Version",
+      "Identity-Scope", "Status", "Product-ID", "Development-Version",
+      "Owner-Package", "Canonical-Profile-ID", "Canonical-Profile-Version"
+    )],
+    "Domain-IDs" = "discharge_episode,terminal_event",
+    "Domain-Specifications" = paste(c(
+      "rrp.canonical-domain.discharge-episode@0.1.0",
+      "rrp.canonical-domain.terminal-event@0.1.0"
+    ), collapse = ","),
+    "Domain-Requirement" = "required",
+    "Available-Row-Cardinality" = "zero_or_more",
+    "Capability-IDs" = paste(c(
+      "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
+    ), collapse = ","),
+    "Capability-Status" = "available", "Unknown-Domains" = "prohibited",
+    "Unknown-Capabilities" = "prohibited", "Additional-Records" = "prohibited"
+  )
+  profile[["Specification-Kind"]] <- "canonical-profile"
+  profile[["Specification-ID"]] <- "rrp.canonical-profile.readmission"
+  names(profile)[names(profile) == "Canonical-Profile-ID"] <- "Canonical-Bundle-ID"
+  names(profile)[names(profile) == "Canonical-Profile-Version"] <- "Canonical-Bundle-Version"
+  profile[["Canonical-Bundle-ID"]] <- "rrp.canonical-bundle"
+  domain_prefix <- bundle[c(
+    "Record-Type", "Specification-Kind", "Specification-ID",
+    "Specification-Version", "Specification-Format-Version", "Identity-Scope",
+    "Status", "Product-ID", "Development-Version", "Owner-Package"
+  )]
+  domain_prefix[["Specification-Kind"]] <- "canonical-domain"
+  discharge <- c(
+    domain_prefix,
+    "Domain-ID" = "discharge_episode",
+    "Capability-ID" = "rrp.capability.discharge-episode",
+    "Fields" = paste(c(
+      "episode_id", "patient_id", "index_encounter_id", "admission_time",
+      "discharge_time", "followup_window_end"
+    ), collapse = ","),
+    "Primary-Key" = "episode_id",
+    "Identifier-Fields" = "episode_id,patient_id,index_encounter_id",
+    "Timestamp-Fields" = "admission_time,discharge_time,followup_window_end",
+    "Timestamp-Representation" = "rfc3339_explicit_offset",
+    "Admission-Before-Discharge" = "required",
+    "Discharge-Not-After-Bundle-As-Of" = "required",
+    "Followup-Elapsed-Seconds" = "2592000",
+    "Multiple-Episodes-Per-Patient" = "allowed",
+    "Available-Row-Cardinality" = "zero_or_more", "Null-Fields" = "none",
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited"
+  )
+  discharge[["Specification-ID"]] <- "rrp.canonical-domain.discharge-episode"
+  terminal <- c(
+    domain_prefix,
+    "Domain-ID" = "terminal_event",
+    "Capability-ID" = "rrp.capability.terminal-event",
+    "Fields" = "terminal_event_id,episode_id,event_type,occurred_at,available_at",
+    "Primary-Key" = "terminal_event_id",
+    "Episode-Reference-Field" = "episode_id",
+    "Episode-Reference-Domain" = "discharge_episode",
+    "Event-Type-Field" = "event_type", "Event-Type-Values" = "readmission,death",
+    "Occurrence-Field" = "occurred_at", "Availability-Field" = "available_at",
+    "Timestamp-Representation" = "rfc3339_explicit_offset",
+    "Occurrence-After-Discharge" = "required",
+    "Occurrence-Through-Followup-End" = "required",
+    "Availability-Not-Before-Occurrence" = "required",
+    "Availability-Not-After-Bundle-As-Of" = "required",
+    "Maximum-Per-Episode-And-Type" = "1",
+    "Equal-Readmission-Death-Time" = "allowed",
+    "Death-Before-Later-Readmission" = "prohibited",
+    "Available-Row-Cardinality" = "zero_or_more", "Null-Fields" = "none",
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited"
+  )
+  terminal[["Specification-ID"]] <- "rrp.canonical-domain.terminal-event"
+  specifications <- list(
+    canonical_envelope = list(
+      id = "rrp.contract.specification-envelope", owner = "rrpplatform",
+      path = "resources/contracts/canonical/specification-envelope.dcf",
+      document = envelope
+    ),
+    canonical_producer = list(
+      id = "rrp.contract.canonical-producer", owner = "rrpplatform",
+      path = "resources/contracts/canonical/canonical-producer.dcf",
+      document = producer
+    ),
+    canonical_bundle = list(
+      id = "rrp.contract.canonical-bundle", owner = "rrpruntime",
+      path = "resources/contracts/canonical/canonical-bundle.dcf",
+      document = bundle
+    ),
+    readmission_profile = list(
+      id = "rrp.profile.readmission", owner = "rrpruntime",
+      path = "resources/contracts/canonical/profiles/readmission.dcf",
+      document = profile
+    ),
+    discharge_episode = list(
+      id = "rrp.domain.discharge-episode", owner = "rrpruntime",
+      path = "resources/contracts/canonical/domains/discharge-episode.dcf",
+      document = discharge
+    ),
+    terminal_event = list(
+      id = "rrp.domain.terminal-event", owner = "rrpruntime",
+      path = "resources/contracts/canonical/domains/terminal-event.dcf",
+      document = terminal
+    )
+  )
+  lapply(specifications, function(specification) {
+    specification$source_path <- specification$path
+    specification$installed_path <- specification$path
+    specification$path <- NULL
+    specification
+  })
+}
+
 software_contract_resources <- function() {
-  list(
+  resources <- list(
     diagnostic = list(
       id = "rrp.contract.diagnostic",
       source_path = "resources/contracts/diagnostic.dcf",
@@ -224,7 +446,7 @@ software_contract_resources <- function() {
       document = c(
         "Record-Type" = "project-manifest-contract",
         "Contract-ID" = "rrp.project",
-        "Contract-Version" = "0.1.0",
+        "Contract-Version" = "0.2.0",
         "Format-Version" = "1.0.0",
         "Product-ID" = "readmission-risk-pool-platform",
         "Development-Version" = "1.0.0-dev",
@@ -234,13 +456,13 @@ software_contract_resources <- function() {
         "Registration-Path" = "R/register.R",
         "Manifest-Record-Type" = "rrp-project",
         "Project-API-ID" = "rrp.project-api",
-        "Project-API-Version" = "0.1.0",
+        "Project-API-Version" = "0.2.0",
         "Fields" = paste(c(
           "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
           "Project-ID", "Project-Version", "Project-Scope",
-          "Supported-RRP-API-Version", "Producer-ID", "Producer-Version",
-          "Provider-ID", "Provider-Version", "Extension-Library-Path",
-          "State-Path"
+          "Supported-RRP-API-Version", "Canonical-Profile-ID",
+          "Canonical-Profile-Version", "Producer-ID", "Producer-Version",
+          "Provider-ID", "Provider-Version", "Extension-Library-Path", "State-Path"
         ), collapse = ","),
         "Optional-Fields" = "none",
         "Identity-Fields" = "Project-ID,Producer-ID,Provider-ID",
@@ -248,7 +470,8 @@ software_contract_resources <- function() {
         "Identity-Max-Bytes" = "96",
         "Protected-Project-ID-Prefix" = "rrp.",
         "Version-Fields" = paste(c(
-          "Project-Version", "Producer-Version", "Provider-Version"
+          "Project-Version", "Canonical-Profile-Version", "Producer-Version",
+          "Provider-Version"
         ), collapse = ","),
         "Version-Pattern" = paste0(
           "^[0-9]+[.][0-9]+[.][0-9]+",
@@ -256,6 +479,8 @@ software_contract_resources <- function() {
         ),
         "Version-Max-Bytes" = "64",
         "Project-Scope-Value" = "one_health_system",
+        "Canonical-Profile-ID-Value" = "rrp.canonical-profile.readmission",
+        "Canonical-Profile-Version-Value" = "0.1.0",
         "Path-Fields" = "Extension-Library-Path,State-Path",
         "Path-Syntax" = "safe_relative_forward_segments",
         "Path-Case-Folded-Conflicts" = "prohibited",
@@ -274,7 +499,7 @@ software_contract_resources <- function() {
       document = c(
         "Record-Type" = "project-registration-contract",
         "Contract-ID" = "rrp.project-registration",
-        "Contract-Version" = "0.1.0",
+        "Contract-Version" = "0.2.0",
         "Format-Version" = "1.0.0",
         "Product-ID" = "readmission-risk-pool-platform",
         "Development-Version" = "1.0.0-dev",
@@ -289,7 +514,26 @@ software_contract_resources <- function() {
         "Collection-Fields" = "producers,providers",
         "Collection-Representation" = "ordered_unnamed_list",
         "Empty-Collections" = "allowed",
-        "Component-Fields" = "component_id,component_version,callable",
+        "Producer-Fields" = paste(c(
+          "component_id", "component_version", "producer_api_id",
+          "producer_api_version", "canonical_bundle_id",
+          "canonical_bundle_version", "canonical_profile_id",
+          "canonical_profile_version", "implementation_id",
+          "implementation_version", "mapping_id", "mapping_version",
+          "capabilities", "callable"
+        ), collapse = ","),
+        "Provider-Fields" = "component_id,component_version,callable",
+        "Capability-Fields" = "capability_id,status",
+        "Producer-API-ID" = "rrp.producer-api",
+        "Producer-API-Version" = "0.1.0",
+        "Canonical-Bundle-ID" = "rrp.canonical-bundle",
+        "Canonical-Bundle-Version" = "0.1.0",
+        "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+        "Canonical-Profile-Version" = "0.1.0",
+        "Required-Capability-IDs" = paste(c(
+          "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
+        ), collapse = ","),
+        "Capability-Status-Value" = "available",
         "Project-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
         "Component-ID-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
         "Identity-Max-Bytes" = "96",
@@ -303,11 +547,13 @@ software_contract_resources <- function() {
         "Duplicate-Kind-ID-Version" = "prohibited",
         "Unknown-Component-Kinds" = "prohibited",
         "Additional-Result-Fields" = "prohibited",
-        "Additional-Component-Fields" = "prohibited",
+        "Additional-Producer-Fields" = "prohibited",
+        "Additional-Provider-Fields" = "prohibited",
         "Callable-Invocation-During-Validation" = "prohibited"
       )
     )
   )
+  c(resources, canonical_contract_resources())
 }
 
 validate_software_contract_resources <- function(authority, root, projection) {
@@ -322,10 +568,15 @@ validate_software_contract_resources <- function(authority, root, projection) {
       paste0(specification$id, " must be cataloged exactly once.")
     )
     entry <- authority$entries[[matched]]
+    owner <- if (is.null(specification$owner)) {
+      "rrpplatform"
+    } else {
+      specification$owner
+    }
     expected_entry <- c(
       "Resource-ID" = specification$id,
       "Resource-Class" = "contract",
-      "Owner-Package" = "rrpplatform",
+      "Owner-Package" = owner,
       "Installed-Path" = specification$installed_path,
       "Format" = "dcf"
     )
@@ -383,7 +634,7 @@ validate_software_template_resources <- function(authority, root, projection) {
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
-  required_tokens <- c(
+  manifest_tokens <- c(
     "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
     "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
   )
@@ -415,6 +666,11 @@ validate_software_template_resources <- function(authority, root, projection) {
     discovered <- unique(unlist(regmatches(
       lines, gregexpr("@@RRP_[A-Z_]+@@", lines, perl = TRUE)
     ), use.names = FALSE))
+    required_tokens <- if (identical(name, "project_registration")) {
+      c(manifest_tokens, "@@RRP_IMPLEMENTATION_ID@@", "@@RRP_MAPPING_ID@@")
+    } else {
+      manifest_tokens
+    }
     resource_require(
       setequal(discovered, required_tokens), paste0(name, "_template_tokens"),
       paste0(specification[["id"]], " has invalid template tokens.")
@@ -1152,6 +1408,29 @@ run_resource_contract_validation <- function() {
     validate_resource_authority(root, projection = FALSE)
   }, "project_registration_contract_fields")
 
+  root <- fixture("unsupported-canonical-bundle-version")
+  bundle_path <- file.path(
+    root, "resources", "contracts", "canonical", "canonical-bundle.dcf"
+  )
+  records <- read_dcf_records(bundle_path)
+  records[[1L]][["Specification-Version"]] <- "9.9.9"
+  write_dcf_records(records, bundle_path)
+  expect_resource_failure("unsupported canonical bundle version", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "canonical_bundle_contract_identity")
+
+  root <- fixture("unknown-canonical-domain-field")
+  domain_path <- file.path(
+    root, "resources", "contracts", "canonical", "domains",
+    "terminal-event.dcf"
+  )
+  records <- read_dcf_records(domain_path)
+  records[[1L]][["Unknown-Field"]] <- "not-allowed"
+  write_dcf_records(records, domain_path)
+  expect_resource_failure("unknown canonical domain field", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "terminal_event_contract_fields")
+
   drift_projection <- file.path(work_root, "projection-byte-drift")
   project_resource_authority(repository_root, drift_projection)
   schema_path <- file.path(
@@ -1186,6 +1465,7 @@ package_expected_files <- function(package_name) {
   if (identical(package_name, "rrpplatform")) {
     files <- c(
       files,
+      file.path("R", "canonical-contracts.R"),
       file.path("R", "operation-result.R"),
       file.path("R", "project-contracts.R"),
       file.path("R", "project-doctor.R"),
@@ -1200,6 +1480,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
+      file.path("tests", "canonical-contracts.R"),
       file.path("tests", "project-contracts.R"),
       file.path("tests", "project-doctor.R"),
       file.path("tests", "project-initializer.R"),
@@ -1618,6 +1899,12 @@ validate_installed_resource_access <- function(library_root, work_root) {
     operation_result = "resources/contracts/operation-result.dcf",
     project_manifest = "resources/contracts/project-manifest.dcf",
     project_registration = "resources/contracts/project-registration.dcf",
+    canonical_envelope = "resources/contracts/canonical/specification-envelope.dcf",
+    canonical_producer = "resources/contracts/canonical/canonical-producer.dcf",
+    canonical_bundle = "resources/contracts/canonical/canonical-bundle.dcf",
+    readmission_profile = "resources/contracts/canonical/profiles/readmission.dcf",
+    discharge_episode = "resources/contracts/canonical/domains/discharge-episode.dcf",
+    terminal_event = "resources/contracts/canonical/domains/terminal-event.dcf",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R"
   )
@@ -1657,6 +1944,18 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["project_manifest"]], quote = "\""),
     ", project_registration = ",
     encodeString(expected_copies[["project_registration"]], quote = "\""),
+    ", canonical_envelope = ",
+    encodeString(expected_copies[["canonical_envelope"]], quote = "\""),
+    ", canonical_producer = ",
+    encodeString(expected_copies[["canonical_producer"]], quote = "\""),
+    ", canonical_bundle = ",
+    encodeString(expected_copies[["canonical_bundle"]], quote = "\""),
+    ", readmission_profile = ",
+    encodeString(expected_copies[["readmission_profile"]], quote = "\""),
+    ", discharge_episode = ",
+    encodeString(expected_copies[["discharge_episode"]], quote = "\""),
+    ", terminal_event = ",
+    encodeString(expected_copies[["terminal_event"]], quote = "\""),
     ", project_manifest_template = ",
     encodeString(expected_copies[["project_manifest_template"]], quote = "\""),
     ", project_registration_template = ",
@@ -1680,7 +1979,13 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "diagnostic = 'rrp.contract.diagnostic', ",
     "operation_result = 'rrp.contract.operation-result', ",
     "project_manifest = 'rrp.contract.project-manifest', ",
-    "project_registration = 'rrp.contract.project-registration'); ",
+    "project_registration = 'rrp.contract.project-registration', ",
+    "canonical_envelope = 'rrp.contract.specification-envelope', ",
+    "canonical_producer = 'rrp.contract.canonical-producer', ",
+    "canonical_bundle = 'rrp.contract.canonical-bundle', ",
+    "readmission_profile = 'rrp.profile.readmission', ",
+    "discharge_episode = 'rrp.domain.discharge-episode', ",
+    "terminal_event = 'rrp.domain.terminal-event'); ",
     "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
     "project_registration_template = 'rrp.template.project-registration'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
@@ -1691,10 +1996,16 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrpplatform')(catalog); registration_contract <- getFromNamespace(",
     "'rrp_project_registration_contract', 'rrpplatform')(catalog); ",
     "stopifnot(identical(manifest_contract[['Contract-ID']], 'rrp.project'), ",
-    "identical(manifest_contract[['Project-API-Version']], '0.1.0'), ",
+    "identical(manifest_contract[['Project-API-Version']], '0.2.0'), ",
     "identical(registration_contract[['Contract-ID']], ",
     "'rrp.project-registration'), identical(registration_contract[[",
     "'Callable-Invocation-During-Validation']], 'prohibited')); ",
+    "canonical_contracts <- getFromNamespace('rrp_canonical_contracts', ",
+    "'rrpplatform')(catalog); stopifnot(identical(names(canonical_contracts), ",
+    "c('specification_envelope', 'canonical_producer', 'canonical_bundle', ",
+    "'readmission_profile', 'discharge_episode', 'terminal_event')), ",
+    "identical(canonical_contracts$canonical_producer[['Canonical-Profile-ID']], ",
+    "'rrp.canonical-profile.readmission')); ",
     "success <- rrp_validate_software_resources(root); ",
     "stopifnot(identical(class(success), c('rrp_operation_result', 'list')), ",
     "identical(names(success), c('operation_id', 'status', 'value', ",
@@ -1744,11 +2055,13 @@ write_hand_authored_project <- function(project_root) {
   manifest <- c(
     "Record-Type" = "rrp-project",
     "Project-Contract-ID" = "rrp.project",
-    "Project-Contract-Version" = "0.1.0",
+    "Project-Contract-Version" = "0.2.0",
     "Project-ID" = "maintainer-fixture",
     "Project-Version" = "1.0.0",
     "Project-Scope" = "one_health_system",
-    "Supported-RRP-API-Version" = "0.1.0",
+    "Supported-RRP-API-Version" = "0.2.0",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
     "Producer-ID" = "maintainer.producer",
     "Producer-Version" = "1.0.0",
     "Provider-ID" = "maintainer.provider",
@@ -1765,16 +2078,18 @@ write_hand_authored_project <- function(project_root) {
     "  calls <- 0L",
     "  function(project_root) {",
     "    calls <<- calls + 1L",
-    "    component <- function(id) {",
+    "    component <- function(id, kind = 'producer') {",
     "      callable <- function(...) stop('selected callable executed', call. = FALSE)",
     "      attr(callable, 'registration_calls') <- calls",
-    "      list(component_id = id, component_version = '1.0.0', callable = callable)",
+    "      if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', callable = callable))",
+    "      prefix <- sub('[.]producer$', '', id)",
+    "      list(component_id = id, component_version = '1.0.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = paste0(prefix, '.implementation'), implementation_version = '1.0.0', mapping_id = paste0(prefix, '.mapping'), mapping_version = '1.0.0', capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')), callable = callable)",
     "    }",
     "    list(registration_contract_id = 'rrp.project-registration',",
-    "         registration_contract_version = '0.1.0',",
+    "         registration_contract_version = '0.2.0',",
     "         project_id = 'maintainer-fixture',",
     "         producers = list(component('zeta.producer'), component('maintainer.producer')),",
-    "         providers = list(component('zeta.provider'), component('maintainer.provider'))) ",
+    "         providers = list(component('zeta.provider', 'provider'), component('maintainer.provider', 'provider'))) ",
     "  }",
     "})"
   ), file.path(project_root, "R", "register.R"), useBytes = TRUE)
@@ -1832,8 +2147,9 @@ validate_installed_project_loading <- function(library_root, work_root) {
     "  copied <- rrp_load_project(catalog, copied_root)",
     "  stopifnot(",
     "    identical(class(context), c('rrp_project_context', 'list')),",
-    "    identical(names(context), c('software_catalog', 'project_root', 'manifest', 'registration', 'producer', 'provider', 'extension_library_path', 'state_path')),",
+    "    identical(names(context), c('software_catalog', 'project_root', 'manifest', 'registration', 'canonical_profile', 'producer', 'provider', 'extension_library_path', 'state_path')),",
     "    identical(context$manifest[['Project-ID']], 'maintainer-fixture'),",
+    "    identical(context$canonical_profile, list(profile_id = 'rrp.canonical-profile.readmission', profile_version = '0.1.0')),",
     "    identical(context$producer$component_id, 'maintainer.producer'),",
     "    identical(context$provider$component_id, 'maintainer.provider'),",
     "    identical(context$producer$origin, 'project'),",
@@ -1905,10 +2221,10 @@ validate_installed_project_initialization <- function(library_root, work_root) {
     "  catalog <- rrp_open_resource_catalog(software_root)",
     "  stopifnot(!file.exists(destination), !dir.exists(destination))",
     "  result <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
-    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', created_paths = c('rrp-project.dcf', 'R/register.R'))",
+    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', implementation_id = 'maintainer-initialized.implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', created_paths = c('rrp-project.dcf', 'R/register.R'))",
     "  context <- rrp_load_project(catalog, destination)",
     "  doctor <- rrp_validate_project(catalog, destination)",
-    "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.1.0', supported_rrp_api_version = '0.1.0', producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
+    "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.2.0', supported_rrp_api_version = '0.2.0', canonical_profile = list(profile_id = 'rrp.canonical-profile.readmission', profile_version = '0.1.0'), producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', implementation_id = 'maintainer-initialized.implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
     "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/register.R', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
     "  stopifnot(file.copy(destination, copy_parent, recursive = TRUE, copy.mode = FALSE))",
     "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root); copied_doctor <- rrp_validate_project(catalog, copied_root)",
@@ -1943,7 +2259,7 @@ validate_installed_project_initialization <- function(library_root, work_root) {
 }
 
 validate_packages <- function() {
-  cat("RRP local package, resource, and project-foundation validation\n")
+  cat("RRP local package, resource, canonical-contract, and project validation\n")
   cat("=============================================================\n")
 
   run_resource_contract_validation()
@@ -2055,12 +2371,13 @@ validate_packages <- function() {
   validate_installed_project_loading(library_root, work_root)
   validate_installed_project_initialization(library_root, work_root)
 
-  cat("\nResult: PASS (package, resource, operation-result, and project foundation)\n")
+  cat("\nResult: PASS (package, resource, canonical-contract, and project foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "and project-structure contracts, explicit trusted project loading, exact ",
-    "structural selection, transactional minimal-project initialization, ",
+    "canonical contract relationships and kind-specific project contracts, ",
+    "explicit trusted project loading, exact semantic producer and structural ",
+    "provider selection, transactional minimal-project initialization, ",
     "loader-backed project diagnosis, copied-project portability, bounded ",
     "adversarial translation, resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",
