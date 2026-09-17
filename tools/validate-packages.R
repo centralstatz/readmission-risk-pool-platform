@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
-# Prove the local package foundation, maintainer-owned source-resource
-# catalog/projection contract, and explicit-root installed-package access. This
-# is not an installed RRP operation or a general validation dispatcher.
+# Prove the local package/resource/project foundation, including explicit-root
+# installed-resource access and trusted project loading. This is not an
+# installed RRP operation or a general validation dispatcher.
 
 script_argument <- grep(
   "^--file=", commandArgs(trailingOnly = FALSE), value = TRUE
@@ -1122,13 +1122,16 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "operation-result.R"),
       file.path("R", "project-contracts.R"),
+      file.path("R", "project-loader.R"),
       file.path("R", "resource-catalog.R"),
+      file.path("man", "rrp_load_project.Rd"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
       file.path("tests", "project-contracts.R"),
+      file.path("tests", "project-loader.R"),
       file.path("tests", "resource-access.R")
     )
   }
@@ -1279,7 +1282,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_open_resource_catalog", "rrp_operation_succeeded",
+      "rrp_load_project", "rrp_open_resource_catalog", "rrp_operation_succeeded",
       "rrp_resource_path", "rrp_validate_software_resources"
     )
   } else {
@@ -1301,6 +1304,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   ]
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
+      "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
       "export(rrp_resource_path)",
@@ -1339,7 +1343,6 @@ validate_source_boundaries <- function(package_roots) {
 
   forbidden_source_patterns <- c(
     "\\.GlobalEnv", "getwd\\s*\\(", "Sys\\.getenv\\s*\\(",
-    "(?:^|[^[:alnum:]_.])(?:sys\\.)?source\\s*\\(",
     "repository_root", "[.]git(?:/|\\\\|\"|')",
     "readmission-risk-pool(?:/|\\\\)"
   )
@@ -1360,6 +1363,30 @@ validate_source_boundaries <- function(package_roots) {
       paste(matched, collapse = ", ")
     )
   }
+
+  source_pattern <- "(?:^|[^[:alnum:]_.])(?:sys[.])?source[[:space:]]*[(]"
+  platform_source_files <- list.files(
+    file.path(package_roots[["rrpplatform"]], "R"),
+    pattern = "[.]R$", full.names = TRUE
+  )
+  source_calls <- lapply(platform_source_files, function(path) {
+    lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+    grep(source_pattern, lines, value = TRUE, perl = TRUE, ignore.case = TRUE)
+  })
+  names(source_calls) <- basename(platform_source_files)
+  files_with_source <- names(source_calls)[lengths(source_calls) > 0L]
+  require_true(
+    identical(files_with_source, "project-loader.R") &&
+      length(source_calls[["project-loader.R"]]) == 1L &&
+      grepl(
+        "sys[.]source[[:space:]]*[(]", source_calls[["project-loader.R"]],
+        perl = TRUE
+      ),
+    paste0(
+      "rrpplatform may evaluate source only once through the fixed trusted ",
+      "project-loader registration boundary."
+    )
+  )
 }
 
 run_command <- function(command, arguments, environment = character()) {
@@ -1437,7 +1464,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_open_resource_catalog\", \"rrp_operation_succeeded\", ",
+      "c(\"rrp_load_project\", \"rrp_open_resource_catalog\", ",
+      "\"rrp_operation_succeeded\", ",
       "\"rrp_resource_path\", \"rrp_validate_software_resources\")"
     )
   } else {
@@ -1554,7 +1582,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_open_resource_catalog', 'rrp_operation_succeeded', ",
+    "c('rrp_load_project', 'rrp_open_resource_catalog', ",
+    "'rrp_operation_succeeded', ",
     "'rrp_resource_path', 'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
     "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
@@ -1623,9 +1652,148 @@ validate_installed_resource_access <- function(library_root, work_root) {
   )
 }
 
+write_hand_authored_project <- function(project_root) {
+  dir.create(file.path(project_root, "R"), recursive = TRUE)
+  manifest <- c(
+    "Record-Type" = "rrp-project",
+    "Project-Contract-ID" = "rrp.project",
+    "Project-Contract-Version" = "0.1.0",
+    "Project-ID" = "maintainer-fixture",
+    "Project-Version" = "1.0.0",
+    "Project-Scope" = "one_health_system",
+    "Supported-RRP-API-Version" = "0.1.0",
+    "Producer-ID" = "maintainer.producer",
+    "Producer-Version" = "1.0.0",
+    "Provider-ID" = "maintainer.provider",
+    "Provider-Version" = "1.0.0",
+    "Extension-Library-Path" = "extensions/library",
+    "State-Path" = "state"
+  )
+  writeLines(
+    paste0(names(manifest), ": ", unname(manifest)),
+    file.path(project_root, "rrp-project.dcf"), useBytes = TRUE
+  )
+  writeLines(c(
+    "rrp_register_project <- local({",
+    "  calls <- 0L",
+    "  function(project_root) {",
+    "    calls <<- calls + 1L",
+    "    component <- function(id) {",
+    "      callable <- function(...) stop('selected callable executed', call. = FALSE)",
+    "      attr(callable, 'registration_calls') <- calls",
+    "      list(component_id = id, component_version = '1.0.0', callable = callable)",
+    "    }",
+    "    list(registration_contract_id = 'rrp.project-registration',",
+    "         registration_contract_version = '0.1.0',",
+    "         project_id = 'maintainer-fixture',",
+    "         producers = list(component('zeta.producer'), component('maintainer.producer')),",
+    "         providers = list(component('zeta.provider'), component('maintainer.provider'))) ",
+    "  }",
+    "})"
+  ), file.path(project_root, "R", "register.R"), useBytes = TRUE)
+}
+
+validate_installed_project_loading <- function(library_root, work_root) {
+  software_root <- file.path(work_root, "project-loader-software-root")
+  project_resource_authority(repository_root, software_root)
+  project_root <- file.path(work_root, "hand-authored-project")
+  write_hand_authored_project(project_root)
+  copy_parent <- file.path(work_root, "copied-project-parent")
+  dir.create(copy_parent)
+  require_true(
+    file.copy(project_root, copy_parent, recursive = TRUE, copy.mode = FALSE),
+    "Could not copy the hand-authored project fixture."
+  )
+  copied_root <- file.path(copy_parent, basename(project_root))
+  invalid_parent <- file.path(work_root, "invalid-selection-parent")
+  dir.create(invalid_parent)
+  require_true(
+    file.copy(project_root, invalid_parent, recursive = TRUE, copy.mode = FALSE),
+    "Could not copy the invalid project fixture."
+  )
+  invalid_root <- file.path(invalid_parent, basename(project_root))
+  invalid_manifest <- readLines(
+    file.path(invalid_root, "rrp-project.dcf"), warn = FALSE
+  )
+  invalid_manifest <- sub(
+    "^Provider-ID:.*$", "Provider-ID: missing.provider", invalid_manifest
+  )
+  writeLines(
+    invalid_manifest, file.path(invalid_root, "rrp-project.dcf"),
+    useBytes = TRUE
+  )
+  unrelated_root <- file.path(work_root, "project-loader-unrelated-directory")
+  dir.create(unrelated_root)
+  script_path <- file.path(work_root, "validate-installed-project-loader.R")
+  writeLines(c(
+    "local({",
+    "  arguments <- commandArgs(trailingOnly = TRUE)",
+    "  library_root <- normalizePath(arguments[[1L]], winslash = '/', mustWork = TRUE)",
+    "  software_root <- normalizePath(arguments[[2L]], winslash = '/', mustWork = TRUE)",
+    "  project_root <- normalizePath(arguments[[3L]], winslash = '/', mustWork = TRUE)",
+    "  copied_root <- normalizePath(arguments[[4L]], winslash = '/', mustWork = TRUE)",
+    "  invalid_root <- normalizePath(arguments[[5L]], winslash = '/', mustWork = TRUE)",
+    "  unrelated_root <- normalizePath(arguments[[6L]], winslash = '/', mustWork = TRUE)",
+    "  .libPaths(c(library_root, .Library), include.site = FALSE)",
+    "  library(rrpplatform)",
+    "  before_globals <- ls(.GlobalEnv, all.names = TRUE)",
+    "  before_libraries <- .libPaths()",
+    "  previous_directory <- setwd(unrelated_root)",
+    "  on.exit(setwd(previous_directory), add = TRUE)",
+    "  catalog <- rrp_open_resource_catalog(software_root)",
+    "  context <- rrp_load_project(catalog, project_root)",
+    "  copied <- rrp_load_project(catalog, copied_root)",
+    "  stopifnot(",
+    "    identical(class(context), c('rrp_project_context', 'list')),",
+    "    identical(names(context), c('software_catalog', 'project_root', 'manifest', 'registration', 'producer', 'provider', 'extension_library_path', 'state_path')),",
+    "    identical(context$manifest[['Project-ID']], 'maintainer-fixture'),",
+    "    identical(context$producer$component_id, 'maintainer.producer'),",
+    "    identical(context$provider$component_id, 'maintainer.provider'),",
+    "    identical(context$producer$origin, 'project'),",
+    "    identical(context$provider$origin, 'project'),",
+    "    identical(attr(context$producer$callable, 'registration_calls'), 1L),",
+    "    identical(attr(context$provider$callable, 'registration_calls'), 1L),",
+    "    identical(vapply(context$registration$producers, function(entry) entry$component_id, character(1L)), c('maintainer.producer', 'zeta.producer')),",
+    "    identical(vapply(context$registration$providers, function(entry) entry$component_id, character(1L)), c('maintainer.provider', 'zeta.provider')),",
+    "    !dir.exists(context$extension_library_path), !dir.exists(context$state_path),",
+    "    identical(copied$manifest, context$manifest),",
+    "    identical(copied$producer$component_id, context$producer$component_id),",
+    "    identical(copied$provider$component_id, context$provider$component_id),",
+    "    !identical(copied$project_root, context$project_root),",
+    "    !identical(copied$extension_library_path, context$extension_library_path),",
+    "    !identical(copied$state_path, context$state_path),",
+    "    !startsWith(project_root, paste0(software_root, '/')),",
+    "    !startsWith(software_root, paste0(project_root, '/')),",
+    "    identical(.libPaths(), before_libraries),",
+    "    identical(getwd(), unrelated_root),",
+    "    identical(ls(.GlobalEnv, all.names = TRUE), before_globals),",
+    "    !dir.exists(file.path(project_root, '.git')), !dir.exists(file.path(unrelated_root, '.git'))",
+    "  )",
+    "  condition <- tryCatch({ rrp_load_project(catalog, invalid_root); NULL }, error = identity)",
+    "  stopifnot(inherits(condition, 'rrp_project_error'), identical(condition$code, 'unknown_provider_selection'), !grepl(invalid_root, condition$message, fixed = TRUE), !grepl('[/\\\\]', condition$message), identical(.libPaths(), before_libraries))",
+    "})"
+  ), script_path, useBytes = TRUE)
+  require_command_success(
+    "installed rrpplatform explicit project loading",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(script_path), shQuote(library_root),
+      shQuote(software_root), shQuote(project_root), shQuote(copied_root),
+      shQuote(invalid_root), shQuote(unrelated_root)
+    )
+  )
+  cat(
+    paste0(
+      "PASS installed rrpplatform explicit/copy project loading, exact ",
+      "selection, origin, call-count, non-invocation, context separation, ",
+      "global/working-directory stability, and safe typed failure\n"
+    )
+  )
+}
+
 validate_packages <- function() {
-  cat("RRP local package and resource-foundation validation\n")
-  cat("====================================================\n")
+  cat("RRP local package, resource, and project-foundation validation\n")
+  cat("=============================================================\n")
 
   run_resource_contract_validation()
 
@@ -1733,12 +1901,14 @@ validate_packages <- function() {
   }
 
   validate_installed_resource_access(library_root, work_root)
+  validate_installed_project_loading(library_root, work_root)
 
-  cat("\nResult: PASS (package, resource, operation-result, and project-contract foundation)\n")
+  cat("\nResult: PASS (package, resource, operation-result, and project-loading foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "and project-structure contracts, resource-validation operation, package topology, metadata, ",
+    "and project-structure contracts, explicit trusted project loading and exact ",
+    "structural selection, resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",
     "package-native check only.\n",
     sep = ""

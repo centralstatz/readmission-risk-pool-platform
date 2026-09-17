@@ -14,10 +14,11 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and one structured resource-validation
 operation in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2 and
-Stage 3 push evidence. Stages 1–3 and Increment 4.A are complete; Increment
-4.B is the next authorized source task. The software now owns strict project-
-manifest and registration-result contracts, but there is no hospital project,
-project loader, complete installed RRP product, or ordinary operator command.
+Stage 3 push evidence. Stages 1–3 and Increments 4.A–4.B are complete;
+Increment 4.C is the next authorized source task. The software now owns strict
+project-manifest and registration-result contracts plus one explicit trusted
+project loader, but there is no project initializer, structured project doctor,
+complete installed RRP product, or ordinary operator command.
 
 ## Read authority before source
 
@@ -109,23 +110,26 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact four-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact five-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict project-manifest and in-memory registration-result structural validation. |
+| `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
+| `packages/rrpplatform/man/rrp_load_project.Rd` | Focused technical API contract and honest trusted-code/immutability limits for explicit project loading. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, duplicate, and non-invocation evidence for the internal project contracts. |
+| `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and zero-export namespace. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Behavior-free package source and human/package documentation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and absent exports. |
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
 | `resources/contracts/operation-result.dcf` and `resources/contracts/diagnostic.dcf` | Machine-readable exact common operation-result and privacy-safe diagnostic contracts cataloged under their stable logical IDs. |
-| `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable Stage 4 authorities for the future strict project manifest and closed trusted-registration result. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root access, common result/diagnostic behavior, and internal project contracts. |
+| `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable Stage 4 authorities for the strict project manifest and closed trusted-registration result. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection contract, installed explicit-root resource access, common result/diagnostic behavior, project contracts, and explicit trusted project loading. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -183,7 +187,8 @@ owner is explicit. Keep these future dependency responsibilities distinct:
 
 The `rrpruntime` package currently uses only base R package machinery and has
 no `Imports`, `Suggests`, or `LinkingTo`. `rrpplatform` imports only
-`rrpruntime` and exports exactly `rrp_open_resource_catalog()`,
+`rrpruntime` and exports exactly `rrp_load_project()`,
+`rrp_open_resource_catalog()`,
 `rrp_operation_succeeded()`, `rrp_resource_path()`, and
 `rrp_validate_software_resources()`; `rrpruntime` remains export-free. No
 dependency environment exists yet. Do not introduce one by convenience,
@@ -229,7 +234,10 @@ It validates the exact closed DCF catalog/schema/contracts, including the
 project-manifest and registration authorities, current source resources, safe
 paths and collisions, source closure, and deterministic byte-preserving
 installed projection with copied adversarial fixtures. It also
-checks exact package layout, metadata, dependency direction and exports, and
+proves explicit and copied project loading, controlled registration, exact
+selection, selected-callable non-invocation, context separation, typed
+failures, and library/global/working-directory restoration. It checks exact
+package layout, metadata, dependency direction and exports, and
 repository independence; builds both source packages; proves that the main
 package cannot install without the runtime dependency; installs them in
 dependency order into a fresh temporary library; loads each in a fresh vanilla
@@ -253,8 +261,9 @@ Stage 3 closed only after committed push run `35116049077`, job
 `11fc44835c0d3862196e1af5d1ef691e781c9688` and final reconciliation found no
 deviation from True North or the architecture. Increment 4.A subsequently
 established the two project contract authorities and internal structural
-validators. The next authorized source task is only Increment 4.B — Trusted
-registration and explicit project loading.
+validators. Increment 4.B added the one explicit trusted project-loading API
+and its package-native/maintainer evidence. The next authorized source task is
+only Increment 4.C — Minimal independent-project initialization.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

@@ -5,16 +5,21 @@ Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 `0.3.0.9000` and the RRP product development identity `1.0.0-dev`.
 
 The package imports `rrpruntime` to retain the accepted one-way internal-package
-dependency. It also owns internal strict validation of the cataloged
-`rrp.project@0.1.0` manifest and `rrp.project-registration@0.1.0` registration-
-result structures. That machinery is not exported and does not discover a
-project, load registration code, or invoke component callables.
+dependency. It owns strict validation of the cataloged `rrp.project@0.1.0`
+manifest and `rrp.project-registration@0.1.0` registration-result structures,
+plus one explicit project-loading boundary. Contract parsers, registration
+evaluation, path checks, composition, resolution, and error construction remain
+internal.
 
 Its current callable interfaces are:
 
 - `rrp_open_resource_catalog(software_root)` validates the fixed installed DCF
   schema, catalog, and closed declared resource set beneath exactly the supplied
   root; and
+- `rrp_load_project(software_catalog, project_root)` revalidates the required
+  software resources, validates exactly the supplied project, executes its
+  fixed trusted `R/register.R` boundary once, and returns one closed
+  `rrp_project_context` after exact producer/provider selection;
 - `rrp_resource_path(catalog, resource_id)` resolves one declared logical ID
   after reopening and revalidating the installed resource boundary;
 - `rrp_validate_software_resources(software_root)` returns one common
@@ -28,6 +33,16 @@ from the working directory, Git, environment variables, package installation,
 sibling paths, or repository source. The catalog object is a validated software
 context, not a general configuration object.
 
+Expected low-level project failures inherit from `rrp_project_error` and carry
+one stable safe code. Project loading validates the declarative manifest and
+filesystem boundaries before trusted code. Registration is evaluated in a
+fresh environment whose parent is the base environment, with RRP-owned package
+libraries first, an existing declared project extension library second, and
+ambient user libraries excluded. This reduces accidental coupling but is not a
+security sandbox: `R/register.R` is trusted local code. The loader validates and
+resolves the returned callable objects but never invokes the selected producer
+or provider.
+
 Opening may report root codes `invalid_software_root`,
 `missing_software_root`, or `linked_software_root`; catalog/schema state codes
 such as `missing_catalog`, `linked_catalog`, `nonregular_catalog`,
@@ -40,9 +55,11 @@ file state, containment, and closed inventory. Lookup additionally reports
 when installed state changed. Codes are machine-readable; messages are bounded
 maintainer text and do not echo arbitrary paths, parser text, IDs, or content.
 
-The package does not yet provide root selection, an ordinary operator command,
-project loading or context, registration execution, clinical contracts,
-runtime orchestration, products, applications, installation, or deployment.
+The returned project context is a validated in-process snapshot, not a mutable
+or serialized project session. The package does not yet provide root selection,
+an ordinary operator command, project initialization, a structured project
+doctor, dependency restoration, state creation, clinical contracts, runtime
+orchestration, products, applications, installation, or deployment.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.

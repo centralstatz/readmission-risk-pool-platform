@@ -124,8 +124,22 @@ rrp_project_registration_contract <- function(catalog) {
   )
 }
 
-rrp_project_stop <- function(message) {
-  stop(message, call. = FALSE)
+rrp_project_abort <- function(code, message) {
+  if (!is.character(code) || length(code) != 1L || is.na(code) ||
+      !grepl("^[a-z][a-z0-9_]*$", code) ||
+      !is.character(message) || length(message) != 1L || is.na(message) ||
+      !nzchar(message) || nchar(message, type = "bytes") > 160L ||
+      grepl("[\r\n]", message)) {
+    stop("Invalid internal project-error definition.", call. = FALSE)
+  }
+  stop(structure(
+    list(message = message, call = NULL, code = code),
+    class = c("rrp_project_error", "error", "condition")
+  ))
+}
+
+rrp_project_stop <- function(message, code = "invalid_project_contract") {
+  rrp_project_abort(code, message)
 }
 
 rrp_project_split_fields <- function(value) {
@@ -147,22 +161,30 @@ rrp_project_parse_dcf_record <- function(lines) {
         "^[A-Za-z][A-Za-z0-9-]*:[[:space:]]+[^[:space:]].*[^[:space:]]$|^[A-Za-z][A-Za-z0-9-]*:[[:space:]]+[^[:space:]]$",
         lines
       ))) {
-    rrp_project_stop("Project manifest DCF is malformed.")
+    rrp_project_stop(
+      "Project manifest is malformed.", "malformed_project_manifest"
+    )
   }
   fields <- sub(":.*$", "", lines)
   if (anyDuplicated(fields)) {
-    rrp_project_stop("Project manifest DCF is malformed.")
+    rrp_project_stop(
+      "Project manifest is malformed.", "malformed_project_manifest"
+    )
   }
   connection <- textConnection(lines)
   parsed <- tryCatch(
     read.dcf(connection, all = TRUE),
     error = function(condition) {
-      rrp_project_stop("Project manifest DCF is malformed.")
+      rrp_project_stop(
+        "Project manifest is malformed.", "malformed_project_manifest"
+      )
     },
     finally = close(connection)
   )
   if (nrow(parsed) != 1L) {
-    rrp_project_stop("Project manifest DCF is malformed.")
+    rrp_project_stop(
+      "Project manifest is malformed.", "malformed_project_manifest"
+    )
   }
   record <- as.list(as.character(parsed[1L, ]))
   names(record) <- colnames(parsed)
@@ -220,25 +242,39 @@ rrp_project_validate_manifest <- function(lines, contract) {
   expected_contract <- rrp_project_manifest_contract_expected()
   if (!is.list(contract) || !identical(names(contract), names(expected_contract)) ||
       !identical(unlist(contract, use.names = TRUE), expected_contract)) {
-    rrp_project_stop("Project manifest contract is unsupported.")
+    rrp_project_stop(
+      "Project manifest contract is unsupported.",
+      "unsupported_project_contract"
+    )
   }
   record <- rrp_project_parse_dcf_record(lines)
   fields <- rrp_project_split_fields(contract[["Fields"]])
   if (!rrp_project_plain_named_list(record, fields)) {
-    rrp_project_stop("Project manifest fields are invalid.")
+    rrp_project_stop(
+      "Project manifest is malformed.", "malformed_project_manifest"
+    )
   }
   record <- record[fields]
-  fixed <- c(
+  contract_fixed <- c(
     "Record-Type" = contract[["Manifest-Record-Type"]],
     "Project-Contract-ID" = contract[["Contract-ID"]],
     "Project-Contract-Version" = contract[["Contract-Version"]],
-    "Project-Scope" = contract[["Project-Scope-Value"]],
-    "Supported-RRP-API-Version" = contract[["Project-API-Version"]]
+    "Project-Scope" = contract[["Project-Scope-Value"]]
   )
-  if (any(!vapply(names(fixed), function(field) {
-    identical(record[[field]], unname(fixed[[field]]))
+  if (any(!vapply(names(contract_fixed), function(field) {
+    identical(record[[field]], unname(contract_fixed[[field]]))
   }, logical(1L)))) {
-    rrp_project_stop("Project manifest identity or compatibility is unsupported.")
+    rrp_project_stop(
+      "Project manifest contract is unsupported.",
+      "unsupported_project_contract"
+    )
+  }
+  if (!identical(
+    record[["Supported-RRP-API-Version"]], contract[["Project-API-Version"]]
+  )) {
+    rrp_project_stop(
+      "Project API compatibility is unsupported.", "incompatible_project_api"
+    )
   }
 
   identity_pattern <- contract[["Project-ID-Pattern"]]
@@ -247,13 +283,17 @@ rrp_project_validate_manifest <- function(lines, contract) {
     if (!rrp_project_valid_identity(
       record[[field]], identity_pattern, identity_limit
     )) {
-      rrp_project_stop("Project manifest identity is invalid.")
+      rrp_project_stop(
+        "Project manifest is malformed.", "malformed_project_manifest"
+      )
     }
   }
   if (startsWith(
     record[["Project-ID"]], contract[["Protected-Project-ID-Prefix"]]
   )) {
-    rrp_project_stop("Project manifest identity is invalid.")
+    rrp_project_stop(
+      "Project manifest is malformed.", "malformed_project_manifest"
+    )
   }
   version_pattern <- contract[["Version-Pattern"]]
   version_limit <- as.integer(contract[["Version-Max-Bytes"]])
@@ -261,14 +301,16 @@ rrp_project_validate_manifest <- function(lines, contract) {
     if (!rrp_project_valid_version(
       record[[field]], version_pattern, version_limit
     )) {
-      rrp_project_stop("Project manifest version is invalid.")
+      rrp_project_stop(
+        "Project manifest is malformed.", "malformed_project_manifest"
+      )
     }
   }
 
   path_fields <- rrp_project_split_fields(contract[["Path-Fields"]])
   paths <- unlist(record[path_fields], use.names = FALSE)
   if (!all(vapply(paths, rrp_project_safe_relative_path, logical(1L)))) {
-    rrp_project_stop("Project manifest path is invalid.")
+    rrp_project_stop("Project path declaration is unsafe.", "unsafe_project_path")
   }
   protected_paths <- rrp_project_split_fields(
     contract[["Fixed-Path-Conflicts"]]
@@ -285,7 +327,7 @@ rrp_project_validate_manifest <- function(lines, contract) {
   if (any(vapply(comparisons, function(pair) {
     rrp_project_paths_overlap(pair[[1L]], pair[[2L]])
   }, logical(1L)))) {
-    rrp_project_stop("Project manifest paths conflict.")
+    rrp_project_stop("Project path declaration is unsafe.", "unsafe_project_path")
   }
   record
 }
@@ -294,11 +336,15 @@ rrp_project_validate_registration <- function(candidate, contract) {
   expected_contract <- rrp_project_registration_contract_expected()
   if (!is.list(contract) || !identical(names(contract), names(expected_contract)) ||
       !identical(unlist(contract, use.names = TRUE), expected_contract)) {
-    rrp_project_stop("Project registration contract is unsupported.")
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
   }
   fields <- rrp_project_split_fields(contract[["Result-Fields"]])
   if (!rrp_project_plain_named_list(candidate, fields)) {
-    rrp_project_stop("Project registration fields are invalid.")
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
   }
   candidate <- candidate[fields]
   if (!identical(
@@ -306,24 +352,33 @@ rrp_project_validate_registration <- function(candidate, contract) {
   ) || !identical(
     candidate$registration_contract_version, contract[["Contract-Version"]]
   )) {
-    rrp_project_stop("Project registration identity is unsupported.")
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
   }
   identity_limit <- as.integer(contract[["Identity-Max-Bytes"]])
   if (!rrp_project_valid_identity(
     candidate$project_id, contract[["Project-ID-Pattern"]], identity_limit
   ) || startsWith(candidate$project_id, contract[["Protected-ID-Prefix"]])) {
-    rrp_project_stop("Project registration project identity is invalid.")
+    rrp_project_stop(
+      "Project registration result is invalid.", "invalid_registration_result"
+    )
   }
 
   component_fields <- rrp_project_split_fields(contract[["Component-Fields"]])
   for (kind in rrp_project_split_fields(contract[["Collection-Fields"]])) {
     entries <- candidate[[kind]]
     if (!is.list(entries) || !is.null(attributes(entries))) {
-      rrp_project_stop("Project registration collection is invalid.")
+      rrp_project_stop(
+        "Project registration result is invalid.", "invalid_registration_result"
+      )
     }
     validated_entries <- lapply(entries, function(entry) {
       if (!rrp_project_plain_named_list(entry, component_fields)) {
-        rrp_project_stop("Project registration component is invalid.")
+        rrp_project_stop(
+          "Project registration result is invalid.",
+          "invalid_registration_result"
+        )
       }
       entry <- entry[component_fields]
       if (!rrp_project_valid_identity(
@@ -331,17 +386,31 @@ rrp_project_validate_registration <- function(candidate, contract) {
       ) || startsWith(
         entry$component_id, contract[["Protected-ID-Prefix"]]
       )) {
-        rrp_project_stop("Project registration component identity is invalid.")
+        code <- if (rrp_project_scalar_string(entry$component_id) &&
+                    startsWith(
+                      entry$component_id, contract[["Protected-ID-Prefix"]]
+                    )) {
+          "protected_registration"
+        } else {
+          "invalid_registration_result"
+        }
+        rrp_project_stop("Project registration identity is invalid.", code)
       }
       if (!rrp_project_valid_version(
         entry$component_version,
         contract[["Component-Version-Pattern"]],
         as.integer(contract[["Component-Version-Max-Bytes"]])
       )) {
-        rrp_project_stop("Project registration component version is invalid.")
+        rrp_project_stop(
+          "Project registration result is invalid.",
+          "invalid_registration_result"
+        )
       }
       if (!is.function(entry$callable)) {
-        rrp_project_stop("Project registration callable is invalid.")
+        rrp_project_stop(
+          "Project registration result is invalid.",
+          "invalid_registration_result"
+        )
       }
       entry
     })
@@ -349,7 +418,10 @@ rrp_project_validate_registration <- function(candidate, contract) {
       paste(entry$component_id, entry$component_version, sep = "@")
     }, character(1L))
     if (anyDuplicated(keys)) {
-      rrp_project_stop("Project registration component identity is duplicated.")
+      rrp_project_stop(
+        "Project registration identity is duplicated.",
+        "duplicate_registration"
+      )
     }
     candidate[[kind]] <- validated_entries
   }

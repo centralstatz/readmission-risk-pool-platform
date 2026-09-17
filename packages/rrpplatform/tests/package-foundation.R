@@ -15,10 +15,12 @@ stopifnot(
   identical(
     sort(getNamespaceExports("rrpplatform")),
     c(
-      "rrp_open_resource_catalog", "rrp_operation_succeeded",
+      "rrp_load_project", "rrp_open_resource_catalog",
+      "rrp_operation_succeeded",
       "rrp_resource_path", "rrp_validate_software_resources"
     )
   ),
+  is.function(rrp_load_project),
   is.function(rrp_open_resource_catalog),
   is.function(rrp_operation_succeeded),
   is.function(rrp_resource_path),

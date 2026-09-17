@@ -1213,3 +1213,151 @@ contracts, but it cannot yet execute registration or load a project.
 
 **Next task:** review Increment 4.A and, if accepted, proceed to Increment 4.B
 — Trusted registration and explicit project loading.
+
+## Increment 4.B — Trusted registration and explicit project loading (complete, 2026-09-16)
+
+Increment 4.B began from clean committed baseline
+`7392537f0c92522f5bc6f674da1514407156cba8` (`4.A complete`) on `main`;
+that branch was one local commit ahead of `origin/main`, and no uncommitted
+change was present. The increment added exactly one public technical interface,
+`rrp_load_project(software_catalog, project_root)`, to `rrpplatform`.
+`rrpruntime` was unchanged. The main package still imports only
+`rrpruntime`, uses no third-party dependency, and now exports exactly the four
+Stage 3 interfaces plus this loader.
+
+`packages/rrpplatform/R/project-loader.R` owns the realized boundary. It first
+revalidates the two required project-contract resources through the supplied
+Stage 3 `rrp_resource_catalog`, canonicalizes only the separately supplied
+project root, and reads exactly `rrp-project.dcf`. Manifest contract/API,
+identity, selection, and path declarations are validated before
+`R/register.R` is examined or executed. The loader performs no current-
+directory, parent, Git, sibling, environment-variable, software-root,
+installation, or package-location discovery for the project.
+
+Real filesystem validation now resolves the declared extension-library and
+state paths beneath the canonical project root. Existing segments must be
+case-exact and non-linked; an existing final target must be a directory; and
+containment, separation, overlap, fixed-artifact, and case rules fail closed.
+Both locations may be absent and are then returned only as normalized intended
+paths. Neither is created. The fixed manifest and registration artifacts must
+be ordinary non-linked files, including a non-linked `R` segment for the
+registration entry point.
+
+After all declarative and structural checks, the loader evaluates exactly
+`R/register.R` once with `sys.source()` in a new environment whose parent is
+`baseenv()`. That environment must expose exactly one binding,
+`rrp_register_project`, and it must be a function. The function receives the
+normalized project root exactly once. Source/evaluation failures and callable
+failures become bounded typed project failures without copying source, parser,
+path, or arbitrary returned error text. This controlled environment reduces
+accidental global coupling but is explicitly not a security sandbox; trusted
+project code can still perform arbitrary R effects.
+
+Registration loading temporarily places the libraries owning the installed
+`rrpplatform` and `rrpruntime` packages first, an existing declared project
+extension library second, and the base/recommended R library afterward.
+Ambient user and site libraries are excluded from this declared resolution
+window. The caller's prior library paths are restored on both success and
+failure. A project extension library is rejected if a direct entry or package
+`DESCRIPTION` attempts to shadow `rrpplatform` or `rrpruntime`. The loader
+does not restore, install, lock, close, or otherwise manage dependencies.
+
+The existing 4.A registration validator now raises the same typed low-level
+project conditions while retaining its closed result, project identity,
+collection, component ID/version, callable, protected-name, and duplicate
+rules. The loader requires registration `project_id` to match the manifest,
+canonicalizes producer/provider registration order by exact ID/version,
+combines it with the deliberately empty current installed-component set,
+retains `project` or future `installed` origin, rejects exact collisions,
+and resolves each manifest selection by exact ID plus version. Missing and
+ambiguous selection have distinct codes. There is no precedence, alias,
+latest, range, fallback, ensemble, or data-dependent choice, and selected
+callables are never invoked.
+
+The returned object has exact class
+`c("rrp_project_context", "list")` and exact fields
+`software_catalog`, `project_root`, `manifest`, `registration`,
+`producer`, `provider`, `extension_library_path`, and `state_path`.
+Selected records contain only component ID, version, callable, and origin. It
+is an in-process validated snapshot: package code does not mutate it after
+construction, and later operations should load a new context rather than
+serialize or treat it as a mutable project session.
+
+Expected low-level failures inherit from `rrp_project_error` and contain only
+`message`, `call = NULL`, and stable `code`. The realized finite codes
+cover invalid, missing, non-directory, or linked roots; missing, linked,
+malformed, unsupported, or API-incompatible manifests; unsafe project paths;
+invalid extension/state boundaries; missing, linked, or malformed
+registration; invalid results; project identity mismatch; protected or
+duplicate registration; installed/project collision; and unknown or ambiguous
+producer/provider selection. Messages are fixed, bounded, single-line
+maintainer text and never echo absolute fixture paths, manifest/registration
+content, parser output, secret-like values, or callable error text. Software-
+resource invalidation retains its existing `rrp_resource_error` owner rather
+than being mislabeled as a project failure.
+
+Focused package-native evidence in
+`packages/rrpplatform/tests/project-loader.R` constructs only temporary
+hand-authored projects. It covers exact context shape, separate explicit
+software/project roots, unrelated working directories, no parent/Git/
+environment discovery, missing/non-directory/linked roots, copied-project
+portability, manifest-before-code sentinels, ordinary fixed files, malformed
+registration and closed-environment bindings, exact one-time evaluation and
+registration call, identity reconciliation, protected/duplicate/collision
+behavior, exact/unknown/ambiguous selection, deterministic ordering, project
+and installed origin, absent/present/non-directory/linked/case-conflicting
+state and library paths, RRP-package shadowing, declared temporary project-
+package resolution, ambient-library rejection, library restoration on success
+and failure, software-resource revalidation, no `.GlobalEnv` or working-
+directory mutation by RRP, safe failures, and selected-callable non-invocation.
+No persistent project fixture or extension package entered source.
+
+The maintainer package operation now expects the loader source, manual, test,
+and exact fifth export; permits source evaluation only at the single fixed
+`sys.source()` registration boundary; and adds an installed-package proof
+that loads a hand-authored project and unrelated copy outside repository/Git
+context, checks exact context/selection/origin/order/call-count/non-invocation,
+and exercises one safe typed selection failure. It retains the complete
+Stage 1–3 and 4.A catalog, projection, resource, result, package, build,
+isolated install/load, package-native, and strict-check evidence.
+
+Historical reconnaissance revisited immutable `v0.1.0`
+`runtime/R/provider-registry.R`,
+`operations/lib/canonical-producer-operation.R`,
+`operations/compositions/installed-producers.R`, and the Phase 10 independent-
+adopter fixture/tests, plus pre-reset assessments at `f4a98a8`, `6c2ac3b`,
+`fd98c73`, and `c459f7d`. Exact ID/version keys, duplicate rejection,
+trusted function-object validation, fail-closed lookup, closed registration,
+origin, collision, and independent-copy mechanics were reused or adapted.
+`.GlobalEnv` composition, recursive/fixed-order sourcing, repository roots,
+generated Hospital repositories, copied Platform source, Git validity,
+hard-coded reference composition, daily-hazard/estimand behavior, and
+Phase/distribution/release machinery were rejected.
+
+Focused implementation validation exposed three harness/static issues without
+changing the accepted contract. The old blanket package-source prohibition on
+all `source()` calls was narrowed to permit exactly one `sys.source()` call
+in `project-loader.R`; all other source evaluation remains prohibited.
+`R CMD check` identified unqualified `file_test()` usage, which was replaced
+with dependency-free filesystem checks rather than adding an import. The
+installed-proof fixture initially copied a directory to a nonexistent target
+using unsupported `file.copy()` semantics; it now copies beneath an existing
+temporary parent. Final repository and package validation passed with all
+generated archives, libraries, check directories, projected software roots,
+projects, extension packages, and scripts removed by their temporary owners.
+
+No initializer, template, persistent project, structured project doctor,
+operation-result translation, CLI/root convenience, producer/provider
+execution or semantic conformance, source/canonical behavior, dependency
+restore/lock, state creation or persistence, runtime/history, product,
+application, distribution, deployment, or release behavior was introduced.
+The completion statement is therefore literal: installed `rrpplatform` can
+safely load a manually authored independent project and resolve its declared
+structural extensions, but it cannot create or diagnose a project through a
+structured operation.
+
+**Current implementation state:** Increment 4.B complete; Stage 4 remains in
+progress.
+
+**Next task:** review Increment 4.B and, if accepted, proceed to Increment 4.C
+— Minimal independent-project initialization.

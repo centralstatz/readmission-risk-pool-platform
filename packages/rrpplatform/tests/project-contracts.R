@@ -308,15 +308,14 @@ rrp_test_cases <- list(
       is.function(result$providers[[1L]]$callable)
     )
   },
-  "4.A adds no project operation or public API" = function() {
+  "project contract helpers remain internal after the 4.B loader" = function() {
     namespace <- asNamespace("rrpplatform")
     deferred <- c(
-      "rrp_load_project", "rrp_initialize_project", "rrp_validate_project",
-      "rrp_register_project"
+      "rrp_initialize_project", "rrp_validate_project", "rrp_register_project"
     )
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
-        "rrp_open_resource_catalog", "rrp_operation_succeeded",
+        "rrp_load_project", "rrp_open_resource_catalog", "rrp_operation_succeeded",
         "rrp_resource_path", "rrp_validate_software_resources"
       )),
       !any(vapply(deferred, exists, logical(1L), envir = namespace,

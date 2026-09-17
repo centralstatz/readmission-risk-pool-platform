@@ -19,13 +19,14 @@ repository-foundation validator, and two conventional internal package owners.
 A closed base-R DCF source catalog now declares its schema, the common
 operation-result and diagnostic contracts, and exact project-manifest and
 registration-result authorities, with a temporary deterministic installed-
-projection proof. `rrpplatform` internally validates candidate manifest and
-registration structures and exports only explicit-root catalog opening,
-logical resource resolution, structured software-resource validation, and a
-success predicate; `rrpruntime` remains export-free. The repository has no
-root selector, persistent installed RRP distribution, hospital project,
-project loader, clinical contract, risk calculation, product, application,
-command-line interface, or deployment capability.
+projection proof. `rrpplatform` now loads one manually authored independent
+project from separate explicit software and project contexts, executes only its
+fixed trusted registration boundary, and resolves exact structural producer
+and provider selections without invoking them; `rrpruntime` remains export-
+free. The repository has no root selector, persistent installed RRP
+distribution, project initializer or doctor, clinical contract, risk
+calculation, product, application, command-line interface, or deployment
+capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -88,8 +89,9 @@ Rscript --vanilla tools/validate-packages.R
 This operation checks the closed source catalog/schema/contracts,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
-common result/diagnostic behavior, strict internal project-contract behavior,
-privacy-safe resource failures, and adversarial rejection behavior. It also
+common result/diagnostic behavior, strict project-contract behavior, explicit
+trusted project loading, exact structural selection, typed privacy-safe
+project/resource failures, and adversarial rejection behavior. It also
 checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
@@ -103,8 +105,9 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity. Increment 4.A is complete, but no hospital-
-project loading or operation capability exists yet.
+platform or support validity. Increments 4.A and 4.B are complete; the low-level
+loader is an internal technical interface, while project initialization,
+structured doctor behavior, and ordinary operator commands remain absent.
 
 ## License
 
