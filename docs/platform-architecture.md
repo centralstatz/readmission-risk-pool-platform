@@ -15,9 +15,10 @@ without reconciling the historical assessment sequence that produced it.
 The published `v0.1.0` tag remains immutable historical implementation and
 release evidence. This document does not reinterpret, migrate, amend, or claim
 compatibility with those released bytes. The active repository has been
-deliberately reset to this architecture and its True North; no RRP 1.0
-software is implemented yet. Historical implementations remain available
-through Git for selective reuse.
+deliberately reset to this architecture and its True North. Current
+implementation status is recorded by the implementation plan and record rather
+than frozen into this target-architecture document. Historical implementations
+remain available through Git for selective reuse.
 
 Implementation planning must derive a progressive construction path from this
 architecture. When established, that plan governs construction order and its

@@ -13,10 +13,10 @@ foundation validator, two conventional internal package owners,
 one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
-and one narrowly scoped hosted workflow with successful committed Stage 2 and
-Stage 3 push evidence. Stages 1–3 are accepted and all four Stage 4
-implementation increments are complete; committed hosted Stage 4 evidence and
-formal acceptance/reconciliation are next. The software now owns strict
+and one narrowly scoped hosted workflow with successful committed Stage 2,
+Stage 3, and Stage 4 push evidence. Stages 1–4 are accepted and complete; the
+next task is to detail Stage 5 without beginning its source implementation.
+The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, and a bounded project doctor, but there is no complete installed
 RRP product or ordinary operator command.
@@ -276,9 +276,12 @@ two project contract authorities and internal structural validators. Increment
 4.B added the explicit trusted project-loading API. Increment 4.C added the two
 cataloged templates and transactional create-only initializer. Increment 4.D
 added the thin structured project doctor and complete installed independent-
-project proof. The next task is committed hosted evidence followed by the
-separate formal Stage 4 acceptance/reconciliation pass; no Stage 5 source work
-is authorized yet.
+project proof. Stage 4 closed at revision
+`f5c1fb0db47e9154b99e133a8f553bee8ea2aa16` after hosted push run
+`35221028009`, job `105200921084`, succeeded and final reconciliation found no
+deviation from True North or the architecture. The next task is to detail Stage
+5 — Canonical Handoff and Producer Boundary; no Stage 5 source work is
+authorized yet.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

@@ -1577,3 +1577,155 @@ source data or calculate readmission risk.
 from the unchanged hosted package-foundation workflow, and perform the separate
 human-directed Stage 4 acceptance/reconciliation pass. Stage 5 is not yet
 authorized.
+
+## Stage 4 acceptance and reconciliation — 2026-09-17
+
+Stage 4 is accepted and complete at exact committed baseline
+`f5c1fb0db47e9154b99e133a8f553bee8ea2aa16` (`4.D complete`). Acceptance began
+from clean synchronized `main`: local `HEAD` and `origin/main` both resolved to
+that revision. GitHub Actions workflow `package-foundation` push run
+`35221028009`, job `105200921084`, completed successfully against the same
+`main` SHA. The unchanged read-only job checked out that commit, set up R 4.4,
+and passed the existing repository- and package-foundation operations. This is
+narrow hosted package/project-foundation evidence, not a distribution,
+clinical, production, deployment, release, or broader support claim.
+
+The realized architecture composes without a conflicting seam. Installed RRP
+owns the validated software-resource catalog, the resource/result/project
+contracts, and the two project templates. Initialization renders those
+software-owned templates into exactly `rrp-project.dcf` and `R/register.R` at
+an absent hospital-owned destination; the instantiated files have no template,
+source-repository, staging, or original-root backreference. The manifest owns
+strict project/contract/API identity, one-health-system scope, exact structural
+producer/provider selections, and safe relative extension-library/state
+declarations. The fixed trusted registration owns the closed project identity
+plus producer/provider records. It is trusted local R code, not a sandbox.
+
+The loader remains the sole structural authority: it revalidates the explicit
+software context, validates the explicit project root, manifest, compatibility,
+and declared paths before trusted code, evaluates exactly `R/register.R` once,
+validates the closed registration, composes installed/project origins, and
+resolves exact ID+version selections without invoking either selected callable.
+The initializer uses that same loader before and after same-parent promotion;
+the doctor calls it once and only translates its context or expected typed
+project error into the common bounded result. Thus contracts, templates,
+initializer, loader, and doctor agree on one project boundary rather than
+forming parallel authorities.
+
+The accepted project is independent of the development repository and Git.
+Installed-package proof initializes it from explicit software/project contexts
+in an unrelated non-Git working directory, confirms the exact two-file initial
+inventory, loads and doctors it, copies it elsewhere, and reloads/rediagnoses
+the copy with unchanged semantic identity and newly resolved physical paths.
+No current package operation discovers a project through cwd, parents, Git,
+siblings, environment variables, package installation, or a global singleton.
+The temporary source-to-installed resource projection remains maintainer
+evidence and is not represented as the final distribution manifest.
+
+The extension library is a declared optional project-owned location. RRP-owned
+package libraries precede it, ambient user libraries are excluded during
+registration, and project content cannot shadow `rrpplatform` or `rrpruntime`.
+Absence is valid; Stage 4 does not restore, install, lock, or claim dependency
+closure. State is a separate safe project-owned declaration. Absence is valid
+and doctor reports `not_initialized` plus the fixed
+`project_state_not_initialized` warning; an existing structurally valid
+directory reports `available` without content interpretation. State schemas,
+history, locking, persistence, retention, backup, recovery, and migration stay
+with Stage 7.
+
+The public technical surface is exactly `rrp_initialize_project()`,
+`rrp_load_project()`, `rrp_open_resource_catalog()`,
+`rrp_operation_succeeded()`, `rrp_resource_path()`,
+`rrp_validate_project()`, and `rrp_validate_software_resources()`.
+`rrpplatform` is the sole project/operation owner and imports only
+`rrpruntime`; `rrpruntime` remains dependency-light, dependency-free,
+export-free, and independent upward. These are internal implementation-package
+interfaces beneath the future installed CLI, not a decision that hospital
+operators directly use the packages.
+
+The closed software-resource authority contains exactly seven concrete
+resources: the resource-catalog, diagnostic, operation-result, project-manifest,
+and project-registration contracts plus the project-manifest and project-
+registration templates. It contains no project instance, extension library,
+state, source data, mapping, canonical data, model, product, application,
+artifact, deployment, or release material. Source `Source-Path` ownership and
+installed `Installed-Path` resolution remain distinct and byte-preserving.
+
+Reconciliation against Platform True North and Platform Architecture found no
+acceptance blocker or architectural deviation. The project is hospital-owned;
+registration and exact selection are explicit; generic code remains unaware of
+hospital/source identity; software/project/state/deployment lifecycles remain
+separate; structured failures and diagnostics remain bounded and privacy-safe;
+and the internal package topology remains invisible to ordinary operators.
+The retained `v0.1.0` influence is limited to deliberately adapted registry,
+structured-result, staging, independent-copy, and adversarial-test mechanics.
+Generated Hospital repositories, copied Platform source, Git-state validity,
+repository-root execution, root `renv`, Phase routing, daily-hazard semantics,
+and release/deployment behavior did not re-enter the clean line.
+
+Findings were classified as follows:
+
+- **Acceptance blockers:** none.
+- **Nonblocking clarifications:** pending-closeout wording in the plan, guide,
+  README, and agent agreement; one target-architecture status sentence frozen
+  at the clean reset; and the initializer manual's obsolete reference to a
+  future doctor were corrected without changing implementation behavior.
+- **Future-stage concerns:** producer semantic execution and canonical handoff
+  begin with Stage 5 planning; provider/target execution, dependency closure,
+  state lifecycle, CLI/distribution, products/application, deployment, and
+  release remain with their planned later owners.
+- **No issue:** all remaining Stage 4 ownership, composition, trust, path,
+  selection, portability, privacy, validation, and scope behavior remains
+  consistent with the accepted authority.
+
+Final local acceptance reran both authoritative human operations.
+`Rscript --vanilla tools/validate-repository.R` passed all eight checks with
+zero issues. `Rscript --vanilla tools/validate-packages.R` passed the complete
+catalog/schema/contract/template regression, deterministic projection,
+package-native tests, both source builds, isolated dependency-order
+installation/loading, missing-dependency rejection, installed resource access,
+hand-authored loading, initialization/load/doctor/copy/adversarial proof, and
+exact `R CMD check --no-manual` `Status: OK` for both packages. R, Rd, DCF, and
+DESCRIPTION parsing, `git diff --check`, inventory, symlink, confidential-text,
+and generated-output hygiene passed. No generated project, state, extension,
+staging directory, archive, check directory, projection, or temporary library
+remained in repository source.
+
+Stage 4 establishes only structural project validity:
+
+```text
+Installed RRP software
+        ↓
+explicit software context
+
+Independent hospital project
+        ↓
+manifest + trusted registration
+        ↓
+exact structural producer/provider selections
+        ↓
+initialize / load / doctor
+
+STOP
+
+No source admission
+No producer execution
+No canonical data
+No provider execution
+No risk calculation
+No state persistence
+```
+
+This is not source-mapping validity, producer conformance, canonical-data
+validity, provider/model validity, clinical risk validity, production approval,
+or release readiness. The accepted exit statement is literal: RRP can
+initialize, recognize, safely load, and structurally diagnose an independent
+hospital-owned project and its declared producer/provider registrations, but
+it cannot yet admit source data or calculate readmission risk.
+
+**Current implementation state:** Stages 1–4 accepted and complete at the
+baseline above.
+
+**Next task:** detail Stage 5 — Canonical Handoff and Producer Boundary from
+the accepted Stage 4 baseline. Do not begin Stage 5 source implementation
+before that plan is reviewed and accepted.

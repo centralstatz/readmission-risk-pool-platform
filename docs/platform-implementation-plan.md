@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative high-level roadmap; Stages 1–3 and all four Stage 4
-implementation increments are complete. Stage 4 remains in progress pending
-committed hosted evidence and formal acceptance/reconciliation.
+**Status:** authoritative high-level roadmap; Stages 1–4 are accepted and
+complete. The next planning task is to detail Stage 5 from the accepted Stage
+4 baseline; Stage 5 source implementation is not yet authorized.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -69,8 +69,9 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current stage is decomposed into accepted increments. Stage 4 is the
-current detailed stage; completed Stage 1–3 detail remains as implementation
-lineage. After a stage is implemented:
+most recently detailed and accepted stage; completed Stage 1–3 detail remains
+as implementation lineage. Stage 5 remains high-level until its separate
+planning task. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -959,9 +960,8 @@ their privacy, retention, trust, and dependency boundaries.
 
 ## Stage 4 — Independent project foundation
 
-**Planning status:** detailed and accepted for implementation on 2026-09-16;
-Increments 4.A–4.D are implemented; committed hosted evidence and formal Stage
-4 acceptance/reconciliation remain.
+**Status:** accepted and complete on 2026-09-17 at committed baseline
+`f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`.
 
 ### Objective
 
@@ -1443,8 +1443,8 @@ doctor yet.
 
 ### Increment 4.D — Structured project doctor and independent-project proof
 
-**Implementation status:** complete on 2026-09-17; formal Stage 4
-acceptance/reconciliation is next after committed hosted evidence.
+**Implementation status:** complete on 2026-09-17; included in the accepted
+Stage 4 baseline.
 
 **Objective:** expose project health through the common operation-result
 contract and prove the complete Stage 4 lifecycle outside repository/Git
@@ -1603,6 +1603,16 @@ Stage 4 is complete only when:
 After implementation and committed hosted evidence pass, reconcile the
 realized project boundary with True North and Platform Architecture and record
 any deviation. Stage acceptance is a lifecycle action, not Increment 4.E.
+
+**Acceptance result:** accepted and complete on 2026-09-17. All criteria above
+passed for committed revision
+`f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`, including unchanged read-only
+hosted push workflow `package-foundation`, run `35221028009`, job
+`105200921084`, result `success`. Reconciliation found no deviation from
+Platform True North or Platform Architecture. The next planning task is to
+detail Stage 5 — Canonical Handoff and Producer Boundary from this accepted
+baseline; Stage 5 source implementation remains unauthorized until that plan
+is accepted.
 
 ### Plain-language exit state
 

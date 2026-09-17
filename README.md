@@ -108,10 +108,10 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity. Increments 4.A–4.D are implemented locally; the
-complete Stage 4 tree still requires committed hosted evidence and formal
-acceptance/reconciliation. The initializer, loader, and doctor are internal
-technical interfaces; ordinary operator commands remain absent.
+platform or support validity. The complete Stage 4 revision also passed the
+same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
+The initializer, loader, and doctor are internal technical interfaces; ordinary
+operator commands remain absent. Stage 5 has not been detailed or implemented.
 
 ## License
 

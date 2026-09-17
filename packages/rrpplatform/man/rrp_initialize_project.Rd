@@ -41,6 +41,6 @@ state directories remain absent.
 The registered producer and provider callables are structural placeholders
 that fail safely if invoked. Initialization and loading never execute them.
 This technical API does not discover roots, create Git or dependency state,
-initialize persistence, validate producer/provider semantics, or provide the
-future project doctor.
+initialize persistence, validate producer/provider semantics, or replace the
+separate \code{rrp_validate_project()} doctor operation.
 }
