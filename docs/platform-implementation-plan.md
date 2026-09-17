@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–4 are accepted and complete, and
-Stage 5 is in progress under its accepted detail. Increment 5.A is complete;
-Increment 5.B is the next implementation task.
+Stage 5 is in progress under its accepted detail. Increments 5.A and 5.B are
+complete; Increment 5.C is the next implementation task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -1691,8 +1691,8 @@ own stages.
 ## Stage 5 — Canonical handoff and producer boundary
 
 **Status:** detailed and accepted for implementation on 2026-09-17. Increment
-5.A is complete and 5.B is next. This section authorizes only the three Stage 5
-increments below; producer execution and canonical admission do not yet exist.
+Increments 5.A and 5.B are complete and 5.C is next. This section authorizes
+only the three Stage 5 increments below; producer execution does not yet exist.
 
 ### Objective
 
@@ -2020,7 +2020,8 @@ evidence and stops before the next responsibility.
 
 ### Increment 5.A — Canonical contract authority and semantic producer declaration
 
-**Implementation status:** complete on 2026-09-17; Increment 5.B is next.
+**Implementation status:** complete on 2026-09-17; Increment 5.B subsequently
+completed and Increment 5.C is next.
 
 **Objective:** establish the complete language-neutral Stage 5 handoff contract
 and make a loaded project declare an exact compatible producer without
@@ -2071,6 +2072,8 @@ producer declares the exact Stage 5 handoff it intends to implement, but it
 cannot yet validate or admit a candidate bundle.
 
 ### Increment 5.B — Dependency-light canonical bundle admission
+
+**Implementation status:** complete on 2026-09-17; Increment 5.C is next.
 
 **Objective:** implement the pure post-handoff validator that turns one valid
 candidate into an admitted canonical bundle without knowing any source or

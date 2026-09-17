@@ -1963,3 +1963,144 @@ Stage 5 is in progress; Increment 5.A is complete.
 
 **Next task:** implement only Increment 5.B — Dependency-light canonical bundle
 admission. Do not begin Increment 5.C, Stage 6, or Stage 5 acceptance.
+
+## Stage 5 / Increment 5.B — Dependency-light canonical bundle admission — 2026-09-17
+
+Increment 5.B is complete. `rrpruntime` now has its first and only export,
+`rrp_admit_canonical_bundle(candidate, expected_context)`. The package remains
+dependency-free with no `Imports`, `Suggests`, or `LinkingTo`; it has no
+knowledge of `rrpplatform`, resource catalogs, projects, roots, registration,
+producer/provider callables, source systems, state, persistence, products, or
+repository layout. `rrpplatform` still imports only `rrpruntime` and retains
+exactly its seven existing exports.
+
+The expected context is one closed plain named list containing exact bundle-
+contract, project, producer, implementation, mapping, canonical-profile,
+capability, and authoritative as-of facts. The candidate is the 5.A closed
+plain named-list adapter with the same identity/context fields, one bounded
+non-patient bundle instance ID, exactly two available capability records, and
+the exact named `discharge_episode` and `terminal_event` base-data-frame
+domains. All scalar and column values are plain character values; unknown,
+missing, classed, attributed, reference-bearing, executable, or coercion-
+requiring content fails closed. No malformed value is dropped, renamed,
+sorted, filled, repaired, or converted.
+
+Admission validates exact supported bundle/profile versions and exact expected
+project, producer, implementation, mapping, profile, capability, and as-of
+agreement. Explicit-offset RFC 3339 timestamps are normalized only to compare
+instants. Equivalent instants with different offsets agree; the admitted value
+retains the submitted representation. Discharge episodes require bounded
+nonempty identifiers, unique episode keys, permit multiple episodes per
+patient, require admission before discharge, prohibit discharge after as-of,
+and require `followup_window_end` to equal discharge plus exactly
+`30 * 86,400` elapsed seconds.
+
+Terminal events require bounded unique IDs, exact episode foreign keys, only
+`readmission` or `death`, at most one of each type per episode, occurrence
+strictly after discharge and through the inclusive follow-up endpoint,
+occurrence no later than availability, and availability no later than bundle
+as-of. Death before a later readmission fails; equal readmission/death
+occurrence instants remain valid for Stage 6 target precedence. Required
+capability availability remains distinct from row cardinality, so either
+available domain may contain zero rows and an entirely empty two-domain bundle
+is valid.
+
+Success returns the copied candidate with exact class
+`c("rrp_admitted_canonical_bundle", "list")`. Runtime reconstructs every
+supported list, data frame, and atomic vector, does not mutate the caller's
+candidate, and does not retain mutable references to it. Later mutation of the
+original outer identity, episode data, or terminal-event data cannot change the
+admitted value. The type is only sensitive in-memory analytical input; no
+serialization, transport, persistence, database, or user-facing data model was
+introduced.
+
+Expected failures inherit from `rrp_canonical_error` and contain only
+`message`, `call = NULL`, and stable bounded `code`. Fixed maintainer-authored
+messages identify the invariant family without rendering patient, episode, or
+event identifiers; field values; rows; raw candidate content; paths; source
+information; SQL; credentials; or arbitrary object/condition text. Runtime did
+not import or duplicate the main package's common operation-result system.
+Translation into that system remains an Increment 5.C orchestration
+responsibility.
+
+`rrpplatform` gained no export. Its installed canonical-contract owner now has
+one internal assembler that verifies the exact six loaded 5.A authorities and
+derives the full runtime expected context from those authorities plus explicit
+caller-supplied identity and as-of facts. Package-native integration loads the
+DCF authorities through an explicit temporary installed-resource catalog,
+assembles that context, directly constructs a candidate fixture, and admits it
+through `rrpruntime`. It executes no project registration, producer, or
+provider callable.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`operations/lib/canonical-bundle-validation.R`,
+`operations/lib/canonical-clinical-validation.R`,
+`operations/lib/canonical-producer-validation.R`, `runtime/R/utils.R`, and the
+Phase 2 canonical profile tests. Closed mapping/field checks, primary- and
+foreign-key validation, duplicate detection, exact capability agreement,
+explicit-offset timestamp parsing, normalized elapsed-time comparison,
+dual occurrence/availability rules, candidate non-coercion, and adversarial
+fixture ideas were adapted to the current dependency-free runtime owner and
+two-domain fixed-day-30 contract. YAML, repository-root loaders, generalized
+dependency graphs, broad generic events, baseline risk, daily hazard,
+estimands, runtime eligibility, provider execution, Phase result aggregation,
+operation logging, state/history, products/application, and Hospital delivery
+were rejected.
+
+Focused positive evidence admitted a meaningful two-episode candidate with one
+patient contributing both episodes, terminal evidence, offset-equivalent
+instants, later availability, equal readmission/death occurrence, and an event
+at the exact follow-up endpoint. Separate evidence admitted zero-row domains,
+proved a daylight-saving offset change still represents exactly 30 elapsed
+days, proved caller-input nonmutation and post-admission detachment, and
+rejected unknown/missing fields or domains; unsupported types/classes or
+attributes; functions, environments, and connections; malformed identifiers
+and timestamps; duplicate keys; orphans; unsupported event vocabulary;
+terminal cardinality violations; admission/discharge/as-of errors; shortened
+or extended follow-up; endpoint overflow; occurrence/availability reversal;
+future availability; death before later readmission; all expected identity
+mismatches; unsupported bundle/profile versions; and missing, duplicate,
+unsupported, or unavailable capabilities. Unsafe injected content did not
+appear in rendered failures.
+
+Focused installation and native execution passed before the full checkpoint.
+A strict runtime `R CMD check --no-manual` completed with exact `Status: OK`;
+the surrounding temporary shell wrapper then used zsh's reserved `status`
+variable after the successful check. That harness-only error was corrected for
+subsequent work and its owned temporary check tree was removed; no package
+behavior changed.
+
+The final complete local package operation passed once after implementation:
+`Rscript --vanilla tools/validate-packages.R` validated the exact source
+catalog and all 13 installed resources, deterministic projection, canonical
+and project authorities, dependency-light admission, all package-native and
+inherited adversarial tests, both package builds, main-package missing-
+dependency rejection, isolated dependency-order installation/loading,
+installed explicit-root resource and independent-project proofs, and exact
+`Status: OK` from both strict package checks. No archive, check directory,
+temporary library, projection, or project fixture remained in repository
+source.
+
+Final static closeout also passed. The repository command
+`Rscript --vanilla tools/validate-repository.R` reported all eight checks and
+zero issues. Direct
+parsing covered 22 R files, 10 Rd files, and all 15 package/resource DCF files;
+namespace/metadata inspection confirmed `rrpruntime` has no package dependency
+and exactly one export while `rrpplatform` imports only `rrpruntime` and retains
+exactly seven exports. Repository inventory, symlink/generated-artifact review,
+and `git diff --check` passed. No producer/provider callable was invoked and no
+persistent output was created. A final runtime-only strict check after the last
+future-occurrence adversarial fixture again ended with exact `Status: OK`.
+
+No contradiction, ambiguity, or deviation from the accepted 5.A authority,
+Stage 5 plan, Platform Architecture, or True North was found. This increment
+does not establish source truth, completeness, clinical validity, calibration,
+production approval, or fitness for care decisions.
+
+**Current implementation state:** Stages 1–4 remain accepted and complete.
+Stage 5 remains in progress; Increments 5.A and 5.B are complete. Dependency-
+light runtime code can admit or reject the minimum source-independent canonical
+candidate, but no supported project operation executes a producer yet.
+
+**Next task:** implement only Increment 5.C — Selected producer execution and
+canonical handoff proof. Do not begin Stage 6 or Stage 5 acceptance.

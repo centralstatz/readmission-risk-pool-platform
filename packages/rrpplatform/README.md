@@ -77,8 +77,11 @@ provider remains a non-executable structural placeholder. The declared
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. The package does not yet provide root selection,
 an ordinary operator command, dependency restoration, state creation,
-canonical admission or producer execution, runtime
-orchestration, products, applications, installation, or deployment.
+producer execution, runtime orchestration, products, applications,
+installation, or deployment. It can internally normalize the installed
+canonical authority into the exact context accepted by `rrpruntime`, whose one
+export can admit a directly supplied candidate; no supported project operation
+invokes that primitive yet.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.

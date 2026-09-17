@@ -362,3 +362,51 @@ rrp_canonical_required_capabilities <- function(canonical_contracts) {
   )[[1L]]
   lapply(ids, function(id) list(capability_id = id, status = "available"))
 }
+
+rrp_canonical_admission_context <- function(
+  canonical_contracts,
+  project_id,
+  project_version,
+  producer_id,
+  producer_version,
+  implementation_id,
+  implementation_version,
+  mapping_id,
+  mapping_version,
+  as_of_time
+) {
+  definitions <- rrp_canonical_contract_definitions()
+  valid_contracts <- is.list(canonical_contracts) &&
+    identical(names(canonical_contracts), names(definitions)) &&
+    all(vapply(names(definitions), function(name) {
+      identical(
+        canonical_contracts[[name]],
+        as.list(definitions[[name]]$expected)
+      )
+    }, logical(1L)))
+  if (!valid_contracts) {
+    rrp_resource_abort(
+      "incompatible_canonical_contracts",
+      "Installed canonical contracts are incompatible."
+    )
+  }
+  rrp_canonical_validate_relationships(canonical_contracts)
+  bundle <- canonical_contracts$canonical_bundle
+  profile <- canonical_contracts$readmission_profile
+  list(
+    bundle_contract_id = bundle[["Specification-ID"]],
+    bundle_contract_version = bundle[["Specification-Version"]],
+    project_id = project_id,
+    project_version = project_version,
+    producer_id = producer_id,
+    producer_version = producer_version,
+    implementation_id = implementation_id,
+    implementation_version = implementation_version,
+    mapping_id = mapping_id,
+    mapping_version = mapping_version,
+    canonical_profile_id = profile[["Specification-ID"]],
+    canonical_profile_version = profile[["Specification-Version"]],
+    capabilities = rrp_canonical_required_capabilities(canonical_contracts),
+    as_of_time = as_of_time
+  )
+}

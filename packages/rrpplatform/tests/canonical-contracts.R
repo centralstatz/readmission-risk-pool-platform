@@ -101,6 +101,65 @@ stopifnot(
   )
 )
 
+admission_context <- rrp_canonical_test_internal(
+  "rrp_canonical_admission_context"
+)(
+  contracts,
+  project_id = "integration-health-system",
+  project_version = "1.0.0",
+  producer_id = "integration.producer",
+  producer_version = "1.0.0",
+  implementation_id = "integration.implementation",
+  implementation_version = "1.0.0",
+  mapping_id = "integration.mapping",
+  mapping_version = "1.0.0",
+  as_of_time = "2026-02-10T06:00:00-06:00"
+)
+integration_candidate <- c(
+  admission_context[c("bundle_contract_id", "bundle_contract_version")],
+  list(bundle_instance_id = "integration.bundle-001"),
+  admission_context[c(
+    "project_id", "project_version", "producer_id", "producer_version",
+    "implementation_id", "implementation_version", "mapping_id",
+    "mapping_version", "canonical_profile_id", "canonical_profile_version"
+  )],
+  list(
+    as_of_time = "2026-02-10T12:00:00Z",
+    capabilities = admission_context$capabilities,
+    domains = list(
+      discharge_episode = data.frame(
+        episode_id = "integration-episode-001",
+        patient_id = "integration-patient-001",
+        index_encounter_id = "integration-encounter-001",
+        admission_time = "2026-01-01T08:00:00-06:00",
+        discharge_time = "2026-01-02T08:00:00-06:00",
+        followup_window_end = "2026-02-01T14:00:00Z",
+        stringsAsFactors = FALSE
+      ),
+      terminal_event = data.frame(
+        terminal_event_id = "integration-event-001",
+        episode_id = "integration-episode-001",
+        event_type = "readmission",
+        occurred_at = "2026-01-15T12:00:00-06:00",
+        available_at = "2026-01-16T01:00:00+07:00",
+        stringsAsFactors = FALSE
+      )
+    )
+  )
+)
+admitted <- rrpruntime::rrp_admit_canonical_bundle(
+  integration_candidate, admission_context
+)
+stopifnot(
+  identical(class(admitted), c("rrp_admitted_canonical_bundle", "list")),
+  identical(admitted$bundle_contract_id, contracts$canonical_bundle[[
+    "Specification-ID"
+  ]]),
+  identical(admitted$canonical_profile_id, contracts$readmission_profile[[
+    "Specification-ID"
+  ]])
+)
+
 rrp_canonical_test_error(rrp_canonical_test_fixture(function(definitions) {
   definitions$canonical_bundle$expected[["Unknown-Field"]] <- "not-allowed"
   definitions

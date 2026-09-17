@@ -1,1 +1,1 @@
-# No callable API is exported in Stage 2 Increment 2.A.
+export(rrp_admit_canonical_bundle)

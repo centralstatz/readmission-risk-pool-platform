@@ -4,13 +4,15 @@
 \docType{package}
 \title{Dependency-Light Readmission Runtime Foundation}
 \description{
-Establishes the internal package owner for future implementation-neutral
-Readmission Risk Pool runtime responsibilities. The package intentionally
-provides no callable behavior at this stage.
+Provides dependency-light implementation-neutral Readmission Risk Pool runtime
+behavior. Its current responsibility is pure canonical bundle admission.
 }
 \details{
-The package has no callable exports and uses only base R package machinery.
-Later responsibilities require their own accepted increments and evidence.
+The package uses only base R package machinery and exports exactly
+\code{rrp_admit_canonical_bundle()}. It has no project, installed-resource,
+producer/provider execution, eligibility, risk, state, history, product, or
+persistence responsibility. Later responsibilities require their own accepted
+increments and evidence.
 }
 \author{RRP maintainers}
 \keyword{internal}

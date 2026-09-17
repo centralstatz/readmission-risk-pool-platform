@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
 # Prove the local package/resource/project foundation, including explicit-root
-# installed-resource access and trusted project loading. This is not an
-# installed RRP operation or a general validation dispatcher.
+# installed-resource access, pure canonical admission, and trusted project
+# loading. This is not an installed RRP operation or a general validator.
 
 script_argument <- grep(
   "^--file=", commandArgs(trailingOnly = FALSE), value = TRUE
@@ -1487,6 +1487,13 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-loader.R"),
       file.path("tests", "resource-access.R")
     )
+  } else {
+    files <- c(
+      files,
+      file.path("R", "canonical-admission.R"),
+      file.path("man", "rrp_admit_canonical_bundle.Rd"),
+      file.path("tests", "canonical-admission.R")
+    )
   }
   files
 }
@@ -1640,9 +1647,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_resource_path", "rrp_validate_project",
       "rrp_validate_software_resources"
     )
-  } else {
-    character()
-  }
+  } else "rrp_admit_canonical_bundle"
   require_true(
     identical(sort(namespace$exports, method = "radix"), expected_exports),
     paste0(
@@ -1668,9 +1673,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_validate_software_resources)",
       "import(rrpruntime)"
     )
-  } else {
-    character()
-  }
+  } else "export(rrp_admit_canonical_bundle)"
   require_true(
     identical(namespace_directives, expected_directives),
     paste0(
@@ -1827,9 +1830,7 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_resource_path\", \"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
     )
-  } else {
-    "character()"
-  }
+  } else "\"rrp_admit_canonical_bundle\""
   expression <- paste0(
     "library_root <- ",
     encodeString(normalizePath(library_root, mustWork = TRUE), quote = "\""),
@@ -2371,11 +2372,12 @@ validate_packages <- function() {
   validate_installed_project_loading(library_root, work_root)
   validate_installed_project_initialization(library_root, work_root)
 
-  cat("\nResult: PASS (package, resource, canonical-contract, and project foundation)\n")
+  cat("\nResult: PASS (package, resource, canonical-admission, and project foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "canonical contract relationships and kind-specific project contracts, ",
+    "canonical contract relationships, dependency-light canonical admission, ",
+    "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and structural ",
     "provider selection, transactional minimal-project initialization, ",
     "loader-backed project diagnosis, copied-project portability, bounded ",

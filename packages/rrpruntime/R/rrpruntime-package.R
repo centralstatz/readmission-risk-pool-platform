@@ -1,3 +1,4 @@
-# This source file establishes the package owner without introducing behavior.
-# Runtime responsibilities enter only through later accepted increments.
+# This source file establishes the package owner. Canonical admission is its
+# first dependency-light runtime responsibility; later runtime behavior remains
+# outside the current increment.
 NULL

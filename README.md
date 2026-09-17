@@ -28,10 +28,14 @@ loader-owned assessment through a bounded project doctor. Producer declarations
 now identify the exact canonical profile, bundle, implementation, mapping, and
 required available capabilities, while providers retain their structural
 shape; neither callable is invoked during initialization, loading, or doctor.
-`rrpruntime` remains export-free. The repository has no producer-execution or
-canonical-admission operation, root selector, persistent installed RRP
-distribution, risk calculation, product, application, command-line interface,
-or deployment capability.
+`rrpruntime` now exports one pure dependency-light canonical admission
+primitive. It validates exact identity, capability, closed-domain, key,
+relationship, explicit-offset time, dual-time, and 30-elapsed-day rules and
+returns a detached in-memory admitted bundle or a bounded typed failure. No
+supported project operation executes a producer or calls admission yet. The
+repository has no producer-execution operation, root selector, persistent
+installed RRP distribution, risk calculation, product, application,
+command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -100,13 +104,14 @@ trusted project loading, transactional minimal-project initialization, exact
 semantic producer and structural provider selection, structured project
 diagnosis, copied-project
 portability, typed privacy-safe
-project/resource failures, and adversarial rejection behavior. It also
-checks exact package topology,
+project/resource failures, adversarial rejection behavior, and direct
+installed-authority/runtime canonical admission. It also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
-selector, product command, distribution build, or proof of runtime, clinical,
-deployment, or release behavior.
+selector, product command, distribution build, or proof of producer/provider
+execution, risk calculation, clinical validity, deployment, or release
+behavior.
 
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
@@ -118,8 +123,8 @@ platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
 The initializer, loader, and doctor are internal technical interfaces; ordinary
 operator commands remain absent. Stage 5 is in progress: Increment 5.A is
-complete, while producer execution and canonical admission remain deferred to
-the accepted later Stage 5 increments.
+complete and Increment 5.B provides pure runtime canonical admission, while
+selected producer execution remains deferred to Increment 5.C.
 
 ## License
 

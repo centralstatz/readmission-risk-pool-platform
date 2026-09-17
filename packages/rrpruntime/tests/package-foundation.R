@@ -9,5 +9,5 @@ stopifnot(
   is.null(description[["Imports"]]),
   is.null(description[["Suggests"]]),
   is.null(description[["LinkingTo"]]),
-  length(getNamespaceExports("rrpruntime")) == 0L
+  identical(getNamespaceExports("rrpruntime"), "rrp_admit_canonical_bundle")
 )
