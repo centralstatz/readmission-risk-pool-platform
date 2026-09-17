@@ -1361,3 +1361,112 @@ progress.
 
 **Next task:** review Increment 4.B and, if accepted, proceed to Increment 4.C
 — Minimal independent-project initialization.
+
+## Increment 4.C — Minimal independent-project initialization (complete, 2026-09-17)
+
+Increment 4.C began from clean synchronized commit
+`aa4586274c364d8acbf6c5578240ae7fd43d7172` (`4.B complete`) on `main`.
+It added exactly one public technical interface,
+`rrp_initialize_project(software_catalog, project_root, project_id,
+project_version)`, to `rrpplatform`. `rrpruntime` remained unchanged;
+`rrpplatform` still imports only `rrpruntime`, uses no third-party dependency,
+and now exports exactly six interfaces.
+
+The closed software-resource catalog now declares the software-owned templates
+`rrp.template.project-manifest` and
+`rrp.template.project-registration` at
+`resources/templates/project/rrp-project.dcf` and
+`resources/templates/project/R/register.R`. The resource schema's already
+accepted `template` class now permits the directly required `r` format in
+addition to `dcf`. Source and projected resource closure, safe paths, exact
+catalog mappings, regular-file/link rules, and byte-preserving projection apply
+to both templates without a parallel template-discovery mechanism.
+
+The manifest template renders exactly the 13 fields of
+`rrp.project@0.1.0`. For a validated project ID and version, it selects
+`<project-id>.producer` and `<project-id>.provider` at that exact project
+version, declares `extensions/library` and `state`, and adds no optional field.
+The registration template exposes only `rrp_register_project(project_root)`
+and returns the exact `rrp.project-registration@0.1.0` result for those two
+project-owned records. Their callables are structural placeholders that raise
+one fixed safe error if invoked; initialization and loading never invoke them.
+
+`packages/rrpplatform/R/project-initializer.R` reuses the installed contract
+authorities and their existing identity/version predicates. It rejects invalid
+or protected project identities, invalid versions, and IDs whose derived
+component names exceed the accepted registration boundary before filesystem
+mutation. Rendering recognizes only four fixed tokens and rejects missing or
+unknown template tokens. It verifies the staged inventory is exactly
+`rrp-project.dcf`, `R/register.R`, and the implied `R` directory.
+
+Initialization is create-only. The requested destination must be absent as a
+directory, file, or link; its direct parent must already be an ordinary
+non-linked directory; and a case-folded sibling collision is rejected. The
+operation creates a unique sibling staging directory, writes only the two
+rendered files, calls the existing `rrp_load_project()` as the authoritative
+staged acceptance gate, and checks the exact requested identity/selections. It
+then rechecks destination absence, promotes with same-parent `file.rename()`,
+and calls the same loader again so the accepted context corresponds to the
+final physical root. Scoped cleanup removes only staging or promoted content
+owned by the current unsuccessful attempt. Existing caller content is never
+overwritten, merged, emptied, repaired, adopted, renamed, or deleted.
+
+The initializer returns operation ID `rrp.initialize-project` through the
+existing `rrp_operation_result` contract. Success contains only project,
+producer, and provider identities/versions plus created relative paths
+`rrp-project.dcf` and `R/register.R`; it contains no absolute root, context,
+callable, timestamp, run/Git data, inventory, or future state metadata.
+Expected resource, project, and narrow initialization conditions become one
+error diagnostic with the originating stable code and fixed message `Project
+initialization failed.` Unexpected programming errors remain visible. New
+initializer-owned codes are limited to invalid project inputs/destination/
+parent, existing destination, invalid template/rendering, staging failure, and
+promotion failure.
+
+Package-native evidence initializes under an unrelated temporary parent and
+checks exact manifest fields, derived IDs/versions, two-file inventory, absent
+state/extensions/Git, operation-result shape, successful final loading,
+project origin, and safely failing placeholder callables. It copies and reloads
+the project with unchanged semantic identity and new physical paths and proves
+rendered files contain neither the original nor staging root. Adversarial
+coverage rejects invalid/protected/overlong identities, invalid versions,
+unsafe destinations, missing/file/linked parents, existing directory/file/link
+destinations, token drift, malformed rendered registration, and repeat
+initialization while preserving sentinels and removing owned staging state.
+
+Historical reconnaissance inspected immutable `v0.1.0` Hospital managed-
+platform extraction, release preparation, Connect realization, YAML product
+materialization, and their failure tests. The narrow same-parent staging,
+`on.exit` cleanup, validation-before-promotion, `file.rename()` promotion,
+absent-destination refusal, and failure-sentinel mechanics were adapted.
+Embedded Platform extraction, generated Hospital repositories, copied Platform
+source, Hospital distribution inventories, replacement/backup semantics,
+wrapper scripts, top-level `renv`, ignored `build/`, Git initialization/state,
+reference-hospital identities, and Phase/release assumptions were rejected.
+
+The maintainer package operation now recognizes the templates, initializer
+source/manual/test, sixth export, and installed initialization proof. Final
+validation passed source catalog/schema/contract/template closure and
+projection, package parsing/native tests, both source builds, isolated
+dependency-order installation/loading, exact `R CMD check --no-manual`
+`Status: OK` for both packages, installed resource access, hand-authored
+project loading, transactional initialization, final-location loading, copied
+portability, create-only failure, and staging cleanup. Repository validation,
+direct R/DCF/Rd parsing, inventory/symlink/generated-output review, and
+`git diff --check` also passed. All validation projects, staging directories,
+software projections, archives, libraries, and check directories remained
+temporary and were removed.
+
+No project doctor or `rrp_validate_project()`, CLI/root discovery, Git project,
+dependency library/restore/lock, state directory/persistence, source/mapping,
+producer/provider execution or conformance, canonical/runtime/risk behavior,
+product/application, distribution, deployment, or release behavior entered.
+No persistent project fixture exists. No discrepancy from the accepted plan,
+Platform Architecture, or True North was found.
+
+**Current implementation state:** Increment 4.C complete; Stage 4 remains in
+progress. RRP can transactionally initialize and load the smallest independent
+hospital-owned project, but it has no structured project doctor yet.
+
+**Next task:** review Increment 4.C and, if accepted, proceed to Increment 4.D
+— Structured project doctor and independent-project proof.

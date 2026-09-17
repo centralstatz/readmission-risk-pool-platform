@@ -134,7 +134,7 @@ resource_schema_expected <- function() {
       "static_application_asset"
     ), collapse = ","),
     "Owner-Packages" = "rrpplatform,rrpruntime",
-    "Resource-Formats" = "dcf",
+    "Resource-Formats" = "dcf,r",
     "Status-Values" = "development_unpublished",
     "Unique-Fields" = "Resource-ID,Source-Path,Installed-Path",
     "Case-Folded-Path-Fields" = "Source-Path,Installed-Path",
@@ -369,6 +369,71 @@ validate_software_contract_resources <- function(authority, root, projection) {
     }
   }
   invisible(authority)
+}
+
+validate_software_template_resources <- function(authority, root, projection) {
+  templates <- list(
+    project_manifest = c(
+      id = "rrp.template.project-manifest",
+      path = "resources/templates/project/rrp-project.dcf", format = "dcf"
+    ),
+    project_registration = c(
+      id = "rrp.template.project-registration",
+      path = "resources/templates/project/R/register.R", format = "r"
+    )
+  )
+  ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
+  required_tokens <- c(
+    "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
+    "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
+  )
+  for (name in names(templates)) {
+    specification <- templates[[name]]
+    matched <- which(ids == specification[["id"]])
+    resource_require(
+      length(matched) == 1L, paste0(name, "_template_catalog"),
+      paste0(specification[["id"]], " must be cataloged exactly once.")
+    )
+    entry <- authority$entries[[matched]]
+    expected <- c(
+      "Resource-ID" = specification[["id"]],
+      "Resource-Class" = "template", "Owner-Package" = "rrpplatform",
+      "Installed-Path" = specification[["path"]],
+      "Format" = specification[["format"]]
+    )
+    if (!projection) expected <- append(
+      expected, c("Source-Path" = specification[["path"]]), after = 3L
+    )
+    for (field in names(expected)) resource_require(
+      identical(entry[[field]], unname(expected[[field]])),
+      paste0(name, "_template_catalog"),
+      paste0(specification[["id"]], " has an unsupported catalog mapping.")
+    )
+    lines <- readLines(
+      file.path(root, specification[["path"]]), warn = FALSE, encoding = "UTF-8"
+    )
+    discovered <- unique(unlist(regmatches(
+      lines, gregexpr("@@RRP_[A-Z_]+@@", lines, perl = TRUE)
+    ), use.names = FALSE))
+    resource_require(
+      setequal(discovered, required_tokens), paste0(name, "_template_tokens"),
+      paste0(specification[["id"]], " has invalid template tokens.")
+    )
+    if (identical(specification[["format"]], "dcf")) {
+      resource_require(
+        length(read_dcf_records(file.path(root, specification[["path"]]))) == 1L,
+        "project_manifest_template", "Project manifest template is malformed."
+      )
+    } else {
+      tryCatch(
+        parse(text = lines),
+        error = function(condition) resource_fail(
+          "project_registration_template",
+          "Project registration template is malformed."
+        )
+      )
+    }
+  }
 }
 
 validate_resource_schema <- function(record) {
@@ -741,6 +806,7 @@ validate_resource_authority <- function(root, projection = FALSE) {
   records <- read_dcf_records(file.path(root, catalog_relative))
   authority <- validate_catalog_records(records, schema, root, projection)
   validate_software_contract_resources(authority, root, projection)
+  validate_software_template_resources(authority, root, projection)
   authority
 }
 
@@ -1122,8 +1188,10 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "operation-result.R"),
       file.path("R", "project-contracts.R"),
+      file.path("R", "project-initializer.R"),
       file.path("R", "project-loader.R"),
       file.path("R", "resource-catalog.R"),
+      file.path("man", "rrp_initialize_project.Rd"),
       file.path("man", "rrp_load_project.Rd"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
@@ -1131,6 +1199,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
       file.path("tests", "project-contracts.R"),
+      file.path("tests", "project-initializer.R"),
       file.path("tests", "project-loader.R"),
       file.path("tests", "resource-access.R")
     )
@@ -1282,7 +1351,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_load_project", "rrp_open_resource_catalog", "rrp_operation_succeeded",
+      "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
+      "rrp_operation_succeeded",
       "rrp_resource_path", "rrp_validate_software_resources"
     )
   } else {
@@ -1304,6 +1374,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   ]
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
+      "export(rrp_initialize_project)",
       "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
@@ -1464,7 +1535,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_load_project\", \"rrp_open_resource_catalog\", ",
+      "c(\"rrp_initialize_project\", \"rrp_load_project\", ",
+      "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
       "\"rrp_resource_path\", \"rrp_validate_software_resources\")"
     )
@@ -1539,7 +1611,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     diagnostic = "resources/contracts/diagnostic.dcf",
     operation_result = "resources/contracts/operation-result.dcf",
     project_manifest = "resources/contracts/project-manifest.dcf",
-    project_registration = "resources/contracts/project-registration.dcf"
+    project_registration = "resources/contracts/project-registration.dcf",
+    project_manifest_template = "resources/templates/project/rrp-project.dcf",
+    project_registration_template = "resources/templates/project/R/register.R"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -1577,12 +1651,16 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["project_manifest"]], quote = "\""),
     ", project_registration = ",
     encodeString(expected_copies[["project_registration"]], quote = "\""),
+    ", project_manifest_template = ",
+    encodeString(expected_copies[["project_manifest_template"]], quote = "\""),
+    ", project_registration_template = ",
+    encodeString(expected_copies[["project_registration_template"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_load_project', 'rrp_open_resource_catalog', ",
+    "c('rrp_initialize_project', 'rrp_load_project', 'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
     "'rrp_resource_path', 'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
@@ -1596,6 +1674,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "operation_result = 'rrp.contract.operation-result', ",
     "project_manifest = 'rrp.contract.project-manifest', ",
     "project_registration = 'rrp.contract.project-registration'); ",
+    "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
+    "project_registration_template = 'rrp.template.project-registration'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -1791,6 +1871,63 @@ validate_installed_project_loading <- function(library_root, work_root) {
   )
 }
 
+validate_installed_project_initialization <- function(library_root, work_root) {
+  software_root <- file.path(work_root, "project-initializer-software-root")
+  project_resource_authority(repository_root, software_root)
+  destination_parent <- file.path(work_root, "initializer-destination-parent")
+  copy_parent <- file.path(work_root, "initializer-copy-parent")
+  unrelated_root <- file.path(work_root, "initializer-unrelated-directory")
+  dir.create(destination_parent)
+  dir.create(copy_parent)
+  dir.create(unrelated_root)
+  destination <- file.path(destination_parent, "initialized-project")
+  script_path <- file.path(work_root, "validate-installed-project-initializer.R")
+  writeLines(c(
+    "local({",
+    "  arguments <- commandArgs(trailingOnly = TRUE)",
+    "  library_root <- normalizePath(arguments[[1L]], winslash = '/', mustWork = TRUE)",
+    "  software_root <- normalizePath(arguments[[2L]], winslash = '/', mustWork = TRUE)",
+    "  destination <- arguments[[3L]]",
+    "  copy_parent <- normalizePath(arguments[[4L]], winslash = '/', mustWork = TRUE)",
+    "  unrelated_root <- normalizePath(arguments[[5L]], winslash = '/', mustWork = TRUE)",
+    "  .libPaths(c(library_root, .Library), include.site = FALSE)",
+    "  old <- setwd(unrelated_root); on.exit(setwd(old), add = TRUE)",
+    "  library(rrpplatform)",
+    "  before_globals <- ls(.GlobalEnv, all.names = TRUE)",
+    "  before_libraries <- .libPaths()",
+    "  catalog <- rrp_open_resource_catalog(software_root)",
+    "  stopifnot(!file.exists(destination), !dir.exists(destination))",
+    "  result <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
+    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', created_paths = c('rrp-project.dcf', 'R/register.R'))",
+    "  context <- rrp_load_project(catalog, destination)",
+    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/register.R', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'))",
+    "  stopifnot(file.copy(destination, copy_parent, recursive = TRUE, copy.mode = FALSE))",
+    "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root)",
+    "  text <- paste(unlist(lapply(c(file.path(destination, 'rrp-project.dcf'), file.path(destination, 'R', 'register.R')), readLines, warn = FALSE)), collapse = '\\n')",
+    "  stopifnot(identical(copied$manifest, context$manifest), identical(copied$producer$component_id, context$producer$component_id), identical(copied$provider$component_id, context$provider$component_id), !identical(copied$project_root, context$project_root), !grepl(destination, text, fixed = TRUE), !grepl('rrp-staging', text, fixed = TRUE))",
+    "  existing <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
+    "  invalid_destination <- file.path(dirname(destination), 'invalid-project'); invalid <- rrp_initialize_project(catalog, invalid_destination, 'rrp.protected', 'bad-version')",
+    "  stopifnot(identical(existing$status, 'failure'), identical(existing$diagnostics[[1L]]$code, 'project_destination_exists'), identical(invalid$status, 'failure'), identical(invalid$diagnostics[[1L]]$code, 'invalid_project_id'), !file.exists(invalid_destination), !dir.exists(invalid_destination), !any(grepl('rrp-staging', list.files(dirname(destination)))), identical(.libPaths(), before_libraries), identical(getwd(), unrelated_root), identical(ls(.GlobalEnv, all.names = TRUE), before_globals))",
+    "})"
+  ), script_path, useBytes = TRUE)
+  require_command_success(
+    "installed rrpplatform transactional project initialization",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(script_path), shQuote(library_root),
+      shQuote(software_root), shQuote(destination), shQuote(copy_parent),
+      shQuote(unrelated_root)
+    )
+  )
+  cat(
+    paste0(
+      "PASS installed rrpplatform transactional initialization, exact ",
+      "inventory, final-location load, copied portability, create-only ",
+      "failure, state isolation, and staging cleanup\n"
+    )
+  )
+}
+
 validate_packages <- function() {
   cat("RRP local package, resource, and project-foundation validation\n")
   cat("=============================================================\n")
@@ -1902,13 +2039,15 @@ validate_packages <- function() {
 
   validate_installed_resource_access(library_root, work_root)
   validate_installed_project_loading(library_root, work_root)
+  validate_installed_project_initialization(library_root, work_root)
 
-  cat("\nResult: PASS (package, resource, operation-result, and project-loading foundation)\n")
+  cat("\nResult: PASS (package, resource, operation-result, and project foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "and project-structure contracts, explicit trusted project loading and exact ",
-    "structural selection, resource-validation operation, package topology, metadata, ",
+    "and project-structure contracts, explicit trusted project loading, exact ",
+    "structural selection, transactional minimal-project initialization, ",
+    "resource-validation operation, package topology, metadata, ",
     "dependency direction, exact exports, build, isolated install/load, and ",
     "package-native check only.\n",
     sep = ""

@@ -3,7 +3,7 @@
 ## Status and authority
 
 **Status:** authoritative high-level roadmap; Stages 1–3 and Increments 4.A–4.B
-are complete. Stage 4 remains in progress; Increment 4.C is the next authorized
+are complete. Stage 4 remains in progress; Increment 4.D is the next authorized
 source task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
@@ -960,7 +960,7 @@ their privacy, retention, trust, and dependency boundaries.
 ## Stage 4 — Independent project foundation
 
 **Planning status:** detailed and accepted for implementation on 2026-09-16;
-Increments 4.A and 4.B are complete; Increment 4.C is next.
+Increments 4.A–4.C are complete; Increment 4.D is next.
 
 ### Objective
 
@@ -1392,6 +1392,8 @@ authored independent project and resolve its declared structural extensions,
 but it cannot create or diagnose a project through a structured operation.
 
 ### Increment 4.C — Minimal independent-project initialization
+
+**Implementation status:** complete on 2026-09-17; Increment 4.D is next.
 
 **Objective:** create the smallest valid portable Stage 4 project through one
 transactional programmatic operation.

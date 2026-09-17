@@ -727,15 +727,14 @@ rrp_loader_tests <- list(
     })
   },
 
-  "4.B adds only the project loader public interface" = function() {
+  "4.C retains loader behavior and adds only initialization" = function() {
     namespace <- asNamespace("rrpplatform")
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
-        "rrp_load_project", "rrp_open_resource_catalog",
+        "rrp_initialize_project", "rrp_load_project", "rrp_open_resource_catalog",
         "rrp_operation_succeeded", "rrp_resource_path",
         "rrp_validate_software_resources"
       )),
-      !exists("rrp_initialize_project", envir = namespace, inherits = FALSE),
       !exists("rrp_validate_project", envir = namespace, inherits = FALSE)
     )
   }

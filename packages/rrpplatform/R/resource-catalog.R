@@ -95,7 +95,7 @@ rrp_resource_schema_contract <- function() {
       "static_application_asset"
     ), collapse = ","),
     "Owner-Packages" = "rrpplatform,rrpruntime",
-    "Resource-Formats" = "dcf",
+    "Resource-Formats" = "dcf,r",
     "Status-Values" = "development_unpublished",
     "Unique-Fields" = "Resource-ID,Source-Path,Installed-Path",
     "Case-Folded-Path-Fields" = "Source-Path,Installed-Path",

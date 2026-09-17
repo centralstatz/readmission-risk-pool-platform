@@ -27,10 +27,12 @@ expected_files <- c(
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
   "packages/rrpplatform/R/operation-result.R",
   "packages/rrpplatform/R/project-contracts.R",
+  "packages/rrpplatform/R/project-initializer.R",
   "packages/rrpplatform/R/project-loader.R",
   "packages/rrpplatform/R/resource-catalog.R",
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
+  "packages/rrpplatform/man/rrp_initialize_project.Rd",
   "packages/rrpplatform/man/rrp_open_resource_catalog.Rd",
   "packages/rrpplatform/man/rrp_load_project.Rd",
   "packages/rrpplatform/man/rrp_operation_succeeded.Rd",
@@ -40,6 +42,7 @@ expected_files <- c(
   "packages/rrpplatform/tests/operation-results.R",
   "packages/rrpplatform/tests/package-foundation.R",
   "packages/rrpplatform/tests/project-contracts.R",
+  "packages/rrpplatform/tests/project-initializer.R",
   "packages/rrpplatform/tests/project-loader.R",
   "packages/rrpplatform/tests/resource-access.R",
   "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
@@ -51,6 +54,8 @@ expected_files <- c(
   "resources/contracts/operation-result.dcf",
   "resources/contracts/project-manifest.dcf",
   "resources/contracts/project-registration.dcf",
+  "resources/templates/project/R/register.R",
+  "resources/templates/project/rrp-project.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
@@ -59,7 +64,9 @@ expected_directories <- c(
   "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
   "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",
-  "packages/rrpruntime/tests", "resources", "resources/contracts", "tools"
+  "packages/rrpruntime/tests", "resources", "resources/contracts",
+  "resources/templates", "resources/templates/project",
+  "resources/templates/project/R", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",
@@ -243,6 +250,7 @@ for (relative_path in c(
   "resources/contracts/operation-result.dcf",
   "resources/contracts/project-manifest.dcf",
   "resources/contracts/project-registration.dcf",
+  "resources/templates/project/rrp-project.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
 )) {
   path <- file.path(repository_root, relative_path)

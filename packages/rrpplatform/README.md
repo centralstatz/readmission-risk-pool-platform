@@ -7,9 +7,10 @@ Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 The package imports `rrpruntime` to retain the accepted one-way internal-package
 dependency. It owns strict validation of the cataloged `rrp.project@0.1.0`
 manifest and `rrp.project-registration@0.1.0` registration-result structures,
-plus one explicit project-loading boundary. Contract parsers, registration
-evaluation, path checks, composition, resolution, and error construction remain
-internal.
+one explicit project-loading boundary, and transactional minimal-project
+initialization from cataloged software-owned templates. Contract parsers,
+registration evaluation, rendering, staging, path checks, composition,
+resolution, and error construction remain internal.
 
 Its current callable interfaces are:
 
@@ -20,6 +21,10 @@ Its current callable interfaces are:
   software resources, validates exactly the supplied project, executes its
   fixed trusted `R/register.R` boundary once, and returns one closed
   `rrp_project_context` after exact producer/provider selection;
+- `rrp_initialize_project(software_catalog, project_root, project_id,
+  project_version)` creates exactly the manifest and registration file in a
+  previously absent destination, validates staged and promoted output through
+  the loader, and returns one common operation result;
 - `rrp_resource_path(catalog, resource_id)` resolves one declared logical ID
   after reopening and revalidating the installed resource boundary;
 - `rrp_validate_software_resources(software_root)` returns one common
@@ -55,10 +60,17 @@ file state, containment, and closed inventory. Lookup additionally reports
 when installed state changed. Codes are machine-readable; messages are bounded
 maintainer text and do not echo arbitrary paths, parser text, IDs, or content.
 
+Initialization is create-only and uses a unique sibling staging directory.
+It never overwrites, merges with, repairs, or adopts existing content; cleanup
+is limited to filesystem objects owned by the current attempt. Its registered
+producer/provider callables are deliberately non-executable structural
+placeholders. The declared `extensions/library` and `state` locations remain
+absent.
+
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. The package does not yet provide root selection,
-an ordinary operator command, project initialization, a structured project
-doctor, dependency restoration, state creation, clinical contracts, runtime
+an ordinary operator command, a structured project doctor, dependency
+restoration, state creation, clinical contracts, runtime
 orchestration, products, applications, installation, or deployment.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,

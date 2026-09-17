@@ -16,15 +16,15 @@ machine-readable product-development identity authority.
 The repository presently contains product and architecture documentation,
 public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional internal package owners.
-A closed base-R DCF source catalog now declares its schema, the common
-operation-result and diagnostic contracts, and exact project-manifest and
-registration-result authorities, with a temporary deterministic installed-
-projection proof. `rrpplatform` now loads one manually authored independent
-project from separate explicit software and project contexts, executes only its
-fixed trusted registration boundary, and resolves exact structural producer
-and provider selections without invoking them; `rrpruntime` remains export-
-free. The repository has no root selector, persistent installed RRP
-distribution, project initializer or doctor, clinical contract, risk
+A closed base-R DCF source catalog now declares its schema, common result and
+diagnostic contracts, exact project contracts, and the two minimal-project
+templates, with a temporary deterministic installed-projection proof.
+`rrpplatform` transactionally initializes an absent independent project and
+loads it from separate explicit software and project contexts, executing only
+its fixed trusted registration boundary and resolving exact structural
+producer/provider selections without invoking them; `rrpruntime` remains
+export-free. The repository has no root selector, persistent installed RRP
+distribution, project doctor, clinical contract, risk
 calculation, product, application, command-line interface, or deployment
 capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
@@ -90,7 +90,8 @@ This operation checks the closed source catalog/schema/contracts,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
-trusted project loading, exact structural selection, typed privacy-safe
+trusted project loading, transactional minimal-project initialization, exact
+structural selection, typed privacy-safe
 project/resource failures, and adversarial rejection behavior. It also
 checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
@@ -105,9 +106,9 @@ under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
-platform or support validity. Increments 4.A and 4.B are complete; the low-level
-loader is an internal technical interface, while project initialization,
-structured doctor behavior, and ordinary operator commands remain absent.
+platform or support validity. Increments 4.A–4.C are complete; the loader and
+initializer are internal technical interfaces, while structured project-doctor
+behavior and ordinary operator commands remain absent.
 
 ## License
 

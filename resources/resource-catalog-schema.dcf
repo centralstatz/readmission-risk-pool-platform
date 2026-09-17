@@ -14,7 +14,7 @@ Installed-Resource-Fields: Record-Type,Resource-ID,Resource-Class,Owner-Package,
 Resource-ID-Pattern: ^rrp[.][a-z0-9]+(?:[.][a-z0-9-]+)+$
 Resource-Classes: contract,default,template,documentation,static_application_asset
 Owner-Packages: rrpplatform,rrpruntime
-Resource-Formats: dcf
+Resource-Formats: dcf,r
 Status-Values: development_unpublished
 Unique-Fields: Resource-ID,Source-Path,Installed-Path
 Case-Folded-Path-Fields: Source-Path,Installed-Path

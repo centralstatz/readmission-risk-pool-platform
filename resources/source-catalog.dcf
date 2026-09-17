@@ -45,3 +45,19 @@ Owner-Package: rrpplatform
 Source-Path: resources/contracts/project-registration.dcf
 Installed-Path: resources/contracts/project-registration.dcf
 Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.template.project-manifest
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/rrp-project.dcf
+Installed-Path: resources/templates/project/rrp-project.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.template.project-registration
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/R/register.R
+Installed-Path: resources/templates/project/R/register.R
+Format: r

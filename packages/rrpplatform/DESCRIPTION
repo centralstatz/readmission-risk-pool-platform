@@ -9,7 +9,8 @@ Description: Establishes the main internal implementation package for the
     explicit software root, resolves declared resources by logical identity,
     reports resource validation through a common privacy-safe result, and
     loads one explicit independent project through strict project-manifest and
-    trusted-registration boundaries without executing selected components.
+    trusted-registration boundaries without executing selected components,
+    and transactionally initializes the smallest valid project.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues
