@@ -6,8 +6,10 @@ Authors@R: c(person("Alex", "Zajichek", email = "alexzajichek@gmail.com", role =
 Description: Provides dependency-light implementation-neutral Readmission Risk
     Pool runtime primitives. The current package admits or rejects the initial
     source-independent canonical bundle using strict identity, shape,
-    relationship, capability, and temporal rules without knowing project or
-    source implementation details.
+    relationship, capability, and temporal rules, then evaluates singular-
+    target eligibility and prepares one detached minimal episode state at the
+    admitted bundle cutoff without knowing project or source implementation
+    details.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

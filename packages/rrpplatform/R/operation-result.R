@@ -157,7 +157,8 @@ rrp_resource_failure_result <- function(condition) {
 rrp_validate_software_resources <- function(software_root) {
   tryCatch({
     catalog <- rrp_open_resource_catalog(software_root)
-    rrp_canonical_contracts(catalog)
+    canonical_contracts <- rrp_canonical_contracts(catalog)
+    rrp_runtime_contracts(catalog, canonical_contracts)
     rrp_project_manifest_contract(catalog)
     rrp_project_registration_contract(catalog)
     header <- catalog$catalog$header

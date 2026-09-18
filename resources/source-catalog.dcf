@@ -95,6 +95,22 @@ Installed-Path: resources/contracts/canonical/domains/terminal-event.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.target.readmission-risk
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/runtime/readmission-risk-target.dcf
+Installed-Path: resources/contracts/runtime/readmission-risk-target.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.episode-state
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/runtime/episode-state.dcf
+Installed-Path: resources/contracts/runtime/episode-state.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

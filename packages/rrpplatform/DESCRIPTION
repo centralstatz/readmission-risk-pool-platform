@@ -8,8 +8,8 @@ Description: Establishes the main internal implementation package for the
     runtime package. It opens validated installed-resource catalogs from an
     explicit software root, resolves declared resources by logical identity,
     reports resource validation through a common privacy-safe result,
-    normalizes installed canonical authority into exact runtime admission
-    context, loads one explicit independent project through strict
+    normalizes installed canonical and singular target/state authority into
+    exact runtime contexts, loads one explicit independent project through strict
     project-manifest and trusted-registration boundaries, executes its exact
     selected producer through a closed request/result boundary, delegates
     successful canonical admission to the runtime package, transactionally

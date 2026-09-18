@@ -182,7 +182,8 @@ canonical_contract_resources <- function() {
     ), collapse = ","),
     "Allowed-Specification-Kinds" = paste(c(
       "specification-envelope", "canonical-producer-contract",
-      "canonical-bundle-contract", "canonical-profile", "canonical-domain"
+      "canonical-bundle-contract", "canonical-profile", "canonical-domain",
+      "risk-target", "episode-state-contract"
     ), collapse = ","),
     "Specification-ID-Pattern" = "^rrp[.][a-z0-9]+(?:[.-][a-z0-9]+)+$",
     "Specification-Version-Pattern" = paste0(
@@ -386,6 +387,114 @@ canonical_contract_resources <- function() {
   })
 }
 
+runtime_contract_resources <- function() {
+  target <- c(
+    "Record-Type" = "specification", "Specification-Kind" = "risk-target",
+    "Specification-ID" = "rrp.risk-target.readmission-remaining-30-day",
+    "Specification-Version" = "0.1.0",
+    "Specification-Format-Version" = "1.0.0",
+    "Identity-Scope" = "platform", "Status" = "development_unpublished",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev", "Owner-Package" = "rrpruntime",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
+    "Population" = "all_admitted_profile_episodes",
+    "Event" = "first_canonical_readmission",
+    "Readmission-Plannedness" = "not_distinguished",
+    "Origin" = "discharge_time",
+    "Endpoint-Definition" = "discharge_plus_elapsed_seconds",
+    "Endpoint-Elapsed-Seconds" = "2592000",
+    "Endpoint-Inclusion" = "included",
+    "Eligible-As-Of-Interval" = "[D,W30)",
+    "Target-Interval" = "(t,W30]",
+    "Conditioning" = "alive_and_readmission_free_through_t",
+    "Information-Cutoff" = "occurred_and_available_through_t",
+    "Competing-Event" = "death",
+    "Equal-Time-Precedence" = "readmission",
+    "Output-Quantity" = "probability", "Output-Cardinality" = "one",
+    "Output-Minimum" = "0", "Output-Maximum" = "1",
+    "Target-Selection" = "prohibited",
+    "Eligibility-Failure-Codes" = paste(c(
+      "invalid_analytical_as_of", "analytical_as_of_mismatch",
+      "unknown_episode", "episode_before_discharge",
+      "target_horizon_exhausted", "episode_already_readmitted",
+      "episode_already_dead"
+    ), collapse = ","),
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+    "Executable-Content" = "prohibited"
+  )
+  state <- c(
+    "Record-Type" = "specification",
+    "Specification-Kind" = "episode-state-contract",
+    "Specification-ID" = "rrp.episode-state",
+    "Specification-Version" = "0.1.0",
+    "Specification-Format-Version" = "1.0.0",
+    "Identity-Scope" = "platform", "Status" = "development_unpublished",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev", "Owner-Package" = "rrpruntime",
+    "Target-ID" = target[["Specification-ID"]],
+    "Target-Version" = target[["Specification-Version"]],
+    "Canonical-Bundle-ID" = "rrp.canonical-bundle",
+    "Canonical-Bundle-Version" = "0.1.0",
+    "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
+    "Canonical-Profile-Version" = "0.1.0",
+    "Object-Class" = "rrp_episode_state,list",
+    "State-Fields" = paste(c(
+      "state_contract_id", "state_contract_version", "state_id", "target_id",
+      "target_version", "bundle_contract_id", "bundle_contract_version",
+      "bundle_instance_id", "project_id", "project_version",
+      "canonical_profile_id", "canonical_profile_version", "episode_id",
+      "as_of_time", "discharge_time", "target_window_end",
+      "elapsed_seconds_since_discharge", "remaining_seconds_through_w30",
+      "terminal_status"
+    ), collapse = ","),
+    "Timestamp-Fields" = "as_of_time,discharge_time,target_window_end",
+    "Timestamp-Representation" = "rfc3339_utc",
+    "Elapsed-Fields" = paste(c(
+      "elapsed_seconds_since_discharge", "remaining_seconds_through_w30"
+    ), collapse = ","),
+    "Elapsed-Unit" = "seconds",
+    "Terminal-Status-Value" = "none_available_through_as_of",
+    "State-ID-Prefix" = "rrp.state.",
+    "State-ID-Algorithm" = "dual_modular_hash_v1",
+    "State-ID-Inputs" = paste(c(
+      "bundle_contract_id", "bundle_contract_version", "bundle_instance_id",
+      "project_id", "project_version", "canonical_profile_id",
+      "canonical_profile_version", "episode_id", "as_of_time",
+      "discharge_time", "target_window_end", "target_id", "target_version",
+      "state_contract_id", "state_contract_version"
+    ), collapse = ","),
+    "Expected-Context-Fields" = paste(c(
+      "product_id", "development_version", "target_id", "target_version",
+      "state_contract_id", "state_contract_version", "bundle_contract_id",
+      "bundle_contract_version", "canonical_profile_id",
+      "canonical_profile_version", "target_event", "conditioning",
+      "endpoint_elapsed_seconds", "eligible_as_of_start",
+      "eligible_as_of_end", "target_interval", "information_cutoff",
+      "competing_event", "equal_time_precedence", "target_selection",
+      "terminal_status"
+    ), collapse = ","),
+    "Construction" = "eligible_only", "Detached-Plain-Value" = "required",
+    "Reference-Bearing-Values" = "prohibited",
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+    "Executable-Content" = "prohibited"
+  )
+  list(
+    readmission_risk_target = list(
+      id = "rrp.target.readmission-risk", owner = "rrpruntime",
+      source_path = "resources/contracts/runtime/readmission-risk-target.dcf",
+      installed_path = "resources/contracts/runtime/readmission-risk-target.dcf",
+      document = target
+    ),
+    episode_state = list(
+      id = "rrp.contract.episode-state", owner = "rrpruntime",
+      source_path = "resources/contracts/runtime/episode-state.dcf",
+      installed_path = "resources/contracts/runtime/episode-state.dcf",
+      document = state
+    )
+  )
+}
+
 software_contract_resources <- function() {
   resources <- list(
     diagnostic = list(
@@ -554,7 +663,7 @@ software_contract_resources <- function() {
       )
     )
   )
-  c(resources, canonical_contract_resources())
+  c(resources, canonical_contract_resources(), runtime_contract_resources())
 }
 
 validate_software_contract_resources <- function(authority, root, projection) {
@@ -1062,6 +1171,24 @@ validate_resource_authority <- function(root, projection = FALSE) {
   )
   records <- read_dcf_records(file.path(root, catalog_relative))
   authority <- validate_catalog_records(records, schema, root, projection)
+  actual_ids <- vapply(
+    authority$entries, `[[`, character(1L), "Resource-ID"
+  )
+  expected_ids <- c(
+    "rrp.contract.resource-catalog",
+    unname(vapply(
+      software_contract_resources(), `[[`, character(1L), "id"
+    )),
+    "rrp.template.project-manifest", "rrp.template.project-registration"
+  )
+  resource_require(
+    length(actual_ids) == 15L && identical(
+      sort(actual_ids, method = "radix"),
+      sort(expected_ids, method = "radix")
+    ),
+    "resource_inventory",
+    "The software resource inventory must contain exactly 15 known entries."
+  )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
   authority
@@ -1432,6 +1559,29 @@ run_resource_contract_validation <- function() {
     validate_resource_authority(root, projection = FALSE)
   }, "terminal_event_contract_fields")
 
+  root <- fixture("unsupported-readmission-risk-target")
+  target_path <- file.path(
+    root, "resources", "contracts", "runtime",
+    "readmission-risk-target.dcf"
+  )
+  records <- read_dcf_records(target_path)
+  records[[1L]][["Target-Interval"]] <- "(t,t+1day]"
+  write_dcf_records(records, target_path)
+  expect_resource_failure("unsupported readmission risk target", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "readmission_risk_target_contract_identity")
+
+  root <- fixture("unknown-episode-state-field")
+  state_path <- file.path(
+    root, "resources", "contracts", "runtime", "episode-state.dcf"
+  )
+  records <- read_dcf_records(state_path)
+  records[[1L]][["Unknown-Field"]] <- "not-allowed"
+  write_dcf_records(records, state_path)
+  expect_resource_failure("unknown episode-state field", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "episode_state_contract_fields")
+
   drift_projection <- file.path(work_root, "projection-byte-drift")
   project_resource_authority(repository_root, drift_projection)
   schema_path <- file.path(
@@ -1474,6 +1624,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "project-initializer.R"),
       file.path("R", "project-loader.R"),
       file.path("R", "resource-catalog.R"),
+      file.path("R", "runtime-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
       file.path("man", "rrp_load_project.Rd"),
       file.path("man", "rrp_open_resource_catalog.Rd"),
@@ -1489,14 +1640,18 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-initializer.R"),
       file.path("tests", "project-loader.R"),
       file.path("tests", "producer-execution.R"),
-      file.path("tests", "resource-access.R")
+      file.path("tests", "resource-access.R"),
+      file.path("tests", "runtime-contracts.R")
     )
   } else {
     files <- c(
       files,
       file.path("R", "canonical-admission.R"),
+      file.path("R", "episode-state.R"),
       file.path("man", "rrp_admit_canonical_bundle.Rd"),
-      file.path("tests", "canonical-admission.R")
+      file.path("man", "rrp_prepare_episode_state.Rd"),
+      file.path("tests", "canonical-admission.R"),
+      file.path("tests", "episode-state.R")
     )
   }
   files
@@ -1652,7 +1807,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_resource_path", "rrp_validate_project",
       "rrp_validate_software_resources"
     )
-  } else "rrp_admit_canonical_bundle"
+  } else c("rrp_admit_canonical_bundle", "rrp_prepare_episode_state")
   require_true(
     identical(sort(namespace$exports, method = "radix"), expected_exports),
     paste0(
@@ -1679,7 +1834,10 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_validate_software_resources)",
       "import(rrpruntime)"
     )
-  } else "export(rrp_admit_canonical_bundle)"
+  } else c(
+    "export(rrp_admit_canonical_bundle)",
+    "export(rrp_prepare_episode_state)"
+  )
   require_true(
     identical(namespace_directives, expected_directives),
     paste0(
@@ -1875,7 +2033,10 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_resource_path\", \"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
     )
-  } else "\"rrp_admit_canonical_bundle\""
+  } else paste0(
+    "c(\"rrp_admit_canonical_bundle\", ",
+    "\"rrp_prepare_episode_state\")"
+  )
   expression <- paste0(
     "library_root <- ",
     encodeString(normalizePath(library_root, mustWork = TRUE), quote = "\""),
@@ -1951,6 +2112,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     readmission_profile = "resources/contracts/canonical/profiles/readmission.dcf",
     discharge_episode = "resources/contracts/canonical/domains/discharge-episode.dcf",
     terminal_event = "resources/contracts/canonical/domains/terminal-event.dcf",
+    readmission_risk_target = "resources/contracts/runtime/readmission-risk-target.dcf",
+    episode_state = "resources/contracts/runtime/episode-state.dcf",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R"
   )
@@ -2002,6 +2165,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["discharge_episode"]], quote = "\""),
     ", terminal_event = ",
     encodeString(expected_copies[["terminal_event"]], quote = "\""),
+    ", readmission_risk_target = ",
+    encodeString(expected_copies[["readmission_risk_target"]], quote = "\""),
+    ", episode_state = ",
+    encodeString(expected_copies[["episode_state"]], quote = "\""),
     ", project_manifest_template = ",
     encodeString(expected_copies[["project_manifest_template"]], quote = "\""),
     ", project_registration_template = ",
@@ -2033,6 +2200,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "readmission_profile = 'rrp.profile.readmission', ",
     "discharge_episode = 'rrp.domain.discharge-episode', ",
     "terminal_event = 'rrp.domain.terminal-event'); ",
+    "ids <- c(ids, readmission_risk_target = 'rrp.target.readmission-risk', ",
+    "episode_state = 'rrp.contract.episode-state'); ",
     "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
     "project_registration_template = 'rrp.template.project-registration'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
@@ -2053,6 +2222,14 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'readmission_profile', 'discharge_episode', 'terminal_event')), ",
     "identical(canonical_contracts$canonical_producer[['Canonical-Profile-ID']], ",
     "'rrp.canonical-profile.readmission')); ",
+    "runtime_contracts <- getFromNamespace('rrp_runtime_contracts', ",
+    "'rrpplatform')(catalog, canonical_contracts); context <- getFromNamespace(",
+    "'rrp_episode_state_expected_context', 'rrpplatform')(",
+    "runtime_contracts, canonical_contracts); stopifnot(",
+    "identical(names(runtime_contracts), c('readmission_risk_target', ",
+    "'episode_state')), identical(context$target_id, ",
+    "'rrp.risk-target.readmission-remaining-30-day'), ",
+    "identical(context$endpoint_elapsed_seconds, 2592000)); ",
     "success <- rrp_validate_software_resources(root); ",
     "stopifnot(identical(class(success), c('rrp_operation_result', 'list')), ",
     "identical(names(success), c('operation_id', 'status', 'value', ",
@@ -2341,8 +2518,8 @@ validate_installed_producer_execution <- function(
 }
 
 validate_packages <- function() {
-  cat("RRP local package, project, and canonical-handoff validation\n")
-  cat("===========================================================\n")
+  cat("RRP local package, project, canonical, and state validation\n")
+  cat("=============================================================\n")
 
   run_resource_contract_validation()
 
@@ -2454,11 +2631,13 @@ validate_packages <- function() {
   validate_installed_project_initialization(library_root, work_root)
   validate_installed_producer_execution(library_root, work_root, environment)
 
-  cat("\nResult: PASS (package, project, and canonical-handoff foundation)\n")
+  cat("\nResult: PASS (package, project, canonical, and state foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "canonical contract relationships, dependency-light canonical admission, ",
+    "canonical and target/state contract relationships, dependency-light ",
+    "canonical admission, exact eligibility and immutable episode-state ",
+    "construction, ",
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and structural ",
     "provider selection, transactional minimal-project initialization, ",

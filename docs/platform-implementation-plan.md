@@ -3,7 +3,7 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–5 are accepted and complete. Stage
-6 is detailed and accepted for implementation; Increment 6.A is the next task.
+6 is in progress: Increment 6.A is complete and Increment 6.B is the next task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -2373,8 +2373,8 @@ preserve this boundary.
 
 ## Stage 6 — Singular target, runtime, and provider execution
 
-**Status:** detailed and accepted for implementation on 2026-09-18. No Stage 6
-source implementation has begun. This section authorizes only Increments
+**Status:** detailed and accepted for implementation on 2026-09-18. Increment
+6.A is complete; Increment 6.B is next. This section authorizes only Increments
 6.A–6.C below.
 
 ### Objective and responsibilities
@@ -2843,6 +2843,8 @@ project invocation; and installed/project provider substitution belongs with
 the final orchestration proof.
 
 ### Increment 6.A — Singular target authority, eligibility, and immutable episode state
+
+**Implementation status:** complete on 2026-09-18. Increment 6.B is next.
 
 **Objective:** make the one RRP risk target and its eligibility/state semantics
 versioned software authority, then construct one detached state from admitted

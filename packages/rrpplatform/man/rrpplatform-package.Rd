@@ -9,11 +9,12 @@ its one-way dependency on the focused runtime package. It provides explicit-
 root installed-resource catalog opening, logical resource resolution, and a
 minimal common operation-result boundary with privacy-safe diagnostics. It
 also owns strict project-manifest and trusted-registration validation, one
-exact installed canonical specification authority, an explicit project-loading
-boundary, and transactional minimal-project initialization plus a bounded
-structured project doctor. It can normalize installed canonical authority into
-the exact context consumed by the runtime admission primitive and orchestrate
-one selected project producer through that boundary.
+exact installed canonical specification authority, the singular risk-target
+and episode-state authorities, an explicit project-loading boundary, and
+transactional minimal-project initialization plus a bounded structured project
+doctor. It can normalize installed authority into the exact contexts consumed
+by runtime admission and episode-state preparation and orchestrate one selected
+project producer through the canonical boundary.
 }
 \details{
 The package imports the \pkg{rrpruntime} namespace and exports exactly
@@ -30,7 +31,8 @@ gate, and creates no state or dependency directories. Producer execution
 invokes exactly the selected producer once with a closed request, validates its
 closed result, and delegates its candidate to the imported runtime admission
 primitive. It never invokes the selected provider, retries, initializes state,
-or persists output. No risk calculation or state behavior exists.
+or persists output. It loads and cross-validates target/state authority but
+does not yet expose a risk operation or invoke a provider.
 }
 \author{RRP maintainers}
 \keyword{internal}

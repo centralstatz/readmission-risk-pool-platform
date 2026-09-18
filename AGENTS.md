@@ -69,14 +69,16 @@ Rscript --vanilla tools/validate-packages.R
 
 It proves the closed source-resource catalog, temporary deterministic installed
 projection, explicit-root installed-package access, common resource-validation
-result and privacy-safe diagnostic behavior, the exact canonical specification
-family and relationships, strict 0.2.0 project contracts, explicit trusted
+result and privacy-safe diagnostic behavior, the exact canonical and singular
+target/state specification families and relationships, strict 0.2.0 project
+contracts, explicit trusted
 project loading, transactional minimal-project initialization, exact semantic
 producer and structural provider selection, loader-backed structured project diagnosis, copied-
 project portability, selected producer execution, closed request/result
 validation, two distinct fictional hospital mappings, exact one-call and zero-
 provider behavior, canonical admission delegation, package topology, one-way
-dependency, dependency-light canonical admission, exact export posture, builds,
+dependency, dependency-light canonical admission, exact eligibility and
+immutable episode-state construction, exact export posture, builds,
 isolated install/load, and package-
 native checks. No root selector, dependency environment, provider/risk
 operation, or release procedure exists on the clean line. The
@@ -96,12 +98,15 @@ Committed push run `35221028009`, job `105200921084`, succeeded for revision
 `f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`, completing Stage 4 after final
 reconciliation. Increment 5.A adds the installed canonical contract authority,
 semantic producer declarations, and the 0.2.0 project line without invoking a
-component. Increment 5.B adds the sole `rrpruntime` export for pure canonical
+component. Increment 5.B adds the first `rrpruntime` export for pure canonical
 admission without invoking project code. Increment 5.C adds the eighth
 `rrpplatform` export for exact selected-producer execution and the full local
 canonical handoff proof. Committed push run `35288890797`, job `105427207401`,
 succeeded for revision `01b0d564ecbe55830542c10cfcb77d4d72366d7b`, completing
-Stage 5 after final reconciliation. Stage 6 is detailed and accepted but
-unimplemented. The next task is Increment 6.A — Singular Target Authority,
-Eligibility, and Immutable Episode State. Do not begin Increment 6.B or later
-work without explicit authorization.
+Stage 5 after final reconciliation. Increment 6.A adds the cataloged singular
+readmission-risk target and episode-state contract, exact installed authority
+loading, and the second `rrpruntime` export for pure eligibility and detached
+immutable episode-state construction. Stage 6 remains in progress. The next
+task is Increment 6.B — Semantic Provider Contract and Standard
+Request/Estimate Boundary. Do not begin Increment 6.B or later work without
+explicit authorization.

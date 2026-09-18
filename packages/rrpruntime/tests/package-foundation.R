@@ -9,5 +9,10 @@ stopifnot(
   is.null(description[["Imports"]]),
   is.null(description[["Suggests"]]),
   is.null(description[["LinkingTo"]]),
-  identical(getNamespaceExports("rrpruntime"), "rrp_admit_canonical_bundle")
+  identical(
+    sort(getNamespaceExports("rrpruntime")),
+    c("rrp_admit_canonical_bundle", "rrp_prepare_episode_state")
+  ),
+  is.function(rrp_admit_canonical_bundle),
+  is.function(rrp_prepare_episode_state)
 )

@@ -15,8 +15,8 @@ proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2,
 Stage 3, Stage 4, and Stage 5 push evidence. Stages 1–5 are accepted and
-complete; Stage 6 is detailed and accepted but remains unimplemented, and the
-next task is Increment 6.A only.
+complete; Stage 6 is in progress, Increment 6.A is complete locally, and the
+next task is Increment 6.B only.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -121,6 +121,7 @@ closed to the following present paths:
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
 | `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities plus assembly of their exact runtime admission context. |
+| `packages/rrpplatform/R/runtime-contracts.R` | Internal exact loading and canonical cross-validation of the singular target and episode-state authorities plus assembly of the closed runtime state context. |
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict 0.2.0 project-manifest and kind-specific in-memory registration-result validation. |
 | `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe template rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
 | `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
@@ -133,16 +134,20 @@ closed to the following present paths:
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
 | `packages/rrpplatform/tests/canonical-contracts.R` | Base-R exact-field, installed-loading, relationship, adversarial, and direct runtime-admission integration evidence for the canonical specification family. |
+| `packages/rrpplatform/tests/runtime-contracts.R` | Base-R exact-field, installed-loading, cross-contract, adversarial, and direct episode-state integration evidence for the target/state authority. |
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R exact-inventory, rendering, create-only ownership, staging/rollback, portability, privacy, and non-invocation evidence for project initialization. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
 | `packages/rrpplatform/tests/producer-execution.R` | Base-R two-mapping, request/result, exact invocation, zero-provider, copied-project, process-restoration, canonical-admission, privacy, failure, and non-mutation evidence for producer handoff. |
-| `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and exact one-export namespace. |
+| `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and exact two-export namespace. |
 | `packages/rrpruntime/R/canonical-admission.R` | Pure closed-value canonical candidate validation, exact identity/capability agreement, domain/temporal rules, typed safe failures, and detached admitted-bundle construction. |
+| `packages/rrpruntime/R/episode-state.R` | Pure admitted-bundle revalidation, exact as-of and eligibility enforcement, terminal precedence, deterministic state identity, typed safe failures, and detached immutable episode-state construction. |
 | `packages/rrpruntime/man/rrp_admit_canonical_bundle.Rd` | Focused internal API contract for the exact candidate, expected context, admitted type, and failure boundary. |
+| `packages/rrpruntime/man/rrp_prepare_episode_state.Rd` | Focused internal API contract for exact analytical cutoff, eligibility, state construction, and typed failure behavior. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Runtime-package orientation and current dependency-light responsibility. |
 | `packages/rrpruntime/tests/canonical-admission.R` | Base-R positive, adversarial, identity, relationship, temporal, privacy, and detached-copy evidence for canonical admission. |
+| `packages/rrpruntime/tests/episode-state.R` | Base-R boundary, terminal, multi-episode, cutoff, immutability, identity, privacy, and adversarial evidence for episode-state preparation. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and exact export posture. |
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
@@ -150,8 +155,9 @@ closed to the following present paths:
 | `resources/contracts/project-manifest.dcf` and `resources/contracts/project-registration.dcf` | Machine-readable 0.2.0 authorities for the strict project manifest and kind-specific trusted-registration result. |
 | `resources/contracts/canonical/specification-envelope.dcf` and `resources/contracts/canonical/canonical-producer.dcf` | Exact installed specification envelope and platform-owned semantic producer contract. |
 | `resources/contracts/canonical/canonical-bundle.dcf`, `resources/contracts/canonical/profiles/readmission.dcf`, and `resources/contracts/canonical/domains/*.dcf` | Runtime-owned canonical bundle, initial readmission profile, and discharge-episode/terminal-event semantic authorities. |
+| `resources/contracts/runtime/readmission-risk-target.dcf` and `resources/contracts/runtime/episode-state.dcf` | Runtime-owned singular target and immutable eligible episode-state semantic authorities. |
 | `resources/templates/project/rrp-project.dcf` and `resources/templates/project/R/register.R` | Cataloged software-owned templates for exactly the two files in a minimal initialized 0.2.0 project, including an honest unavailable producer declaration. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection and canonical contract family, runtime canonical admission, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, transactional minimal-project initialization, and installed selected-producer handoff. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection, canonical and target/state contract families, runtime admission and episode-state preparation, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, transactional minimal-project initialization, and installed selected-producer handoff. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -209,7 +215,8 @@ owner is explicit. Keep these future dependency responsibilities distinct:
 
 The `rrpruntime` package uses only base R package machinery, has no `Imports`,
 `Suggests`, or `LinkingTo`, and exports exactly
-`rrp_admit_canonical_bundle()`. `rrpplatform` imports only
+`rrp_admit_canonical_bundle()` and `rrp_prepare_episode_state()`.
+`rrpplatform` imports only
 `rrpruntime` and exports exactly `rrp_execute_producer()`,
 `rrp_initialize_project()`,
 `rrp_load_project()`,
@@ -310,10 +317,10 @@ with the complete local handoff proof in 5.C. Committed push run `35288890797`,
 job `105427207401`, succeeded for revision
 `01b0d564ecbe55830542c10cfcb77d4d72366d7b`; final reconciliation found no
 deviation from True North or the architecture. Stages 1–5 are accepted and
-complete. Stage 6 is detailed and accepted for implementation but no Stage 6
-source exists. The next task is Increment 6.A — Singular Target Authority,
-Eligibility, and Immutable Episode State; later Stage 6 increments remain
-unauthorized.
+complete. Stage 6 is in progress: Increment 6.A added the singular target and
+episode-state authorities plus dependency-light eligibility and immutable state
+construction. The next task is Increment 6.B — Semantic Provider Contract and
+Standard Request/Estimate Boundary; later Stage 6 work remains unauthorized.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

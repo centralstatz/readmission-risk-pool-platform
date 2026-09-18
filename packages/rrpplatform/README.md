@@ -7,7 +7,8 @@ Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 The package imports `rrpruntime` to retain the accepted one-way internal-package
 dependency. It owns strict validation of the cataloged `rrp.project@0.2.0`
 manifest and `rrp.project-registration@0.2.0` registration-result structures,
-the installed canonical specification family, one explicit project-loading
+the installed canonical specification family, the singular risk-target and
+episode-state authorities, one explicit project-loading
 boundary, and transactional minimal-project initialization from cataloged
 software-owned templates. Contract parsers, registration evaluation,
 rendering, staging, path checks, composition, resolution, producer request and
@@ -89,12 +90,15 @@ provider remains a non-executable structural placeholder. The declared
 `extensions/library` and `state` locations remain absent.
 
 The returned project context is a validated in-process snapshot, not a mutable
-or serialized project session. The package does not yet provide root selection,
+or serialized project session. It validates the target/state authorities
+against canonical contracts and assembles the exact closed context consumed by
+runtime state preparation without adding a platform export. The package does
+not yet provide root selection,
 an ordinary operator command, dependency restoration, state creation,
 provider execution, risk calculation, runtime history, products, applications,
 installation, or deployment. It normalizes installed canonical authority into
-the exact context accepted by `rrpruntime` and invokes its sole admission
-export only after one selected project producer returns a conforming result.
+the exact context accepted by `rrpruntime` and invokes its admission export
+only after one selected project producer returns a conforming result.
 Execution performs no retry, scheduling, state initialization, persistence, or
 retention.
 The result/diagnostic foundation is deliberately

@@ -2459,3 +2459,112 @@ resource, package behavior, provider, operation, or test exists yet.
 **Next task:** implement only Increment 6.A — Singular Target Authority,
 Eligibility, and Immutable Episode State. Do not begin Increment 6.B, Increment
 6.C, Stage 7, or Stage 6 acceptance.
+
+## Stage 6 / Increment 6.A — Singular target authority, eligibility, and immutable episode state — 2026-09-18
+
+Increment 6.A is complete. The closed source-resource authority now contains
+exactly 15 entries. Two new runtime-owned DCF specifications establish the one
+nonselectable target
+`rrp.risk-target.readmission-remaining-30-day@0.1.0` and the detached state
+contract `rrp.episode-state@0.1.0`. The specification envelope was extended
+only for the two realized kinds. The target fixes the population, first
+canonical readmission event, discharge origin, exact 2,592,000-second included
+endpoint, eligible interval `[D,W30)`, target interval `(t,W30]`, dual
+occurred-and-available cutoff, death competition, readmission equal-time
+precedence, one probability quantity, prohibited target selection, and stable
+eligibility failure codes. The state contract fixes its exact class, fields,
+UTC timestamp representation, elapsed quantities, deterministic identity
+inputs, expected context, eligible-only construction, and reference-free
+detached value requirement.
+
+`rrpplatform` now loads both resources exclusively through the validated
+explicit-root catalog, requires their exact fields and identities, and checks
+their target, state, canonical-bundle, canonical-profile, 30-day endpoint, and
+terminal-event relationships. It assembles one closed plain-value runtime
+context from those installed authorities. Software-resource validation invokes
+this relationship check. No platform export was added; its exact public
+surface remains eight functions.
+
+`rrpruntime` remains base-R-only with no `Imports`, `Suggests`, or `LinkingTo`
+and now exports exactly two functions. The new
+`rrp_prepare_episode_state(admitted_bundle, episode_id, as_of_time,
+expected_context)` revalidates the admitted canonical boundary, requires the
+analytical time and bundle cutoff to denote exactly the same instant, selects
+exactly one episode, verifies its target endpoint, evaluates eligibility, and
+constructs one detached `c("rrp_episode_state", "list")` value. Discharge is
+eligible; `W30` and later are not. A readmission or death whose occurrence and
+availability are admitted through `t` prevents construction, and a same-time
+readmission/death tie returns the readmission failure. Valid states contain
+only governed contract, target, bundle, project, profile, episode, normalized
+UTC timing, elapsed/remaining seconds, deterministic state identity, and the
+controlled nonterminal status. They contain no patient or encounter identity,
+terminal row, full bundle, producer/mapping/source fact, arbitrary feature,
+provider, run, history, path, connection, or reference-bearing value.
+
+Expected failures inherit from `rrp_runtime_error` and carry one stable code,
+`NULL` call, and fixed bounded privacy-safe message. The target codes are
+`invalid_analytical_as_of`, `analytical_as_of_mismatch`, `unknown_episode`,
+`episode_before_discharge`, `target_horizon_exhausted`,
+`episode_already_readmitted`, and `episode_already_dead`; invalid caller
+context or a corrupted admitted value fail separately at the runtime boundary.
+The canonical-admission implementation produces ordinary default row names in
+its detached result, while original candidate admission accepts compact row
+names. Revalidation therefore first requires exact ordinary default row names,
+normalizes only a private validation copy, and reuses canonical admission. It
+does not weaken or mutate either input boundary.
+
+Historical reconnaissance inspected `v0.1.0` runtime `utils.R`,
+`eligibility.R`, and `state.R`; runtime unit and Phase 4 foundation tests; and
+the former eligibility-result and episode-state contracts. Explicit-offset
+parsing, instant comparison, eligibility-before-state sequencing, fixed cutoff,
+deterministic identity intent, and boundary-focused temporal fixtures were
+adapted. Shortened horizons, daily-hazard semantics, root terminal timestamps,
+baseline/generic feature state, run identity, YAML loading, repository-root
+orchestration, and persistence were rejected. Current Stage 5 admission,
+plain-value, timestamp, safe-condition, and detachment mechanics were reused
+directly where their ownership remained correct.
+
+Package-native evidence covers state construction at discharge and one second
+before `W30`; rejection at and after `W30`; the otherwise unreachable
+before-discharge eligibility guard; readmission and death before or exactly at
+`t`; equal-time precedence; late availability across separately admitted
+cutoffs; multi-episode isolation and unknown selection; exact-offset
+equivalence and earlier/later mismatch; malformed and attributed input;
+deterministic identity; exact type/field/timing shape; input nonmutation and
+post-construction detachment; reference rejection; and fixed safe errors.
+Platform tests cover exact installed loading, closed context assembly,
+cross-resource agreement, direct admitted-bundle-to-state integration, unknown
+fields, unsupported versions, and incompatible references. The maintainer
+validator also proves exact 15-resource projection and byte equality, the
+two-export/eight-export package posture, one-way dependency, builds, isolated
+installation/loading, and package-native checks.
+
+Local implementation evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks
+  passed with zero issues;
+- focused isolated installation plus the runtime episode-state and platform
+  runtime-contract tests: passed;
+- `Rscript --vanilla tools/validate-packages.R`: the complete inherited and
+  Increment 6.A resource, package, project, canonical, and state matrix passed,
+  including both source builds and exact `R CMD check --no-manual` status `OK`;
+  and
+- `git diff --check`: passed, with no generated archive, check directory,
+  temporary library, projected root, or other validation output retained in
+  repository source.
+
+No discrepancy from Platform True North, Platform Architecture, or the
+accepted 6.A plan was found. No provider declaration, request, estimate,
+project-contract bump, provider callable, transparent provider, platform risk
+operation, run identity, state write, persistence, or Stage 6 acceptance was
+introduced.
+
+**Current implementation state:** Stages 1–5 remain accepted and complete.
+Increment 6.A is complete; Stage 6 remains in progress. Dependency-light
+runtime can decide eligibility and construct the exact immutable state for one
+admitted episode at the bundle's authoritative as-of instant, but no provider
+can receive a request.
+
+**Next task:** implement only Increment 6.B — Semantic Provider Contract and
+Standard Request/Estimate Boundary. Do not begin Increment 6.C, Stage 7, or
+Stage 6 acceptance.
