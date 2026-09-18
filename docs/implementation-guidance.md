@@ -14,9 +14,9 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2,
-Stage 3, and Stage 4 push evidence. Stages 1–4 are accepted and complete;
-Stage 5 is in progress and its three implementation increments are complete;
-the next separate task is formal Stage 5 acceptance and reconciliation.
+Stage 3, Stage 4, and Stage 5 push evidence. Stages 1–5 are accepted and
+complete; Stage 6 has not begun, and the next separate task is to detail and
+accept it before source implementation.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -304,11 +304,14 @@ project proof. Stage 4 closed at revision
 `f5c1fb0db47e9154b99e133a8f553bee8ea2aa16` after hosted push run
 `35221028009`, job `105200921084`, succeeded and final reconciliation found no
 deviation from True North or the architecture. Stage 5 — Canonical Handoff and
-Producer Boundary is detailed and accepted. Increment 5.A established its
-semantic authority and producer declaration; Increment 5.B established pure
-runtime canonical admission; and Increment 5.C established selected producer
-execution and the complete local handoff proof. The next task is formal Stage 5
-acceptance and reconciliation; Stage 6 work is not authorized.
+Producer Boundary established semantic authority and producer declaration in
+5.A, pure runtime canonical admission in 5.B, and selected producer execution
+with the complete local handoff proof in 5.C. Committed push run `35288890797`,
+job `105427207401`, succeeded for revision
+`01b0d564ecbe55830542c10cfcb77d4d72366d7b`; final reconciliation found no
+deviation from True North or the architecture. Stages 1–5 are accepted and
+complete. The next task is to detail and accept Stage 6; its source work is not
+authorized.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

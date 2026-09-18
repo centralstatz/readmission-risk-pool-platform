@@ -123,10 +123,11 @@ completed successfully for the complete Stage 3 revision, so Stages 1–3 are
 accepted and complete. This narrow hosted evidence does not establish broader
 platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
-The initializer, loader, and doctor are internal technical interfaces; ordinary
-operator commands remain absent. Stage 5 is in progress: its three
-implementation increments are complete, and formal Stage 5 acceptance and
-reconciliation remains a separate next task.
+The initializer, loader, doctor, and producer operation are internal technical
+interfaces; ordinary operator commands remain absent. The complete Stage 5
+revision passed the same hosted workflow and has been formally accepted, so
+Stages 1–5 are complete. Stage 6 has not begun; the next task is to detail and
+accept it before source implementation.
 
 ## License
 

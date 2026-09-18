@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–4 are accepted and complete, and
-Stage 5 is in progress under its accepted detail. Increments 5.A–5.C are
-complete; formal Stage 5 acceptance and reconciliation is the next task.
+**Status:** authoritative roadmap; Stages 1–5 are accepted and complete. Stage
+6 remains high-level and is the next stage to detail and accept before source
+implementation.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,10 +68,10 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 5 is the
-current detailed and accepted stage; completed Stage 1–4 detail remains as
-implementation lineage. Stage 6 remains high-level until its separate
-planning task. After a stage is implemented:
+Only the current stage is decomposed into accepted increments. Completed Stage
+1–5 detail remains as implementation lineage. Stage 6 is the next planning
+stage and remains high-level until its separate detailing and acceptance task.
+After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -1690,10 +1690,9 @@ own stages.
 
 ## Stage 5 — Canonical handoff and producer boundary
 
-**Status:** detailed and accepted for implementation on 2026-09-17. Increments
-5.A–5.C are complete; Stage 5 remains in progress pending its separate formal
-acceptance and reconciliation. This section authorizes only the three Stage 5
-increments below.
+**Status:** accepted and complete on 2026-09-17. Increments 5.A–5.C, committed
+hosted evidence, and formal acceptance/reconciliation are complete. This
+section records only the three accepted Stage 5 increments.
 
 ### Objective
 
@@ -2126,7 +2125,7 @@ operation executes a producer yet.
 ### Increment 5.C — Selected producer execution and canonical handoff proof
 
 **Implementation status:** complete on 2026-09-17; formal Stage 5 acceptance
-and reconciliation is next.
+and reconciliation subsequently completed successfully.
 
 **Objective:** execute exactly the selected project producer through the closed
 request/result contract, admit its successful candidate, and prove hospital-
@@ -2312,6 +2311,13 @@ Stage 5 is complete only when:
 After implementation and committed hosted evidence pass, reconcile the
 realized boundary with True North and Platform Architecture and record any
 deviation. Stage acceptance is a lifecycle action, not Increment 5.D.
+
+**Acceptance result:** accepted and complete on 2026-09-17 at committed
+revision `01b0d564ecbe55830542c10cfcb77d4d72366d7b`. Read-only hosted push run
+`35288890797`, job `105427207401`, completed successfully for that exact
+revision. Formal reconciliation found all 22 criteria satisfied and no
+deviation from Platform True North or Platform Architecture. Stage 6 remains
+unimplemented and must be separately detailed and accepted before source work.
 
 ### Plain-language exit state
 

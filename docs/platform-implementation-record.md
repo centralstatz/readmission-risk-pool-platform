@@ -2239,3 +2239,73 @@ has not yet undergone formal acceptance and reconciliation.
 
 **Next task:** perform only formal Stage 5 acceptance and reconciliation. Do not
 begin Stage 6 without separate authorization.
+
+## Stage 5 acceptance and reconciliation — 2026-09-17
+
+Formal acceptance evaluated the complete committed Stage 5 baseline
+`01b0d564ecbe55830542c10cfcb77d4d72366d7b`, containing accepted Increments
+5.A–5.C. Public GitHub Actions evidence confirms that read-only
+`package-foundation` push run `35288890797`, job `105427207401`, completed
+successfully for that exact `main` revision.
+
+The assembled boundary satisfies all 22 accepted Stage 5 criteria. Installed,
+versioned, closed DCF resources own the canonical envelope, producer, bundle,
+profile, and two domain contracts. The project manifest, API, and registration
+contracts agree at `0.2.0`; unsupported structural `0.1.0` projects fail
+explicitly. Initialization remains a two-file, inert-provider skeleton. Trusted
+loading validates the selected producer declaration before execution. The one
+supported operation constructs a closed request, invokes exactly the selected
+hospital producer once, validates exact result identity, and delegates the
+single candidate to dependency-light runtime admission.
+
+Reconciliation against Platform True North and Platform Architecture found the
+boundary both sufficient and minimal. Two materially different temporary
+hospital mappings reach the same generic operation and canonical admission
+path; copied-project evidence proves project-root portability. Generic package
+source, manuals, and resources contain no hospital source vocabulary or
+producer-identity branch. The admitted profile is deliberately small and
+readmission-specific rather than a generic EHR model. Admission retains the
+source-independent episode and dual-time terminal facts that Stage 6 can use
+without reopening hospital mapping. Selected-provider structure remains inert,
+with instrumented proof of zero provider calls.
+
+Package posture remains exact: `rrpruntime` requires only R, imports no package,
+and exports only `rrp_admit_canonical_bundle()`; `rrpplatform` imports only
+`rrpruntime` and exports eight interfaces, with
+`rrp_execute_producer()` the only Stage 5 addition. Producer execution and
+admission write no project state or other persistent output. Controlled
+failures remain bounded and diagnostics exclude raw source, canonical values,
+paths, configuration, credentials, connections, SQL, and arbitrary exception
+text.
+
+No abstraction exists only to preserve historical structure, and no accepted
+Stage 5 requirement remains partially implemented. No acceptance-blocking or
+nonblocking reconciliation defect was found. Optional source conveniences,
+including a future SQL-oriented mapping layer and broader adopter usability,
+remain future usability work rather than defects. Target/eligibility/provider
+execution belongs to Stage 6; history/persistence and all later product,
+application, CLI, distribution, deployment, and release behavior remain
+intentionally deferred.
+
+Closeout evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all repository-foundation
+  checks passed with zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: the complete installed
+  resource, package, independent-project, canonical admission, two-hospital,
+  copied-project, build, isolated install/load, and strict package-check matrix
+  passed; and
+- `git diff --check`: passed, with no generated validation artifact retained.
+
+**Acceptance decision:** Stage 5 is accepted and complete. The plain-language
+exit state is realized: a project-selected producer can submit
+source-independent discharge episodes and dual-time readmission/death evidence
+through a versioned canonical boundary, while RRP still does not construct a
+risk request, invoke a provider, calculate risk, or retain operational state.
+
+**Current implementation state:** Stages 1–5 are accepted and complete. Stage
+6 has not begun.
+
+**Next task:** detail and accept Stage 6 — Singular Target, Runtime, and Provider
+Execution. Do not begin Stage 6 source implementation without separate
+authorization.
