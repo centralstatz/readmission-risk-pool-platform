@@ -15,8 +15,8 @@ proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2,
 Stage 3, Stage 4, and Stage 5 push evidence. Stages 1–5 are accepted and
-complete; Stage 6 has not begun, and the next separate task is to detail and
-accept it before source implementation.
+complete; Stage 6 is detailed and accepted but remains unimplemented, and the
+next task is Increment 6.A only.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -310,8 +310,10 @@ with the complete local handoff proof in 5.C. Committed push run `35288890797`,
 job `105427207401`, succeeded for revision
 `01b0d564ecbe55830542c10cfcb77d4d72366d7b`; final reconciliation found no
 deviation from True North or the architecture. Stages 1–5 are accepted and
-complete. The next task is to detail and accept Stage 6; its source work is not
-authorized.
+complete. Stage 6 is detailed and accepted for implementation but no Stage 6
+source exists. The next task is Increment 6.A — Singular Target Authority,
+Eligibility, and Immutable Episode State; later Stage 6 increments remain
+unauthorized.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

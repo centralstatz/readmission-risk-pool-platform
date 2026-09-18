@@ -2309,3 +2309,153 @@ risk request, invoke a provider, calculate risk, or retain operational state.
 **Next task:** detail and accept Stage 6 — Singular Target, Runtime, and Provider
 Execution. Do not begin Stage 6 source implementation without separate
 authorization.
+
+## Stage 6 detailed-plan acceptance — 2026-09-18
+
+Stage 6 — Singular Target, Runtime, and Provider Execution was detailed from
+the accepted Stage 5 baseline without implementing source behavior. Planning
+began from a clean `main` at
+`8717c2f06b23a282e14ab8d3bdced1f882d044cc` (`Stage 5 complete`). Platform
+True North, Platform Architecture, the complete plan and record, human
+implementation guidance, and the coding-agent agreement were read in order.
+The realized admitted-bundle type, canonical contracts, project manifest and
+registration authorities, trusted loader, installed/project composition,
+producer operation, package topology, exact exports, and current tests were
+inspected as the factual starting point. No contradiction requires reopening
+Stages 1–5.
+
+The accepted construction sequence is:
+
+1. **Increment 6.A — Singular target authority, eligibility, and immutable
+   episode state:** add the exact target/state authorities and the pure runtime
+   boundary that prepares one eligible detached episode state at the admitted
+   bundle's authoritative as-of instant;
+2. **Increment 6.B — Semantic provider contract and standard request/estimate
+   boundary:** add request/provider/estimate authorities, advance the
+   unreleased project line to `0.3.0`, and prove an explicitly supplied
+   compatible provider against the RRP-owned request and estimate semantics;
+   and
+3. **Increment 6.C — Selected provider execution and transparent end-to-end
+   proof:** add the one platform risk operation and protected transparent
+   provider, then prove installed and project-owned provider substitution
+   through the same admitted-bundle-to-estimate path.
+
+Stage acceptance follows committed 6.C evidence and final reconciliation; it
+is not Increment 6.D.
+
+The central temporal decision is exact as-of equality. Stage 6 executes only
+when requested analytical `t` denotes the same instant as the admitted
+bundle's authoritative as-of. It does not filter a later bundle backward to an
+earlier time. This both enforces the architecture's available-information rule
+and avoids prematurely implementing retrospective reconstruction. A terminal
+event affects eligibility only in the first admitted bundle whose exact cutoff
+may legitimately include it.
+
+Eligibility follows the target rather than workflow convention: discharge is
+included; `W30` and later are excluded; a readmission or death known at or
+before `t` prevents a request; and equal known readmission/death occurrence is
+classified with readmission precedence. RRP constructs a minimal immutable
+episode state and provider-neutral `(t,W30]` request containing only governed
+episode timing and attribution. Patient and encounter identity, terminal rows,
+the complete bundle, source/mapping details, arbitrary features, configuration,
+paths, secrets, connections, and persistence handles do not reach providers.
+
+The target is one installed nonselectable authority,
+`rrp.risk-target.readmission-remaining-30-day@0.1.0`. Together with state,
+request, provider, and estimate DCF authorities it will add exactly five
+resources, taking the closed catalog from 13 to 18 by Increment 6.B. No target
+registry, project target field, route, request-builder plugin, compatibility
+range, or alternate quantity is planned.
+
+The provider callable receives one detached RRP-constructed request and returns
+only request identity, success/failure status, one probability or `NULL`, and a
+controlled failure code. RRP constructs the accepted estimate envelope and
+stamps exact software, target, state, request, project, bundle, provider,
+implementation, optional model, interval, and as-of attribution. The
+probability is exactly one unclassed finite base-R double in `[0,1]`; no
+coercion, uncertainty, explanation, calibration, clinical-validity, decision,
+or persistence meaning is accepted.
+
+Provider declarations become semantic in the forward-only `0.3.0` project/
+API/registration line. They declare exact provider API, target, state, request,
+estimate, implementation, optional model, and callable facts. Producer
+semantics and the closed manifest selection remain unchanged. Initialized
+projects still contain exactly two files and explicitly select their own
+semantically conforming unavailable provider. Structural `0.2.0` projects fail
+instead of receiving a compatibility bridge or silent rewrite.
+
+The maintained installed provider is
+`rrp.provider.transparent@0.1.0` with implementation
+`rrp.provider-implementation.transparent@0.1.0` and no model artifact. Its
+inspectable deterministic calculation is only
+`0.20 * remaining_to_target_seconds / 2,592,000`. It is explicitly
+nonclinical, must be selected by exact manifest identity, follows the same
+generic path as a project provider, and is never an implicit default, fallback,
+or privileged runtime branch.
+
+The planned package surface is deliberately small. `rrpruntime` remains
+dependency-free and will add only `rrp_prepare_episode_state()` and
+`rrp_execute_risk_provider()` beside canonical admission. `rrpplatform`
+continues to import only `rrpruntime` and will add only
+`rrp_execute_risk(software_catalog, project_root, admitted_bundle, episode_id,
+as_of_time)` with operation ID `rrp.execute-risk`. The operation begins from
+the Stage 5 admitted value and does not call a producer; complete proof invokes
+the existing producer operation first at the same `t`. Stage 7 may later own
+the one-run orchestration and durable attribution.
+
+Historical reconnaissance inspected immutable `v0.1.0` runtime eligibility,
+state, estimand request, provider specification/registry/compatibility/
+execution, estimate, transparent provider, operation composition, runtime and
+provider DCF/YAML contracts, Phase 4 runtime/provider tests, and package-native
+tests. It also revisited the fixed-target assessment at revision `1e7b95c`.
+Exact project selection already present on the clean line, trusted-callable and
+probability checks, instant comparison, plain-value detachment, and bounded
+failure mechanics are directly reusable where independently suitable.
+
+Eligibility/state/request separation, exact cutoff, compatibility-before-call,
+one-call execution, provider substitution, request/result agreement,
+structured non-estimate outcomes, transparent-provider role, and adversarial
+temporal/output fixtures are adaptable. Historical deterministic run/provenance
+records are conceptual input for Stage 7 only. Daily hazard, shortened
+follow-up, baseline/event feature state, estimand catalogs/routes/ranges,
+runtime registry selection, retries and attempt/run IDs, old estimate
+identities, raw exception issues, the historical transparent formula, YAML and
+repository-root loading, Phase suites, history append, and source assumptions
+are rejected.
+
+The 17 planning-quality challenges were applied explicitly. The design operates
+only from admitted source-independent input; exposes one target and one fixed
+interval meaning; permits radically different provider methods behind one
+request/result boundary; keeps target/protocol construction with RRP; prevents
+earlier-time use of later bundles; handles competing death and equal-time
+precedence; executes only exact project selection; treats the transparent
+provider as ordinary; distinguishes structural estimates from clinical
+validity; keeps runtime dependency-light and project/source independent;
+contains no persistence; leaves a complete semantic result for Stage 7; imports
+no historical-only abstraction; avoids forcing providers to reproduce RRP
+envelopes; does not solve multiple-target, remote-provider, feature-store, or
+model-packaging futures; and remains explainable through the governing plan
+without AI assistance.
+
+Persistence, run/attempt/history identity, retries, retrospective
+reconstruction, state adapters/migration, multiple targets, additional
+canonical domains/features, remote/non-R providers, provider dependency
+restoration and model-artifact integrity, uncertainty/explanations,
+calibration/evaluation, clinical validation, decisions, scheduling, the
+maintained fictional project, products/app, CLI, distribution, deployment, and
+release remain explicitly deferred to their owning later stages.
+
+Planning validation passed `Rscript --vanilla tools/validate-repository.R`,
+including current local documentation-link validation, and `git diff --check`.
+Scope review confirmed that only planning/current-status documentation changed;
+no package source/API/metadata, resource, test, validator, workflow, or other
+implementation file changed. Package validation was intentionally not rerun
+because this planning action changes no executable claim.
+
+**Current implementation state:** Stages 1–5 remain accepted and complete.
+Stage 6 is detailed and accepted for implementation, but no Stage 6 contract,
+resource, package behavior, provider, operation, or test exists yet.
+
+**Next task:** implement only Increment 6.A — Singular Target Authority,
+Eligibility, and Immutable Episode State. Do not begin Increment 6.B, Increment
+6.C, Stage 7, or Stage 6 acceptance.

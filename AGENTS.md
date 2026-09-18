@@ -101,5 +101,7 @@ admission without invoking project code. Increment 5.C adds the eighth
 `rrpplatform` export for exact selected-producer execution and the full local
 canonical handoff proof. Committed push run `35288890797`, job `105427207401`,
 succeeded for revision `01b0d564ecbe55830542c10cfcb77d4d72366d7b`, completing
-Stage 5 after final reconciliation. The next task is to detail and accept Stage
-6. Do not begin Stage 6 source implementation without explicit authorization.
+Stage 5 after final reconciliation. Stage 6 is detailed and accepted but
+unimplemented. The next task is Increment 6.A — Singular Target Authority,
+Eligibility, and Immutable Episode State. Do not begin Increment 6.B or later
+work without explicit authorization.
