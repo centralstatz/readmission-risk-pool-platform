@@ -3239,12 +3239,22 @@ capability declarations, canonical bundle construction, and admission handoff,
 while preserving the underlying producer boundary as the flexible lower-level
 extension point.
 
-This is a design preference, not a fixed implementation requirement. Detailed
-Stage 8 planning must choose the realization from the architecture and evidence
-available then, without this roadmap preselecting files, call signatures,
-project layout, commands, connection conventions, or source-specific
-configuration. Later conveniences, including SQL-oriented helpers, may build
-on the same boundary rather than establish a separate ingestion architecture.
+The same principle applies to provider authoring. The raw Stage 6 provider
+registration contract is a foundational platform boundary, not necessarily the
+normal hospital-facing model-authoring surface. Prefer a narrower customization
+point in which hospital-owned code supplies or invokes the model or engine that
+calculates the governed RRP risk quantity. RRP should ordinarily own provider
+registration, semantic compatibility declarations, request/result protocol
+envelopes, and accepted-estimate construction, while preserving the underlying
+provider contract as the flexible lower-level extension point.
+
+These are design preferences, not fixed implementation requirements. Detailed
+Stage 8 planning must choose the realizations from the architecture and
+evidence available then, without this roadmap preselecting files, call
+signatures, project layout, commands, model packaging, engine types, connection
+conventions, or source-specific configuration. Later conveniences, including
+SQL-oriented helpers, may build on the same boundary rather than establish a
+separate ingestion architecture.
 
 ### Plain-language exit state
 
