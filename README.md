@@ -30,7 +30,11 @@ required available capabilities, while providers declare exact target, state,
 request, estimate, implementation, and nullable model compatibility. One
 supported operation now executes exactly the selected producer once
 through a closed request/result contract and delegates a successful detached
-candidate to runtime admission; the selected provider remains inert.
+candidate to runtime admission. A second operation prepares one eligible
+episode state and invokes exactly the explicitly selected compatible provider
+once, returning an accepted in-memory estimate. Projects may select the
+protected installed nonclinical transparent provider or a compatible
+project-owned provider; no provider is selected by default.
 `rrpruntime` now exports three pure dependency-light primitives: canonical
 admission, eligible episode-state preparation, and direct compatible-provider
 execution through the standard request/result/estimate boundary. It validates exact identity,
@@ -42,8 +46,8 @@ bundle cutoff and analytical as-of to denote the same instant, admits only
 `D <= t < W30`, and rejects episodes already readmitted or dead through the
 available-information cutoff. The
 repository has no root selector, persistent installed RRP distribution,
-provider declaration or execution, risk request or estimate, product, application,
-command-line interface, or deployment capability.
+operational history, retry lifecycle, product, application, command-line
+interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -115,15 +119,16 @@ diagnosis, selected producer execution through two materially different
 fictional hospital mappings, copied-project portability, typed privacy-safe
 project/resource failures, adversarial rejection behavior, and direct
 installed-authority/runtime canonical admission, exact single producer
-invocation, zero provider calls in platform-owned operations, process
-restoration, and no project/state mutation. It also checks runtime eligibility,
-immutable episode state, standard request, directly supplied semantic provider,
-minimal result, and accepted estimate behavior, plus exact package topology,
+invocation, selected provider execution through both installed transparent and
+project-owned implementations, process restoration, copied-project behavior,
+and no project/state mutation. It also checks runtime eligibility, immutable
+episode state, standard request, direct semantic-provider execution, minimal
+result, and accepted estimate behavior, plus exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
-selector, product command, distribution build, or proof of provider execution,
-risk calculation, clinical validity, deployment, or release behavior.
+selector, product command, distribution build, proof of clinical validity,
+deployment, or release behavior.
 
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
 configured to run these same two human operations on pushes and pull requests
@@ -136,8 +141,9 @@ same hosted workflow and has been formally accepted, so Stages 1–4 are complet
 The initializer, loader, doctor, and producer operation are internal technical
 interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
-Stages 1–5 are complete. Stage 6 is in progress: Increments 6.A and 6.B are
-complete locally. Increment 6.C is the next task.
+Stages 1–5 are complete. Stage 6 is in progress: Increments 6.A–6.C are
+implemented locally. Formal Stage 6 acceptance and reconciliation remain a
+separate next task.
 
 ## License
 

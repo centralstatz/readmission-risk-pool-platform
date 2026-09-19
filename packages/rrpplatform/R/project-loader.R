@@ -254,8 +254,18 @@ rrp_project_order_entries <- function(entries) {
   entries[order(ids, versions, method = "radix")]
 }
 
-rrp_project_installed_components <- function() {
-  list(producers = list(), providers = list())
+rrp_project_installed_components <- function(
+  registration_contract,
+  runtime_contracts
+) {
+  provider <- rrp_transparent_provider_declaration()
+  provider <- rrp_project_validate_provider(
+    provider,
+    registration_contract,
+    runtime_contracts,
+    allow_protected = TRUE
+  )
+  list(producers = list(), providers = list(provider))
 }
 
 rrp_project_origin_entry <- function(entry, origin) {
@@ -402,7 +412,10 @@ rrp_load_project <- function(software_catalog, project_root) {
   registration$providers <- rrp_project_order_entries(registration$providers)
 
   components <- rrp_project_compose_components(
-    rrp_project_installed_components(), registration
+    rrp_project_installed_components(
+      registration_contract, runtime_contracts
+    ),
+    registration
   )
   producer <- rrp_project_resolve_component(
     components$producers,

@@ -1790,6 +1790,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "canonical-contracts.R"),
       file.path("R", "operation-result.R"),
       file.path("R", "producer-execution.R"),
+      file.path("R", "risk-execution.R"),
       file.path("R", "project-contracts.R"),
       file.path("R", "project-doctor.R"),
       file.path("R", "project-initializer.R"),
@@ -1801,6 +1802,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_open_resource_catalog.Rd"),
       file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_execute_producer.Rd"),
+      file.path("man", "rrp_execute_risk.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
@@ -1811,6 +1813,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-initializer.R"),
       file.path("tests", "project-loader.R"),
       file.path("tests", "producer-execution.R"),
+      file.path("tests", "risk-execution.R"),
       file.path("tests", "resource-access.R"),
       file.path("tests", "runtime-contracts.R")
     )
@@ -1975,7 +1978,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_execute_producer", "rrp_initialize_project", "rrp_load_project",
+      "rrp_execute_producer", "rrp_execute_risk", "rrp_initialize_project",
+      "rrp_load_project",
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
       "rrp_resource_path", "rrp_validate_project",
@@ -2003,6 +2007,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     c(
       "export(rrp_initialize_project)",
       "export(rrp_execute_producer)",
+      "export(rrp_execute_risk)",
       "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
@@ -2075,14 +2080,41 @@ validate_source_boundaries <- function(package_roots) {
     grep("getwd[[:space:]]*[(]", lines, value = TRUE, perl = TRUE)
   })
   names(getwd_calls) <- basename(platform_source_files)
-  files_with_getwd <- names(getwd_calls)[lengths(getwd_calls) > 0L]
+  files_with_getwd <- sort(
+    names(getwd_calls)[lengths(getwd_calls) > 0L], method = "radix"
+  )
   require_true(
-    identical(files_with_getwd, "producer-execution.R") &&
-      length(getwd_calls[["producer-execution.R"]]) == 2L,
+    identical(
+      files_with_getwd, c("producer-execution.R", "risk-execution.R")
+    ) && length(getwd_calls[["producer-execution.R"]]) == 2L &&
+      length(getwd_calls[["risk-execution.R"]]) == 2L,
     paste0(
       "rrpplatform may inspect the working directory only to save and restore ",
-      "it around selected producer execution."
+      "it around selected producer or provider execution."
     )
+  )
+
+  risk_source <- paste(readLines(
+    file.path(package_roots[["rrpplatform"]], "R", "risk-execution.R"),
+    warn = FALSE, encoding = "UTF-8"
+  ), collapse = "\n")
+  generic_risk <- sub(
+    "(?s).*?rrp_risk_execute <- function\\(",
+    "rrp_risk_execute <- function(", risk_source, perl = TRUE
+  )
+  generic_risk <- sub(
+    "(?s)\\n#' Execute the risk provider.*$", "", generic_risk, perl = TRUE
+  )
+  provider_branch_tokens <- c(
+    "rrp.provider.transparent", "provider_id", "implementation_id",
+    "model_id", "project_id"
+  )
+  require_true(
+    !any(vapply(
+      provider_branch_tokens, grepl, logical(1L), x = generic_risk,
+      fixed = TRUE
+    )),
+    "Generic risk orchestration must not branch on provider or project identity."
   )
 
   generic_text <- paste(unlist(lapply(c(
@@ -2204,7 +2236,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_execute_producer\", \"rrp_initialize_project\", ",
+      "c(\"rrp_execute_producer\", \"rrp_execute_risk\", ",
+      "\"rrp_initialize_project\", ",
       "\"rrp_load_project\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
@@ -2366,7 +2399,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_execute_producer', 'rrp_initialize_project', 'rrp_load_project', ",
+    "c('rrp_execute_producer', 'rrp_execute_risk', ",
+    "'rrp_initialize_project', 'rrp_load_project', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
     "'rrp_resource_path', 'rrp_validate_project', ",
@@ -2709,6 +2743,41 @@ validate_installed_producer_execution <- function(
   )
 }
 
+validate_installed_risk_execution <- function(
+  library_root,
+  work_root,
+  environment
+) {
+  software_root <- file.path(work_root, "risk-execution-software-root")
+  project_resource_authority(repository_root, software_root)
+  script_path <- file.path(work_root, "validate-installed-risk-execution.R")
+  copied <- file.copy(
+    file.path(
+      repository_root, "packages", "rrpplatform", "tests",
+      "risk-execution.R"
+    ),
+    script_path,
+    overwrite = FALSE,
+    copy.mode = FALSE,
+    copy.date = FALSE
+  )
+  require_true(copied, "Could not copy installed risk-execution proof.")
+  require_command_success(
+    "installed rrpplatform selected provider execution",
+    file.path(R.home("bin"), "Rscript"),
+    c("--vanilla", shQuote(script_path), shQuote(software_root)),
+    environment
+  )
+  cat(
+    paste0(
+      "PASS installed producer-to-estimate execution with explicit ",
+      "transparent/project provider selection, copied-project substitution, ",
+      "one-call/no-call behavior, bounded failures, process restoration, ",
+      "estimate detachment, and zero project-state output\n"
+    )
+  )
+}
+
 validate_packages <- function() {
   cat("RRP local package, project, canonical, and state validation\n")
   cat("=============================================================\n")
@@ -2822,6 +2891,7 @@ validate_packages <- function() {
   validate_installed_project_loading(library_root, work_root)
   validate_installed_project_initialization(library_root, work_root)
   validate_installed_producer_execution(library_root, work_root, environment)
+  validate_installed_risk_execution(library_root, work_root, environment)
 
   cat("\nResult: PASS (package, project, canonical, and state foundation)\n")
   cat(
@@ -2830,7 +2900,8 @@ validate_packages <- function() {
     "canonical and five-resource runtime contract relationships, dependency-light ",
     "canonical admission, exact eligibility and immutable episode-state ",
     "construction, provider-neutral request, direct compatible-provider ",
-    "execution, accepted estimate, ",
+    "execution, accepted estimate, exact project-selected provider risk ",
+    "execution, installed transparent/project provider substitution, ",
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and provider ",
     "selection, transactional minimal-project initialization, ",

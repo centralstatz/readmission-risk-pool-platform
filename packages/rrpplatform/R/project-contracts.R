@@ -377,11 +377,17 @@ rrp_project_validate_manifest <- function(lines, contract) {
   record
 }
 
-rrp_project_validate_component_identity <- function(entry, contract) {
+rrp_project_validate_component_identity <- function(
+  entry,
+  contract,
+  allow_protected = FALSE
+) {
   identity_limit <- as.integer(contract[["Identity-Max-Bytes"]])
   if (!rrp_project_valid_identity(
     entry$component_id, contract[["Component-ID-Pattern"]], identity_limit
-  ) || startsWith(entry$component_id, contract[["Protected-ID-Prefix"]])) {
+  ) || (!allow_protected && startsWith(
+    entry$component_id, contract[["Protected-ID-Prefix"]]
+  ))) {
     code <- if (rrp_project_scalar_string(entry$component_id) &&
                 startsWith(entry$component_id, contract[["Protected-ID-Prefix"]])) {
       "protected_registration"
@@ -514,14 +520,21 @@ rrp_project_validate_producer <- function(entry, contract, manifest) {
   entry
 }
 
-rrp_project_validate_provider <- function(entry, contract, runtime_contracts) {
+rrp_project_validate_provider <- function(
+  entry,
+  contract,
+  runtime_contracts,
+  allow_protected = FALSE
+) {
   fields <- rrp_project_split_fields(contract[["Provider-Fields"]])
   if (!rrp_project_plain_named_list(entry, fields)) {
     rrp_project_stop(
       "Project registration result is invalid.", "invalid_registration_result"
     )
   }
-  entry <- rrp_project_validate_component_identity(entry[fields], contract)
+  entry <- rrp_project_validate_component_identity(
+    entry[fields], contract, allow_protected = allow_protected
+  )
   fixed <- c(
     provider_api_id = "Provider-API-ID",
     provider_api_version = "Provider-API-Version",
@@ -546,7 +559,9 @@ rrp_project_validate_provider <- function(entry, contract, runtime_contracts) {
   if (!rrp_project_valid_identity(
     entry$implementation_id, contract[["Component-ID-Pattern"]],
     identity_limit
-  ) || startsWith(entry$implementation_id, contract[["Protected-ID-Prefix"]]) ||
+  ) || (!allow_protected && startsWith(
+    entry$implementation_id, contract[["Protected-ID-Prefix"]]
+  )) ||
       !rrp_project_valid_version(
         entry$implementation_version,
         contract[["Component-Version-Pattern"]], version_limit
@@ -559,7 +574,9 @@ rrp_project_validate_provider <- function(entry, contract, runtime_contracts) {
   model_null <- is.null(entry$model_id) && is.null(entry$model_version)
   model_set <- rrp_project_valid_identity(
     entry$model_id, contract[["Component-ID-Pattern"]], identity_limit
-  ) && !startsWith(entry$model_id, contract[["Protected-ID-Prefix"]]) &&
+  ) && (allow_protected || !startsWith(
+    entry$model_id, contract[["Protected-ID-Prefix"]]
+  )) &&
     rrp_project_valid_version(
       entry$model_version, contract[["Component-Version-Pattern"]],
       version_limit

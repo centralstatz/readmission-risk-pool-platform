@@ -13,7 +13,8 @@ Description: Establishes the main internal implementation package for the
     project-manifest and trusted-registration boundaries, executes its exact
     selected producer through a closed request/result boundary, delegates
     successful canonical admission to the runtime package, validates exact
-    semantic provider declarations without invoking them, transactionally
+    semantic provider declarations, executes the explicitly selected provider
+    through the runtime package's closed risk boundary, transactionally
     initializes the smallest valid project, and reports bounded operation
     results.
 License: Apache License (>= 2)

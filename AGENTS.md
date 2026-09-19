@@ -75,14 +75,16 @@ contracts, explicit trusted
 project loading, transactional minimal-project initialization, exact semantic
 producer and semantic provider selection, loader-backed structured project diagnosis, copied-
 project portability, selected producer execution, closed request/result
-validation, two distinct fictional hospital mappings, exact one-call and zero-
-provider behavior, canonical admission delegation, package topology, one-way
+validation, two distinct fictional hospital mappings, canonical admission
+delegation, selected-provider end-to-end execution through both installed
+transparent and project-owned implementations, exact one-call and no-default
+behavior, package topology, one-way
 dependency, dependency-light canonical admission, exact eligibility and
 immutable episode-state construction, standard provider-neutral request,
 direct one-call compatible-provider execution, accepted estimate, exact export posture, builds,
 isolated install/load, and package-
-native checks. No root selector, dependency environment, platform risk
-operation, installed provider, or release procedure exists on the clean line. The
+native checks. No root selector, dependency environment, operational history,
+or release procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -110,7 +112,8 @@ loading, and the second `rrpruntime` export for pure eligibility and detached
 immutable episode-state construction. Increment 6.B adds the remaining three
 runtime authorities, the exact 0.3.0 project line and semantic provider
 declaration, and the third `rrpruntime` export for standard request, direct one-
-call provider execution, and accepted estimates. Stage 6 remains in progress.
-The next task is Increment 6.C — Selected Provider Execution and Transparent
-End-to-End Proof. Do not begin Increment 6.C or later work without explicit
+Increment 6.C adds the ninth `rrpplatform` export for generic selected-provider
+execution, the explicitly selected protected transparent provider, and the
+complete local installed end-to-end proof. Formal Stage 6 acceptance and
+reconciliation are the next task. Do not begin Stage 7 without explicit
 authorization.

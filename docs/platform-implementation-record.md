@@ -2681,3 +2681,91 @@ RRP does not yet execute the provider selected by a project.
 
 **Next task:** implement only Increment 6.C — Selected Provider Execution and
 Transparent End-to-End Proof. Do not begin Stage 7 or Stage 6 acceptance.
+
+## Stage 6 / Increment 6.C — Selected provider execution and transparent end-to-end proof — 2026-09-19
+
+Increment 6.C is complete locally. `rrpplatform` now exports exactly nine
+functions. The new `rrp_execute_risk(software_catalog, project_root,
+admitted_bundle, episode_id, as_of_time)` operation validates its scalar inputs,
+loads exactly the explicit project through the sole trusted loader, reconstructs
+the installed canonical/runtime authority, prepares one eligible immutable
+episode state, verifies project/profile agreement, and invokes exactly the
+provider already selected by that project through
+`rrpruntime::rrp_execute_risk_provider()`. Success returns the detached accepted
+estimate in the common `rrp.execute-risk` result. Expected project, operation,
+target, state, provider, and estimate failures become bounded privacy-safe
+diagnostics; resource-owner failures and unexpected implementation defects are
+not obscured.
+
+Installed composition now contains one protected provider declaration,
+`rrp.provider.transparent@0.1.0`, with implementation
+`rrp.provider-implementation.transparent@0.1.0` and no separate model identity.
+It declares exact agreement with the installed target, state, request, provider
+API, and estimate authorities. Its deterministic nonclinical value is
+`0.20 * remaining_to_target_seconds / 2592000`. A project must select that
+identity explicitly: it is not a default, fallback, registry preference, or
+clinically validated model. Project-owned compatible providers remain the
+ordinary substitution boundary and execute through unchanged generic
+orchestration. Protected identities remain rejected in project-owned
+registration; a narrow internal validation path exists only for RRP-owned
+installed declarations.
+
+Both producer and provider execution retain the established software-first,
+declared-extension-second controlled library policy and restore the caller's
+library paths and working directory. Risk execution creates no state directory,
+file, log, cache, request record, estimate record, run identity, retry, history,
+or other persistent output. The installed source-resource authority remains
+the exact 18-resource set; no provider registry or new contract resource was
+introduced.
+
+Historical reconnaissance inspected immutable `v0.1.0` reference-provider,
+provider-registry, provider-execution, provider-operation, and Phase 4 provider-
+foundation material. Compatibility-before-call, detached input, exact one-call
+behavior, deterministic example-provider proof, provider substitution, process
+restoration, and structured failure mechanics were adapted. Historical
+registry-based selection, the daily-hazard reference formula, raw error text,
+retry/attempt/history behavior, and repository-root orchestration were rejected.
+
+The package-native and installed temporary-root evidence covers an existing
+producer call at authoritative time `t`, runtime admission, and risk execution
+at the same `t`; explicit installed transparent-provider selection; exact
+formula and complete target/request/state/project/provider/implementation/model
+attribution; deterministic repeat behavior; a materially different project-
+owned provider through the same operation; copied-project execution from an
+unrelated non-Git working directory; exact one-call and pre-invocation no-call
+guards; no implicit provider default; provider-declared and RRP-detected
+failures; resource-error ownership; library/working-directory/global
+restoration; accepted-estimate detachment; generic-code independence from
+provider/project identity; and absence of project/state mutation or output.
+
+Local implementation evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all repository checks passed
+  with zero issues;
+- focused isolated installed-package regression and risk-execution tests:
+  passed;
+- `Rscript --vanilla tools/validate-packages.R`: the complete inherited and
+  Increment 6.C resource, package, project, producer, runtime, and installed
+  selected-provider matrix passed, including both source builds, isolated
+  installation/loading, package-native tests, and exact
+  `R CMD check --no-manual` status `OK`;
+- R source, Rd, and DESCRIPTION parsing: passed; and
+- `git diff --check` and repository-artifact inspection: passed, with no
+  generated archive, check directory, temporary library, projected root, or
+  other validation output retained in repository source.
+
+No discrepancy from Platform True North, Platform Architecture, or the
+accepted 6.C plan was found. No implicit provider selection, provider dependency
+or model loading, retry, concurrency, remote transport, run/history identity,
+persistence, product, application, CLI, distribution, deployment, release,
+Stage 7 behavior, or formal Stage 6 acceptance was introduced.
+
+**Current implementation state:** Stages 1–5 remain accepted and complete.
+Increments 6.A–6.C are implemented locally, so all planned Stage 6 increments
+are complete. Stage 6 remains in progress until its separately authorized
+formal acceptance and reconciliation, including the plan's committed hosted
+evidence boundary.
+
+**Next task:** perform formal Stage 6 acceptance and reconciliation only after
+the complete Stage 6 tree is reviewed and committed and the required hosted
+workflow evidence is available. Do not begin Stage 7.

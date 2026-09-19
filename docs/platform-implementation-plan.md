@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–5 are accepted and complete. Stage
-6 is in progress: Increment 6.A is complete and Increment 6.B is the next task.
+6 is in progress: Increments 6.A–6.C are implemented locally, and formal Stage
+6 acceptance and reconciliation remain pending.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -2373,9 +2374,9 @@ preserve this boundary.
 
 ## Stage 6 — Singular target, runtime, and provider execution
 
-**Status:** detailed and accepted for implementation on 2026-09-18. Increment
-6.A is complete; Increment 6.B is next. This section authorizes only Increments
-6.A–6.C below.
+**Status:** detailed and accepted for implementation on 2026-09-18. Increments
+6.A–6.C are implemented locally; formal Stage 6 acceptance and reconciliation
+remain pending. This section authorizes only Increments 6.A–6.C below.
 
 ### Objective and responsibilities
 
@@ -2884,7 +2885,8 @@ authoritative as-of instant, but no provider can yet receive a request.
 
 ### Increment 6.B — Semantic provider contract and standard request/estimate boundary
 
-**Implementation status:** complete on 2026-09-18. Increment 6.C is next.
+**Implementation status:** complete on 2026-09-18. Subsequent Increment 6.C is
+now complete locally; formal Stage 6 acceptance remains pending.
 
 **Objective:** define and prove the complete provider-neutral request,
 compatible provider declaration, minimal provider result, and RRP-owned
@@ -2932,6 +2934,9 @@ estimate, but installed RRP does not yet execute the provider selected by a
 project.
 
 ### Increment 6.C — Selected provider execution and transparent end-to-end proof
+
+**Implementation status:** complete locally on 2026-09-19. Formal Stage 6
+acceptance and reconciliation remain pending.
 
 **Objective:** invoke exactly the provider already selected by a validated
 project and prove the complete admitted-bundle-to-estimate boundary with both

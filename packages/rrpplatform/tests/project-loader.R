@@ -796,7 +796,8 @@ rrp_loader_tests <- list(
   "project loading retains the current public API" = function() {
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
-        "rrp_execute_producer", "rrp_initialize_project", "rrp_load_project",
+        "rrp_execute_producer", "rrp_execute_risk",
+        "rrp_initialize_project", "rrp_load_project",
         "rrp_open_resource_catalog",
         "rrp_operation_succeeded", "rrp_resource_path",
         "rrp_validate_project",

@@ -41,8 +41,9 @@ state directories remain absent.
 The registered producer declares the exact 0.1.0 producer API, canonical
 bundle/profile, implementation, mapping, and required available capabilities.
 Its callable returns the controlled \code{producer_unavailable} result when
-later invoked with a request. The provider remains a structural placeholder
-that fails safely if invoked. Initialization and loading execute neither
+later invoked with a request. The project-owned provider is semantically
+compatible but returns a controlled unavailable result if invoked.
+Initialization and loading execute neither
 callable. This technical API does not discover roots, create Git or dependency
 state, initialize persistence, execute a producer/provider, or replace the
 separate \code{rrp_validate_project()} doctor operation.

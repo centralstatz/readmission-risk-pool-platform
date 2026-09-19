@@ -1,5 +1,6 @@
 export(rrp_initialize_project)
 export(rrp_execute_producer)
+export(rrp_execute_risk)
 export(rrp_load_project)
 export(rrp_open_resource_catalog)
 export(rrp_operation_succeeded)

@@ -13,7 +13,7 @@ boundary, and transactional minimal-project initialization from cataloged
 software-owned templates. Contract parsers, registration evaluation,
 rendering, staging, path checks, composition, resolution, producer request and
 result validation, provider-authority agreement, and error construction remain
-internal. It does not yet invoke the selected project provider.
+internal. Provider execution remains explicit and in memory.
 
 Its current callable interfaces are:
 
@@ -21,6 +21,9 @@ Its current callable interfaces are:
   explicit project, invokes exactly its selected producer once through the
   closed request/result contract, and delegates its candidate to runtime
   admission;
+- `rrp_execute_risk(software_catalog, project_root, admitted_bundle,
+  episode_id, as_of_time)` loads that project, prepares one immutable eligible
+  episode state, and invokes exactly its selected compatible provider once;
 - `rrp_open_resource_catalog(software_root)` validates the fixed installed DCF
   schema, catalog, and closed declared resource set beneath exactly the supplied
   root; and
@@ -59,7 +62,8 @@ security sandbox: `R/register.R` is trusted local code. The loader validates and
 resolves the returned callable objects but never invokes the selected producer
 or provider. Producer records declare exact producer API, canonical bundle and
 profile, implementation, mapping, and available-capability identities;
-providers retain their Stage 4 structural shape.
+providers declare exact target, state, request, estimate, implementation, and
+nullable model compatibility.
 
 Producer execution validates the authoritative as-of time before project code,
 reuses the loader and its software-first extension-library policy, and passes
@@ -70,6 +74,18 @@ become bounded common results. Arbitrary producer error text is discarded;
 unexpected defects in RRP code remain visible. Success returns the admitted
 in-memory canonical bundle, which can contain sensitive analytical data and
 must not be logged or rendered as diagnostic output.
+
+Risk execution validates the episode and authoritative as-of time before
+project code, reuses the loader and its controlled library policy, requires the
+bundle and project canonical profile identities to agree, delegates state and
+provider semantics to `rrpruntime`, and returns one accepted in-memory estimate.
+Expected project, target, runtime, and provider-result failures become bounded
+common results; unexpected implementation defects and resource-owner errors
+remain visible. The installed protected transparent provider is available only
+through explicit project selection and returns the nonclinical deterministic
+reference value `0.20 * remaining_to_target_seconds / 2592000`. It is neither a
+default nor a fallback, and project-owned compatible providers use the same
+generic operation.
 
 Opening may report root codes `invalid_software_root`,
 `missing_software_root`, or `linked_software_root`; catalog/schema state codes
@@ -94,16 +110,14 @@ provider is a semantically conforming unavailable placeholder. The declared
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
-runtime state/provider behavior without adding a platform export. The package
-does
-not yet provide root selection,
-an ordinary operator command, dependency restoration, state creation,
-provider execution, risk calculation, runtime history, products, applications,
-installation, or deployment. It normalizes installed canonical authority into
+runtime state/provider behavior. The package does not provide root selection,
+an ordinary operator command, dependency restoration, persistent state,
+runtime history, products, applications, installation, or deployment. It
+normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.
-Execution performs no retry, scheduling, state initialization, persistence, or
-retention.
+Producer and risk execution perform no retry, scheduling, state initialization,
+persistence, or retention.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.
