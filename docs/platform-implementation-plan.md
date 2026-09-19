@@ -3212,6 +3212,26 @@ This is the first meaningful end-to-end computational integration point. It
 follows the real boundaries rather than shaping them as a privileged example
 mode and gives later product/app stages stable fictional history to consume.
 
+### Forward design consideration for hospital authoring
+
+The raw project registration and producer contracts established in Stages
+4–5 are foundational platform boundaries, not necessarily the normal
+hospital-facing authoring surface. When Stage 8 details the reference project,
+prefer a narrower customization point in which hospital-owned R code obtains
+source data through whatever local mechanism is appropriate and returns the
+canonical domains required by the selected profile. RRP should ordinarily own
+the lower-level registration, producer-protocol identity and envelopes,
+capability declarations, canonical bundle construction, and admission handoff,
+while preserving the underlying producer boundary as the flexible lower-level
+extension point.
+
+This is a design preference, not a fixed implementation requirement. Detailed
+Stage 8 planning must choose the realization from the architecture and evidence
+available then, without this roadmap preselecting files, call signatures,
+project layout, commands, connection conventions, or source-specific
+configuration. Later conveniences, including SQL-oriented helpers, may build
+on the same boundary rather than establish a separate ingestion architecture.
+
 ### Plain-language exit state
 
 > A human can run a normal independent fictional project from source mapping
