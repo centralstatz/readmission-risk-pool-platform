@@ -360,6 +360,9 @@ rrp_project_new_context <- function(
 #' @export
 rrp_load_project <- function(software_catalog, project_root) {
   canonical_contracts <- rrp_canonical_contracts(software_catalog)
+  runtime_contracts <- rrp_runtime_contracts(
+    software_catalog, canonical_contracts
+  )
   manifest_contract <- rrp_project_manifest_contract(software_catalog)
   registration_contract <- rrp_project_registration_contract(software_catalog)
   root <- rrp_project_validate_root(project_root)
@@ -386,7 +389,8 @@ rrp_load_project <- function(software_catalog, project_root) {
     registration_path, registration_contract, root, extension_library_path
   )
   registration <- rrp_project_validate_registration(
-    candidate, registration_contract, canonical_contracts, manifest
+    candidate, registration_contract, canonical_contracts, runtime_contracts,
+    manifest
   )
   if (!identical(registration$project_id, manifest[["Project-ID"]])) {
     rrp_project_abort(

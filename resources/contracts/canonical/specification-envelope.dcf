@@ -9,7 +9,7 @@ Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
 Owner-Package: rrpplatform
 Required-Envelope-Fields: Record-Type,Specification-Kind,Specification-ID,Specification-Version,Specification-Format-Version,Identity-Scope,Status,Product-ID,Development-Version,Owner-Package
-Allowed-Specification-Kinds: specification-envelope,canonical-producer-contract,canonical-bundle-contract,canonical-profile,canonical-domain,risk-target,episode-state-contract
+Allowed-Specification-Kinds: specification-envelope,canonical-producer-contract,canonical-bundle-contract,canonical-profile,canonical-domain,risk-target,episode-state-contract,risk-request-contract,risk-provider-contract,risk-estimate-contract
 Specification-ID-Pattern: ^rrp[.][a-z0-9]+(?:[.-][a-z0-9]+)+$
 Specification-Version-Pattern: ^[0-9]+[.][0-9]+[.][0-9]+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$
 Compatibility-Rule: exact_version

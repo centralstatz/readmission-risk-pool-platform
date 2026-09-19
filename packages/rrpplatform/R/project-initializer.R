@@ -191,6 +191,12 @@ rrp_project_initialization_assert_context <- function(context, inputs, root) {
     identical(context$producer$origin, "project") &&
     identical(context$provider$component_id, inputs$provider_id) &&
     identical(context$provider$component_version, inputs$project_version) &&
+    identical(context$provider$implementation_id, inputs$implementation_id) &&
+    identical(
+      context$provider$implementation_version, inputs$project_version
+    ) &&
+    is.null(context$provider$model_id) &&
+    is.null(context$provider$model_version) &&
     identical(context$provider$origin, "project")
   if (!valid) {
     rrp_project_initialization_abort(

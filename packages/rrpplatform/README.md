@@ -5,14 +5,15 @@ Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 `0.3.0.9000` and the RRP product development identity `1.0.0-dev`.
 
 The package imports `rrpruntime` to retain the accepted one-way internal-package
-dependency. It owns strict validation of the cataloged `rrp.project@0.2.0`
-manifest and `rrp.project-registration@0.2.0` registration-result structures,
-the installed canonical specification family, the singular risk-target and
-episode-state authorities, one explicit project-loading
+dependency. It owns strict validation of the cataloged `rrp.project@0.3.0`
+manifest and `rrp.project-registration@0.3.0` registration-result structures,
+the installed canonical specification family, the five singular runtime
+authorities, semantic provider declarations, one explicit project-loading
 boundary, and transactional minimal-project initialization from cataloged
 software-owned templates. Contract parsers, registration evaluation,
 rendering, staging, path checks, composition, resolution, producer request and
-result validation, and error construction remain internal.
+result validation, provider-authority agreement, and error construction remain
+internal. It does not yet invoke the selected project provider.
 
 Its current callable interfaces are:
 
@@ -24,9 +25,10 @@ Its current callable interfaces are:
   schema, catalog, and closed declared resource set beneath exactly the supplied
   root; and
 - `rrp_load_project(software_catalog, project_root)` revalidates the required
-  software resources and canonical authorities, validates exactly the supplied
-  project, executes its fixed trusted `R/register.R` boundary once, and returns
-  one closed `rrp_project_context` after exact producer/provider selection;
+  software resources and canonical/runtime authorities, validates exactly the
+  supplied project, executes its fixed trusted `R/register.R` boundary once, and returns
+  one closed `rrp_project_context` after exact semantic producer/provider
+  validation and selection;
 - `rrp_initialize_project(software_catalog, project_root, project_id,
   project_version)` creates exactly the manifest and registration file in a
   previously absent destination, validates staged and promoted output through
@@ -86,13 +88,14 @@ It never overwrites, merges with, repairs, or adopts existing content; cleanup
 is limited to filesystem objects owned by the current attempt. Its registered
 producer returns the controlled `producer_unavailable` result when later
 invoked with a request; initialization and validation do not invoke it. The
-provider remains a non-executable structural placeholder. The declared
+provider is a semantically conforming unavailable placeholder. The declared
 `extensions/library` and `state` locations remain absent.
 
 The returned project context is a validated in-process snapshot, not a mutable
-or serialized project session. It validates the target/state authorities
-against canonical contracts and assembles the exact closed context consumed by
-runtime state preparation without adding a platform export. The package does
+or serialized project session. It validates all five runtime authorities
+against canonical contracts and assembles exact closed contexts consumed by
+runtime state/provider behavior without adding a platform export. The package
+does
 not yet provide root selection,
 an ordinary operator command, dependency restoration, state creation,
 provider execution, risk calculation, runtime history, products, applications,

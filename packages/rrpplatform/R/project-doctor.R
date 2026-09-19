@@ -50,6 +50,10 @@ rrp_project_validation_success <- function(context) {
     provider = list(
       component_id = context$provider$component_id,
       component_version = context$provider$component_version,
+      implementation_id = context$provider$implementation_id,
+      implementation_version = context$provider$implementation_version,
+      model_id = context$provider$model_id,
+      model_version = context$provider$model_version,
       origin = context$provider$origin
     ),
     extension_library_status = extension_library_status,

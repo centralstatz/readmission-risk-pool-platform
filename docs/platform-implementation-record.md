@@ -2568,3 +2568,116 @@ can receive a request.
 **Next task:** implement only Increment 6.B — Semantic Provider Contract and
 Standard Request/Estimate Boundary. Do not begin Increment 6.C, Stage 7, or
 Stage 6 acceptance.
+
+## Stage 6 / Increment 6.B — Semantic provider contract and standard request/estimate boundary — 2026-09-18
+
+Increment 6.B is complete. The closed source-resource authority now contains
+exactly 18 entries. Three new runtime-owned DCF specifications establish
+`rrp.risk-request@0.1.0`, `rrp.provider-api@0.1.0`, and
+`rrp.risk-estimate@0.1.0`. Together with the 6.A target and episode-state
+authorities they form the exact five-resource runtime family. The specification
+envelope was extended only for the three realized kinds. `rrpplatform` loads
+the new authorities solely through the validated explicit software catalog,
+requires exact field/identity equality, checks every target/state/request/
+provider/estimate relationship, and assembles the closed plain runtime provider
+context. The projected installed resources remain byte-equal to source.
+
+The unreleased project manifest, project API, and registration contract moved
+atomically from `0.2.0` to the sole supported `0.3.0` line. Manifest fields did
+not change. Provider registration now contains exactly component, provider API,
+target, state, request, estimate, implementation, nullable model, and callable
+facts. Validation requires exact installed-authority agreement, independent
+bounded implementation identity, both-null or both-present model identity, and
+a one-argument `request` callable without invoking it. Producer semantics are
+unchanged. Structural `0.2.0` manifests, API declarations, and registration
+results fail explicitly; no compatibility bridge, rewrite, range, or migration
+was introduced.
+
+Initialization still creates exactly `rrp-project.dcf` and `R/register.R` in a
+new project. Its provider is project-derived, semantically conforming, declares
+no separate model, and would return only the controlled
+`provider_unavailable` result. Initialization, loading, project doctor, and
+producer execution do not invoke it. The loader remains the sole exact project
+provider-selection authority. The doctor adds only bounded implementation and
+nullable model identity to its provider summary. `rrpplatform` still imports
+only `rrpruntime` and still exports exactly eight functions; no platform risk
+operation or installed provider exists.
+
+`rrpruntime` remains base-R-only with no `Imports`, `Suggests`, or `LinkingTo`
+and now exports exactly three functions. The new
+`rrp_execute_risk_provider(episode_state, provider, expected_context)`
+revalidates the closed state and its deterministic identity, validates exact
+provider compatibility before invocation, constructs one deterministic
+detached `c("rrp_risk_request", "list")` request for `(t,W30]`, passes only a
+detached request copy to the callable, invokes it exactly once, and validates
+the exact four-field result. The request contains governed contract, target,
+state, bundle-instance, project, episode, time, interval, and elapsed facts; it
+contains no provider identity, bundle/domain payload, source or mapping fact,
+project root/path, credential, connection, feature surface, callback, state
+handle, or persistence reference.
+
+Successful provider output must contain the matching request identity, status
+`success`, one unclassed finite base-R double in `[0,1]`, and `NULL` failure.
+Controlled failure contains no value and only `provider_unavailable`,
+`provider_input_unavailable`, or `provider_calculation_failed`. Thrown
+conditions, malformed/unsafe results, mismatched request identity, and invalid
+probabilities raise fixed privacy-safe `rrp_runtime_error` codes without raw
+condition text. RRP constructs the exact closed detached
+`c("rrp_risk_estimate", "list")` envelope and stamps all software, target,
+request, state, bundle-instance, project, episode, provider, implementation,
+nullable model, interval, output, and value attribution from validated context.
+No estimate/run/attempt/history identity, retry, registry, fallback, model
+loading, persistence, or decision field was added.
+
+Historical reconnaissance inspected immutable `v0.1.0` estimand-request,
+provider-specification, registry, compatibility, execution, estimate, and
+reference-provider source; their runtime/provider contracts; and Phase 4 and
+package-native tests. Compatibility-before-invocation, exact trusted callable,
+detached input, one-call proof, request/result identity agreement, bounded
+probability, provider substitution, structured non-estimate failure, and
+adversarial output mechanics were adapted. The runtime registry, estimand
+collections/ranges, arbitrary state-field and feature requirements, baseline/
+event feature state, retries/attempts/run identities, raw exception issues,
+historical estimate identity/provenance shapes, YAML, daily hazard, repository-
+root loading, and the old reference formula were rejected.
+
+Evidence covers exact DCF fields/identities and five-resource relationships;
+the 18-resource closed projection; coherent `0.3.0` project initialization,
+loading, diagnosis, copy portability, and `0.2.0` rejection; semantic provider
+and model-pair validation; zero provider calls in all existing platform
+operations; exact request/estimate class and field order; deterministic request
+identity; fixed interval; state/request detachment and nonmutation; exact
+single invocation; success and all controlled failure paths; provider-thrown,
+malformed, unsafe, identity-mismatched, non-double, nonfinite, attributed,
+length, and range failures; dependency and export posture; source builds;
+isolated install/load; and exact package checks.
+
+Local implementation evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks
+  passed with zero issues;
+- focused isolated runtime and platform tests for provider execution, runtime
+  authority, project contracts, loader, initializer, doctor, and producer
+  regression behavior: passed;
+- `Rscript --vanilla tools/validate-packages.R`: the complete inherited and
+  Increment 6.B resource, package, project, canonical, state, request,
+  provider, and estimate matrix passed, including both source builds and exact
+  `R CMD check --no-manual` status `OK`; and
+- R/DCF/Rd parsing and `git diff --check`: passed, with no generated archive,
+  check directory, temporary library, projected root, or other validation
+  output retained in repository source.
+
+No discrepancy from Platform True North, Platform Architecture, or the
+accepted 6.B plan was found. No installed transparent provider, selected
+project-provider invocation, platform risk operation, fallback/retry, provider
+dependency or model loading, history, persistence, workflow change, Stage 6
+acceptance, or Stage 7 behavior was introduced.
+
+**Current implementation state:** Stages 1–5 remain accepted and complete.
+Increments 6.A and 6.B are complete; Stage 6 remains in progress. Dependency-
+light runtime can construct the standard request, execute one explicitly
+supplied compatible provider, and accept or reject one estimate, but installed
+RRP does not yet execute the provider selected by a project.
+
+**Next task:** implement only Increment 6.C — Selected Provider Execution and
+Transparent End-to-End Proof. Do not begin Stage 7 or Stage 6 acceptance.

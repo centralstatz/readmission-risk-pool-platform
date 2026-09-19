@@ -1,6 +1,6 @@
 Record-Type: project-registration-contract
 Contract-ID: rrp.project-registration
-Contract-Version: 0.2.0
+Contract-Version: 0.3.0
 Format-Version: 1.0.0
 Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
@@ -13,7 +13,7 @@ Collection-Fields: producers,providers
 Collection-Representation: ordered_unnamed_list
 Empty-Collections: allowed
 Producer-Fields: component_id,component_version,producer_api_id,producer_api_version,canonical_bundle_id,canonical_bundle_version,canonical_profile_id,canonical_profile_version,implementation_id,implementation_version,mapping_id,mapping_version,capabilities,callable
-Provider-Fields: component_id,component_version,callable
+Provider-Fields: component_id,component_version,provider_api_id,provider_api_version,target_id,target_version,state_contract_id,state_contract_version,request_contract_id,request_contract_version,estimate_contract_id,estimate_contract_version,implementation_id,implementation_version,model_id,model_version,callable
 Capability-Fields: capability_id,status
 Producer-API-ID: rrp.producer-api
 Producer-API-Version: 0.1.0
@@ -21,6 +21,17 @@ Canonical-Bundle-ID: rrp.canonical-bundle
 Canonical-Bundle-Version: 0.1.0
 Canonical-Profile-ID: rrp.canonical-profile.readmission
 Canonical-Profile-Version: 0.1.0
+Provider-API-ID: rrp.provider-api
+Provider-API-Version: 0.1.0
+Target-ID: rrp.risk-target.readmission-remaining-30-day
+Target-Version: 0.1.0
+State-Contract-ID: rrp.episode-state
+State-Contract-Version: 0.1.0
+Request-Contract-ID: rrp.risk-request
+Request-Contract-Version: 0.1.0
+Estimate-Contract-ID: rrp.risk-estimate
+Estimate-Contract-Version: 0.1.0
+Model-Identity-Rule: both_null_or_both_bounded
 Required-Capability-IDs: rrp.capability.discharge-episode,rrp.capability.terminal-event
 Capability-Status-Value: available
 Project-ID-Pattern: ^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$

@@ -2884,6 +2884,8 @@ authoritative as-of instant, but no provider can yet receive a request.
 
 ### Increment 6.B — Semantic provider contract and standard request/estimate boundary
 
+**Implementation status:** complete on 2026-09-18. Increment 6.C is next.
+
 **Objective:** define and prove the complete provider-neutral request,
 compatible provider declaration, minimal provider result, and RRP-owned
 accepted estimate without project-selected execution.

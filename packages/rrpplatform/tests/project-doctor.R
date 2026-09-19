@@ -12,11 +12,11 @@ rrp_doctor_write_record <- function(record, path) {
 rrp_doctor_manifest_template <- c(
   "Record-Type: rrp-project",
   "Project-Contract-ID: rrp.project",
-  "Project-Contract-Version: 0.2.0",
+  "Project-Contract-Version: 0.3.0",
   "Project-ID: @@RRP_PROJECT_ID@@",
   "Project-Version: @@RRP_PROJECT_VERSION@@",
   "Project-Scope: one_health_system",
-  "Supported-RRP-API-Version: 0.2.0",
+  "Supported-RRP-API-Version: 0.3.0",
   "Canonical-Profile-ID: rrp.canonical-profile.readmission",
   "Canonical-Profile-Version: 0.1.0",
   "Producer-ID: @@RRP_PRODUCER_ID@@",
@@ -29,13 +29,13 @@ rrp_doctor_manifest_template <- c(
 
 rrp_doctor_registration_template <- c(
   "rrp_register_project <- function(project_root) {",
-  "  unavailable <- function(...) stop('selected callable executed', call. = FALSE)",
+  "  unavailable <- function(request) stop('selected callable executed', call. = FALSE)",
   "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
   "  producer <- function() list(component_id = '@@RRP_PRODUCER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', mapping_id = '@@RRP_MAPPING_ID@@', mapping_version = '@@RRP_PROJECT_VERSION@@', capabilities = capabilities, callable = unavailable)",
-  "  provider <- function() list(component_id = '@@RRP_PROVIDER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', callable = unavailable)",
+  "  provider <- function() list(component_id = '@@RRP_PROVIDER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', model_id = NULL, model_version = NULL, callable = unavailable)",
   "  list(",
   "    registration_contract_id = 'rrp.project-registration',",
-  "    registration_contract_version = '0.2.0',",
+  "    registration_contract_version = '0.3.0',",
   "    project_id = '@@RRP_PROJECT_ID@@',",
   "    producers = list(producer()),",
   "    providers = list(provider())",
@@ -85,6 +85,16 @@ rrp_doctor_software_root <- function(root) {
     "rrp_canonical_contract_definitions"
   )()
   resources <- c(resources, lapply(canonical_definitions, function(definition) {
+    list(
+      id = definition$resource_id, class = "contract", format = "dcf",
+      owner = definition$owner, path = definition$path,
+      value = definition$expected
+    )
+  }))
+  runtime_definitions <- rrp_doctor_internal(
+    "rrp_runtime_contract_definitions"
+  )()
+  resources <- c(resources, lapply(runtime_definitions, function(definition) {
     list(
       id = definition$resource_id, class = "contract", format = "dcf",
       owner = definition$owner, path = definition$path,
@@ -175,8 +185,8 @@ expected_value <- list(
   project_id = "doctor-project",
   project_version = "2.4.0",
   project_contract_id = "rrp.project",
-  project_contract_version = "0.2.0",
-  supported_rrp_api_version = "0.2.0",
+  project_contract_version = "0.3.0",
+  supported_rrp_api_version = "0.3.0",
   canonical_profile = list(
     profile_id = "rrp.canonical-profile.readmission",
     profile_version = "0.1.0"
@@ -193,6 +203,10 @@ expected_value <- list(
   provider = list(
     component_id = "doctor-project.provider",
     component_version = "2.4.0",
+    implementation_id = "doctor-project.implementation",
+    implementation_version = "2.4.0",
+    model_id = NULL,
+    model_version = NULL,
     origin = "project"
   ),
   extension_library_status = "not_initialized",
@@ -299,12 +313,12 @@ instrumented <- c(
   "  count_path <- Sys.getenv('RRP_DOCTOR_REGISTRATION_COUNT')",
   "  count <- if (file.exists(count_path)) as.integer(readLines(count_path)) else 0L",
   "  writeLines(as.character(count + 1L), count_path)",
-  "  unavailable <- function(...) { Sys.setenv(RRP_DOCTOR_SELECTED_CALLED = 'yes') }",
+  "  unavailable <- function(request) { Sys.setenv(RRP_DOCTOR_SELECTED_CALLED = 'yes') }",
   "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
   "  producer <- list(component_id = 'doctor-project.producer', component_version = '2.4.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'doctor-project.implementation', implementation_version = '2.4.0', mapping_id = 'doctor-project.mapping', mapping_version = '2.4.0', capabilities = capabilities, callable = unavailable)",
-  "  provider <- list(component_id = 'doctor-project.provider', component_version = '2.4.0', callable = unavailable)",
+  "  provider <- list(component_id = 'doctor-project.provider', component_version = '2.4.0', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = 'doctor-project.implementation', implementation_version = '2.4.0', model_id = NULL, model_version = NULL, callable = unavailable)",
   "  list(registration_contract_id = 'rrp.project-registration',",
-  "    registration_contract_version = '0.2.0', project_id = 'doctor-project',",
+  "    registration_contract_version = '0.3.0', project_id = 'doctor-project',",
   "    producers = list(producer), providers = list(provider)) ",
   "}"
 )

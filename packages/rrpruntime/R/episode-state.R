@@ -10,7 +10,15 @@ rrp_runtime_failure_messages <- function() {
     episode_before_discharge = "Selected episode is before discharge.",
     target_horizon_exhausted = "Selected episode has exhausted the target horizon.",
     episode_already_readmitted = "Selected episode has already been readmitted.",
-    episode_already_dead = "Selected episode is already dead."
+    episode_already_dead = "Selected episode is already dead.",
+    provider_incompatible = "Selected provider is incompatible.",
+    provider_execution_failed = "Selected provider execution failed.",
+    invalid_provider_result = "Provider result validation failed.",
+    provider_result_identity_mismatch = "Provider result identity does not match the request.",
+    invalid_estimate = "Provider estimate is invalid.",
+    provider_unavailable = "Selected provider reported a controlled failure.",
+    provider_input_unavailable = "Selected provider reported a controlled failure.",
+    provider_calculation_failed = "Selected provider reported a controlled failure."
   )
 }
 
@@ -164,13 +172,7 @@ rrp_runtime_hash <- function(value, multiplier, modulus) {
 }
 
 rrp_runtime_state_identity <- function(values) {
-  serialized <- paste(vapply(values, function(value) {
-    value <- enc2utf8(as.character(value))
-    paste0(nchar(value, type = "bytes"), ":", value)
-  }, character(1L)), collapse = "|")
-  first <- rrp_runtime_hash(serialized, 257, 2147483629)
-  second <- rrp_runtime_hash(serialized, 263, 2147483587)
-  paste0("rrp.state.", sprintf("%08x%08x", first, second))
+  rrp_runtime_identity("rrp.state.", values)
 }
 
 rrp_runtime_validate_episode_state <- function(state) {

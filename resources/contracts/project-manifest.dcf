@@ -1,6 +1,6 @@
 Record-Type: project-manifest-contract
 Contract-ID: rrp.project
-Contract-Version: 0.2.0
+Contract-Version: 0.3.0
 Format-Version: 1.0.0
 Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
@@ -10,7 +10,7 @@ Manifest-Path: rrp-project.dcf
 Registration-Path: R/register.R
 Manifest-Record-Type: rrp-project
 Project-API-ID: rrp.project-api
-Project-API-Version: 0.2.0
+Project-API-Version: 0.3.0
 Fields: Record-Type,Project-Contract-ID,Project-Contract-Version,Project-ID,Project-Version,Project-Scope,Supported-RRP-API-Version,Canonical-Profile-ID,Canonical-Profile-Version,Producer-ID,Producer-Version,Provider-ID,Provider-Version,Extension-Library-Path,State-Path
 Optional-Fields: none
 Identity-Fields: Project-ID,Producer-ID,Provider-ID

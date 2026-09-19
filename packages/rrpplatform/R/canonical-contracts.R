@@ -19,7 +19,8 @@ rrp_canonical_envelope_expected <- function() {
     "Allowed-Specification-Kinds" = paste(c(
       "specification-envelope", "canonical-producer-contract",
       "canonical-bundle-contract", "canonical-profile", "canonical-domain",
-      "risk-target", "episode-state-contract"
+      "risk-target", "episode-state-contract", "risk-request-contract",
+      "risk-provider-contract", "risk-estimate-contract"
     ), collapse = ","),
     "Specification-ID-Pattern" = "^rrp[.][a-z0-9]+(?:[.-][a-z0-9]+)+$",
     "Specification-Version-Pattern" = paste0(

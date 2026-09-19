@@ -111,6 +111,30 @@ Installed-Path: resources/contracts/runtime/episode-state.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.risk-request
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/runtime/risk-request.dcf
+Installed-Path: resources/contracts/runtime/risk-request.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.risk-provider
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/runtime/risk-provider.dcf
+Installed-Path: resources/contracts/runtime/risk-provider.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.risk-estimate
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/runtime/risk-estimate.dcf
+Installed-Path: resources/contracts/runtime/risk-estimate.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

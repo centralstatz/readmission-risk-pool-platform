@@ -69,19 +69,20 @@ Rscript --vanilla tools/validate-packages.R
 
 It proves the closed source-resource catalog, temporary deterministic installed
 projection, explicit-root installed-package access, common resource-validation
-result and privacy-safe diagnostic behavior, the exact canonical and singular
-target/state specification families and relationships, strict 0.2.0 project
+result and privacy-safe diagnostic behavior, the exact canonical and five-
+resource runtime specification families and relationships, strict 0.3.0 project
 contracts, explicit trusted
 project loading, transactional minimal-project initialization, exact semantic
-producer and structural provider selection, loader-backed structured project diagnosis, copied-
+producer and semantic provider selection, loader-backed structured project diagnosis, copied-
 project portability, selected producer execution, closed request/result
 validation, two distinct fictional hospital mappings, exact one-call and zero-
 provider behavior, canonical admission delegation, package topology, one-way
 dependency, dependency-light canonical admission, exact eligibility and
-immutable episode-state construction, exact export posture, builds,
+immutable episode-state construction, standard provider-neutral request,
+direct one-call compatible-provider execution, accepted estimate, exact export posture, builds,
 isolated install/load, and package-
-native checks. No root selector, dependency environment, provider/risk
-operation, or release procedure exists on the clean line. The
+native checks. No root selector, dependency environment, platform risk
+operation, installed provider, or release procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -96,7 +97,7 @@ sixth `rrpplatform` export. Increment 4.D added the seventh export,
 `rrp_validate_project()`, and the complete local independent-project proof.
 Committed push run `35221028009`, job `105200921084`, succeeded for revision
 `f5c1fb0db47e9154b99e133a8f553bee8ea2aa16`, completing Stage 4 after final
-reconciliation. Increment 5.A adds the installed canonical contract authority,
+reconciliation. Increment 5.A added the installed canonical contract authority,
 semantic producer declarations, and the 0.2.0 project line without invoking a
 component. Increment 5.B adds the first `rrpruntime` export for pure canonical
 admission without invoking project code. Increment 5.C adds the eighth
@@ -106,7 +107,10 @@ succeeded for revision `01b0d564ecbe55830542c10cfcb77d4d72366d7b`, completing
 Stage 5 after final reconciliation. Increment 6.A adds the cataloged singular
 readmission-risk target and episode-state contract, exact installed authority
 loading, and the second `rrpruntime` export for pure eligibility and detached
-immutable episode-state construction. Stage 6 remains in progress. The next
-task is Increment 6.B — Semantic Provider Contract and Standard
-Request/Estimate Boundary. Do not begin Increment 6.B or later work without
-explicit authorization.
+immutable episode-state construction. Increment 6.B adds the remaining three
+runtime authorities, the exact 0.3.0 project line and semantic provider
+declaration, and the third `rrpruntime` export for standard request, direct one-
+call provider execution, and accepted estimates. Stage 6 remains in progress.
+The next task is Increment 6.C — Selected Provider Execution and Transparent
+End-to-End Proof. Do not begin Increment 6.C or later work without explicit
+authorization.

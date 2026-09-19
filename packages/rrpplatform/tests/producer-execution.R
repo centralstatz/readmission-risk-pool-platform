@@ -50,6 +50,13 @@ rrp_producer_test_software_root <- function(root) {
     path = definition$path,
     value = definition$expected
   )))
+  runtime <- rrp_producer_test_internal("rrp_runtime_contract_definitions")()
+  resources <- c(resources, lapply(runtime, function(definition) list(
+    id = definition$resource_id,
+    owner = definition$owner,
+    path = definition$path,
+    value = definition$expected
+  )))
   for (resource in resources) {
     rrp_producer_test_write_record(
       resource$value, file.path(root, resource$path)
@@ -83,11 +90,11 @@ rrp_producer_test_manifest <- function(project_id) {
   c(
     "Record-Type" = "rrp-project",
     "Project-Contract-ID" = "rrp.project",
-    "Project-Contract-Version" = "0.2.0",
+    "Project-Contract-Version" = "0.3.0",
     "Project-ID" = project_id,
     "Project-Version" = "1.0.0",
     "Project-Scope" = "one_health_system",
-    "Supported-RRP-API-Version" = "0.2.0",
+    "Supported-RRP-API-Version" = "0.3.0",
     "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
     "Canonical-Profile-Version" = "0.1.0",
     "Producer-ID" = paste0(project_id, ".producer"),
@@ -188,7 +195,7 @@ rrp_producer_test_registration <- function(
     "  captured_root <- project_root",
     "  calls <- 0L",
     "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
-    "  provider <- function(...) stop('private provider condition 86420', call. = FALSE)",
+    "  provider <- function(request) stop('private provider condition 86420', call. = FALSE)",
     "  producer <- function(request) {",
     "    calls <<- calls + 1L",
     "    if (!identical(calls, 1L)) stop('producer invoked more than once', call. = FALSE)",
@@ -238,7 +245,7 @@ rrp_producer_test_registration <- function(
     prelude,
     producer_body,
     "  }",
-    "  list(registration_contract_id = 'rrp.project-registration', registration_contract_version = '0.2.0',",
+    "  list(registration_contract_id = 'rrp.project-registration', registration_contract_version = '0.3.0',",
     paste0("    project_id = '", project_id, "',"),
     "    producers = list(list(",
     paste0("      component_id = '", producer_id, "', component_version = '1.0.0',"),
@@ -247,7 +254,7 @@ rrp_producer_test_registration <- function(
     "      canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0',",
     paste0("      implementation_id = '", implementation_id, "', implementation_version = '1.0.0',"),
     paste0("      mapping_id = '", mapping_id, "', mapping_version = '1.0.0', capabilities = capabilities, callable = producer)),"),
-    paste0("    providers = list(list(component_id = '", provider_id, "', component_version = '1.0.0', callable = provider)))"),
+    paste0("    providers = list(list(component_id = '", provider_id, "', component_version = '1.0.0', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = '", implementation_id, "', implementation_version = '1.0.0', model_id = NULL, model_version = NULL, callable = provider)))"),
     "}"
   )
 }

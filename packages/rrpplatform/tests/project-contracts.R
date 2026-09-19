@@ -14,6 +14,10 @@ canonical_contracts <- lapply(
   rrp_test_internal("rrp_canonical_contract_definitions")(),
   function(definition) as.list(definition$expected)
 )
+runtime_contracts <- lapply(
+  rrp_test_internal("rrp_runtime_contract_definitions")(),
+  function(definition) as.list(definition$expected)
+)
 validate_manifest <- rrp_test_internal("rrp_project_validate_manifest")
 validate_registration <- rrp_test_internal("rrp_project_validate_registration")
 
@@ -21,11 +25,11 @@ rrp_test_manifest <- function() {
   c(
     "Record-Type" = "rrp-project",
     "Project-Contract-ID" = "rrp.project",
-    "Project-Contract-Version" = "0.2.0",
+    "Project-Contract-Version" = "0.3.0",
     "Project-ID" = "fictional-health-system",
     "Project-Version" = "1.2.3-alpha.1",
     "Project-Scope" = "one_health_system",
-    "Supported-RRP-API-Version" = "0.2.0",
+    "Supported-RRP-API-Version" = "0.3.0",
     "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
     "Canonical-Profile-Version" = "0.1.0",
     "Producer-ID" = "fictional.producer",
@@ -80,9 +84,29 @@ rrp_test_producer <- function(
 rrp_test_provider <- function(
   id = "fictional.provider",
   version = "1.0.0",
-  callable = function() NULL
+  callable = function(request) NULL,
+  model_id = NULL,
+  model_version = NULL
 ) {
-  list(component_id = id, component_version = version, callable = callable)
+  list(
+    component_id = id,
+    component_version = version,
+    provider_api_id = "rrp.provider-api",
+    provider_api_version = "0.1.0",
+    target_id = "rrp.risk-target.readmission-remaining-30-day",
+    target_version = "0.1.0",
+    state_contract_id = "rrp.episode-state",
+    state_contract_version = "0.1.0",
+    request_contract_id = "rrp.risk-request",
+    request_contract_version = "0.1.0",
+    estimate_contract_id = "rrp.risk-estimate",
+    estimate_contract_version = "0.1.0",
+    implementation_id = sub("[.]provider$", ".implementation", id),
+    implementation_version = version,
+    model_id = model_id,
+    model_version = model_version,
+    callable = callable
+  )
 }
 
 rrp_test_registration <- function(
@@ -91,7 +115,7 @@ rrp_test_registration <- function(
 ) {
   list(
     registration_contract_id = "rrp.project-registration",
-    registration_contract_version = "0.2.0",
+    registration_contract_version = "0.3.0",
     project_id = "fictional-health-system",
     producers = producers,
     providers = providers
@@ -100,7 +124,7 @@ rrp_test_registration <- function(
 
 rrp_test_validate_registration <- function(candidate) {
   validate_registration(
-    candidate, registration_contract, canonical_contracts,
+    candidate, registration_contract, canonical_contracts, runtime_contracts,
     as.list(rrp_test_manifest())
   )
 }
@@ -123,7 +147,7 @@ rrp_test_expect_error <- function(callback, code = NULL) {
 }
 
 rrp_test_cases <- list(
-  "exact 0.2.0 project manifest parses to canonical field order" = function() {
+  "exact 0.3.0 project manifest parses to canonical field order" = function() {
     parsed <- validate_manifest(rrp_test_manifest_lines(), manifest_contract)
     stopifnot(
       identical(names(parsed), names(rrp_test_manifest())),
@@ -161,9 +185,9 @@ rrp_test_cases <- list(
     changes <- list(
       "Record-Type" = "other-project",
       "Project-Contract-ID" = "other.project",
-      "Project-Contract-Version" = "0.1.0",
+      "Project-Contract-Version" = "0.2.0",
       "Project-Scope" = "multiple_health_systems",
-      "Supported-RRP-API-Version" = "0.1.0",
+      "Supported-RRP-API-Version" = "0.2.0",
       "Canonical-Profile-ID" = "other.profile",
       "Canonical-Profile-Version" = "9.9.9"
     )
@@ -242,7 +266,15 @@ rrp_test_cases <- list(
       )),
       identical(
         names(one$providers[[1L]]),
-        c("component_id", "component_version", "callable")
+        c(
+          "component_id", "component_version", "provider_api_id",
+          "provider_api_version", "target_id", "target_version",
+          "state_contract_id", "state_contract_version",
+          "request_contract_id", "request_contract_version",
+          "estimate_contract_id", "estimate_contract_version",
+          "implementation_id", "implementation_version", "model_id",
+          "model_version", "callable"
+        )
       ),
       length(multiple$producers) == 2L,
       length(multiple$providers) == 2L,
@@ -253,7 +285,7 @@ rrp_test_cases <- list(
     wrong_id <- rrp_test_registration()
     wrong_id$registration_contract_id <- "other.registration"
     wrong_version <- rrp_test_registration()
-    wrong_version$registration_contract_version <- "0.1.0"
+    wrong_version$registration_contract_version <- "0.2.0"
     missing <- rrp_test_registration()
     missing$providers <- NULL
     extra <- c(rrp_test_registration(), list(extra = "not-allowed"))
@@ -266,6 +298,40 @@ rrp_test_cases <- list(
       rrp_test_registration(providers = list(bad_provider))
     )) {
       rrp_test_expect_error(function() rrp_test_validate_registration(candidate))
+    }
+  },
+  "provider declarations enforce semantics and nullable model identity" = function() {
+    valid_model <- rrp_test_provider(
+      model_id = "fictional.model", model_version = "1.0.0"
+    )
+    validated <- rrp_test_validate_registration(rrp_test_registration(
+      providers = list(valid_model)
+    ))
+    stopifnot(
+      identical(validated$providers[[1L]]$model_id, "fictional.model"),
+      identical(validated$providers[[1L]]$model_version, "1.0.0")
+    )
+    changes <- list(
+      provider_api_id = "other.provider-api", target_version = "9.9.9",
+      state_contract_id = "other.state", request_contract_version = "9.9.9",
+      estimate_contract_id = "other.estimate",
+      implementation_id = "rrp.protected", implementation_version = "v1",
+      callable = function(...) NULL
+    )
+    for (field in names(changes)) {
+      candidate <- rrp_test_provider()
+      candidate[[field]] <- changes[[field]]
+      rrp_test_expect_error(function() rrp_test_validate_registration(
+        rrp_test_registration(providers = list(candidate))
+      ))
+    }
+    for (candidate in list(
+      rrp_test_provider(model_id = "fictional.model"),
+      rrp_test_provider(model_version = "1.0.0")
+    )) {
+      rrp_test_expect_error(function() rrp_test_validate_registration(
+        rrp_test_registration(providers = list(candidate))
+      ), "invalid_provider_declaration")
     }
   },
   "producer declaration identity and semantic references fail closed" = function() {
@@ -335,10 +401,11 @@ rrp_test_cases <- list(
   "contract validation never invokes component callables" = function() {
     evidence <- new.env(parent = emptyenv())
     evidence$calls <- 0L
-    callable <- function(...) evidence$calls <- evidence$calls + 1L
+    producer_callable <- function(...) evidence$calls <- evidence$calls + 1L
+    provider_callable <- function(request) evidence$calls <- evidence$calls + 1L
     result <- rrp_test_validate_registration(rrp_test_registration(
-      producers = list(rrp_test_producer(callable = callable)),
-      providers = list(rrp_test_provider(callable = callable))
+      producers = list(rrp_test_producer(callable = producer_callable)),
+      providers = list(rrp_test_provider(callable = provider_callable))
     ))
     stopifnot(
       identical(evidence$calls, 0L),

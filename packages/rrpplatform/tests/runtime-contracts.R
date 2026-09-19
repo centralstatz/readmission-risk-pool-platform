@@ -88,6 +88,9 @@ definitions <- rrp_runtime_test_internal("rrp_runtime_contract_definitions")()
 context <- rrp_runtime_test_internal("rrp_episode_state_expected_context")(
   contracts, canonical
 )
+provider_context <- rrp_runtime_test_internal("rrp_provider_expected_context")(
+  contracts, canonical
+)
 stopifnot(
   identical(names(contracts), names(definitions)),
   all(vapply(names(definitions), function(name) {
@@ -105,7 +108,19 @@ stopifnot(
   )),
   identical(context$endpoint_elapsed_seconds, 2592000),
   identical(context$eligible_as_of_start, "inclusive"),
-  identical(context$eligible_as_of_end, "exclusive")
+  identical(context$eligible_as_of_end, "exclusive"),
+  identical(names(provider_context), c(
+    "product_id", "development_version", "target_id", "target_version",
+    "state_contract_id", "state_contract_version", "request_contract_id",
+    "request_contract_version", "provider_api_id", "provider_api_version",
+    "estimate_contract_id", "estimate_contract_version", "request_class",
+    "estimate_class", "target_interval_boundary", "output_type",
+    "output_minimum", "output_maximum"
+  )),
+  identical(provider_context$target_interval_boundary, "(start,end]"),
+  identical(provider_context$output_type, "probability"),
+  identical(provider_context$output_minimum, 0),
+  identical(provider_context$output_maximum, 1)
 )
 
 admission_context <- rrp_runtime_test_internal(
@@ -168,8 +183,36 @@ rrp_runtime_test_expect_error(rrp_runtime_test_fixture(function(definitions) {
   definitions
 }), "unsupported_runtime_contract")
 
+rrp_runtime_test_expect_error(rrp_runtime_test_fixture(function(definitions) {
+  definitions$risk_request$expected[["Unknown-Field"]] <- "not-allowed"
+  definitions
+}), "invalid_runtime_contract_fields")
+
+rrp_runtime_test_expect_error(rrp_runtime_test_fixture(function(definitions) {
+  definitions$risk_provider$expected[["Specification-Version"]] <- "9.9.9"
+  definitions
+}), "unsupported_runtime_contract")
+
+rrp_runtime_test_expect_error(rrp_runtime_test_fixture(function(definitions) {
+  definitions$risk_estimate$expected[["Unknown-Field"]] <- "not-allowed"
+  definitions
+}), "invalid_runtime_contract_fields")
+
 incompatible <- contracts
 incompatible$episode_state[["Target-Version"]] <- "9.9.9"
+condition <- tryCatch({
+  rrp_runtime_test_internal("rrp_runtime_validate_relationships")(
+    incompatible, canonical
+  )
+  NULL
+}, error = identity)
+stopifnot(
+  inherits(condition, "rrp_resource_error"),
+  identical(condition$code, "incompatible_runtime_contracts")
+)
+
+incompatible <- contracts
+incompatible$risk_provider[["Request-Contract-Version"]] <- "9.9.9"
 condition <- tryCatch({
   rrp_runtime_test_internal("rrp_runtime_validate_relationships")(
     incompatible, canonical

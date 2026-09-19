@@ -2,7 +2,7 @@ rrp_project_manifest_contract_expected <- function() {
   c(
     "Record-Type" = "project-manifest-contract",
     "Contract-ID" = "rrp.project",
-    "Contract-Version" = "0.2.0",
+    "Contract-Version" = "0.3.0",
     "Format-Version" = "1.0.0",
     "Product-ID" = "readmission-risk-pool-platform",
     "Development-Version" = "1.0.0-dev",
@@ -12,7 +12,7 @@ rrp_project_manifest_contract_expected <- function() {
     "Registration-Path" = "R/register.R",
     "Manifest-Record-Type" = "rrp-project",
     "Project-API-ID" = "rrp.project-api",
-    "Project-API-Version" = "0.2.0",
+    "Project-API-Version" = "0.3.0",
     "Fields" = paste(c(
       "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
       "Project-ID", "Project-Version", "Project-Scope",
@@ -53,7 +53,7 @@ rrp_project_registration_contract_expected <- function() {
   c(
     "Record-Type" = "project-registration-contract",
     "Contract-ID" = "rrp.project-registration",
-    "Contract-Version" = "0.2.0",
+    "Contract-Version" = "0.3.0",
     "Format-Version" = "1.0.0",
     "Product-ID" = "readmission-risk-pool-platform",
     "Development-Version" = "1.0.0-dev",
@@ -76,7 +76,14 @@ rrp_project_registration_contract_expected <- function() {
       "implementation_version", "mapping_id", "mapping_version",
       "capabilities", "callable"
     ), collapse = ","),
-    "Provider-Fields" = "component_id,component_version,callable",
+    "Provider-Fields" = paste(c(
+      "component_id", "component_version", "provider_api_id",
+      "provider_api_version", "target_id", "target_version",
+      "state_contract_id", "state_contract_version", "request_contract_id",
+      "request_contract_version", "estimate_contract_id",
+      "estimate_contract_version", "implementation_id",
+      "implementation_version", "model_id", "model_version", "callable"
+    ), collapse = ","),
     "Capability-Fields" = "capability_id,status",
     "Producer-API-ID" = "rrp.producer-api",
     "Producer-API-Version" = "0.1.0",
@@ -84,6 +91,17 @@ rrp_project_registration_contract_expected <- function() {
     "Canonical-Bundle-Version" = "0.1.0",
     "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
     "Canonical-Profile-Version" = "0.1.0",
+    "Provider-API-ID" = "rrp.provider-api",
+    "Provider-API-Version" = "0.1.0",
+    "Target-ID" = "rrp.risk-target.readmission-remaining-30-day",
+    "Target-Version" = "0.1.0",
+    "State-Contract-ID" = "rrp.episode-state",
+    "State-Contract-Version" = "0.1.0",
+    "Request-Contract-ID" = "rrp.risk-request",
+    "Request-Contract-Version" = "0.1.0",
+    "Estimate-Contract-ID" = "rrp.risk-estimate",
+    "Estimate-Contract-Version" = "0.1.0",
+    "Model-Identity-Rule" = "both_null_or_both_bounded",
     "Required-Capability-IDs" = paste(c(
       "rrp.capability.discharge-episode", "rrp.capability.terminal-event"
     ), collapse = ","),
@@ -496,20 +514,95 @@ rrp_project_validate_producer <- function(entry, contract, manifest) {
   entry
 }
 
-rrp_project_validate_provider <- function(entry, contract) {
+rrp_project_validate_provider <- function(entry, contract, runtime_contracts) {
   fields <- rrp_project_split_fields(contract[["Provider-Fields"]])
   if (!rrp_project_plain_named_list(entry, fields)) {
     rrp_project_stop(
       "Project registration result is invalid.", "invalid_registration_result"
     )
   }
-  rrp_project_validate_component_identity(entry[fields], contract)
+  entry <- rrp_project_validate_component_identity(entry[fields], contract)
+  fixed <- c(
+    provider_api_id = "Provider-API-ID",
+    provider_api_version = "Provider-API-Version",
+    target_id = "Target-ID", target_version = "Target-Version",
+    state_contract_id = "State-Contract-ID",
+    state_contract_version = "State-Contract-Version",
+    request_contract_id = "Request-Contract-ID",
+    request_contract_version = "Request-Contract-Version",
+    estimate_contract_id = "Estimate-Contract-ID",
+    estimate_contract_version = "Estimate-Contract-Version"
+  )
+  if (any(!vapply(names(fixed), function(field) {
+    identical(entry[[field]], contract[[fixed[[field]]]])
+  }, logical(1L)))) {
+    rrp_project_stop(
+      "Provider declaration is incompatible.",
+      "incompatible_provider_declaration"
+    )
+  }
+  identity_limit <- as.integer(contract[["Identity-Max-Bytes"]])
+  version_limit <- as.integer(contract[["Component-Version-Max-Bytes"]])
+  if (!rrp_project_valid_identity(
+    entry$implementation_id, contract[["Component-ID-Pattern"]],
+    identity_limit
+  ) || startsWith(entry$implementation_id, contract[["Protected-ID-Prefix"]]) ||
+      !rrp_project_valid_version(
+        entry$implementation_version,
+        contract[["Component-Version-Pattern"]], version_limit
+      )) {
+    rrp_project_stop(
+      "Provider implementation identity is invalid.",
+      "invalid_provider_declaration"
+    )
+  }
+  model_null <- is.null(entry$model_id) && is.null(entry$model_version)
+  model_set <- rrp_project_valid_identity(
+    entry$model_id, contract[["Component-ID-Pattern"]], identity_limit
+  ) && !startsWith(entry$model_id, contract[["Protected-ID-Prefix"]]) &&
+    rrp_project_valid_version(
+      entry$model_version, contract[["Component-Version-Pattern"]],
+      version_limit
+    )
+  if (!model_null && !model_set) {
+    rrp_project_stop(
+      "Provider model identity is invalid.", "invalid_provider_declaration"
+    )
+  }
+  arguments <- formals(entry$callable)
+  if (!identical(names(arguments), "request")) {
+    rrp_project_stop(
+      "Provider callable is invalid.", "invalid_provider_declaration"
+    )
+  }
+  expected_runtime <- list(
+    provider_api_id = runtime_contracts$risk_provider[["Specification-ID"]],
+    provider_api_version = runtime_contracts$risk_provider[["Specification-Version"]],
+    target_id = runtime_contracts$readmission_risk_target[["Specification-ID"]],
+    target_version = runtime_contracts$readmission_risk_target[["Specification-Version"]],
+    state_contract_id = runtime_contracts$episode_state[["Specification-ID"]],
+    state_contract_version = runtime_contracts$episode_state[["Specification-Version"]],
+    request_contract_id = runtime_contracts$risk_request[["Specification-ID"]],
+    request_contract_version = runtime_contracts$risk_request[["Specification-Version"]],
+    estimate_contract_id = runtime_contracts$risk_estimate[["Specification-ID"]],
+    estimate_contract_version = runtime_contracts$risk_estimate[["Specification-Version"]]
+  )
+  if (any(!vapply(names(expected_runtime), function(field) {
+    identical(entry[[field]], expected_runtime[[field]])
+  }, logical(1L)))) {
+    rrp_project_stop(
+      "Provider declaration is incompatible.",
+      "incompatible_provider_declaration"
+    )
+  }
+  entry
 }
 
 rrp_project_validate_registration <- function(
   candidate,
   contract,
   canonical_contracts,
+  runtime_contracts,
   manifest = NULL
 ) {
   expected_contract <- rrp_project_registration_contract_expected()
@@ -555,7 +648,10 @@ rrp_project_validate_registration <- function(
       lapply(entries, rrp_project_validate_producer,
              contract = contract, manifest = manifest)
     } else {
-      lapply(entries, rrp_project_validate_provider, contract = contract)
+      lapply(
+        entries, rrp_project_validate_provider, contract = contract,
+        runtime_contracts = runtime_contracts
+      )
     }
     keys <- vapply(validated_entries, function(entry) {
       paste(entry$component_id, entry$component_version, sep = "@")
@@ -593,6 +689,15 @@ rrp_project_validate_registration <- function(
     rrp_project_stop(
       "Producer declaration contract is incompatible.",
       "incompatible_producer_declaration"
+    )
+  }
+  if (!is.list(runtime_contracts) || !all(c(
+    "readmission_risk_target", "episode_state", "risk_request",
+    "risk_provider", "risk_estimate"
+  ) %in% names(runtime_contracts))) {
+    rrp_project_stop(
+      "Provider declaration contract is incompatible.",
+      "incompatible_provider_declaration"
     )
   }
   candidate

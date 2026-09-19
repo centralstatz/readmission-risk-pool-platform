@@ -12,11 +12,11 @@ rrp_init_write_record <- function(record, path) {
 rrp_init_manifest_template <- c(
   "Record-Type: rrp-project",
   "Project-Contract-ID: rrp.project",
-  "Project-Contract-Version: 0.2.0",
+  "Project-Contract-Version: 0.3.0",
   "Project-ID: @@RRP_PROJECT_ID@@",
   "Project-Version: @@RRP_PROJECT_VERSION@@",
   "Project-Scope: one_health_system",
-  "Supported-RRP-API-Version: 0.2.0",
+  "Supported-RRP-API-Version: 0.3.0",
   "Canonical-Profile-ID: rrp.canonical-profile.readmission",
   "Canonical-Profile-Version: 0.1.0",
   "Producer-ID: @@RRP_PRODUCER_ID@@",
@@ -48,13 +48,13 @@ rrp_init_registration_template <- c(
   "         canonical_as_of_time = request$as_of_time, capabilities = capabilities,",
   "         candidate_bundle = NULL, failure_code = \"producer_unavailable\")",
   "  }",
-  "  unavailable_provider <- function(...) {",
+  "  unavailable_provider <- function(request) {",
   "    Sys.setenv(RRP_INIT_SELECTED_CALLED = \"yes\")",
-  "    stop(\"Initialized structural component has no execution behavior.\", call. = FALSE)",
+  "    list(request_id = request$request_id, status = \"failure\", estimate_value = NULL, failure_code = \"provider_unavailable\")",
   "  }",
   "  list(",
   "    registration_contract_id = \"rrp.project-registration\",",
-  "    registration_contract_version = \"0.2.0\",",
+  "    registration_contract_version = \"0.3.0\",",
   "    project_id = \"@@RRP_PROJECT_ID@@\",",
   "    producers = list(list(",
   "      component_id = \"@@RRP_PRODUCER_ID@@\",",
@@ -75,6 +75,20 @@ rrp_init_registration_template <- c(
   "    providers = list(list(",
   "      component_id = \"@@RRP_PROVIDER_ID@@\",",
   "      component_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "      provider_api_id = \"rrp.provider-api\",",
+  "      provider_api_version = \"0.1.0\",",
+  "      target_id = \"rrp.risk-target.readmission-remaining-30-day\",",
+  "      target_version = \"0.1.0\",",
+  "      state_contract_id = \"rrp.episode-state\",",
+  "      state_contract_version = \"0.1.0\",",
+  "      request_contract_id = \"rrp.risk-request\",",
+  "      request_contract_version = \"0.1.0\",",
+  "      estimate_contract_id = \"rrp.risk-estimate\",",
+  "      estimate_contract_version = \"0.1.0\",",
+  "      implementation_id = \"@@RRP_IMPLEMENTATION_ID@@\",",
+  "      implementation_version = \"@@RRP_PROJECT_VERSION@@\",",
+  "      model_id = NULL,",
+  "      model_version = NULL,",
   "      callable = unavailable_provider",
   "    ))",
   "  )",
@@ -95,11 +109,19 @@ rrp_init_software_root <- function(root) {
   canonical_definitions <- rrp_init_internal(
     "rrp_canonical_contract_definitions"
   )()
+  runtime_definitions <- rrp_init_internal(
+    "rrp_runtime_contract_definitions"
+  )()
   rrp_init_write_record(
     manifest_contract,
     file.path(root, "resources", "contracts", "project-manifest.dcf")
   )
   for (definition in canonical_definitions) {
+    rrp_init_write_record(
+      definition$expected, file.path(root, definition$path)
+    )
+  }
+  for (definition in runtime_definitions) {
     rrp_init_write_record(
       definition$expected, file.path(root, definition$path)
     )
@@ -142,6 +164,10 @@ rrp_init_software_root <- function(root) {
   )
   entries <- c(entries, lapply(canonical_definitions, function(definition) c(
     definition$resource_id, "contract", definition$path, "dcf", definition$owner
+  )))
+  entries <- c(entries, lapply(runtime_definitions, function(definition) c(
+    definition$resource_id, "contract", definition$path, "dcf",
+    definition$owner
   )))
   header <- c(
     "Record-Type" = "catalog", "Catalog-ID" = "rrp.software-resources",

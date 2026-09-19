@@ -37,12 +37,23 @@ rrp_loader_software_fixture <- function() {
   canonical_definitions <- rrp_loader_internal(
     "rrp_canonical_contract_definitions"
   )()
+  runtime_definitions <- rrp_loader_internal(
+    "rrp_runtime_contract_definitions"
+  )()
   writeLines(
     paste0(names(schema), ": ", unname(schema)),
     file.path(root, "resources", "resource-catalog-schema.dcf"),
     useBytes = TRUE
   )
   for (definition in canonical_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(definition$expected), ": ", unname(definition$expected)),
+      path, useBytes = TRUE
+    )
+  }
+  for (definition in runtime_definitions) {
     path <- file.path(root, definition$path)
     dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
     writeLines(
@@ -89,6 +100,11 @@ rrp_loader_software_fixture <- function() {
       definition$resource_id, definition$path, definition$owner
     )
   }))
+  records <- c(records, lapply(runtime_definitions, function(definition) {
+    rrp_loader_resource_entry(
+      definition$resource_id, definition$path, definition$owner
+    )
+  }))
   rrp_loader_write_records(
     records, file.path(root, "resources", "resource-catalog.dcf")
   )
@@ -99,11 +115,11 @@ rrp_loader_manifest <- function() {
   c(
     "Record-Type" = "rrp-project",
     "Project-Contract-ID" = "rrp.project",
-    "Project-Contract-Version" = "0.2.0",
+    "Project-Contract-Version" = "0.3.0",
     "Project-ID" = "fictional-health-system",
     "Project-Version" = "1.0.0",
     "Project-Scope" = "one_health_system",
-    "Supported-RRP-API-Version" = "0.2.0",
+    "Supported-RRP-API-Version" = "0.3.0",
     "Canonical-Profile-ID" = "rrp.canonical-profile.readmission",
     "Canonical-Profile-Version" = "0.1.0",
     "Producer-ID" = "fictional.producer",
@@ -134,11 +150,11 @@ rrp_loader_registration <- function(
     "    calls <<- calls + 1L",
     "    component <- function(id, version, kind = 'producer') {",
     paste0(
-      "      callable <- function(...) stop('selected callable executed', ",
+      "      callable <- function(request) stop('selected callable executed', ",
       "call. = FALSE)"
     ),
     "      attr(callable, 'registration_calls') <- calls",
-    "      if (identical(kind, 'provider')) return(list(component_id = id, component_version = version, callable = callable))",
+    "      if (identical(kind, 'provider')) return(list(component_id = id, component_version = version, provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = paste0(sub('[.]provider$', '', id), '.implementation'), implementation_version = version, model_id = NULL, model_version = NULL, callable = callable))",
     "      prefix <- sub('[.]producer$', '', id)",
     "      list(component_id = id, component_version = version,",
     "           producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0',",
@@ -151,7 +167,7 @@ rrp_loader_registration <- function(
     "    }",
     "    list(",
     paste0("      registration_contract_id = '", contract_id, "',"),
-    "      registration_contract_version = '0.2.0',",
+    "      registration_contract_version = '0.3.0',",
     paste0("      project_id = '", project_id, "',"),
     paste0("      producers = list(", paste(producer_entries, collapse = ", "), "),"),
     paste0("      providers = list(", paste(provider_entries, collapse = ", "), ")"),
@@ -496,7 +512,7 @@ rrp_loader_tests <- list(
       non_callable = list(c(
         "rrp_register_project <- function(project_root) list(",
         "  registration_contract_id = 'rrp.project-registration',",
-        "  registration_contract_version = '0.2.0',",
+        "  registration_contract_version = '0.3.0',",
         "  project_id = 'fictional-health-system',",
         paste0(
           "  producers = list(list(component_id = 'fictional.producer', ",
@@ -687,11 +703,11 @@ rrp_loader_tests <- list(
         "  callable <- getExportedValue('rrpfixtureextension', 'fixture_callable')",
         "  attr(callable, 'observed_libraries') <- .libPaths()",
         "  component <- function(id, kind) {",
-        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', callable = callable))",
+        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', model_id = NULL, model_version = NULL, callable = function(request) callable(request)))",
         "    list(component_id = id, component_version = '1.0.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', mapping_id = 'fictional.mapping', mapping_version = '1.0.0', capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')), callable = callable)",
         "  }",
         "  list(registration_contract_id = 'rrp.project-registration',",
-        "       registration_contract_version = '0.2.0',",
+        "       registration_contract_version = '0.3.0',",
         "       project_id = 'fictional-health-system',",
         "       producers = list(component('fictional.producer', 'producer')),",
         "       providers = list(component('fictional.provider', 'provider')))",
@@ -729,11 +745,11 @@ rrp_loader_tests <- list(
         "rrp_register_project <- function(project_root) {",
         "  callable <- getExportedValue('rrpambientfixture', 'fixture_callable')",
         "  component <- function(id, kind) {",
-        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', callable = callable))",
+        "    if (identical(kind, 'provider')) return(list(component_id = id, component_version = '1.0.0', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', model_id = NULL, model_version = NULL, callable = function(request) callable(request)))",
         "    list(component_id = id, component_version = '1.0.0', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = 'fictional.implementation', implementation_version = '1.0.0', mapping_id = 'fictional.mapping', mapping_version = '1.0.0', capabilities = list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available')), callable = callable)",
         "  }",
         "  list(registration_contract_id = 'rrp.project-registration',",
-        "       registration_contract_version = '0.2.0',",
+        "       registration_contract_version = '0.3.0',",
         "       project_id = 'fictional-health-system',",
         "       producers = list(component('fictional.producer', 'producer')),",
         "       providers = list(component('fictional.provider', 'provider')))",

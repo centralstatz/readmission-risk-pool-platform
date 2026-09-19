@@ -11,8 +11,12 @@ stopifnot(
   is.null(description[["LinkingTo"]]),
   identical(
     sort(getNamespaceExports("rrpruntime")),
-    c("rrp_admit_canonical_bundle", "rrp_prepare_episode_state")
+    c(
+      "rrp_admit_canonical_bundle", "rrp_execute_risk_provider",
+      "rrp_prepare_episode_state"
+    )
   ),
   is.function(rrp_admit_canonical_bundle),
+  is.function(rrp_execute_risk_provider),
   is.function(rrp_prepare_episode_state)
 )

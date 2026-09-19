@@ -18,21 +18,22 @@ public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional internal package owners.
 A closed base-R DCF source catalog now declares its schema, common result and
 diagnostic contracts, exact project contracts, the initial canonical
-specification family, the singular readmission-risk target and episode-state
-contract, and the two minimal-project templates, with a temporary deterministic
-installed-projection proof.
+specification family, all five singular runtime contracts, and the two minimal-
+project templates, with a temporary deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
-its fixed trusted registration boundary and resolving exact structural
+its fixed trusted registration boundary and resolving exact semantic
 producer/provider selections without invoking them during loading. It reports the same
 loader-owned assessment through a bounded project doctor. Producer declarations
 now identify the exact canonical profile, bundle, implementation, mapping, and
-required available capabilities, while providers retain their structural
-shape. One supported operation now executes exactly the selected producer once
+required available capabilities, while providers declare exact target, state,
+request, estimate, implementation, and nullable model compatibility. One
+supported operation now executes exactly the selected producer once
 through a closed request/result contract and delegates a successful detached
 candidate to runtime admission; the selected provider remains inert.
-`rrpruntime` now exports two pure dependency-light primitives: canonical
-admission and eligible episode-state preparation. It validates exact identity,
+`rrpruntime` now exports three pure dependency-light primitives: canonical
+admission, eligible episode-state preparation, and direct compatible-provider
+execution through the standard request/result/estimate boundary. It validates exact identity,
 capability, closed-domain, key,
 relationship, explicit-offset time, dual-time, and 30-elapsed-day rules and
 returns detached in-memory admitted bundles and immutable target-specific
@@ -103,7 +104,7 @@ Rscript --vanilla tools/validate-packages.R
 ```
 
 This operation checks the closed source catalog/schema/contracts, including
-the exact canonical specification family, singular target and episode-state
+the exact canonical specification family, all five singular runtime
 authorities, and their cross-references,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
@@ -114,9 +115,10 @@ diagnosis, selected producer execution through two materially different
 fictional hospital mappings, copied-project portability, typed privacy-safe
 project/resource failures, adversarial rejection behavior, and direct
 installed-authority/runtime canonical admission, exact single producer
-invocation, zero provider calls, process restoration, and no project/state
-mutation. It also checks runtime eligibility and immutable episode-state
-construction without provider behavior, plus exact package topology,
+invocation, zero provider calls in platform-owned operations, process
+restoration, and no project/state mutation. It also checks runtime eligibility,
+immutable episode state, standard request, directly supplied semantic provider,
+minimal result, and accepted estimate behavior, plus exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
@@ -134,8 +136,8 @@ same hosted workflow and has been formally accepted, so Stages 1–4 are complet
 The initializer, loader, doctor, and producer operation are internal technical
 interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
-Stages 1–5 are complete. Stage 6 is in progress: Increment 6.A is complete
-locally, and Increment 6.B is the next task.
+Stages 1–5 are complete. Stage 6 is in progress: Increments 6.A and 6.B are
+complete locally. Increment 6.C is the next task.
 
 ## License
 

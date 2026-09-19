@@ -1,2 +1,3 @@
 export(rrp_admit_canonical_bundle)
+export(rrp_execute_risk_provider)
 export(rrp_prepare_episode_state)

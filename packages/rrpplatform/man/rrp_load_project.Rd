@@ -12,7 +12,7 @@ rrp_load_project(software_catalog, project_root)
 \value{
 One closed \code{rrp_project_context} list containing the validated software
 catalog, normalized project root, manifest, registration result, exact selected
-canonical-profile identity, semantic producer and structural provider records
+canonical-profile identity and semantic producer and provider records
 with origin, and normalized intended extension-library and state locations.
 }
 \description{
