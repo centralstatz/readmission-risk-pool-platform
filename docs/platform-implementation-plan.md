@@ -3175,19 +3175,31 @@ these are explicit later boundaries, not implementation-time ambiguity.
 
 ## Stage 7 — Project state and operational history
 
-**Status:** detailed and accepted for implementation on 2026-09-19. No Stage 7
+**Status:** detailed and accepted for implementation on 2026-09-19, including
+the subsequently accepted bundle-scoped operational decision. No Stage 7
 source, contract, dependency, state, or adapter capability exists yet. This
 section authorizes only Increments 7.A–7.D below.
+
+The non-authoritative reasoning record is retained at
+`docs/assessments/stage-7-bundle-scope-assessment.md`; this reconciled section
+is the authoritative build plan.
 
 ### Objective and responsibilities
 
 Add durable, attributable operational truth around the accepted Stage 5/6
-computation without redefining that computation. Define the smallest useful
-logical history model and storage-neutral port; append one episode execution as
-one atomic terminal batch; make duplicate, conflict, retry, invalidation,
-restatement, raw-read, and current-read semantics explicit; and supply one
-project-path DuckDB adapter with explicit initialize, reopen, backup, and
-bounded recovery behavior.
+computation without redefining that computation. One successfully admitted
+canonical bundle at authoritative analytical time `t` is the operational
+scope; one discharge episode, the singular target, and `t` remain the
+analytical unit; and one terminal episode disposition remains the atomic
+persistence unit. RRP owns accounting for every admitted episode, including
+ineligible and bounded-failure outcomes, without implying that every episode
+receives a risk estimate.
+
+Define the smallest useful three-family logical history model and storage-
+neutral port; make scope completeness, partial progress, deterministic
+continuation, idempotency, retry, correction, raw-read, and current-read
+semantics explicit; and supply one project-path DuckDB adapter with explicit
+initialize, reopen, backup, and bounded recovery behavior.
 
 The accepted Stage 7 path is:
 
@@ -3196,15 +3208,15 @@ explicit project + authoritative analytical time t + operation key
         ↓
 existing selected producer and canonical admission
         ↓
-existing singular-target eligibility/state/request/provider execution
+one trusted admitted scope containing N discharge episodes
         ↓
-one terminal result for one episode
+deterministic sequential enumeration
         ↓
-RRP-owned logical terminal history batch
+each episode through existing singular-target Stage 6 semantics
         ↓
-storage-neutral history port
+one independently atomic terminal disposition per episode
         ↓
-explicitly initialized project-owned DuckDB state
+derived complete or incomplete scope in project-owned DuckDB state
 ```
 
 History records what the accepted computation actually knew and concluded. It
@@ -3241,22 +3253,26 @@ change is required before Stage 7. The realized system fixes these inputs:
   record, product, or operator command currently exists.
 
 Stage 7 preserves the Stage 5/6 exports as nonpersistent primitives. It adds a
-higher operation that composes them with history construction and atomic
-append; it does not silently make either accepted primitive persistent.
+higher bundle-scoped operation that composes those episode-level semantics
+with history construction and independent atomic episode append; it does not
+silently make either accepted primitive persistent or change the Stage 6
+one-call rule.
 
 ### Scope test and settled decisions
 
 | Question | Accepted Stage 7 decision |
 |---|---|
-| Unit of analytical work | One analytical run concerns one known discharge episode, one admitted bundle, the singular target, and exact authoritative `t`. Stage 7 does not introduce multi-episode scoring. |
-| Terminal batch | One terminal run header plus exactly one episode-execution record become visible together. The episode record contains governed state/request/estimate objects only when those stages occurred. There is no separate batch identity. |
-| Operation, analytical run, attempt | The named operation is the callable behavior. Each invocation has an operation-run identity used as the idempotency key. The analytical-run identity identifies the intended analytical question. The provider-execution identity identifies the one attempted provider call and is absent when no provider was called. |
-| Retry | A retry is a new explicit operation run related to one prior terminal failure, reusing its analytical-run identity and making at most one new provider call. It is never a hidden second call within one operation. |
-| Ordinary rerun | A deliberately new computation, even at the same `t`, receives a new analytical-run and operation-run identity. It does not replace earlier history automatically. |
-| Persisted representation | Preserve exact small governed state, request, and accepted-estimate objects inside one episode-execution record, plus minimal run/provenance/outcome facts. Do not persist the full canonical bundle or create one logical table per in-memory noun. |
-| Correction model | `correction` is operator intent, not a third mutation mechanism. It is represented as either an immutable invalidation or an atomic restatement consisting of a new terminal run plus an invalidation/replacement relationship. |
-| Validity scope | Invalidation targets a whole terminal operation run. Because one run contains one atomic episode fact graph, partial state/request/execution/estimate invalidation is unnecessary and prohibited. |
-| Current history | `rrpruntime` derives effective/current meaning from raw records and immutable actions. DuckDB may filter and order raw candidates but does not own validity rules. |
+| Operational scope | One successful producer invocation and canonical admission at exact authoritative `t` establish one trusted admitted bundle containing zero or more discharge episodes. One durable operation owns accounting for that whole scope. |
+| Analytical and provider unit | One analytical run concerns one admitted discharge episode, the singular target, and exact `t`. A provider execution remains one optional call for one eligible episode analytical attempt. |
+| Processing and persistence | RRP enumerates admitted episode IDs deterministically and sequentially initially. Each episode receives or remains visibly pending toward one governed terminal disposition, committed independently and atomically. There is no all-episode transaction. |
+| Scope completeness | Immutable scope evidence records expected count `N` and a governed/versioned membership fingerprint over canonically encoded, uniquely admitted episode IDs. Completeness is derived only when terminal-disposition membership reproduces both; no mutable completion flag or full bundle is authoritative. A zero-episode scope is complete once its scope evidence is durable. |
+| Operation, analytical run, attempt | The operation-run identity is bundle-scoped and keyed by the caller operation key. Analytical-run, episode disposition, state/request, and optional provider-execution identities remain episode-scoped. There is no batch, episode-operation, loop-position, transaction, storage-row, or attempt-counter domain identity. |
+| Continuation and retry | Reinvoking an incomplete matching scope continues only missing episode dispositions. An explicit provider retry is a separate later episode analytical attempt related to one terminal failure; it never occurs implicitly during continuation. |
+| Ordinary rerun | A deliberately new bundle computation, even at the same `t`, receives a new operation-run identity and new episode analytical identities. It does not replace earlier history automatically. |
+| Persisted representation | Preserve minimal scope provenance, expected membership evidence, and one terminal episode disposition containing exact small governed state/request/accepted-estimate objects only when those stages occurred. Do not persist the full canonical bundle or create one logical table per in-memory noun. |
+| Correction model | `correction` is operator intent, not a third mutation mechanism. It is represented as either an immutable invalidation or an atomic restatement consisting of new episode or scope history plus an invalidation/replacement relationship. |
+| Validity scope | Invalidation/restatement normally targets one episode analytical result. A scope-level action is allowed only for a defect in shared admission or operational provenance; individual state/request/execution/estimate fragments are never independently invalidated. |
+| Raw and current history | Raw history exposes immutable scopes, partial progress, all dispositions, and actions. `rrpruntime` derives effective/current episode meaning and excludes incomplete scopes from population-level current interpretation; DuckDB does not own validity rules. |
 | State lifecycle | State initialization is explicit, separate from project initialization and execution, create-only for an absent state root, and idempotently validating for an already-compatible root. Execution never initializes state implicitly. |
 | Adapter | DuckDB is the one supplied local adapter, not the logical contract or a production database requirement. |
 | Concurrency | One controlled writer/session per project state on a supported local filesystem. No distributed or production multi-writer claim. |
@@ -3267,61 +3283,70 @@ append; it does not silently make either accepted primitive persistent.
 Stage 7 retains the minimum distinct identities required by Platform
 Architecture:
 
-1. **Operation-run identity** identifies one invocation of the durable
-   operation, one terminal batch, and one idempotency domain. RRP derives it
-   from the initialized state identity and a required caller-supplied bounded,
-   nonsecret operation key. Reusing the key addresses uncertain persistence
-   outcomes without executing again when the batch already exists.
-2. **Analytical-run identity** identifies the intended episode/target/bundle/
-   `t` question. The first operation run creates it. An explicit retry reuses
-   it; an ordinary rerun or restatement creates a new one.
-3. **Provider-execution identity** identifies the exact one provider call in an
-   operation run. It is deterministic from the operation run, request, and
-   selected provider and is `NULL` when eligibility or compatibility prevents
-   invocation.
+1. **Operation-run identity** identifies one admitted-bundle operational scope
+   and its idempotency domain. RRP derives it from initialized state identity
+   and a required caller-supplied bounded, nonsecret operation key. Reusing the
+   key addresses interruption and uncertain persistence without treating a
+   different admitted population as the same operation.
+2. **Analytical-run identity** identifies one episode/target/`t` question
+   within that operation. Initial identities are deterministic from operation
+   scope and analytical inputs. An explicit retry creates a new related
+   analytical attempt identity; an ordinary rerun or restatement also creates
+   new analytical identities and never overwrites prior facts.
+3. **Provider-execution identity** identifies the exact one provider call for
+   one episode analytical attempt. It is deterministic from the analytical
+   attempt, request, and selected provider and is `NULL` when eligibility or
+   compatibility prevents invocation.
 4. Existing **state ID** and **request ID** remain the governed Stage 6
    identities. A successful execution receives one durable estimate-record ID
    derived from the provider-execution identity and accepted estimate. The
    Stage 6 estimate object is not modified to become a persistence object.
 5. One immutable **history-action ID** identifies an invalidation or
-   restatement relationship. There is no separate batch, correction,
-   restatement, or retry-counter identity.
+   restatement relationship. There is no separate batch, episode-operation,
+   correction, restatement, loop-position, transaction, storage-generated, or
+   retry-counter identity.
 
-The exact deterministic ID algorithms and version markers are part of the
-7.A contracts. Filesystem paths, Git state, wall-clock order, storage row IDs,
-and DuckDB sequences never define semantic identity.
+Processing order may be deterministic without becoming identity. The exact
+deterministic ID algorithms and version markers are part of the 7.A contracts.
+Filesystem paths, Git state, wall-clock order, provider values, similarity of
+inputs, storage row IDs, and DuckDB sequences never define semantic identity.
 
 ### Logical history record model
 
-Stage 7 uses three logical record families rather than reproducing the six
-historical `v0.1.0` families.
+Stage 7 uses three logical record families rather than reproducing historical
+family proliferation. Completion is derived and does not add a fourth family.
 
-#### Terminal run header
+#### Operational scope
 
-One closed terminal-run record carries:
+One closed immutable operational-scope record carries:
 
-- contract and record identities;
-- operation ID, operation-run ID, analytical-run ID, and optional
-  `retry_of_operation_run_id`;
+- contract, record, named-operation, and bundle-scoped operation-run identities;
+- the caller operation key only in its bounded governed representation;
 - initialized state identity;
 - RRP product/development and relevant API/contract versions;
 - project ID/version;
 - canonical bundle/profile, producer, implementation, and mapping attribution;
 - singular target ID/version and authoritative analytical `t`;
-- episode-execution record ID;
-- operation start and terminal wall-clock timestamps;
-- terminal outcome `succeeded`, `ineligible`, or `failed`; and
-- one bounded outcome code with no arbitrary message or payload.
+- expected admitted discharge-episode count `N`;
+- the governed fingerprint algorithm/encoding version and deterministic
+  membership fingerprint over sorted, uniquely admitted episode IDs; and
+- operation start/creation and bounded provenance timestamps that never define
+  analytical order.
 
-There is no separately persisted `started` lifecycle record. A failed process
-before terminal append leaves no logical run. This avoids incomplete-run
-cleanup and makes every visible run terminal.
+The scope record is durable before episode enumeration and may remain
+incomplete. It stores neither the full canonical bundle nor a second episode
+manifest. `complete` is derived by comparing expected count and fingerprint
+with the unique terminal dispositions linked to the scope; a mutable flag or
+terminal scope event is not authoritative. A zero-episode scope is derivably
+complete once this record is durable. Only the one initial analytical identity
+derived for each admitted episode contributes to scope completeness; later
+retry or restatement records do not alter the admitted-membership proof.
 
-#### Episode execution
+#### Episode execution/disposition
 
-One closed episode-execution record carries:
+One closed terminal episode-disposition record carries:
 
-- its record ID and parent operation/analytical run identities;
+- its record ID and parent operation-run and analytical-run identities;
 - opaque project-owned `episode_id` and the minimal associated opaque
   `patient_id` needed by later episode/patient products;
 - target eligibility outcome;
@@ -3334,11 +3359,14 @@ One closed episode-execution record carries:
 - nullable durable estimate-record ID; and
 - the exact detached governed accepted estimate on success.
 
-Field-presence rules make these combinations closed. Ineligibility has no
-state, request, provider execution, or estimate. Compatibility failure may
-retain state/request and selected-provider attribution but has no provider
-call. A successful provider call has exactly one accepted estimate. A failed
-call has no estimate.
+Field-presence rules make these combinations closed. The governed terminal
+outcomes include ineligibility, accepted estimate, provider incompatibility,
+provider-declared failure, bounded execution failure, invalid provider result,
+invalid estimate, and any other explicitly governed post-admission Stage 6
+failure. Ineligibility has no state, request, provider execution, or estimate.
+Compatibility failure may retain state/request and selected-provider
+attribution but has no provider call. A successful provider call has exactly
+one accepted estimate. A failed call has no estimate.
 
 The record does not duplicate the full canonical bundle, terminal-event rows,
 or arbitrary domains. Exact state/request/estimate retention is justified
@@ -3349,16 +3377,21 @@ second semantic authority.
 
 #### History action
 
-One closed immutable action targets one existing terminal operation run and
-contains action identity, target operation/analytical run, action type,
-effective wall-clock time, bounded reason code, optional replacement operation/
-analytical run, and actor/provenance category without a person name or free-form
-clinical narrative.
+One closed immutable action normally targets one existing episode analytical
+run and contains action identity, target kind and identity, action type,
+effective wall-clock time, bounded reason code, optional replacement scope/
+analytical identity, and actor/provenance category without a person name or
+free-form clinical narrative. It may instead target an operational scope only
+when shared admission or scope provenance is defective, such as the wrong
+bundle or authoritative `t`.
 
-- `invalidate` excludes the target run from effective/current reads and has no
-  replacement.
-- `restate` excludes the target and identifies one newly appended replacement
-  run. The replacement terminal batch and action append atomically.
+- `invalidate` excludes the targeted analytical result—or, narrowly, every
+  analytical result under a defective scope—from effective/current reads and
+  has no replacement.
+- `restate` excludes the target and identifies newly appended replacement
+  analytical history. The replacement episode disposition and action append
+  atomically; a scope-level restatement uses a new operational scope rather
+  than mutating membership.
 
 An action never erases or edits its target and cannot be revoked in place. If
 an action was itself mistaken, a new valid analytical run/restatement is the
@@ -3370,19 +3403,21 @@ Stage 7 persists only facts needed for durable provenance, current operational
 interpretation, future product construction, and correction semantics:
 
 - initialized state identity and compatibility metadata;
-- terminal run and relationship identities;
+- operational-scope, episode analytical, execution, and relationship identities;
 - project/software/canonical/producer/provider/model/target attribution;
-- bundle instance and exact analytical time;
+- bundle instance, exact analytical time, expected episode count, and versioned
+  membership fingerprint;
 - opaque episode and patient linkage;
 - the exact governed state, request, and accepted estimate when present;
 - bounded eligibility/execution outcome; and
 - immutable invalidation/restatement evidence.
 
-It does **not** persist raw hospital source data, the full canonical bundle,
-encounter identity, terminal-event rows, credentials, connections, executable
-callables, project/software filesystem paths, arbitrary source vocabulary,
-provider exception text, stack traces, arbitrary configuration, model content,
-mutable references, application products, logs, metrics, or audit claims.
+It does **not** persist raw hospital source data, the full canonical bundle, a
+second episode manifest, encounter identity, terminal-event rows, credentials,
+connections, executable callables, project/software filesystem paths,
+arbitrary source vocabulary, source-system configuration, provider exception
+text, stack traces, arbitrary configuration, model content, mutable references,
+application products, logs, metrics, or audit claims.
 
 `patient_id` enters only the durable episode-attribution boundary because later
 history-built products must relate multiple episodes for one patient. It does
@@ -3393,84 +3428,119 @@ rendering. Stage 7 does not claim encryption, authorization, retention,
 de-identification, audit completeness, or production privacy approval; those
 remain deployment/adopter responsibilities.
 
-### Terminal outcomes and atomic batch rules
+The membership fingerprint is project-owned operational metadata and an
+integrity/equality aid, not a security or authentication primitive. Its closed
+canonical encoding and algorithm version are governed in 7.A.
 
-The durable operation starts only after project loading, producer execution,
-canonical admission, exact-`t` agreement, and known-episode lookup succeed.
-Failures before that boundary remain bounded operation diagnostics and are not
-history facts.
+### Terminal outcomes, completeness, and atomic writes
 
-Once the episode and exact analytical context are known, these outcomes are
-terminal and persistable:
+Project loading, producer execution, canonical admission, and exact-`t`
+agreement precede creation or matching of a trusted operational scope. Invalid
+project/resource/configuration, producer failure, canonical-admission failure,
+or invalid/mismatched analytical time therefore remain bounded nonhistorical
+operation failures: no trusted population exists to disposition.
+
+After successful admission, RRP validates the uniquely admitted episode IDs,
+computes expected count and the governed membership fingerprint, and
+atomically creates or matches the immutable scope. It walks the admitted IDs
+in deterministic order. For each episode, these outcomes are terminal and
+persistable:
 
 - accepted estimate success;
 - target ineligibility for a known episode, including before discharge,
   exhausted horizon, known readmission, or known death;
 - selected-provider incompatibility or other pre-invocation runtime failure;
-- controlled provider-declared failure; and
-- RRP-detected execution/result/estimate failure with only its bounded code.
+- controlled provider-declared failure;
+- RRP-detected execution/result/estimate failure with only its bounded code;
+  and
+- another closed, explicitly governed post-admission Stage 6 terminal failure.
 
-Invalid project/resource/configuration, producer failure, canonical-admission
-failure, invalid or mismatched analytical time, and unknown episode remain
-nonhistorical operation failures. A persistence failure is never reported as a
-committed run unless reopening by the same operation key proves the complete
-batch exists.
+An impossible unknown/malformed episode or membership invariant after
+admission fails closed and leaves the scope visibly incomplete; RRP does not
+fabricate a disposition. A persistence failure is never reported as a
+committed disposition unless reopening by the same operation key and
+analytical identity proves it exists.
 
-One terminal batch is the header plus its one episode-execution record. Both
-are validated before delegation and become visible all-or-none. A restatement
-transaction adds the replacement batch plus its history action all-or-none.
-No reader may observe a header without its episode record, an estimate without
-its execution, or a replacement without its invalidation relationship.
+Creating or matching the scope uses one short atomic write. Each episode
+disposition is validated before delegation and becomes visible all-or-none in
+its own transaction. A restatement transaction adds its replacement episode
+disposition and history action all-or-none. No reader may observe an estimate
+without its disposition or a replacement without its action. No transaction
+spans evaluation of all `N` episodes.
+
+Raw progress is the immutable scope plus `k` committed unique dispositions.
+Here `k` counts only the one deterministic initial analytical identity per
+admitted episode. The scope is complete exactly when `k = N`, those episode
+IDs reproduce the scope membership fingerprint, and their immutable provenance
+matches. Retry/restatement history does not change this proof. Until then the
+scope is derivably incomplete; no extra completion record is required. A zero-
+episode scope is complete when its scope evidence is durable.
 
 ### Idempotency, conflict, and retry
 
-Idempotency is exact and content-based within the operation-run identity:
+Idempotency is exact at two cardinalities:
 
-- the same operation key resolving to the same operation-run ID and identical
-  terminal batch is a successful no-op that returns the existing result;
-- the same operation-run ID with any different semantic content is a conflict
-  and changes nothing;
-- the durable operation queries by operation-run ID before producer/provider
-  execution; an existing run must match the requested project, episode, `t`,
-  operation, and retry context or the reused key is a conflict, and an exact
-  match returns committed history without executing either component again;
-- a new operation key creates a genuinely new operation run; and
-- a same-`t` computation is not silently deduplicated merely because its
-  analytical inputs resemble an earlier run.
+- the same operation key and matching governed scope identity/provenance,
+  expected count, and membership fingerprint match the existing scope;
+- a complete match returns existing history without episode reexecution;
+- an incomplete match deterministically re-walks admitted episode IDs, skips
+  every matching terminal analytical identity, and evaluates/appends only
+  missing dispositions;
+- the same operation key with different governed scope evidence is an
+  idempotency conflict and changes nothing;
+- the same episode analytical identity and identical terminal disposition are
+  idempotent; different content under that identity is a conflict; and
+- a new operation key creates a genuinely new operational scope; same `t` or
+  similar inputs/values alone never deduplicate a run.
 
-An analytical/provider retry is explicit. It requires a new operation key and
-one prior terminal failed operation, reuses the prior analytical-run identity,
-references the immediately prior operation run, preserves exact project,
-bundle, episode, `t`, target, request, and provider identity, and invokes the
-provider at most once. It uses the retained governed state/request and does not
-rerun the producer or reconstruct source; the currently loaded project must
-still resolve the exact prior provider/project version or retry fails before a
-new history append. Retry after success or ineligibility, branching retry
-chains, skipped predecessors, changed inputs/provider, automatic backoff,
-fallback, and hidden loops are prohibited. A changed provider/input is a new
-analytical run and, if intended to supersede an earlier run, a restatement.
+If a 500-episode process ends after 347 commits, raw history exposes expected
+count 500, the scope fingerprint, and 347 dispositions. Reinvocation with the
+same key and exact `t` reproduces producer/admission output, matches all
+immutable scope evidence, re-walks the admitted IDs, and processes only the
+153 missing dispositions. An already committed disposition—including a
+failure—is complete for continuation; its episode is not reexecuted and its
+provider is not recalled. RRP guarantees visible attributable partial work and
+deterministic continuation when reinvoked, not background completion after a
+process disappears.
+
+If producer execution or canonical admission fails while attempting to
+continue, the existing scope remains incomplete and unchanged; the new failure
+returns through the privacy-safe nonhistorical operation-result boundary.
+
+An analytical/provider retry is a separate explicit later episode attempt. It
+preserves the original terminal failure, uses a new analytical/provider
+execution identity related to that failed predecessor, and invokes the
+provider at most once. It does not occur during continuation and does not add
+automatic policy, backoff, counters, fallback, branching, or hidden loops. A
+changed provider/input is a new analytical run and, if intended to supersede an
+earlier result, an episode restatement.
 
 ### Immutable raw and effective/current history
 
-Raw history is every committed terminal header, episode execution, and history
-action, including failures and invalidated facts. Nothing in an ordinary
-append, provider transition, project/software change, invalidation, or
-restatement updates or deletes earlier logical records.
+Raw history is every committed operational scope, episode disposition, and
+history action, including incomplete progress, failures, and invalidated facts.
+Nothing in an ordinary append, provider transition, project/software change,
+invalidation, or restatement updates or deletes earlier logical records.
 
 Current history is a deterministic `rrpruntime` interpretation of raw history:
 
 1. apply only history actions effective at or before an explicit history
    cutoff;
-2. exclude invalidated target runs while retaining them in raw history;
-3. resolve each analytical run to the end of its one unbranched retry chain;
-4. consider the resulting terminal outcome, including success, failure, or
+2. derive operational-scope completeness from expected and disposition
+   membership and exclude episode records from incomplete scopes from
+   effective population-level interpretation while retaining them in raw
+   history;
+3. exclude invalidated episode results and defective scopes while retaining
+   them in raw history;
+4. resolve each analytical lineage to its explicit effective attempt;
+5. consider the resulting terminal outcome, including success, failure, or
    ineligibility, so a newer failure/ineligibility cannot expose a stale
    estimate as though it were current;
-5. for an episode and target, use the greatest analytical `t` at or before an
+6. for an episode and target, use the greatest analytical `t` at or before an
    explicit analytical cutoff;
-6. use an explicit restatement relationship to resolve same-`t` replacement;
+7. use an explicit restatement relationship to resolve same-`t` replacement;
    and
-7. fail as ambiguous if multiple unrelated effective analytical runs remain at
+8. fail as ambiguous if multiple unrelated effective analytical runs remain at
    the same greatest `t`.
 
 Wall-clock time, insertion order, provider name, record ID, or physical row
@@ -3485,8 +3555,8 @@ Four time meanings remain explicit:
 
 - **analytical `t`** is the exact admitted bundle cutoff and state/request
   as-of time; it determines target meaning;
-- **operation start/terminal time** describes when platform execution happened
-  and never changes analytical meaning;
+- **scope creation and episode execution times** describe when platform work
+  happened and never change analytical meaning or prove completeness;
 - **commit time** is adapter evidence of durable visibility and never chooses
   between analytical facts; and
 - **history-action effective time** controls when invalidation/restatement
@@ -3502,31 +3572,34 @@ reproducibility claim implicit.
 relationship rules, current-history resolver, and a small port exposing only
 RRP needs:
 
-- append one validated terminal batch;
+- append or match one validated immutable operational scope;
+- append one validated terminal episode disposition against that scope;
 - append one validated invalidation action;
-- atomically append one replacement terminal batch with its restatement action;
-- read one raw run by operation-run identity;
+- atomically append one replacement episode disposition with its restatement
+  action;
+- read one raw scope and its progress by operation-run identity;
 - read raw episode history through an explicit history cutoff; and
 - resolve effective/current episode history through explicit analytical and
   history cutoffs.
 
-The adapter declaration must affirm atomic terminal/restatement append,
-identical-content idempotency, conflicting-identity rejection, immutable raw
-retention, bounded raw reads, and close/reopen durability. The port says
-nothing about SQL, tables, files, DBI connections, indexes, locks, checkpoints,
-or DuckDB. It is not a generic database interface.
+The adapter declaration must affirm atomic scope, episode, and restatement
+append; identical-content idempotency; conflicting-identity rejection;
+immutable raw retention; completeness/progress reads; bounded raw reads; and
+close/reopen durability. The port says nothing about SQL, tables, files, DBI
+connections, indexes, locks, checkpoints, or DuckDB. It is not a generic
+database interface.
 
 Adapters return detached plain records. The port validates before writes and
 after reads. Adapters may use query columns to bound raw candidate retrieval,
-but only `rrpruntime` applies retry, invalidation, restatement, ambiguity, and
-current-selection rules.
+but only `rrpruntime` applies completeness, continuation, retry, invalidation,
+restatement, ambiguity, and current-selection rules.
 
 ### Package ownership and dependency strategy
 
 | Owner | Stage 7 responsibility |
 |---|---|
-| `rrpruntime` | Logical history/state identities that are storage-neutral; terminal batch and action contracts; record validation; port conformance; idempotency/conflict relationship checks; raw-to-current resolver; dependency-free in-memory conformance evidence. |
-| `rrpplatform` | Installed contract/resource loading; project `State-Path` resolution; explicit initialize/open/close/inspect operations; DuckDB/DBI adapter; single-writer session control; durable producer/risk orchestration; history operations; backup/restore; common privacy-safe results. |
+| `rrpruntime` | Storage-neutral operational-scope, episode-disposition, action, and identity contracts; membership fingerprint and completeness rules; record validation; port conformance; idempotency/conflict/continuation relationships; raw-to-current resolver; dependency-free in-memory conformance evidence. |
+| `rrpplatform` | Installed contract/resource loading; project `State-Path` resolution; explicit initialize/open/close/inspect operations; DuckDB/DBI adapter; single-writer session control; bundle-scoped durable producer/risk orchestration; history operations; backup/restore; common privacy-safe results. |
 | Independent project | Declares the existing state path and owns writable state, backup destination, retention, access, encryption, filesystem, and operating policy. It does not register a persistence implementation. |
 | Stage 9 products | Consume only storage-neutral effective-history reads. They do not query DuckDB or reconstruct validity. |
 
@@ -3624,11 +3697,13 @@ The concrete table layout and smallest proven payload encoding are adapter
 internals selected in 7.B; their versions are compatibility metadata, not
 public history contracts.
 
-Initialization and every write use transactions. Terminal append inserts the
-run header and episode execution atomically. Restatement inserts its replacement
-header, episode execution, and action atomically. Invalidation inserts its one
-action atomically. Preflight checks all existing identities and relationships
-before mutation.
+Initialization and every write use transactions. Scope creation/match is one
+short atomic operation. Each terminal episode append inserts one complete
+disposition and its scope relationship atomically. Restatement inserts its
+replacement episode disposition and action atomically. Invalidation inserts
+its one action atomically. Preflight checks all existing identities and
+relationships before mutation. Physical tables need not mirror logical record
+families one-for-one.
 
 Focused failure injection must cover:
 
@@ -3639,8 +3714,10 @@ Focused failure injection must cover:
 - each stage of atomic restatement.
 
 After close/reopen, pre-commit failures expose none of the candidate logical
-batch; committed work is complete; post-commit uncertainty is resolved by the
-same operation key without execution; and no partial run/action becomes raw or
+write; committed episode dispositions are complete; and post-commit uncertainty
+is resolved by the same operation key and episode identity without provider
+reexecution. A process may leave a truthful incomplete scope containing only
+fully committed dispositions; no partial disposition/action becomes raw or
 current history.
 
 The supported concurrency posture is one writer/session per project state on
@@ -3665,9 +3742,9 @@ does not claim malicious-tamper detection or cryptographic authenticity.
 Recovery has three bounded meanings:
 
 1. normal reopen validates metadata/schema and relies on DuckDB transaction
-   recovery so only committed batches appear;
-2. uncertain append recovery reuses the operation key to return the existing
-   complete batch or safely execute/append only when absent; and
+   recovery so only committed scopes, dispositions, and actions appear;
+2. uncertain append recovery reuses the operation key and episode identity to
+   return existing committed work or continue only missing dispositions; and
 3. explicit restore validates a closed backup and restores it transactionally
    into an absent declared state path.
 
@@ -3685,56 +3762,66 @@ The new durable operation composes rather than alters the existing primitives:
 preflight explicit initialized state + operation key
         ↓ existing rrp_execute_producer() semantics at t
         ↓ existing admission truth
-        ↓ one episode through existing eligibility/request/provider semantics
-        ↓ build terminal history batch from governed objects/outcome
-        ↓ atomically append through the history port
+        ↓ create/match admitted-bundle operational scope
+        ↓ deterministically enumerate every admitted episode
+        ↓ for each missing episode, use existing Stage 6 semantics
+        ↓ build and atomically append one terminal disposition
+        ↓ derive complete/incomplete scope from membership evidence
         ↓ common operation result containing only safe identity/status evidence
 ```
 
 The implementation may factor existing internal Stage 5/6 helpers so the
 durable orchestrator can receive governed state/request/outcome evidence, but
 the existing public operations retain their inputs, outputs, one-call behavior,
-and zero-persistence semantics. The durable operation performs one episode per
-invocation. Bulk selection, iteration, scheduling, parallelism, and cohort
-scoring remain later concerns.
+and zero-persistence semantics. Stage 7 owns admitted-bundle enumeration and
+accountability; each analytical/provider/persistence unit remains one episode.
+Vectorization, parallelism, scheduling, queues/workers, cohort selection beyond
+the admitted bundle, and product scoring remain later concerns.
 
 ### Increment 7.A — Logical history contracts, port, and in-memory semantics
 
 **Objective:** establish the complete storage-neutral operational-history
 meaning before selecting physical storage.
 
-**Scope and ownership:** add the cataloged terminal-run, episode-execution,
-history-action, and history-port authorities with `rrpruntime` ownership. Add
-dependency-free constructors/validators, deterministic identities, terminal-
-batch and restatement validation, port conformance, raw-read validation, and
-the single raw-to-current resolver. Add a test-only in-memory adapter solely to
-prove the logical contract.
+**Scope and ownership:** add the cataloged operational-scope, episode-
+disposition, history-action, and history-port authorities with `rrpruntime`
+ownership. Add dependency-free constructors/validators; bundle-scoped
+operation and episode-scoped analytical identities; governed membership
+fingerprint encoding; expected-cardinality, scope/episode relationship,
+progress, and completeness rules; idempotency/conflict and continuation
+semantics; retry/correction distinctions; raw/current interpretation; and a
+test-only in-memory adapter solely to prove the logical contract.
 
-**Interfaces introduced:** logical append-terminal, append-invalidation,
-append-restatement, read-raw-run, read-raw-episode-history, and read-current-
-episode-history operations. Exact exported R names and namespace count are
-settled during implementation without widening this semantic surface.
+**Interfaces introduced:** logical append/match-scope, append-terminal-episode,
+append-invalidation, append-restatement, read-raw-scope/progress, read-raw-
+episode-history, and read-current-episode-history operations. Exact exported R
+names and namespace count are settled during implementation without widening
+this semantic surface.
 
 **Historical reuse:** substantially reuse validate-before-delegate port
 composition, identical-content idempotency, conflict failure, detached records,
-and in-memory conformance mechanics. Adapt retry/current/invalidation tests to
-the one-episode two-record batch and whole-run actions. Reject historical YAML,
-daily-hazard/estimand fields, five separate analytical families, started status,
-multi-attempt batches, and family-level invalidation cascades.
+and in-memory conformance mechanics. Adapt population provenance, episode
+iteration, retry/current/invalidation tests, and actions to the three-family
+scope/disposition/action model. Reject historical YAML, daily-hazard/estimand
+fields, five separate analytical families, started/failed lifecycle records,
+multi-attempt batches, giant population transactions, and family-level
+invalidation cascades.
 
 **Evidence:** contract/catalog closure; exact field/presence and relationship
-tests; deterministic identity; success/ineligibility/failure batches;
-idempotent repeat and conflict; retry chains and prohibited retries;
-invalidation/restatement; analytical/history cutoffs; ambiguity failure;
-detachment/privacy; base-R package-native tests; package build/check; repository
-validation and hygiene.
+tests; deterministic scope/analytical identities and fingerprint; zero, one,
+and multiple episode scopes; success/ineligibility/failure dispositions;
+partial and complete progress; count/fingerprint mismatch; idempotent repeat
+and conflict; continuation versus retry; episode/scope invalidation and
+restatement; incomplete-scope current gate; analytical/history cutoffs;
+ambiguity failure; detachment/privacy; base-R package-native tests; package
+build/check; repository validation and hygiene.
 
 **Exclusions:** no project path, state directory, DuckDB/DBI, durable file,
 platform orchestration, backup, product, migration, or legacy import.
 
 **Completion statement:** dependency-light runtime can validate and interpret
-one storage-neutral immutable operational history, but no project can initialize
-or retain it durably.
+storage-neutral immutable bundle scopes, episode dispositions, completeness,
+and current history, but no project can initialize or retain them durably.
 
 ### Increment 7.B — Explicit project state and DuckDB adapter
 
@@ -3745,9 +3832,11 @@ project-owned local state without analytical orchestration.
 adapter authorities under `rrpplatform`; add `DBI` and `duckdb` as its direct
 dependencies; implement safe state-path resolution, staged initialization,
 compatibility inspection, private open/close sessions, exact logical roundtrip,
-atomic terminal/action/restatement append, bounded raw reads, and close/reopen.
-Update the project doctor to report absent, compatible, or incompatible state
-without creating or repairing it.
+atomic scope/episode/action/restatement append, raw scope-progress and bounded
+history reads, and close/reopen. State may contain incomplete and complete
+operational scopes, independently committed episode dispositions, and history
+actions. Update the project doctor to report absent, compatible, or
+incompatible state without creating or repairing it.
 
 **Interfaces introduced:** stable platform operations to initialize and inspect
 project state; protected adapter/session composition used by later operations.
@@ -3764,10 +3853,12 @@ adapter-internal format.
 
 **Evidence:** missing/existing/partial/linked/unsafe state; staged cleanup;
 idempotent compatible initialization; other-project and every compatibility
-mismatch; exact roundtrip; copied project with and without state; arbitrary
-non-Git working directory; single-writer contention; transaction injection at
-every boundary; reopen after rollback/commit; dependency direction; isolated
-install/load and strict package checks.
+mismatch; exact scope/disposition/action roundtrip; incomplete progress and
+derived completion; operation-key conflict; copied project with and without
+state; arbitrary non-Git working directory; single-writer contention;
+transaction injection at every scope/episode/action boundary; reopen after
+rollback/commit; in-memory/DuckDB semantic equivalence; dependency direction;
+isolated install/load and strict package checks.
 
 **Exclusions:** no producer/provider execution, durable run operation, history
 correction operation, backup/restore, migration, remote adapter, or product.
@@ -3776,44 +3867,59 @@ correction operation, backup/restore, migration, remote adapter, or product.
 compatible empty/local history store and the adapter can durably satisfy the
 logical port, but normal RRP computation still does not write it.
 
-### Increment 7.C — Durable one-episode operation and history interpretation
+### Increment 7.C — Bundle-scoped durable operation and history interpretation
 
 **Objective:** connect the accepted Stage 5/6 computation to terminal history
-without changing its analytical semantics.
+without changing its episode-level analytical semantics, while making RRP
+accountable for every episode in one successfully admitted bundle.
 
-**Scope and ownership:** add one `rrpplatform` durable operation taking explicit
-software catalog, project root, episode, analytical `t`, and operation key;
-preflight existing history before computation; execute the selected producer
-and one episode risk path; construct and atomically append the terminal batch;
-return bounded common evidence. Add supported raw/current history inspection,
-explicit retry, invalidation, and atomic restatement operations over the same
-port. Factor internal execution evidence only as necessary while retaining the
+**Scope and ownership:** add one `rrpplatform` durable operation taking an
+explicit software catalog, project root, analytical `t`, and operation key.
+Preflight initialized state; execute the existing selected producer and
+canonical admission; create or match the admitted-bundle scope; enumerate its
+episode IDs deterministically; and, for each missing analytical identity,
+evaluate unchanged Stage 6 semantics and atomically append one terminal
+disposition. Derive completeness and return bounded common evidence. Add
+supported raw/current scope and episode inspection, explicit episode retry,
+episode invalidation/restatement, and narrowly justified scope correction over
+the same port. Factor internal evidence only as necessary while preserving all
 existing public primitive behavior.
 
-**Interfaces introduced:** durable one-episode execution; raw/current episode
-history inspection with explicit cutoffs; explicit retry linked to one failed
-run; whole-run invalidation; and atomic restatement. Exact public technical
-names and export count are recorded during implementation.
+**Interfaces introduced:** bundle-scoped durable execution; raw scope-progress
+and raw/current episode-history inspection with explicit cutoffs; deterministic
+continuation under the same operation key; explicit retry linked to one failed
+episode attempt; episode correction; narrow scope correction; and atomic
+restatement. Exact public technical names and export count are recorded during
+implementation.
 
-**Historical reuse:** adapt historical durable reference orchestration,
-provider transition, retry lineage, current-read, and restatement tests. Reject
-repository-root discovery, generated reference source, daily-hazard runs,
-multi-episode batches, automatic retry, and raw error retention.
+**Historical reuse:** conceptually adapt producer-once population
+orchestration, episode eligibility iteration, provider-only-for-eligible
+execution, attributable provenance, retry lineage, current-read, and
+restatement tests. Reject repository-root discovery, generated reference
+source, daily-hazard runs, one giant population transaction, started/failed
+lifecycle machinery, automatic retry, and raw error retention.
 
-**Evidence:** installed temporary source-to-producer-to-admission-to-risk-to-
-history success; ineligible and provider failure outcomes; nonhistorical
-pre-boundary failures; one provider call and pre-provider zero-call guards;
-same-key post-commit return without producer/provider reinvocation; explicit
-retry; changed provider as new/restated analysis; raw/current and ambiguity;
-privacy-safe results; process restoration; state-only mutation; copied-project
-execution; no Stage 5/6 primitive persistence regression.
+**Evidence:** installed temporary source-to-producer-to-admission-to-bundle-
+scope execution with multiple materially different episode outcomes; zero-
+episode completion; explicit ineligibility and bounded provider failures;
+nonhistorical producer/admission failures; one-call and pre-provider zero-call
+guards per episode; full count/fingerprint completion; interrupted subset with
+visible incomplete progress; same-key continuation of only missing episodes;
+no provider recall for committed dispositions; scope mismatch conflict;
+explicit retry distinct from continuation; episode and narrow scope
+correction; raw/current gating and ambiguity; privacy-safe results; process
+restoration; state-only mutation; copied-project execution; no Stage 5/6
+primitive persistence regression.
 
-**Exclusions:** no multi-episode run, scheduling, parallelism, automatic retry,
+**Exclusions:** no vectorized/batch provider inference, parallelism, production
+concurrency, scheduling, queue/worker/lease machinery, automated retry,
+persisted loop cursor, cohort selection outside the admitted bundle,
 retrospective reconstruction, product/materialization, app, CLI, or backup.
 
-**Completion statement:** installed RRP can durably append and interpret one
-attributable terminal episode computation, retry or correct it explicitly, and
-reopen the same raw/current truth, but has no supported backup/restore proof.
+**Completion statement:** installed RRP can own one admitted-bundle scope,
+sequentially and atomically disposition every admitted episode, expose and
+continue incomplete work deterministically, interpret raw/current history, and
+correct it append-only, but has no supported backup/restore proof.
 
 ### Increment 7.D — Backup, bounded recovery, and complete installed proof
 
@@ -3837,7 +3943,10 @@ merge, arbitrary corruption repair, enterprise backup claims, and repository
 operation wrappers.
 
 **Evidence:** backup only while writer is quiescent; create-only destination;
-manifest and database validation; exact raw/current equality after restore;
+manifest and database validation; complete-history backup; backup of a
+partially processed scope; exact raw scope/disposition/action equality after
+restore; preserved derived completeness; deterministic continuation after
+recovery to the same complete logical history as uninterrupted execution;
 normal reopen; pre/post-commit recovery; corrupted/incomplete/incompatible
 backup failure; source preserved on every failure; installed packages/resources
 from an unrelated non-Git directory; copied project; clean generated-artifact
@@ -3848,10 +3957,11 @@ hosted workflow evidence before separate Stage 7 acceptance.
 control, replication, point-in-time restore, physical corruption repair,
 migration, multi-writer service, products, app, CLI, distribution, or deployment.
 
-**Completion statement:** RRP can explicitly initialize, append, reopen, inspect,
-back up, and restore the supplied local project history with bounded recovery
-guarantees. Formal Stage 7 acceptance and architecture reconciliation remain a
-separate lifecycle action, not Increment 7.E.
+**Completion statement:** RRP can explicitly initialize, append, reopen,
+inspect, continue, back up, and restore complete or incomplete supplied local
+project history with bounded recovery guarantees. Formal Stage 7 acceptance
+and architecture reconciliation remain a separate lifecycle action, not
+Increment 7.E.
 
 ### Validation and hosted evidence
 
@@ -3890,28 +4000,33 @@ confirm project State-Path is absent
         ↓
 explicitly initialize compatible project state
         ↓
-run one episode through producer, admission, and selected provider at t
+run one producer and admit a multi-episode bundle at t
         ↓
-atomically append one terminal run header + episode execution
+persist one immutable scope with expected count + membership fingerprint
         ↓
-close and reopen from an unrelated non-Git working directory
+sequentially evaluate materially different episode outcomes
         ↓
-prove raw and current history
+atomically append each terminal episode disposition
         ↓
-repeat the same operation key and prove no producer/provider reinvocation
+prove complete count/fingerprint and raw/current interpretation
         ↓
-exercise conflict, failure, retry, invalidation, restatement, and ambiguity
+repeat the same operation key and prove no episode/provider reexecution
         ↓
-inject interruption before/during/before-commit/after-commit and reopen
+interrupt after a subset, reopen, and prove visible incomplete progress
         ↓
-checkpoint backup, validate, restore create-only, and reopen identical history
+reinvoke the same matching scope and process only missing dispositions
+        ↓
+exercise scope conflict, explicit episode retry, episode/scope correction,
+restatement, and ambiguity
+        ↓
+checkpoint complete and incomplete backups, restore create-only, and continue
         ↓
 repeat with copied project state
         ↓
 STOP
 
 No hidden retry or fallback
-No partial terminal run
+No partial episode disposition and no silent admitted-episode omission
 No rewrite of earlier facts
 No product or application
 ```
@@ -3920,82 +4035,94 @@ No product or application
 
 Stage 7 is complete only when:
 
-1. the logical terminal-run, episode-execution, history-action, port, project-
-   state, and DuckDB-adapter authorities are closed, versioned, cataloged, and
-   owned without duplicate authority;
-2. one analytical run means exactly one known episode, singular target,
-   admitted bundle, and authoritative `t`;
-3. operation-run, analytical-run, and provider-execution identities are
-   distinct only for the settled purposes above, and no unnecessary batch or
-   attempt-counter identity exists;
-4. one terminal batch contains exactly one run header and one episode execution
-   and is visible all-or-none;
-5. exact governed state/request/estimate objects are retained only when
-   constructed, with closed presence/cardinality/relationship rules;
-6. minimal patient/episode linkage exists only in history and does not broaden
-   Stage 6 provider input or diagnostics;
-7. raw source, full canonical bundles, terminal rows, encounter identity,
-   secrets, paths, callables, raw exceptions, model content, and arbitrary
-   configuration are absent from history;
-8. success, known-episode ineligibility, controlled provider failure, and
-   bounded detected failure are terminal history, while pre-admission/config/
-   unknown-episode/persistence failures are not falsely recorded;
-9. the same operation key and identical committed batch are idempotent and
-   return existing history without component reinvocation;
-10. conflicting reuse of any semantic identity fails before mutation;
-11. a genuinely new same-`t` computation requires a new operation/analytical
-    identity and never silently replaces history;
-12. explicit retry creates one new operation/provider attempt linked to one
-    failed predecessor, retains the analytical identity, calls at most once,
-    and cannot hide fallback/backoff/branching;
-13. earlier facts are append-only and provider/project/software changes affect
-    only new runs;
-14. invalidation is an immutable whole-run overlay and never erases its target;
-15. restatement atomically appends one new analytical run and its relationship
-    while preserving the superseded raw run;
-16. correction is expressed only through invalidation/restatement rather than
-    mutable metadata or a redundant correction family;
-17. raw history returns all immutable records/actions and current history is
-    reproducibly derived by the single `rrpruntime` resolver;
-18. retry chains, invalidations, restatements, analytical/history cutoffs, and
-    same-`t` ambiguity produce the exact deterministic current outcome;
-19. wall-clock/commit/storage order never changes analytical meaning or breaks
-    an otherwise ambiguous tie;
-20. the storage-neutral port expresses only terminal/action append and bounded
-    raw/current history needs and contains no database/path/SQL vocabulary;
-21. `rrpruntime` remains base-R-only and project/resource/path independent;
-    `rrpplatform` alone owns DBI/DuckDB and project/storage orchestration;
-22. project state initialization is explicit, staged, non-destructive,
-    path-safe, link-safe, and idempotently validating for compatible state;
-23. missing, partial, malformed, linked, other-project, newer unsupported,
-    older migration-required, target-incompatible, or physically invalid state
-    fails closed without automatic repair/migration;
-24. initialized state reopens independently of repository, Git, original
-    project location, or ambient library, and exact copied-project behavior is
-    proved;
-25. interruption before commit exposes no candidate logical run, successful
-    commit exposes the entire run, and after-commit uncertainty is resolved by
-    idempotent lookup without re-execution;
-26. the adapter supports only the declared one-writer local posture and makes
-    no production multi-writer/network-filesystem guarantee;
-27. backup is explicit, quiescent, checkpointed, create-only, metadata-bearing,
-    reopened and validated; restore is staged, create-only, and preserves the
-    source/active state on failure;
-28. normal reopen, uncertain-append recovery, and backup restore are proven,
-    while arbitrary corruption repair and broader disaster-recovery claims are
-    explicitly absent;
-29. the accepted Stage 5/6 public operations retain their nonpersistent,
-    one-call behavior and the durable operation remains one episode only;
-30. no legacy-history import, retrospective reconstruction/rescoring,
-    products/materialization, application, CLI, scheduling, distribution,
-    deployment, audit, retention/encryption infrastructure, automatic
-    migration, or Stage 8 behavior enters;
-31. repository/package validation, DCF/R/Rd parsing, package-native and
-    in-memory conformance tests, transaction injection, installed temporary-
-    system proof, builds, isolated install/load, strict checks, hygiene, and
-    committed hosted evidence all pass without retained generated output; and
-32. final reconciliation finds no deviation from Platform True North or
-    Platform Architecture.
+1. operational-scope, episode-disposition, history-action, port, project-state,
+   and DuckDB-adapter authorities are closed, versioned, cataloged, and owned
+   without duplicate authority;
+2. one operation-run means one successfully admitted bundle at exact `t`, while
+   one analytical run means one admitted episode, singular target, and `t`;
+3. provider execution and atomic terminal persistence remain episode-scoped,
+   with at most one provider call per eligible analytical attempt;
+4. expected admitted count and a governed/versioned deterministic fingerprint
+   over canonically encoded unique episode IDs establish immutable scope
+   membership without persisting the full bundle;
+5. scope completeness is derived only when the unique initial episode-
+   disposition membership reproduces both expected cardinality and
+   fingerprint; retries/restatements do not alter this proof, zero-episode
+   behavior is proved, and no mutable flag is authoritative;
+6. every admitted episode is dispositioned or visibly pending, and governed
+   records distinguish ineligibility, accepted estimate, provider
+   incompatibility/declaration, detected execution/result/estimate failure,
+   and other closed post-admission terminal outcomes;
+7. pre-admission project/producer/admission failures are not falsely recorded,
+   and an impossible post-admission invariant defect leaves an incomplete
+   scope rather than a fabricated disposition;
+8. operation-run, analytical-run, provider-execution, state/request, and action
+   identities are distinct only for the settled purposes; no batch, episode-
+   operation, attempt-counter, loop-position, transaction, or storage identity
+   is added;
+9. the scope is created/matched atomically and each complete episode
+   disposition is independently atomic; no transaction spans all episodes;
+10. exact governed state/request/estimate objects are retained only when
+    constructed, with closed presence/cardinality/relationship rules;
+11. minimal patient/episode linkage exists only in history and does not broaden
+    Stage 6 provider input or diagnostics;
+12. source data, full bundles/manifests, encounter/terminal rows, secrets,
+    paths, callables, raw exceptions, source vocabulary/configuration, model
+    content, and arbitrary data are absent from history;
+13. the same operation key and matching scope continues missing dispositions
+    or returns complete history, while conflicting scope evidence fails before
+    mutation;
+14. a matching committed episode disposition is never reexecuted or appended
+    twice, including after interruption or uncertain post-commit return;
+15. interruption after any committed subset leaves attributable raw incomplete
+    progress; reinvocation reproduces scope, re-walks deterministically, and
+    processes only missing episodes without a persisted cursor or queue;
+16. continuation is distinct from explicit provider retry; retry is one new
+    related episode analytical/provider attempt, preserves the original
+    failure, calls at most once, and cannot hide policy, fallback, or loops;
+17. genuinely new same-`t` computation uses new operation/analytical identities
+    and never silently replaces history;
+18. earlier facts remain append-only; normal invalidation/restatement is
+    episode-scoped, while scope correction is limited to shared admission or
+    provenance defects and uses the same history-action family;
+19. raw history returns scopes, incomplete progress, dispositions, and actions;
+    current/effective interpretation is derived only by `rrpruntime`;
+20. incomplete-scope episodes are gated from effective population-level
+    interpretation, while episode + target + analytical `t` remains the
+    analytical current-history key;
+21. retries, corrections, analytical/history cutoffs, scope validity, and same-
+    `t` ambiguity produce exact deterministic current outcomes; wall-clock,
+    commit, insertion, or storage order never breaks an analytical tie;
+22. the storage-neutral port supports scope/episode/action append, progress,
+    completeness, and bounded raw/current reads without database/path/SQL
+    vocabulary;
+23. `rrpruntime` remains base-R-only and project/resource/path independent;
+    `rrpplatform` alone owns DBI/DuckDB, project state, and orchestration;
+24. project state initialization is explicit, staged, non-destructive,
+    path/link-safe, and idempotently validating for compatible state;
+25. missing, partial, malformed, linked, other-project, unsupported,
+    migration-required, target-incompatible, or physically invalid state fails
+    closed without automatic repair/migration;
+26. state reopens independently of repository, Git, original location, or
+    ambient library, with copied-project and one-writer local behavior proved;
+27. DuckDB exact roundtrip, scope progress/completeness, transaction failure
+    injection, reopen, and in-memory semantic equivalence are proved;
+28. complete and incomplete state backups are explicit, quiescent,
+    checkpointed, create-only, reopened, and validated; staged restore
+    preserves active/source state on failure;
+29. restored incomplete scope continues to the same complete logical history as
+    uninterrupted execution, while broader repair/DR claims remain absent;
+30. accepted Stage 5/6 public operations remain nonpersistent and preserve
+    their one-episode/one-provider-call behavior unchanged;
+31. no legacy import, retrospective rescoring, product/materialization,
+    application, CLI, scheduling, queue/worker, parallel/vectorized execution,
+    production concurrency, distribution, deployment, audit, retention/
+    encryption, migration, or Stage 8 behavior enters;
+32. repository/package validation, parsing, package-native/in-memory
+    conformance, transaction injection, installed temporary-system proof,
+    builds, isolated install/load, strict checks, hygiene, committed hosted
+    evidence, and final authority reconciliation all pass without retained
+    generated output or deviation from True North/Architecture.
 
 After implementation and committed hosted evidence pass, perform formal Stage
 7 acceptance/reconciliation as a separate task. Planning acceptance does not
@@ -4003,9 +4130,13 @@ mark Stage 7 implemented or complete.
 
 ### Plain-language exit state
 
-> RRP can preserve and reopen attributable run, state, request, execution,
-> estimate, and correction history in project-owned storage without rewriting
-> earlier facts. It still has no application-facing products.
+> A hospital project can produce and admit zero or more discharge episodes at
+> an authoritative time. RRP owns that admitted scope, processes every episode
+> through the governed risk path sequentially if necessary, and atomically
+> records either its accepted estimate or governed terminal disposition. After
+> interruption or reopening, the project can determine whether the scope is
+> complete, safely continue missing work, and account for what happened to the
+> admitted population. It still has no application-facing products.
 
 ### Historical reuse disposition
 
@@ -4014,13 +4145,15 @@ Reconnaissance inspected immutable `v0.1.0`
 `history-conformance.R`, `persistence-port.R`, the persistence contracts,
 `tests/helpers/in-memory-history-adapter.R`, operational-history tests,
 DuckDB foundation/schema/session/adapter source and declaration, DuckDB tests,
-and the operational-history and DuckDB architecture documentation.
+`runtime/R/eligibility.R`, `operations/lib/runtime-operation.R`,
+`provider-operation.R`, `reference-history-operation.R`, and the operational-
+history and DuckDB architecture documentation.
 
 | Classification | Historical finding and Stage 7 disposition |
 |---|---|
 | Reuse substantially | Validate-before-delegate storage-neutral port; adapter capability declaration; detached record validation; identical-content idempotency; conflicting-identity failure; append-only truth; explicit non-destructive initialization; adapter-owned connection lifecycle; transactional append; metadata/schema validation; close/reopen; injected interruption; quiescent checkpoint-copy backup; in-memory and durable conformance proof. |
-| Adapt concept/mechanic | Run/provenance attribution, provider-attempt lineage, current selection, invalidation/restatement, query columns plus complete payload, read-only reopen, provider transition, ambiguity failure, backup validation, and prospective empty state. Adapt all to one episode, singular cumulative target, Stage 5/6 objects, project `State-Path`, explicit operation keys, and the two-record terminal batch. |
-| Obsolete under 1.0 | Daily-hazard/estimand semantics, canonical-run identity, repository-root operations, generated reference source, started/terminal status pair, multi-episode completed batches, multiple provider attempts inside one run, five separately persisted analytical families, family-level invalidation cascade, YAML active contracts, optional repository lock dependencies, and current selection by terminal wall-clock tie-break. |
+| Adapt concept/mechanic | Producer-once population orchestration, episode enumeration and eligibility, provider-only-for-eligible execution, bundle/run provenance, provider-attempt lineage, current selection, invalidation/restatement, query columns plus complete payload, read-only reopen, ambiguity failure, backup validation, and prospective empty state. Adapt to one bundle-scoped operation with independently atomic episode dispositions, the singular cumulative target, Stage 5/6 objects, project `State-Path`, explicit operation keys, deterministic continuation, and derived completeness. |
+| Obsolete under 1.0 | Daily-hazard/estimand semantics, canonical-run identity, repository-root operations, generated reference source, started/failed lifecycle records, one giant population transaction, incomplete detail for ineligible admitted episodes, multiple provider attempts inside one run, five separately persisted analytical families, family-level invalidation cascade, YAML active contracts, optional repository lock dependencies, and current selection by terminal wall-clock tie-break. |
 | Deferred beyond Stage 7 | Legacy archive/import, general migration, production/client-server adapters, multi-writer coordination, encryption/retention/access infrastructure, audit, replay/rescoring, performance indexing claims, and enterprise backup/disaster recovery. |
 
 Historical source is evidence only. No `v0.1.0` record or database is accepted
@@ -4029,13 +4162,17 @@ introduced.
 
 ### Major deferrals and deliberately open adapter details
 
-Stage 8 owns the maintained fictional project and normal reference run; Stage
-9 owns products/materialization. Stage 7 excludes production databases,
+Stage 8 owns the maintained fictional project, convenience authoring choices,
+and normal reference run; Stage 9 owns products/materialization. Stage 7
+excludes vectorized/batch inference, parallel processing, chunking/performance
+tuning, production concurrency, scheduling, queues/workers/leases, automated
+provider retry/fallback, cohort selection outside the admitted bundle,
+retrospective rescoring, changed-model migration, production databases,
 multi-writer guarantees, network filesystems, automatic migration, legacy
-import, retention/encryption/access infrastructure, audit, scheduling,
-retrospective reconstruction/rescoring, model artifact preservation, source or
-canonical snapshot retention, products, app, CLI, distribution, deployment,
-and release behavior.
+import, retention/encryption/access infrastructure, audit/compliance systems,
+enterprise backup/disaster recovery, model artifact preservation, full source
+or canonical snapshots, products, app, CLI, distribution, deployment, and
+release behavior.
 
 The precise private DuckDB table/index layout and smallest exact payload
 encoding remain reversible adapter-internal choices for the bounded 7.B spike.
