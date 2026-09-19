@@ -13,10 +13,9 @@ foundation validator, two conventional internal package owners,
 one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
-and one narrowly scoped hosted workflow with successful committed Stage 2,
-Stage 3, Stage 4, and Stage 5 push evidence. Stages 1–5 are accepted and
-complete; Stage 6 is in progress, and Increments 6.A–6.C are complete locally.
-Formal Stage 6 acceptance and reconciliation are the next separate task.
+and one narrowly scoped hosted workflow with successful committed Stage 2
+through Stage 6 push evidence. Stages 1–6 are accepted and complete. Stage 7 is
+the next stage to detail and has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -230,6 +229,7 @@ The `rrpruntime` package uses only base R package machinery, has no `Imports`,
 `rrp_execute_risk_provider()`.
 `rrpplatform` imports only
 `rrpruntime` and exports exactly `rrp_execute_producer()`,
+`rrp_execute_risk()`,
 `rrp_initialize_project()`,
 `rrp_load_project()`,
 `rrp_open_resource_catalog()`,
@@ -328,16 +328,19 @@ Producer Boundary established semantic authority and producer declaration in
 with the complete local handoff proof in 5.C. Committed push run `35288890797`,
 job `105427207401`, succeeded for revision
 `01b0d564ecbe55830542c10cfcb77d4d72366d7b`; final reconciliation found no
-deviation from True North or the architecture. Stages 1–5 are accepted and
-complete. Stage 6 is in progress: Increment 6.A added the singular target and
-episode-state authorities plus dependency-light eligibility and immutable state
-construction. Increment 6.B added the remaining runtime authorities, coherent
-0.3.0 project/provider semantics, the provider-neutral request, direct one-call
-provider execution, and accepted-estimate construction. Increment 6.C added the
-generic platform risk operation, protected explicitly selected transparent
-provider, project-provider substitution, and complete local end-to-end proof.
-Formal Stage 6 acceptance and reconciliation are the next task; later work
-remains unauthorized.
+deviation from True North or the architecture. Stage 6 added the singular
+target and episode-state authorities plus dependency-light eligibility and
+immutable state construction. Increment 6.B added the remaining runtime
+authorities, coherent 0.3.0 project/provider semantics, the provider-neutral
+request, direct one-call provider execution, and accepted-estimate
+construction. Increment 6.C added the generic platform risk operation,
+protected explicitly selected transparent provider, project-provider
+substitution, and complete local end-to-end proof.
+Committed push run `35444384900`, job `105900696412`, succeeded for exact
+revision `c9a8f539d07611d29ec86d4fd1ee5a308413938c`; final reconciliation found
+no deviation from True North or the architecture. Stages 1–6 are accepted and
+complete. Stage 7 is the next stage to detail and has not begun; later source
+work remains unauthorized.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

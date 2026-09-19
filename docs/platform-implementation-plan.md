@@ -2,9 +2,8 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–5 are accepted and complete. Stage
-6 is in progress: Increments 6.A–6.C are implemented locally, and formal Stage
-6 acceptance and reconciliation remain pending.
+**Status:** authoritative roadmap; Stages 1–6 are accepted and complete. Stage
+7 is the next stage to detail and has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,10 +67,10 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current stage is decomposed into accepted increments. Stage 6 is the
-current detailed and accepted stage; completed Stage 1–5 detail remains as
-implementation lineage. Stage 7 remains high-level until its separate planning
-task. After a stage is implemented:
+Only the current implementation stage is decomposed into accepted increments.
+Stage 6 is complete, and completed Stage 1–6 detail remains as implementation
+lineage. Stage 7 remains high-level until its separate planning task. After a
+stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -2374,9 +2373,9 @@ preserve this boundary.
 
 ## Stage 6 — Singular target, runtime, and provider execution
 
-**Status:** detailed and accepted for implementation on 2026-09-18. Increments
-6.A–6.C are implemented locally; formal Stage 6 acceptance and reconciliation
-remain pending. This section authorizes only Increments 6.A–6.C below.
+**Status:** accepted and complete on 2026-09-19 at committed implementation
+baseline `c9a8f539d07611d29ec86d4fd1ee5a308413938c`. Increments 6.A–6.C and
+formal Stage 6 acceptance and reconciliation are complete.
 
 ### Objective and responsibilities
 
@@ -2845,7 +2844,8 @@ the final orchestration proof.
 
 ### Increment 6.A — Singular target authority, eligibility, and immutable episode state
 
-**Implementation status:** complete on 2026-09-18. Increment 6.B is next.
+**Implementation status:** complete on 2026-09-18 and included in the accepted
+Stage 6 baseline.
 
 **Objective:** make the one RRP risk target and its eligibility/state semantics
 versioned software authority, then construct one detached state from admitted
@@ -2885,8 +2885,8 @@ authoritative as-of instant, but no provider can yet receive a request.
 
 ### Increment 6.B — Semantic provider contract and standard request/estimate boundary
 
-**Implementation status:** complete on 2026-09-18. Subsequent Increment 6.C is
-now complete locally; formal Stage 6 acceptance remains pending.
+**Implementation status:** complete on 2026-09-18 and included in the accepted
+Stage 6 baseline.
 
 **Objective:** define and prove the complete provider-neutral request,
 compatible provider declaration, minimal provider result, and RRP-owned
@@ -2935,8 +2935,8 @@ project.
 
 ### Increment 6.C — Selected provider execution and transparent end-to-end proof
 
-**Implementation status:** complete locally on 2026-09-19. Formal Stage 6
-acceptance and reconciliation remain pending.
+**Implementation status:** complete on 2026-09-19 and included in the accepted
+Stage 6 baseline.
 
 **Objective:** invoke exactly the provider already selected by a validated
 project and prove the complete admitted-bundle-to-estimate boundary with both
@@ -3121,6 +3121,13 @@ After implementation and committed hosted evidence pass, reconcile the
 realized target/runtime/provider boundary with Platform True North and Platform
 Architecture and record any deviation. Stage acceptance is a lifecycle action,
 not Increment 6.D.
+
+**Acceptance result:** passed on 2026-09-19. The exact committed implementation
+baseline `c9a8f539d07611d29ec86d4fd1ee5a308413938c` satisfied all criteria above.
+Read-only GitHub Actions `package-foundation` push run `35444384900`, job
+`105900696412`, completed successfully for that exact revision. Reconciliation
+found no deviation from Platform True North or Platform Architecture. Stage 7
+remains high-level and is the next stage to detail; it has not begun.
 
 ### Plain-language exit state
 

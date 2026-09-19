@@ -141,9 +141,9 @@ same hosted workflow and has been formally accepted, so Stages 1–4 are complet
 The initializer, loader, doctor, and producer operation are internal technical
 interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
-Stages 1–5 are complete. Stage 6 is in progress: Increments 6.A–6.C are
-implemented locally. Formal Stage 6 acceptance and reconciliation remain a
-separate next task.
+Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
+workflow and has been formally accepted, so Stages 1–6 are complete. Stage 7
+has not begun; detailing it from the accepted realized system is the next task.
 
 ## License
 

@@ -2769,3 +2769,127 @@ evidence boundary.
 **Next task:** perform formal Stage 6 acceptance and reconciliation only after
 the complete Stage 6 tree is reviewed and committed and the required hosted
 workflow evidence is available. Do not begin Stage 7.
+
+## Stage 6 acceptance and reconciliation — 2026-09-19
+
+Stage 6 was reviewed as one realized architectural stage at the exact committed
+implementation baseline `c9a8f539d07611d29ec86d4fd1ee5a308413938c`. GitHub
+Actions workflow `package-foundation`, push run `35444384900`, job
+`105900696412`, completed successfully for `main` at that exact SHA. The job
+used Ubuntu and R 4.4 and passed checkout, repository validation, and package
+validation. This hosted identity applies to the committed implementation under
+review, not to the later uncommitted acceptance-documentation state.
+
+The combined 6.A–6.C review passed every accepted Stage 6 criterion. The closed
+18-resource catalog contains exactly the five governed runtime authorities for
+the singular nonselectable remaining day-30 target, episode state, risk
+request, provider API, and risk estimate. Target semantics remain the first
+canonical readmission in `(t,W30]` conditional on being alive and
+readmission-free through `t`, with `W30` exactly 2,592,000 elapsed seconds after
+discharge, admitted-information cutoff, competing death, and equal-time
+readmission precedence. Analytical `t` must be the same instant as the admitted
+bundle cutoff; eligibility is exactly `D <= t < W30`; terminal occurrence and
+availability remain distinct; and no daily-hazard, target-selection, or
+retrospective-reconstruction surface exists.
+
+Runtime constructs the deterministic, detached, closed, provider-neutral state
+only for an eligible episode, then constructs the deterministic detached
+standard request. Neither object exposes patient/encounter identity, source or
+mapping facts, arbitrary features or domains, provider selection in the
+request, paths, credentials, connections, callbacks, persistence handles, or
+run/history identity. Provider compatibility is exact across API, target,
+state, request, and estimate authorities before invocation, while
+implementation identity remains distinct and model identity remains explicitly
+nullable. The provider receives exactly one request argument. The runtime
+primitive revalidates its boundary, calls exactly one supplied provider once,
+accepts only the closed matching four-field result and controlled failure
+codes, suppresses raw provider condition text, and returns no estimate for
+malformed, mismatched, nonfinite, non-double, attributed, or out-of-range
+values.
+
+An accepted estimate is closed and detached, carries the governed target,
+state, request, project, episode, provider, implementation, and nullable-model
+attribution, and contains one plain finite base-R double probability in
+`[0,1]`; both `0` and `1` are valid. It contains no run, attempt, history,
+uncertainty, alternate horizon, classification, band, explanation,
+recommendation, threshold, or clinical action. The `0.3.0` project/API/
+registration line is the sole supported line, structural `0.2.0` projects fail
+without a bridge, Stage 5 producer semantics remain intact, and project
+initialization remains two-file and nonexecuting.
+
+At platform level, `rrp_execute_risk()` uses an explicit validated software
+catalog and project root, the sole trusted loader, the exact provider selected
+by the project manifest, runtime-owned state construction, and the generic
+runtime provider primitive. Only expected typed failures become bounded common
+`rrp.execute-risk` diagnostics; resource-owner and unexpected defects are not
+broadly hidden. Generic execution contains no provider-, implementation-,
+model-, or project-identity route. The protected installed
+`rrp.provider.transparent@0.1.0` declaration has implementation
+`rrp.provider-implementation.transparent@0.1.0`, no model identity, requires
+explicit selection, cannot be impersonated by project registration, and uses
+the same generic path as a materially different project-owned provider. Its
+inspectable nonclinical formula remains exactly
+`0.20 * remaining_to_target_seconds / 2592000`; it is neither a default nor a
+historical daily-hazard model.
+
+Installed-system evidence passed from fictional temporary source through the
+selected producer, admitted canonical bundle at authoritative `t`, eligible
+state, exact selected provider, and accepted estimate. It used isolated
+installed packages and byte-preserved resources from an unrelated non-Git
+working directory, repeated with a copied project, demonstrated explicit
+transparent-provider selection and materially different project-provider
+substitution, proved one provider call for eligible execution and no call for
+pre-provider failures, restored library paths and working directory, and wrote
+no project state or other persistent output. The software-first then declared-
+extension library policy remains intact, and no project dependency can shadow
+installed RRP through the supported path.
+
+Package posture is exact. `rrpruntime` remains base-R-only with no `Imports`,
+`Suggests`, or `LinkingTo` and exports only
+`rrp_admit_canonical_bundle()`, `rrp_prepare_episode_state()`, and
+`rrp_execute_risk_provider()`. `rrpplatform` imports only `rrpruntime` and
+exports exactly nine functions, including `rrp_execute_risk()`. Dependency
+direction remains only `rrpplatform -> rrpruntime`. Installed projection is
+deterministic and byte-preserving. No provider registry, later-stage resource,
+permanent fictional hospital/producer, fallback, retry, parallel/remote
+execution, provider dependency environment, model artifact manager, state or
+history persistence, product, application, CLI, distribution, deployment,
+release behavior, or other Stage 7+ capability entered.
+
+Local acceptance evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: 8 checks passed with zero
+  issues;
+- `Rscript --vanilla tools/validate-packages.R`: the complete resource,
+  package, project, producer, canonical, state, request, provider, estimate,
+  copied-project, substitution, failure, process-restoration, and no-output
+  matrix passed; both source builds, dependency-order isolated install/load,
+  package-native tests, and both `R CMD check --no-manual` operations completed
+  with exact status `OK`;
+- namespace, dependency, resource, generated-artifact, and scope inspection:
+  passed; and
+- `git diff --check`: passed after acceptance reconciliation.
+
+No blocking finding or material discrepancy with Platform True North, Platform
+Architecture, or the accepted Stage 6 plan was found. Two nonblocking current-
+documentation defects found during review were corrected: the human dependency
+summary now includes the already-realized ninth `rrpplatform` export, and the
+agent evidence summary's interrupted 6.B sentence is complete. These corrections
+do not change implementation behavior. All persistence, run/attempt identity,
+idempotency/conflict, retry, invalidation/restatement, history access, state
+adapters, locking, backup/recovery, and migration concerns remain expected
+Stage 7 deferrals and are not Stage 6 defects. Stage 6 introduced no unnecessary
+compatibility layer, duplicated authority, repository-root assumption, ambient
+discovery, or provider-specific special case.
+
+**Acceptance decision:** Stage 6 is accepted and complete. Stages 1–6 are now
+accepted and complete. Installed RRP can admit source-independent canonical
+readmission data, evaluate the singular fixed-endpoint eligibility/state
+boundary at authoritative time `t`, construct the standard risk request, and
+execute exactly the compatible provider selected by an independent project to
+return one governed accepted risk estimate or bounded failure, while retaining
+no operational state. Stage 7 has not begun.
+
+**Next task:** detail Stage 7 — Project State and Operational History from the
+accepted realized system. Do not implement Stage 7 before its separate detailed
+plan is accepted.

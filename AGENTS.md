@@ -112,8 +112,12 @@ loading, and the second `rrpruntime` export for pure eligibility and detached
 immutable episode-state construction. Increment 6.B adds the remaining three
 runtime authorities, the exact 0.3.0 project line and semantic provider
 declaration, and the third `rrpruntime` export for standard request, direct one-
-Increment 6.C adds the ninth `rrpplatform` export for generic selected-provider
+call compatible-provider execution, and accepted estimates. Increment 6.C adds
+the ninth `rrpplatform` export for generic selected-provider
 execution, the explicitly selected protected transparent provider, and the
-complete local installed end-to-end proof. Formal Stage 6 acceptance and
-reconciliation are the next task. Do not begin Stage 7 without explicit
+complete installed end-to-end proof. Committed push run `35444384900`, job
+`105900696412`, succeeded for revision
+`c9a8f539d07611d29ec86d4fd1ee5a308413938c`, completing Stage 6 after final
+reconciliation. Stages 1–6 are accepted and complete. The next task is to
+detail Stage 7. Do not begin Stage 7 source implementation without explicit
 authorization.
