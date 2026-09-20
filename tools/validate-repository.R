@@ -489,6 +489,16 @@ expected_workflow <- c(
   ),
   "        with:",
   "          r-version: '4.4'",
+  "      - name: Install declared external R dependencies",
+  "        shell: Rscript {0}",
+  "        run: |",
+  "          dependency_library <- Sys.getenv(\"R_LIBS_USER\")",
+  "          stopifnot(nzchar(dependency_library))",
+  "          dir.create(dependency_library, recursive = TRUE, showWarnings = FALSE)",
+  "          repository <- Sys.getenv(\"RSPM\")",
+  "          if (!nzchar(repository)) repository <- \"https://cloud.r-project.org\"",
+  "          install.packages(c(\"DBI\", \"duckdb\"), lib = dependency_library,",
+  "                           repos = repository)",
   "      - name: Validate repository foundation",
   "        run: Rscript --vanilla tools/validate-repository.R",
   "      - name: Validate package foundation",
@@ -501,7 +511,8 @@ if (file.exists(workflow_path)) {
       "hosted_workflow_policy",
       paste0(
         "package-foundation workflow must retain the accepted push/pull-",
-        "request, read-only, pinned-action, Ubuntu/R 4.4, two-command shape"
+        "request, read-only, pinned-action, Ubuntu/R 4.4, declared external-",
+        "dependency provisioning, and two-command shape"
       )
     )
   }

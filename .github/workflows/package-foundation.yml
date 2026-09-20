@@ -19,6 +19,16 @@ jobs:
         uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2.12.1
         with:
           r-version: '4.4'
+      - name: Install declared external R dependencies
+        shell: Rscript {0}
+        run: |
+          dependency_library <- Sys.getenv("R_LIBS_USER")
+          stopifnot(nzchar(dependency_library))
+          dir.create(dependency_library, recursive = TRUE, showWarnings = FALSE)
+          repository <- Sys.getenv("RSPM")
+          if (!nzchar(repository)) repository <- "https://cloud.r-project.org"
+          install.packages(c("DBI", "duckdb"), lib = dependency_library,
+                           repos = repository)
       - name: Validate repository foundation
         run: Rscript --vanilla tools/validate-repository.R
       - name: Validate package foundation

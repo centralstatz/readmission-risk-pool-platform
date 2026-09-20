@@ -29,6 +29,8 @@ package_specs <- list(
   )
 )
 
+external_package_names <- c("DBI", "duckdb")
+
 fail <- function(...) {
   stop(paste0(...), call. = FALSE)
 }
@@ -2584,6 +2586,73 @@ validation_environment <- function(profile_path, library_root) {
   )
 }
 
+locate_external_packages <- function(package_names) {
+  locations <- vapply(package_names, function(package_name) {
+    path <- find.package(package_name, quiet = TRUE)
+    require_true(
+      nzchar(path) && dir.exists(path),
+      paste0(
+        "Declared external dependency `", package_name,
+        "` is unavailable. Install declared external dependencies before ",
+        "running package validation."
+      )
+    )
+    normalizePath(path, winslash = "/", mustWork = TRUE)
+  }, character(1L))
+  require_true(
+    identical(names(locations), package_names),
+    "External dependency discovery changed package identity."
+  )
+  locations
+}
+
+provision_external_packages <- function(locations, library_roots) {
+  for (library_root in library_roots) {
+    for (package_name in names(locations)) {
+      copied <- file.copy(
+        locations[[package_name]], library_root,
+        recursive = TRUE, copy.mode = TRUE, copy.date = FALSE
+      )
+      destination <- file.path(library_root, package_name)
+      require_true(
+        copied && dir.exists(destination),
+        paste0(
+          "Could not provision declared external dependency `", package_name,
+          "` into the controlled validation library."
+        )
+      )
+      description <- read.dcf(file.path(destination, "DESCRIPTION"))
+      require_true(
+        nrow(description) == 1L &&
+          identical(unname(description[[1L, "Package"]]), package_name),
+        paste0(
+          "Provisioned external dependency `", package_name,
+          "` has invalid installed metadata."
+        )
+      )
+    }
+  }
+  invisible(library_roots)
+}
+
+validate_external_package_locations <- function(library_root, package_names) {
+  expression <- paste0(
+    "library_root <- ",
+    encodeString(normalizePath(library_root, mustWork = TRUE), quote = "\""),
+    "; .libPaths(c(library_root, .Library)); packages <- c(",
+    paste(vapply(package_names, encodeString, character(1L), quote = "\""),
+      collapse = ", "),
+    "); paths <- vapply(packages, find.package, character(1L)); ",
+    "stopifnot(all(startsWith(normalizePath(paths), ",
+    "paste0(library_root, .Platform$file.sep))))"
+  )
+  require_command_success(
+    "controlled external dependency availability",
+    file.path(R.home("bin"), "Rscript"),
+    c("--vanilla", "-e", shQuote(expression))
+  )
+}
+
 build_package <- function(package_name, package_root, work_root) {
   spec <- package_specs[[package_name]]
   require_command_success(
@@ -2657,7 +2726,13 @@ load_package_fresh <- function(package_name, library_root) {
     "), identical(sort(getNamespaceExports(package_name)), ",
     expected_exports, "))",
     if (identical(package_name, "rrpplatform")) {
-      "; stopifnot(\"rrpruntime\" %in% loadedNamespaces())"
+      paste0(
+        "; dependencies <- c(\"DBI\", \"duckdb\", \"rrpruntime\"); ",
+        "dependency_paths <- vapply(dependencies, find.package, character(1L)); ",
+        "stopifnot(\"rrpruntime\" %in% loadedNamespaces(), ",
+        "all(startsWith(normalizePath(dependency_paths), ",
+        "paste0(library_root, .Platform$file.sep))))"
+      )
     } else {
       ""
     }
@@ -3224,6 +3299,9 @@ validate_packages <- function() {
   validate_source_boundaries(package_roots)
   cat("PASS one-way dependency and repository-independence boundary\n")
 
+  external_package_locations <- locate_external_packages(external_package_names)
+  cat("PASS declared external package dependency availability\n")
+
   work_root <- tempfile("rrp-package-validation-")
   dir.create(work_root)
   old_directory <- setwd(work_root)
@@ -3233,12 +3311,24 @@ validate_packages <- function() {
   }, add = TRUE)
 
   library_root <- file.path(work_root, "library")
+  runtime_library_root <- file.path(work_root, "runtime-library")
   missing_dependency_library <- file.path(work_root, "missing-dependency-library")
   local_contrib <- file.path(work_root, "repository", "src", "contrib")
   dir.create(library_root)
+  dir.create(runtime_library_root)
   dir.create(missing_dependency_library)
   dir.create(local_contrib, recursive = TRUE)
   writeLines(character(), file.path(local_contrib, "PACKAGES"))
+
+  provision_external_packages(
+    external_package_locations,
+    c(library_root, missing_dependency_library)
+  )
+  validate_external_package_locations(library_root, external_package_names)
+  validate_external_package_locations(
+    missing_dependency_library, external_package_names
+  )
+  cat("PASS controlled external dependency provisioning\n")
 
   profile_path <- file.path(work_root, "check-profile.R")
   repository_url <- paste0(
@@ -3247,6 +3337,11 @@ validate_packages <- function() {
   )
   write_validation_profile(profile_path, library_root, repository_url)
   environment <- validation_environment(profile_path, library_root)
+  runtime_profile <- file.path(work_root, "runtime-check-profile.R")
+  write_validation_profile(runtime_profile, runtime_library_root, repository_url)
+  runtime_environment <- validation_environment(
+    runtime_profile, runtime_library_root
+  )
 
   archives <- lapply(names(package_specs), function(package_name) {
     archive <- build_package(
@@ -3280,25 +3375,51 @@ validate_packages <- function() {
       "library."
     )
   )
+  missing_lines <- grep(
+    "not available for package", missing_result$output,
+    value = TRUE, fixed = TRUE
+  )
+  require_true(
+    length(missing_lines) == 1L &&
+      grepl("rrpruntime", missing_lines[[1L]], fixed = TRUE) &&
+      !grepl("DBI", missing_lines[[1L]], fixed = TRUE) &&
+      !grepl("duckdb", missing_lines[[1L]], fixed = TRUE),
+    paste0(
+      "rrpplatform negative installation must fail specifically because ",
+      "rrpruntime is absent while DBI and duckdb are available."
+    )
+  )
   cat("PASS rrpplatform rejects installation without rrpruntime\n")
 
-  for (package_name in names(package_specs)) {
-    install_package(
-      package_name, archives[[package_name]], library_root, environment
-    )
-    load_package_fresh(package_name, library_root)
-    check_package(
-      package_name, archives[[package_name]], work_root, library_root,
-      environment
-    )
-    cat(sprintf(
-      paste0(
-        "PASS %-11s isolated install/load and R CMD check ",
-        "--no-manual (Status: OK)\n"
-      ),
-      package_name
-    ))
-  }
+  install_package(
+    "rrpruntime", archives[["rrpruntime"]], runtime_library_root,
+    runtime_environment
+  )
+  load_package_fresh("rrpruntime", runtime_library_root)
+  check_package(
+    "rrpruntime", archives[["rrpruntime"]], work_root,
+    runtime_library_root, runtime_environment
+  )
+  cat(paste0(
+    "PASS rrpruntime  isolated install/load and R CMD check ",
+    "--no-manual (Status: OK)\n"
+  ))
+
+  install_package(
+    "rrpruntime", archives[["rrpruntime"]], library_root, environment
+  )
+  install_package(
+    "rrpplatform", archives[["rrpplatform"]], library_root, environment
+  )
+  load_package_fresh("rrpplatform", library_root)
+  check_package(
+    "rrpplatform", archives[["rrpplatform"]], work_root,
+    library_root, environment
+  )
+  cat(paste0(
+    "PASS rrpplatform isolated install/load and R CMD check ",
+    "--no-manual (Status: OK)\n"
+  ))
 
   validate_installed_resource_access(library_root, work_root)
   validate_installed_project_loading(library_root, work_root)

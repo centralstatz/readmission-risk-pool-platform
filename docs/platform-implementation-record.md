@@ -3101,6 +3101,33 @@ Final proportional evidence passed:
 - direct R, DESCRIPTION, and Rd parsing passed; and
 - generated-artifact review and `git diff --check` passed.
 
+Post-commit hosted acceptance exposed one validation-environment assumption,
+not a state/history defect. The clean Ubuntu runner had neither `DBI` nor
+`duckdb`, while the local R installation happened to provide both in
+`.Library`; the validator's deliberately narrowed library search therefore
+made the hosted `rrpplatform` installation fail before its package-native
+tests. The read-only workflow now explicitly installs only these two declared
+external dependencies. The validator discovers those declared installations,
+copies only them into controlled temporary platform and negative-proof
+libraries, and uses a separate empty temporary library for the dependency-light
+`rrpruntime` install/load/check. The negative platform installation now asserts
+that `DBI` and `duckdb` resolve from its controlled library and that the sole
+unavailable dependency is `rrpruntime`. A platform-positive library receives
+the same external packages plus an explicit installation of the built internal
+`rrpruntime` archive before `rrpplatform` is installed and checked. This keeps
+the original isolated-validation meaning while removing reliance on a
+developer's ambient library.
+
+Focused reconciliation proved the external-only negative library failed with
+exactly `dependency ‘rrpruntime’ is not available`. The complete local
+checkpoint then passed repository validation, controlled dependency
+provisioning, the isolated dependency-light runtime check, the platform check
+with its declared internal and external dependencies, all 7.B DuckDB tests,
+all inherited installed regressions, and both strict checks with `Status: OK`.
+A new committed hosted run remains required to confirm this workflow correction
+in the clean runner. No 7.B runtime, state, history, contract, package metadata,
+or API semantic changed.
+
 **Current implementation state:** Increment 7.B is complete locally; Stage 7
 remains in progress. An explicit project can initialize, inspect, copy, and
 reopen a compatible local DuckDB history store, and the protected adapter
