@@ -3176,10 +3176,11 @@ these are explicit later boundaries, not implementation-time ambiguity.
 ## Stage 7 — Project state and operational history
 
 **Status:** detailed and accepted for implementation on 2026-09-19, including
-the subsequently accepted bundle-scoped operational decision. Increment 7.A is
-complete; Increment 7.B is next. Storage-neutral logical history now exists,
-but no project state, physical dependency, or durable adapter exists. This
-section authorizes only Increments 7.A–7.D below.
+the subsequently accepted bundle-scoped operational decision. Increments 7.A
+and 7.B are complete; Increment 7.C is next. Storage-neutral logical history
+and explicit project-owned DuckDB state now exist, but normal RRP computation
+does not yet write history. This section authorizes only Increments 7.A–7.D
+below.
 
 The non-authoritative reasoning record is retained at
 `docs/assessments/stage-7-bundle-scope-assessment.md`; this reconciled section
@@ -3828,6 +3829,8 @@ storage-neutral immutable bundle scopes, episode dispositions, completeness,
 and current history, but no project can initialize or retain them durably.
 
 ### Increment 7.B — Explicit project state and DuckDB adapter
+
+**Implementation status:** complete on 2026-09-20; Increment 7.C is next.
 
 **Objective:** realize the accepted logical history port in explicit,
 project-owned local state without analytical orchestration.

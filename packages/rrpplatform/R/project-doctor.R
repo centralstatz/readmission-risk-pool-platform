@@ -20,7 +20,13 @@ rrp_project_validation_success <- function(context) {
   extension_library_status <- rrp_project_location_status(
     context$extension_library_path
   )
-  state_status <- rrp_project_location_status(context$state_path)
+  state_status <- if (rrp_state_path_exists(context$state_path)) {
+    contracts <- rrp_state_contracts(context$software_catalog)
+    rrp_state_inspect_root(context$state_path, context, contracts)
+    "compatible"
+  } else {
+    "not_initialized"
+  }
   diagnostics <- if (identical(state_status, "not_initialized")) {
     list(rrp_new_diagnostic(
       code = "project_state_not_initialized",
@@ -85,6 +91,7 @@ rrp_validate_project <- function(software_catalog, project_root) {
       software_catalog = software_catalog,
       project_root = project_root
     )),
-    rrp_project_error = rrp_project_validation_failure
+    rrp_project_error = rrp_project_validation_failure,
+    rrp_state_error = rrp_project_validation_failure
   )
 }

@@ -13,9 +13,8 @@ rrp_validate_project(software_catalog, project_root)
 \value{
 One validated \code{rrp_operation_result}. A valid project returns the exact
 project, contract, API, canonical-profile, producer implementation/mapping,
-and provider identities plus
-\code{available} or \code{not_initialized} extension-library and state
-statuses. An absent state adds one
+and provider identities plus extension-library status and either
+\code{compatible} or \code{not_initialized} state status. An absent state adds one
 \code{project_state_not_initialized} warning. Expected project failures retain
 their stable code and use the fixed message
 \code{RRP project validation failed.}
@@ -28,17 +27,19 @@ but never invokes the selected producer or provider.
 }
 \details{
 The operation ID is \code{rrp.validate-project}. The function performs no root
-discovery, creates no extension or state directory, inspects no directory
-contents beyond the loader's existing structural rules, and returns no paths,
-callables, registration source, arbitrary metadata, or project context.
+discovery and creates no extension or state directory. When state exists it
+reuses the project-state compatibility inspection without returning paths,
+connections, SQL details, callables, registration source, arbitrary metadata,
+or project context.
 
 An absent declared extension library is a valid optional condition and does
 not produce a warning. An absent declared state directory is also structurally
-valid at this stage, but produces one fixed warning because state has not yet
-been initialized. Existing directories are reported as \code{available};
-their contents are not validated by this operation.
+valid, but produces one fixed warning because state has not yet been
+initialized. Existing state must pass its exact inventory, metadata, and
+physical-schema compatibility checks and is reported as \code{compatible}.
 
-Expected \code{rrp_project_error} conditions become failed operation results.
+Expected \code{rrp_project_error} and \code{rrp_state_error} conditions become
+failed operation results.
 Invalid software-resource context retains its \code{rrp_resource_error} owner,
 and unexpected programming errors propagate. Structural validity does not
 establish source mapping, canonical admission, clinical semantics, producer

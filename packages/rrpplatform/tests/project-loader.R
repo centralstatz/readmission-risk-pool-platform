@@ -797,7 +797,8 @@ rrp_loader_tests <- list(
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
         "rrp_execute_producer", "rrp_execute_risk",
-        "rrp_initialize_project", "rrp_load_project",
+        "rrp_initialize_project", "rrp_initialize_project_state",
+        "rrp_inspect_project_state", "rrp_load_project",
         "rrp_open_resource_catalog",
         "rrp_operation_succeeded", "rrp_resource_path",
         "rrp_validate_project",

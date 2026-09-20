@@ -101,6 +101,25 @@ rrp_doctor_software_root <- function(root) {
       value = definition$expected
     )
   }))
+  state_definitions <- list(
+    list(
+      resource_id = "rrp.contract.project-state", owner = "rrpplatform",
+      path = "resources/contracts/state/project-state.dcf",
+      expected = rrp_doctor_internal("rrp_project_state_contract_expected")()
+    ),
+    list(
+      resource_id = "rrp.contract.duckdb-history-adapter", owner = "rrpplatform",
+      path = "resources/contracts/state/duckdb-history-adapter.dcf",
+      expected = rrp_doctor_internal("rrp_duckdb_history_contract_expected")()
+    )
+  )
+  resources <- c(resources, lapply(state_definitions, function(definition) {
+    list(
+      id = definition$resource_id, class = "contract", format = "dcf",
+      owner = definition$owner, path = definition$path,
+      value = definition$expected
+    )
+  }))
   for (resource in resources) {
     path <- file.path(root, resource$path)
     if (identical(resource$format, "dcf") && !is.null(names(resource$value))) {
@@ -261,28 +280,31 @@ stopifnot(
 )
 
 dir.create(file.path(project_root, "extensions", "library"), recursive = TRUE)
-dir.create(file.path(project_root, "state"))
 writeLines("opaque extension content", file.path(
   project_root, "extensions", "library", "sentinel.txt"
 ))
-writeLines("opaque state content", file.path(project_root, "state", "sentinel.txt"))
+state_initialized <- rrp_initialize_project_state(catalog, project_root)
+stopifnot(rrp_operation_succeeded(state_initialized))
 extension_before <- readLines(file.path(
   project_root, "extensions", "library", "sentinel.txt"
 ))
-state_before <- readLines(file.path(project_root, "state", "sentinel.txt"))
+state_before <- tools::md5sum(file.path(
+  project_root, "state", c("state.dcf", "history.duckdb")
+))
 available <- rrp_validate_project(catalog, project_root)
 available_serialized <- paste(capture.output(str(available)), collapse = " ")
 stopifnot(
   identical(available$status, "success"),
   identical(available$value$extension_library_status, "available"),
-  identical(available$value$state_status, "available"),
+  identical(available$value$state_status, "compatible"),
   identical(available$diagnostics, list()),
   identical(readLines(file.path(
     project_root, "extensions", "library", "sentinel.txt"
   )), extension_before),
-  identical(readLines(file.path(project_root, "state", "sentinel.txt")), state_before),
+  identical(tools::md5sum(file.path(
+    project_root, "state", c("state.dcf", "history.duckdb")
+  )), state_before),
   !grepl("opaque extension content", available_serialized, fixed = TRUE),
-  !grepl("opaque state content", available_serialized, fixed = TRUE),
   !grepl(project_root, available_serialized, fixed = TRUE)
 )
 

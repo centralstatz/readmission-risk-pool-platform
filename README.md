@@ -18,8 +18,9 @@ public repository essentials, human development guidance, one local
 repository-foundation validator, and two conventional internal package owners.
 A closed base-R DCF source catalog now declares its schema, common result and
 diagnostic contracts, exact project contracts, the initial canonical
-specification family, all five singular runtime contracts, and the two minimal-
-project templates, with a temporary deterministic installed-projection proof.
+specification family, all five singular runtime contracts, the two minimal-
+project templates, and the project-state/DuckDB-adapter authorities, with a
+temporary deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
 its fixed trusted registration boundary and resolving exact semantic
@@ -45,10 +46,14 @@ returns detached in-memory admitted bundles and immutable target-specific
 episode states, or bounded typed failures. State preparation requires the
 bundle cutoff and analytical as-of to denote the same instant, admits only
 `D <= t < W30`, and rejects episodes already readmitted or dead through the
-available-information cutoff. The
-repository has no root selector, persistent installed RRP distribution,
-project state, durable history adapter, product, application, command-line
-interface, or deployment capability.
+available-information cutoff. `rrpplatform` now explicitly initializes and
+inspects a project-owned two-file state root and privately realizes the logical
+history port through bounded DBI/DuckDB sessions with exact transactional
+append and close/reopen behavior. Normal producer/risk computation still
+writes nothing. The repository has no root selector, persistent installed RRP
+distribution, durable bundle-scoped run or correction operation,
+backup/restore, product, application, command-line interface, or deployment
+capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -124,7 +129,10 @@ invocation, selected provider execution through both installed transparent and
 project-owned implementations, process restoration, copied-project behavior,
 and no project/state mutation. It also checks runtime eligibility, immutable
 episode state, standard request, direct semantic-provider execution, minimal
-result, and accepted estimate behavior, plus exact package topology,
+result, and accepted estimate behavior. Package-native checks additionally
+prove explicit state initialization/inspection, compatibility, private
+DuckDB-port roundtrip, transactions, interruption, copied-project reopen, and
+writer exclusion. The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
@@ -144,7 +152,8 @@ interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
 workflow and has been formally accepted, so Stages 1–6 are complete. Stage 7
-has not begun; detailing it from the accepted realized system is the next task.
+is in progress: Increments 7.A and 7.B provide logical history plus explicit
+project state and the DuckDB adapter; Increment 7.C is next.
 
 ## License
 

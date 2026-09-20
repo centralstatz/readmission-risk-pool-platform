@@ -54,6 +54,18 @@ rrp_test_operation_fixture <- function() {
   runtime_definitions <- rrp_test_internal(
     "rrp_runtime_contract_definitions"
   )()
+  state_definitions <- list(
+    list(
+      resource_id = "rrp.contract.project-state",
+      path = "resources/contracts/state/project-state.dcf",
+      expected = rrp_test_internal("rrp_project_state_contract_expected")()
+    ),
+    list(
+      resource_id = "rrp.contract.duckdb-history-adapter",
+      path = "resources/contracts/state/duckdb-history-adapter.dcf",
+      expected = rrp_test_internal("rrp_duckdb_history_contract_expected")()
+    )
+  )
   for (item in list(
     list(
       value = manifest_contract,
@@ -80,6 +92,14 @@ rrp_test_operation_fixture <- function() {
     )
   }
   for (definition in runtime_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(definition$expected), ": ", unname(definition$expected)),
+      path, useBytes = TRUE
+    )
+  }
+  for (definition in state_definitions) {
     path <- file.path(root, definition$path)
     dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
     writeLines(
@@ -135,6 +155,11 @@ rrp_test_operation_fixture <- function() {
   entries <- c(entries, lapply(runtime_definitions, function(definition) list(
     "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
     "Resource-Class" = "contract", "Owner-Package" = definition$owner,
+    "Installed-Path" = definition$path, "Format" = "dcf"
+  )))
+  entries <- c(entries, lapply(state_definitions, function(definition) list(
+    "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
+    "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
     "Installed-Path" = definition$path, "Format" = "dcf"
   )))
   header <- list(
@@ -342,7 +367,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 16L
+          resource_count = 18L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)

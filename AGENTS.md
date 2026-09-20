@@ -86,8 +86,10 @@ isolated install/load, and package-
 native checks. Increment 7.A adds the cataloged storage-neutral scope,
 disposition, action, and port contracts plus dependency-light record,
 relationship, completeness, correction, and current-history semantics proven
-through a test-only in-memory adapter. No root selector, dependency environment,
-project state, durable history adapter, or release procedure exists on the clean line. The
+through a test-only in-memory adapter. Increment 7.B adds explicit project
+state plus the supplied transactional DuckDB adapter. No root selector,
+dependency environment, durable run orchestration, backup/restore, or release
+procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -121,7 +123,11 @@ execution, the explicitly selected protected transparent provider, and the
 complete installed end-to-end proof. Committed push run `35444384900`, job
 `105900696412`, succeeded for revision
 `c9a8f539d07611d29ec86d4fd1ee5a308413938c`, completing Stage 6 after final
-reconciliation. Stages 1–6 are accepted and complete. Increment 7.A is complete;
-the next task is Increment 7.B. Do not introduce physical project state,
-DuckDB/DBI, durable adapters, or later Stage 7 behavior without explicit
-authorization.
+reconciliation. Stages 1–6 are accepted and complete. Increment 7.A established
+the storage-neutral logical history foundation. Increment 7.B adds the two
+platform-owned state authorities, direct DBI/DuckDB dependencies, explicit
+initialize/inspect operations, compatible-state doctor, and private
+transactional DuckDB adapter behind the unchanged runtime port. Increments 7.A
+and 7.B are complete; the next task is Increment 7.C. Do not introduce durable
+producer/provider orchestration, supported correction operations,
+backup/restore, or later Stage 7 behavior without explicit authorization.

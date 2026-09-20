@@ -15,8 +15,9 @@ proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
 through Stage 6 push evidence. Stages 1–6 are accepted and complete. Stage 7 is
-detailed and accepted, and Increment 7.A supplies its dependency-light logical
-history foundation; Increment 7.B is next.
+detailed and accepted; Increments 7.A and 7.B supply its dependency-light
+logical history plus explicit project state and DuckDB adapter. Increment 7.C
+is next.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -121,20 +122,24 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, sole runtime-package dependency, and exact nine-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct `DBI`, `duckdb`, and `rrpruntime` dependencies, and exact 11-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
 | `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities plus assembly of their exact runtime admission context. |
 | `packages/rrpplatform/R/runtime-contracts.R` | Internal exact loading and cross-validation of all five singular runtime authorities plus assembly of the closed state and provider contexts. |
+| `packages/rrpplatform/R/state-contracts.R` | Internal exact loading of the installed project-state and DuckDB-adapter authorities. |
+| `packages/rrpplatform/R/project-state.R` | Explicit state inspection/initialization, closed metadata, exact inventory, compatibility, owned staging, atomic promotion, and bounded state results. |
+| `packages/rrpplatform/R/duckdb-history.R` | Private versioned payload encoding, schema/session lifecycle, transactional DuckDB adapter, interruption boundaries, and bounded raw reads behind the runtime port. |
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict 0.3.0 project-manifest and kind-specific in-memory registration-result validation. |
 | `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe template rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
 | `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
-| `packages/rrpplatform/R/project-doctor.R` | Thin loader-backed structural project diagnosis, closed privacy-safe summary construction, declared-location status, absent-state warning, and expected project-error translation. |
+| `packages/rrpplatform/R/project-doctor.R` | Thin loader-backed project diagnosis, closed privacy-safe summary construction, absent/compatible state reporting, and expected project/state-error translation. |
 | `packages/rrpplatform/R/producer-execution.R` | Closed request/result construction and validation, exact selected-producer invocation, process-context restoration, runtime admission delegation, and bounded expected-failure translation. |
 | `packages/rrpplatform/R/risk-execution.R` | Protected transparent-provider declaration, exact selected-provider risk orchestration, process-context restoration, runtime delegation, and bounded expected-failure translation. |
 | `packages/rrpplatform/man/rrp_initialize_project.Rd` | Focused technical API contract for transactional minimal-project initialization and its exact limits. |
+| `packages/rrpplatform/man/rrp_initialize_project_state.Rd` and `packages/rrpplatform/man/rrp_inspect_project_state.Rd` | Focused public contracts for create-only state initialization and nonmutating compatibility inspection. |
 | `packages/rrpplatform/man/rrp_load_project.Rd` | Focused technical API contract and honest trusted-code/immutability limits for explicit project loading. |
 | `packages/rrpplatform/man/rrp_validate_project.Rd` | Focused technical API contract and limits for explicit structured project diagnosis. |
 | `packages/rrpplatform/man/rrp_execute_producer.Rd` | Focused technical API contract, sensitive-value boundary, and explicit limits for selected producer execution. |
@@ -146,6 +151,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R exact-inventory, rendering, create-only ownership, staging/rollback, portability, privacy, and non-invocation evidence for project initialization. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
+| `packages/rrpplatform/tests/project-state.R` | Package-native state-inventory, compatibility, staging, exact DuckDB roundtrip, progress, idempotency/conflict, transaction interruption, reopen, copied-project, equivalence, privacy, and writer-exclusion evidence. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
 | `packages/rrpplatform/tests/producer-execution.R` | Base-R two-mapping, request/result, exact invocation, zero-provider, copied-project, process-restoration, canonical-admission, privacy, failure, and non-mutation evidence for producer handoff. |
 | `packages/rrpplatform/tests/risk-execution.R` | Base-R installed-transparent and project-provider end-to-end proof for exact selection, one-call execution, substitution, portability, process restoration, bounded failures, and non-persistence. |
@@ -172,8 +178,9 @@ closed to the following present paths:
 | `resources/contracts/canonical/canonical-bundle.dcf`, `resources/contracts/canonical/profiles/readmission.dcf`, and `resources/contracts/canonical/domains/*.dcf` | Runtime-owned canonical bundle, initial readmission profile, and discharge-episode/terminal-event semantic authorities. |
 | `resources/contracts/runtime/*.dcf` | Runtime-owned singular target, immutable episode-state, standard risk-request, provider API, and accepted-estimate semantic authorities. |
 | `resources/contracts/history/*.dcf` | Runtime-owned operational-scope, episode-disposition, append-only action, and storage-neutral history-port authorities. |
+| `resources/contracts/state/*.dcf` | Platform-owned closed project-state metadata and private DuckDB-adapter authorities. |
 | `resources/templates/project/rrp-project.dcf` and `resources/templates/project/R/register.R` | Cataloged software-owned templates for exactly the two files in a minimal initialized 0.3.0 project, including an honest unavailable producer declaration. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection, canonical, runtime, and logical-history contract families, logical history conformance, runtime computation, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, transactional minimal-project initialization, installed selected-producer handoff, and installed selected-provider end-to-end execution. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection, canonical, runtime, logical-history, project-state, and DuckDB-adapter authorities, logical history conformance, runtime computation, installed explicit-root resource access, project/state lifecycle, trusted loading, selected-producer handoff, and selected-provider execution. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -234,10 +241,11 @@ The `rrpruntime` package uses only base R package machinery, has no `Imports`,
 provider primitives plus the 12 logical-history record, port, append, and read
 interfaces declared in its namespace. It supplies no physical history adapter
 or durable state.
-`rrpplatform` imports only
-`rrpruntime` and exports exactly `rrp_execute_producer()`,
+`rrpplatform` imports `DBI`, `duckdb`, and `rrpruntime`; only `rrpplatform`
+owns physical state dependencies. It exports exactly `rrp_execute_producer()`,
 `rrp_execute_risk()`,
 `rrp_initialize_project()`,
+`rrp_initialize_project_state()`, `rrp_inspect_project_state()`,
 `rrp_load_project()`,
 `rrp_open_resource_catalog()`,
 `rrp_operation_succeeded()`, `rrp_resource_path()`,
@@ -346,9 +354,10 @@ substitution, and complete local end-to-end proof.
 Committed push run `35444384900`, job `105900696412`, succeeded for exact
 revision `c9a8f539d07611d29ec86d4fd1ee5a308413938c`; final reconciliation found
 no deviation from True North or the architecture. Stages 1–6 are accepted and
-complete. Stage 7 is detailed and accepted. Increment 7.A is complete with
-storage-neutral logical history only; Increment 7.B is the next authorized
-planning target. No 7.B physical state or adapter capability exists yet.
+complete. Stage 7 is detailed and accepted. Increments 7.A and 7.B are complete
+with storage-neutral logical history plus explicit project-owned DuckDB state;
+Increment 7.C is the next authorized implementation target. Normal computation
+does not yet write durable history, and no correction or backup operation exists.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

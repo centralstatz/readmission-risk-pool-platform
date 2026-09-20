@@ -167,6 +167,22 @@ Installed-Path: resources/contracts/history/history-port.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.project-state
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/state/project-state.dcf
+Installed-Path: resources/contracts/state/project-state.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.duckdb-history-adapter
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/state/duckdb-history-adapter.dcf
+Installed-Path: resources/contracts/state/duckdb-history-adapter.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

@@ -4,13 +4,16 @@
 Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 `0.4.0.9000` and the RRP product development identity `1.0.0-dev`.
 
-The package imports `rrpruntime` to retain the accepted one-way internal-package
-dependency. It owns strict validation of the cataloged `rrp.project@0.3.0`
+The package imports `rrpruntime`, `DBI`, and `duckdb` while retaining the
+accepted one-way internal-package dependency. It owns strict validation of the
+cataloged `rrp.project@0.3.0`
 manifest and `rrp.project-registration@0.3.0` registration-result structures,
 the installed canonical specification family, the five singular runtime
 authorities, semantic provider declarations, one explicit project-loading
-boundary, and transactional minimal-project initialization from cataloged
-software-owned templates. Contract parsers, registration evaluation,
+boundary, transactional minimal-project initialization from cataloged
+software-owned templates, explicit project-state lifecycle operations, and the
+private DuckDB realization of the runtime-owned logical history port. Contract
+parsers, registration evaluation,
 rendering, staging, path checks, composition, resolution, producer request and
 result validation, provider-authority agreement, and error construction remain
 internal. Provider execution remains explicit and in memory.
@@ -36,6 +39,12 @@ Its current callable interfaces are:
   project_version)` creates exactly the manifest and registration file in a
   previously absent destination, validates staged and promoted output through
   the loader, and returns one common operation result;
+- `rrp_initialize_project_state(software_catalog, project_root)` creates and
+  validates exactly `state.dcf` and `history.duckdb` beneath the manifest-owned
+  state path, or validates an existing compatible state without mutation;
+- `rrp_inspect_project_state(software_catalog, project_root)` reports absent or
+  compatible state and fails boundedly for invalid/incompatible state without
+  exposing a database connection or physical schema;
 - `rrp_validate_project(software_catalog, project_root)` reuses the loader and
   returns one bounded structural success/failure result, including declared
   extension-library and state status and a fixed warning when state is absent;
@@ -99,20 +108,32 @@ file state, containment, and closed inventory. Lookup additionally reports
 when installed state changed. Codes are machine-readable; messages are bounded
 maintainer text and do not echo arbitrary paths, parser text, IDs, or content.
 
-Initialization is create-only and uses a unique sibling staging directory.
+Project initialization is create-only and uses a unique sibling staging
+directory.
 It never overwrites, merges with, repairs, or adopts existing content; cleanup
 is limited to filesystem objects owned by the current attempt. Its registered
 producer returns the controlled `producer_unavailable` result when later
 invoked with a request; initialization and validation do not invoke it. The
 provider is a semantically conforming unavailable placeholder. The declared
-`extensions/library` and `state` locations remain absent.
+`extensions/library` and `state` locations remain absent until their distinct
+owners initialize them.
+
+State initialization is separately create-only, uses owned staging and atomic
+promotion, and admits no overwrite, force, repair, or migration mode. The
+closed metadata and DuckDB schema identify their exact logical-history,
+adapter, physical-schema, and serialize-v3/XDR/hex payload versions. Every
+adapter operation opens and reliably closes a private bounded DBI session;
+callers receive only the storage-neutral `rrp_history_port`. Identical writes
+are idempotent, conflicting identities fail, restatements are atomic, and raw
+reads remain bounded by an operation or episode/target relationship closure.
 
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, persistent state,
-durable history orchestration, products, applications, installation, or deployment. It
+an ordinary operator command, dependency restoration, durable producer/provider
+orchestration, correction operations, backup/restore, products, applications,
+installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.

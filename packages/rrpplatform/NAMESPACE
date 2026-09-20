@@ -1,4 +1,6 @@
 export(rrp_initialize_project)
+export(rrp_initialize_project_state)
+export(rrp_inspect_project_state)
 export(rrp_execute_producer)
 export(rrp_execute_risk)
 export(rrp_load_project)

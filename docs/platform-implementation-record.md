@@ -2995,3 +2995,120 @@ orchestration, product, application, CLI, migration, or legacy import exists.
 
 **Next task:** implement only Increment 7.B — Explicit project state and DuckDB
 adapter.
+
+### Increment 7.B — Explicit project state and DuckDB adapter (complete, 2026-09-20)
+
+Increment 7.B realizes the accepted 7.A logical history port in explicit local
+project state without connecting ordinary producer or provider computation to
+history. `rrpplatform` now directly imports `DBI`, `duckdb`, and `rrpruntime`,
+and exports exactly 11 technical interfaces after adding
+`rrp_initialize_project_state()` and `rrp_inspect_project_state()`. The package
+remains version `0.1.0.9000`; the existing project/API line remains `0.3.0`.
+Raw connections, SQL, table names, adapter construction, and failure injection
+remain protected implementation details.
+
+Two platform-owned installed authorities extend the closed resource catalog to
+exactly 24 entries. `rrp.project-state` defines the exact two-file inventory
+(`state.dcf` and `history.duckdb`), closed metadata, opaque non-path-derived
+state identity, project/API/target/logical-history provenance, compatibility
+rules, and prohibition on automatic migration or repair. The
+`rrp.adapter.duckdb-history` authority fixes the adapter and physical-schema
+versions, four private tables, query columns, transaction families, bounded
+read posture, private-session lifecycle, and single controlled local writer.
+The manifest's existing safe relative `State-Path` remains the sole location
+authority.
+
+Initialization is explicit, create-only, and non-destructive. It validates the
+loaded project and state authorities, creates only necessary owned parent
+segments, constructs metadata and the empty database in a project-root staging
+directory, validates the staged state, atomically promotes it, and removes
+owned staging/empty-parent residue on failure. Repeating initialization against
+compatible state succeeds idempotently without changing its identity; partial,
+linked, unknown, malformed, corrupt, other-project, or incompatible state is
+rejected rather than repaired. Inspection is nonmutating and reports
+`not_initialized`, `compatible`, or a bounded typed failure. The project doctor
+now delegates to that inspection: absence remains a warning, compatible state
+is reported as such, and incompatibility is a failure without creation or
+repair.
+
+The private DuckDB realization opens and closes one bounded connection for each
+port operation, validates schema and embedded metadata before use, and returns
+detached logical records. Indexed scalar columns support bounded scope and
+episode/target relationship reads, while each row also stores its complete
+logical record. Exact preflight comparison provides same-content idempotency
+and different-content identity conflict. Scope, disposition, and action writes
+each use one transaction; restatement inserts its replacement disposition and
+action in one transaction. Rollback leaves neither partial row, while an
+injected post-commit interruption is recovered by the normal idempotent retry.
+Incomplete and complete scopes, independently committed dispositions, and
+independently committed actions therefore remain valid physical states. The
+accepted runtime layer continues to own completeness and raw/current semantic
+interpretation.
+
+The bounded payload-format evaluation selected
+`r-serialize-v3-xdr-hex-v1`: base-R serialization version 3 with XDR enabled,
+encoded as canonical lowercase hexadecimal text. A raw DuckDB BLOB would avoid
+the two-times text expansion but adds driver-specific raw/list binding and
+retrieval behavior without improving 7.B semantics. The chosen representation
+is a deterministic scalar, preserves the exact validated R logical object
+through close/reopen, is easy to reject when malformed, and is explicitly
+versioned and private so a later physical-schema migration can replace it. The
+storage cost is accepted for this correctness-first local reference adapter;
+the payload is not a public interchange format or a security encoding.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`implementations/persistence/duckdb/R/foundation.R`, `session.R`, `schema.R`,
+and `adapter.R`, plus `tests/phase5/test-duckdb-persistence.R`. Explicit
+non-destructive initialization, schema metadata, adapter-owned connection
+lifecycle, transaction/preflight mechanics, deterministic reads, version-3
+hex payloads, close/reopen, and interruption injection were adapted. The old
+repository configuration, six analytical-family tables, physical validity
+logic, giant batch transaction, optional dependency posture, backup/restore,
+and legacy migration/import were rejected.
+
+Recovery preserved the coherent partial implementation and made only bounded
+corrections revealed by focused and strict evidence. These included preserving
+typed state failures across connection wrappers, classifying writer-lock
+unavailability, correcting a stale fixture resource count, eliminating one
+`R CMD check` namespace note, forwarding complete installed library paths to
+nested process proofs, clearing only the check-owned relative `R_TESTS` hook in
+those child processes, and updating the older installed doctor regression to
+require initialized compatible state rather than accepting an arbitrary state
+directory. No accepted 7.A record, relationship, identity, completeness,
+retry, correction, or current-history semantic changed.
+
+Package-native evidence covers missing/existing/partial/linked/unsafe state;
+exact inventory and all compatibility fields; staging and promotion cleanup;
+idempotent initialization; other-project state; exact scope, disposition, and
+action roundtrip; incomplete progress and derived completion; operation-key
+conflict; raw/current and restatement behavior; detached reads; copied projects
+with and without state; arbitrary non-Git working directory; fresh-process
+reopen; separate-process writer contention; and injected interruption before,
+during, and after every scope/disposition/action/restatement transaction. The
+same scenarios run against a dependency-free in-memory fixture and the DuckDB
+adapter to prove logical equivalence.
+
+Final proportional evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks
+  passed with zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: exact 24-resource authority
+  and projection, both static package boundaries and source builds, negative
+  dependency-order proof, all package-native tests, dependency-order isolated
+  installation/loading, both strict `R CMD check --no-manual` operations with
+  `Status: OK`, and all installed resource/project/producer/provider
+  regressions passed;
+- direct R, DESCRIPTION, and Rd parsing passed; and
+- generated-artifact review and `git diff --check` passed.
+
+**Current implementation state:** Increment 7.B is complete locally; Stage 7
+remains in progress. An explicit project can initialize, inspect, copy, and
+reopen a compatible local DuckDB history store, and the protected adapter
+durably satisfies the accepted logical port. Normal RRP computation still does
+not write history. No durable bundle-run or continuation orchestration,
+supported correction operation, automatic retry, backup/restore, migration,
+remote adapter, product, application, CLI, release, or deployment behavior was
+introduced.
+
+**Next task:** implement only Increment 7.C — Bundle-scoped durable operation
+and history interpretation.
