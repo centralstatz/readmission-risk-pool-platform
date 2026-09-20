@@ -21,6 +21,7 @@ expected_files <- c(
   ".editorconfig", ".github/workflows/package-foundation.yml", ".gitignore",
   "AGENTS.md", "CONTRIBUTING.md", "LICENSE", "NOTICE", "README.md",
   "RRP.yml", "SECURITY.md", "SUPPORT.md",
+  "docs/assessments/stage-7-bundle-scope-assessment.md",
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
@@ -93,7 +94,7 @@ expected_files <- c(
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
 expected_directories <- c(
-  ".github", ".github/workflows", "docs", "packages",
+  ".github", ".github/workflows", "docs", "docs/assessments", "packages",
   "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
   "packages/rrpruntime", "packages/rrpruntime/R", "packages/rrpruntime/man",

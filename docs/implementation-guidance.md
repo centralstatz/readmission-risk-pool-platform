@@ -109,6 +109,7 @@ closed to the following present paths:
 | `docs/platform-implementation-plan.md` | Authoritative construction order and current accepted increment. |
 | `docs/platform-implementation-record.md` | Append-forward account of clean-line work actually completed. |
 | `docs/implementation-guidance.md` | Human development method, conventions, and current ownership map. |
+| `docs/assessments/` and `docs/assessments/stage-7-bundle-scope-assessment.md` | Bounded non-authoritative reasoning records for questions investigated before an accepted authority changes. Each retained assessment must be admitted explicitly by the closed repository inventory; accepted conclusions belong in the applicable authoritative document rather than gaining authority here. The current file preserves the evidence behind the reconciled Stage 7 bundle-scope decision. |
 | `RRP.yml` | Sole machine-readable product-development identity authority. |
 | `README.md` | Public orientation, current maturity, and navigation. |
 | `CONTRIBUTING.md` | Public contribution entry point and sign-off expectation. |
