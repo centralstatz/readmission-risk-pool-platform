@@ -2,11 +2,11 @@
 
 `rrpruntime` is the dependency-light internal R package owner for
 implementation-neutral Readmission Risk Pool runtime responsibilities. Its
-package version is `0.3.0.9000`, independently of the RRP product development
+package version is `0.4.0.9000`, independently of the RRP product development
 identity `1.0.0-dev`.
 
-The package uses only base R package machinery and exports exactly three
-technical interfaces:
+The package uses only base R package machinery. Its original three technical
+runtime interfaces remain:
 
 - `rrp_admit_canonical_bundle(candidate, expected_context)` validates the
   closed source-independent canonical handoff and returns a detached admitted
@@ -19,6 +19,15 @@ technical interfaces:
   constructs the exact provider-neutral request, invokes one compatible
   explicitly supplied provider once, and returns one detached accepted
   probability estimate.
+
+It also exports the storage-neutral Stage 7 logical history surface:
+constructors for scope, disposition, and action records; the deterministic
+membership fingerprint; a closed history port; append/match, invalidation, and
+atomic restatement operations; and raw scope, raw episode, and effective
+current-history reads. These interfaces validate relationships before writes
+and after detached reads. Scope completeness is derived from the expected
+initial-disposition cardinality and governed membership fingerprint; retry and
+restatement remain distinct append-only lineages.
 
 Admission enforces the initial discharge-episode and terminal-event key,
 relationship, cardinality, explicit-offset timestamp, dual-time, and exact
@@ -35,7 +44,8 @@ and state failures inherit from `rrp_runtime_error`. Both carry a stable bounded
 identifiers. The package does not know a project root, load installed resources,
 access a source, execute a producer, select or discover a project provider,
 control project libraries, or persist state. It has no provider registry,
-fallback, retry, history, model loading, or platform operation.
+fallback policy, model loading, project-state path, physical adapter, durable
+file, DBI/DuckDB dependency, close/reopen behavior, or platform orchestration.
 
 The package is internal software source. It is not the RRP product, an operator
 interface, or evidence that RRP 1.0 is installed, released, or clinically

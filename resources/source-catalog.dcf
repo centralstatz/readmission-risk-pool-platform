@@ -135,6 +135,38 @@ Installed-Path: resources/contracts/runtime/risk-estimate.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.history-operational-scope
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/history/operational-scope.dcf
+Installed-Path: resources/contracts/history/operational-scope.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.history-episode-disposition
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/history/episode-disposition.dcf
+Installed-Path: resources/contracts/history/episode-disposition.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.history-action
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/history/history-action.dcf
+Installed-Path: resources/contracts/history/history-action.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.history-port
+Resource-Class: contract
+Owner-Package: rrpruntime
+Source-Path: resources/contracts/history/history-port.dcf
+Installed-Path: resources/contracts/history/history-port.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

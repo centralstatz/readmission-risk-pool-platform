@@ -83,8 +83,11 @@ dependency, dependency-light canonical admission, exact eligibility and
 immutable episode-state construction, standard provider-neutral request,
 direct one-call compatible-provider execution, accepted estimate, exact export posture, builds,
 isolated install/load, and package-
-native checks. No root selector, dependency environment, operational history,
-or release procedure exists on the clean line. The
+native checks. Increment 7.A adds the cataloged storage-neutral scope,
+disposition, action, and port contracts plus dependency-light record,
+relationship, completeness, correction, and current-history semantics proven
+through a test-only in-memory adapter. No root selector, dependency environment,
+project state, durable history adapter, or release procedure exists on the clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -118,6 +121,7 @@ execution, the explicitly selected protected transparent provider, and the
 complete installed end-to-end proof. Committed push run `35444384900`, job
 `105900696412`, succeeded for revision
 `c9a8f539d07611d29ec86d4fd1ee5a308413938c`, completing Stage 6 after final
-reconciliation. Stages 1–6 are accepted and complete. The next task is to
-detail Stage 7. Do not begin Stage 7 source implementation without explicit
+reconciliation. Stages 1–6 are accepted and complete. Increment 7.A is complete;
+the next task is Increment 7.B. Do not introduce physical project state,
+DuckDB/DBI, durable adapters, or later Stage 7 behavior without explicit
 authorization.

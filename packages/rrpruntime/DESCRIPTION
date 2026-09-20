@@ -1,7 +1,7 @@
 Package: rrpruntime
 Type: Package
 Title: Dependency-Light Readmission Runtime Foundation
-Version: 0.3.0.9000
+Version: 0.4.0.9000
 Authors@R: c(person("Alex", "Zajichek", email = "alexzajichek@gmail.com", role = c("aut", "cre")), person("CentralStatz Statistical & Data Sciences LLC", role = "cph"))
 Description: Provides dependency-light implementation-neutral Readmission Risk
     Pool runtime primitives. The current package admits or rejects the initial
@@ -11,7 +11,9 @@ Description: Provides dependency-light implementation-neutral Readmission Risk
     admitted bundle cutoff, then constructs the standard provider-neutral risk
     request, invokes one explicitly supplied compatible provider, and accepts
     one closed finite probability estimate without knowing project or source
-    implementation details.
+    implementation details. It also owns storage-neutral immutable operational
+    scope, terminal episode-disposition, append-only correction, completeness,
+    and current-history semantics behind a dependency-free logical port.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

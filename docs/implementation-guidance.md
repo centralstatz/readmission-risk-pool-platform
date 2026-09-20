@@ -15,7 +15,8 @@ proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
 through Stage 6 push evidence. Stages 1–6 are accepted and complete. Stage 7 is
-the next stage to detail and has not begun.
+detailed and accepted, and Increment 7.A supplies its dependency-light logical
+history foundation; Increment 7.B is next.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -148,17 +149,20 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
 | `packages/rrpplatform/tests/producer-execution.R` | Base-R two-mapping, request/result, exact invocation, zero-provider, copied-project, process-restoration, canonical-admission, privacy, failure, and non-mutation evidence for producer handoff. |
 | `packages/rrpplatform/tests/risk-execution.R` | Base-R installed-transparent and project-provider end-to-end proof for exact selection, one-call execution, substitution, portability, process restoration, bounded failures, and non-persistence. |
-| `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and exact three-export namespace. |
+| `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and exact 15-export namespace. |
 | `packages/rrpruntime/R/canonical-admission.R` | Pure closed-value canonical candidate validation, exact identity/capability agreement, domain/temporal rules, typed safe failures, and detached admitted-bundle construction. |
 | `packages/rrpruntime/R/episode-state.R` | Pure admitted-bundle revalidation, exact as-of and eligibility enforcement, terminal precedence, deterministic state identity, typed safe failures, and detached immutable episode-state construction. |
 | `packages/rrpruntime/R/risk-provider.R` | Pure state/provider compatibility, deterministic detached request construction, one-call provider invocation, exact result validation, and detached accepted-estimate construction. |
+| `packages/rrpruntime/R/history.R` | Storage-neutral immutable history record construction, deterministic operation/analysis/membership identities, closed field and relationship validation, logical port composition, derived scope progress/completeness, and raw/current interpretation. |
 | `packages/rrpruntime/man/rrp_admit_canonical_bundle.Rd` | Focused internal API contract for the exact candidate, expected context, admitted type, and failure boundary. |
 | `packages/rrpruntime/man/rrp_prepare_episode_state.Rd` | Focused internal API contract for exact analytical cutoff, eligibility, state construction, and typed failure behavior. |
 | `packages/rrpruntime/man/rrp_execute_risk_provider.Rd` | Focused internal API contract for the standard request, compatible provider invocation, accepted estimate, and bounded failure boundary. |
+| `packages/rrpruntime/man/rrp_history_records.Rd`, `packages/rrpruntime/man/rrp_history_port.Rd`, and `packages/rrpruntime/man/rrp_history_reads.Rd` | Focused technical contracts for logical history records and identities, the storage-neutral append port, and explicit-cutoff raw/current reads. |
 | `packages/rrpruntime/R/rrpruntime-package.R`, `packages/rrpruntime/man/rrpruntime-package.Rd`, and `packages/rrpruntime/README.md` | Runtime-package orientation and current dependency-light responsibility. |
 | `packages/rrpruntime/tests/canonical-admission.R` | Base-R positive, adversarial, identity, relationship, temporal, privacy, and detached-copy evidence for canonical admission. |
 | `packages/rrpruntime/tests/episode-state.R` | Base-R boundary, terminal, multi-episode, cutoff, immutability, identity, privacy, and adversarial evidence for episode-state preparation. |
 | `packages/rrpruntime/tests/risk-provider.R` | Base-R request/estimate shape, compatibility, model-pair, detachment, one-call, probability, result, failure, and privacy evidence for provider execution. |
+| `packages/rrpruntime/tests/history.R` | Base-R test-only in-memory adapter and conformance evidence for exact records, presence/relationship rules, progress/completeness, idempotency/conflict, continuation/retry, append-only corrections, cutoffs, ambiguity, detachment, and privacy-safe failure. |
 | `packages/rrpruntime/tests/package-foundation.R` | Base-R package-native evidence for installed identity, version, R requirement, dependencies, and exact export posture. |
 | `resources/source-catalog.dcf` | Closed maintainer authority for current software-owned resources and source-to-installed mappings. |
 | `resources/resource-catalog-schema.dcf` | Exact base-R DCF schema for source and projected catalog identities, fields, controlled values, and safety invariants; also the first cataloged `contract` resource. |
@@ -167,8 +171,9 @@ closed to the following present paths:
 | `resources/contracts/canonical/specification-envelope.dcf` and `resources/contracts/canonical/canonical-producer.dcf` | Exact installed specification envelope and platform-owned semantic producer contract. |
 | `resources/contracts/canonical/canonical-bundle.dcf`, `resources/contracts/canonical/profiles/readmission.dcf`, and `resources/contracts/canonical/domains/*.dcf` | Runtime-owned canonical bundle, initial readmission profile, and discharge-episode/terminal-event semantic authorities. |
 | `resources/contracts/runtime/*.dcf` | Runtime-owned singular target, immutable episode-state, standard risk-request, provider API, and accepted-estimate semantic authorities. |
+| `resources/contracts/history/*.dcf` | Runtime-owned operational-scope, episode-disposition, append-only action, and storage-neutral history-port authorities. |
 | `resources/templates/project/rrp-project.dcf` and `resources/templates/project/R/register.R` | Cataloged software-owned templates for exactly the two files in a minimal initialized 0.3.0 project, including an honest unavailable producer declaration. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection, canonical and five-resource runtime contract families, runtime admission, episode-state preparation, direct compatible-provider execution, accepted-estimate construction, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, transactional minimal-project initialization, installed selected-producer handoff, and installed selected-provider end-to-end execution. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection, canonical, runtime, and logical-history contract families, logical history conformance, runtime computation, installed explicit-root resource access, common result/diagnostic behavior, project contracts, trusted loading, transactional minimal-project initialization, installed selected-producer handoff, and installed selected-provider end-to-end execution. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -225,9 +230,10 @@ owner is explicit. Keep these future dependency responsibilities distinct:
 - deployment-target closure.
 
 The `rrpruntime` package uses only base R package machinery, has no `Imports`,
-`Suggests`, or `LinkingTo`, and exports exactly
-`rrp_admit_canonical_bundle()`, `rrp_prepare_episode_state()`, and
-`rrp_execute_risk_provider()`.
+`Suggests`, or `LinkingTo`, and exports exactly the three canonical/state/
+provider primitives plus the 12 logical-history record, port, append, and read
+interfaces declared in its namespace. It supplies no physical history adapter
+or durable state.
 `rrpplatform` imports only
 `rrpruntime` and exports exactly `rrp_execute_producer()`,
 `rrp_execute_risk()`,
@@ -340,8 +346,9 @@ substitution, and complete local end-to-end proof.
 Committed push run `35444384900`, job `105900696412`, succeeded for exact
 revision `c9a8f539d07611d29ec86d4fd1ee5a308413938c`; final reconciliation found
 no deviation from True North or the architecture. Stages 1–6 are accepted and
-complete. Stage 7 is the next stage to detail and has not begun; later source
-work remains unauthorized.
+complete. Stage 7 is detailed and accepted. Increment 7.A is complete with
+storage-neutral logical history only; Increment 7.B is the next authorized
+planning target. No 7.B physical state or adapter capability exists yet.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

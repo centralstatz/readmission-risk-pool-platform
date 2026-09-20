@@ -35,9 +35,10 @@ episode state and invokes exactly the explicitly selected compatible provider
 once, returning an accepted in-memory estimate. Projects may select the
 protected installed nonclinical transparent provider or a compatible
 project-owned provider; no provider is selected by default.
-`rrpruntime` now exports three pure dependency-light primitives: canonical
-admission, eligible episode-state preparation, and direct compatible-provider
-execution through the standard request/result/estimate boundary. It validates exact identity,
+`rrpruntime` provides the three pure dependency-light computation primitives—
+canonical admission, eligible episode-state preparation, and direct compatible-
+provider execution—and now also owns storage-neutral logical operational-
+history records, a small port, completeness, and raw/current interpretation. It validates exact identity,
 capability, closed-domain, key,
 relationship, explicit-offset time, dual-time, and 30-elapsed-day rules and
 returns detached in-memory admitted bundles and immutable target-specific
@@ -46,7 +47,7 @@ bundle cutoff and analytical as-of to denote the same instant, admits only
 `D <= t < W30`, and rejects episodes already readmitted or dead through the
 available-information cutoff. The
 repository has no root selector, persistent installed RRP distribution,
-operational history, retry lifecycle, product, application, command-line
+project state, durable history adapter, product, application, command-line
 interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 

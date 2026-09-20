@@ -2,7 +2,7 @@
 
 `rrpplatform` is the main internal implementation package within RRP software.
 Its package version is `0.1.0.9000`, independently of `rrpruntime` version
-`0.3.0.9000` and the RRP product development identity `1.0.0-dev`.
+`0.4.0.9000` and the RRP product development identity `1.0.0-dev`.
 
 The package imports `rrpruntime` to retain the accepted one-way internal-package
 dependency. It owns strict validation of the cataloged `rrp.project@0.3.0`
@@ -112,7 +112,7 @@ or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
 an ordinary operator command, dependency restoration, persistent state,
-runtime history, products, applications, installation, or deployment. It
+durable history orchestration, products, applications, installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.

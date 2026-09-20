@@ -11,7 +11,7 @@ stopifnot(
   is.null(description[["Suggests"]]),
   is.null(description[["LinkingTo"]]),
   "rrpruntime" %in% names(namespace_imports),
-  identical(as.character(utils::packageVersion("rrpruntime")), "0.3.0.9000"),
+  identical(as.character(utils::packageVersion("rrpruntime")), "0.4.0.9000"),
   identical(
     sort(getNamespaceExports("rrpplatform")),
     c(

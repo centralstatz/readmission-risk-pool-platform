@@ -8,15 +8,16 @@ Provides dependency-light implementation-neutral Readmission Risk Pool runtime
 behavior. Its current responsibilities are pure canonical bundle admission,
 singular-target episode eligibility/state preparation, standard risk-request
 construction, compatible provider invocation, and accepted-estimate creation.
+It also owns the storage-neutral immutable operational-history contracts,
+logical port, completeness rules, and raw/current interpretation.
 }
 \details{
-The package uses only base R package machinery and exports exactly
-\code{rrp_admit_canonical_bundle()},
-\code{rrp_prepare_episode_state()}, and
-\code{rrp_execute_risk_provider()}. It has no project, installed-resource,
-producer execution, provider selection, controlled project-library, history,
-product, or persistence responsibility. Later responsibilities require their
-own accepted increments and evidence.
+The package uses only base R package machinery. History interfaces know no
+project path or physical storage vocabulary and supply no durable adapter. The
+package has no project loading, installed-resource access, producer execution,
+provider selection, controlled project-library, product, or physical
+persistence responsibility. Later responsibilities require their own accepted
+increments and evidence.
 }
 \author{RRP maintainers}
 \keyword{internal}

@@ -20,7 +20,7 @@ repository_root <- normalizePath(
 
 package_specs <- list(
   rrpruntime = list(
-    version = "0.3.0.9000",
+    version = "0.4.0.9000",
     imports = character()
   ),
   rrpplatform = list(
@@ -647,6 +647,226 @@ runtime_contract_resources <- function() {
   )
 }
 
+history_contract_resources <- function() {
+  common <- c(
+    "Record-Type" = "history-contract",
+    "Contract-Version" = "0.1.0",
+    "Format-Version" = "1.0.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev",
+    "Status" = "development_unpublished",
+    "Owner-Package" = "rrpruntime"
+  )
+  scope <- c(
+    common["Record-Type"],
+    "Contract-ID" = "rrp.history.operational-scope",
+    common[names(common) != "Record-Type"],
+    "Object-Class" = "rrp_operational_scope,list",
+    "Fields" = paste(c(
+      "scope_contract_id", "scope_contract_version", "scope_record_id",
+      "named_operation_id", "operation_run_id", "operation_key", "state_id",
+      "product_id", "development_version", "rrp_api_version", "project_api_id",
+      "project_api_version", "project_id", "project_version", "bundle_contract_id",
+      "bundle_contract_version", "bundle_instance_id", "canonical_profile_id",
+      "canonical_profile_version", "producer_id", "producer_version",
+      "producer_implementation_id", "producer_implementation_version",
+      "mapping_id", "mapping_version", "target_id", "target_version",
+      "analytical_time", "expected_episode_count", "membership_encoding",
+      "membership_fingerprint_algorithm", "membership_fingerprint", "created_at"
+    ), collapse = ","),
+    "Named-Operation-ID" = "rrp.operation.evaluate-admitted-bundle",
+    "Operation-Run-ID-Prefix" = "rrp.operation-run.",
+    "Operation-Run-ID-Algorithm" = "dual_modular_hash_v1",
+    "Operation-Run-ID-Inputs" = "state_id,named_operation_id,operation_key",
+    "Scope-Record-ID-Prefix" = "rrp.scope.",
+    "Scope-Record-ID-Algorithm" = "dual_modular_hash_v1",
+    "Scope-Record-ID-Inputs" = paste(c(
+      "scope_contract_id", "scope_contract_version", "operation_run_id"
+    ), collapse = ","),
+    "Membership-Encoding" = "utf8_length_prefixed_sorted_unique_v1",
+    "Membership-Fingerprint-Algorithm" = "dual_modular_hash_v1",
+    "Membership-Fingerprint-Prefix" = "rrp.membership.",
+    "Membership-Inputs" = "sorted_unique_episode_ids",
+    "Expected-Episode-Count-Type" = "nonnegative_integer",
+    "Completion-Rule" = "initial_disposition_count_and_membership_fingerprint_match",
+    "Mutable-Completion-Flag" = "prohibited",
+    "Full-Canonical-Bundle" = "prohibited",
+    "Second-Episode-Manifest" = "prohibited",
+    "Timestamp-Fields" = "analytical_time,created_at",
+    "Timestamp-Representation" = "rfc3339_utc",
+    "Timestamp-Order" = "analytical_time<=created_at",
+    "Unknown-Fields" = "prohibited",
+    "Reference-Bearing-Values" = "prohibited"
+  )
+  disposition <- c(
+    common["Record-Type"],
+    "Contract-ID" = "rrp.history.episode-disposition",
+    common[names(common) != "Record-Type"],
+    "Object-Class" = "rrp_episode_disposition,list",
+    "Fields" = paste(c(
+      "disposition_contract_id", "disposition_contract_version",
+      "disposition_record_id", "operation_run_id", "analytical_run_id",
+      "analytical_kind", "related_analytical_run_id", "analytical_key",
+      "episode_id", "patient_id", "target_id", "target_version",
+      "analytical_time", "outcome", "outcome_code", "eligibility_status",
+      "state", "request", "provider_id", "provider_version", "implementation_id",
+      "implementation_version", "model_id", "model_version",
+      "provider_execution_id", "provider_status", "estimate_record_id",
+      "estimate", "terminal_time"
+    ), collapse = ","),
+    "Analytical-Kinds" = "initial,retry,restatement",
+    "Initial-Analytical-ID-Prefix" = "rrp.analysis.",
+    "Initial-Analytical-ID-Algorithm" = "dual_modular_hash_v1",
+    "Initial-Analytical-ID-Inputs" = paste(c(
+      "operation_run_id", "episode_id", "target_id", "target_version",
+      "analytical_time", "initial"
+    ), collapse = ","),
+    "Later-Analytical-ID-Inputs" = paste(c(
+      "operation_run_id", "episode_id", "target_id", "target_version",
+      "analytical_time", "analytical_kind", "related_analytical_run_id",
+      "analytical_key"
+    ), collapse = ","),
+    "Nullable-ID-Encoding" = "literal_null_token_v1",
+    "Disposition-Record-ID-Prefix" = "rrp.disposition.",
+    "Disposition-Record-ID-Algorithm" = "dual_modular_hash_v1",
+    "Disposition-Record-ID-Inputs" = paste(c(
+      "disposition_contract_id", "disposition_contract_version",
+      "analytical_run_id"
+    ), collapse = ","),
+    "Provider-Execution-ID-Prefix" = "rrp.provider-execution.",
+    "Provider-Execution-ID-Algorithm" = "dual_modular_hash_v1",
+    "Provider-Execution-ID-Inputs" = paste(c(
+      "analytical_run_id", "request_id", "provider_id", "provider_version",
+      "implementation_id", "implementation_version", "model_id", "model_version"
+    ), collapse = ","),
+    "Estimate-Record-ID-Prefix" = "rrp.estimate-record.",
+    "Estimate-Record-ID-Algorithm" = "dual_modular_hash_v1",
+    "Estimate-Record-ID-Inputs" = paste(c(
+      "provider_execution_id", "estimate_contract_id", "estimate_contract_version",
+      "request_id", "estimate_value"
+    ), collapse = ","),
+    "Outcome-Values" = paste(c(
+      "ineligible", "accepted_estimate", "provider_incompatible",
+      "provider_declared_failure", "detected_failure"
+    ), collapse = ","),
+    "Eligibility-Values" = "eligible,ineligible",
+    "Provider-Status-Values" = "not_invoked,succeeded,declared_failure,detected_failure",
+    "Ineligible-Codes" = paste(c(
+      "episode_before_discharge", "target_horizon_exhausted",
+      "episode_already_readmitted", "episode_already_dead"
+    ), collapse = ","),
+    "Declared-Failure-Codes" = paste(c(
+      "provider_unavailable", "provider_input_unavailable",
+      "provider_calculation_failed"
+    ), collapse = ","),
+    "Detected-Failure-Codes" = paste(c(
+      "provider_execution_failed", "invalid_provider_result",
+      "provider_result_identity_mismatch", "invalid_estimate"
+    ), collapse = ","),
+    "Accepted-Outcome-Code" = "estimate_accepted",
+    "Timestamp-Fields" = "analytical_time,terminal_time",
+    "Timestamp-Representation" = "rfc3339_utc",
+    "Timestamp-Order" = "analytical_time<=terminal_time",
+    "Unknown-Fields" = "prohibited",
+    "Reference-Bearing-Values" = "prohibited"
+  )
+  action <- c(
+    common["Record-Type"],
+    "Contract-ID" = "rrp.history.action",
+    common[names(common) != "Record-Type"],
+    "Object-Class" = "rrp_history_action,list",
+    "Fields" = paste(c(
+      "action_contract_id", "action_contract_version", "action_id", "target_kind",
+      "target_id", "target_operation_run_id", "action_type", "effective_time",
+      "reason_code", "replacement_operation_run_id",
+      "replacement_analytical_run_id", "actor_category"
+    ), collapse = ","),
+    "Target-Kinds" = "analytical_run,operational_scope",
+    "Action-Types" = "invalidate,restate",
+    "Reason-Codes" = paste(c(
+      "incorrect_input", "incorrect_scope", "incorrect_provenance",
+      "superseded_result"
+    ), collapse = ","),
+    "Actor-Categories" = "maintainer,operator",
+    "Action-ID-Prefix" = "rrp.history-action.",
+    "Action-ID-Algorithm" = "dual_modular_hash_v1",
+    "Action-ID-Inputs" = paste(c(
+      "action_contract_id", "action_contract_version", "target_kind", "target_id",
+      "target_operation_run_id", "action_type", "effective_time", "reason_code",
+      "replacement_operation_run_id", "replacement_analytical_run_id",
+      "actor_category"
+    ), collapse = ","),
+    "Nullable-ID-Encoding" = "literal_null_token_v1",
+    "Episode-Correction" = "normal",
+    "Scope-Correction" = "shared_admission_or_provenance_only",
+    "Mutation-Or-Deletion" = "prohibited",
+    "Free-Text-Reason" = "prohibited",
+    "Timestamp-Fields" = "effective_time",
+    "Timestamp-Representation" = "rfc3339_utc",
+    "Unknown-Fields" = "prohibited",
+    "Reference-Bearing-Values" = "prohibited"
+  )
+  port <- c(
+    common["Record-Type"],
+    "Contract-ID" = "rrp.history.port",
+    common[names(common) != "Record-Type"],
+    "Object-Class" = "rrp_history_port,list",
+    "Adapter-Fields" = paste(c(
+      "adapter_id", "adapter_version", "contract_id", "contract_version",
+      "capabilities", "methods"
+    ), collapse = ","),
+    "Required-Methods" = paste(c(
+      "append_scope", "append_disposition", "append_action",
+      "append_restatement", "read_scope_history", "read_episode_history"
+    ), collapse = ","),
+    "Required-Capabilities" = paste(c(
+      "atomic_scope_append", "atomic_episode_append",
+      "atomic_restatement_append", "identical_append_idempotency",
+      "conflicting_identity_rejection", "immutable_raw_retention",
+      "bounded_raw_reads", "detached_reads"
+    ), collapse = ","),
+    "Logical-Operations" = paste(c(
+      "append_or_match_scope", "append_episode_disposition",
+      "append_invalidation", "append_restatement", "read_scope_progress",
+      "read_raw_episode_history", "resolve_current_episode_history"
+    ), collapse = ","),
+    "Validate-Before-Delegate" = "required",
+    "Validate-After-Read" = "required",
+    "Detached-Records" = "required",
+    "Physical-Storage-Vocabulary" = "prohibited",
+    "Close-Reopen-Durability" = "deferred_to_physical_adapter",
+    "Current-History-Owner" = "rrpruntime",
+    "Unknown-Fields" = "prohibited",
+    "Reference-Bearing-Values" = "adapter_methods_only"
+  )
+  list(
+    history_operational_scope = list(
+      id = "rrp.contract.history-operational-scope", owner = "rrpruntime",
+      source_path = "resources/contracts/history/operational-scope.dcf",
+      installed_path = "resources/contracts/history/operational-scope.dcf",
+      document = scope
+    ),
+    history_episode_disposition = list(
+      id = "rrp.contract.history-episode-disposition", owner = "rrpruntime",
+      source_path = "resources/contracts/history/episode-disposition.dcf",
+      installed_path = "resources/contracts/history/episode-disposition.dcf",
+      document = disposition
+    ),
+    history_action = list(
+      id = "rrp.contract.history-action", owner = "rrpruntime",
+      source_path = "resources/contracts/history/history-action.dcf",
+      installed_path = "resources/contracts/history/history-action.dcf",
+      document = action
+    ),
+    history_port = list(
+      id = "rrp.contract.history-port", owner = "rrpruntime",
+      source_path = "resources/contracts/history/history-port.dcf",
+      installed_path = "resources/contracts/history/history-port.dcf",
+      document = port
+    )
+  )
+}
+
 software_contract_resources <- function() {
   resources <- list(
     diagnostic = list(
@@ -834,7 +1054,10 @@ software_contract_resources <- function() {
       )
     )
   )
-  c(resources, canonical_contract_resources(), runtime_contract_resources())
+  c(
+    resources, canonical_contract_resources(), runtime_contract_resources(),
+    history_contract_resources()
+  )
 }
 
 validate_software_contract_resources <- function(authority, root, projection) {
@@ -1353,12 +1576,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.template.project-manifest", "rrp.template.project-registration"
   )
   resource_require(
-    length(actual_ids) == 18L && identical(
+    length(actual_ids) == 22L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 18 known entries."
+    "The software resource inventory must contain exactly 22 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -1822,12 +2045,17 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "canonical-admission.R"),
       file.path("R", "episode-state.R"),
+      file.path("R", "history.R"),
       file.path("R", "risk-provider.R"),
       file.path("man", "rrp_admit_canonical_bundle.Rd"),
       file.path("man", "rrp_prepare_episode_state.Rd"),
       file.path("man", "rrp_execute_risk_provider.Rd"),
+      file.path("man", "rrp_history_port.Rd"),
+      file.path("man", "rrp_history_reads.Rd"),
+      file.path("man", "rrp_history_records.Rd"),
       file.path("tests", "canonical-admission.R"),
       file.path("tests", "episode-state.R"),
+      file.path("tests", "history.R"),
       file.path("tests", "risk-provider.R")
     )
   }
@@ -1987,6 +2215,12 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     )
   } else c(
     "rrp_admit_canonical_bundle", "rrp_execute_risk_provider",
+    "rrp_history_append_disposition", "rrp_history_append_invalidation",
+    "rrp_history_append_restatement", "rrp_history_append_scope",
+    "rrp_history_membership_fingerprint", "rrp_history_read_current",
+    "rrp_history_read_episode", "rrp_history_read_scope",
+    "rrp_new_episode_disposition", "rrp_new_history_action",
+    "rrp_new_history_port", "rrp_new_operational_scope",
     "rrp_prepare_episode_state"
   )
   require_true(
@@ -2019,6 +2253,18 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   } else c(
     "export(rrp_admit_canonical_bundle)",
     "export(rrp_execute_risk_provider)",
+    "export(rrp_history_append_disposition)",
+    "export(rrp_history_append_invalidation)",
+    "export(rrp_history_append_restatement)",
+    "export(rrp_history_append_scope)",
+    "export(rrp_history_membership_fingerprint)",
+    "export(rrp_history_read_current)",
+    "export(rrp_history_read_episode)",
+    "export(rrp_history_read_scope)",
+    "export(rrp_new_episode_disposition)",
+    "export(rrp_new_history_action)",
+    "export(rrp_new_history_port)",
+    "export(rrp_new_operational_scope)",
     "export(rrp_prepare_episode_state)"
   )
   require_true(
@@ -2247,6 +2493,18 @@ load_package_fresh <- function(package_name, library_root) {
   } else paste0(
     "c(\"rrp_admit_canonical_bundle\", ",
     "\"rrp_execute_risk_provider\", ",
+    "\"rrp_history_append_disposition\", ",
+    "\"rrp_history_append_invalidation\", ",
+    "\"rrp_history_append_restatement\", ",
+    "\"rrp_history_append_scope\", ",
+    "\"rrp_history_membership_fingerprint\", ",
+    "\"rrp_history_read_current\", ",
+    "\"rrp_history_read_episode\", ",
+    "\"rrp_history_read_scope\", ",
+    "\"rrp_new_episode_disposition\", ",
+    "\"rrp_new_history_action\", ",
+    "\"rrp_new_history_port\", ",
+    "\"rrp_new_operational_scope\", ",
     "\"rrp_prepare_episode_state\")"
   )
   expression <- paste0(
@@ -2329,6 +2587,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     risk_request = "resources/contracts/runtime/risk-request.dcf",
     risk_provider = "resources/contracts/runtime/risk-provider.dcf",
     risk_estimate = "resources/contracts/runtime/risk-estimate.dcf",
+    history_operational_scope = "resources/contracts/history/operational-scope.dcf",
+    history_episode_disposition = "resources/contracts/history/episode-disposition.dcf",
+    history_action = "resources/contracts/history/history-action.dcf",
+    history_port = "resources/contracts/history/history-port.dcf",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R"
   )
@@ -2893,11 +3155,13 @@ validate_packages <- function() {
   validate_installed_producer_execution(library_root, work_root, environment)
   validate_installed_risk_execution(library_root, work_root, environment)
 
-  cat("\nResult: PASS (package, project, canonical, and state foundation)\n")
+  cat("\nResult: PASS (package, project, canonical, runtime, and history foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "canonical and five-resource runtime contract relationships, dependency-light ",
+    "canonical, five-resource runtime, and four-resource logical-history ",
+    "contract relationships, dependency-light logical history records/port, ",
+    "in-memory conformance, raw/current interpretation, dependency-light ",
     "canonical admission, exact eligibility and immutable episode-state ",
     "construction, provider-neutral request, direct compatible-provider ",
     "execution, accepted estimate, exact project-selected provider risk ",

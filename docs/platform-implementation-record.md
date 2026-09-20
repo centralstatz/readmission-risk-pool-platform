@@ -2893,3 +2893,105 @@ no operational state. Stage 7 has not begun.
 **Next task:** detail Stage 7 — Project State and Operational History from the
 accepted realized system. Do not implement Stage 7 before its separate detailed
 plan is accepted.
+
+## Stage 7 — Project state and operational history
+
+### Increment 7.A — Logical history contracts, port, and in-memory semantics (complete, 2026-09-19)
+
+Increment 7.A establishes the complete dependency-light logical history
+foundation without creating project state or selecting physical storage. Four
+new `rrpruntime`-owned DCF authorities are admitted through the closed source
+catalog: immutable bundle-scoped operational scope, terminal episode
+disposition, append-only invalidation/restatement action, and the storage-
+neutral history port. The resource inventory now contains exactly 22 entries
+and projects the four history authorities byte-for-byte with the existing
+software resources.
+
+The interrupted implementation was recovered rather than restarted. Its four
+catalog declarations and record-family direction were retained. Explicit
+closed-field constructors replaced fragile positional assembly, and the
+partial relationship/current resolver was completed around one central graph
+validator. The partial port's `close_reopen_durability` requirement was removed:
+close/reopen is physical-adapter evidence owned by 7.B, not a truthful
+capability of the 7.A test-only in-memory adapter. The Stage 7 plan now states
+that boundary explicitly without changing the accepted durable 7.B target.
+
+`rrpruntime` advances from `0.3.0.9000` to `0.4.0.9000`, retains no `Imports`,
+`Suggests`, or `LinkingTo`, and exports exactly 15 technical interfaces: the
+existing three canonical/state/provider primitives plus 12 history record,
+port, append, and read interfaces. Deterministic operation-run identity uses
+initialized state identity, the fixed named operation, and caller operation
+key. Initial analytical identity uses operation, episode, target/version, and
+analytical time; explicit retry/restatement identity additionally uses kind,
+predecessor, and bounded analytical key. Nullable identity inputs use the
+governed literal-null encoding. Admitted membership uses sorted unique UTF-8
+episode IDs with count and byte-length prefixes before the existing dual-
+modular hash. The fingerprint is deterministic equality/integrity evidence,
+not a security primitive.
+
+Scope completeness is derived only from unique initial dispositions whose
+count and membership fingerprint reproduce the immutable scope; zero-episode
+scopes are complete immediately, partial or mismatched scopes remain visibly
+incomplete, and retry/restatement records do not alter progress. Closed outcome
+rules distinguish ineligibility, accepted estimate, compatibility failure,
+provider-declared failure, and detected failure, including exact state,
+request, provider-execution, and estimate presence. Relationship validation
+enforces scope target/time provenance, one initial disposition per admitted
+episode identity within a scope, failure-only explicit retry, nonbranching
+lineage, narrow scope-action reasons, and matching atomic restatements.
+
+Raw reads retain immutable scopes, outcomes, failures, and actions. Current
+episode interpretation requires explicit analytical and history cutoffs,
+excludes incomplete and invalidated scopes, applies only effective actions,
+resolves retry/restatement lineage, permits a newer terminal failure or
+ineligibility to remain current, and fails rather than using insertion order or
+identity to break unrelated same-time ambiguity. Port writes validate before
+delegation; reads validate detached records and relationships afterward.
+Because scope creation and terminal disposition are operational events that
+follow exact-`t` admission and processing, their timestamps may equal but may
+not precede the authoritative analytical time. Focused constructor tests prove
+equality and later times and reject either operational timestamp before `t`.
+
+The package-native history test owns the only adapter introduced here. It is a
+dependency-free process-local in-memory conformance fixture, not production
+software. It proves zero/one/multiple-episode scope behavior; success,
+ineligibility, compatibility, declared-failure, and detected-failure records;
+partial/complete and fingerprint-mismatch progress; exact idempotency and
+conflict; continuation versus explicit retry; episode/scope invalidation and
+restatement; analytical/history cutoffs; incomplete-scope gating; same-time
+ambiguity; detached reads; bounded diagnostics; and atomic logical
+restatement. It creates no project path or retained state.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`runtime/R/history-records.R`, `runtime/R/persistence-port.R`,
+`runtime/R/history-conformance.R`, and
+`tests/helpers/in-memory-history-adapter.R`. Validate-before-delegate port
+composition, exact-content idempotency/conflict, detached records, and the
+in-memory conformance technique were adapted. Historical YAML authority,
+daily-hazard/estimand semantics, five analytical families, started/failed run
+lifecycle, multi-attempt batches, giant completed-population transactions, and
+family-level invalidation cascades were rejected.
+
+Local evidence passed the complete proportional checkpoint:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks
+  passed with zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: exact 22-resource closure and
+  projection, all package-native tests including in-memory history conformance,
+  both source builds, dependency-order isolated installation/loading, both
+  strict `R CMD check --no-manual` operations with `Status: OK`, and all prior
+  installed project/producer/provider regressions passed;
+- direct R parsing of package and validator source and exact comparison of the
+  four history DCF documents against their hard-coded validator authorities
+  passed; and
+- generated-artifact review and `git diff --check` passed.
+
+**Current implementation state:** Increment 7.A is complete; Stage 7 remains in
+progress. Dependency-light runtime can construct, validate, append through,
+and interpret storage-neutral immutable history, but no project can initialize,
+retain, close/reopen, back up, or restore it. No project state directory, DBI,
+DuckDB, durable database/file, production adapter, producer/provider durable
+orchestration, product, application, CLI, migration, or legacy import exists.
+
+**Next task:** implement only Increment 7.B — Explicit project state and DuckDB
+adapter.

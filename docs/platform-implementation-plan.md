@@ -3176,8 +3176,9 @@ these are explicit later boundaries, not implementation-time ambiguity.
 ## Stage 7 — Project state and operational history
 
 **Status:** detailed and accepted for implementation on 2026-09-19, including
-the subsequently accepted bundle-scoped operational decision. No Stage 7
-source, contract, dependency, state, or adapter capability exists yet. This
+the subsequently accepted bundle-scoped operational decision. Increment 7.A is
+complete; Increment 7.B is next. Storage-neutral logical history now exists,
+but no project state, physical dependency, or durable adapter exists. This
 section authorizes only Increments 7.A–7.D below.
 
 The non-authoritative reasoning record is retained at
@@ -3582,12 +3583,13 @@ RRP needs:
 - resolve effective/current episode history through explicit analytical and
   history cutoffs.
 
-The adapter declaration must affirm atomic scope, episode, and restatement
-append; identical-content idempotency; conflicting-identity rejection;
-immutable raw retention; completeness/progress reads; bounded raw reads; and
-close/reopen durability. The port says nothing about SQL, tables, files, DBI
-connections, indexes, locks, checkpoints, or DuckDB. It is not a generic
-database interface.
+The storage-neutral adapter declaration must affirm atomic scope, episode, and
+restatement append; identical-content idempotency; conflicting-identity
+rejection; immutable raw retention; completeness/progress reads; bounded raw
+reads; and detached results. The supplied durable adapter must additionally
+prove close/reopen durability in 7.B. The port says nothing about SQL, tables,
+files, DBI connections, indexes, locks, checkpoints, or DuckDB. It is not a
+generic database interface.
 
 Adapters return detached plain records. The port validates before writes and
 after reads. Adapters may use query columns to bound raw candidate retrieval,
@@ -3779,6 +3781,8 @@ Vectorization, parallelism, scheduling, queues/workers, cohort selection beyond
 the admitted bundle, and product scoring remain later concerns.
 
 ### Increment 7.A — Logical history contracts, port, and in-memory semantics
+
+**Implementation status:** complete on 2026-09-19; Increment 7.B is next.
 
 **Objective:** establish the complete storage-neutral operational-history
 meaning before selecting physical storage.
