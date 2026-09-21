@@ -136,11 +136,21 @@ also expose bounded raw/current history, explicit failed-attempt retry, and
 append-only invalidation or atomic restatement. These operations add no stored
 bundle, loop cursor, automatic retry, or second scope authority.
 
+`rrp_backup_project_state()` checkpoints one compatible quiescent state and
+creates a closed two-file backup artifact at an absent destination.
+`rrp_restore_project_state()` validates that artifact against an independently
+loaded compatible project and atomically promotes the recovered state only
+when its declared state path is absent. Restore uses ordinary state reopening
+and 7.C continuation; it adds no overwrite, merge, migration, repair, scheduled
+backup, or alternate recovery engine.
+The project doctor remains inspection-only: it reports absent, compatible, or
+invalid state and never initializes, backs up, restores, or repairs it.
+
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, backup/restore, products, applications,
+an ordinary operator command, dependency restoration, products, applications,
 installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export

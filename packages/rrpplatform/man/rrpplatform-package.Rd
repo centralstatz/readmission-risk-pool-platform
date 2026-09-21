@@ -18,11 +18,13 @@ execution and orchestrate one selected project producer through the canonical
 boundary and one selected project provider through the risk boundary. It also
 owns explicit project-state initialization/inspection and the private DuckDB
 adapter behind the runtime-owned logical history port, plus bundle-scoped
-durable execution and supported history interpretation/correction.
+durable execution, supported history interpretation/correction, and explicit
+create-only checkpointed state backup/absent-state restore.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 18
-technical interfaces: \code{rrp_execute_durable_bundle()},
+The package imports the \pkg{rrpruntime} namespace and exports exactly 20
+technical interfaces: \code{rrp_backup_project_state()},
+\code{rrp_execute_durable_bundle()},
 \code{rrp_execute_producer()}, \code{rrp_execute_risk()},
 \code{rrp_initialize_project()}, \code{rrp_initialize_project_state()},
 \code{rrp_inspect_current_history()}, \code{rrp_inspect_episode_history()},
@@ -31,7 +33,8 @@ technical interfaces: \code{rrp_execute_durable_bundle()},
 \code{rrp_load_project()},
 \code{rrp_open_resource_catalog()},
 \code{rrp_operation_succeeded()}, \code{rrp_resource_path()},
-\code{rrp_restate_history()}, \code{rrp_retry_episode()},
+\code{rrp_restate_history()}, \code{rrp_restore_project_state()},
+\code{rrp_retry_episode()},
 \code{rrp_validate_project()}, and
 \code{rrp_validate_software_resources()}. It does not discover or select a
 software or project root. The loader evaluates trusted project registration in
@@ -46,7 +49,10 @@ runtime primitive. Neither standalone computation operation retries,
 initializes state, or persists output. Durable bundle execution is explicit,
 requires initialized state, and independently commits terminal episode
 dispositions; continuation skips committed initial dispositions. State
-initialization is a distinct create-only operation;
+initialization is a distinct create-only operation. Backup requires a
+quiescent checkpoint and creates only a new closed artifact; restore validates
+that artifact and creates only an absent compatible project state. Neither
+operation overwrites, merges, migrates, or repairs state;
 the physical adapter remains protected and opens DBI/DuckDB only for bounded
 work. The installed transparent provider is a protected,
 nonclinical deterministic reference that must be selected explicitly; it is

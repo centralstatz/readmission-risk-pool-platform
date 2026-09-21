@@ -965,12 +965,60 @@ state_contract_resources <- function() {
     "Physical-Validity-Logic" = "prohibited",
     "Automatic-Migration-Or-Repair" = "prohibited"
   )
+  backup <- c(
+    "Record-Type" = "contract",
+    "Contract-ID" = "rrp.project-state-backup",
+    "Contract-Version" = "0.1.0", "Format-Version" = "1.0.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev", "Status" = "development_unpublished",
+    "Owner-Package" = "rrpplatform",
+    "Manifest-Record-Type" = "rrp-project-state-backup",
+    "Manifest-File" = "backup.dcf", "Payload-File" = "history.duckdb",
+    "Artifact-Inventory" = "backup.dcf,history.duckdb",
+    "Fields" = paste(c(
+      "Record-Type", "Backup-Contract-ID", "Backup-Contract-Version",
+      "Format-Version", "Product-ID", "Development-Version", "Backup-ID",
+      "Source-State-ID", "Project-ID", "Project-API-ID",
+      "Project-API-Version", "State-Contract-ID", "State-Contract-Version",
+      "Logical-History-Format-Version", "Target-ID", "Target-Version",
+      "History-Scope-Contract-ID", "History-Scope-Contract-Version",
+      "History-Disposition-Contract-ID", "History-Disposition-Contract-Version",
+      "History-Action-Contract-ID", "History-Action-Contract-Version",
+      "History-Port-Contract-ID", "History-Port-Contract-Version",
+      "Adapter-ID", "Adapter-Version", "Physical-Schema-Version",
+      "Payload-Encoding-Version", "Created-At", "High-Water-Commit-ID",
+      "Scope-Count", "Disposition-Count", "Action-Count", "Payload-File",
+      "Payload-Size", "Artifact-Inventory"
+    ), collapse = ","),
+    "Backup-ID-Pattern" = "^rrp[.]backup[.][0-9a-f]{32}$",
+    "Backup-ID-Generation" = "opaque_process_time_sequence_v1",
+    "High-Water-Commit-ID-Pattern" =
+      "^rrp[.]backup-high-water[.][0-9a-f]{16}$",
+    "Project-ID-Compatibility" = "exact_manifest_identity",
+    "Quiescence" = "checkpoint_under_exclusive_duckdb_writer_session",
+    "Restore-Mode" = "create_only_absent_project_state",
+    "Integrity-Validation" =
+      paste(c(
+        "exact_inventory", "closed_manifest", "payload_size",
+        "high_water_counts_and_identity", "state_metadata", "duckdb_reopen"
+      ), collapse = ","),
+    "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+    "Linked-Or-Nonregular-Inventory" = "prohibited",
+    "Overwrite-Or-Merge" = "prohibited",
+    "Automatic-Migration-Or-Repair" = "prohibited"
+  )
   list(
     project_state = list(
       id = "rrp.contract.project-state", owner = "rrpplatform",
       source_path = "resources/contracts/state/project-state.dcf",
       installed_path = "resources/contracts/state/project-state.dcf",
       document = state
+    ),
+    project_state_backup = list(
+      id = "rrp.contract.project-state-backup", owner = "rrpplatform",
+      source_path = "resources/contracts/state/project-state-backup.dcf",
+      installed_path = "resources/contracts/state/project-state-backup.dcf",
+      document = backup
     ),
     duckdb_history_adapter = list(
       id = "rrp.contract.duckdb-history-adapter", owner = "rrpplatform",
@@ -1690,12 +1738,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.template.project-manifest", "rrp.template.project-registration"
   )
   resource_require(
-    length(actual_ids) == 24L && identical(
+    length(actual_ids) == 25L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 24 known entries."
+    "The software resource inventory must contain exactly 25 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2130,6 +2178,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "operation-result.R"),
       file.path("R", "producer-execution.R"),
       file.path("R", "risk-execution.R"),
+      file.path("R", "state-recovery.R"),
       file.path("R", "project-contracts.R"),
       file.path("R", "project-doctor.R"),
       file.path("R", "project-initializer.R"),
@@ -2148,6 +2197,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_execute_risk.Rd"),
       file.path("man", "rrp_execute_durable_bundle.Rd"),
       file.path("man", "rrp_history_operations.Rd"),
+      file.path("man", "rrp_project_state_backup.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
@@ -2161,6 +2211,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "producer-execution.R"),
       file.path("tests", "risk-execution.R"),
       file.path("tests", "durable-history.R"),
+      file.path("tests", "state-recovery.R"),
       file.path("tests", "resource-access.R"),
       file.path("tests", "runtime-contracts.R")
     )
@@ -2330,7 +2381,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_execute_durable_bundle", "rrp_execute_producer", "rrp_execute_risk",
+      "rrp_backup_project_state", "rrp_execute_durable_bundle",
+      "rrp_execute_producer", "rrp_execute_risk",
       "rrp_initialize_project",
       "rrp_initialize_project_state",
       "rrp_inspect_current_history", "rrp_inspect_episode_history",
@@ -2339,7 +2391,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_load_project",
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
-      "rrp_resource_path", "rrp_restate_history", "rrp_retry_episode",
+      "rrp_resource_path", "rrp_restate_history", "rrp_restore_project_state",
+      "rrp_retry_episode",
       "rrp_validate_project",
       "rrp_validate_software_resources"
     )
@@ -2372,6 +2425,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_initialize_project)",
       "export(rrp_initialize_project_state)",
       "export(rrp_inspect_project_state)",
+      "export(rrp_backup_project_state)",
+      "export(rrp_restore_project_state)",
       "export(rrp_execute_producer)",
       "export(rrp_execute_risk)",
       "export(rrp_execute_durable_bundle)",
@@ -2705,7 +2760,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_execute_durable_bundle\", \"rrp_execute_producer\", ",
+      "c(\"rrp_backup_project_state\", \"rrp_execute_durable_bundle\", ",
+      "\"rrp_execute_producer\", ",
       "\"rrp_execute_risk\", ",
       "\"rrp_initialize_project\", ",
       "\"rrp_initialize_project_state\", ",
@@ -2718,7 +2774,8 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
       "\"rrp_resource_path\", \"rrp_restate_history\", ",
-      "\"rrp_retry_episode\", \"rrp_validate_project\", ",
+      "\"rrp_restore_project_state\", \"rrp_retry_episode\", ",
+      "\"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
     )
   } else paste0(
@@ -2829,6 +2886,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     history_action = "resources/contracts/history/history-action.dcf",
     history_port = "resources/contracts/history/history-port.dcf",
     project_state = "resources/contracts/state/project-state.dcf",
+    project_state_backup = "resources/contracts/state/project-state-backup.dcf",
     duckdb_history_adapter = "resources/contracts/state/duckdb-history-adapter.dcf",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R"
@@ -2893,6 +2951,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["risk_estimate"]], quote = "\""),
     ", project_state = ",
     encodeString(expected_copies[["project_state"]], quote = "\""),
+    ", project_state_backup = ",
+    encodeString(expected_copies[["project_state_backup"]], quote = "\""),
     ", duckdb_history_adapter = ",
     encodeString(expected_copies[["duckdb_history_adapter"]], quote = "\""),
     ", project_manifest_template = ",
@@ -2904,7 +2964,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_execute_durable_bundle', 'rrp_execute_producer', ",
+    "c('rrp_backup_project_state', 'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
     "'rrp_execute_risk', ",
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
     "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",
@@ -2912,7 +2972,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_invalidate_history', 'rrp_load_project', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
-    "'rrp_resource_path', 'rrp_restate_history', 'rrp_retry_episode', ",
+    "'rrp_resource_path', 'rrp_restate_history', 'rrp_restore_project_state', ",
+    "'rrp_retry_episode', ",
     "'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
@@ -2938,6 +2999,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "risk_provider = 'rrp.contract.risk-provider', ",
     "risk_estimate = 'rrp.contract.risk-estimate', ",
     "project_state = 'rrp.contract.project-state', ",
+    "project_state_backup = 'rrp.contract.project-state-backup', ",
     "duckdb_history_adapter = 'rrp.contract.duckdb-history-adapter'); ",
     "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
     "project_registration_template = 'rrp.template.project-registration'); ",
@@ -2958,6 +3020,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "c('state', 'adapter')), identical(state_contracts$state[[",
     "'Contract-ID']], 'rrp.project-state'), identical(state_contracts$adapter[[",
     "'Payload-Encoding-Version']], 'r-serialize-v3-xdr-hex-v1')); ",
+    "backup_contract <- getFromNamespace('rrp_state_backup_contract', ",
+    "'rrpplatform')(catalog); stopifnot(identical(backup_contract[[",
+    "'Contract-ID']], 'rrp.project-state-backup')); ",
     "canonical_contracts <- getFromNamespace('rrp_canonical_contracts', ",
     "'rrpplatform')(catalog); stopifnot(identical(names(canonical_contracts), ",
     "c('specification_envelope', 'canonical_producer', 'canonical_bundle', ",
@@ -3295,6 +3360,40 @@ validate_installed_risk_execution <- function(
   )
 }
 
+validate_installed_state_recovery <- function(
+  library_root,
+  work_root,
+  environment
+) {
+  software_root <- file.path(work_root, "state-recovery-software-root")
+  project_resource_authority(repository_root, software_root)
+  proof_root <- file.path(work_root, "installed-state-recovery")
+  dir.create(proof_root)
+  proof_files <- c("project-state.R", "durable-history.R", "state-recovery.R")
+  for (file in proof_files) {
+    copied <- file.copy(
+      file.path(repository_root, "packages", "rrpplatform", "tests", file),
+      file.path(proof_root, file), overwrite = FALSE,
+      copy.mode = FALSE, copy.date = FALSE
+    )
+    require_true(copied, paste0("Could not copy installed ", file, " proof."))
+  }
+  require_command_success(
+    "installed rrpplatform state backup/recovery lifecycle",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(file.path(proof_root, "state-recovery.R")),
+      shQuote(software_root), shQuote(proof_root)
+    ),
+    environment
+  )
+  cat(paste0(
+    "PASS installed non-Git project-state backup/restore, complete and ",
+    "incomplete history roundtrip, fresh-process continuation, and bounded ",
+    "recovery evidence\n"
+  ))
+}
+
 validate_packages <- function() {
   cat("RRP local package, project, canonical, and state validation\n")
   cat("=============================================================\n")
@@ -3455,18 +3554,20 @@ validate_packages <- function() {
   validate_installed_project_initialization(library_root, work_root)
   validate_installed_producer_execution(library_root, work_root, environment)
   validate_installed_risk_execution(library_root, work_root, environment)
+  validate_installed_state_recovery(library_root, work_root, environment)
 
   cat("\nResult: PASS (package, project, canonical, runtime, and history foundation)\n")
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
     "canonical, five-resource runtime, four-resource logical-history, and ",
-    "two-resource state/adapter contract relationships, dependency-light ",
+    "three-resource state/adapter/backup contract relationships, dependency-light ",
     "logical history records/port, explicit project-state initialize/inspect, ",
     "private transactional DuckDB roundtrip/reopen/interruption evidence, ",
     "in-memory conformance, raw/current interpretation, ",
     "bundle-scoped durable execution/continuation, explicit retry, supported ",
-    "inspection/correction, ",
+    "inspection/correction, create-only checkpointed backup and absent-state ",
+    "restore with bounded recovery, ",
     "dependency-light canonical admission, exact eligibility and immutable episode-state ",
     "construction, provider-neutral request, direct compatible-provider ",
     "execution, accepted estimate, exact project-selected provider risk ",

@@ -3230,3 +3230,132 @@ deployment behavior.
 
 **Next task:** implement only Increment 7.D — Backup, bounded recovery, and
 complete installed proof. Do not begin Stage 7 acceptance or Stage 8.
+
+### Increment 7.D — Backup, bounded recovery, and complete installed proof (complete locally, 2026-09-20)
+
+Increment 7.D began from clean committed baseline
+`290904bed36246878feb9bd9d70589fef42fd587` (`7.C complete`). It closes the
+supported local project-state lifecycle without changing the accepted 7.A
+logical records/port, 7.B state identity and DuckDB adapter, or 7.C durable
+execution and continuation semantics. `rrpplatform` now exports exactly 20
+interfaces after adding `rrp_backup_project_state()` and
+`rrp_restore_project_state()`.
+
+The backup interface takes an explicit software catalog, source project root,
+and absent backup destination. It loads and validates the source project and
+state, refuses an existing/invalid destination, builds in an owned sibling
+staging directory, opens the source database under DuckDB's existing exclusive
+writer ownership, validates it, issues `CHECKPOINT`, derives logical high-water
+evidence, and copies the stable database while that source session still owns
+the writer boundary. The copy is reopened read-only and the complete staged
+artifact is validated before create-only atomic promotion. Interruption cleanup
+removes only staging/final content owned by that attempt; source logical history
+is never edited. Active writer ownership fails boundedly as `state_unavailable`
+rather than waiting indefinitely or copying an active WAL.
+
+The closed artifact contains exactly:
+
+```text
+backup.dcf
+history.duckdb
+```
+
+The new cataloged `rrp.project-state-backup` 0.1.0 authority defines its exact
+inventory and manifest. The manifest records backup/product identity and
+version; source state and project identity; project API, state, logical-history,
+target, history-record/port, adapter, physical-schema, and payload-encoding
+compatibility; creation time; one high-water commit identity derived from the
+state identity plus ordered record-family identities; scope, disposition, and
+action counts; and the payload filename and byte size. It does not reproduce
+operational scopes, episode dispositions, actions, canonical data, project
+source, or project configuration. The existing metadata embedded in DuckDB
+remains state authority.
+
+The restore interface takes the same explicit software/project context and one
+existing artifact. It requires the destination project's declared state path
+to be wholly absent, validates exact artifact inventory and regular-file
+posture, reads and validates the database's embedded state metadata against the
+independently loaded destination project, verifies the closed manifest,
+high-water identity/counts, payload size, schema, metadata, and database
+reopenability, then copies into an owned project staging directory. It writes
+`state.dcf` from the exact validated embedded metadata, revalidates the staged
+normal two-file state, and atomically promotes it. Any failure—including an
+injected post-promotion interruption—leaves destination state absent. Existing,
+partial, linked, incompatible, or unknown destination state is never
+overwritten, merged, adopted, repaired, or migrated.
+
+The integrity boundary deliberately uses exact inventory, closed manifest,
+payload size, deterministic logical high-water identity/counts, exact state
+metadata/schema compatibility, and DuckDB read-only reopening. No extra digest
+dependency was justified. This detects the tested missing, partial, malformed,
+incompatible, size-mismatched, invalid-metadata, and unreadable/corrupt
+artifacts, but is not authentication, tamper-proofing, encryption, or a claim
+that every possible same-size physical corruption is detected.
+
+Package-native evidence starts two equivalent paths from the same restored
+empty state identity. The uninterrupted path reaches complete history. The
+recovery path commits two initial dispositions, exposes incomplete progress,
+backs up, restores into an absent compatible copied project, reopens in a fresh
+process, and invokes ordinary `rrp_execute_durable_bundle()` continuation. A
+sentinel proves already committed episodes are not sent to the provider again;
+committed failures are not retried. Final raw scope, disposition/action,
+membership, and derived completeness evidence is exactly equal to the
+uninterrupted path. There is no persisted cursor or special recovery engine.
+
+A complete-history roundtrip additionally preserves accepted, ineligible, and
+failure dispositions, an explicit retry, invalidation, restatement, raw reads,
+current interpretation, and derived completeness. Transaction-boundary tests
+back up and restore both a before-commit append failure (candidate absent) and
+an after-commit uncertain append (record present and identical retry
+idempotent). Other evidence covers empty state, create-only backup/restore,
+failure cleanup, source reopen after failed backup, active-writer rejection,
+destination absence after every failed restore, incompatible project identity,
+copied-project portability, state-only mutation, and ordinary doctor behavior.
+The doctor remains inspection-only and never initializes, backs up, restores,
+or repairs state.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`implementations/persistence/duckdb/R/session.R`, the related foundation/schema/
+adapter files, `operations/backup-reference-history.R`,
+`operations/lib/duckdb-persistence-operation.R`, and
+`tests/phase5/test-duckdb-persistence.R`. Quiescent writer acquisition,
+`CHECKPOINT`, non-overwriting physical copy, read-only reopen validation, and
+restart proof were substantially adapted. The file-only repository operation,
+repository-root path resolution, active-WAL copying, overwrite/merge, arbitrary
+repair, migration/import, retention, scheduling, off-host transport, and
+enterprise disaster-recovery claims were rejected.
+
+The closed repository inventory, package layout, 25-resource catalog and
+projection, exact 20-export assertions, package README/technical documentation,
+human ownership map, and validator now own the backup authority, lifecycle
+implementation, and recovery evidence. The independent installed proof builds
+and installs both packages, projects exact installed resources, runs from an
+unrelated non-Git directory, creates independent fictional projects, exercises
+complete/incomplete backup and restore, continues in a fresh process, and
+reopens the final history through supported operations.
+
+Final validation passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: eight checks, zero issues;
+- `Rscript --vanilla tools/validate-packages.R`: 25-resource authority and
+  projection, static boundaries, controlled external dependencies, both source
+  builds, negative dependency-order proof, package-native tests, isolated
+  installs/loads, both strict `R CMD check --no-manual` operations with
+  `Status: OK`, all inherited installed regressions, and the installed non-Git
+  backup/recovery proof;
+- direct changed R/Rd parsing and focused installed lifecycle tests passed;
+- generated-artifact inspection and `git diff --check` passed.
+
+**Current implementation state:** Increment 7.D is complete locally. RRP can
+explicitly initialize, append, reopen, inspect, continue, back up, and restore
+complete or incomplete supplied local project history with bounded recovery
+guarantees. Stage 7 remains in progress pending committed hosted evidence,
+formal acceptance, and architecture reconciliation. There is no scheduled or
+off-host backup, retention/rotation, encryption, access-control system,
+replication, point-in-time recovery, WAL shipping, corruption repair,
+overwrite/merge restore, migration/import, multi-writer service, product,
+application, CLI, distribution, release, or deployment behavior.
+
+**Next task:** obtain committed hosted evidence for the exact 7.D revision,
+then perform formal Stage 7 acceptance and architecture reconciliation as a
+separate lifecycle action. Do not begin Stage 8.

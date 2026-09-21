@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–6 are accepted and complete. Stage
-7 is detailed and accepted; Increments 7.A–7.C are complete and Increment 7.D
-is next.
+7 is detailed and accepted; Increments 7.A–7.D are complete locally, and Stage
+7 remains pending formal acceptance and architecture reconciliation.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -3178,10 +3178,11 @@ these are explicit later boundaries, not implementation-time ambiguity.
 
 **Status:** detailed and accepted for implementation on 2026-09-19, including
 the subsequently accepted bundle-scoped operational decision. Increments
-7.A–7.C are complete; Increment 7.D is next. Storage-neutral logical history,
-explicit project-owned DuckDB state, and bundle-scoped durable execution and
-history interpretation now exist. This section authorizes only Increments
-7.A–7.D below.
+7.A–7.D are complete locally; formal Stage 7 acceptance and architecture
+reconciliation remain separate. Storage-neutral logical history, explicit
+project-owned DuckDB state, bundle-scoped durable execution/history
+interpretation, and bounded backup/restore now exist. This section authorizes
+only Increments 7.A–7.D below.
 
 The non-authoritative reasoning record is retained at
 `docs/assessments/stage-7-bundle-scope-assessment.md`; this reconciled section
@@ -3932,6 +3933,9 @@ continue incomplete work deterministically, interpret raw/current history, and
 correct it append-only, but has no supported backup/restore proof.
 
 ### Increment 7.D — Backup, bounded recovery, and complete installed proof
+
+**Implementation status:** complete locally on 2026-09-20; formal Stage 7
+acceptance and architecture reconciliation remain separate.
 
 **Objective:** close the local project-state lifecycle and prove the complete
 Stage 7 claim under interruption and independent installed use.

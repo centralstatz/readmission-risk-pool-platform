@@ -116,7 +116,7 @@ rrp_duckdb_with_connection <- function(path, metadata, contracts, read_only, cal
   })
 }
 
-rrp_duckdb_validate_connection <- function(connection, metadata, contracts) {
+rrp_duckdb_validate_schema <- function(connection) {
   expected <- rrp_duckdb_schema()
   tables <- sort(DBI::dbListTables(connection), method = "radix")
   if (!identical(tables, sort(names(expected), method = "radix"))) {
@@ -131,6 +131,10 @@ rrp_duckdb_validate_connection <- function(connection, metadata, contracts) {
       rrp_state_abort("state_incompatible", "Project state schema is incompatible.")
     }
   }
+  invisible(TRUE)
+}
+
+rrp_duckdb_metadata_row <- function(connection) {
   rows <- DBI::dbGetQuery(
     connection,
     paste(
@@ -139,8 +143,16 @@ rrp_duckdb_validate_connection <- function(connection, metadata, contracts) {
     ),
     params = list("project_state")
   )
-  if (nrow(rows) != 1L ||
-      !identical(rows$state_id[[1L]], metadata[["State-ID"]]) ||
+  if (nrow(rows) != 1L) {
+    rrp_state_abort("state_incompatible", "Project state metadata is incompatible.")
+  }
+  rows
+}
+
+rrp_duckdb_validate_connection <- function(connection, metadata, contracts) {
+  rrp_duckdb_validate_schema(connection)
+  rows <- rrp_duckdb_metadata_row(connection)
+  if (!identical(rows$state_id[[1L]], metadata[["State-ID"]]) ||
       !identical(rows$project_id[[1L]], metadata[["Project-ID"]]) ||
       !identical(rrp_duckdb_payload_decode(rows$payload_hex[[1L]]), metadata)) {
     rrp_state_abort("state_incompatible", "Project state metadata is incompatible.")
@@ -148,11 +160,102 @@ rrp_duckdb_validate_connection <- function(connection, metadata, contracts) {
   invisible(TRUE)
 }
 
+rrp_duckdb_read_metadata <- function(path) {
+  connection <- NULL
+  tryCatch({
+    connection <- rrp_duckdb_connect(path, read_only = TRUE)
+    on.exit(rrp_duckdb_disconnect(connection), add = TRUE)
+    rrp_duckdb_validate_schema(connection)
+    rows <- rrp_duckdb_metadata_row(connection)
+    metadata <- rrp_duckdb_payload_decode(rows$payload_hex[[1L]])
+    if (!identical(rows$state_id[[1L]], metadata[["State-ID"]]) ||
+        !identical(rows$project_id[[1L]], metadata[["Project-ID"]])) {
+      rrp_state_abort("state_incompatible", "Project state metadata is incompatible.")
+    }
+    metadata
+  }, error = function(condition) {
+    if (inherits(condition, "rrp_state_error")) stop(condition)
+    rrp_state_abort("state_access_failed", "Project state access failed.")
+  })
+}
+
+rrp_duckdb_high_water_connection <- function(connection, state_id) {
+  specifications <- list(
+    scopes = c("operational_scopes", "operation_run_id"),
+    dispositions = c("episode_dispositions", "analytical_run_id"),
+    actions = c("history_actions", "action_id")
+  )
+  identities <- lapply(specifications, function(specification) {
+    rows <- DBI::dbGetQuery(connection, paste(
+      "SELECT", specification[[2L]], "FROM", specification[[1L]],
+      "ORDER BY", specification[[2L]]
+    ))
+    as.character(rows[[specification[[2L]]]])
+  })
+  identity_values <- list(state_id)
+  for (family in names(identities)) {
+    identity_values <- c(
+      identity_values, list(family, as.character(length(identities[[family]]))),
+      as.list(identities[[family]])
+    )
+  }
+  identity <- get(
+    "rrp_history_id", envir = asNamespace("rrpruntime"), inherits = FALSE
+  )("rrp.backup-high-water.", identity_values)
+  list(
+    high_water_commit_id = identity,
+    scope_count = as.integer(length(identities$scopes)),
+    disposition_count = as.integer(length(identities$dispositions)),
+    action_count = as.integer(length(identities$actions))
+  )
+}
+
+rrp_duckdb_high_water_file <- function(path, metadata, contracts) {
+  rrp_duckdb_with_connection(
+    path, metadata, contracts, read_only = TRUE,
+    callback = function(connection) {
+      rrp_duckdb_high_water_connection(connection, metadata[["State-ID"]])
+    }
+  )
+}
+
 rrp_duckdb_validate_file <- function(path, metadata, contracts) {
   rrp_duckdb_with_connection(
     path, metadata, contracts, read_only = TRUE,
     callback = function(connection) invisible(TRUE)
   )
+}
+
+rrp_duckdb_checkpoint_copy <- function(
+  source_path, destination_path, metadata, contracts
+) {
+  if (rrp_state_path_exists(destination_path)) rrp_state_abort(
+    "backup_failed", "Project state backup failed."
+  )
+  copied <- FALSE
+  on.exit(if (!copied && rrp_state_path_exists(destination_path)) {
+    unlink(c(destination_path, paste0(destination_path, ".wal")), force = TRUE)
+  }, add = TRUE)
+  evidence <- rrp_duckdb_with_connection(
+    source_path, metadata, contracts, read_only = FALSE,
+    callback = function(connection) {
+      DBI::dbExecute(connection, "CHECKPOINT")
+      high_water <- rrp_duckdb_high_water_connection(
+        connection, metadata[["State-ID"]]
+      )
+      if (!isTRUE(file.copy(
+        source_path, destination_path, overwrite = FALSE,
+        copy.mode = FALSE, copy.date = FALSE
+      ))) rrp_state_abort("backup_failed", "Project state backup failed.")
+      rrp_duckdb_validate_file(destination_path, metadata, contracts)
+      copied <<- TRUE
+      high_water
+    }
+  )
+  evidence$payload_size <- as.character(file.info(
+    destination_path, extra_cols = FALSE
+  )$size[[1L]])
+  evidence
 }
 
 rrp_duckdb_initialize_file <- function(path, metadata, contracts) {

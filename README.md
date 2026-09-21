@@ -19,7 +19,7 @@ repository-foundation validator, and two conventional internal package owners.
 A closed base-R DCF source catalog now declares its schema, common result and
 diagnostic contracts, exact project contracts, the initial canonical
 specification family, all five singular runtime contracts, the two minimal-
-project templates, and the project-state/DuckDB-adapter authorities, with a
+project templates, and the project-state, DuckDB-adapter, and backup authorities, with a
 temporary deterministic installed-projection proof.
 `rrpplatform` transactionally initializes an absent independent project and
 loads it from separate explicit software and project contexts, executing only
@@ -53,8 +53,10 @@ append and close/reopen behavior. Normal producer/risk computation still
 writes nothing. An explicit durable operation now owns one admitted-bundle
 scope, terminal episode dispositions, deterministic continuation, bounded
 history inspection, explicit retry, and append-only correction. The repository
-has no root selector, persistent installed RRP distribution, backup/restore,
-product, application, command-line interface, or deployment capability.
+also supports explicit create-only checkpointed state backup and restore into
+an absent compatible project state. It has no root selector, persistent
+installed RRP distribution, scheduled/off-host backup, migration, product,
+application, command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -153,9 +155,10 @@ interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
 workflow and has been formally accepted, so Stages 1–6 are complete. Stage 7
-is in progress: Increments 7.A–7.C provide logical history, explicit project
-state and DuckDB, and bundle-scoped durable execution/history interpretation;
-Increment 7.D is next.
+is in progress pending formal acceptance: Increments 7.A–7.D provide logical
+history, explicit project state and DuckDB, durable execution/history
+interpretation, and bounded backup/restore. Formal Stage 7 acceptance and
+architecture reconciliation are next.
 
 ## License
 

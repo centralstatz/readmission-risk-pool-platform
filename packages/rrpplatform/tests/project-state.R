@@ -70,6 +70,11 @@ state_software_root <- function(root) {
       value = state_internal("rrp_project_state_contract_expected")()
     ),
     list(
+      id = "rrp.contract.project-state-backup", owner = "rrpplatform",
+      path = "resources/contracts/state/project-state-backup.dcf", format = "dcf",
+      value = state_internal("rrp_project_state_backup_contract_expected")()
+    ),
+    list(
       id = "rrp.contract.duckdb-history-adapter", owner = "rrpplatform",
       path = "resources/contracts/state/duckdb-history-adapter.dcf", format = "dcf",
       value = state_internal("rrp_duckdb_history_contract_expected")()
