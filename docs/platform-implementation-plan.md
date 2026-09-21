@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–6 are accepted and complete. Stage
-7 is detailed and accepted; Increments 7.A–7.D are complete locally, and Stage
-7 remains pending formal acceptance and architecture reconciliation.
+**Status:** authoritative roadmap; Stages 1–7 are accepted and complete. Stage
+8 remains high-level pending its separate detailed-planning and acceptance
+task.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -69,9 +69,9 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current implementation stage is decomposed into accepted increments.
-Stage 7 is the current detailed and accepted stage; completed Stage 1–6 detail
-remains as implementation lineage. Stage 8 remains high-level until its
-separate planning task. After a stage is implemented:
+Stage 7 is accepted and complete; completed Stage 1–7 detail remains as
+implementation lineage. Stage 8 remains high-level until its separate planning
+task. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -3176,13 +3176,12 @@ these are explicit later boundaries, not implementation-time ambiguity.
 
 ## Stage 7 — Project state and operational history
 
-**Status:** detailed and accepted for implementation on 2026-09-19, including
-the subsequently accepted bundle-scoped operational decision. Increments
-7.A–7.D are complete locally; formal Stage 7 acceptance and architecture
-reconciliation remain separate. Storage-neutral logical history, explicit
-project-owned DuckDB state, bundle-scoped durable execution/history
-interpretation, and bounded backup/restore now exist. This section authorizes
-only Increments 7.A–7.D below.
+**Status:** accepted and complete on 2026-09-21, including the subsequently
+accepted bundle-scoped operational decision. Increments 7.A–7.D, committed
+hosted evidence, and formal architecture reconciliation are complete.
+Storage-neutral logical history, explicit project-owned DuckDB state,
+bundle-scoped durable execution/history interpretation, and bounded backup/
+restore now exist. No Increment 7.E exists.
 
 The non-authoritative reasoning record is retained at
 `docs/assessments/stage-7-bundle-scope-assessment.md`; this reconciled section
@@ -3934,8 +3933,8 @@ correct it append-only, but has no supported backup/restore proof.
 
 ### Increment 7.D — Backup, bounded recovery, and complete installed proof
 
-**Implementation status:** complete locally on 2026-09-20; formal Stage 7
-acceptance and architecture reconciliation remain separate.
+**Implementation status:** complete on 2026-09-21; committed hosted evidence
+and formal Stage 7 acceptance are recorded below.
 
 **Objective:** close the local project-state lifecycle and prove the complete
 Stage 7 claim under interruption and independent installed use.
@@ -3974,8 +3973,8 @@ migration, multi-writer service, products, app, CLI, distribution, or deployment
 **Completion statement:** RRP can explicitly initialize, append, reopen,
 inspect, continue, back up, and restore complete or incomplete supplied local
 project history with bounded recovery guarantees. Formal Stage 7 acceptance
-and architecture reconciliation remain a separate lifecycle action, not
-Increment 7.E.
+and architecture reconciliation were completed as a separate lifecycle action,
+not Increment 7.E.
 
 ### Validation and hosted evidence
 
@@ -4000,6 +3999,12 @@ successful hosted run for the exact committed complete Stage 7 implementation
 and records workflow/run/job/SHA/ref/event. Passing software evidence is not a
 production database, privacy, security, audit, clinical, or disaster-recovery
 claim.
+
+That requirement passed for the exact committed implementation at
+`387976b15739071d8f685d316d2eb712707479ca`: `package-foundation` push run
+`35589769595`, job `106301272647`, completed successfully on `main`. The job
+passed checkout, R 4.4 setup, declared external dependency installation,
+repository validation, and package validation.
 
 ### Human-readable Stage 7 acceptance scenario
 
@@ -4138,9 +4143,13 @@ Stage 7 is complete only when:
     evidence, and final authority reconciliation all pass without retained
     generated output or deviation from True North/Architecture.
 
-After implementation and committed hosted evidence pass, perform formal Stage
-7 acceptance/reconciliation as a separate task. Planning acceptance does not
-mark Stage 7 implemented or complete.
+Formal reconciliation against Platform True North, Platform Architecture, the
+exit state, and all 32 criteria passed on 2026-09-21 for the exact committed
+baseline above. The architecture's earlier singular "terminal run batch"
+wording was clarified to express the accepted bundle-scoped operation with an
+atomic scope write, independently atomic terminal episode dispositions,
+visible incomplete progress, and derived completeness. No implementation or
+contract correction was required. Stage 7 is accepted and complete.
 
 ### Plain-language exit state
 

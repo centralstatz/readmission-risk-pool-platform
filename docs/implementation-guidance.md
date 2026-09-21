@@ -14,11 +14,10 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
-through Stage 6 push evidence. Stages 1–6 are accepted and complete. Stage 7 is
-detailed and accepted; Increments 7.A–7.D now supply dependency-light logical
-history, explicit project state and DuckDB, bundle-scoped durable execution and
-history interpretation, and bounded backup/restore. Stage 7 remains pending
-formal acceptance and architecture reconciliation.
+through Stage 7 push evidence. Stages 1–7 are accepted and complete. Stage 7
+supplies dependency-light logical history, explicit project state and DuckDB,
+bundle-scoped durable execution and history interpretation, and bounded backup/
+restore. Stage 8 remains high-level pending separate detailed planning.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -249,17 +248,16 @@ provider primitives plus the 12 logical-history record, port, append, and read
 interfaces declared in its namespace. It supplies no physical history adapter
 or durable state.
 `rrpplatform` imports `DBI`, `duckdb`, and `rrpruntime`; only `rrpplatform`
-owns physical state dependencies. It exports exactly `rrp_execute_producer()`,
-`rrp_execute_risk()`,
-`rrp_initialize_project()`,
-`rrp_initialize_project_state()`, `rrp_inspect_project_state()`,
-`rrp_load_project()`,
-`rrp_open_resource_catalog()`,
-`rrp_operation_succeeded()`, `rrp_resource_path()`,
-`rrp_validate_project()`, and `rrp_validate_software_resources()`. No
-dependency environment exists yet. Do not introduce one by convenience,
-preselect its physical layout here, or treat a future development lock as the
-installed, project, provider, or deployment authority.
+owns physical state dependencies. It exports exactly 20 interfaces: project
+initialization/loading/validation; project-state initialization, inspection,
+backup, and restore; installed-resource access and common result inspection;
+producer and nonpersistent risk execution; durable admitted-bundle execution;
+scope, raw episode, and current-history inspection; and explicit retry,
+invalidation, and restatement. The namespace and package validator are the
+exact technical inventory authority. No dependency environment exists yet. Do
+not introduce one by convenience, preselect its physical layout here, or treat
+a future development lock as the installed, project, provider, or deployment
+authority.
 
 ## Privacy and committed evidence
 
@@ -360,12 +358,16 @@ protected explicitly selected transparent provider, project-provider
 substitution, and complete local end-to-end proof.
 Committed push run `35444384900`, job `105900696412`, succeeded for exact
 revision `c9a8f539d07611d29ec86d4fd1ee5a308413938c`; final reconciliation found
-no deviation from True North or the architecture. Stages 1–6 are accepted and
-complete. Stage 7 is detailed and accepted. Increments 7.A–7.D are complete
-locally with storage-neutral logical history, explicit project-owned DuckDB
-state, bundle-scoped durable execution/history interpretation, and bounded
-create-only backup/restore. Stage 7 remains pending formal acceptance and
-architecture reconciliation; Stage 8 has not begun.
+no deviation from True North or the architecture. Increments 7.A–7.D added
+storage-neutral logical history, explicit project-owned DuckDB state, bundle-
+scoped durable execution/history interpretation, and bounded create-only
+backup/restore. Committed push run `35589769595`, job `106301272647`, succeeded
+for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
+reconciliation found no implementation deviation from True North or the
+architecture and clarified the architecture's older atomic-batch wording to
+match the accepted per-episode transaction model. Stages 1–7 are accepted and
+complete. Stage 8 has not begun and remains high-level pending separate
+detailed planning.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

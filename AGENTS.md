@@ -125,11 +125,15 @@ execution, the explicitly selected protected transparent provider, and the
 complete installed end-to-end proof. Committed push run `35444384900`, job
 `105900696412`, succeeded for revision
 `c9a8f539d07611d29ec86d4fd1ee5a308413938c`, completing Stage 6 after final
-reconciliation. Stages 1–6 are accepted and complete. Increment 7.A established
+reconciliation. Increment 7.A established
 the storage-neutral logical history foundation. Increment 7.B adds the two
 platform-owned state authorities, direct DBI/DuckDB dependencies, explicit
 initialize/inspect operations, compatible-state doctor, and private
 transactional DuckDB adapter behind the unchanged runtime port. Increments
-7.A–7.D are complete locally; Stage 7 remains pending formal acceptance and
-architecture reconciliation. Do not introduce products, Stage 8, or later
-behavior without explicit authorization.
+7.C and 7.D add durable bundle execution/history interpretation and bounded
+backup/restore. Committed push run `35589769595`, job `106301272647`, succeeded
+for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
+reconciliation found no implementation deviation and clarified the target
+architecture's atomic-history wording. Stages 1–7 are accepted and complete.
+The next task is to detail and accept Stage 8. Do not begin Stage 8 source
+implementation without explicit authorization and an accepted detailed plan.

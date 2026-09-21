@@ -402,11 +402,12 @@ For each explicit project and as-of invocation, RRP performs:
 load and validate project
 → resolve exactly one producer and provider
 → execute producer and admit canonical result
-→ evaluate target eligibility and build immutable as-of state
-→ construct the standard remaining-risk request
-→ validate and execute the selected provider
+→ establish one durable admitted-bundle operational scope
+→ evaluate each admitted episode at the same authoritative time
+→ construct the standard remaining-risk request when eligible
+→ validate and execute the selected provider at most once per attempt
 → validate estimate or structured failure
-→ append one atomic attributable terminal history batch
+→ append one atomic attributable terminal disposition per episode
 ```
 
 RRP owns project loading, admission, eligibility, temporal filtering, state and
@@ -415,9 +416,13 @@ failures, history orchestration, diagnostics, and provenance. The main package
 owns orchestration; `rrpruntime` owns focused computation and history
 primitives.
 
-Operation-run identity remains distinct from analytical run and provider-
-execution identity. State is immutable input to one request, not a universal
-feature store, and cannot perform provider source lookups.
+Operation-run identity names the admitted-bundle operational scope and remains
+distinct from episode-scoped analytical-run and provider-execution identity.
+Scope completeness is derived from immutable admitted-membership evidence and
+the independently committed initial episode dispositions; an interrupted scope
+may remain visibly incomplete and be continued deterministically. State is
+immutable input to one request, not a universal feature store, and cannot
+perform provider source lookups.
 
 An accepted estimate is exactly one finite probability in `[0,1]` per request
 and carries project, software, target, state, request, provider/model, run,
@@ -453,14 +458,18 @@ encryption, and infrastructure policy. RRP supplies logical history semantics
 and a default local DuckDB adapter; DuckDB is not a production requirement.
 
 History records what RRP actually knew, requested, attempted, and accepted.
-Initial retained families include run status, target-eligible state/request,
-provider execution outcome, accepted estimate, and explicit invalidation/
-restatement evidence.
+Initial retained families are one immutable operational scope for each
+successfully admitted bundle, one terminal episode disposition retaining the
+governed state/request/provider/estimate evidence that actually occurred, and
+explicit invalidation/restatement actions.
 
 History obeys these rules:
 
 - new as-of runs append attributable records;
-- one terminal run batch is atomic and never exposes partial success;
+- scope creation is atomic, and each terminal episode disposition is atomic;
+- interruption may expose a truthful incomplete scope containing only complete
+  committed dispositions, while completeness remains derived from immutable
+  admitted-membership evidence;
 - retry identity is distinct from a new analytical run;
 - identical identity/content is idempotent; conflict fails loudly;
 - provider/model/software/target transitions retain prior facts;

@@ -154,11 +154,12 @@ The initializer, loader, doctor, and producer operation are internal technical
 interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
-workflow and has been formally accepted, so Stages 1–6 are complete. Stage 7
-is in progress pending formal acceptance: Increments 7.A–7.D provide logical
-history, explicit project state and DuckDB, durable execution/history
-interpretation, and bounded backup/restore. Formal Stage 7 acceptance and
-architecture reconciliation are next.
+workflow and has been formally accepted. The complete Stage 7 revision passed
+the same hosted workflow and its architecture reconciliation, so Stages 1–7
+are accepted and complete. Stage 7 provides logical history, explicit project
+state and DuckDB, durable execution/history interpretation, and bounded backup/
+restore. Stage 8 remains high-level pending its separate detailed-planning
+task.
 
 ## License
 

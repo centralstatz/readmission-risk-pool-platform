@@ -3231,7 +3231,7 @@ deployment behavior.
 **Next task:** implement only Increment 7.D — Backup, bounded recovery, and
 complete installed proof. Do not begin Stage 7 acceptance or Stage 8.
 
-### Increment 7.D — Backup, bounded recovery, and complete installed proof (complete locally, 2026-09-20)
+### Increment 7.D — Backup, bounded recovery, and complete installed proof (complete, 2026-09-21)
 
 Increment 7.D began from clean committed baseline
 `290904bed36246878feb9bd9d70589fef42fd587` (`7.C complete`). It closes the
@@ -3346,16 +3346,158 @@ Final validation passed:
 - direct changed R/Rd parsing and focused installed lifecycle tests passed;
 - generated-artifact inspection and `git diff --check` passed.
 
-**Current implementation state:** Increment 7.D is complete locally. RRP can
+**Current implementation state:** Increment 7.D is complete. RRP can
 explicitly initialize, append, reopen, inspect, continue, back up, and restore
 complete or incomplete supplied local project history with bounded recovery
-guarantees. Stage 7 remains in progress pending committed hosted evidence,
-formal acceptance, and architecture reconciliation. There is no scheduled or
-off-host backup, retention/rotation, encryption, access-control system,
-replication, point-in-time recovery, WAL shipping, corruption repair,
-overwrite/merge restore, migration/import, multi-writer service, product,
-application, CLI, distribution, release, or deployment behavior.
+guarantees. Exact committed hosted evidence and formal Stage 7 acceptance are
+recorded below. There is no scheduled or off-host backup, retention/rotation,
+encryption, access-control system, replication, point-in-time recovery, WAL
+shipping, corruption repair, overwrite/merge restore, migration/import,
+multi-writer service, product, application, CLI, distribution, release, or
+deployment behavior.
 
-**Next task:** obtain committed hosted evidence for the exact 7.D revision,
-then perform formal Stage 7 acceptance and architecture reconciliation as a
-separate lifecycle action. Do not begin Stage 8.
+The next lifecycle action was committed hosted verification followed by the
+formal Stage 7 acceptance and architecture reconciliation recorded below.
+
+## Stage 7 acceptance and architecture reconciliation — 2026-09-21
+
+Stage 7 was reviewed as one realized architectural stage at exact committed
+baseline `387976b15739071d8f685d316d2eb712707479ca` (`7.D complete`). The
+working tree was clean and local `main` matched `origin/main`. GitHub Actions
+workflow `package-foundation`, push run `35589769595`, job `106301272647`,
+completed successfully for `main` at that exact SHA. The Ubuntu job used R 4.4
+and passed checkout, declared DBI/DuckDB dependency installation, repository
+validation, and the complete package validator.
+
+The combined 7.A–7.D review passed every accepted Stage 7 criterion. One
+successfully admitted canonical bundle at exact analytical time `t` is the
+durable operational scope; one discharge episode, the singular target, and
+that same `t` remain the analytical/provider/persistence unit. `rrpruntime`
+owns the three closed logical record families, deterministic identities and
+membership fingerprint, relationship and field-presence validation, derived
+completeness, retry/correction rules, current-history interpretation, and the
+storage-neutral port while remaining base-R-only. `rrpplatform` alone owns
+project-state lifecycle, DBI/DuckDB, the private physical schema and payload,
+durable admitted-bundle orchestration, supported history operations, and
+backup/restore. The independent hospital project owns its explicit local state;
+installed software, project source, and writable state remain distinct. The
+accepted Stage 5/6 producer and one-episode risk operations remain
+nonpersistent when called directly.
+
+Scope evidence retains governed project/profile, producer/mapping, bundle,
+target, analytical-time, expected-count, and deterministic membership evidence
+without copying the canonical bundle or adding an episode manifest, persisted
+cursor, lifecycle machine, or mutable completion flag. Completeness is derived
+only when unique initial terminal dispositions reproduce both expected count
+and fingerprint; zero-episode scope is complete when durable, partial scope is
+visibly incomplete, and retry/restatement history cannot change original
+membership. Each admitted episode can be accounted for as ineligible, accepted
+estimate, post-admission provider incompatibility, provider-declared failure,
+or detected failure. Registration-time provider incompatibility still fails
+during project loading before an episode execution context exists, so it is
+nonhistorical and does not contradict the accountability rule. Likewise,
+project, producer, or admission failure creates no scope because operational
+scope is defined only by successful admission.
+
+Exact repeat and interruption semantics are coherent. Every invocation
+reexecutes producer/admission to reproduce immutable scope evidence. A complete
+match performs no episode/provider work; an incomplete match deterministically
+skips committed initial dispositions—including failures—and processes only
+missing identities; changed evidence under the same operation key conflicts.
+Continuation fills missing initial dispositions, while explicit retry creates
+one deterministic related analytical/provider attempt after a committed
+eligible failure, preserves the original result, is idempotent under the same
+retry key, rejects competing children, and never changes scope completeness.
+There is no automatic retry.
+
+Raw history remains append-only. Invalidation retains its target; restatement
+atomically appends replacement plus action; episode correction is normal and
+scope correction is limited to shared admission/provenance defects. Current
+history is derived by `rrpruntime` from complete valid scopes and explicit
+analytical/history cutoffs, resolves declared retry/restatement lineage, and
+fails unrelated same-time ambiguity instead of using wall-clock, insertion, or
+storage order. Analytical `t` remains distinct from operational timestamps;
+scope creation and terminal times may equal or follow `t`, so retrospective
+processing remains valid without allowing operational events to precede their
+analytical state.
+
+Physical state is exactly the project-owned two-file root `state.dcf` plus
+`history.duckdb`. Initialization is explicit, staged, create-only, path/link
+safe, non-destructive, and idempotent only for compatible state; partial,
+unknown, corrupt, other-project, unsupported, and migration-required state fail
+closed. Scope, disposition, action, and replacement-plus-action writes retain
+their accepted transaction boundaries. DuckDB details, including the versioned
+`r-serialize-v3-xdr-hex-v1` exact logical payload, remain private. One
+controlled local writer is the supported posture.
+
+Backup is a separate exact two-file artifact, `backup.dcf` plus checkpointed
+`history.duckdb`. Its manifest is artifact authority while embedded database
+metadata remains restored-state authority. Backup is quiescent, checkpointed,
+staged, validated, and create-only; restore validates and stages into an absent
+destination and reconstructs `state.dcf` from embedded metadata. Neither path
+overwrites, merges, adopts, repairs, or migrates state. Integrity is bounded to
+exact inventory, payload size, logical high-water identity/counts, metadata and
+schema compatibility, and reopenability. It does not claim authentication,
+tamper-proofing, encryption, or detection of every same-size corruption.
+
+Recovery evidence proves logical-history equivalence, not byte identity,
+between uninterrupted execution and partial execution followed by backup,
+restore, fresh-process ordinary continuation, and completion. Committed
+dispositions are not sent to providers again, committed failures are not
+retried, and missing ineligible episodes require no provider call. Pre-commit
+uncertainty leaves a record absent for normal continuation; post-commit
+uncertainty leaves it present and recognizable by idempotent identity without a
+duplicate analytical execution. Copied project/state reopening depends on
+opaque project/state identity and compatibility, not repository location, Git,
+original path, or working directory.
+
+The complete installed proof built and isolated-installed both packages,
+projected exact resources, and ran from an unrelated non-Git directory against
+independent temporary projects through state initialization, durable execution,
+incomplete inspection, backup, absent-state restore, fresh reopen,
+continuation, and complete history. Persistence remains limited to accepted
+governed provenance, sensitive opaque patient/episode linkage, detached
+state/request/estimate evidence, bounded outcomes, and immutable actions. Raw
+source data, canonical-bundle copies, terminal rows, secrets, paths, callables,
+raw exceptions, model content, and unbounded diagnostics remain excluded; no
+production privacy, security, audit, or disaster-recovery claim is made.
+
+The final public inventory is justified: `rrpruntime` exports 15 interfaces
+(three accepted computation primitives and 12 logical-history interfaces), and
+`rrpplatform` exports 20 interfaces, with every Stage 7 addition corresponding
+to supported state, durable execution, inspection, retry/correction, or backup/
+restore behavior rather than test convenience. The installed catalog contains
+25 resources. Its four logical-history, two state/adapter, and one backup
+authorities are stable distinct contract boundaries rather than scaffolding.
+
+Reconciliation found no scheduler, queue, worker, lease, background
+continuation, automatic retry or fallback, persisted cursor, batch/vectorized
+provider inference, parallel or production multi-writer orchestration,
+retrospective canonical reconstruction, outside-bundle cohort selection,
+scheduled/off-host backup, retention/rotation, encryption, replication,
+point-in-time recovery, corruption repair, migration/import, product,
+application, CLI, distribution, or deployment behavior. The architecture's
+older singular "terminal run batch" wording was clarified to describe the
+accepted atomic scope creation plus independently atomic episode dispositions,
+truthful incomplete progress, and derived completeness. This was an authority-
+wording reconciliation, not an implementation defect or a new increment.
+
+Proportional closeout evidence passed repository validation and documentation
+hygiene after these documentation-only updates; the exact committed package
+implementation had already passed the hosted complete package matrix above.
+No package, resource, contract, test, validator, or workflow behavior changed.
+
+**Acceptance decision:** Stage 7 is formally accepted and complete. The exit
+condition is satisfied: a hospital project can durably own one successfully
+admitted zero-or-more-episode scope, account for each episode through a
+governed terminal disposition, derive completeness, continue missing work
+after interruption/reopen, and explicitly back up and restore complete or
+incomplete local history with bounded recovery guarantees. It still has no
+application-facing products.
+
+**Next task:** detail and accept Stage 8 — Fictional Reference Path. Stage 8 may
+assume installed package/resource behavior, independent projects, selected
+producer to canonical admission, the singular provider/risk path,
+project-owned durable history, continuation, explicit retry, append-only
+correction/current interpretation, and bounded backup/restore/recovery. Do not
+begin Stage 8 implementation before its separate detailed plan is accepted.
