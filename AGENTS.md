@@ -135,5 +135,6 @@ backup/restore. Committed push run `35589769595`, job `106301272647`, succeeded
 for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
 reconciliation found no implementation deviation and clarified the target
 architecture's atomic-history wording. Stages 1–7 are accepted and complete.
-The next task is to detail and accept Stage 8. Do not begin Stage 8 source
-implementation without explicit authorization and an accepted detailed plan.
+The next task is to review and accept the detailed Stage 8 plan. Do not begin
+Stage 8 source implementation without explicit authorization and an accepted
+detailed plan.

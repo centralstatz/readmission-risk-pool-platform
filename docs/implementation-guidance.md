@@ -17,7 +17,8 @@ and one narrowly scoped hosted workflow with successful committed Stage 2
 through Stage 7 push evidence. Stages 1–7 are accepted and complete. Stage 7
 supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
-restore. Stage 8 remains high-level pending separate detailed planning.
+restore. Stage 8 is detailed and awaits review and acceptance; no Stage 8
+source implementation has begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -366,8 +367,8 @@ for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
 reconciliation found no implementation deviation from True North or the
 architecture and clarified the architecture's older atomic-batch wording to
 match the accepted per-episode transaction model. Stages 1–7 are accepted and
-complete. Stage 8 has not begun and remains high-level pending separate
-detailed planning.
+complete. Stage 8 source implementation has not begun; its detailed plan now
+awaits review and acceptance.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

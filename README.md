@@ -158,8 +158,8 @@ workflow and has been formally accepted. The complete Stage 7 revision passed
 the same hosted workflow and its architecture reconciliation, so Stages 1–7
 are accepted and complete. Stage 7 provides logical history, explicit project
 state and DuckDB, durable execution/history interpretation, and bounded backup/
-restore. Stage 8 remains high-level pending its separate detailed-planning
-task.
+restore. Stage 8 is detailed in the implementation plan and awaits review and
+acceptance; no Stage 8 source implementation has begun.
 
 ## License
 

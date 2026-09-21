@@ -3501,3 +3501,61 @@ producer to canonical admission, the singular provider/risk path,
 project-owned durable history, continuation, explicit retry, append-only
 correction/current interpretation, and bounded backup/restore/recovery. Do not
 begin Stage 8 implementation before its separate detailed plan is accepted.
+
+## Stage 8 detailed-plan preparation — 2026-09-21
+
+Stage 8 was detailed as planning only from clean synchronized `main` at
+`c40263646988a930014c4e97eb925b5bc495e0ba` (`Stage 7 complete`). Platform
+True North, Platform Architecture, the complete implementation plan and record,
+Stage 7 acceptance, implementation guidance, and agent agreement were read in
+order. Reconnaissance inspected the realized project manifest/registration and
+fixed trusted loader; initializer/templates; project validation; selected
+producer, canonical admission, target/state/request/provider/estimate,
+transparent provider, durable execution/history, installed-resource, and
+extension-library boundaries; current hand-authored fictional/custom package
+tests; and the Stage 5 manual/adopter evidence.
+
+Immutable `v0.1.0` reconnaissance covered synthetic source generation,
+source-local schema and validation, canonical mapping, producer/adapter and
+identity configuration, deterministic test/reference scales, canonical
+failure and reference tests, the historical transparent provider, the
+independent-adopter producer fixture, and distribution-era local composition.
+The detailed plan selectively retains deterministic fictional data, meaningful
+source/canonical separation, dual-time filtering, fixture ideas, and
+transparent nonclinical calculation while rejecting privileged installed
+synthetic composition, repository-root execution, obsolete domains/daily
+hazards, and distribution-era wiring.
+
+The proposed Stage 8 sequence is:
+
+1. **Increment 8.A — Supported standard project authoring boundary:** add one
+   `rrpplatform`-owned standard authoring authority and adapter that turns two
+   narrow project functions plus declarative identity/dependency metadata into
+   the unchanged raw producer/provider registration contracts, and make that
+   discoverable six-file form the normal initialized project;
+2. **Increment 8.B — Fictional project, meaningful mapping, and project
+   provider:** realize one installed-template-backed independent fictional
+   project with explicit deterministic two-table source generation, real
+   source-to-canonical translation, and a project-owned transparent provider;
+   and
+3. **Increment 8.C — Installed end-to-end reference proof and human runbook:**
+   prove the complete normal path outside Git/source, record bounded human
+   authoring observations, and leave deterministic ordinary Stage 7 history
+   for later product work.
+
+The raw project/producer/provider contracts remain the supported advanced
+escape hatch and are not versioned or weakened. Normal generated
+`R/register.R` becomes thin stable wiring, not the ordinary edit surface. RRP
+owns invariant identities, capabilities, envelopes, bundle construction,
+semantic compatibility, admission, request/result and accepted-estimate
+construction; the hospital owns source meaning, canonical rows, risk
+calculation, implementation/mapping/provider identity, and optional model
+identity. The fictional project uses no artificial external dependency and no
+installed-provider shortcut. No Stage 8 source, resource, project, package,
+test, API, validator, workflow, or generated artifact was created in this
+planning pass.
+
+**Planning state:** the Stage 8 detailed plan is ready for maintainer review
+and acceptance but is not yet accepted or authorized for implementation. No
+increment is complete. The next lifecycle action is review and acceptance of
+the detailed Stage 8 plan; only then may Increment 8.A begin.
