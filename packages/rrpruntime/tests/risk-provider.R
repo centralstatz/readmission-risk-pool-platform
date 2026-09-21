@@ -222,6 +222,22 @@ incompatible$target_version <- "9.9.9"
 rrp_provider_test_expect(function() rrp_execute_risk_provider(
   state, incompatible, rrp_provider_test_context()
 ), "provider_incompatible")
+incompatible_calls <- 0L
+incompatible$callable <- function(request) {
+  incompatible_calls <<- incompatible_calls + 1L
+  stop("must not be called", call. = FALSE)
+}
+incompatible_evidence <- rrp_provider_test_internal(
+  "rrp_runtime_risk_evidence"
+)(state, incompatible, rrp_provider_test_context())
+stopifnot(
+  identical(incompatible_evidence$outcome, "provider_incompatible"),
+  identical(incompatible_evidence$outcome_code, "provider_incompatible"),
+  identical(incompatible_evidence$provider_status, "not_invoked"),
+  is.null(incompatible_evidence$request),
+  is.null(incompatible_evidence$estimate),
+  identical(incompatible_calls, 0L)
+)
 bad_model <- provider
 bad_model$model_id <- "fictional.model"
 rrp_provider_test_expect(function() rrp_execute_risk_provider(

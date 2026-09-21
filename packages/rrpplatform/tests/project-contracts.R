@@ -418,11 +418,14 @@ rrp_test_cases <- list(
     deferred <- "rrp_register_project"
     stopifnot(
       identical(sort(getNamespaceExports("rrpplatform")), c(
-        "rrp_execute_producer", "rrp_execute_risk",
+        "rrp_execute_durable_bundle", "rrp_execute_producer", "rrp_execute_risk",
         "rrp_initialize_project", "rrp_initialize_project_state",
-        "rrp_inspect_project_state", "rrp_load_project",
+        "rrp_inspect_current_history", "rrp_inspect_episode_history",
+        "rrp_inspect_project_state", "rrp_inspect_scope_history",
+        "rrp_invalidate_history", "rrp_load_project",
         "rrp_open_resource_catalog", "rrp_operation_succeeded",
-        "rrp_resource_path", "rrp_validate_project",
+        "rrp_resource_path", "rrp_restate_history", "rrp_retry_episode",
+        "rrp_validate_project",
         "rrp_validate_software_resources"
       )),
       !any(vapply(deferred, exists, logical(1L), envir = namespace,

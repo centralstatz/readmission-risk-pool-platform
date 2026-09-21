@@ -128,6 +128,5 @@ the storage-neutral logical history foundation. Increment 7.B adds the two
 platform-owned state authorities, direct DBI/DuckDB dependencies, explicit
 initialize/inspect operations, compatible-state doctor, and private
 transactional DuckDB adapter behind the unchanged runtime port. Increments 7.A
-and 7.B are complete; the next task is Increment 7.C. Do not introduce durable
-producer/provider orchestration, supported correction operations,
-backup/restore, or later Stage 7 behavior without explicit authorization.
+through 7.C are complete; the next task is Increment 7.D. Do not introduce
+products or later-stage behavior without explicit authorization.

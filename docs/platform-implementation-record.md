@@ -3139,3 +3139,94 @@ introduced.
 
 **Next task:** implement only Increment 7.C — Bundle-scoped durable operation
 and history interpretation.
+
+### Increment 7.C — Bundle-scoped durable operation and history interpretation (complete, 2026-09-20)
+
+Increment 7.C connects the existing Stage 5 producer/admission boundary, Stage
+6 episode/provider semantics, Stage 7.A logical history, and Stage 7.B durable
+port without changing those public primitives. `rrpplatform` now exports
+exactly 18 interfaces after adding `rrp_execute_durable_bundle()`, explicit
+failed-attempt retry, three bounded scope/episode/current reads, and generic
+append-only invalidation/restatement operations. The main operation accepts an
+explicit software catalog, project root, analytical time, and caller operation
+key. It preflights compatible initialized state, executes the selected producer
+once, admits the candidate, and only then creates or exactly matches the
+immutable admitted-bundle scope.
+
+Admitted episode identities are sorted deterministically. Each missing initial
+analytical identity is evaluated with unchanged Stage 6 eligibility and
+provider semantics and appended in its own atomic transaction. Terminal
+records distinguish ineligibility, accepted estimates, provider incompatibility,
+provider-declared failure, and detected execution/result/estimate failure with
+bounded codes and the exact governed state/request/estimate evidence permitted
+by the accepted history contract. The public Stage 6 provider primitive keeps
+its exact result/error behavior; a protected runtime evidence path now shares
+that same validation and one-call engine with durable orchestration. Project
+registration incompatibility remains the existing earlier Stage 6 project-load
+failure and is therefore nonhistorical; the terminal `provider_incompatible`
+mapping applies to a post-admission runtime compatibility failure and is proved
+at the protected runtime boundary without weakening trusted project loading.
+
+Completeness remains derived solely from the initial disposition count and
+membership fingerprint. Repeating a complete operation reexecutes the producer
+to reestablish the admitted population but invokes no provider and adds no
+history. Reopening an interrupted matching operation likewise skips every
+committed terminal initial disposition, including failures, and evaluates only
+missing episodes. A changed admitted population under the same operation key
+conflicts with the immutable scope. No canonical bundle, loop cursor, mutable
+completion flag, or second episode manifest is persisted.
+
+`rrp_retry_episode()` accepts only a provider-declared or detected failed
+analytical attempt, creates one deterministic related retry identity from a
+caller key, invokes the currently selected compatible provider at most once,
+and preserves the original failure. Repeating the same retry key returns the
+committed child without another provider call; a second different child for
+the same parent is rejected before invocation. Retry records do not affect scope
+completeness and no retry occurs during continuation. The three supported read
+operations delegate to the accepted storage-neutral raw scope, raw episode,
+and current-history semantics with explicit analytical/history cutoffs where
+applicable. The correction operations construct governed actions and delegate
+episode or narrowly justified scope invalidation and atomic restatement to the
+existing runtime port; no update or deletion path was added.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`operations/lib/reference-history-operation.R`,
+`runtime/R/history-records.R`, and
+`tests/phase5/test-operational-history.R`. Producer-once population flow,
+provider-only-for-eligible evaluation, bounded failure attribution, retry
+lineage, append-only invalidation/restatement, and current-read test concepts
+were adapted. Repository-root discovery, generated reference source, daily
+hazard semantics, started/failed lifecycle records, one giant population
+transaction, separately persisted analytical families, automatic retry, raw
+exception retention, and wall-clock current tie-breaking were rejected.
+
+Package-native evidence covers accepted, ineligible, provider-declared,
+detected, and protected incompatible outcomes; exact zero/one-call behavior;
+zero-episode completion; full count/fingerprint completion; nonhistorical
+producer failure; same-key exact repeat and population conflict; interrupted
+partial visibility and continuation of only missing episodes; explicit retry
+to a distinct related attempt; raw/current cutoffs; episode invalidation and
+atomic restatement; narrow scope restatement; process-context restoration;
+state-only mutation; close/reopen through every operation; and copied-project
+execution with copied compatible state. Existing runtime provider/history and
+Stage 5/6 execution suites remain regression owners for their unchanged public
+primitives.
+
+The closed repository inventory, package layout, exact export checks, package
+README, human ownership map, and technical documentation now include the 7.C
+owner, tests, and operations. Final validation passed repository validation,
+package-native tests, source builds, controlled dependency-order installation,
+isolated load, both strict `R CMD check --no-manual` operations with `Status:
+OK`, installed Stage 3–7 regressions, direct R/Rd parsing, generated-artifact
+review, and `git diff --check`.
+
+**Current implementation state:** Increment 7.C is complete; Stage 7 remains
+in progress. Installed RRP can create or continue one admitted-bundle durable
+scope, independently commit every episode's terminal disposition, explicitly
+retry failed provider attempts, inspect raw/current history, and correct
+history append-only. There is still no backup/restore, migration, remote
+adapter, product/materialization, application, CLI, distribution, release, or
+deployment behavior.
+
+**Next task:** implement only Increment 7.D — Backup, bounded recovery, and
+complete installed proof. Do not begin Stage 7 acceptance or Stage 8.

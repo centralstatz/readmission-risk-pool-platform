@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–6 are accepted and complete. Stage
-7 is detailed and accepted for implementation but has not begun.
+7 is detailed and accepted; Increments 7.A–7.C are complete and Increment 7.D
+is next.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -3176,11 +3177,11 @@ these are explicit later boundaries, not implementation-time ambiguity.
 ## Stage 7 — Project state and operational history
 
 **Status:** detailed and accepted for implementation on 2026-09-19, including
-the subsequently accepted bundle-scoped operational decision. Increments 7.A
-and 7.B are complete; Increment 7.C is next. Storage-neutral logical history
-and explicit project-owned DuckDB state now exist, but normal RRP computation
-does not yet write history. This section authorizes only Increments 7.A–7.D
-below.
+the subsequently accepted bundle-scoped operational decision. Increments
+7.A–7.C are complete; Increment 7.D is next. Storage-neutral logical history,
+explicit project-owned DuckDB state, and bundle-scoped durable execution and
+history interpretation now exist. This section authorizes only Increments
+7.A–7.D below.
 
 The non-authoritative reasoning record is retained at
 `docs/assessments/stage-7-bundle-scope-assessment.md`; this reconciled section
@@ -3875,6 +3876,8 @@ compatible empty/local history store and the adapter can durably satisfy the
 logical port, but normal RRP computation still does not write it.
 
 ### Increment 7.C — Bundle-scoped durable operation and history interpretation
+
+**Implementation status:** complete on 2026-09-20; Increment 7.D is next.
 
 **Objective:** connect the accepted Stage 5/6 computation to terminal history
 without changing its episode-level analytical semantics, while making RRP

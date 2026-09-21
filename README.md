@@ -50,10 +50,11 @@ available-information cutoff. `rrpplatform` now explicitly initializes and
 inspects a project-owned two-file state root and privately realizes the logical
 history port through bounded DBI/DuckDB sessions with exact transactional
 append and close/reopen behavior. Normal producer/risk computation still
-writes nothing. The repository has no root selector, persistent installed RRP
-distribution, durable bundle-scoped run or correction operation,
-backup/restore, product, application, command-line interface, or deployment
-capability.
+writes nothing. An explicit durable operation now owns one admitted-bundle
+scope, terminal episode dispositions, deterministic continuation, bounded
+history inspection, explicit retry, and append-only correction. The repository
+has no root selector, persistent installed RRP distribution, backup/restore,
+product, application, command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -152,8 +153,9 @@ interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
 workflow and has been formally accepted, so Stages 1–6 are complete. Stage 7
-is in progress: Increments 7.A and 7.B provide logical history plus explicit
-project state and the DuckDB adapter; Increment 7.C is next.
+is in progress: Increments 7.A–7.C provide logical history, explicit project
+state and DuckDB, and bundle-scoped durable execution/history interpretation;
+Increment 7.D is next.
 
 ## License
 

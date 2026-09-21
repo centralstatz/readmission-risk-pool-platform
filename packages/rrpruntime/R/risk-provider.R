@@ -301,6 +301,60 @@ rrp_runtime_risk_estimate <- function(
   estimate
 }
 
+rrp_runtime_risk_evidence <- function(
+  episode_state,
+  provider,
+  expected_context
+) {
+  rrp_runtime_validate_provider_context(expected_context)
+  rrp_runtime_validate_provider_state(episode_state, expected_context)
+
+  compatibility <- tryCatch({
+    rrp_runtime_validate_provider(provider, expected_context)
+    NULL
+  }, rrp_runtime_error = identity)
+  if (!is.null(compatibility)) return(list(
+    outcome = "provider_incompatible",
+    outcome_code = compatibility$code,
+    provider_status = "not_invoked",
+    request = NULL,
+    estimate = NULL
+  ))
+
+  request <- rrp_runtime_risk_request(episode_state, expected_context)
+  execution <- tryCatch({
+    value <- rrp_runtime_provider_result(
+      rrp_runtime_invoke_provider(provider, request), request, expected_context
+    )
+    list(
+      outcome = "accepted_estimate",
+      outcome_code = "estimate_accepted",
+      provider_status = "succeeded",
+      request = request,
+      estimate = rrp_runtime_risk_estimate(
+        request, provider, value, expected_context
+      )
+    )
+  }, rrp_runtime_error = function(condition) {
+    declared <- condition$code %in% c(
+      "provider_unavailable", "provider_input_unavailable",
+      "provider_calculation_failed"
+    )
+    list(
+      outcome = if (declared) {
+        "provider_declared_failure"
+      } else {
+        "detected_failure"
+      },
+      outcome_code = condition$code,
+      provider_status = if (declared) "declared_failure" else "detected_failure",
+      request = request,
+      estimate = NULL
+    )
+  })
+  unserialize(serialize(execution, NULL))
+}
+
 #' Execute one compatible risk provider
 #'
 #' Revalidate an immutable episode state and one explicit semantic provider,
@@ -318,12 +372,11 @@ rrp_execute_risk_provider <- function(
   provider,
   expected_context
 ) {
-  rrp_runtime_validate_provider_context(expected_context)
-  rrp_runtime_validate_provider_state(episode_state, expected_context)
-  rrp_runtime_validate_provider(provider, expected_context)
-  request <- rrp_runtime_risk_request(episode_state, expected_context)
-  value <- rrp_runtime_provider_result(
-    rrp_runtime_invoke_provider(provider, request), request, expected_context
+  evidence <- rrp_runtime_risk_evidence(
+    episode_state, provider, expected_context
   )
-  rrp_runtime_risk_estimate(request, provider, value, expected_context)
+  if (!identical(evidence$outcome, "accepted_estimate")) {
+    rrp_runtime_abort(evidence$outcome_code)
+  }
+  evidence$estimate
 }

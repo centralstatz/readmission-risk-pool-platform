@@ -2126,6 +2126,7 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "canonical-contracts.R"),
       file.path("R", "duckdb-history.R"),
+      file.path("R", "durable-history.R"),
       file.path("R", "operation-result.R"),
       file.path("R", "producer-execution.R"),
       file.path("R", "risk-execution.R"),
@@ -2145,6 +2146,8 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_operation_succeeded.Rd"),
       file.path("man", "rrp_execute_producer.Rd"),
       file.path("man", "rrp_execute_risk.Rd"),
+      file.path("man", "rrp_execute_durable_bundle.Rd"),
+      file.path("man", "rrp_history_operations.Rd"),
       file.path("man", "rrp_resource_path.Rd"),
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
@@ -2157,6 +2160,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-state.R"),
       file.path("tests", "producer-execution.R"),
       file.path("tests", "risk-execution.R"),
+      file.path("tests", "durable-history.R"),
       file.path("tests", "resource-access.R"),
       file.path("tests", "runtime-contracts.R")
     )
@@ -2326,12 +2330,17 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_execute_producer", "rrp_execute_risk", "rrp_initialize_project",
-      "rrp_initialize_project_state", "rrp_inspect_project_state",
+      "rrp_execute_durable_bundle", "rrp_execute_producer", "rrp_execute_risk",
+      "rrp_initialize_project",
+      "rrp_initialize_project_state",
+      "rrp_inspect_current_history", "rrp_inspect_episode_history",
+      "rrp_inspect_project_state", "rrp_inspect_scope_history",
+      "rrp_invalidate_history",
       "rrp_load_project",
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
-      "rrp_resource_path", "rrp_validate_project",
+      "rrp_resource_path", "rrp_restate_history", "rrp_retry_episode",
+      "rrp_validate_project",
       "rrp_validate_software_resources"
     )
   } else c(
@@ -2365,6 +2374,13 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_inspect_project_state)",
       "export(rrp_execute_producer)",
       "export(rrp_execute_risk)",
+      "export(rrp_execute_durable_bundle)",
+      "export(rrp_inspect_current_history)",
+      "export(rrp_inspect_episode_history)",
+      "export(rrp_inspect_scope_history)",
+      "export(rrp_invalidate_history)",
+      "export(rrp_restate_history)",
+      "export(rrp_retry_episode)",
       "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
@@ -2468,9 +2484,12 @@ validate_source_boundaries <- function(package_roots) {
   )
   require_true(
     identical(
-      files_with_getwd, c("producer-execution.R", "risk-execution.R")
+      files_with_getwd, c(
+        "durable-history.R", "producer-execution.R", "risk-execution.R"
+      )
     ) && length(getwd_calls[["producer-execution.R"]]) == 2L &&
-      length(getwd_calls[["risk-execution.R"]]) == 2L,
+      length(getwd_calls[["risk-execution.R"]]) == 2L &&
+      length(getwd_calls[["durable-history.R"]]) == 2L,
     paste0(
       "rrpplatform may inspect the working directory only to save and restore ",
       "it around selected producer or provider execution."
@@ -2686,14 +2705,20 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_execute_producer\", \"rrp_execute_risk\", ",
+      "c(\"rrp_execute_durable_bundle\", \"rrp_execute_producer\", ",
+      "\"rrp_execute_risk\", ",
       "\"rrp_initialize_project\", ",
       "\"rrp_initialize_project_state\", ",
+      "\"rrp_inspect_current_history\", ",
+      "\"rrp_inspect_episode_history\", ",
       "\"rrp_inspect_project_state\", ",
+      "\"rrp_inspect_scope_history\", ",
+      "\"rrp_invalidate_history\", ",
       "\"rrp_load_project\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
-      "\"rrp_resource_path\", \"rrp_validate_project\", ",
+      "\"rrp_resource_path\", \"rrp_restate_history\", ",
+      "\"rrp_retry_episode\", \"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
     )
   } else paste0(
@@ -2879,12 +2904,16 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_execute_producer', 'rrp_execute_risk', ",
+    "c('rrp_execute_durable_bundle', 'rrp_execute_producer', ",
+    "'rrp_execute_risk', ",
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
-    "'rrp_inspect_project_state', 'rrp_load_project', ",
+    "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",
+    "'rrp_inspect_project_state', 'rrp_inspect_scope_history', ",
+    "'rrp_invalidate_history', 'rrp_load_project', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
-    "'rrp_resource_path', 'rrp_validate_project', ",
+    "'rrp_resource_path', 'rrp_restate_history', 'rrp_retry_episode', ",
+    "'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
     "catalog <- rrp_open_resource_catalog(root); ",
     "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
@@ -3435,8 +3464,10 @@ validate_packages <- function() {
     "two-resource state/adapter contract relationships, dependency-light ",
     "logical history records/port, explicit project-state initialize/inspect, ",
     "private transactional DuckDB roundtrip/reopen/interruption evidence, ",
-    "in-memory conformance, raw/current interpretation, dependency-light ",
-    "canonical admission, exact eligibility and immutable episode-state ",
+    "in-memory conformance, raw/current interpretation, ",
+    "bundle-scoped durable execution/continuation, explicit retry, supported ",
+    "inspection/correction, ",
+    "dependency-light canonical admission, exact eligibility and immutable episode-state ",
     "construction, provider-neutral request, direct compatible-provider ",
     "execution, accepted estimate, exact project-selected provider risk ",
     "execution, installed transparent/project provider substitution, ",

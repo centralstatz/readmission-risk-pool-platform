@@ -127,18 +127,26 @@ callers receive only the storage-neutral `rrp_history_port`. Identical writes
 are idempotent, conflicting identities fail, restatements are atomic, and raw
 reads remain bounded by an operation or episode/target relationship closure.
 
+`rrp_execute_durable_bundle()` connects the existing selected producer,
+canonical admission, episode-state, and provider semantics to that port. One
+successful admission creates or matches one bundle scope; each missing episode
+receives one independently committed terminal disposition, and continuation
+skips every committed initial result, including failures. Supported operations
+also expose bounded raw/current history, explicit failed-attempt retry, and
+append-only invalidation or atomic restatement. These operations add no stored
+bundle, loop cursor, automatic retry, or second scope authority.
+
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, durable producer/provider
-orchestration, correction operations, backup/restore, products, applications,
+an ordinary operator command, dependency restoration, backup/restore, products, applications,
 installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.
-Producer and risk execution perform no retry, scheduling, state initialization,
-persistence, or retention.
+The standalone producer and risk primitives still perform no retry, scheduling,
+state initialization, persistence, or retention.
 The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.
