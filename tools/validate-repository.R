@@ -22,6 +22,7 @@ expected_files <- c(
   "AGENTS.md", "CONTRIBUTING.md", "LICENSE", "NOTICE", "README.md",
   "RRP.yml", "SECURITY.md", "SUPPORT.md",
   "docs/assessments/stage-7-bundle-scope-assessment.md",
+  "docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md",
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
