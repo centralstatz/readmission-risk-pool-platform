@@ -17,8 +17,9 @@ and one narrowly scoped hosted workflow with successful committed Stage 2
 through Stage 7 push evidence. Stages 1–7 are accepted and complete. Stage 7
 supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
-restore. Stage 8 is detailed and awaits review and acceptance; no Stage 8
-source implementation has begun.
+restore. Stage 8 is detailed, revised after its bounded authoring-UX and
+installed-documentation assessment, and awaits review and acceptance; no
+Stage 8 source implementation has begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional minimal-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -112,7 +113,7 @@ closed to the following present paths:
 | `docs/platform-implementation-plan.md` | Authoritative construction order and current accepted increment. |
 | `docs/platform-implementation-record.md` | Append-forward account of clean-line work actually completed. |
 | `docs/implementation-guidance.md` | Human development method, conventions, and current ownership map. |
-| `docs/assessments/` and `docs/assessments/stage-7-bundle-scope-assessment.md` | Bounded non-authoritative reasoning records for questions investigated before an accepted authority changes. Each retained assessment must be admitted explicitly by the closed repository inventory; accepted conclusions belong in the applicable authoritative document rather than gaining authority here. The current file preserves the evidence behind the reconciled Stage 7 bundle-scope decision. |
+| `docs/assessments/`, `docs/assessments/stage-7-bundle-scope-assessment.md`, and `docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md` | Bounded non-authoritative reasoning records for questions investigated before an accepted authority changes. Each retained assessment must be admitted explicitly by the closed repository inventory; accepted conclusions belong in the applicable authoritative document rather than gaining authority here. The current files preserve reasoning behind the reconciled Stage 7 bundle-scope decision and the revised Stage 8 authoring/documentation plan. |
 | `RRP.yml` | Sole machine-readable product-development identity authority. |
 | `README.md` | Public orientation, current maturity, and navigation. |
 | `CONTRIBUTING.md` | Public contribution entry point and sign-off expectation. |
@@ -367,8 +368,9 @@ for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
 reconciliation found no implementation deviation from True North or the
 architecture and clarified the architecture's older atomic-batch wording to
 match the accepted per-episode transaction model. Stages 1–7 are accepted and
-complete. Stage 8 source implementation has not begun; its detailed plan now
-awaits review and acceptance.
+complete. Stage 8 source implementation has not begun; its detailed plan was
+revised after the bounded authoring-UX and installed-documentation assessment
+and now awaits review and acceptance.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

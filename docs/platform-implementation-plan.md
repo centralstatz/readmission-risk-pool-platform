@@ -4205,9 +4205,10 @@ governing-plan permanence. No other unresolved question blocks Increment 7.A.
 
 ## Stage 8 — Fictional reference path
 
-**Status:** detailed on 2026-09-21 and ready for review and acceptance. No
-Stage 8 implementation has begun, and none is authorized until this detailed
-plan is accepted.
+**Status:** detailed and revised on 2026-09-21 after the bounded authoring-UX
+and installed-documentation assessment; ready for review and acceptance. No
+Stage 8 implementation has begun, and none is authorized until this revised
+detailed plan is accepted.
 
 ### Objective and responsibilities
 
@@ -4215,10 +4216,13 @@ Establish the supported normal hospital authoring path over the accepted raw
 producer and provider extension contracts, then use one deterministic,
 visibly fictional, nonclinical independent project as its first realistic
 adopter. The project owns explicit source generation, source-local meaning,
-canonical mapping, and an inspectable project-owned risk calculation. RRP owns
-the invariant registration, protocol, canonical-bundle, compatibility,
-request/result, admission, estimate, and durable-history machinery around
-those hospital-authored callables.
+canonical mapping and identity resolution, private predictor meaning, and an
+inspectable project-owned risk calculation. RRP owns the invariant
+registration, protocol, canonical-bundle, compatibility, request/result,
+admission, estimate, and durable-history machinery around those hospital-
+authored callables. Stage 8 also introduces the first version-matched installed
+product documentation so the normal interface can be understood without the
+development repository.
 
 The result must be one architecture:
 
@@ -4277,14 +4281,21 @@ inherits these facts without reopening them:
   `rrpruntime::rrp_admit_canonical_bundle()`;
 - `rrp_execute_risk()` and `rrp_execute_durable_bundle()` use the exact
   selected provider through the Stage 6 request/result boundary;
+- that provider receives the unchanged flat, detached 19-field
+  `rrp.risk-request@0.1.0`; the request contains canonical `episode_id` as its
+  only canonical domain identifier and does not contain source IDs, a
+  crosswalk, arbitrary predictors, or provider/model identity;
 - the installed transparent provider is protected, explicit, nonclinical,
   and not a default;
 - the project manifest already declares one safe relative extension-library
   path and one state path; no dependency installer or lockfile exists;
 - the initializer currently emits only a manifest plus verbose raw
-  registration with unavailable producer/provider callables; and
+  registration with unavailable producer/provider callables;
 - project validation/doctor executes and validates registration but never
-  invokes either selected callable.
+  invokes either selected callable; and
+- the closed resource schema already admits the `documentation` class and
+  explicit `rrp_resource_path()` access, but currently admits only `dcf` and
+  `r` formats and catalogs no installed product document.
 
 Stage 8 does not change the meaning, version, or availability of the raw
 project manifest, registration, producer, provider, canonical, runtime, or
@@ -4408,25 +4419,90 @@ The current raw provider author must repeat component, provider API, target,
 state, request, estimate, implementation, and optional model compatibility;
 accept exactly one request; and build the closed four-field result envelope
 with matching request identity and conditional success/failure fields. Only
-model/engine loading, legitimate model-specific request transformation,
-calculation, and implementation/model provenance are hospital-specific.
+canonical-to-local resolution, private predictor acquisition/engineering,
+model/engine loading, legitimate model-specific transformation, calculation,
+and implementation/model provenance are hospital-specific.
 
 The standard provider file therefore defines exactly one function,
 `rrp_calculate_risk(project_root, request)`. The explicit project root supports
-portable project-owned packages and artifacts; `request` is the existing
-detached governed Stage 6 request and is not widened with arbitrary features,
-configuration, source data, or callbacks. On success the function returns one
-plain finite base-R double probability in `[0,1]`. On a controlled failure it
-returns an `rrp_authoring_failure` carrying one existing provider failure code.
+portable project-owned data access, packages, artifacts, and engines;
+`request` remains the existing detached governed Stage 6 request and is not
+widened with arbitrary features, configuration, source data, or callbacks. On
+success the function returns one plain finite base-R double probability in
+`[0,1]`. On a controlled failure it returns an `rrp_authoring_failure` carrying
+one existing provider failure code, including
+`provider_input_unavailable` when a required private input is unavailable.
+
+The unchanged request has exact class `c("rrp_risk_request", "list")` and is
+one flat named list with these 19 fields in contractual order:
+
+```text
+request_contract_id              scalar character
+request_contract_version         scalar character
+request_id                       scalar character
+target_id                        scalar character
+target_version                   scalar character
+state_contract_id                scalar character
+state_contract_version           scalar character
+state_id                         scalar character
+bundle_instance_id               scalar character
+project_id                       scalar character
+project_version                  scalar character
+episode_id                       scalar character
+as_of_time                       scalar character, RFC 3339 UTC
+discharge_time                   scalar character, RFC 3339 UTC
+target_interval_start            scalar character, RFC 3339 UTC
+target_interval_end              scalar character, RFC 3339 UTC
+target_interval_boundary         scalar character, exactly (start,end]
+elapsed_seconds_since_discharge  finite unclassed base-R double
+remaining_seconds_through_w30    finite unclassed base-R double
+```
+
+`episode_id` is the canonical episode identity and the only canonical domain
+identifier supplied. `as_of_time` is authoritative analytical time `t`;
+`target_interval_start` equals `t`, and the request asks for remaining first-
+readmission probability through the inclusive fixed day-30 endpoint. Before
+invocation RRP has admitted the canonical bundle, established episode
+eligibility and immutable state at `t`, selected and compatibility-checked the
+provider, constructed deterministic request identity, and detached the plain
+request.
+
+The request deliberately omits canonical `patient_id` and
+`index_encounter_id`, admission and terminal-event rows, the canonical bundle,
+native/source identifiers, crosswalks, arbitrary predictors, project paths,
+credentials, connections, callbacks, provider/model identity, prior
+estimates, products, and history. The separately supplied `project_root` is the
+hospital-owned context for resolving private model data; it is not inserted
+into the provider-neutral raw request.
 
 The hospital/model author remains responsible for:
 
 - loading or invoking the project-owned model, score, package, or engine;
-- making only legitimate model-specific transformations of the governed
-  request;
+- resolving canonical `request$episode_id` to any local model-data identity;
+- obtaining and engineering arbitrary private predictors without widening the
+  RRP canonical model or request;
+- ensuring every model-specific input is legitimate for
+  `request$as_of_time` and never uses future information or redefines the
+  cohort, target, or interval;
 - returning the probability for the installed singular RRP target; and
 - maintaining truthful provider implementation and optional model artifact
   identities/versions.
+
+RRP governs the analytical question and cutoff. The hospital provider governs
+the correctness and temporal validity of its private model inputs for that
+cutoff. RRP does not understand or validate temporal provenance inside every
+hospital field, query, API response, feature, or external score, and Stage 8
+does not add a temporal-feature-validation framework.
+
+Native hospital identifiers may serve as canonical identifiers only when they
+legitimately satisfy the canonical contract and local privacy/governance
+requirements. Otherwise the hospital assigns stable conforming canonical
+identities and retains its own downstream resolution. The project is the
+shared ownership boundary through which its producer and provider coordinate
+that resolution. RRP does not add native IDs to the request, own or persist a
+crosswalk, retain source IDs in state/history, add arbitrary predictors to the
+canonical bundle, define a universal predictor schema, or become a feature
+store merely for provider convenience.
 
 RRP derives fixed semantic compatibility from installed target/runtime
 authority, adapts the standard callable to the raw one-argument provider
@@ -4443,6 +4519,18 @@ protocols, service-backed adapters, advanced lifecycle management, or other
 future conforming integrations that need direct result-envelope control. It
 still registers through `R/register.R` and is subject to the same Stage 6
 compatibility and execution semantics. No engine-specific branch enters RRP.
+
+Ordinary authors must be able to learn the complete request and normal output
+contract from the initialized project and installed product documentation,
+without reading `rrpplatform`, `rrpruntime`, DCF internals, or tests. Generated
+`R/calculate-risk.R` therefore contains a compact accurate comment block that
+states the class, flat structure, exact fields/types, interval and identity
+meaning, deliberate omissions, and success/failure alternatives, then points
+by stable resource identity and runnable `rrp_resource_path()` example to the
+complete installed provider-request reference. It is an orientation surface,
+not a duplicate manual. Generated `R/produce-canonical.R` similarly describes
+its explicit inputs and exact two-domain success return and points to the
+installed authoring guide.
 
 ### Final role of `R/register.R`
 
@@ -4476,8 +4564,10 @@ surfaces for ordinary customization: the manifest selections/paths, the small
 authoring metadata record, the producer mapping function, and the provider
 risk function. Only the latter two contain hospital-specific executable logic.
 The generated README explains this division, the trusted status of project
-code, the extension library, and the raw escape hatch. It does not teach all
-raw envelope fields as the normal workflow.
+code, the extension library, the raw escape hatch, and how to resolve the
+installed product documents through the explicit software-resource catalog.
+It does not teach all raw envelope fields as the normal workflow or duplicate
+the installed manuals.
 
 Stage 8 implementation must record a bounded human inspection answering:
 
@@ -4488,11 +4578,79 @@ Stage 8 implementation must record a bounded human inspection answering:
 - whether the risk function is understandable without reading provider
   protocol internals;
 - whether any normal step still requires editing `R/register.R`; and
-- whether the hospital/RRP responsibility boundary is visible from the
-  initialized project alone.
+- whether the hospital/RRP identity, private-predictor, and temporal
+  responsibility boundaries are visible from the initialized project alone;
+  and
+- whether a human can resolve the detailed installed documentation without
+  repository or package-internal access.
 
 If normal use still requires manual reproduction of most raw declarations or
 envelopes, Increment 8.A is incomplete.
+
+### Installed product documentation and teaching hierarchy
+
+Stage 8 introduces product documentation as an installed, version-matched RRP
+capability rather than assuming development documentation ships. The three
+classes remain distinct:
+
+- repository architecture, plan, record, implementation/contribution
+  guidance, and assessments are development/maintainer documentation and are
+  not assumed to ship;
+- installed product documentation is cataloged hospital-user material usable
+  without the development Git repository; and
+- the generated project README and focused callable comments are project-local
+  orientation that links to, but does not reproduce, the installed material.
+
+Their teaching relationship is:
+
+```text
+generated project scaffold
+        ↓ what do I edit and what reaches these callables?
+installed product documentation
+        ↓ what are the exact contracts, semantics, responsibilities,
+          and supported behaviors?
+fictional reference project
+        ↓ show the same production architecture working end to end
+```
+
+The first installed set is exactly three concise single-source Markdown
+resources:
+
+1. **Project Authoring Guide:** the standard scaffold, trusted-code boundary,
+   normal edit surfaces, producer/provider callables, canonical identity and
+   source/mapping responsibilities, canonical-to-local provider resolution,
+   private model inputs and analytical cutoff, extension dependencies,
+   controlled failures, standard adapter, and raw-registration escape hatch;
+2. **Provider Request Reference:** the unchanged request class, flat ordered
+   19-field structure, R types and meanings, identities, timestamps, interval,
+   pre-invocation guarantees, deliberate omissions, normal success/failure
+   returns, private predictor/temporal responsibility, and relationship to the
+   lower-level raw four-field provider result; and
+3. **Fictional Reference Walkthrough:** the supported installed package-level
+   path through fictional initialization, inspection, explicit source
+   generation, mapping, validation, state initialization, durable execution,
+   history inspection, repeat, and copy/reopen, including the fictional
+   identity and provider-only predictor example.
+
+`rrpplatform` owns access because it already owns the resource catalog,
+project lifecycle, and authoring boundary. The existing resource machinery is
+extended only to admit controlled Markdown beneath the governed `resources/`
+source tree, declare each document in the closed source catalog, project bytes
+unchanged into the installed catalog/tree, assign stable resource identities,
+and resolve them through existing `rrp_resource_path()`. No documentation-
+specific package API or duplicate `docs/user/` authority is planned.
+
+Stage 8 begins an incremental installed product-documentation track. Later
+stages add only material for capabilities then realized: logical products in
+Stage 9, application use in Stage 10, installation/CLI/upgrade and ordinary
+documentation discovery in Stage 11, deployment in Stage 12, clean-system/
+adopter troubleshooting in Stage 13, and release-quality assembly/generated
+publication formats in Stage 14. Exact later documents and formats remain
+progressive decisions. User-facing product documentation is introduced and
+versioned with the supported capability it explains rather than reconstructed
+only at release time; later HTML/PDF/manual outputs derive from maintained
+sources rather than unrelated duplicate prose. Stage 8 adds no documentation
+site, PDF/publication pipeline, CLI browser, or later-stage manual.
 
 ### Fictional reference project and source generation
 
@@ -4511,8 +4669,10 @@ surfaces:
 ```text
 R/generate-source.R          explicit deterministic project-owned generator
 source/generated/source.dcf  generated fictional-source provenance
-source/generated/stays.csv   generated local encounter/discharge facts
+source/generated/stays.csv   generated stay facts and bounded model input
 source/generated/events.csv  generated local terminal-event notifications
+source/generated/identity-crosswalk.csv
+                             generated native-to-canonical identity mapping
 ```
 
 Generated CSV files do not exist in the installed template and are never
@@ -4536,30 +4696,42 @@ estimates and governed ineligibility dispositions. Every identifier and label
 is visibly prefixed as fictional, and the project README states that all data
 and risk values are nonclinical simulation artifacts.
 
-The two source tables deliberately differ from canonical data. They use local
-stay/person keys, separate stay and notification records, local categorical
-terminal codes, local field names, and source timestamps that the mapping
-normalizes to explicit-offset canonical instants. The mapping joins source
-keys, constructs canonical episode/event IDs, translates local readmission and
-death codes, calculates the exact elapsed day-30 endpoint, filters terminal
-facts by availability at the requested as-of, discards source-only fields, and
-returns only the two canonical data frames. This is meaningful but bounded
-source interpretation, not an EHR simulator.
+The generated source deliberately differs from canonical data. Native
+stay/person identifiers are visibly fictional, and at least one source
+identity is intentionally invalid under the canonical identifier grammar so
+the example cannot imply that hospital IDs always equal RRP IDs. The small
+explicit crosswalk maps native stay identity to valid canonical episode (and
+related patient/encounter where needed) identities. It is project data—not an
+installed RRP resource, canonical field, state/history table, or input known to
+generic RRP code. A reversible string trick is insufficient because the
+example must teach hospital-owned identity resolution.
 
-The fictional project's normal provider is project-owned and implements the
-same inspectable nonclinical relationship as the installed transparent
-example:
+`stays.csv` additionally carries one bounded, visibly fictional, nonclinical
+provider-only predictor and its availability time. The producer joins native
+keys through the crosswalk, constructs canonical episode/event IDs, translates
+local terminal codes, normalizes timestamps, calculates the exact elapsed
+day-30 endpoint, filters terminal facts by availability at the requested
+as-of, and explicitly discards native keys, the crosswalk, and model-only
+fields from its two returned canonical data frames. This is meaningful but
+bounded source interpretation, not an EHR simulator or general feature table.
 
-```text
-0.20 * remaining seconds through W30 / 2,592,000
-```
+The fictional project's normal provider is project-owned. It receives the
+unchanged request, resolves `request$episode_id` through the project-owned
+crosswalk to the native fictional stay, retrieves the provider-only predictor,
+requires its availability through `request$as_of_time`, and uses it in one
+simple deterministic, inspectable, bounded, explicitly nonclinical probability
+calculation. Missing or late predictor input exercises the existing
+`provider_input_unavailable` authoring failure. The exact small formula and
+fictional values are implementation choices protected by these invariants;
+they need not reproduce the installed transparent timing-only relationship.
 
-It returns only the governed probability through
+The callable returns only the governed probability through
 `rrp_calculate_risk(project_root, request)`, declares a distinct fictional
 provider implementation, and has no model artifact identity. The project does
 not select the installed transparent provider for its main path, because doing
-so would fail to prove normal provider authoring. Separate regression evidence
-retains the installed provider and direct raw project-provider paths.
+so would fail to prove normal provider authoring and private predictor
+resolution. Separate regression evidence retains the installed provider and
+direct raw project-provider paths.
 
 The fictional project declares an empty extension-package inventory and uses
 base R only. It does not add a ceremonial dependency. Standard-authoring tests
@@ -4577,11 +4749,15 @@ supported package operations plus the explicit trusted fictional generator:
 ```text
 open one explicit installed software-resource catalog
         ↓
+resolve the three version-matched installed product documents
+        ↓
 initialize the supplied fictional project at an absent destination
         ↓
 read its README, mapping, provider, manifest, and authoring metadata
         ↓
 explicitly run the project-owned source generator
+        ↓
+inspect native identities, project crosswalk, and provider-only predictor
         ↓
 validate the project and explicitly initialize project state
         ↓
@@ -4593,30 +4769,34 @@ repeat the same key, reproduce producer/admission evidence, and prove no
 episode/provider reexecution after the complete scope matches
 ```
 
-The documentation supplies complete R calls and always takes explicit
-software/project roots. It does not add a CLI, infer a root from Git or the
-working directory, source repository operations, or expose DuckDB/SQL as the
-human history interface.
+The cataloged Fictional Reference Walkthrough supplies complete R calls and
+always takes explicit software/project roots. The project-local README and
+callable comments orient the local edits and point to stable installed
+resource identities. None adds a CLI, infers a root from Git or the working
+directory, sources repository operations, or exposes DuckDB/SQL as the human
+history interface.
 
 ### Non-privilege and architecture tests
 
 The fictional project is acceptable only if both architecture tests answer
 yes:
 
-1. replacing its source generator/mapping and risk function with hospital
-   implementations leaves the standard scaffold, adapter, raw contracts, and
-   RRP execution/history machinery unchanged; and
+1. replacing its source, mapping, identity resolution, predictor retrieval,
+   and risk calculation with hospital implementations leaves the standard
+   scaffold, adapter, raw contracts, canonical admission, risk execution, and
+   durable-history machinery unchanged; and
 2. replacing its thin registration with a direct raw registration can express
    equivalent producer/provider behavior through the already accepted lower-
    level contracts.
 
-Evidence must additionally prove no fictional ID, source filename, local
-column, event code, or branch appears in generic runtime/execution code; no
-installed component is selected implicitly; standard and direct-raw fixtures
-reach the same existing contract validators; the project runs after copying
-from installed resources in an unrelated non-Git directory; and execution has
-no repository-root or source-tree access. Installed fictional templates are
-acquisition material only and cannot execute until realized as an explicit
+Evidence must additionally prove no fictional project/native ID, crosswalk
+path, source filename/field/code, predictor name, calculation, or branch
+appears in generic runtime/execution/history code; no installed component is
+selected implicitly; standard and direct-raw fixtures reach the same existing
+contract validators; the project runs after copying from installed resources
+in an unrelated non-Git directory; and execution has no repository-root or
+source-tree access. Only template acquisition/materialization is special.
+Installed fictional templates cannot execute until realized as an explicit
 project selected by the caller.
 
 ### Stable handoff to Stage 9
@@ -4645,16 +4825,21 @@ safe isolated evaluation, authoring failure tokens, deterministic normal-path
 bundle identity, and raw producer/provider adapters. Export
 `rrp_register_authored_project()` and `rrp_authoring_failure()`. Replace the
 installed initializer templates atomically with the six-file standard
-scaffold, retain create-only staging/promotion, and update loader/doctor/
+scaffold, including exact provider-request and focused producer comments plus
+README orientation/resource lookup. Admit controlled Markdown, catalog the
+installed Project Authoring Guide and Provider Request Reference under
+`rrpplatform`, retain create-only staging/promotion, and update loader/doctor/
 ownership/catalog/validator/package documentation only for realized behavior.
 
-**Interfaces/contracts changed:** one new authoring authority and the two
-interfaces above; no change to the `0.3.0` manifest, registration, producer,
-provider, canonical, runtime, or history contracts. The exact standard
-producer/provider file names, bindings, arguments, success values, failure
-token, metadata, and dependency declaration are those defined in this Stage 8
-plan. `R/register.R` remains the sole trusted registration entry point and
-compiles the standard layer into the raw result.
+**Interfaces/contracts changed:** one new authoring authority, the two
+interfaces above, and the narrow resource-catalog format admission needed for
+closed Markdown documentation; no change to the `0.3.0` manifest,
+registration, producer, provider, canonical, runtime, or history contracts.
+In particular, `rrp.risk-request@0.1.0` remains the exact flat 19-field Stage 6
+request. The exact standard producer/provider file names, bindings, arguments,
+success values, failure token, metadata, and dependency declaration are those
+defined in this Stage 8 plan. `R/register.R` remains the sole trusted
+registration entry point and compiles the standard layer into the raw result.
 
 **Historical reuse:** adapt the current initializer's installed-template,
 token-rendering, exact-inventory, staged validation, and atomic promotion;
@@ -4664,27 +4849,35 @@ adapter constructors inform envelope ownership, but repository-root
 composition, installed producer registries, arbitrary producer configuration,
 and YAML executable selection do not return.
 
-**Evidence:** standard initialized inventory and generated guidance; load and
-doctor without callable invocation; exact metadata and dependency rules;
-producer domains adapted to the existing 15-field result and 16-field
-candidate; provider scalar/failure adapted to the existing four-field result;
-deterministic content-sensitive bundle identity; controlled failures and
-thrown-error containment; malformed, unsafe, extra-binding, wrong-signature,
-linked/path-conflicting, missing-package, wrong-version, and RRP-shadowing
-failure; positive declared temporary extension-package resolution under the
-controlled library order; standard/raw semantic equivalence fixtures;
-unchanged direct raw projects; existing installed transparent provider;
-copied project; process restoration; builds, isolated install/load, strict
-checks, and inherited regressions.
+**Evidence:** standard initialized inventory and generated guidance; exact
+request class/fields/types/output alternatives visible from the scaffold;
+focused producer return guidance; installed authoring/request documents
+resolvable by stable identity outside Git; scaffold/document/contract
+agreement; load and doctor without callable invocation; exact metadata and
+dependency rules; producer domains adapted to the existing 15-field result and
+16-field candidate; provider scalar/failure adapted to the existing four-field
+result; deterministic content-sensitive bundle identity; controlled failures
+and thrown-error containment; malformed, unsafe, extra-binding, wrong-
+signature, linked/path-conflicting, missing-package, wrong-version, and RRP-
+shadowing failure; positive declared temporary extension-package resolution
+under the controlled library order; standard/raw semantic equivalence
+fixtures; unchanged direct raw projects; existing installed transparent
+provider; copied project; process restoration; builds, isolated install/load,
+strict checks, and inherited regressions.
 
 **Explicit exclusions:** no fictional source/project yet; no SQL, DBI, Parquet,
-API, database, engine, or model-specific helper; no dependency installation or
-lockfile; no new target/canonical domain; no execution/history change; no CLI.
+API, database, engine, or model-specific helper; no native-ID/crosswalk or
+predictor persistence; no universal feature schema/store or temporal-feature
+validator; no dependency installation or lockfile; no new target/canonical
+domain; no execution/history change; no documentation-specific API/site/PDF/
+publication framework; no CLI.
 
 **Completion condition:** a new independent project visibly exposes two small
-normal customization points and loads as the same raw producer/provider
-registration, while advanced direct raw projects remain valid. No Stage 8
-reference data or durable history yet exists.
+normal customization points, states the exact provider input/output contract
+and hospital/RRP identity/predictor/time responsibilities, resolves the two
+installed detailed documents without Git, and loads as the same raw producer/
+provider registration, while advanced direct raw projects remain valid. No
+Stage 8 reference data or durable history yet exists.
 
 ### Increment 8.B — Fictional project, meaningful mapping, and project provider
 
@@ -4694,40 +4887,51 @@ consumer of the completed 8.A authoring capability.
 **Scope and ownership:** add cataloged installed fictional-project template
 assets and `rrp_initialize_fictional_project()` under `rrpplatform`; implement
 the project-owned create-only source generator, source-local checks, mapping,
-standard provider callable, metadata, empty dependency declaration, and
-teaching README. Keep fictional vocabulary and behavior in those assets and
-their focused tests. Use the same loader, producer admission, provider, and
-state boundaries as any project.
+explicit identity crosswalk, provider-only predictor and availability check,
+standard provider callable, metadata, empty dependency declaration, teaching
+README, and installed Fictional Reference Walkthrough. Keep fictional
+vocabulary and behavior in those assets and their focused tests. Use the same
+loader, producer admission, provider, and state boundaries as any project.
 
 **Interfaces/contracts changed:** one package-level fictional-project
 initializer and its cataloged template inventory; no generic synthetic
-component, source contract, canonical field, provider contract, target, or
-history schema. The realized project uses the 8.A files and functions exactly.
+component, source contract, canonical/source-ID/predictor field, provider
+contract, target, or history schema. The crosswalk and predictor remain
+project data. The realized project uses the 8.A files and functions exactly.
 
 **Historical reuse:** selectively adapt `v0.1.0` deterministic ID/table ideas,
 explicit reference time, source/canonical vocabulary separation, joins,
 terminal-code translation, occurrence/availability filtering, fictional
 classification, scale summaries, and invariant-focused failure fixtures.
-Reduce six tables and large seeded scales to two small literal CSV tables and
-the current two-domain profile. Adapt the transparent calculation to the
-current fixed-endpoint target as a project callable.
+Reduce six tables and large seeded scales to two small literal fact tables plus
+one explicit bounded identity crosswalk and the current two-domain profile.
+Adapt transparent nonclinical calculation mechanics to one project-only,
+time-aware fictional predictor under the current fixed-endpoint target.
 
 **Evidence:** explicit byte-deterministic generation; create-only generated
 path; visibly fictional values; understandable scale; source schema/key/time/
-code failures before mapping; meaningful two-table translation; availability
-filtering; exact canonical domains; no source-only field leakage; project-
-owned provider success and controlled failure; empty extension package
-inventory; copied project; no installed-provider bypass; no generic fictional
-identifier/source vocabulary branch; and inherited 8.A/raw contract tests.
+code failures before mapping; at least one native identity rejected by the
+canonical grammar; explicit canonical-to-native crosswalk resolution;
+meaningful fact-table translation and availability filtering; exact canonical
+domains; no native ID/crosswalk/predictor leakage; provider retrieval of one
+project-only predictor by `request$episode_id`, cutoff check against
+`request$as_of_time`, deterministic probability, and controlled missing/late
+input failure; installed walkthrough; empty extension package inventory;
+copied project; no installed-provider bypass; no generic fictional identity/
+crosswalk/source/predictor/calculation branch; and inherited 8.A/raw contract
+tests.
 
 **Explicit exclusions:** no realistic EHR simulator, large benchmark, real
-data, credentials, connection convention, clinical model, generated database,
-durable reference run, product, app, CLI, distribution, or deployment.
+data, credentials, connection convention, identity service, general feature
+table/store, clinical model, generated database, durable reference run,
+product, app, CLI, distribution, or deployment.
 
 **Completion condition:** an independently realized fictional project can
-explicitly generate meaningful local source and reach admitted canonical data
-and accepted project-provider estimates through the standard layer, but its
-durable Stage 7 reference history is not yet the accepted installed proof.
+explicitly generate meaningful local source, map noncanonical native identity,
+reach admitted canonical data, resolve a provider-only predictor back from the
+canonical request identity, and produce accepted project-provider estimates
+through the standard layer. Its durable Stage 7 reference history is not yet
+the accepted installed proof.
 
 ### Increment 8.C — Installed end-to-end reference proof and human runbook
 
@@ -4735,9 +4939,10 @@ durable Stage 7 reference history is not yet the accepted installed proof.
 and resources outside the repository and document the exact human package-
 level path.
 
-**Scope and ownership:** add the focused end-to-end installed proof, reference
-runbook, bounded human authoring inspection, package/repository ownership and
-validator updates, and only the narrow corrections revealed by that proof.
+**Scope and ownership:** add the focused end-to-end installed proof, use the
+cataloged Fictional Reference Walkthrough as the human runbook, perform bounded
+human authoring/documentation inspection, update package/repository ownership
+and validators, and make only the narrow corrections revealed by that proof.
 Realize a fresh fictional project from installed templates, explicitly
 generate source, validate and initialize it, run one complete durable scope,
 inspect history, repeat idempotently, copy and rerun/reopen where applicable,
@@ -4755,21 +4960,26 @@ privileged reference commands, old daily-hazard history, products/app coupling,
 and distribution-era wrappers.
 
 **Evidence:** both authoritative local validators; resource/catalog closure;
-package-native authoring and fictional tests; source/package parsing; builds;
-dependency-order isolated install/load; strict checks; unrelated non-Git
-installed execution; no source-tree access; explicit source generation;
-project validation/state initialization; eligible/ineligible outcomes;
-accepted transparent estimates; scope/dispositions/completeness; raw/current
-history inspection; same-key deterministic producer/admission reproduction
-with no episode/provider reexecution after complete match; copied-project
-portability; dependency isolation; raw escape-hatch regression; no privileged
-branch; generated-artifact/hygiene checks; and successful hosted workflow
-evidence for the exact committed Stage 8 implementation before formal
-acceptance.
+all three Markdown documents resolve by stable identity outside Git and their
+links/references agree with realized interfaces; generated README/callable
+comments identify normal edits and installed references; package-native
+authoring and fictional tests; source/package parsing; builds; dependency-order
+isolated install/load; strict checks; unrelated non-Git installed execution;
+no source-tree access; explicit source generation; project validation/state
+initialization; canonical-ID to project-crosswalk to provider-only-predictor
+execution; proof that private fields do not enter canonical/history structures;
+eligible/ineligible outcomes; accepted fictional estimates; scope/
+dispositions/completeness; raw/current history inspection; same-key
+deterministic producer/admission reproduction with no episode/provider
+reexecution after complete match; copied-project portability; dependency
+isolation; raw escape-hatch regression; no privileged branch; generated-
+artifact/hygiene checks; and successful hosted workflow evidence for the exact
+committed Stage 8 implementation before formal acceptance.
 
 The human inspection records project file count, ordinary edit surfaces,
-removed protocol ceremony, `R/register.R` non-editing, mapping/model
-readability, and the visible hospital/RRP responsibility boundary.
+removed protocol ceremony, `R/register.R` non-editing, exact request
+discoverability, mapping/model readability, installed-document resolution, and
+the visible hospital/RRP identity, predictor, temporal, and protocol boundary.
 
 **Explicit exclusions:** no products or materialization, app dataset or Shiny
 work, CLI, package installer, closed distribution, scheduling, deployment,
@@ -4779,9 +4989,10 @@ claim.
 **Completion condition:** a human can follow supported package-level steps
 against installed RRP to create, understand, generate, validate, initialize,
 run, repeat, copy, and inspect the normal fictional project through complete
-durable history with no repository or privileged execution path. Formal Stage
-8 acceptance and architecture reconciliation follow as a separate lifecycle
-action, not Increment 8.D.
+durable history; understand exactly what to edit and what the provider receives;
+and access version-matched detailed product documentation with no repository or
+privileged execution path. Formal Stage 8 acceptance and architecture
+reconciliation follow as a separate lifecycle action, not Increment 8.D.
 
 ### Validation and hosted evidence
 
@@ -4792,12 +5003,13 @@ Rscript --vanilla tools/validate-repository.R
 Rscript --vanilla tools/validate-packages.R
 ```
 
-Validation grows only for the cataloged authoring/reference assets, standard
+Validation grows only for the cataloged authoring/reference/documentation
+assets, Markdown projection/access and link/reference consistency, standard
 adapter and raw equivalence, updated initializer, deterministic fictional
-project, package-native tests, installed non-Git path, exact namespaces and
-dependencies, builds, isolated install/load, strict checks, and repository
-hygiene. It must not become a separate Stage 8 framework or revive Phase
-suites.
+identity/crosswalk/predictor path, package-native tests, installed non-Git
+path, exact namespaces and dependencies, builds, isolated install/load, strict
+checks, and repository hygiene. It must not become a separate Stage 8
+framework or revive Phase suites.
 
 The read-only Ubuntu/R 4.4 `package-foundation` workflow should continue to
 invoke those same human operations. No CI behavior change is planned unless
@@ -4814,6 +5026,9 @@ build and isolate-install rrpruntime then rrpplatform with declared closure
         ↓
 project the exact installed software-resource root
         ↓
+resolve the Project Authoring Guide, Provider Request Reference, and
+Fictional Reference Walkthrough without repository access
+        ↓
 initialize one normal project and inspect its standard authoring scaffold
         ↓
 realize the supplied fictional project at an unrelated absent destination
@@ -4821,6 +5036,9 @@ realize the supplied fictional project at an unrelated absent destination
 inspect its two hospital logic files and declarative metadata
         ↓
 explicitly generate the small fictional source tables
+        ↓
+inspect noncanonical native identity, explicit project crosswalk, and the
+provider-only time-aware predictor
         ↓
 validate the project and initialize its absent state
         ↓
@@ -4840,6 +5058,7 @@ STOP
 No product or application
 No implicit source generation or state initialization
 No privileged fictional runtime branch
+No RRP-owned crosswalk, predictor store, or documentation-specific API
 No repository, Git, working-directory, or ambient-library dependence
 ```
 
@@ -4849,25 +5068,32 @@ Stage 8 is complete only when:
 
 1. the installed authoring authority closes the standard metadata, files,
    bindings, signatures, return alternatives, dependency declaration, and raw
-   adaptations without duplicating any existing semantic authority;
+   adaptations without duplicating any existing semantic authority, while the
+   installed documentation remains explanatory rather than a competing
+   contract;
 2. new normal projects receive the six-file discoverable scaffold, contain
    only two hospital-specific logic files, and need no manual raw registration
-   or envelope construction;
+   or envelope construction; their comments and README expose the exact normal
+   callable inputs/outputs, edit surfaces, and installed documentation lookup;
 3. generated `R/register.R` remains the sole fixed trusted entry point, is thin
    stable wiring, is not normally edited, and performs no discovery;
 4. standard producer authors own source access/interpretation and exact
-   canonical-domain content while RRP owns API/profile/capability identities,
-   bundle/result construction, content-sensitive bundle identity, and
-   admission handoff;
-5. standard provider authors own model/engine invocation and one governed
-   probability while RRP owns target/runtime compatibility, raw result,
-   execution containment, validation, and accepted-estimate construction;
+   canonical-domain content, native-to-canonical assignment, and any local
+   crosswalk while RRP owns canonical requirements, API/profile/capability
+   identities, bundle/result construction, content-sensitive bundle identity,
+   and admission handoff;
+5. standard provider authors own canonical-to-local resolution, private
+   predictor retrieval/engineering and cutoff validity, model/engine
+   invocation, and one governed probability while RRP owns analytical time,
+   target/runtime compatibility, request construction, raw result, execution
+   containment, validation, and accepted-estimate construction;
 6. implementation/mapping/provider identity and optional paired model identity
    remain explicit and truthful while every invariant contract identity is
    derived from installed authority;
 7. standard declared failures map only to existing raw codes, arbitrary
    errors remain privacy-safe detected failures, and no source/model/private
-   condition content enters diagnostics;
+   condition content enters diagnostics; missing/late private input uses the
+   existing provider-input-unavailable behavior;
 8. normal adapters return exactly the existing raw registration, producer,
    bundle, and provider structures and invoke the unchanged admission/runtime/
    history paths rather than parallel engines;
@@ -4880,51 +5106,65 @@ Stage 8 is complete only when:
 11. extension package/version declaration is closed and validated under the
     existing RRP-first controlled library policy without adding a package
     manager, solver, source lock, or artificial fictional dependency;
-12. the fictional project is independently realized from installed visible
+12. exactly three version-matched Markdown product documents are closed
+    catalog resources, resolve through existing explicit resource access
+    outside Git, and agree with the scaffold and installed semantic contracts;
+13. the fictional project is independently realized from installed visible
     templates and is never an installed registered component or generic-code
     branch;
-13. its explicit generator produces byte-deterministic, visibly fictional,
+14. its explicit generator produces byte-deterministic, visibly fictional,
     nonclinical, human-inspectable source at one declared reference time and
-    never runs implicitly during RRP execution;
-14. local source tables differ materially from canonical domains through
-    names, relationships, codes, identifiers, and timestamp representation,
-    and mapping performs real joins/translation/availability filtering;
-15. source-local invalidity fails before mapping, canonical invalidity remains
-    RRP admission responsibility, and source-only fields never cross the
-    canonical boundary;
-16. the selected reference provider is project-owned, transparent,
+    never runs implicitly during RRP execution; at least one native identity
+    is unsuitable as a canonical identity and an explicit project-owned
+    crosswalk supplies the valid resolution;
+15. local source tables differ materially from canonical domains through
+    names, relationships, codes, identifiers, timestamp representation, and a
+    provider-only time-aware predictor; mapping performs real joins/
+    translation/availability filtering and excludes private model data;
+16. source-local invalidity fails before mapping, canonical invalidity remains
+    RRP admission responsibility, and native IDs, crosswalks, model-only
+    fields, and arbitrary predictors never cross the canonical boundary or
+    enter generic state/history where prohibited;
+17. the selected reference provider is project-owned, transparent,
     deterministic, nonclinical, has truthful implementation/null-model
-    identity, and reaches the unchanged Stage 6 path without selecting or
-    special-casing the installed provider;
-17. the reference dataset produces stable eligible and distinct ineligible
+    identity, resolves canonical request identity through the private
+    crosswalk, checks one private predictor against `request$as_of_time`, uses
+    it in the probability, and reaches the unchanged Stage 6 path without
+    selecting or special-casing the installed provider;
+18. the reference dataset produces stable eligible and distinct ineligible
     cases, accepted estimates, terminal dispositions, exact membership, and a
     derived-complete durable scope suitable for later Stage 9 proof;
-18. the complete reference path runs from installed packages/resources in an
-    unrelated non-Git location with explicit roots and no repository/source-
-    tree access;
-19. copied-project execution/reopen uses only the copied root, and no original
+19. the complete reference path and all three documents run/resolve from
+    installed packages/resources in an unrelated non-Git location with
+    explicit roots and no repository/source-tree access;
+20. copied-project execution/reopen uses only the copied root, and no original
     path, working directory, Git state, or ambient user/site library is an
     operational dependency;
-20. same-key repeat of complete history performs no episode/provider work,
+21. same-key repeat of complete history performs no episode/provider work,
     while ordinary raw/current inspection returns the accepted Stage 7
     evidence without direct DuckDB access;
-21. package-native tests prove standard-to-raw equivalence, retained raw paths,
-    deterministic generation/mapping/provider behavior, controlled failures,
-    dependency isolation, and architectural non-privilege without duplicating
-    all Stage 5–7 adversarial suites;
-22. the documented human path uses supported package operations, identifies
-    the normal edit surfaces, and requires no knowledge of every low-level
-    protocol field or any Stage 11 CLI;
-23. repository/package validation, parsing, package-native tests, builds,
+22. package-native tests prove standard-to-raw equivalence, retained raw paths,
+    deterministic generation/mapping/crosswalk/predictor/provider behavior,
+    controlled failures, dependency isolation, documentation agreement, and
+    architectural non-privilege without duplicating all Stage 5–7 adversarial
+    suites;
+23. the cataloged human path uses supported package operations, identifies the
+    normal edit surfaces, completely documents the unchanged 19-field request,
+    explains canonical/local identity and private predictor/time
+    responsibilities, and requires no knowledge of package internals, every
+    low-level protocol field, or any Stage 11 CLI;
+24. repository/package validation, parsing, package-native tests, builds,
     isolated install/load, strict checks, installed proof, hygiene, and exact
     committed hosted evidence all pass with no retained generated source,
     project state, database, backup, product, archive, or check artifact;
-24. bounded human inspection confirms that the standard layer materially
-    removes protocol ceremony and clearly separates hospital meaning from RRP
-    governance; and
-25. no product/materialization, app, CLI, dependency installer/lockfile,
+25. bounded human inspection confirms that the standard layer materially
+    removes protocol ceremony, the request is discoverable, the three teaching
+    surfaces agree, and hospital meaning/data/time responsibility is clearly
+    separated from RRP governance; and
+26. no product/materialization, app, CLI, dependency installer/lockfile,
     scheduler, deployment, distribution, release, production-support,
-    clinical-validation, or other Stage 9+ capability enters.
+    clinical-validation, feature/crosswalk service, documentation site/PDF/
+    publication framework, or other Stage 9+ capability enters.
 
 After implementation and exact committed hosted evidence pass, reconcile the
 realized authoring/reference path with Platform True North and Platform
@@ -4934,8 +5174,11 @@ Architecture. Stage acceptance is a separate lifecycle action; no Increment
 ### Plain-language exit state
 
 > A human can run a normal independent fictional project from source mapping
-> through durable remaining-risk history and inspect the result. RRP still has
-> no logical products or application.
+> through durable remaining-risk history and inspect the result, understand
+> what to edit and exactly what the provider receives, see canonical identity
+> resolved to private model data by project code, and use the corresponding
+> version-matched installed product documentation without the development
+> repository. RRP still has no logical products or application.
 
 ### Historical reuse disposition
 
@@ -4951,8 +5194,8 @@ burden.
 
 | Classification | Historical finding and Stage 8 disposition |
 |---|---|
-| Reuse substantially | Visibly fictional identities/classification; deterministic explicit source construction; fixed reference instant; separate source-local validation; meaningful source/canonical vocabulary; joins, code translation, occurrence/availability filtering; canonical leakage tests; human-inspectable summaries; materially different adopter fixtures; transparent nonclinical calculation; invariant-focused failure cases. |
-| Adapt concept/mechanic | Reduce the six-table seeded reference/test scales to two small literal source tables; map only the current discharge-episode and terminal-event profile; move all behavior into an ordinary initialized project; adapt producer results through the new standard layer; use the current remaining-to-day-30 provider request and project-owned transparent callable; run through current durable bundle history. |
+| Reuse substantially | Visibly fictional identities/classification; deterministic explicit source construction; fixed reference instant; separate source-local validation; meaningful source/canonical vocabulary; joins, explicit identity mapping, code translation, occurrence/availability filtering; canonical leakage tests; human-inspectable summaries; materially different adopter fixtures; transparent nonclinical calculation; invariant-focused failure cases. |
+| Adapt concept/mechanic | Reduce the six-table seeded reference/test scales to two small literal fact tables plus one explicit identity crosswalk; map only the current discharge-episode and terminal-event profile; move all behavior into an ordinary initialized project; adapt producer results through the new standard layer; use the unchanged remaining-to-day-30 provider request with one project-owned time-aware fictional predictor; run through current durable bundle history. |
 | Reject | Installed synthetic registration/defaults, generated reference composition, repository-root loading, `.GlobalEnv` composition, arbitrary YAML producer configuration, privileged reference commands, old baseline-risk/generic-event domains, daily-hazard estimands and provider formula, old run/history identities, product/application coupling, Phase aggregation, Hospital distribution wrappers, and source-tree runtime dependence. |
 | Defer | Richer hospital source tooling, SQL/database helpers, remote/service/Flux adapters, fitted-model packaging and integrity, package acquisition/lockfiles, large scales/performance, products/app, CLI, distribution, deployment, production governance, and clinical validation. |
 
@@ -4972,11 +5215,13 @@ Real hospital mappings, source-specific helpers, SQL/DBI conventions,
 connection/credential management, richer EHR simulation, project package
 acquisition and full reproducibility, model artifact packaging/digests/loading,
 remote/non-R engines, training/evaluation/calibration/approval/monitoring,
-performance scale claims, automated operations, products/materialization,
-application, CLI, distribution, deployment, release, clinical validation, and
-production governance remain absent. Future source or engine conveniences may
-adapt into the standard callable boundaries; they must not establish separate
-ingestion or provider architectures.
+universal predictor schemas, feature stores, RRP-owned source-ID registries or
+crosswalks, arbitrary predictor persistence or temporal validation, performance
+scale claims, automated operations, products/materialization, application,
+CLI, documentation sites/PDF/publication pipelines, distribution, deployment,
+release, clinical validation, and production governance remain absent. Future
+source or engine conveniences may adapt into the standard callable boundaries;
+they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 

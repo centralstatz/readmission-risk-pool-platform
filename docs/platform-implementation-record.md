@@ -3559,3 +3559,78 @@ planning pass.
 and acceptance but is not yet accepted or authorized for implementation. No
 increment is complete. The next lifecycle action is review and acceptance of
 the detailed Stage 8 plan; only then may Increment 8.A begin.
+
+## Stage 8 authoring-UX assessment and detailed-plan revision — 2026-09-21
+
+A bounded non-authoritative assessment examined the realized Stage 5–7
+canonical identity, request/provider, history, project-initialization, and
+installed-resource behavior before Stage 8 implementation. It established
+that the existing detached flat 19-field `rrp.risk-request@0.1.0` and canonical
+episode identity are sufficient for the planned normal provider callable. No
+Stage 4–7 manifest, registration, canonical, runtime, provider, estimate, or
+history contract requires revision. The gap is hospital-facing
+discoverability and executable teaching, not request redesign.
+
+The assessment also established the intended provider data boundary. RRP owns
+the analytical question and cutoff, eligibility, request, compatibility,
+invocation, output validation, accepted estimate, and durable attribution.
+The hospital project owns native identity meaning, canonical assignment and
+canonical-to-local resolution, private predictor acquisition/engineering,
+their validity at `request$as_of_time`, model execution, truthful versions,
+and clinical/model governance. RRP does not add native IDs, crosswalks,
+arbitrary predictors, a universal feature schema, or a feature store for
+provider convenience.
+
+The assessment is retained at
+`docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md`
+as reasoning evidence and was explicitly admitted to the closed repository
+inventory. Its accepted conclusions were reconciled into the authoritative
+Stage 8 plan without turning the assessment into authority.
+
+The revised Stage 8 plan retains the same one-architecture model and the
+existing 8.A/8.B/8.C sequence. Stage 8 now introduces the first three single-
+source cataloged Markdown product documents. Increment 8.A owns the Project
+Authoring Guide and exact Provider Request Reference; Increment 8.B owns the
+Fictional Reference Walkthrough. Generated callable comments and README
+orientation expose the exact normal interface and stable installed lookups
+while remaining smaller than the manuals. The existing resource interface
+remains sufficient; only controlled Markdown admission and closed catalog/
+projection evidence are planned.
+
+Increment 8.B now makes the fictional project prove the production identity
+and private-data boundary. At least one native fictional ID cannot serve
+directly as a canonical identity; an explicit small project-owned crosswalk
+provides resolution; and one time-aware provider-only predictor is excluded
+from canonical domains, resolved back from `request$episode_id`, checked at
+`request$as_of_time`, and used in a deterministic nonclinical calculation.
+Generic RRP code knows none of those fictional details. The installed
+transparent provider remains separate regression evidence rather than the
+fictional project's main calculation.
+
+Increment 8.C now proves all three documentation/teaching surfaces and the
+canonical-ID-to-project-crosswalk-to-private-predictor path from installed RRP
+outside Git, in addition to the existing durable execution, repeat,
+copy/reopen, raw escape-hatch, hosted-evidence, and non-privilege proof. The
+cataloged Fictional Reference Walkthrough is the human runbook. No Increment
+8.D was added.
+
+Reconciliation found no materially stale Platform Architecture, AGENTS, or
+README statement: the architecture already distinguishes installed product
+documentation from development evidence and treats product docs as ordinary
+installed resources, while AGENTS and README correctly say Stage 8 is
+detailed, unimplemented, and awaiting review and acceptance. Implementation
+guidance was updated only to name the retained Stage 8 assessment in its
+current ownership map and to identify the detailed plan as revised; no
+development method or implementation claim changed.
+
+This was planning/documentation reconciliation only. No Stage 8 source,
+resource, package behavior, contract, template, test, workflow, generated
+artifact, or installed Markdown document was created. Stage 8 remains
+unimplemented and unauthorized until this revised detailed plan is reviewed
+and accepted. No unresolved architecture question blocks that review; only
+then may Increment 8.A begin.
+
+Proportionate closeout evidence passed the authoritative repository validator
+with all eight checks and zero issues, and `git diff --check` passed. Broader
+package/resource validation was not rerun because no package, installed
+resource, contract, catalog, test, or workflow behavior changed.
