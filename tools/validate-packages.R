@@ -2794,13 +2794,37 @@ validation_supervisor_path <- local({
       "output_path=$3",
       "marker_path=$4",
       "shift 4",
-      "set -m 2>/dev/null || exit 126",
-      "\"$@\" </dev/null >\"$output_path\" 2>&1 &",
+      "if command -v setsid >/dev/null 2>&1; then",
+      "  launch_mode=setsid",
+      "  setsid \"$@\" </dev/null >\"$output_path\" 2>&1 &",
+      "else",
+      "  launch_mode=monitor",
+      "  set -m 2>/dev/null || exit 126",
+      "  \"$@\" </dev/null >\"$output_path\" 2>&1 &",
+      "fi",
       "child_pid=$!",
       "terminate_child_group() {",
-      "  kill -TERM -\"$child_pid\" 2>/dev/null || kill -TERM \"$child_pid\" 2>/dev/null || true",
+      "  if kill -TERM -\"$child_pid\" 2>/dev/null; then",
+      "    term_target=group",
+      "  elif kill -TERM \"$child_pid\" 2>/dev/null; then",
+      "    term_target=child-only",
+      "  else",
+      "    term_target=not-found",
+      "  fi",
+      "  printf 'term-target=%s\\n' \"$term_target\" >>\"$marker_path\"",
       "  sleep 1",
-      "  kill -KILL -\"$child_pid\" 2>/dev/null || kill -KILL \"$child_pid\" 2>/dev/null || true",
+      "  if kill -KILL -\"$child_pid\" 2>/dev/null; then",
+      "    kill_target=group",
+      "  elif kill -KILL \"$child_pid\" 2>/dev/null; then",
+      "    kill_target=child-only",
+      "  else",
+      "    kill_target=not-found",
+      "  fi",
+      "  printf 'kill-target=%s\\n' \"$kill_target\" >>\"$marker_path\"",
+      "}",
+      "record_cleanup() {",
+      "  printf '%s\\n' \"$1\" >\"$marker_path\"",
+      "  printf 'validator-pid=%s\\nsupervisor-pid=%s\\nchild-pgid=%s\\nlaunch-mode=%s\\nelapsed-before-term=%s\\n' \"$parent_pid\" \"$$\" \"$child_pid\" \"$launch_mode\" \"$elapsed\" >>\"$marker_path\"",
       "}",
       "cleanup() {",
       "  if [ -n \"${watchdog_pid:-}\" ]; then kill \"$watchdog_pid\" 2>/dev/null || true; fi",
@@ -2808,25 +2832,35 @@ validation_supervisor_path <- local({
       "}",
       "trap 'cleanup; exit 130' HUP INT TERM",
       "(",
+      "  started_at=$(date +%s)",
       "  elapsed=0",
       "  while kill -0 \"$child_pid\" 2>/dev/null; do",
+      "    now=$(date +%s)",
+      "    elapsed=$((now - started_at))",
       "    if ! kill -0 \"$parent_pid\" 2>/dev/null; then",
-      "      printf '%s\\n' abandoned >\"$marker_path\"",
+      "      record_cleanup abandoned",
       "      terminate_child_group",
       "      exit 0",
       "    fi",
       "    if [ \"$elapsed\" -ge \"$timeout_seconds\" ]; then",
-      "      printf '%s\\n' timeout >\"$marker_path\"",
+      "      record_cleanup timeout",
       "      terminate_child_group",
       "      exit 0",
       "    fi",
       "    sleep 1",
-      "    elapsed=$((elapsed + 1))",
       "  done",
       ") &",
       "watchdog_pid=$!",
+      "command_started_at=$(date +%s)",
       "wait \"$child_pid\"",
       "status=$?",
+      "command_finished_at=$(date +%s)",
+      "command_elapsed=$((command_finished_at - command_started_at))",
+      "if [ ! -f \"$marker_path\" ] && [ \"$command_elapsed\" -ge \"$timeout_seconds\" ]; then",
+      "  elapsed=$command_elapsed",
+      "  record_cleanup timeout",
+      "  printf 'term-target=not-required-command-exited\\nkill-target=not-required-command-exited\\n' >>\"$marker_path\"",
+      "fi",
       "if [ -f \"$marker_path\" ]; then",
       "  wait \"$watchdog_pid\" 2>/dev/null || true",
       "else",
@@ -2868,6 +2902,7 @@ run_command <- function(
     return(list(
       status = as.integer(status), output = output,
       timed_out = identical(as.integer(status), 124L), abandoned = FALSE,
+      cleanup = character(),
       elapsed = proc.time()[["elapsed"]] - started
     ))
   }
@@ -2893,15 +2928,17 @@ run_command <- function(
     character()
   }
   marker <- if (file.exists(marker_path)) {
-    readLines(marker_path, n = 1L, warn = FALSE, encoding = "UTF-8")
+    readLines(marker_path, warn = FALSE, encoding = "UTF-8")
   } else {
     character()
   }
-  timed_out <- length(marker) == 1L && identical(marker, "timeout")
-  abandoned <- length(marker) == 1L && identical(marker, "abandoned")
+  reason <- if (length(marker) > 0L) marker[[1L]] else ""
+  timed_out <- identical(reason, "timeout")
+  abandoned <- identical(reason, "abandoned")
   list(
     status = if (timed_out) 124L else if (abandoned) 125L else as.integer(status),
     output = output, timed_out = timed_out, abandoned = abandoned,
+    cleanup = marker,
     elapsed = proc.time()[["elapsed"]] - started
   )
 }
@@ -2917,18 +2954,23 @@ require_command_success <- function(
   )
   if (!identical(result$status, 0L)) {
     details <- paste(tail(result$output, 80L), collapse = "\n")
+    cleanup <- if (length(result$cleanup) > 0L) {
+      paste0("\nCleanup metadata:\n", paste(result$cleanup, collapse = "\n"))
+    } else {
+      ""
+    }
     if (isTRUE(result$timed_out)) {
       fail(
         label, " timed out after ", timeout_seconds,
         " seconds; its validation process group was terminated.",
-        if (nzchar(details)) paste0("\n", details) else ""
+        if (nzchar(details)) paste0("\n", details) else "", cleanup
       )
     }
     if (isTRUE(result$abandoned)) {
       fail(
         label, " was abandoned after its controlling validator exited; ",
         "its validation process group was terminated.",
-        if (nzchar(details)) paste0("\n", details) else ""
+        if (nzchar(details)) paste0("\n", details) else "", cleanup
       )
     }
     fail(label, " failed with exit status ", result$status, ".\n", details)
@@ -2938,31 +2980,139 @@ require_command_success <- function(
   invisible(result$output)
 }
 
+validation_process_table <- function() {
+  output <- suppressWarnings(system2(
+    "ps",
+    c("-axo", shQuote("pid=,ppid=,pgid=,sess=,stat=,command=")),
+    stdout = TRUE, stderr = TRUE
+  ))
+  status <- attr(output, "status")
+  if (is.null(status)) status <- 0L
+  require_true(
+    identical(as.integer(status), 0L),
+    paste0(
+      "Validation subprocess state inspection failed.\n",
+      paste(tail(output, 20L), collapse = "\n")
+    )
+  )
+  pattern <- paste0(
+    "^[[:space:]]*([0-9]+)[[:space:]]+([0-9]+)[[:space:]]+",
+    "([0-9]+)[[:space:]]+([0-9]+)[[:space:]]+",
+    "([^[:space:]]+)[[:space:]]+(.*)$"
+  )
+  matches <- regmatches(output, regexec(pattern, output))
+  matches <- matches[lengths(matches) == 7L]
+  require_true(
+    length(matches) > 0L,
+    "Validation subprocess state inspection returned no parseable processes."
+  )
+  data.frame(
+    pid = as.integer(vapply(matches, `[[`, character(1L), 2L)),
+    ppid = as.integer(vapply(matches, `[[`, character(1L), 3L)),
+    pgid = as.integer(vapply(matches, `[[`, character(1L), 4L)),
+    session_id = as.integer(vapply(matches, `[[`, character(1L), 5L)),
+    state = vapply(matches, `[[`, character(1L), 6L),
+    command = vapply(matches, `[[`, character(1L), 7L),
+    stringsAsFactors = FALSE
+  )
+}
+
+format_validation_processes <- function(processes) {
+  if (nrow(processes) == 0L) return("  <none>")
+  paste(sprintf(
+    "  PID=%s PPID=%s PGID=%s SID=%s STATE=%s COMMAND=%s",
+    processes$pid, processes$ppid, processes$pgid,
+    processes$session_id, processes$state, processes$command
+  ), collapse = "\n")
+}
+
+validation_command_identity <- function(line) {
+  match <- regexec(
+    "^leader=([0-9]+) descendant=([0-9]+)$", line
+  )
+  values <- regmatches(line, match)[[1L]]
+  require_true(
+    length(values) == 3L,
+    "Validation subprocess cleanup proof returned malformed process identity."
+  )
+  c(leader = as.integer(values[[2L]]), descendant = as.integer(values[[3L]]))
+}
+
+validation_live_group_members <- function(process_group, watched_pids) {
+  processes <- validation_process_table()
+  relevant <- processes[
+    processes$pgid == process_group | processes$pid %in% watched_pids,
+    , drop = FALSE
+  ]
+  list(
+    all = relevant,
+    live = relevant[!grepl("^Z", relevant$state), , drop = FALSE]
+  )
+}
+
 validate_subprocess_supervisor <- function() {
   if (!identical(.Platform$OS.type, "unix")) return(invisible(TRUE))
+
+  normal <- run_command(
+    "/bin/sh",
+    c("-c", shQuote("sleep 0.1 & descendant=$!; echo leader=$$ descendant=$descendant; wait")),
+    timeout_seconds = 2L, label = "validation subprocess normal-completion proof"
+  )
+  require_true(
+    identical(normal$status, 0L) && !isTRUE(normal$timed_out) &&
+      length(normal$output) == 1L,
+    "Validation subprocess supervisor did not report normal completion."
+  )
+  normal_identity <- validation_command_identity(normal$output[[1L]])
+  normal_state <- validation_live_group_members(
+    normal_identity[["leader"]], normal_identity
+  )
+  require_true(
+    nrow(normal_state$live) == 0L,
+    paste0(
+      "Validation subprocess supervisor left live work after normal completion.\n",
+      format_validation_processes(normal_state$all)
+    )
+  )
+
   result <- run_command(
     "/bin/sh",
-    c("-c", shQuote(
-      "trap '' TERM; sleep 30 & descendant=$!; echo $descendant; wait"
-    )),
+    c("-c", shQuote(paste0(
+      "trap '' TERM; sleep 30 & descendant=$!; ",
+      "echo leader=$$ descendant=$descendant; wait"
+    ))),
     timeout_seconds = 2L, label = "validation subprocess cleanup proof"
   )
-  descendant_pid <- suppressWarnings(as.integer(result$output[[1L]]))
   require_true(
     identical(result$status, 124L) && isTRUE(result$timed_out) &&
-      length(descendant_pid) == 1L && !is.na(descendant_pid),
-    "Validation subprocess supervisor did not report its controlled timeout."
+      length(result$output) == 1L,
+    paste0(
+      "Validation subprocess supervisor did not report its controlled timeout.",
+      if (length(result$cleanup) > 0L) paste0(
+        "\nCleanup metadata:\n", paste(result$cleanup, collapse = "\n")
+      ) else ""
+    )
   )
+  identity <- validation_command_identity(result$output[[1L]])
+  state <- NULL
   for (attempt in seq_len(20L)) {
-    if (!isTRUE(tools::pskill(descendant_pid, signal = 0L))) break
+    state <- validation_live_group_members(identity[["leader"]], identity)
+    if (nrow(state$live) == 0L) break
     Sys.sleep(0.05)
   }
   require_true(
-    !isTRUE(tools::pskill(descendant_pid, signal = 0L)),
-    "Validation subprocess supervisor left a descendant after timeout."
+    nrow(state$live) == 0L,
+    paste0(
+      "Validation subprocess supervisor left live work after timeout.",
+      "\nCleanup metadata:\n", paste(result$cleanup, collapse = "\n"),
+      "\nRelevant process state:\n", format_validation_processes(state$all)
+    )
   )
   cat(sprintf(
-    "PASS validation subprocess timeout and descendant cleanup (%0.2fs)\n",
+    paste0(
+      "PASS validation subprocess normal completion, timeout, nested ",
+      "TERM-resistant cleanup, and process-state proof (%0.2fs)\n"
+    ),
     result$elapsed
   ))
   invisible(TRUE)

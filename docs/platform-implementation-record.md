@@ -3807,5 +3807,64 @@ remains in progress. No product contract, package behavior, installed resource,
 project scaffold, fictional reference implementation, or later-stage
 capability changed.
 
-**Next task:** Increment 8.B — Fictional project, meaningful mapping, and
-project provider, only when explicitly authorized.
+#### Hosted Linux portability follow-up — 2026-09-27
+
+The first committed correction at
+`7ce5c05f4fc12de2ef0f67815adb798a3d45ead6` passed locally on macOS but its
+`package-foundation` push workflow failed immediately in the supervisor
+self-proof with `Validation subprocess supervisor left a descendant after
+timeout.` No package or product proof had begun. The failure exposed two
+portability defects in the new development validator: process-group creation
+depended on non-interactive shell monitor mode, and cleanup success was reduced
+to `kill(pid, 0)`, which cannot distinguish live work from a terminated Linux
+zombie awaiting reaping. The original hosted diagnostic contained no process
+state, so it cannot establish which of those two conditions the runner saw.
+
+The Unix supervisor now uses the installed `setsid` utility when available to
+give the external command an explicit session and process group; the proven
+monitor-mode path remains the macOS fallback. Cleanup records the validator,
+supervisor, and child-group identities, launch mode, elapsed time, and whether
+TERM and KILL addressed the group or only the immediate child. The self-proof
+now exercises normal completion plus a nested TERM-resistant timeout topology
+and inspects PID, PPID, PGID, session, state, and command. Any running,
+sleeping, stopped, or otherwise live member of the watched group or watched
+PIDs remains a failure. A `Z` process is reported as terminated rather than
+misclassified as live validation work; detailed topology and cleanup metadata
+are included only on failure.
+
+Focused local evidence passed the native macOS monitor-mode path repeatedly,
+a bounded local emulation of the Linux `setsid` path, explicit group-signal
+metadata, normal completion, timeout, nested TERM resistance, process-state
+inspection, zombie classification, generated-shell parsing, and controlling-
+parent disappearance cleanup. Docker's client is installed locally but its
+daemon is unavailable, so an actual local Linux runner was not claimed. The
+workflow remains unchanged and correctly invokes the same human validation
+operation on `ubuntu-latest` with R 4.4.
+
+The first full diagnostic run after that portability change exposed one more
+runner defect rather than serving as acceptance evidence: an
+`rrpplatform` check completed after 974.97 seconds despite its advertised
+900-second bound. The watchdog had counted completed one-second polling loops,
+not elapsed wall time, so delayed scheduling or machine sleep could extend the
+real bound. It now compares epoch time on every poll and independently checks
+wall duration when the child exits; a child that happens to finish before a
+delayed watchdog is rescheduled is still reported as timed out when it crossed
+the bound.
+
+After that correction, the complete package validator passed in 228.27 seconds
+with no timeout. The strict `rrpruntime` and `rrpplatform` checks took 5.34 and
+174.59 seconds, installed-resource access took 0.11 seconds, and installed
+state recovery took 28.40 seconds. Immediate PID/PPID/PGID/session/state
+inspection found no remaining validation R, Rscript, R CMD, supervisor, or
+DuckDB-holder process. Repository validation passed all eight checks with zero
+issues, R parsing and generated supervisor-shell parsing passed, and
+`git diff --check` passed.
+
+The portability correction is locally complete but remains open pending a
+successful exact-revision hosted `package-foundation` run. Increment 8.A
+remains complete; Increment 8.B and Increment 8.C have not begun, and Stage 8
+remains in progress.
+
+**Next task:** commit and push this bounded portability correction, record its
+successful hosted validation if obtained, and only then proceed to Increment
+8.B when explicitly authorized.
