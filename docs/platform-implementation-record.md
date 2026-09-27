@@ -3750,3 +3750,62 @@ product, application, CLI, publication, or deployment behavior.
 **Next task:** human review of Increment 8.A, followed by Increment 8.B —
 Fictional project, meaningful mapping, and project provider only when
 explicitly authorized.
+
+### Post-8.A validation-harness lifecycle correction — 2026-09-27
+
+At committed baseline `1f0b5e4a47f647b1aeebedd1f96414114b26447d`, a bounded
+investigation followed an earlier uninstrumented run in which the installed-
+resource subprocess appeared idle and historical validation descendants had
+accumulated under PID 1. The package validator had one synchronous external-
+command path: `system2()` captured combined output through a pipe, introduced
+the observed shell layer, supplied no timeout, created no managed process
+group, and had no cleanup tied to disappearance of the top-level validator.
+Package-native checks also legitimately create nested R processes. A
+controlled reproduction demonstrated that timeout of an intermediate shell
+can leave a deeper descendant holding the capture pipe, delaying the parent,
+and a controlled parent-disappearance proof established the corresponding
+orphan path.
+
+`tools/validate-packages.R` now uses one bounded command abstraction. On Unix
+it starts each external operation in a supervised process group, redirects
+output to a temporary diagnostic file instead of a capture pipe, watches both
+the elapsed bound and the top-level validator PID, sends TERM followed by KILL
+to the complete child group, and reports timeout or abandonment as failure.
+The non-Unix fallback uses base R's bounded `system2()` behavior. Focused
+proofs default to 180 seconds, the installed-resource proof to 120 seconds,
+build and installation operations to 300 seconds, strict package checks to 900
+seconds, and the installed state-recovery lifecycle to 600 seconds. Every
+external operation now prints `START` with its bound and a timed command-level
+`PASS`; failure retains the final 80 diagnostic lines. A small self-proof uses
+a TERM-resistant descendant to verify timeout and descendant cleanup.
+
+The installed-resource subprocess now emits bounded diagnostic checkpoints
+after package load, catalog opening, resource resolution and comparison,
+contract loading, valid-root validation, invalid-root validation, and post-open
+mutation rejection. After reboot, the exact proof completed three consecutive
+focused runs: its child expression took 0.10–0.11 seconds and each complete
+focused projection/proof took 0.40–0.57 seconds. All checkpoints completed.
+Accordingly, no resource, DBI/DuckDB connection, package-finalizer, input wait,
+or RRP product defect was reproduced. The earlier run was not instrumented, so
+the precise instruction or shutdown state of that historical child cannot be
+recovered; the corrected harness will identify the last completed checkpoint
+and terminate the group if it recurs.
+
+Focused evidence passed for TERM-resistant timeout cleanup, clear timeout
+diagnostics including the operation/bound/final child output, and cleanup after
+SIGKILL of a disposable controlling R process. The complete package validator
+then passed once in 100.47 seconds with no timeout: `rrpruntime` check took 5.55
+seconds, `rrpplatform` check 58.51 seconds, installed-resource access 0.11
+seconds, and installed state recovery 14.98 seconds. A process-table inspection
+immediately afterward found no remaining validation R, Rscript, R CMD, or
+supervisor process. Repository validation and diff hygiene also passed after
+the documentation update.
+
+This corrective work changes development validation only. Increment 8.A
+remains complete; Increment 8.B and Increment 8.C have not begun, and Stage 8
+remains in progress. No product contract, package behavior, installed resource,
+project scaffold, fictional reference implementation, or later-stage
+capability changed.
+
+**Next task:** Increment 8.B — Fictional project, meaningful mapping, and
+project provider, only when explicitly authorized.

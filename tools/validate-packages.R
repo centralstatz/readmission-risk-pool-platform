@@ -2782,22 +2782,190 @@ validate_source_boundaries <- function(package_roots) {
   )
 }
 
-run_command <- function(command, arguments, environment = character()) {
-  output <- suppressWarnings(system2(
-    command, arguments, stdout = TRUE, stderr = TRUE, env = environment
+validation_supervisor_path <- local({
+  path <- NULL
+  function() {
+    if (!is.null(path) && file.exists(path)) return(path)
+    path <<- tempfile("rrp-validation-supervisor-", fileext = ".sh")
+    writeLines(c(
+      "#!/bin/sh",
+      "timeout_seconds=$1",
+      "parent_pid=$2",
+      "output_path=$3",
+      "marker_path=$4",
+      "shift 4",
+      "set -m 2>/dev/null || exit 126",
+      "\"$@\" </dev/null >\"$output_path\" 2>&1 &",
+      "child_pid=$!",
+      "terminate_child_group() {",
+      "  kill -TERM -\"$child_pid\" 2>/dev/null || kill -TERM \"$child_pid\" 2>/dev/null || true",
+      "  sleep 1",
+      "  kill -KILL -\"$child_pid\" 2>/dev/null || kill -KILL \"$child_pid\" 2>/dev/null || true",
+      "}",
+      "cleanup() {",
+      "  if [ -n \"${watchdog_pid:-}\" ]; then kill \"$watchdog_pid\" 2>/dev/null || true; fi",
+      "  terminate_child_group",
+      "}",
+      "trap 'cleanup; exit 130' HUP INT TERM",
+      "(",
+      "  elapsed=0",
+      "  while kill -0 \"$child_pid\" 2>/dev/null; do",
+      "    if ! kill -0 \"$parent_pid\" 2>/dev/null; then",
+      "      printf '%s\\n' abandoned >\"$marker_path\"",
+      "      terminate_child_group",
+      "      exit 0",
+      "    fi",
+      "    if [ \"$elapsed\" -ge \"$timeout_seconds\" ]; then",
+      "      printf '%s\\n' timeout >\"$marker_path\"",
+      "      terminate_child_group",
+      "      exit 0",
+      "    fi",
+      "    sleep 1",
+      "    elapsed=$((elapsed + 1))",
+      "  done",
+      ") &",
+      "watchdog_pid=$!",
+      "wait \"$child_pid\"",
+      "status=$?",
+      "if [ -f \"$marker_path\" ]; then",
+      "  wait \"$watchdog_pid\" 2>/dev/null || true",
+      "else",
+      "  kill \"$watchdog_pid\" 2>/dev/null || true",
+      "  wait \"$watchdog_pid\" 2>/dev/null || true",
+      "fi",
+      "trap - HUP INT TERM",
+      "if [ -f \"$marker_path\" ]; then",
+      "  reason=$(sed -n '1p' \"$marker_path\")",
+      "  if [ \"$reason\" = timeout ]; then exit 124; fi",
+      "  if [ \"$reason\" = abandoned ]; then exit 125; fi",
+      "fi",
+      "exit \"$status\""
+    ), path, useBytes = TRUE)
+    Sys.chmod(path, mode = "0700")
+    path
+  }
+})
+
+run_command <- function(
+  command, arguments, environment = character(), timeout_seconds = 180L,
+  label = "external validation command"
+) {
+  require_true(
+    length(timeout_seconds) == 1L && !is.na(timeout_seconds) &&
+      is.numeric(timeout_seconds) && timeout_seconds >= 1,
+    "External validation timeout must be one positive number of seconds."
+  )
+  timeout_seconds <- as.integer(timeout_seconds)
+  started <- proc.time()[["elapsed"]]
+
+  if (!identical(.Platform$OS.type, "unix")) {
+    output <- suppressWarnings(system2(
+      command, arguments, stdout = TRUE, stderr = TRUE, env = environment,
+      timeout = timeout_seconds
+    ))
+    status <- attr(output, "status")
+    if (is.null(status)) status <- 0L
+    return(list(
+      status = as.integer(status), output = output,
+      timed_out = identical(as.integer(status), 124L), abandoned = FALSE,
+      elapsed = proc.time()[["elapsed"]] - started
+    ))
+  }
+
+  output_path <- tempfile("rrp-validation-output-")
+  marker_path <- tempfile("rrp-validation-marker-")
+  on.exit(unlink(c(output_path, marker_path), force = TRUE), add = TRUE)
+  supervisor <- validation_supervisor_path()
+  status <- suppressWarnings(system2(
+    "/bin/sh",
+    c(
+      shQuote(supervisor), shQuote(as.character(timeout_seconds)),
+      shQuote(as.character(Sys.getpid())), shQuote(output_path),
+      shQuote(marker_path), shQuote(command), arguments
+    ),
+    stdout = FALSE, stderr = FALSE, env = environment,
+    timeout = timeout_seconds + 10L
   ))
-  status <- attr(output, "status")
   if (is.null(status)) status <- 0L
-  list(status = as.integer(status), output = output)
+  output <- if (file.exists(output_path)) {
+    readLines(output_path, warn = FALSE, encoding = "UTF-8")
+  } else {
+    character()
+  }
+  marker <- if (file.exists(marker_path)) {
+    readLines(marker_path, n = 1L, warn = FALSE, encoding = "UTF-8")
+  } else {
+    character()
+  }
+  timed_out <- length(marker) == 1L && identical(marker, "timeout")
+  abandoned <- length(marker) == 1L && identical(marker, "abandoned")
+  list(
+    status = if (timed_out) 124L else if (abandoned) 125L else as.integer(status),
+    output = output, timed_out = timed_out, abandoned = abandoned,
+    elapsed = proc.time()[["elapsed"]] - started
+  )
 }
 
-require_command_success <- function(label, command, arguments, environment = character()) {
-  result <- run_command(command, arguments, environment)
+require_command_success <- function(
+  label, command, arguments, environment = character(), timeout_seconds = 180L
+) {
+  cat(sprintf("START %s (timeout: %ss)\n", label, timeout_seconds))
+  flush.console()
+  result <- run_command(
+    command, arguments, environment, timeout_seconds = timeout_seconds,
+    label = label
+  )
   if (!identical(result$status, 0L)) {
     details <- paste(tail(result$output, 80L), collapse = "\n")
+    if (isTRUE(result$timed_out)) {
+      fail(
+        label, " timed out after ", timeout_seconds,
+        " seconds; its validation process group was terminated.",
+        if (nzchar(details)) paste0("\n", details) else ""
+      )
+    }
+    if (isTRUE(result$abandoned)) {
+      fail(
+        label, " was abandoned after its controlling validator exited; ",
+        "its validation process group was terminated.",
+        if (nzchar(details)) paste0("\n", details) else ""
+      )
+    }
     fail(label, " failed with exit status ", result$status, ".\n", details)
   }
+  cat(sprintf("PASS command %-50s (%0.2fs)\n", label, result$elapsed))
+  flush.console()
   invisible(result$output)
+}
+
+validate_subprocess_supervisor <- function() {
+  if (!identical(.Platform$OS.type, "unix")) return(invisible(TRUE))
+  result <- run_command(
+    "/bin/sh",
+    c("-c", shQuote(
+      "trap '' TERM; sleep 30 & descendant=$!; echo $descendant; wait"
+    )),
+    timeout_seconds = 2L, label = "validation subprocess cleanup proof"
+  )
+  descendant_pid <- suppressWarnings(as.integer(result$output[[1L]]))
+  require_true(
+    identical(result$status, 124L) && isTRUE(result$timed_out) &&
+      length(descendant_pid) == 1L && !is.na(descendant_pid),
+    "Validation subprocess supervisor did not report its controlled timeout."
+  )
+  for (attempt in seq_len(20L)) {
+    if (!isTRUE(tools::pskill(descendant_pid, signal = 0L))) break
+    Sys.sleep(0.05)
+  }
+  require_true(
+    !isTRUE(tools::pskill(descendant_pid, signal = 0L)),
+    "Validation subprocess supervisor left a descendant after timeout."
+  )
+  cat(sprintf(
+    "PASS validation subprocess timeout and descendant cleanup (%0.2fs)\n",
+    result$elapsed
+  ))
+  invisible(TRUE)
 }
 
 write_validation_profile <- function(path, library_root, repository_url = NULL) {
@@ -2896,7 +3064,8 @@ build_package <- function(package_name, package_root, work_root) {
   require_command_success(
     paste0(package_name, " build"),
     file.path(R.home("bin"), "R"),
-    c("CMD", "build", "--no-manual", shQuote(package_root))
+    c("CMD", "build", "--no-manual", shQuote(package_root)),
+    timeout_seconds = 300L
   )
   archive <- file.path(
     work_root, paste0(package_name, "_", spec$version, ".tar.gz")
@@ -2916,7 +3085,8 @@ install_package <- function(package_name, archive, library_root, environment) {
       "CMD", "INSTALL", paste0("--library=", shQuote(library_root)),
       shQuote(archive)
     ),
-    environment
+    environment,
+    timeout_seconds = 300L
   )
 }
 
@@ -3002,7 +3172,8 @@ check_package <- function(
       "CMD", "check", "--no-manual",
       paste0("--library=", shQuote(library_root)), shQuote(archive)
     ),
-    environment
+    environment,
+    timeout_seconds = 900L
   )
   check_log <- file.path(work_root, paste0(package_name, ".Rcheck"), "00check.log")
   require_true(
@@ -3165,7 +3336,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_retry_episode', ",
     "'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
+    "message('CHECKPOINT resource proof: package loaded'); ",
     "catalog <- rrp_open_resource_catalog(root); ",
+    "message('CHECKPOINT resource proof: catalog opened'); ",
     "stopifnot(identical(class(catalog), c('rrp_resource_catalog', 'list')), ",
     "identical(names(catalog), c('software_root', 'catalog_path', ",
     "'schema_path', 'catalog')), ",
@@ -3204,6 +3377,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
     "logical(1L)))); ",
+    "message('CHECKPOINT resource proof: resources resolved and compared'); ",
     "manifest_contract <- getFromNamespace('rrp_project_manifest_contract', ",
     "'rrpplatform')(catalog); registration_contract <- getFromNamespace(",
     "'rrp_project_registration_contract', 'rrpplatform')(catalog); ",
@@ -3235,6 +3409,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "identical(context$target_id, ",
     "'rrp.risk-target.readmission-remaining-30-day'), ",
     "identical(context$endpoint_elapsed_seconds, 2592000)); ",
+    "message('CHECKPOINT resource proof: contracts loaded'); ",
     "success <- rrp_validate_software_resources(root); ",
     "stopifnot(identical(class(success), c('rrp_operation_result', 'list')), ",
     "identical(names(success), c('operation_id', 'status', 'value', ",
@@ -3244,6 +3419,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "catalog_version = '0.1.0', resource_count = expected_count)), ",
     "identical(success$diagnostics, list()), ",
     "identical(rrp_operation_succeeded(success), TRUE)); ",
+    "message('CHECKPOINT resource proof: valid root accepted'); ",
     "failure <- rrp_validate_software_resources(invalid_root); ",
     "diagnostic <- failure$diagnostics[[1L]]; stopifnot(",
     "identical(class(failure), c('rrp_operation_result', 'list')), ",
@@ -3259,16 +3435,19 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "!grepl('/', diagnostic$message, fixed = TRUE), ",
     "!grepl(intToUtf8(92L), diagnostic$message, fixed = TRUE), ",
     "identical(rrp_operation_succeeded(failure), FALSE)); ",
+    "message('CHECKPOINT resource proof: invalid root rejected'); ",
     "unlink(resolved[['resource_catalog']]); condition <- tryCatch({rrp_resource_path(catalog, ",
     "'rrp.contract.resource-catalog'); NULL}, error = identity); ",
     "stopifnot(inherits(condition, 'rrp_resource_error'), ",
     "identical(condition$code, 'missing_schema'), ",
-    "!grepl(root, condition$message, fixed = TRUE))"
+    "!grepl(root, condition$message, fixed = TRUE)); ",
+    "message('CHECKPOINT resource proof: post-open mutation rejected; expression complete')"
   )
   require_command_success(
     "installed rrpplatform copied-root resource access",
     file.path(R.home("bin"), "Rscript"),
-    c("--vanilla", "-e", shQuote(expression))
+    c("--vanilla", "-e", shQuote(expression)),
+    timeout_seconds = 120L
   )
   cat(
     paste0(
@@ -3582,7 +3761,8 @@ validate_installed_state_recovery <- function(
       "--vanilla", shQuote(file.path(proof_root, "state-recovery.R")),
       shQuote(software_root), shQuote(proof_root)
     ),
-    environment
+    environment,
+    timeout_seconds = 600L
   )
   cat(paste0(
     "PASS installed non-Git project-state backup/restore, complete and ",
@@ -3594,6 +3774,8 @@ validate_installed_state_recovery <- function(
 validate_packages <- function() {
   cat("RRP local package, project, canonical, and state validation\n")
   cat("=============================================================\n")
+
+  validate_subprocess_supervisor()
 
   run_resource_contract_validation()
 
@@ -3684,6 +3866,8 @@ validate_packages <- function() {
   missing_environment <- validation_environment(
     missing_profile, missing_dependency_library
   )
+  cat("START rrpplatform expected missing-dependency rejection (timeout: 300s)\n")
+  flush.console()
   missing_result <- run_command(
     file.path(R.home("bin"), "R"),
     c(
@@ -3691,7 +3875,13 @@ validate_packages <- function() {
       paste0("--library=", shQuote(missing_dependency_library)),
       shQuote(archives[["rrpplatform"]])
     ),
-    missing_environment
+    missing_environment,
+    timeout_seconds = 300L,
+    label = "rrpplatform expected missing-dependency rejection"
+  )
+  require_true(
+    !isTRUE(missing_result$timed_out) && !isTRUE(missing_result$abandoned),
+    "rrpplatform missing-dependency rejection did not terminate normally."
   )
   require_true(
     !identical(missing_result$status, 0L),
@@ -3714,6 +3904,11 @@ validate_packages <- function() {
       "rrpruntime is absent while DBI and duckdb are available."
     )
   )
+  cat(sprintf(
+    "PASS command %-50s (%0.2fs)\n",
+    "rrpplatform expected missing-dependency rejection",
+    missing_result$elapsed
+  ))
   cat("PASS rrpplatform rejects installation without rrpruntime\n")
 
   install_package(

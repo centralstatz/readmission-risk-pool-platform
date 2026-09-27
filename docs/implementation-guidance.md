@@ -329,7 +329,14 @@ common resource-validation results against explicit copied roots from an
 unrelated working directory; and requires exact `Status: OK` from each
 package's `R CMD check --no-manual`. Projections, fixtures, archives, libraries,
 check directories, and the local empty package repository are temporary and
-removed after the operation.
+removed after the operation. Each external validation step announces its name
+and elapsed-time bound before execution. On Unix, the validator supervises the
+step in its own process group, captures diagnostics without an open output
+pipe, terminates the group on timeout or interruption, and watches the
+controlling validator so abandoned descendants do not continue indefinitely.
+Focused proofs use shorter bounds than builds and strict package checks; a
+timeout is always a validation failure and reports the affected operation plus
+its final bounded diagnostics.
 
 The package-foundation GitHub Actions workflow invokes these same two human
 operations on pushes and pull requests using read-only repository permission,
