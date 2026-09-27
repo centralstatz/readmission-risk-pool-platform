@@ -10,9 +10,10 @@ root installed-resource catalog opening, logical resource resolution, and a
 minimal common operation-result boundary with privacy-safe diagnostics. It
 also owns strict project-manifest and trusted-registration validation, one
 exact installed canonical specification authority, all five singular runtime
-authorities, semantic provider declarations, an explicit project-loading boundary, and
-transactional minimal-project initialization plus a bounded structured project
-doctor. It can normalize installed authority into the exact contexts consumed
+authorities, semantic provider declarations, an explicit project-loading boundary,
+the supported six-file standard project-authoring adapter, and transactional
+standard-project initialization plus a bounded structured project doctor. It
+can normalize installed authority into the exact contexts consumed
 by runtime admission, episode-state preparation, and direct runtime provider
 execution and orchestrate one selected project producer through the canonical
 boundary and one selected project provider through the risk boundary. It also
@@ -22,8 +23,9 @@ durable execution, supported history interpretation/correction, and explicit
 create-only checkpointed state backup/absent-state restore.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 20
-technical interfaces: \code{rrp_backup_project_state()},
+The package imports the \pkg{rrpruntime} namespace and exports exactly 22
+technical interfaces: \code{rrp_authoring_failure()},
+\code{rrp_backup_project_state()},
 \code{rrp_execute_durable_bundle()},
 \code{rrp_execute_producer()}, \code{rrp_execute_risk()},
 \code{rrp_initialize_project()}, \code{rrp_initialize_project_state()},
@@ -33,6 +35,7 @@ technical interfaces: \code{rrp_backup_project_state()},
 \code{rrp_load_project()},
 \code{rrp_open_resource_catalog()},
 \code{rrp_operation_succeeded()}, \code{rrp_resource_path()},
+\code{rrp_register_authored_project()},
 \code{rrp_restate_history()}, \code{rrp_restore_project_state()},
 \code{rrp_retry_episode()},
 \code{rrp_validate_project()}, and

@@ -3634,3 +3634,119 @@ Proportionate closeout evidence passed the authoritative repository validator
 with all eight checks and zero issues, and `git diff --check` passed. Broader
 package/resource validation was not rerun because no package, installed
 resource, contract, catalog, test, or workflow behavior changed.
+
+## Increment 8.A — Supported standard project authoring boundary (implemented and locally validated, 2026-09-22)
+
+Increment 8.A implements the accepted generic normal authoring capability
+without beginning the fictional reference project. The catalog now contains 32
+closed resources and admits `md` only as an additional controlled format. New
+software-owned resources are `rrp.contract.project-authoring`, four standard
+project templates beyond the retained manifest/thin registration templates,
+and exactly two installed product documents:
+`rrp.documentation.project-authoring-guide` and
+`rrp.documentation.provider-request-reference`. Projection remains exact and
+byte-preserving; no documentation-specific API or parallel source tree was
+introduced.
+
+`rrp.project-authoring@0.1.0` closes the normal six-file convention, fixed
+paths, exact bindings/signatures, authoring metadata, applicable controlled
+failures, declared extension-package/version inventory, raw adaptation, and
+versioned length-delimited `dual_modular_hash_v1` bundle identity. A normally
+initialized independent project now contains exactly `rrp-project.dcf`,
+`rrp-authoring.dcf`, `R/register.R`, `R/produce-canonical.R`,
+`R/calculate-risk.R`, and `README.md`. Initialization remains create-only,
+staged, loader-validated before promotion, atomically promoted, revalidated at
+its final location, and limited to attempt-owned cleanup. The registration
+template is only stable wiring to
+`rrpplatform::rrp_register_authored_project(project_root)`.
+
+The main package retains version `0.1.0.9000`, imports no new package, and now
+exports exactly 22 interfaces after adding `rrp_register_authored_project()`
+and `rrp_authoring_failure()`. The adapter validates installed authority,
+metadata, exact declared extension closure, README and two fixed authoring
+files; evaluates the exact callables in isolated environments under the
+existing software-first controlled library order; invokes neither during load
+or doctor; and compiles them into the unchanged raw
+`rrp.project-registration@0.3.0` result. The loader still recognizes a project
+only through its manifest and `R/register.R`; it does not scan for authoring
+files. A deliberately hand-authored raw registration remains supported.
+
+On the producer side, hospital code receives only the explicit project root and
+authoritative analytical time and returns the two exact canonical data frames
+or an applicable failure token. RRP constructs the 15-field raw producer
+result, 16-field candidate bundle, fixed capabilities and contract identities,
+and deterministic bundle ID before using the unchanged canonical admission
+path. Equal request, implementation/mapping identity, and domain content yield
+the same ID; changed canonical content changes it. On the provider side,
+hospital code receives the unchanged detached flat 19-field
+`rrp.risk-request@0.1.0` plus the explicit project root and returns one finite
+unclassed base-R double probability in `[0,1]` or an applicable failure token.
+RRP constructs the unchanged four-field raw provider result and delegates
+validation and accepted-estimate construction to the existing Stage 6 path.
+`NULL`, missing/nonfinite, wrong-type, wrong-cardinality, or out-of-range values
+remain detected invalid estimates; thrown conditions remain execution failures;
+arbitrary hospital exception text is not copied into bounded diagnostics.
+
+The dependency boundary is exact installed-closure preflight, not dependency
+management. `Extension-Packages: none` is explicit. Otherwise every declared
+`Package@version` must be present at the manifest-owned extension library,
+match exactly, and account for its closed top-level inventory. Ambient packages
+do not satisfy the declaration; RRP packages cannot be declared or shadowed;
+the existing RRP-first/project-extension-second invocation order remains in
+force. No acquisition, solving, lockfile, `renv`, source digest, or transitive
+reproduction claim was added.
+
+Historical reconnaissance inspected the immutable `v0.1.0` synthetic
+canonical-producer adapter and canonical-producer operation. The implementation
+adapted their useful principle that platform code owns invariant raw envelopes
+and canonical handoff while hospital code owns mapping. It reused current
+Stage 3–7 safe paths, controlled libraries, trusted loading, closed validation,
+execution containment, deterministic identity, runtime admission, provider
+execution, and template promotion rather than restoring repository-root
+composition, installed producer registries, YAML executable selection,
+historical domains, or compatibility machinery.
+
+Focused package-native evidence proves exact six-file initialization,
+create-only behavior, unavailable placeholders, load/doctor non-invocation,
+copied-root portability, exact raw producer/candidate/provider shapes,
+canonical admission, stable and content-sensitive identity, applicable and
+wrong-context failure tokens, malformed returns, thrown-error containment, all
+accepted invalid provider outputs, metadata/file/binding/signature/link
+failures, explicit empty dependencies, a genuinely installed temporary
+extension package, missing/wrong/ambient/shadow dependency cases, controlled
+library order, process restoration, installed document lookup, and
+scaffold/document/contract agreement. Existing package tests continue to prove
+direct raw projects and the installed transparent provider. Bounded human
+inspection confirmed that the six-file output exposes only
+`R/produce-canonical.R` and `R/calculate-risk.R` as normal logic edit points,
+marks registration as thin generated wiring, states each callable's exact
+inputs and success/failure alternatives, makes all four hospital-owned
+surfaces understandable through README/installed guidance, and requires no
+package-internal or repository-relative knowledge.
+
+During reconciliation, focused evidence exposed and corrected a zero-token
+template-rendering defect, bounded authoring file errors that were being
+collapsed into a generic registration error, incomplete temporary-package
+metadata, and legacy doctor/installed-initializer cases that assumed the former
+two-file raw scaffold. Those cases now use either the retained raw escape hatch
+when testing raw selection semantics or a genuine authoring-metadata failure.
+No Stage 4–7 invariant was weakened.
+
+Final local evidence passed on the realized tree: repository validation passed
+all eight checks with zero issues; the complete package/resource validator
+passed closed catalog/projection and adversarial checks, both source builds,
+negative dependency installation, isolated install/load, both strict
+`R CMD check --no-manual` runs, installed resource/project/initializer,
+producer/provider, and state-recovery proofs; and `git diff --check` passed.
+Package-native authoring evidence ran inside the successful `rrpplatform`
+check. No hosted exact-revision evidence is claimed because the work remains
+uncommitted.
+
+**Implementation state:** Increment 8.A is implemented and locally validated.
+Stage 8 remains in progress. Increment 8.B and Increment 8.C have not begun;
+there is no fictional project/source/crosswalk/predictor, fictional walkthrough,
+product, application, CLI, publication, or deployment behavior.
+
+**Next task:** human review of Increment 8.A, followed by Increment 8.B —
+Fictional project, meaningful mapping, and project provider only when
+explicitly authorized.

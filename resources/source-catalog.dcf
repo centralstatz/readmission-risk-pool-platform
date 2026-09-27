@@ -47,6 +47,14 @@ Installed-Path: resources/contracts/project-registration.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.project-authoring
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/project-authoring.dcf
+Installed-Path: resources/contracts/project-authoring.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.contract.specification-envelope
 Resource-Class: contract
 Owner-Package: rrpplatform
@@ -205,3 +213,51 @@ Owner-Package: rrpplatform
 Source-Path: resources/templates/project/R/register.R
 Installed-Path: resources/templates/project/R/register.R
 Format: r
+
+Record-Type: resource
+Resource-ID: rrp.template.project-authoring-metadata
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/rrp-authoring.dcf
+Installed-Path: resources/templates/project/rrp-authoring.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.template.project-producer
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/R/produce-canonical.R
+Installed-Path: resources/templates/project/R/produce-canonical.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.template.project-provider
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/R/calculate-risk.R
+Installed-Path: resources/templates/project/R/calculate-risk.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.template.project-readme
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/README.md
+Installed-Path: resources/templates/project/README.md
+Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.project-authoring-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/project-authoring-guide.md
+Installed-Path: resources/documentation/project-authoring-guide.md
+Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.provider-request-reference
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/provider-request-reference.md
+Installed-Path: resources/documentation/provider-request-reference.md
+Format: md

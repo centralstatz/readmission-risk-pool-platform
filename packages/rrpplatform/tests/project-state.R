@@ -29,12 +29,28 @@ state_manifest_template <- c(
 
 state_registration_template <- c(
   "rrp_register_project <- function(project_root) {",
-  "  unavailable <- function(request) stop('selected callable executed', call. = FALSE)",
-  "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
-  "  producer <- function() list(component_id = '@@RRP_PRODUCER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', mapping_id = '@@RRP_MAPPING_ID@@', mapping_version = '@@RRP_PROJECT_VERSION@@', capabilities = capabilities, callable = unavailable)",
-  "  provider <- function() list(component_id = '@@RRP_PROVIDER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', model_id = NULL, model_version = NULL, callable = unavailable)",
-  "  list(registration_contract_id = 'rrp.project-registration', registration_contract_version = '0.3.0', project_id = '@@RRP_PROJECT_ID@@', producers = list(producer()), providers = list(provider()))",
+  "  rrpplatform::rrp_register_authored_project(project_root)",
   "}"
+)
+
+state_authoring_template <- c(
+  "Record-Type: rrp-project-authoring",
+  "Authoring-Contract-ID: rrp.project-authoring",
+  "Authoring-Contract-Version: 0.1.0",
+  "Producer-Implementation-ID: @@RRP_PRODUCER_IMPLEMENTATION_ID@@",
+  "Producer-Implementation-Version: @@RRP_PROJECT_VERSION@@",
+  "Mapping-ID: @@RRP_MAPPING_ID@@", "Mapping-Version: @@RRP_PROJECT_VERSION@@",
+  "Provider-Implementation-ID: @@RRP_PROVIDER_IMPLEMENTATION_ID@@",
+  "Provider-Implementation-Version: @@RRP_PROJECT_VERSION@@",
+  "Extension-Packages: none"
+)
+state_producer_template <- c(
+  "rrp_produce_canonical <- function(project_root, as_of_time) {",
+  "  stop('selected callable executed', call. = FALSE)", "}"
+)
+state_provider_template <- c(
+  "rrp_calculate_risk <- function(project_root, request) {",
+  "  stop('selected callable executed', call. = FALSE)", "}"
 )
 
 state_software_root <- function(root) {
@@ -65,6 +81,11 @@ state_software_root <- function(root) {
       value = state_internal("rrp_project_registration_contract_expected")()
     ),
     list(
+      id = "rrp.contract.project-authoring", owner = "rrpplatform",
+      path = "resources/contracts/project-authoring.dcf", format = "dcf",
+      value = state_internal("rrp_authoring_contract_expected")()
+    ),
+    list(
       id = "rrp.contract.project-state", owner = "rrpplatform",
       path = "resources/contracts/state/project-state.dcf", format = "dcf",
       value = state_internal("rrp_project_state_contract_expected")()
@@ -88,6 +109,26 @@ state_software_root <- function(root) {
       id = "rrp.template.project-registration", owner = "rrpplatform",
       path = "resources/templates/project/R/register.R", format = "r",
       value = state_registration_template
+    ),
+    list(
+      id = "rrp.template.project-authoring-metadata", owner = "rrpplatform",
+      path = "resources/templates/project/rrp-authoring.dcf", format = "dcf",
+      value = state_authoring_template
+    ),
+    list(
+      id = "rrp.template.project-producer", owner = "rrpplatform",
+      path = "resources/templates/project/R/produce-canonical.R", format = "r",
+      value = state_producer_template
+    ),
+    list(
+      id = "rrp.template.project-provider", owner = "rrpplatform",
+      path = "resources/templates/project/R/calculate-risk.R", format = "r",
+      value = state_provider_template
+    ),
+    list(
+      id = "rrp.template.project-readme", owner = "rrpplatform",
+      path = "resources/templates/project/README.md", format = "md",
+      value = "# RRP hospital project"
     )
   )
   canonical <- state_internal("rrp_canonical_contract_definitions")()

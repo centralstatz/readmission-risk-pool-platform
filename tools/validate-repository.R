@@ -31,6 +31,7 @@ expected_files <- c(
   "packages/rrpplatform/R/duckdb-history.R",
   "packages/rrpplatform/R/durable-history.R",
   "packages/rrpplatform/R/operation-result.R",
+  "packages/rrpplatform/R/project-authoring.R",
   "packages/rrpplatform/R/producer-execution.R",
   "packages/rrpplatform/R/risk-execution.R",
   "packages/rrpplatform/R/state-recovery.R",
@@ -45,6 +46,7 @@ expected_files <- c(
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
   "packages/rrpplatform/man/rrp_initialize_project.Rd",
+  "packages/rrpplatform/man/rrp_project_authoring.Rd",
   "packages/rrpplatform/man/rrp_initialize_project_state.Rd",
   "packages/rrpplatform/man/rrp_inspect_project_state.Rd",
   "packages/rrpplatform/man/rrp_open_resource_catalog.Rd",
@@ -96,6 +98,7 @@ expected_files <- c(
   "resources/contracts/operation-result.dcf",
   "resources/contracts/project-manifest.dcf",
   "resources/contracts/project-registration.dcf",
+  "resources/contracts/project-authoring.dcf",
   "resources/contracts/canonical/canonical-bundle.dcf",
   "resources/contracts/canonical/canonical-producer.dcf",
   "resources/contracts/canonical/specification-envelope.dcf",
@@ -115,7 +118,13 @@ expected_files <- c(
   "resources/contracts/state/project-state-backup.dcf",
   "resources/contracts/state/project-state.dcf",
   "resources/templates/project/R/register.R",
+  "resources/templates/project/R/produce-canonical.R",
+  "resources/templates/project/R/calculate-risk.R",
   "resources/templates/project/rrp-project.dcf",
+  "resources/templates/project/rrp-authoring.dcf",
+  "resources/templates/project/README.md",
+  "resources/documentation/project-authoring-guide.md",
+  "resources/documentation/provider-request-reference.md",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
@@ -130,6 +139,7 @@ expected_directories <- c(
   "resources/contracts/history",
   "resources/contracts/state",
   "resources/contracts/runtime",
+  "resources/documentation",
   "resources/templates", "resources/templates/project",
   "resources/templates/project/R", "tools"
 )
@@ -315,6 +325,7 @@ for (relative_path in c(
   "resources/contracts/operation-result.dcf",
   "resources/contracts/project-manifest.dcf",
   "resources/contracts/project-registration.dcf",
+  "resources/contracts/project-authoring.dcf",
   "resources/contracts/canonical/canonical-bundle.dcf",
   "resources/contracts/canonical/canonical-producer.dcf",
   "resources/contracts/canonical/specification-envelope.dcf",
@@ -331,6 +342,7 @@ for (relative_path in c(
   "resources/contracts/history/history-port.dcf",
   "resources/contracts/history/operational-scope.dcf",
   "resources/templates/project/rrp-project.dcf",
+  "resources/templates/project/rrp-authoring.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
 )) {
   path <- file.path(repository_root, relative_path)

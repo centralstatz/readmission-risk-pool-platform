@@ -7,6 +7,8 @@ Description: Establishes the main internal implementation package for the
     Readmission Risk Pool software and its one-way dependency on the focused
     runtime package. It opens validated installed-resource catalogs from an
     explicit software root, resolves declared resources by logical identity,
+    compiles a supported six-file standard project-authoring convention into
+    the unchanged raw producer and provider registration contracts,
     reports resource validation through a common privacy-safe result,
     normalizes installed canonical and five-resource runtime authority into
     exact runtime contexts, loads one explicit independent project through strict
@@ -15,8 +17,8 @@ Description: Establishes the main internal implementation package for the
     successful canonical admission to the runtime package, validates exact
     semantic provider declarations, executes the explicitly selected provider
     through the runtime package's closed risk boundary, transactionally
-    initializes the smallest valid project, and reports bounded operation
-    results. It also initializes, inspects, backs up, and restores explicit
+    initializes the smallest valid standard-authored project, and reports
+    bounded operation results. It also initializes, inspects, backs up, and restores explicit
     project-owned state and privately realizes the storage-neutral history port
     through bounded DBI and DuckDB sessions.
 License: Apache License (>= 2)

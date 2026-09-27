@@ -4205,10 +4205,9 @@ governing-plan permanence. No other unresolved question blocks Increment 7.A.
 
 ## Stage 8 — Fictional reference path
 
-**Status:** detailed and revised on 2026-09-21 after the bounded authoring-UX
-and installed-documentation assessment; ready for review and acceptance. No
-Stage 8 implementation has begun, and none is authorized until this revised
-detailed plan is accepted.
+**Status:** detailed, revised, and accepted for implementation. Increment 8.A
+is implemented and locally validated as of 2026-09-22; Increment 8.B is next.
+Stage 8 is not complete.
 
 ### Objective and responsibilities
 
@@ -4813,6 +4812,9 @@ database. The generator plus documented operation reproduces the history;
 generated source, database, backup, and product artifacts remain untracked.
 
 ### Increment 8.A — Supported standard project authoring boundary
+
+**Implementation status:** implemented and locally validated on 2026-09-22;
+ready for human review. Increment 8.B has not begun.
 
 **Objective:** add the smallest supported normal producer/provider authoring
 capability and make it the discoverable default scaffold for newly initialized

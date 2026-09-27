@@ -240,9 +240,12 @@ rrp_project_evaluate_registration <- function(
     }
     tryCatch(
       registration_function(project_root),
-      error = function(condition) rrp_project_abort(
-        "invalid_registration_result", "Project registration result is invalid."
-      )
+      error = function(condition) {
+        if (inherits(condition, "rrp_authoring_error")) stop(condition)
+        rrp_project_abort(
+          "invalid_registration_result", "Project registration result is invalid."
+        )
+      }
     )
   })
 }
@@ -395,9 +398,11 @@ rrp_load_project <- function(software_catalog, project_root) {
   rrp_project_reject_software_shadowing(extension_library_path)
 
   registration_path <- rrp_project_registration_path(root)
-  candidate <- rrp_project_evaluate_registration(
-    registration_path, registration_contract, root, extension_library_path
-  )
+  candidate <- rrp_authoring_with_context(software_catalog, root, function() {
+    rrp_project_evaluate_registration(
+      registration_path, registration_contract, root, extension_library_path
+    )
+  })
   registration <- rrp_project_validate_registration(
     candidate, registration_contract, canonical_contracts, runtime_contracts,
     manifest

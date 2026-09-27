@@ -122,8 +122,10 @@ authorities, and their cross-references,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
-trusted project loading, transactional minimal-project initialization, exact
-semantic producer and structural provider selection, structured project
+trusted project loading, transactional six-file standard-project initialization,
+standard-authoring adaptation into the unchanged raw contracts, installed
+product-document resolution, exact semantic producer and structural provider
+selection, structured project
 diagnosis, selected producer execution through two materially different
 fictional hospital mappings, copied-project portability, typed privacy-safe
 project/resource failures, adversarial rejection behavior, and direct
@@ -158,8 +160,9 @@ workflow and has been formally accepted. The complete Stage 7 revision passed
 the same hosted workflow and its architecture reconciliation, so Stages 1–7
 are accepted and complete. Stage 7 provides logical history, explicit project
 state and DuckDB, durable execution/history interpretation, and bounded backup/
-restore. Stage 8 is detailed in the implementation plan and awaits review and
-acceptance; no Stage 8 source implementation has begun.
+restore. Stage 8 is accepted and in progress: Increment 8.A supplies the
+generic six-file standard authoring capability and its first two installed
+product documents. Increment 8.B has not begun.
 
 ## License
 

@@ -45,11 +45,17 @@ rrp_project_initialization_inputs <- function(
 
   producer_id <- paste0(project_id, ".producer")
   provider_id <- paste0(project_id, ".provider")
-  implementation_id <- paste0(project_id, ".implementation")
+  producer_implementation_id <- paste0(
+    project_id, ".producer-implementation"
+  )
+  provider_implementation_id <- paste0(
+    project_id, ".provider-implementation"
+  )
   mapping_id <- paste0(project_id, ".mapping")
   component_max <- as.integer(registration_contract[["Identity-Max-Bytes"]])
   valid_component <- vapply(c(
-    producer_id, provider_id, implementation_id, mapping_id
+    producer_id, provider_id, producer_implementation_id,
+    provider_implementation_id, mapping_id
   ), function(value) {
     rrp_project_valid_identity(
       value, registration_contract[["Component-ID-Pattern"]], component_max
@@ -68,7 +74,8 @@ rrp_project_initialization_inputs <- function(
     project_version = project_version,
     producer_id = producer_id,
     provider_id = provider_id,
-    implementation_id = implementation_id,
+    producer_implementation_id = producer_implementation_id,
+    provider_implementation_id = provider_implementation_id,
     mapping_id = mapping_id
   )
 }
@@ -134,7 +141,9 @@ rrp_project_render_template <- function(lines, values) {
       "project_template_invalid", "Installed project template is invalid."
     )
   }
-  tokens <- paste0("@@RRP_", names(values), "@@")
+  tokens <- if (length(values) == 0L) character() else {
+    paste0("@@RRP_", names(values), "@@")
+  }
   present <- vapply(tokens, function(token) {
     any(grepl(token, lines, fixed = TRUE))
   }, logical(1L))
@@ -166,7 +175,10 @@ rrp_project_initialization_inventory <- function(root) {
   directories <- sort(list.dirs(
     root, recursive = TRUE, full.names = FALSE
   ), method = "radix")
-  identical(files, c("R/register.R", "rrp-project.dcf")) &&
+  identical(files, c(
+    "R/calculate-risk.R", "R/produce-canonical.R", "R/register.R",
+    "README.md", "rrp-authoring.dcf", "rrp-project.dcf"
+  )) &&
     identical(directories[nzchar(directories)], "R")
 }
 
@@ -184,14 +196,20 @@ rrp_project_initialization_assert_context <- function(context, inputs, root) {
     ) &&
     identical(context$producer$component_id, inputs$producer_id) &&
     identical(context$producer$component_version, inputs$project_version) &&
-    identical(context$producer$implementation_id, inputs$implementation_id) &&
+    identical(
+      context$producer$implementation_id,
+      inputs$producer_implementation_id
+    ) &&
     identical(context$producer$implementation_version, inputs$project_version) &&
     identical(context$producer$mapping_id, inputs$mapping_id) &&
     identical(context$producer$mapping_version, inputs$project_version) &&
     identical(context$producer$origin, "project") &&
     identical(context$provider$component_id, inputs$provider_id) &&
     identical(context$provider$component_version, inputs$project_version) &&
-    identical(context$provider$implementation_id, inputs$implementation_id) &&
+    identical(
+      context$provider$implementation_id,
+      inputs$provider_implementation_id
+    ) &&
     identical(
       context$provider$implementation_version, inputs$project_version
     ) &&
@@ -234,6 +252,18 @@ rrp_project_initialize <- function(
   registration_template <- rrp_resource_path(
     software_catalog, "rrp.template.project-registration"
   )
+  authoring_template <- rrp_resource_path(
+    software_catalog, "rrp.template.project-authoring-metadata"
+  )
+  producer_template <- rrp_resource_path(
+    software_catalog, "rrp.template.project-producer"
+  )
+  provider_template <- rrp_resource_path(
+    software_catalog, "rrp.template.project-provider"
+  )
+  readme_template <- rrp_resource_path(
+    software_catalog, "rrp.template.project-readme"
+  )
   inputs <- rrp_project_initialization_inputs(
     project_id, project_version, manifest_contract, registration_contract
   )
@@ -245,9 +275,10 @@ rrp_project_initialize <- function(
     PRODUCER_ID = inputs$producer_id,
     PROVIDER_ID = inputs$provider_id
   )
-  registration_values <- c(
-    manifest_values,
-    IMPLEMENTATION_ID = inputs$implementation_id,
+  authoring_values <- c(
+    PROJECT_VERSION = inputs$project_version,
+    PRODUCER_IMPLEMENTATION_ID = inputs$producer_implementation_id,
+    PROVIDER_IMPLEMENTATION_ID = inputs$provider_implementation_id,
     MAPPING_ID = inputs$mapping_id
   )
   manifest <- rrp_project_render_template(
@@ -256,7 +287,23 @@ rrp_project_initialize <- function(
   )
   registration <- rrp_project_render_template(
     readLines(registration_template, warn = FALSE, encoding = "UTF-8"),
-    registration_values
+    character()
+  )
+  authoring <- rrp_project_render_template(
+    readLines(authoring_template, warn = FALSE, encoding = "UTF-8"),
+    authoring_values
+  )
+  producer <- rrp_project_render_template(
+    readLines(producer_template, warn = FALSE, encoding = "UTF-8"),
+    character()
+  )
+  provider <- rrp_project_render_template(
+    readLines(provider_template, warn = FALSE, encoding = "UTF-8"),
+    character()
+  )
+  readme <- rrp_project_render_template(
+    readLines(readme_template, warn = FALSE, encoding = "UTF-8"),
+    character()
   )
 
   staging <- rrp_project_initialization_stage(destination)
@@ -280,7 +327,11 @@ rrp_project_initialize <- function(
   }
   tryCatch({
     writeLines(manifest, file.path(staging, "rrp-project.dcf"), useBytes = TRUE)
+    writeLines(authoring, file.path(staging, "rrp-authoring.dcf"), useBytes = TRUE)
     writeLines(registration, file.path(staging, "R", "register.R"), useBytes = TRUE)
+    writeLines(producer, file.path(staging, "R", "produce-canonical.R"), useBytes = TRUE)
+    writeLines(provider, file.path(staging, "R", "calculate-risk.R"), useBytes = TRUE)
+    writeLines(readme, file.path(staging, "README.md"), useBytes = TRUE)
   }, error = function(condition) rrp_project_initialization_abort(
     "project_render_failed", "Project template rendering failed."
   ))
@@ -317,15 +368,23 @@ rrp_project_initialize <- function(
     project_version = inputs$project_version,
     producer_id = inputs$producer_id,
     producer_version = inputs$project_version,
-    implementation_id = inputs$implementation_id,
-    implementation_version = inputs$project_version,
+    producer_implementation_id = inputs$producer_implementation_id,
+    producer_implementation_version = inputs$project_version,
     mapping_id = inputs$mapping_id,
     mapping_version = inputs$project_version,
     canonical_profile_id = "rrp.canonical-profile.readmission",
     canonical_profile_version = "0.1.0",
     provider_id = inputs$provider_id,
     provider_version = inputs$project_version,
-    created_paths = c("rrp-project.dcf", "R/register.R")
+    provider_implementation_id = inputs$provider_implementation_id,
+    provider_implementation_version = inputs$project_version,
+    model_id = NULL,
+    model_version = NULL,
+    extension_packages = list(),
+    created_paths = c(
+      "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
+      "R/produce-canonical.R", "R/calculate-risk.R", "README.md"
+    )
   )
   result <- rrp_new_operation_result(
     operation_id = "rrp.initialize-project",
@@ -339,7 +398,8 @@ rrp_project_initialize <- function(
 
 #' Initialize a minimal independent RRP project
 #'
-#' Transactionally render the two installed project templates into one absent
+#' Transactionally render the six installed standard-authoring templates into
+#' one absent
 #' explicit destination, prove the staged output through [rrp_load_project()],
 #' atomically promote it, and load it again at its final physical location.
 #'

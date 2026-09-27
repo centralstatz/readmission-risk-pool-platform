@@ -137,7 +137,7 @@ resource_schema_expected <- function() {
       "static_application_asset"
     ), collapse = ","),
     "Owner-Packages" = "rrpplatform,rrpruntime",
-    "Resource-Formats" = "dcf,r",
+    "Resource-Formats" = "dcf,r,md",
     "Status-Values" = "development_unpublished",
     "Unique-Fields" = "Resource-ID,Source-Path,Installed-Path",
     "Case-Folded-Path-Fields" = "Source-Path,Installed-Path",
@@ -1214,6 +1214,82 @@ software_contract_resources <- function() {
         "Additional-Provider-Fields" = "prohibited",
         "Callable-Invocation-During-Validation" = "prohibited"
       )
+    ),
+    project_authoring = list(
+      id = "rrp.contract.project-authoring",
+      source_path = "resources/contracts/project-authoring.dcf",
+      installed_path = "resources/contracts/project-authoring.dcf",
+      document = c(
+        "Record-Type" = "project-authoring-contract",
+        "Contract-ID" = "rrp.project-authoring",
+        "Contract-Version" = "0.1.0",
+        "Format-Version" = "1.0.0",
+        "Product-ID" = "readmission-risk-pool-platform",
+        "Development-Version" = "1.0.0-dev",
+        "Status" = "development_unpublished",
+        "Owner-Package" = "rrpplatform",
+        "Project-Contract-ID" = "rrp.project",
+        "Project-Contract-Version" = "0.3.0",
+        "Registration-Contract-ID" = "rrp.project-registration",
+        "Registration-Contract-Version" = "0.3.0",
+        "Metadata-Path" = "rrp-authoring.dcf",
+        "Registration-Path" = "R/register.R",
+        "Producer-Path" = "R/produce-canonical.R",
+        "Provider-Path" = "R/calculate-risk.R",
+        "Readme-Path" = "README.md",
+        "Standard-Paths" = paste(c(
+          "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
+          "R/produce-canonical.R", "R/calculate-risk.R", "README.md"
+        ), collapse = ","),
+        "Producer-Binding" = "rrp_produce_canonical",
+        "Producer-Arguments" = "project_root,as_of_time",
+        "Producer-Success-Fields" = "discharge_episode,terminal_event",
+        "Provider-Binding" = "rrp_calculate_risk",
+        "Provider-Arguments" = "project_root,request",
+        "Provider-Success-Type" = "finite_unclassed_base_double_probability",
+        "Failure-Class" = "rrp_authoring_failure,list",
+        "Producer-Failure-Codes" = paste(c(
+          "producer_unavailable", "producer_source_failed",
+          "producer_mapping_failed"
+        ), collapse = ","),
+        "Provider-Failure-Codes" = paste(c(
+          "provider_unavailable", "provider_input_unavailable",
+          "provider_calculation_failed"
+        ), collapse = ","),
+        "Metadata-Record-Type" = "rrp-project-authoring",
+        "Metadata-Required-Fields" = paste(c(
+          "Record-Type", "Authoring-Contract-ID", "Authoring-Contract-Version",
+          "Producer-Implementation-ID", "Producer-Implementation-Version",
+          "Mapping-ID", "Mapping-Version", "Provider-Implementation-ID",
+          "Provider-Implementation-Version", "Extension-Packages"
+        ), collapse = ","),
+        "Metadata-Optional-Fields" = "Model-ID,Model-Version",
+        "Extension-Inventory-Encoding" =
+          "none_or_comma_separated_package_at_version",
+        "Extension-Empty-Value" = "none",
+        "Package-Name-Pattern" = "^[A-Za-z][A-Za-z0-9.]*[A-Za-z0-9]$",
+        "Package-Version-Pattern" = "^[0-9]+(?:[.-][0-9A-Za-z]+)*$",
+        "Identity-Pattern" = "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+        "Identity-Max-Bytes" = "96",
+        "Version-Pattern" = paste0(
+          "^[0-9]+[.][0-9]+[.][0-9]+",
+          "(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+        ),
+        "Version-Max-Bytes" = "64",
+        "Protected-ID-Prefix" = "rrp.",
+        "Bundle-Identity-Algorithm" = "dual_modular_hash_v1",
+        "Bundle-Identity-Prefix" = "rrp.bundle.",
+        "Bundle-Identity-Encoding" = "length_delimited_utf8_v1",
+        "Bundle-Identity-Inputs" = paste(c(
+          "producer_request", "producer_implementation_identity",
+          "mapping_identity", "canonical_domain_content"
+        ), collapse = ","),
+        "Raw-Producer-Adaptation" = "rrp.canonical-producer@0.1.0",
+        "Raw-Provider-Adaptation" = "rrp.provider-api@0.1.0",
+        "Unknown-Metadata-Fields" = "prohibited",
+        "Extra-Authoring-Bindings" = "prohibited",
+        "Callable-Invocation-During-Registration" = "prohibited"
+      )
     )
   )
   c(
@@ -1297,12 +1373,37 @@ validate_software_template_resources <- function(authority, root, projection) {
     project_registration = c(
       id = "rrp.template.project-registration",
       path = "resources/templates/project/R/register.R", format = "r"
+    ),
+    project_authoring_metadata = c(
+      id = "rrp.template.project-authoring-metadata",
+      path = "resources/templates/project/rrp-authoring.dcf", format = "dcf"
+    ),
+    project_producer = c(
+      id = "rrp.template.project-producer",
+      path = "resources/templates/project/R/produce-canonical.R", format = "r"
+    ),
+    project_provider = c(
+      id = "rrp.template.project-provider",
+      path = "resources/templates/project/R/calculate-risk.R", format = "r"
+    ),
+    project_readme = c(
+      id = "rrp.template.project-readme",
+      path = "resources/templates/project/README.md", format = "md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
-  manifest_tokens <- c(
-    "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
-    "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
+  tokens <- list(
+    project_manifest = c(
+      "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
+      "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
+    ),
+    project_registration = character(),
+    project_authoring_metadata = c(
+      "@@RRP_PRODUCER_IMPLEMENTATION_ID@@", "@@RRP_PROJECT_VERSION@@",
+      "@@RRP_MAPPING_ID@@", "@@RRP_PROVIDER_IMPLEMENTATION_ID@@"
+    ),
+    project_producer = character(), project_provider = character(),
+    project_readme = character()
   )
   for (name in names(templates)) {
     specification <- templates[[name]]
@@ -1332,13 +1433,8 @@ validate_software_template_resources <- function(authority, root, projection) {
     discovered <- unique(unlist(regmatches(
       lines, gregexpr("@@RRP_[A-Z_]+@@", lines, perl = TRUE)
     ), use.names = FALSE))
-    required_tokens <- if (identical(name, "project_registration")) {
-      c(manifest_tokens, "@@RRP_IMPLEMENTATION_ID@@", "@@RRP_MAPPING_ID@@")
-    } else {
-      manifest_tokens
-    }
     resource_require(
-      setequal(discovered, required_tokens), paste0(name, "_template_tokens"),
+      setequal(discovered, tokens[[name]]), paste0(name, "_template_tokens"),
       paste0(specification[["id"]], " has invalid template tokens.")
     )
     if (identical(specification[["format"]], "dcf")) {
@@ -1346,7 +1442,7 @@ validate_software_template_resources <- function(authority, root, projection) {
         length(read_dcf_records(file.path(root, specification[["path"]]))) == 1L,
         "project_manifest_template", "Project manifest template is malformed."
       )
-    } else {
+    } else if (identical(specification[["format"]], "r")) {
       tryCatch(
         parse(text = lines),
         error = function(condition) resource_fail(
@@ -1354,7 +1450,59 @@ validate_software_template_resources <- function(authority, root, projection) {
           "Project registration template is malformed."
         )
       )
-    }
+    } else resource_require(
+      length(lines) > 0L && any(nzchar(lines)),
+      paste0(name, "_template_content"),
+      paste0(specification[["id"]], " is empty.")
+    )
+  }
+}
+
+validate_installed_documentation_resources <- function(
+  authority, root, projection
+) {
+  documents <- list(
+    project_authoring = c(
+      id = "rrp.documentation.project-authoring-guide",
+      path = "resources/documentation/project-authoring-guide.md"
+    ),
+    provider_request = c(
+      id = "rrp.documentation.provider-request-reference",
+      path = "resources/documentation/provider-request-reference.md"
+    )
+  )
+  ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
+  for (name in names(documents)) {
+    specification <- documents[[name]]
+    matched <- which(ids == specification[["id"]])
+    resource_require(
+      length(matched) == 1L, paste0(name, "_documentation_catalog"),
+      paste0(specification[["id"]], " must be cataloged exactly once.")
+    )
+    entry <- authority$entries[[matched]]
+    expected <- c(
+      "Resource-ID" = specification[["id"]],
+      "Resource-Class" = "documentation", "Owner-Package" = "rrpplatform",
+      "Installed-Path" = specification[["path"]], "Format" = "md"
+    )
+    if (!projection) expected <- append(
+      expected, c("Source-Path" = specification[["path"]]), after = 3L
+    )
+    for (field in names(expected)) resource_require(
+      identical(entry[[field]], unname(expected[[field]])),
+      paste0(name, "_documentation_catalog"),
+      paste0(specification[["id"]], " has an unsupported catalog mapping.")
+    )
+    lines <- readLines(
+      file.path(root, specification[["path"]]), warn = FALSE,
+      encoding = "UTF-8"
+    )
+    resource_require(
+      length(lines) > 0L && startsWith(lines[[1L]], "# ") &&
+        !any(grepl("docs/|packages/|resources/", lines, fixed = FALSE)),
+      paste0(name, "_documentation_content"),
+      paste0(specification[["id"]], " is not closed installed guidance.")
+    )
   }
 }
 
@@ -1735,18 +1883,24 @@ validate_resource_authority <- function(root, projection = FALSE) {
     unname(vapply(
       software_contract_resources(), `[[`, character(1L), "id"
     )),
-    "rrp.template.project-manifest", "rrp.template.project-registration"
+    "rrp.template.project-manifest", "rrp.template.project-registration",
+    "rrp.template.project-authoring-metadata",
+    "rrp.template.project-producer", "rrp.template.project-provider",
+    "rrp.template.project-readme",
+    "rrp.documentation.project-authoring-guide",
+    "rrp.documentation.provider-request-reference"
   )
   resource_require(
-    length(actual_ids) == 25L && identical(
+    length(actual_ids) == 32L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 25 known entries."
+    "The software resource inventory must contain exactly 32 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
+  validate_installed_documentation_resources(authority, root, projection)
   authority
 }
 
@@ -2176,6 +2330,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "duckdb-history.R"),
       file.path("R", "durable-history.R"),
       file.path("R", "operation-result.R"),
+      file.path("R", "project-authoring.R"),
       file.path("R", "producer-execution.R"),
       file.path("R", "risk-execution.R"),
       file.path("R", "state-recovery.R"),
@@ -2188,6 +2343,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "runtime-contracts.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
+      file.path("man", "rrp_project_authoring.Rd"),
       file.path("man", "rrp_initialize_project_state.Rd"),
       file.path("man", "rrp_inspect_project_state.Rd"),
       file.path("man", "rrp_load_project.Rd"),
@@ -2381,7 +2537,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   )
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
-      "rrp_backup_project_state", "rrp_execute_durable_bundle",
+      "rrp_authoring_failure", "rrp_backup_project_state",
+      "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
       "rrp_initialize_project",
       "rrp_initialize_project_state",
@@ -2391,7 +2548,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_load_project",
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
-      "rrp_resource_path", "rrp_restate_history", "rrp_restore_project_state",
+      "rrp_register_authored_project", "rrp_resource_path",
+      "rrp_restate_history", "rrp_restore_project_state",
       "rrp_retry_episode",
       "rrp_validate_project",
       "rrp_validate_software_resources"
@@ -2423,6 +2581,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
       "export(rrp_initialize_project)",
+      "export(rrp_authoring_failure)",
+      "export(rrp_register_authored_project)",
       "export(rrp_initialize_project_state)",
       "export(rrp_inspect_project_state)",
       "export(rrp_backup_project_state)",
@@ -2605,15 +2765,19 @@ validate_source_boundaries <- function(package_roots) {
   names(source_calls) <- basename(platform_source_files)
   files_with_source <- names(source_calls)[lengths(source_calls) > 0L]
   require_true(
-    identical(files_with_source, "project-loader.R") &&
+    identical(
+      sort(files_with_source, method = "radix"),
+      c("project-authoring.R", "project-loader.R")
+    ) &&
+      length(source_calls[["project-authoring.R"]]) == 1L &&
       length(source_calls[["project-loader.R"]]) == 1L &&
       grepl(
         "sys[.]source[[:space:]]*[(]", source_calls[["project-loader.R"]],
         perl = TRUE
       ),
     paste0(
-      "rrpplatform may evaluate source only once through the fixed trusted ",
-      "project-loader registration boundary."
+      "rrpplatform may evaluate source only through the fixed trusted ",
+      "registration boundary and its closed standard-authoring files."
     )
   )
 }
@@ -2760,7 +2924,8 @@ load_package_fresh <- function(package_name, library_root) {
   spec <- package_specs[[package_name]]
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
-      "c(\"rrp_backup_project_state\", \"rrp_execute_durable_bundle\", ",
+      "c(\"rrp_authoring_failure\", \"rrp_backup_project_state\", ",
+      "\"rrp_execute_durable_bundle\", ",
       "\"rrp_execute_producer\", ",
       "\"rrp_execute_risk\", ",
       "\"rrp_initialize_project\", ",
@@ -2773,7 +2938,8 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_load_project\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
-      "\"rrp_resource_path\", \"rrp_restate_history\", ",
+      "\"rrp_register_authored_project\", \"rrp_resource_path\", ",
+      "\"rrp_restate_history\", ",
       "\"rrp_restore_project_state\", \"rrp_retry_episode\", ",
       "\"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
@@ -2870,6 +3036,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     operation_result = "resources/contracts/operation-result.dcf",
     project_manifest = "resources/contracts/project-manifest.dcf",
     project_registration = "resources/contracts/project-registration.dcf",
+    project_authoring = "resources/contracts/project-authoring.dcf",
     canonical_envelope = "resources/contracts/canonical/specification-envelope.dcf",
     canonical_producer = "resources/contracts/canonical/canonical-producer.dcf",
     canonical_bundle = "resources/contracts/canonical/canonical-bundle.dcf",
@@ -2889,7 +3056,13 @@ validate_installed_resource_access <- function(library_root, work_root) {
     project_state_backup = "resources/contracts/state/project-state-backup.dcf",
     duckdb_history_adapter = "resources/contracts/state/duckdb-history-adapter.dcf",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
-    project_registration_template = "resources/templates/project/R/register.R"
+    project_registration_template = "resources/templates/project/R/register.R",
+    project_authoring_template = "resources/templates/project/rrp-authoring.dcf",
+    project_producer_template = "resources/templates/project/R/produce-canonical.R",
+    project_provider_template = "resources/templates/project/R/calculate-risk.R",
+    project_readme_template = "resources/templates/project/README.md",
+    project_authoring_guide = "resources/documentation/project-authoring-guide.md",
+    provider_request_reference = "resources/documentation/provider-request-reference.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -2927,6 +3100,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["project_manifest"]], quote = "\""),
     ", project_registration = ",
     encodeString(expected_copies[["project_registration"]], quote = "\""),
+    ", project_authoring = ",
+    encodeString(expected_copies[["project_authoring"]], quote = "\""),
     ", canonical_envelope = ",
     encodeString(expected_copies[["canonical_envelope"]], quote = "\""),
     ", canonical_producer = ",
@@ -2959,12 +3134,25 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["project_manifest_template"]], quote = "\""),
     ", project_registration_template = ",
     encodeString(expected_copies[["project_registration_template"]], quote = "\""),
+    ", project_authoring_template = ",
+    encodeString(expected_copies[["project_authoring_template"]], quote = "\""),
+    ", project_producer_template = ",
+    encodeString(expected_copies[["project_producer_template"]], quote = "\""),
+    ", project_provider_template = ",
+    encodeString(expected_copies[["project_provider_template"]], quote = "\""),
+    ", project_readme_template = ",
+    encodeString(expected_copies[["project_readme_template"]], quote = "\""),
+    ", project_authoring_guide = ",
+    encodeString(expected_copies[["project_authoring_guide"]], quote = "\""),
+    ", provider_request_reference = ",
+    encodeString(expected_copies[["provider_request_reference"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
-    "c('rrp_backup_project_state', 'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
+    "c('rrp_authoring_failure', 'rrp_backup_project_state', ",
+    "'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
     "'rrp_execute_risk', ",
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
     "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",
@@ -2972,7 +3160,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_invalidate_history', 'rrp_load_project', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
-    "'rrp_resource_path', 'rrp_restate_history', 'rrp_restore_project_state', ",
+    "'rrp_register_authored_project', 'rrp_resource_path', ",
+    "'rrp_restate_history', 'rrp_restore_project_state', ",
     "'rrp_retry_episode', ",
     "'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
@@ -2987,6 +3176,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "operation_result = 'rrp.contract.operation-result', ",
     "project_manifest = 'rrp.contract.project-manifest', ",
     "project_registration = 'rrp.contract.project-registration', ",
+    "project_authoring = 'rrp.contract.project-authoring', ",
     "canonical_envelope = 'rrp.contract.specification-envelope', ",
     "canonical_producer = 'rrp.contract.canonical-producer', ",
     "canonical_bundle = 'rrp.contract.canonical-bundle', ",
@@ -3003,6 +3193,13 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "duckdb_history_adapter = 'rrp.contract.duckdb-history-adapter'); ",
     "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
     "project_registration_template = 'rrp.template.project-registration'); ",
+    "ids <- c(ids, project_authoring_template = ",
+    "'rrp.template.project-authoring-metadata', project_producer_template = ",
+    "'rrp.template.project-producer', project_provider_template = ",
+    "'rrp.template.project-provider', project_readme_template = ",
+    "'rrp.template.project-readme', project_authoring_guide = ",
+    "'rrp.documentation.project-authoring-guide', provider_request_reference = ",
+    "'rrp.documentation.provider-request-reference'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -3253,19 +3450,19 @@ validate_installed_project_initialization <- function(library_root, work_root) {
     "  catalog <- rrp_open_resource_catalog(software_root)",
     "  stopifnot(!file.exists(destination), !dir.exists(destination))",
     "  result <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
-    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', implementation_id = 'maintainer-initialized.implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', created_paths = c('rrp-project.dcf', 'R/register.R'))",
+    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', producer_implementation_id = 'maintainer-initialized.producer-implementation', producer_implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', provider_implementation_id = 'maintainer-initialized.provider-implementation', provider_implementation_version = '1.2.3', model_id = NULL, model_version = NULL, extension_packages = list(), created_paths = c('rrp-project.dcf', 'rrp-authoring.dcf', 'R/register.R', 'R/produce-canonical.R', 'R/calculate-risk.R', 'README.md'))",
     "  context <- rrp_load_project(catalog, destination)",
     "  doctor <- rrp_validate_project(catalog, destination)",
-    "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.3.0', supported_rrp_api_version = '0.3.0', canonical_profile = list(profile_id = 'rrp.canonical-profile.readmission', profile_version = '0.1.0'), producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', implementation_id = 'maintainer-initialized.implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', implementation_id = 'maintainer-initialized.implementation', implementation_version = '1.2.3', model_id = NULL, model_version = NULL, origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
-    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/register.R', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
+    "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.3.0', supported_rrp_api_version = '0.3.0', canonical_profile = list(profile_id = 'rrp.canonical-profile.readmission', profile_version = '0.1.0'), producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', implementation_id = 'maintainer-initialized.producer-implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', implementation_id = 'maintainer-initialized.provider-implementation', implementation_version = '1.2.3', model_id = NULL, model_version = NULL, origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
+    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/calculate-risk.R', 'R/produce-canonical.R', 'R/register.R', 'README.md', 'rrp-authoring.dcf', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
     "  stopifnot(file.copy(destination, copy_parent, recursive = TRUE, copy.mode = FALSE))",
     "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root); copied_doctor <- rrp_validate_project(catalog, copied_root)",
-    "  text <- paste(unlist(lapply(c(file.path(destination, 'rrp-project.dcf'), file.path(destination, 'R', 'register.R')), readLines, warn = FALSE)), collapse = '\\n')",
+    "  text <- paste(unlist(lapply(c(file.path(destination, 'rrp-project.dcf'), file.path(destination, 'rrp-authoring.dcf'), file.path(destination, 'R', 'register.R'), file.path(destination, 'R', 'produce-canonical.R'), file.path(destination, 'R', 'calculate-risk.R'), file.path(destination, 'README.md')), readLines, warn = FALSE)), collapse = '\\n')",
     "  stopifnot(identical(copied$manifest, context$manifest), identical(copied$producer$component_id, context$producer$component_id), identical(copied$provider$component_id, context$provider$component_id), !identical(copied$project_root, context$project_root), identical(copied_doctor, doctor), !grepl(destination, paste(capture.output(str(copied_doctor)), collapse = ' '), fixed = TRUE), !grepl(destination, text, fixed = TRUE), !grepl('rrp-staging', text, fixed = TRUE))",
     "  dir.create(file.path(copied_root, 'extensions', 'library'), recursive = TRUE); initialized_state <- rrp_initialize_project_state(catalog, copied_root); available <- rrp_validate_project(catalog, copied_root)",
     "  stopifnot(identical(initialized_state$status, 'success'), identical(initialized_state$value$state_status, 'compatible'), identical(available$status, 'success'), identical(available$value$extension_library_status, 'available'), identical(available$value$state_status, 'compatible'), identical(available$diagnostics, list()), identical(sort(list.files(file.path(copied_root, 'state'), all.files = TRUE, no.. = TRUE)), c('history.duckdb', 'state.dcf')))",
-    "  invalid_parent <- file.path(dirname(copy_parent), 'doctor-invalid-parent'); dir.create(invalid_parent); stopifnot(file.copy(destination, invalid_parent, recursive = TRUE, copy.mode = FALSE)); invalid_root <- file.path(invalid_parent, basename(destination)); invalid_manifest <- readLines(file.path(invalid_root, 'rrp-project.dcf')); invalid_manifest <- sub('^Provider-ID:.*$', 'Provider-ID: missing.provider', invalid_manifest); writeLines(invalid_manifest, file.path(invalid_root, 'rrp-project.dcf')); invalid_doctor <- rrp_validate_project(catalog, invalid_root)",
-    "  stopifnot(identical(invalid_doctor$operation_id, 'rrp.validate-project'), identical(invalid_doctor$status, 'failure'), is.null(invalid_doctor$value), length(invalid_doctor$diagnostics) == 1L, identical(invalid_doctor$diagnostics[[1L]]$code, 'unknown_provider_selection'), identical(invalid_doctor$diagnostics[[1L]]$severity, 'error'), identical(invalid_doctor$diagnostics[[1L]]$message, 'RRP project validation failed.'), !grepl(invalid_root, paste(capture.output(str(invalid_doctor)), collapse = ' '), fixed = TRUE))",
+    "  invalid_parent <- file.path(dirname(copy_parent), 'doctor-invalid-parent'); dir.create(invalid_parent); stopifnot(file.copy(destination, invalid_parent, recursive = TRUE, copy.mode = FALSE)); invalid_root <- file.path(invalid_parent, basename(destination)); invalid_authoring <- readLines(file.path(invalid_root, 'rrp-authoring.dcf')); writeLines(c(invalid_authoring, 'Unknown-Field: prohibited'), file.path(invalid_root, 'rrp-authoring.dcf')); invalid_doctor <- rrp_validate_project(catalog, invalid_root)",
+    "  stopifnot(identical(invalid_doctor$operation_id, 'rrp.validate-project'), identical(invalid_doctor$status, 'failure'), is.null(invalid_doctor$value), length(invalid_doctor$diagnostics) == 1L, identical(invalid_doctor$diagnostics[[1L]]$code, 'malformed_authoring_metadata'), identical(invalid_doctor$diagnostics[[1L]]$severity, 'error'), identical(invalid_doctor$diagnostics[[1L]]$message, 'RRP project validation failed.'), !grepl(invalid_root, paste(capture.output(str(invalid_doctor)), collapse = ' '), fixed = TRUE))",
     "  existing <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
     "  invalid_destination <- file.path(dirname(destination), 'invalid-project'); invalid <- rrp_initialize_project(catalog, invalid_destination, 'rrp.protected', 'bad-version')",
     "  stopifnot(identical(existing$status, 'failure'), identical(existing$diagnostics[[1L]]$code, 'project_destination_exists'), identical(invalid$status, 'failure'), identical(invalid$diagnostics[[1L]]$code, 'invalid_project_id'), !file.exists(invalid_destination), !dir.exists(invalid_destination), !any(grepl('rrp-staging', list.files(dirname(destination)))), identical(.libPaths(), before_libraries), identical(getwd(), unrelated_root), identical(ls(.GlobalEnv, all.names = TRUE), before_globals))",
@@ -3574,7 +3771,10 @@ validate_packages <- function() {
     "execution, installed transparent/project provider substitution, ",
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and provider ",
-    "selection, transactional minimal-project initialization, ",
+    "selection, transactional six-file standard-project initialization, ",
+    "standard authoring authority and raw producer/provider adaptation, ",
+    "content-sensitive bundle identity, closed extension-package preflight, ",
+    "and installed Markdown product-document resolution, ",
     "selected producer execution, closed request/result validation, exact ",
     "one-call and zero-provider behavior, admission delegation, two distinct ",
     "hospital mapping fixtures, ",

@@ -10,7 +10,8 @@ cataloged `rrp.project@0.3.0`
 manifest and `rrp.project-registration@0.3.0` registration-result structures,
 the installed canonical specification family, the five singular runtime
 authorities, semantic provider declarations, one explicit project-loading
-boundary, transactional minimal-project initialization from cataloged
+boundary, the installed `rrp.project-authoring@0.1.0` authority and raw-contract
+adapter, transactional six-file standard-project initialization from cataloged
 software-owned templates, explicit project-state lifecycle operations, and the
 private DuckDB realization of the runtime-owned logical history port. Contract
 parsers, registration evaluation,
@@ -20,6 +21,11 @@ internal. Provider execution remains explicit and in memory.
 
 Its current callable interfaces are:
 
+- `rrp_register_authored_project(project_root)` validates one standard-authored
+  project under the authoritative loader context and compiles its two narrow
+  hospital callables into the unchanged raw registration contract;
+- `rrp_authoring_failure(code)` constructs one closed intentional producer or
+  provider failure token whose applicability is rechecked by its adapter;
 - `rrp_execute_producer(software_catalog, project_root, as_of_time)` loads one
   explicit project, invokes exactly its selected producer once through the
   closed request/result contract, and delegates its candidate to runtime
@@ -36,8 +42,8 @@ Its current callable interfaces are:
   one closed `rrp_project_context` after exact semantic producer/provider
   validation and selection;
 - `rrp_initialize_project(software_catalog, project_root, project_id,
-  project_version)` creates exactly the manifest and registration file in a
-  previously absent destination, validates staged and promoted output through
+  project_version)` creates exactly the six-file standard authoring scaffold in
+  a previously absent destination, validates staged and promoted output through
   the loader, and returns one common operation result;
 - `rrp_initialize_project_state(software_catalog, project_root)` creates and
   validates exactly `state.dcf` and `history.duckdb` beneath the manifest-owned
@@ -109,7 +115,11 @@ when installed state changed. Codes are machine-readable; messages are bounded
 maintainer text and do not echo arbitrary paths, parser text, IDs, or content.
 
 Project initialization is create-only and uses a unique sibling staging
-directory.
+directory. Its normal scaffold exposes only source-to-canonical mapping and
+risk calculation as hospital customization points; thin registration, raw
+protocol envelopes, fixed capabilities, deterministic bundle identity, and
+canonical admission remain RRP-owned. Advanced projects may still replace the
+thin registration with the supported raw `0.3.0` contract.
 It never overwrites, merges with, repairs, or adopts existing content; cleanup
 is limited to filesystem objects owned by the current attempt. Its registered
 producer returns the controlled `producer_unavailable` result when later

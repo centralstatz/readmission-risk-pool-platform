@@ -72,7 +72,10 @@ projection, explicit-root installed-package access, common resource-validation
 result and privacy-safe diagnostic behavior, the exact canonical and five-
 resource runtime specification families and relationships, strict 0.3.0 project
 contracts, explicit trusted
-project loading, transactional minimal-project initialization, exact semantic
+project loading, transactional six-file standard-project initialization,
+exact standard-authoring adaptation to the raw producer/provider contracts,
+deterministic content-sensitive bundle identity, controlled authoring failures,
+closed extension-package preflight, installed Markdown guidance, exact semantic
 producer and semantic provider selection, loader-backed structured project diagnosis, copied-
 project portability, selected producer execution, closed request/result
 validation, two distinct fictional hospital mappings, canonical admission
@@ -135,6 +138,8 @@ backup/restore. Committed push run `35589769595`, job `106301272647`, succeeded
 for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
 reconciliation found no implementation deviation and clarified the target
 architecture's atomic-history wording. Stages 1–7 are accepted and complete.
-The next task is to review and accept the detailed Stage 8 plan. Do not begin
-Stage 8 source implementation without explicit authorization and an accepted
-detailed plan.
+Increment 8.A establishes the cataloged standard-authoring authority, normal
+six-file scaffold, producer/provider adapters, two installed product documents,
+and 22-export `rrpplatform` surface while preserving direct raw projects. Stage
+8 remains in progress. The next task is Increment 8.B; do not begin it without
+explicit authorization.

@@ -29,19 +29,31 @@ rrp_doctor_manifest_template <- c(
 
 rrp_doctor_registration_template <- c(
   "rrp_register_project <- function(project_root) {",
-  "  unavailable <- function(request) stop('selected callable executed', call. = FALSE)",
-  "  capabilities <- list(list(capability_id = 'rrp.capability.discharge-episode', status = 'available'), list(capability_id = 'rrp.capability.terminal-event', status = 'available'))",
-  "  producer <- function() list(component_id = '@@RRP_PRODUCER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', producer_api_id = 'rrp.producer-api', producer_api_version = '0.1.0', canonical_bundle_id = 'rrp.canonical-bundle', canonical_bundle_version = '0.1.0', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', mapping_id = '@@RRP_MAPPING_ID@@', mapping_version = '@@RRP_PROJECT_VERSION@@', capabilities = capabilities, callable = unavailable)",
-  "  provider <- function() list(component_id = '@@RRP_PROVIDER_ID@@', component_version = '@@RRP_PROJECT_VERSION@@', provider_api_id = 'rrp.provider-api', provider_api_version = '0.1.0', target_id = 'rrp.risk-target.readmission-remaining-30-day', target_version = '0.1.0', state_contract_id = 'rrp.episode-state', state_contract_version = '0.1.0', request_contract_id = 'rrp.risk-request', request_contract_version = '0.1.0', estimate_contract_id = 'rrp.risk-estimate', estimate_contract_version = '0.1.0', implementation_id = '@@RRP_IMPLEMENTATION_ID@@', implementation_version = '@@RRP_PROJECT_VERSION@@', model_id = NULL, model_version = NULL, callable = unavailable)",
-  "  list(",
-  "    registration_contract_id = 'rrp.project-registration',",
-  "    registration_contract_version = '0.3.0',",
-  "    project_id = '@@RRP_PROJECT_ID@@',",
-  "    producers = list(producer()),",
-  "    providers = list(provider())",
-  "  )",
+  "  rrpplatform::rrp_register_authored_project(project_root)",
   "}"
 )
+
+rrp_doctor_authoring_template <- c(
+  "Record-Type: rrp-project-authoring",
+  "Authoring-Contract-ID: rrp.project-authoring",
+  "Authoring-Contract-Version: 0.1.0",
+  "Producer-Implementation-ID: @@RRP_PRODUCER_IMPLEMENTATION_ID@@",
+  "Producer-Implementation-Version: @@RRP_PROJECT_VERSION@@",
+  "Mapping-ID: @@RRP_MAPPING_ID@@",
+  "Mapping-Version: @@RRP_PROJECT_VERSION@@",
+  "Provider-Implementation-ID: @@RRP_PROVIDER_IMPLEMENTATION_ID@@",
+  "Provider-Implementation-Version: @@RRP_PROJECT_VERSION@@",
+  "Extension-Packages: none"
+)
+rrp_doctor_producer_template <- c(
+  "rrp_produce_canonical <- function(project_root, as_of_time) {",
+  "  stop('selected callable executed', call. = FALSE)", "}"
+)
+rrp_doctor_provider_template <- c(
+  "rrp_calculate_risk <- function(project_root, request) {",
+  "  stop('selected callable executed', call. = FALSE)", "}"
+)
+rrp_doctor_readme_template <- "# RRP hospital project"
 
 rrp_doctor_software_root <- function(root) {
   resources <- list(
@@ -71,6 +83,11 @@ rrp_doctor_software_root <- function(root) {
       value = rrp_doctor_internal("rrp_project_registration_contract_expected")()
     ),
     list(
+      id = "rrp.contract.project-authoring", class = "contract", format = "dcf",
+      path = "resources/contracts/project-authoring.dcf",
+      value = rrp_doctor_internal("rrp_authoring_contract_expected")()
+    ),
+    list(
       id = "rrp.template.project-manifest", class = "template", format = "dcf",
       path = "resources/templates/project/rrp-project.dcf",
       value = rrp_doctor_manifest_template
@@ -79,6 +96,26 @@ rrp_doctor_software_root <- function(root) {
       id = "rrp.template.project-registration", class = "template", format = "r",
       path = "resources/templates/project/R/register.R",
       value = rrp_doctor_registration_template
+    ),
+    list(
+      id = "rrp.template.project-authoring-metadata", class = "template",
+      format = "dcf", path = "resources/templates/project/rrp-authoring.dcf",
+      value = rrp_doctor_authoring_template
+    ),
+    list(
+      id = "rrp.template.project-producer", class = "template", format = "r",
+      path = "resources/templates/project/R/produce-canonical.R",
+      value = rrp_doctor_producer_template
+    ),
+    list(
+      id = "rrp.template.project-provider", class = "template", format = "r",
+      path = "resources/templates/project/R/calculate-risk.R",
+      value = rrp_doctor_provider_template
+    ),
+    list(
+      id = "rrp.template.project-readme", class = "template", format = "md",
+      path = "resources/templates/project/README.md",
+      value = rrp_doctor_readme_template
     )
   )
   canonical_definitions <- rrp_doctor_internal(
@@ -213,7 +250,7 @@ expected_value <- list(
   producer = list(
     component_id = "doctor-project.producer",
     component_version = "2.4.0",
-    implementation_id = "doctor-project.implementation",
+    implementation_id = "doctor-project.producer-implementation",
     implementation_version = "2.4.0",
     mapping_id = "doctor-project.mapping",
     mapping_version = "2.4.0",
@@ -222,7 +259,7 @@ expected_value <- list(
   provider = list(
     component_id = "doctor-project.provider",
     component_version = "2.4.0",
-    implementation_id = "doctor-project.implementation",
+    implementation_id = "doctor-project.provider-implementation",
     implementation_version = "2.4.0",
     model_id = NULL,
     model_version = NULL,
@@ -280,14 +317,8 @@ stopifnot(
 )
 
 dir.create(file.path(project_root, "extensions", "library"), recursive = TRUE)
-writeLines("opaque extension content", file.path(
-  project_root, "extensions", "library", "sentinel.txt"
-))
 state_initialized <- rrp_initialize_project_state(catalog, project_root)
 stopifnot(rrp_operation_succeeded(state_initialized))
-extension_before <- readLines(file.path(
-  project_root, "extensions", "library", "sentinel.txt"
-))
 state_before <- tools::md5sum(file.path(
   project_root, "state", c("state.dcf", "history.duckdb")
 ))
@@ -298,9 +329,10 @@ stopifnot(
   identical(available$value$extension_library_status, "available"),
   identical(available$value$state_status, "compatible"),
   identical(available$diagnostics, list()),
-  identical(readLines(file.path(
-    project_root, "extensions", "library", "sentinel.txt"
-  )), extension_before),
+  identical(list.files(
+    file.path(project_root, "extensions", "library"), all.files = TRUE,
+    no.. = TRUE
+  ), character()),
   identical(tools::md5sum(file.path(
     project_root, "state", c("state.dcf", "history.duckdb")
   )), state_before),
@@ -357,7 +389,7 @@ stopifnot(
   )
 )
 
-# Each case begins from the pristine initialized two-file project so loader-
+# Each case begins from the pristine initialized six-file project so loader-
 # owned failure categories are translated without parallel doctor validation.
 pristine <- file.path(suite_root, "pristine")
 stopifnot(rrp_operation_succeeded(rrp_initialize_project(
@@ -410,13 +442,18 @@ unlink(file.path(case, "R", "register.R"))
 check_case(case, "missing_project_registration")
 
 case <- new_case()
-registration_path <- file.path(case, "R", "register.R")
-registration <- readLines(registration_path, warn = FALSE)
+raw_adversarial_registration <- gsub(
+  "doctor-project", "adversarial-project", instrumented, fixed = TRUE
+)
+raw_adversarial_registration <- gsub(
+  "2.4.0", "1.0.0", raw_adversarial_registration, fixed = TRUE
+)
 registration <- sub(
   "project_id = 'adversarial-project'",
-  "project_id = 'different-project'", registration, fixed = TRUE
+  "project_id = 'different-project'", raw_adversarial_registration,
+  fixed = TRUE
 )
-writeLines(registration, registration_path, useBytes = TRUE)
+writeLines(registration, file.path(case, "R", "register.R"), useBytes = TRUE)
 check_case(case, "project_identity_mismatch")
 
 case <- new_case()
@@ -431,22 +468,29 @@ rrp_doctor_replace_manifest(
 check_case(case, "protected_registration")
 
 case <- new_case()
-registration <- readLines(file.path(case, "R", "register.R"), warn = FALSE)
 registration <- sub(
-  "producers = list(producer())",
-  "producers = list(producer(), producer())",
-  registration, fixed = TRUE
+  "producers = list(producer), providers",
+  "producers = list(producer, producer), providers",
+  raw_adversarial_registration, fixed = TRUE
 )
 writeLines(registration, file.path(case, "R", "register.R"), useBytes = TRUE)
 check_case(case, "duplicate_registration")
 
 case <- new_case()
+writeLines(
+  raw_adversarial_registration, file.path(case, "R", "register.R"),
+  useBytes = TRUE
+)
 rrp_doctor_replace_manifest(
   case, "^Producer-ID:.*$", "Producer-ID: missing.producer"
 )
 check_case(case, "unknown_producer_selection")
 
 case <- new_case()
+writeLines(
+  raw_adversarial_registration, file.path(case, "R", "register.R"),
+  useBytes = TRUE
+)
 rrp_doctor_replace_manifest(
   case, "^Provider-ID:.*$", "Provider-ID: missing.provider"
 )
