@@ -18,7 +18,9 @@ Description: Establishes the main internal implementation package for the
     semantic provider declarations, executes the explicitly selected provider
     through the runtime package's closed risk boundary, transactionally
     initializes the smallest valid standard-authored project, and reports
-    bounded operation results. It also initializes, inspects, backs up, and restores explicit
+    bounded operation results. It also realizes the supplied deterministic
+    fictional project from cataloged templates without generating its source
+    implicitly. It initializes, inspects, backs up, and restores explicit
     project-owned state and privately realizes the storage-neutral history port
     through bounded DBI and DuckDB sessions.
 License: Apache License (>= 2)

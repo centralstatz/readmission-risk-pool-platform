@@ -12,7 +12,9 @@ the installed canonical specification family, the five singular runtime
 authorities, semantic provider declarations, one explicit project-loading
 boundary, the installed `rrp.project-authoring@0.1.0` authority and raw-contract
 adapter, transactional six-file standard-project initialization from cataloged
-software-owned templates, explicit project-state lifecycle operations, and the
+software-owned templates, transactional seven-file fictional-project
+realization with separate explicit project-owned source generation, explicit
+project-state lifecycle operations, and the
 private DuckDB realization of the runtime-owned logical history port. Contract
 parsers, registration evaluation,
 rendering, staging, path checks, composition, resolution, producer request and
@@ -45,6 +47,9 @@ Its current callable interfaces are:
   project_version)` creates exactly the six-file standard authoring scaffold in
   a previously absent destination, validates staged and promoted output through
   the loader, and returns one common operation result;
+- `rrp_initialize_fictional_project(software_catalog, project_root)` creates
+  the supplied ordinary fictional teaching project at an absent destination;
+  its project-owned source generator remains a separate explicit action;
 - `rrp_initialize_project_state(software_catalog, project_root)` creates and
   validates exactly `state.dcf` and `history.duckdb` beneath the manifest-owned
   state path, or validates an existing compatible state without mutation;

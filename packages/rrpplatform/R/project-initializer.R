@@ -167,7 +167,7 @@ rrp_project_render_template <- function(lines, values) {
   rendered
 }
 
-rrp_project_initialization_inventory <- function(root) {
+rrp_project_initialization_inventory <- function(root, extra_files = character()) {
   files <- sort(list.files(
     root, recursive = TRUE, all.files = TRUE, no.. = TRUE,
     full.names = FALSE, include.dirs = FALSE
@@ -175,10 +175,10 @@ rrp_project_initialization_inventory <- function(root) {
   directories <- sort(list.dirs(
     root, recursive = TRUE, full.names = FALSE
   ), method = "radix")
-  identical(files, c(
+  identical(files, sort(c(
     "R/calculate-risk.R", "R/produce-canonical.R", "R/register.R",
-    "README.md", "rrp-authoring.dcf", "rrp-project.dcf"
-  )) &&
+    "README.md", "rrp-authoring.dcf", "rrp-project.dcf", extra_files
+  ), method = "radix")) &&
     identical(directories[nzchar(directories)], "R")
 }
 
@@ -224,14 +224,16 @@ rrp_project_initialization_assert_context <- function(context, inputs, root) {
   invisible(context)
 }
 
-rrp_project_initialization_failure <- function(condition) {
+rrp_project_initialization_failure <- function(
+  condition, operation_id = "rrp.initialize-project"
+) {
   diagnostic <- rrp_new_diagnostic(
     code = condition$code,
     severity = "error",
     message = "Project initialization failed."
   )
   rrp_new_operation_result(
-    operation_id = "rrp.initialize-project",
+    operation_id = operation_id,
     status = "failure",
     value = NULL,
     diagnostics = list(diagnostic)
@@ -242,28 +244,28 @@ rrp_project_initialize <- function(
   software_catalog,
   project_root,
   project_id,
-  project_version
+  project_version,
+  fictional = FALSE
 ) {
   manifest_contract <- rrp_project_manifest_contract(software_catalog)
   registration_contract <- rrp_project_registration_contract(software_catalog)
-  manifest_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-manifest"
+  prefix <- if (fictional) "rrp.template.fictional-project-" else {
+    "rrp.template.project-"
+  }
+  resource_ids <- c(
+    manifest = paste0(prefix, "manifest"),
+    registration = paste0(prefix, "registration"),
+    authoring = paste0(prefix, "authoring-metadata"),
+    producer = paste0(prefix, "producer"),
+    provider = paste0(prefix, "provider"),
+    readme = paste0(prefix, "readme")
   )
-  registration_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-registration"
-  )
-  authoring_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-authoring-metadata"
-  )
-  producer_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-producer"
-  )
-  provider_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-provider"
-  )
-  readme_template <- rrp_resource_path(
-    software_catalog, "rrp.template.project-readme"
-  )
+  template_paths <- vapply(resource_ids, function(resource_id) {
+    rrp_resource_path(software_catalog, resource_id)
+  }, character(1L))
+  generator_template <- if (fictional) rrp_resource_path(
+    software_catalog, "rrp.template.fictional-project-source-generator"
+  ) else NULL
   inputs <- rrp_project_initialization_inputs(
     project_id, project_version, manifest_contract, registration_contract
   )
@@ -282,29 +284,33 @@ rrp_project_initialize <- function(
     MAPPING_ID = inputs$mapping_id
   )
   manifest <- rrp_project_render_template(
-    readLines(manifest_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["manifest"]], warn = FALSE, encoding = "UTF-8"),
     manifest_values
   )
   registration <- rrp_project_render_template(
-    readLines(registration_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["registration"]], warn = FALSE, encoding = "UTF-8"),
     character()
   )
   authoring <- rrp_project_render_template(
-    readLines(authoring_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["authoring"]], warn = FALSE, encoding = "UTF-8"),
     authoring_values
   )
   producer <- rrp_project_render_template(
-    readLines(producer_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["producer"]], warn = FALSE, encoding = "UTF-8"),
     character()
   )
   provider <- rrp_project_render_template(
-    readLines(provider_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["provider"]], warn = FALSE, encoding = "UTF-8"),
     character()
   )
   readme <- rrp_project_render_template(
-    readLines(readme_template, warn = FALSE, encoding = "UTF-8"),
+    readLines(template_paths[["readme"]], warn = FALSE, encoding = "UTF-8"),
     character()
   )
+  generator <- if (fictional) rrp_project_render_template(
+    readLines(generator_template, warn = FALSE, encoding = "UTF-8"),
+    character()
+  ) else NULL
 
   staging <- rrp_project_initialization_stage(destination)
   staging_owned <- TRUE
@@ -332,10 +338,14 @@ rrp_project_initialize <- function(
     writeLines(producer, file.path(staging, "R", "produce-canonical.R"), useBytes = TRUE)
     writeLines(provider, file.path(staging, "R", "calculate-risk.R"), useBytes = TRUE)
     writeLines(readme, file.path(staging, "README.md"), useBytes = TRUE)
+    if (fictional) writeLines(
+      generator, file.path(staging, "R", "generate-source.R"), useBytes = TRUE
+    )
   }, error = function(condition) rrp_project_initialization_abort(
     "project_render_failed", "Project template rendering failed."
   ))
-  if (!rrp_project_initialization_inventory(staging)) {
+  extra_files <- if (fictional) "R/generate-source.R" else character()
+  if (!rrp_project_initialization_inventory(staging, extra_files)) {
     rrp_project_initialization_abort(
       "project_render_failed", "Project template rendering failed."
     )
@@ -383,11 +393,15 @@ rrp_project_initialize <- function(
     extension_packages = list(),
     created_paths = c(
       "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
-      "R/produce-canonical.R", "R/calculate-risk.R", "README.md"
+      "R/produce-canonical.R", "R/calculate-risk.R", "README.md", extra_files
     )
   )
   result <- rrp_new_operation_result(
-    operation_id = "rrp.initialize-project",
+    operation_id = if (fictional) {
+      "rrp.initialize-fictional-project"
+    } else {
+      "rrp.initialize-project"
+    },
     status = "success",
     value = value,
     diagnostics = list()
@@ -423,5 +437,35 @@ rrp_initialize_project <- function(
     rrp_resource_error = rrp_project_initialization_failure,
     rrp_project_error = rrp_project_initialization_failure,
     rrp_project_initialization_error = rrp_project_initialization_failure
+  )
+}
+
+#' Initialize the supplied fictional RRP project
+#'
+#' Transactionally realize the deterministic, visibly fictional, nonclinical
+#' reference project from installed cataloged templates at one absent explicit
+#' destination. Source generation remains a separate explicit project-owned
+#' action after initialization.
+#'
+#' @param software_catalog A validated `rrp_resource_catalog` returned by
+#'   [rrp_open_resource_catalog()].
+#' @param project_root One explicit absent project destination.
+#' @return One validated `rrp_operation_result`.
+#' @export
+rrp_initialize_fictional_project <- function(software_catalog, project_root) {
+  fail <- function(condition) rrp_project_initialization_failure(
+    condition, "rrp.initialize-fictional-project"
+  )
+  tryCatch(
+    rrp_project_initialize(
+      software_catalog = software_catalog,
+      project_root = project_root,
+      project_id = "fictional-reference-hospital",
+      project_version = "1.0.0",
+      fictional = TRUE
+    ),
+    rrp_resource_error = fail,
+    rrp_project_error = fail,
+    rrp_project_initialization_error = fail
   )
 }

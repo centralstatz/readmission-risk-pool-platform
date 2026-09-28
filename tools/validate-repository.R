@@ -46,6 +46,7 @@ expected_files <- c(
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
   "packages/rrpplatform/man/rrp_initialize_project.Rd",
+  "packages/rrpplatform/man/rrp_initialize_fictional_project.Rd",
   "packages/rrpplatform/man/rrp_project_authoring.Rd",
   "packages/rrpplatform/man/rrp_initialize_project_state.Rd",
   "packages/rrpplatform/man/rrp_inspect_project_state.Rd",
@@ -67,6 +68,7 @@ expected_files <- c(
   "packages/rrpplatform/tests/project-contracts.R",
   "packages/rrpplatform/tests/project-doctor.R",
   "packages/rrpplatform/tests/project-initializer.R",
+  "packages/rrpplatform/tests/fictional-project.R",
   "packages/rrpplatform/tests/project-loader.R",
   "packages/rrpplatform/tests/project-state.R",
   "packages/rrpplatform/tests/producer-execution.R",
@@ -123,8 +125,16 @@ expected_files <- c(
   "resources/templates/project/rrp-project.dcf",
   "resources/templates/project/rrp-authoring.dcf",
   "resources/templates/project/README.md",
+  "resources/templates/fictional-project/R/register.R",
+  "resources/templates/fictional-project/R/generate-source.R",
+  "resources/templates/fictional-project/R/produce-canonical.R",
+  "resources/templates/fictional-project/R/calculate-risk.R",
+  "resources/templates/fictional-project/rrp-project.dcf",
+  "resources/templates/fictional-project/rrp-authoring.dcf",
+  "resources/templates/fictional-project/README.md",
   "resources/documentation/project-authoring-guide.md",
   "resources/documentation/provider-request-reference.md",
+  "resources/documentation/fictional-reference-walkthrough.md",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )
@@ -141,7 +151,8 @@ expected_directories <- c(
   "resources/contracts/runtime",
   "resources/documentation",
   "resources/templates", "resources/templates/project",
-  "resources/templates/project/R", "tools"
+  "resources/templates/project/R", "resources/templates/fictional-project",
+  "resources/templates/fictional-project/R", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",

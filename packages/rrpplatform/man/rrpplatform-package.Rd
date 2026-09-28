@@ -11,8 +11,9 @@ minimal common operation-result boundary with privacy-safe diagnostics. It
 also owns strict project-manifest and trusted-registration validation, one
 exact installed canonical specification authority, all five singular runtime
 authorities, semantic provider declarations, an explicit project-loading boundary,
-the supported six-file standard project-authoring adapter, and transactional
-standard-project initialization plus a bounded structured project doctor. It
+the supported six-file standard project-authoring adapter, transactional
+standard-project initialization, supplied fictional-project realization, and
+a bounded structured project doctor. It
 can normalize installed authority into the exact contexts consumed
 by runtime admission, episode-state preparation, and direct runtime provider
 execution and orchestrate one selected project producer through the canonical
@@ -23,11 +24,12 @@ durable execution, supported history interpretation/correction, and explicit
 create-only checkpointed state backup/absent-state restore.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 22
+The package imports the \pkg{rrpruntime} namespace and exports exactly 23
 technical interfaces: \code{rrp_authoring_failure()},
 \code{rrp_backup_project_state()},
 \code{rrp_execute_durable_bundle()},
 \code{rrp_execute_producer()}, \code{rrp_execute_risk()},
+\code{rrp_initialize_fictional_project()},
 \code{rrp_initialize_project()}, \code{rrp_initialize_project_state()},
 \code{rrp_inspect_current_history()}, \code{rrp_inspect_episode_history()},
 \code{rrp_inspect_project_state()}, \code{rrp_inspect_scope_history()},

@@ -956,6 +956,7 @@ stopifnot(
     "rrp_authoring_failure", "rrp_backup_project_state",
     "rrp_execute_durable_bundle",
     "rrp_execute_producer", "rrp_execute_risk",
+    "rrp_initialize_fictional_project",
     "rrp_initialize_project", "rrp_initialize_project_state",
     "rrp_inspect_current_history", "rrp_inspect_episode_history",
     "rrp_inspect_project_state", "rrp_inspect_scope_history",

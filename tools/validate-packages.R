@@ -1389,6 +1389,39 @@ validate_software_template_resources <- function(authority, root, projection) {
     project_readme = c(
       id = "rrp.template.project-readme",
       path = "resources/templates/project/README.md", format = "md"
+    ),
+    fictional_project_manifest = c(
+      id = "rrp.template.fictional-project-manifest",
+      path = "resources/templates/fictional-project/rrp-project.dcf",
+      format = "dcf"
+    ),
+    fictional_project_registration = c(
+      id = "rrp.template.fictional-project-registration",
+      path = "resources/templates/fictional-project/R/register.R", format = "r"
+    ),
+    fictional_project_authoring_metadata = c(
+      id = "rrp.template.fictional-project-authoring-metadata",
+      path = "resources/templates/fictional-project/rrp-authoring.dcf",
+      format = "dcf"
+    ),
+    fictional_project_producer = c(
+      id = "rrp.template.fictional-project-producer",
+      path = "resources/templates/fictional-project/R/produce-canonical.R",
+      format = "r"
+    ),
+    fictional_project_provider = c(
+      id = "rrp.template.fictional-project-provider",
+      path = "resources/templates/fictional-project/R/calculate-risk.R",
+      format = "r"
+    ),
+    fictional_project_readme = c(
+      id = "rrp.template.fictional-project-readme",
+      path = "resources/templates/fictional-project/README.md", format = "md"
+    ),
+    fictional_project_source_generator = c(
+      id = "rrp.template.fictional-project-source-generator",
+      path = "resources/templates/fictional-project/R/generate-source.R",
+      format = "r"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -1403,7 +1436,20 @@ validate_software_template_resources <- function(authority, root, projection) {
       "@@RRP_MAPPING_ID@@", "@@RRP_PROVIDER_IMPLEMENTATION_ID@@"
     ),
     project_producer = character(), project_provider = character(),
-    project_readme = character()
+    project_readme = character(),
+    fictional_project_manifest = c(
+      "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
+      "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
+    ),
+    fictional_project_registration = character(),
+    fictional_project_authoring_metadata = c(
+      "@@RRP_PRODUCER_IMPLEMENTATION_ID@@", "@@RRP_PROJECT_VERSION@@",
+      "@@RRP_MAPPING_ID@@", "@@RRP_PROVIDER_IMPLEMENTATION_ID@@"
+    ),
+    fictional_project_producer = character(),
+    fictional_project_provider = character(),
+    fictional_project_readme = character(),
+    fictional_project_source_generator = character()
   )
   for (name in names(templates)) {
     specification <- templates[[name]]
@@ -1469,6 +1515,10 @@ validate_installed_documentation_resources <- function(
     provider_request = c(
       id = "rrp.documentation.provider-request-reference",
       path = "resources/documentation/provider-request-reference.md"
+    ),
+    fictional_reference = c(
+      id = "rrp.documentation.fictional-reference-walkthrough",
+      path = "resources/documentation/fictional-reference-walkthrough.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -1887,16 +1937,24 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.template.project-authoring-metadata",
     "rrp.template.project-producer", "rrp.template.project-provider",
     "rrp.template.project-readme",
+    "rrp.template.fictional-project-manifest",
+    "rrp.template.fictional-project-registration",
+    "rrp.template.fictional-project-authoring-metadata",
+    "rrp.template.fictional-project-producer",
+    "rrp.template.fictional-project-provider",
+    "rrp.template.fictional-project-readme",
+    "rrp.template.fictional-project-source-generator",
     "rrp.documentation.project-authoring-guide",
-    "rrp.documentation.provider-request-reference"
+    "rrp.documentation.provider-request-reference",
+    "rrp.documentation.fictional-reference-walkthrough"
   )
   resource_require(
-    length(actual_ids) == 32L && identical(
+    length(actual_ids) == 40L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 32 known entries."
+    "The software resource inventory must contain exactly 40 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2343,6 +2401,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "runtime-contracts.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
+      file.path("man", "rrp_initialize_fictional_project.Rd"),
       file.path("man", "rrp_project_authoring.Rd"),
       file.path("man", "rrp_initialize_project_state.Rd"),
       file.path("man", "rrp_inspect_project_state.Rd"),
@@ -2362,6 +2421,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-contracts.R"),
       file.path("tests", "project-doctor.R"),
       file.path("tests", "project-initializer.R"),
+      file.path("tests", "fictional-project.R"),
       file.path("tests", "project-loader.R"),
       file.path("tests", "project-state.R"),
       file.path("tests", "producer-execution.R"),
@@ -2540,6 +2600,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_authoring_failure", "rrp_backup_project_state",
       "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
+      "rrp_initialize_fictional_project",
       "rrp_initialize_project",
       "rrp_initialize_project_state",
       "rrp_inspect_current_history", "rrp_inspect_episode_history",
@@ -2581,6 +2642,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_directives <- if (identical(package_name, "rrpplatform")) {
     c(
       "export(rrp_initialize_project)",
+      "export(rrp_initialize_fictional_project)",
       "export(rrp_authoring_failure)",
       "export(rrp_register_authored_project)",
       "export(rrp_initialize_project_state)",
@@ -2734,16 +2796,28 @@ validate_source_boundaries <- function(package_roots) {
     "Generic risk orchestration must not branch on provider or project identity."
   )
 
+  resource_files <- list.files(
+    file.path(repository_root, "resources"), recursive = TRUE,
+    full.names = TRUE, include.dirs = FALSE
+  )
+  fictional_resource_root <- file.path(
+    repository_root, "resources", "templates", "fictional-project"
+  )
+  fictional_walkthrough <- file.path(
+    repository_root, "resources", "documentation",
+    "fictional-reference-walkthrough.md"
+  )
+  generic_resource_files <- resource_files[
+    !startsWith(resource_files, paste0(fictional_resource_root, .Platform$file.sep)) &
+      resource_files != fictional_walkthrough
+  ]
   generic_text <- paste(unlist(lapply(c(
     platform_source_files,
     list.files(
       file.path(package_roots[["rrpplatform"]], "man"),
       pattern = "[.]Rd$", full.names = TRUE
     ),
-    list.files(
-      file.path(repository_root, "resources"),
-      recursive = TRUE, full.names = TRUE, include.dirs = FALSE
-    )
+    generic_resource_files
   ), readLines, warn = FALSE, encoding = "UTF-8"), use.names = FALSE),
   collapse = "\n")
   hospital_vocabulary <- c(
@@ -3248,6 +3322,7 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_execute_durable_bundle\", ",
       "\"rrp_execute_producer\", ",
       "\"rrp_execute_risk\", ",
+      "\"rrp_initialize_fictional_project\", ",
       "\"rrp_initialize_project\", ",
       "\"rrp_initialize_project_state\", ",
       "\"rrp_inspect_current_history\", ",
@@ -3315,6 +3390,14 @@ load_package_fresh <- function(package_name, library_root) {
 check_package <- function(
   package_name, archive, work_root, library_root, environment
 ) {
+  if (identical(package_name, "rrpplatform")) {
+    test_software_root <- file.path(work_root, "check-software-root")
+    project_resource_authority(repository_root, test_software_root)
+    environment <- c(
+      environment,
+      paste0("RRP_TEST_SOFTWARE_ROOT=", test_software_root)
+    )
+  }
   require_command_success(
     paste0(package_name, " R CMD check --no-manual"),
     file.path(R.home("bin"), "R"),
@@ -3382,8 +3465,16 @@ validate_installed_resource_access <- function(library_root, work_root) {
     project_producer_template = "resources/templates/project/R/produce-canonical.R",
     project_provider_template = "resources/templates/project/R/calculate-risk.R",
     project_readme_template = "resources/templates/project/README.md",
+    fictional_manifest_template = "resources/templates/fictional-project/rrp-project.dcf",
+    fictional_registration_template = "resources/templates/fictional-project/R/register.R",
+    fictional_authoring_template = "resources/templates/fictional-project/rrp-authoring.dcf",
+    fictional_producer_template = "resources/templates/fictional-project/R/produce-canonical.R",
+    fictional_provider_template = "resources/templates/fictional-project/R/calculate-risk.R",
+    fictional_readme_template = "resources/templates/fictional-project/README.md",
+    fictional_generator_template = "resources/templates/fictional-project/R/generate-source.R",
     project_authoring_guide = "resources/documentation/project-authoring-guide.md",
-    provider_request_reference = "resources/documentation/provider-request-reference.md"
+    provider_request_reference = "resources/documentation/provider-request-reference.md",
+    fictional_reference_walkthrough = "resources/documentation/fictional-reference-walkthrough.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -3463,10 +3554,26 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["project_provider_template"]], quote = "\""),
     ", project_readme_template = ",
     encodeString(expected_copies[["project_readme_template"]], quote = "\""),
+    ", fictional_manifest_template = ",
+    encodeString(expected_copies[["fictional_manifest_template"]], quote = "\""),
+    ", fictional_registration_template = ",
+    encodeString(expected_copies[["fictional_registration_template"]], quote = "\""),
+    ", fictional_authoring_template = ",
+    encodeString(expected_copies[["fictional_authoring_template"]], quote = "\""),
+    ", fictional_producer_template = ",
+    encodeString(expected_copies[["fictional_producer_template"]], quote = "\""),
+    ", fictional_provider_template = ",
+    encodeString(expected_copies[["fictional_provider_template"]], quote = "\""),
+    ", fictional_readme_template = ",
+    encodeString(expected_copies[["fictional_readme_template"]], quote = "\""),
+    ", fictional_generator_template = ",
+    encodeString(expected_copies[["fictional_generator_template"]], quote = "\""),
     ", project_authoring_guide = ",
     encodeString(expected_copies[["project_authoring_guide"]], quote = "\""),
     ", provider_request_reference = ",
     encodeString(expected_copies[["provider_request_reference"]], quote = "\""),
+    ", fictional_reference_walkthrough = ",
+    encodeString(expected_copies[["fictional_reference_walkthrough"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -3475,6 +3582,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "c('rrp_authoring_failure', 'rrp_backup_project_state', ",
     "'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
     "'rrp_execute_risk', ",
+    "'rrp_initialize_fictional_project', ",
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
     "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",
     "'rrp_inspect_project_state', 'rrp_inspect_scope_history', ",
@@ -3523,6 +3631,15 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.template.project-readme', project_authoring_guide = ",
     "'rrp.documentation.project-authoring-guide', provider_request_reference = ",
     "'rrp.documentation.provider-request-reference'); ",
+    "ids <- c(ids, fictional_manifest_template = ",
+    "'rrp.template.fictional-project-manifest', fictional_registration_template = ",
+    "'rrp.template.fictional-project-registration', fictional_authoring_template = ",
+    "'rrp.template.fictional-project-authoring-metadata', fictional_producer_template = ",
+    "'rrp.template.fictional-project-producer', fictional_provider_template = ",
+    "'rrp.template.fictional-project-provider', fictional_readme_template = ",
+    "'rrp.template.fictional-project-readme', fictional_generator_template = ",
+    "'rrp.template.fictional-project-source-generator', fictional_reference_walkthrough = ",
+    "'rrp.documentation.fictional-reference-walkthrough'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -4117,9 +4234,12 @@ validate_packages <- function() {
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and provider ",
     "selection, transactional six-file standard-project initialization, ",
+    "transactional seven-file fictional-project initialization, explicit ",
+    "byte-deterministic source generation, private identity-crosswalk mapping ",
+    "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "and installed Markdown product-document resolution, ",
+    "and exact three-document installed Markdown product resolution, ",
     "selected producer execution, closed request/result validation, exact ",
     "one-call and zero-provider behavior, admission delegation, two distinct ",
     "hospital mapping fixtures, ",

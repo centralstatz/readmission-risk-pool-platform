@@ -19,7 +19,10 @@ supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
 restore. Stage 8 is accepted and in progress. Increment 8.A implements the
 supported standard project-authoring boundary, six-file normal scaffold, and
-the first two installed product documents; Increment 8.B is next.
+the first two installed product documents. Increment 8.B adds the ordinary
+fictional project, explicit deterministic source generation, meaningful
+mapping/private-provider proof, and the third installed product document;
+Increment 8.C remains next.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -126,7 +129,7 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct `DBI`, `duckdb`, and `rrpruntime` dependencies, and exact 22-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct `DBI`, `duckdb`, and `rrpruntime` dependencies, and exact 23-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
@@ -140,12 +143,12 @@ closed to the following present paths:
 | `packages/rrpplatform/R/state-recovery.R` | Closed backup manifest validation, explicit create-only checkpointed backup, and staged restore into an absent compatible project state. |
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict 0.3.0 project-manifest and kind-specific in-memory registration-result validation. |
 | `packages/rrpplatform/R/project-authoring.R` | Installed authoring-authority loading, exact metadata/dependency/file validation, isolated callable loading, controlled failure tokens, deterministic bundle identity, and compilation of normal hospital callables into raw producer/provider declarations. |
-| `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe six-file standard-scaffold rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
+| `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe six-file standard-scaffold or seven-file fictional-project rendering, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
 | `packages/rrpplatform/R/project-loader.R` | Typed project failures, explicit project-root/filesystem validation, controlled trusted registration, library separation, installed/project composition, exact selection, and project-context construction. |
 | `packages/rrpplatform/R/project-doctor.R` | Thin loader-backed project diagnosis, closed privacy-safe summary construction, absent/compatible state reporting, and expected project/state-error translation. |
 | `packages/rrpplatform/R/producer-execution.R` | Closed request/result construction and validation, exact selected-producer invocation, process-context restoration, runtime admission delegation, and bounded expected-failure translation. |
 | `packages/rrpplatform/R/risk-execution.R` | Protected transparent-provider declaration, exact selected-provider risk orchestration, process-context restoration, runtime delegation, and bounded expected-failure translation. |
-| `packages/rrpplatform/man/rrp_project_authoring.Rd` and `packages/rrpplatform/man/rrp_initialize_project.Rd` | Focused technical API contracts for standard authoring/failure adaptation and transactional six-file project initialization. |
+| `packages/rrpplatform/man/rrp_project_authoring.Rd`, `packages/rrpplatform/man/rrp_initialize_project.Rd`, and `packages/rrpplatform/man/rrp_initialize_fictional_project.Rd` | Focused technical API contracts for standard authoring/failure adaptation, transactional six-file project initialization, and transactional realization of the supplied fictional project. |
 | `packages/rrpplatform/man/rrp_initialize_project_state.Rd` and `packages/rrpplatform/man/rrp_inspect_project_state.Rd` | Focused public contracts for create-only state initialization and nonmutating compatibility inspection. |
 | `packages/rrpplatform/man/rrp_load_project.Rd` | Focused technical API contract and honest trusted-code/immutability limits for explicit project loading. |
 | `packages/rrpplatform/man/rrp_validate_project.Rd` | Focused technical API contract and limits for explicit structured project diagnosis. |
@@ -159,6 +162,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/runtime-contracts.R` | Base-R exact-field, installed-loading, cross-contract, adversarial, and direct episode-state integration evidence for all five runtime authorities. |
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R six-file initialization plus standard-authoring producer/provider adaptation, deterministic identity, structural/dependency failure, installed-document resolution, rendering, create-only ownership, staging/rollback, portability, privacy, process-restoration, and non-invocation evidence. |
+| `packages/rrpplatform/tests/fictional-project.R` | Package-native evidence for fictional initialization, explicit byte-deterministic generation, source-local failures, crosswalk mapping, availability filtering, canonical leakage prevention, project-provider input/cutoff behavior, empty dependencies, copied-project portability, and installed walkthrough resolution. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpplatform/tests/project-state.R` | Package-native state-inventory, compatibility, staging, exact DuckDB roundtrip, progress, idempotency/conflict, transaction interruption, reopen, copied-project, equivalence, privacy, and writer-exclusion evidence. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
@@ -192,7 +196,8 @@ closed to the following present paths:
 | `resources/contracts/history/*.dcf` | Runtime-owned operational-scope, episode-disposition, append-only action, and storage-neutral history-port authorities. |
 | `resources/contracts/state/*.dcf` | Platform-owned closed project-state metadata, private DuckDB-adapter, and project-state-backup authorities. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-file normal project scaffold: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, and README orientation. |
-| `resources/documentation/project-authoring-guide.md` and `resources/documentation/provider-request-reference.md` | The two version-matched installed Increment 8.A product documents, resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary seven-file fictional teaching project: the standard six responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, and `resources/documentation/fictional-reference-walkthrough.md` | The exact three version-matched installed Stage 8 product documents, resolved through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, and bundle-scoped durable execution/history interpretation. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
@@ -255,7 +260,8 @@ provider primitives plus the 12 logical-history record, port, append, and read
 interfaces declared in its namespace. It supplies no physical history adapter
 or durable state.
 `rrpplatform` imports `DBI`, `duckdb`, and `rrpruntime`; only `rrpplatform`
-owns physical state dependencies. It exports exactly 20 interfaces: project
+owns physical state dependencies. It exports exactly 23 interfaces: standard
+and fictional project
 initialization/loading/validation; project-state initialization, inspection,
 backup, and restore; installed-resource access and common result inspection;
 producer and nonpersistent risk execution; durable admitted-bundle execution;
@@ -383,7 +389,9 @@ architecture and clarified the architecture's older atomic-batch wording to
 match the accepted per-episode transaction model. Stages 1–7 are accepted and
 complete. Stage 8 is accepted and in progress; Increment 8.A supplies the
 generic normal authoring capability and its two installed documents. Increment
-8.B, not yet begun, is the next task.
+8.B supplies the ordinary fictional project, explicit deterministic source,
+meaningful mapping/private provider, and third installed document. Increment
+8.C is the next task.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

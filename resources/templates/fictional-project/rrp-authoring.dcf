@@ -1,0 +1,10 @@
+Record-Type: rrp-project-authoring
+Authoring-Contract-ID: rrp.project-authoring
+Authoring-Contract-Version: 0.1.0
+Producer-Implementation-ID: @@RRP_PRODUCER_IMPLEMENTATION_ID@@
+Producer-Implementation-Version: @@RRP_PROJECT_VERSION@@
+Mapping-ID: @@RRP_MAPPING_ID@@
+Mapping-Version: @@RRP_PROJECT_VERSION@@
+Provider-Implementation-ID: @@RRP_PROVIDER_IMPLEMENTATION_ID@@
+Provider-Implementation-Version: @@RRP_PROJECT_VERSION@@
+Extension-Packages: none

@@ -3860,11 +3860,114 @@ DuckDB-holder process. Repository validation passed all eight checks with zero
 issues, R parsing and generated supervisor-shell parsing passed, and
 `git diff --check` passed.
 
-The portability correction is locally complete but remains open pending a
-successful exact-revision hosted `package-foundation` run. Increment 8.A
-remains complete; Increment 8.B and Increment 8.C have not begun, and Stage 8
-remains in progress.
+The portability correction is complete. Its local macOS evidence passed, and
+the committed correction at `0efb4b44143626cb8802a15edb9aeff63f173b21` passed
+the hosted Ubuntu `package-foundation` workflow in GitHub Actions run
+`36356966160`, job `108726518867`. The validation-supervisor lifecycle issue is
+therefore closed on both supported evidence environments. Increment 8.A
+remains complete; Increment 8.B is the next authorized task, Increment 8.C has
+not begun, and Stage 8 remains in progress.
 
-**Next task:** commit and push this bounded portability correction, record its
-successful hosted validation if obtained, and only then proceed to Increment
-8.B when explicitly authorized.
+### Increment 8.B — Fictional project, meaningful mapping, and project provider (complete, 2026-09-28)
+
+Increment 8.B realizes the deterministic fictional hospital as an ordinary
+consumer of the Increment 8.A standard-authoring boundary. `rrpplatform` now
+exports `rrp_initialize_fictional_project(software_catalog, project_root)`.
+The create-only operation uses the existing destination validation, sibling
+staging, installed-template rendering, staged/final loader proof, atomic
+promotion, and rollback mechanics to create one fixed seven-file project: the
+normal six-file scaffold plus `R/generate-source.R`. It does not create source,
+extensions, state, a database, Git metadata, or any durable reference result.
+
+Seven visible fictional-project templates and the Fictional Reference
+Walkthrough are closed catalog resources owned by `rrpplatform`. The initialized
+project remains ordinary: its thin `R/register.R` delegates to
+`rrp_register_authored_project()`, its declarative extension inventory is
+empty, its selected producer/provider are project-owned, and neither the
+installed transparent provider nor a fictional branch in generic execution is
+used. The package surface is now exactly 23 exports; no package dependency or
+existing raw/canonical/runtime/history contract changed.
+
+The explicit project generator owns a fixed literal realization at
+`2026-01-20T12:00:00Z`: four stay facts, three terminal notifications, and 12
+bounded crosswalk rows across episode, patient, and encounter identity. It
+creates only the absent `source/generated` directory through owned staging,
+accepts an existing realization only when all four generated files are exact,
+and otherwise refuses overwrite. Repeated fresh generations are byte-identical.
+All identifiers and values are visibly fictional and classified
+`fictional_nonclinical`; randomness, credentials, connections, network access,
+Git, and non-base project dependencies are absent.
+
+The source deliberately differs from canonical data. `FIC STAY/001` violates
+canonical identity grammar and is assigned `fictional.episode.001` through the
+explicit project crosswalk rather than a reversible naming trick. The ordinary
+producer performs closed file/schema/row-count checks; key, reference,
+vocabulary, crosswalk-completeness/uniqueness, timestamp, event-window, and
+predictor-availability validation; canonical identity lookup; local
+`LOCAL_READMIT`/`LOCAL_DEATH` translation; and occurrence/availability cutoff
+filtering. It returns only the exact discharge-episode and terminal-event
+columns with default row identity. Native IDs, crosswalk structure, local
+codes, predictor values, and predictor availability do not cross the canonical
+boundary. RRP continues to construct the raw envelope and content-sensitive
+bundle identity and to perform unchanged runtime admission.
+
+The ordinary project provider receives the unchanged detached 19-field
+request, resolves canonical episode identity back to the native stay through
+the private crosswalk, retrieves the bounded fictional signal, requires its
+availability no later than `request$as_of_time`, and combines it with the
+remaining fixed-endpoint fraction in one transparent bounded nonclinical
+formula. It returns only one base-R double probability. Missing, malformed, or
+late private input returns the existing controlled
+`provider_input_unavailable` failure. Provider implementation identity is
+explicit and model identity remains null; accepted-estimate construction stays
+owned by the unchanged Stage 6 path.
+
+Historical reconnaissance inspected immutable `v0.1.0` synthetic generator,
+source validation, identity, mapping, producer/adapter, reference-provider,
+Phase 3, and independent-adopter material identified by the accepted plan.
+Deterministic explicit construction, fixed reference time, source-local
+validation, source/canonical vocabulary separation, relationship joins, code
+translation, availability filtering, nonclinical calculation, readable scale,
+and invariant-focused failures were adapted. Six seeded tables, large scales,
+reversible canonical identity derivation, old baseline-risk/event domains,
+daily-hazard semantics, installed synthetic registration/defaults, repository-
+root composition, arbitrary executable configuration, and product/application
+coupling were rejected.
+
+Focused pre-checks passed closed 40-resource authority/projection validation,
+package layout/metadata/namespace and one-way source-boundary validation, R
+parsing, repository validation, and a temporary isolated build/install run of
+the complete fictional package-native proof. That proof covers seven-file
+initialization, explicit repeatable generation, noncanonical identity and
+crosswalk resolution, meaningful mapping, late-event filtering, canonical
+leakage prevention, accepted project-provider execution, missing/late private
+input, malformed code/key/reference/time/mapping failures, create-only source,
+copied non-Git portability, empty dependencies, and walkthrough resolution.
+
+Final local evidence passed: repository validation completed all eight checks
+with zero issues; the complete package/resource validator passed catalog and
+projection closure, package-native and installed regressions, both source
+builds, isolated install/load, negative dependency installation, and both
+strict `R CMD check --no-manual` operations with exact `Status: OK`; and
+`git diff --check` passed. Immediate process inspection found no remaining
+validation R, Rscript, R CMD, supervisor, or DuckDB-holder work. No generated
+source, package archive, check directory, temporary library, project state,
+database, backup, or other validation artifact remains in the repository.
+
+Bounded human inspection found seven initialized files; the same two ordinary
+hospital logic edit surfaces; one clearly separate explicit teaching generator;
+thin unchanged registration requiring no normal edit; readable mapping,
+identity, predictor, and analytical-cutoff responsibilities; an unchanged
+discoverable 19-field provider request; and exactly three consistent installed
+product documents. The fictional source scale is small enough to inspect by
+eye, and the project README distinguishes hospital-owned meaning/data/time from
+RRP-owned protocol, admission, execution, and estimate construction.
+
+**Implementation state:** Increment 8.B is implemented and locally validated.
+Stage 8 remains in progress. Increment 8.C has not begun; there is no accepted
+durable installed fictional run, complete reference history/idempotency proof,
+product, application, CLI, distribution, deployment, release, or clinical
+claim.
+
+**Next task:** Increment 8.C — Installed end-to-end reference proof and human
+runbook.

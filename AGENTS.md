@@ -74,6 +74,10 @@ resource runtime specification families and relationships, strict 0.3.0 project
 contracts, explicit trusted
 project loading, transactional six-file standard-project initialization,
 exact standard-authoring adaptation to the raw producer/provider contracts,
+transactional seven-file fictional-project initialization, explicit
+byte-deterministic source generation, private identity-crosswalk mapping,
+time-aware project-provider execution, and exact three-document installed
+guidance,
 deterministic content-sensitive bundle identity, controlled authoring failures,
 closed extension-package preflight, installed Markdown guidance, exact semantic
 producer and semantic provider selection, loader-backed structured project diagnosis, copied-
@@ -140,6 +144,10 @@ reconciliation found no implementation deviation and clarified the target
 architecture's atomic-history wording. Stages 1–7 are accepted and complete.
 Increment 8.A establishes the cataloged standard-authoring authority, normal
 six-file scaffold, producer/provider adapters, two installed product documents,
-and 22-export `rrpplatform` surface while preserving direct raw projects. Stage
-8 remains in progress. The next task is Increment 8.B; do not begin it without
+and 22-export `rrpplatform` surface while preserving direct raw projects.
+Increment 8.B adds the cataloged seven-file ordinary fictional project,
+explicit byte-deterministic source generator, local identity crosswalk,
+meaningful two-domain mapping, project-owned private-predictor provider, third
+installed product document, and 23-export `rrpplatform` surface. Stage 8
+remains in progress. The next task is Increment 8.C; do not begin it without
 explicit authorization.

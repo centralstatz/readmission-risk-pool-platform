@@ -162,7 +162,11 @@ are accepted and complete. Stage 7 provides logical history, explicit project
 state and DuckDB, durable execution/history interpretation, and bounded backup/
 restore. Stage 8 is accepted and in progress: Increment 8.A supplies the
 generic six-file standard authoring capability and its first two installed
-product documents. Increment 8.B has not begun.
+product documents. Increment 8.B supplies the ordinary initialized fictional
+project, explicit deterministic source generator, meaningful private mapping
+and provider example, and third installed product document. Increment 8.C has
+not begun; no durable installed reference proof or Stage 8 acceptance is yet
+claimed.
 
 ## License
 

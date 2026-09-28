@@ -70,9 +70,9 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work. Stage
 7 is accepted and complete; completed Stage 1–7 detail remains as
-implementation lineage. Stage 8 is now detailed but is not authorized for
-implementation until its plan is reviewed and accepted. After a stage is
-implemented:
+implementation lineage. Stage 8 is detailed, accepted, and in progress;
+Increments 8.A and 8.B are implemented and Increment 8.C is next. After a
+stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -4205,9 +4205,9 @@ governing-plan permanence. No other unresolved question blocks Increment 7.A.
 
 ## Stage 8 — Fictional reference path
 
-**Status:** detailed, revised, and accepted for implementation. Increment 8.A
-is implemented and locally validated as of 2026-09-22; Increment 8.B is next.
-Stage 8 is not complete.
+**Status:** detailed, revised, and accepted for implementation. Increments 8.A
+and 8.B are implemented and locally validated; Increment 8.C is next. Stage 8
+is not complete.
 
 ### Objective and responsibilities
 
@@ -4813,8 +4813,9 @@ generated source, database, backup, and product artifacts remain untracked.
 
 ### Increment 8.A — Supported standard project authoring boundary
 
-**Implementation status:** implemented and locally validated on 2026-09-22;
-ready for human review. Increment 8.B has not begun.
+**Implementation status:** implemented and locally validated on 2026-09-22.
+Increment 8.B is also implemented and locally validated; Increment 8.C has not
+begun.
 
 **Objective:** add the smallest supported normal producer/provider authoring
 capability and make it the discoverable default scaffold for newly initialized
@@ -4882,6 +4883,9 @@ provider registration, while advanced direct raw projects remain valid. No
 Stage 8 reference data or durable history yet exists.
 
 ### Increment 8.B — Fictional project, meaningful mapping, and project provider
+
+**Implementation status:** implemented and locally validated on 2026-09-28.
+Increment 8.C has not begun, and Stage 8 remains in progress.
 
 **Objective:** implement the deterministic fictional hospital as an ordinary
 consumer of the completed 8.A authoring capability.
