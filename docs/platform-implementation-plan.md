@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–7 are accepted and complete. Stage
-8 is detailed below and awaits review and acceptance before source
-implementation begins.
+**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. Stage
+9 has not begun and remains at roadmap-level detail pending separate planning
+and acceptance.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -68,13 +68,10 @@ operability before the needed layers exist.
 
 ## Progressive planning rule
 
-Only the current implementation stage is decomposed before source work. Stage
-7 is accepted and complete; completed Stage 1–7 detail remains as
-implementation lineage. Stage 8 is detailed, accepted, and in progress;
-Increments 8.A and 8.B are complete with hosted evidence, and Increment 8.C is
-implemented and locally validated. After human review, exact-revision hosted
-evidence and separate reconciliation remain before formal Stage 8 acceptance.
-After a
+Only the current implementation stage is decomposed before source work.
+Stages 1–8 are accepted and complete; their detailed plans remain as
+implementation lineage. Stage 9 has not begun and must be detailed and
+accepted before source implementation. After a
 stage is implemented:
 
 1. validate its stated exit claim;
@@ -4208,10 +4205,10 @@ governing-plan permanence. No other unresolved question blocks Increment 7.A.
 
 ## Stage 8 — Fictional reference path
 
-**Status:** detailed, revised, and accepted for implementation. Increments 8.A
-and 8.B are complete with hosted evidence. Increment 8.C is implemented and
-locally validated; human review, exact-revision hosted evidence, and separate
-acceptance/reconciliation remain. Stage 8 is not formally complete.
+**Status:** accepted and complete on 2026-09-28 at exact committed baseline
+`87a7e2848fadbd5cd7e4a6aec11908a546d096a3`. Increments 8.A–8.C and the
+separate formal acceptance/reconciliation are complete; hosted push run
+`36463026242`, job `109066072183`, passed for that baseline.
 
 ### Objective and responsibilities
 
@@ -4817,10 +4814,9 @@ generated source, database, backup, and product artifacts remain untracked.
 
 ### Increment 8.A — Supported standard project authoring boundary
 
-**Implementation status:** implemented and locally validated on 2026-09-22.
-Increment 8.B is also complete with hosted evidence. Increment 8.C is
-implemented and locally validated, pending the Stage 8 hosted and formal
-acceptance boundary.
+**Implementation status:** complete. Its implementation and inherited
+regressions are included in the exact committed Stage 8 hosted evidence and
+formal acceptance recorded above.
 
 **Objective:** add the smallest supported normal producer/provider authoring
 capability and make it the discoverable default scaffold for newly initialized
@@ -4889,10 +4885,9 @@ Stage 8 reference data or durable history yet exists.
 
 ### Increment 8.B — Fictional project, meaningful mapping, and project provider
 
-**Implementation status:** implemented and locally validated on 2026-09-28,
-with exact-revision hosted evidence recorded. Increment 8.C is implemented and
-locally validated; Stage 8 remains in progress pending hosted evidence for the
-complete committed implementation and separate formal reconciliation.
+**Implementation status:** complete. Its exact-revision hosted evidence and
+the complete Stage 8 hosted evidence are recorded; formal Stage 8 acceptance
+is complete.
 
 **Objective:** implement the deterministic fictional hospital as an ordinary
 consumer of the completed 8.A authoring capability.
@@ -4948,10 +4943,9 @@ the accepted installed proof.
 
 ### Increment 8.C — Installed end-to-end reference proof and human runbook
 
-**Implementation status:** implemented and locally validated on 2026-09-28.
-Formal Stage 8 acceptance remains pending human review, commit/push, successful
-hosted `package-foundation` evidence for that exact revision, and separate
-architecture reconciliation.
+**Implementation status:** complete. The exact committed implementation passed
+hosted `package-foundation` run `36463026242`, job `109066072183`, and the
+separate architecture reconciliation accepted Stage 8 on 2026-09-28.
 
 **Objective:** prove the complete Stage 8 exit state from installed packages
 and resources outside the repository and document the exact human package-
@@ -5242,6 +5236,9 @@ source or engine conveniences may adapt into the standard callable boundaries;
 they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
+
+**Status:** not begun; roadmap-level only pending separate detailed planning
+and acceptance.
 
 ### Objective and responsibilities
 

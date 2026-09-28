@@ -4096,3 +4096,133 @@ separate final architecture reconciliation. Stage 9 has not begun.
 `package-foundation` evidence for that exact revision, then separate formal
 Stage 8 acceptance and architecture reconciliation. There is no Increment
 8.D.
+
+## Stage 8 acceptance and architecture reconciliation — 2026-09-28
+
+Stage 8 was reviewed as one realized architectural stage at exact committed
+baseline `87a7e2848fadbd5cd7e4a6aec11908a546d096a3` (`8.C complete`). The
+starting working tree was clean, `main` matched `origin/main`, and GitHub
+Actions `package-foundation` push run `36463026242`, job `109066072183`,
+completed successfully for that exact SHA. The Ubuntu/R 4.4 job passed
+checkout, declared dependency installation, repository validation, and the
+complete package validator. This closes Increment 8.C's hosted-evidence
+prerequisite without changing product behavior after the validated revision.
+
+The cumulative 8.A–8.C review found one coherent installed package-level path.
+An explicit software catalog operates an independent hospital-owned project;
+the standard authoring metadata and two hospital callables compile through the
+unchanged raw producer/provider boundaries; canonical admission and the fixed
+remaining-risk target construct the unchanged provider-neutral 19-field
+request and accepted estimate; and the existing Stage 7 state/history path
+persists complete attributable outcomes. The deterministic fictional project
+uses installed templates to realize the ordinary seven-file project, then
+explicitly creates project-owned source, maps native identity through its
+private crosswalk to canonical identity, resolves the request's canonical
+`episode_id` back to private project context, checks predictor availability,
+and returns one visibly nonclinical probability. No generic runtime branch or
+installed reference-provider shortcut exists.
+
+Reconciliation with Platform True North passed. Installed software and the
+editable project remain distinct; every operation uses explicit software and
+project roots; source meaning, native identity, private predictors, and model
+logic remain hospital-owned; RRP owns the canonical, target, protocol,
+admission, estimate, and history invariants. Deterministic generation,
+content-sensitive bundle identity, fixed analytical time, attributable
+history, same-key reuse, copied-project reopening, and installed non-Git
+execution supply the promised reproducibility and traceability. The supported
+path is technically human-readable through visible project files and three
+version-matched installed documents, while diagnostics and retained history do
+not acquire project-private source, crosswalk, or predictor content.
+
+Reconciliation with Platform Architecture also passed. `rrpplatform` and
+`rrpruntime` remain internal installed-software owners of resource access,
+project loading, standard adaptation, raw protocols, admission, the singular
+target/request/estimate path, and durable state/history mechanics. The
+independent project owns source access and validation, mapping, canonical
+identity assignment, native-to-canonical and canonical-to-native resolution,
+private predictor meaning and temporal validity, calculation logic, truthful
+implementation/model identity, and its state instance. The producer returns
+only the two governed canonical domains; RRP gained no generic source schema,
+EHR table, native-ID, crosswalk, event-code, predictor, connection, feature-
+store, or identity-service contract.
+
+The provider boundary remains the detached flat
+`rrp.risk-request@0.1.0` with exactly 19 fields. It supplies canonical
+`episode_id` and authoritative `as_of_time`; it excludes native identity,
+crosswalks, predictors, source paths, credentials/connections, prior history,
+and provider/model identity. Explicit `project_root` separately lets trusted
+hospital code recover private context. Occurrence and availability time remain
+distinct at canonical admission, private predictor availability is checked
+against `request$as_of_time`, and the unchanged fixed day-30 remaining-risk
+target prevents a second temporal model or future-information leakage.
+
+The reference durable operation is unchanged Stage 7 behavior: one admitted
+bundle defines the scope; all four members receive governed dispositions; the
+single eligible member reaches provider execution while readmission, death,
+and exhausted-horizon members receive governed ineligibility; membership and
+provenance derive completeness; and raw/current reads remain the existing
+logical interpretations. Repeating the same completed operation reproduces
+producer/admission evidence but neither re-executes the provider nor appends a
+duplicate initial disposition. History contains no fictional-specific schema
+or private native/crosswalk/predictor content.
+
+The standard layer is therefore a ceremony-reducing adapter, not a second
+execution system. Normal projects expose two focused hospital logic files and
+thin normally untouched `R/register.R`; direct raw `0.3.0` registration remains
+the advanced escape hatch and shares the same downstream path. The fictional
+project is one ordinary deterministic, visibly fictional, nonclinical consumer
+and does not claim realistic EHR simulation, clinical validity, benchmark
+realism, production conventions, or a generic synthetic subsystem.
+
+The installed resource catalog contains exactly three Stage 8 Markdown product
+documents: the Project Authoring Guide, Provider Request Reference, and
+Fictional Reference Walkthrough. They resolve outside Git, are version-matched,
+agree with the six/seven-file scaffolds and current function signatures, and
+separate authoring guidance, exact request reference, and end-to-end operation.
+The walkthrough assumes a valid installed RRP software realization. Stage 8
+proves supported package-level behavior from that point; it does not provide
+the Stage 11 distribution, installation, CLI, activation, upgrade, or
+uninstallation lifecycle. Its technical R/project/package workflow is honest
+about requiring a capable implementer and is not a novice-UX claim. Future UX
+may operate these same project contracts without creating another fictional
+architecture.
+
+The cumulative architecture-drift review found no duplicated producer/provider
+path, hidden repository-root or Git-state assumption, ambient user-library
+dependency, source-tree dependency, private-data leakage, obsolete document,
+or convenience function that silently redefined an existing contract.
+Products/materialization, application datasets or Shiny work, CLI,
+installation/distribution, scheduling, deployment, release, production
+governance, clinical/performance/support claims, generic feature/identity
+services, and all Stage 9 behavior remain absent. Findings are classified as
+**A, no implementation or architectural discrepancy**, plus **B,
+documentation/status drift** after the hosted gate. Only lifecycle/status
+documentation was corrected; no package, contract, resource, test, validator,
+workflow, or product behavior changed.
+
+Closeout reused the complete local Increment 8.C evidence already recorded:
+both authoritative validators, source parsing, package-native tests, builds,
+isolated install/load, strict checks, installed non-Git proof, artifact/process
+hygiene, and `git diff --check` had passed for the exact subsequently committed
+tree. The hosted run above independently passed both authoritative validators
+at the same SHA. Proportional documentation closeout reran repository
+validation and diff hygiene only.
+
+**Acceptance decision:** Stage 8 is formally accepted. RRP 1.0 now provides a
+supported package-level path, assuming an installed RRP software realization,
+for creating and understanding an independent standard-authored hospital
+project; explicitly generating project-owned reference source; mapping
+hospital-specific source and identity into admitted canonical data; executing
+project-owned provider logic through the fixed provider-neutral request;
+persisting complete durable operational history; inspecting that history; and
+repeating completed work idempotently. The deterministic fictional hospital
+proves this path without privileged runtime behavior or leakage of project-
+private identity/predictor concepts into generic RRP contracts. Supported
+installation/distribution and simplified operator interfaces remain later-
+stage concerns.
+
+**Current implementation state:** Stages 1–8 are accepted and complete.
+Stage 9 has not begun.
+
+**Next task:** detail and accept Stage 9 — Logical Products and Materialization
+before beginning any Stage 9 implementation.

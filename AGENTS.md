@@ -154,7 +154,8 @@ meaningful two-domain mapping, project-owned private-predictor provider, third
 installed product document, and 23-export `rrpplatform` surface. Increment 8.B
 passed hosted run `36453663714`, job `109034402424`, for exact revision
 `20091b7231d68ced55e1dda25a8f1bf0e0410a82`. Increment 8.C adds the complete
-installed non-Git durable reference proof and completed human runbook. Stage 8
-implementation is locally complete but remains in progress; the next action is
-human review, commit/push, exact-revision hosted `package-foundation`, and
-separate formal Stage 8 reconciliation. Stage 9 has not begun.
+installed non-Git durable reference proof and completed human runbook. Exact
+revision `87a7e2848fadbd5cd7e4a6aec11908a546d096a3` passed hosted run
+`36463026242`, job `109066072183`; formal reconciliation found no architecture
+deviation. Stages 1–8 are accepted and complete. The next task is to detail and
+accept Stage 9; do not begin it without explicit authorization.

@@ -14,18 +14,18 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
-through Stage 7 and Increment 8.B push evidence. Stages 1–7 are accepted and complete. Stage 7
+through Stage 8 push evidence. Stages 1–8 are accepted and complete. Stage 7
 supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
-restore. Stage 8 is accepted and in progress. Increment 8.A implements the
+restore. Increment 8.A implements the
 supported standard project-authoring boundary, six-file normal scaffold, and
 the first two installed product documents. Increment 8.B adds the ordinary
 fictional project, explicit deterministic source generation, meaningful
 mapping/private-provider proof, and the third installed product document.
 Increment 8.C adds the installed non-Git durable reference proof and completes
-the Fictional Reference Walkthrough. Stage 8 implementation is locally
-complete, but exact-revision hosted evidence and separate formal
-reconciliation remain.
+the Fictional Reference Walkthrough. The exact committed Stage 8 realization
+has passed hosted validation and formal architecture reconciliation. Stage 9
+has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -390,14 +390,16 @@ backup/restore. Committed push run `35589769595`, job `106301272647`, succeeded
 for exact revision `387976b15739071d8f685d316d2eb712707479ca`; final
 reconciliation found no implementation deviation from True North or the
 architecture and clarified the architecture's older atomic-batch wording to
-match the accepted per-episode transaction model. Stages 1–7 are accepted and
-complete. Stage 8 is accepted and in progress; Increment 8.A supplies the
+match the accepted per-episode transaction model. Stages 1–8 are accepted and
+complete. Increment 8.A supplies the
 generic normal authoring capability and its two installed documents. Increment
 8.B supplies the ordinary fictional project, explicit deterministic source,
 meaningful mapping/private provider, and third installed document. Increment
 8.C supplies the complete installed durable reference proof and human runbook.
-The next lifecycle action is human review, commit/push, exact-revision hosted
-`package-foundation`, and separate Stage 8 acceptance/reconciliation.
+Exact revision `87a7e2848fadbd5cd7e4a6aec11908a546d096a3` passed hosted
+`package-foundation` run `36463026242`, job `109066072183`, and formal
+reconciliation accepted Stage 8. The next task is to detail and accept Stage 9
+before implementation.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

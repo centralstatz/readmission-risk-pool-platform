@@ -161,18 +161,17 @@ interfaces; ordinary operator commands remain absent. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
 workflow and has been formally accepted. The complete Stage 7 revision passed
-the same hosted workflow and its architecture reconciliation, so Stages 1–7
-are accepted and complete. Stage 7 provides logical history, explicit project
+the same hosted workflow and its architecture reconciliation. Stage 7 provides
+logical history, explicit project
 state and DuckDB, durable execution/history interpretation, and bounded backup/
-restore. Stage 8 is accepted and in progress: Increment 8.A supplies the
+restore. Increment 8.A supplies the
 generic six-file standard authoring capability and its first two installed
 product documents. Increment 8.B supplies the ordinary initialized fictional
 project, explicit deterministic source generator, meaningful private mapping
 and provider example, and third installed product document. Increment 8.C has
-now completed the local installed durable reference proof and human runbook.
-Stage 8 remains in progress pending human review, exact-revision hosted
-validation, and separate formal acceptance/reconciliation; that acceptance is
-not yet claimed.
+completed the installed durable reference proof and human runbook. Its exact
+committed revision passed the hosted workflow and formal architecture
+reconciliation, so Stages 1–8 are accepted and complete. Stage 9 has not begun.
 
 ## License
 
