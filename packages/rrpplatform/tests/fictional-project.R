@@ -320,7 +320,7 @@ walkthrough_text <- paste(readLines(
 stopifnot(
   grepl("rrp_initialize_fictional_project", walkthrough_text, fixed = TRUE),
   grepl("rrp_generate_fictional_source", walkthrough_text, fixed = TRUE),
-  grepl("Increment 8.C", walkthrough_text, fixed = TRUE)
+  grepl("rrp_execute_durable_bundle", walkthrough_text, fixed = TRUE)
 )
 
 existing <- rrp_initialize_fictional_project(catalog, project_root)

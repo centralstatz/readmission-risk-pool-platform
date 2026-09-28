@@ -71,7 +71,10 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work. Stage
 7 is accepted and complete; completed Stage 1–7 detail remains as
 implementation lineage. Stage 8 is detailed, accepted, and in progress;
-Increments 8.A and 8.B are implemented and Increment 8.C is next. After a
+Increments 8.A and 8.B are complete with hosted evidence, and Increment 8.C is
+implemented and locally validated. After human review, exact-revision hosted
+evidence and separate reconciliation remain before formal Stage 8 acceptance.
+After a
 stage is implemented:
 
 1. validate its stated exit claim;
@@ -4206,8 +4209,9 @@ governing-plan permanence. No other unresolved question blocks Increment 7.A.
 ## Stage 8 — Fictional reference path
 
 **Status:** detailed, revised, and accepted for implementation. Increments 8.A
-and 8.B are implemented and locally validated; Increment 8.C is next. Stage 8
-is not complete.
+and 8.B are complete with hosted evidence. Increment 8.C is implemented and
+locally validated; human review, exact-revision hosted evidence, and separate
+acceptance/reconciliation remain. Stage 8 is not formally complete.
 
 ### Objective and responsibilities
 
@@ -4814,8 +4818,9 @@ generated source, database, backup, and product artifacts remain untracked.
 ### Increment 8.A — Supported standard project authoring boundary
 
 **Implementation status:** implemented and locally validated on 2026-09-22.
-Increment 8.B is also implemented and locally validated; Increment 8.C has not
-begun.
+Increment 8.B is also complete with hosted evidence. Increment 8.C is
+implemented and locally validated, pending the Stage 8 hosted and formal
+acceptance boundary.
 
 **Objective:** add the smallest supported normal producer/provider authoring
 capability and make it the discoverable default scaffold for newly initialized
@@ -4884,8 +4889,10 @@ Stage 8 reference data or durable history yet exists.
 
 ### Increment 8.B — Fictional project, meaningful mapping, and project provider
 
-**Implementation status:** implemented and locally validated on 2026-09-28.
-Increment 8.C has not begun, and Stage 8 remains in progress.
+**Implementation status:** implemented and locally validated on 2026-09-28,
+with exact-revision hosted evidence recorded. Increment 8.C is implemented and
+locally validated; Stage 8 remains in progress pending hosted evidence for the
+complete committed implementation and separate formal reconciliation.
 
 **Objective:** implement the deterministic fictional hospital as an ordinary
 consumer of the completed 8.A authoring capability.
@@ -4940,6 +4947,11 @@ through the standard layer. Its durable Stage 7 reference history is not yet
 the accepted installed proof.
 
 ### Increment 8.C — Installed end-to-end reference proof and human runbook
+
+**Implementation status:** implemented and locally validated on 2026-09-28.
+Formal Stage 8 acceptance remains pending human review, commit/push, successful
+hosted `package-foundation` evidence for that exact revision, and separate
+architecture reconciliation.
 
 **Objective:** prove the complete Stage 8 exit state from installed packages
 and resources outside the repository and document the exact human package-

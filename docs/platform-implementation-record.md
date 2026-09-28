@@ -3971,3 +3971,128 @@ claim.
 
 **Next task:** Increment 8.C — Installed end-to-end reference proof and human
 runbook.
+
+#### Hosted validation follow-up — 2026-09-28
+
+The exact committed Increment 8.B revision
+`20091b7231d68ced55e1dda25a8f1bf0e0410a82` passed the read-only GitHub
+Actions `package-foundation` push workflow in run `36453663714`, job
+`109034402424`. Increment 8.A and Increment 8.B are complete with hosted
+validation; Increment 8.C is beginning, and Stage 8 remains in progress.
+
+### Increment 8.C — Installed end-to-end reference proof and human runbook (locally complete, 2026-09-28)
+
+Increment 8.C completes the local Stage 8 implementation by proving the
+fictional hospital through installed packages and a projected closed software
+resource root in unrelated temporary non-Git directories. No public interface,
+contract, dependency, package export, or generic runtime behavior changed. The
+new package-owned `tests/fictional-end-to-end.R` composes only the existing
+catalog, fictional initializer, project validator, producer, state,
+durable-execution, and public logical-history operations. The authoritative
+package validator copies that proof outside the repository and runs it against
+the isolated installed dependency closure; package-native checking runs the
+same integration evidence.
+
+The proof resolves all three installed Stage 8 Markdown documents by stable
+resource identity and verifies that the Provider Request Reference exposes the
+19 fields in contractual order. It initializes exactly the seven intended
+project files with no source, extension library, state, Git, product, or
+application; explicitly generates exactly the four intended source files; and
+validates the ordinary project with empty extension-package inventory. Bounded
+inspection reconfirmed the two normal hospital logic surfaces, separate
+explicit generator, thin non-edit registration wiring, readable metadata and
+mapping/calculation code, native/canonical identity separation, explicit
+project-owned crosswalk, visible private predictor and availability time, and
+the installed request/documentation lookup. The expanded Fictional Reference
+Walkthrough is now the complete package-level human runbook from installed
+document discovery through copy/reopen; it does not imply a CLI or final
+operator UX.
+
+At analytical time `2026-01-20T12:00:00Z`, repeated source generation retained
+identical bytes and repeated producer execution returned identical canonical
+content and the same content-sensitive bundle identity. Canonical admission
+contained four discharge episodes and two available terminal events. Native
+IDs, local event codes, crosswalk structure, predictor fields, and predictor
+availability timestamps were absent. State initialization created only
+`state/state.dcf` and `state/history.duckdb` with initially empty history. The
+ordinary durable operation used named operation
+`rrp.operation.evaluate-admitted-bundle` and caller key
+`fictional-reference-complete-v1`; its state-derived operation-run identity
+held one four-member scope with matching membership fingerprint and immutable
+project/producer/mapping/bundle/target/state provenance.
+
+The completed scope has exactly four unique initial dispositions:
+`fictional.episode.001` is eligible with accepted nonclinical estimate
+`0.3833333333333333`; `.002` is ineligible because already readmitted; `.003`
+is ineligible because already dead; and `.004` is ineligible because the
+target horizon is exhausted. Scope progress reports four expected, four
+dispositioned, and complete. Public scope, episode, and current-history reads
+all returned matching detached evidence without direct DuckDB access. The same
+private source/crosswalk/predictor markers were absent from raw and current
+history, and there was no duplicate initial disposition.
+
+The repeat proof separately establishes deterministic source bytes, canonical
+content, bundle identity, durable operation identity, and history reuse. A
+test-owned call counter was inserted only into the temporary realized
+project's otherwise ordinary standard provider; it is not present in package
+source or templates. The first complete operation invoked that provider once.
+Repeating the same producer realization, analytical time, selected identities,
+and operation key returned the same completed scope, left history byte-for-byte
+equivalent at the logical read boundary, retained exactly four initial
+dispositions, and left the counter at one. Copying the complete project and
+state to another unrelated non-Git directory preserved validation, compatible
+state identity, scope/current reads, and same-key reuse without the original
+project path or an additional provider call.
+
+The fictional project remains `Extension-Packages: none`; installed proof
+additionally requires `rrpplatform`, `rrpruntime`, `DBI`, and `duckdb` to
+resolve from the validator-controlled isolated library. Existing raw-project,
+raw producer/provider, installed transparent provider, and independent mapping
+regressions still pass. A new static validator assertion confines fictional
+identity/private vocabulary in generic package source to the intentionally
+scoped initializer; everything after initialization uses the ordinary loader,
+producer, admission, provider, state, and history paths. No privileged
+fictional branch was found.
+
+Historical reconnaissance selectively inspected immutable `v0.1.0`
+`distribution/hospital/operations/run-reference-acceptance.R`,
+`docs/operations/reference-history.md`, and the idempotency/history cases in
+`tests/phase5/test-operational-history.R`, in addition to the Stage 8 material
+already assessed during 8.B. The implementation retained the useful teaching
+sequence, temporary-artifact hygiene, logical-port inspection, identical-
+append/idempotency emphasis, and loud identity-conflict principle. It rejected
+repository-root commands, generated Hospital composition, fixed build paths,
+`renv`/root assumptions, privileged reference orchestration, old daily-hazard
+records, products/application coupling, and distribution wrappers.
+
+One focused assertion defect was corrected during validation: the completed
+walkthrough no longer contains the former future-tense text `Increment 8.C`,
+so the existing fictional-project test now requires the realized
+`rrp_execute_durable_bundle` instruction instead. This was documentation-test
+reconciliation, not a product defect. No architectural correction was needed.
+
+Final local evidence passed. Repository validation reports eight checks and
+zero issues. The complete package/resource validator passed resource closure,
+all package-native regressions, builds, negative dependency evidence,
+dependency-order isolated installation/loading, both strict
+`R CMD check --no-manual` runs with exact `Status: OK`, all installed proofs,
+and the new non-Git fictional lifecycle in approximately 149 seconds. Strict
+check timings were 5.34 seconds for `rrpruntime` and 70.38 seconds for
+`rrpplatform`; installed state recovery took 17.54 seconds and the installed
+fictional proof took 7.72 seconds. R parsing, local Markdown-link validation,
+closed repository inventory, and `git diff --check` passed. Final process and
+artifact inspection found no retained validation R/Rscript/R CMD/supervisor or
+DuckDB-holder work and no generated source, project/state database, backup,
+archive, check directory, temporary library, copied project, product, or app in
+the repository.
+
+**Implementation state:** Increments 8.A and 8.B are complete with hosted
+evidence. Increment 8.C is implemented and locally validated, so Stage 8
+implementation is locally complete. Stage 8 is not formally accepted: the
+exact uncommitted 8.C tree has no hosted result and has not undergone the
+separate final architecture reconciliation. Stage 9 has not begun.
+
+**Next lifecycle action:** human review, commit/push, successful hosted
+`package-foundation` evidence for that exact revision, then separate formal
+Stage 8 acceptance and architecture reconciliation. There is no Increment
+8.D.

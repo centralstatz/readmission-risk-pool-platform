@@ -14,15 +14,18 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
-through Stage 7 push evidence. Stages 1–7 are accepted and complete. Stage 7
+through Stage 7 and Increment 8.B push evidence. Stages 1–7 are accepted and complete. Stage 7
 supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
 restore. Stage 8 is accepted and in progress. Increment 8.A implements the
 supported standard project-authoring boundary, six-file normal scaffold, and
 the first two installed product documents. Increment 8.B adds the ordinary
 fictional project, explicit deterministic source generation, meaningful
-mapping/private-provider proof, and the third installed product document;
-Increment 8.C remains next.
+mapping/private-provider proof, and the third installed product document.
+Increment 8.C adds the installed non-Git durable reference proof and completes
+the Fictional Reference Walkthrough. Stage 8 implementation is locally
+complete, but exact-revision hosted evidence and separate formal
+reconciliation remain.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -163,6 +166,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R six-file initialization plus standard-authoring producer/provider adaptation, deterministic identity, structural/dependency failure, installed-document resolution, rendering, create-only ownership, staging/rollback, portability, privacy, process-restoration, and non-invocation evidence. |
 | `packages/rrpplatform/tests/fictional-project.R` | Package-native evidence for fictional initialization, explicit byte-deterministic generation, source-local failures, crosswalk mapping, availability filtering, canonical leakage prevention, project-provider input/cutoff behavior, empty dependencies, copied-project portability, and installed walkthrough resolution. |
+| `packages/rrpplatform/tests/fictional-end-to-end.R` | Package-native and separately installed non-Git evidence for documentation resolution, fresh fictional realization, explicit generation, project validation, durable state/scope execution, exact outcomes and history completeness, private-field exclusion, deterministic reproduction, provider non-reexecution on complete same-key reuse, and copied-project/state reopen. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpplatform/tests/project-state.R` | Package-native state-inventory, compatibility, staging, exact DuckDB roundtrip, progress, idempotency/conflict, transaction interruption, reopen, copied-project, equivalence, privacy, and writer-exclusion evidence. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
@@ -391,7 +395,9 @@ complete. Stage 8 is accepted and in progress; Increment 8.A supplies the
 generic normal authoring capability and its two installed documents. Increment
 8.B supplies the ordinary fictional project, explicit deterministic source,
 meaningful mapping/private provider, and third installed document. Increment
-8.C is the next task.
+8.C supplies the complete installed durable reference proof and human runbook.
+The next lifecycle action is human review, commit/push, exact-revision hosted
+`package-foundation`, and separate Stage 8 acceptance/reconciliation.
 
 There is no platform acceptance operation or installed product validation yet.
 Neither local validator nor this narrow hosted workflow implies runtime,

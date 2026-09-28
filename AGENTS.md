@@ -78,6 +78,9 @@ transactional seven-file fictional-project initialization, explicit
 byte-deterministic source generation, private identity-crosswalk mapping,
 time-aware project-provider execution, and exact three-document installed
 guidance,
+complete installed non-Git fictional durable execution, scope/episode/current
+history, private-field exclusion, same-key provider non-reexecution, and
+copied-project/state reopen,
 deterministic content-sensitive bundle identity, controlled authoring failures,
 closed extension-package preflight, installed Markdown guidance, exact semantic
 producer and semantic provider selection, loader-backed structured project diagnosis, copied-
@@ -148,6 +151,10 @@ and 22-export `rrpplatform` surface while preserving direct raw projects.
 Increment 8.B adds the cataloged seven-file ordinary fictional project,
 explicit byte-deterministic source generator, local identity crosswalk,
 meaningful two-domain mapping, project-owned private-predictor provider, third
-installed product document, and 23-export `rrpplatform` surface. Stage 8
-remains in progress. The next task is Increment 8.C; do not begin it without
-explicit authorization.
+installed product document, and 23-export `rrpplatform` surface. Increment 8.B
+passed hosted run `36453663714`, job `109034402424`, for exact revision
+`20091b7231d68ced55e1dda25a8f1bf0e0410a82`. Increment 8.C adds the complete
+installed non-Git durable reference proof and completed human runbook. Stage 8
+implementation is locally complete but remains in progress; the next action is
+human review, commit/push, exact-revision hosted `package-foundation`, and
+separate formal Stage 8 reconciliation. Stage 9 has not begun.

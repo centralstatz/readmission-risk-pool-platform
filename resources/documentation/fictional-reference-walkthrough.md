@@ -1,29 +1,65 @@
 # Fictional Reference Walkthrough
 
-This walkthrough covers the deterministic fictional, nonclinical Stage 8
-project. It uses supported package operations and explicit roots. It does not
-require the development repository, Git, a working-directory convention,
-network access, credentials, or an installed reference provider.
+This runbook covers the deterministic fictional, nonclinical Stage 8 project
+through complete durable history. It uses supported package operations and
+explicit roots. It does not require the development repository, Git, a
+working-directory convention, network access, credentials, an extension
+library, or an installed reference provider. The package-level workflow is
+technical; it is not a future CLI design.
 
-## Initialize and inspect
+## Locate installed documentation
 
-Open the installed resource catalog and initialize the supplied project at an
-absent destination:
+Open the resource catalog beneath the explicit installed RRP software root and
+resolve the three version-matched Stage 8 documents:
 
 ```r
 library(rrpplatform)
 catalog <- rrp_open_resource_catalog(software_root)
-result <- rrp_initialize_fictional_project(catalog, project_root)
-stopifnot(rrp_operation_succeeded(result))
-rrp_validate_project(catalog, project_root)
+
+rrp_resource_path(catalog, "rrp.documentation.project-authoring-guide")
+rrp_resource_path(catalog, "rrp.documentation.provider-request-reference")
+rrp_resource_path(
+  catalog, "rrp.documentation.fictional-reference-walkthrough"
+)
 ```
 
-Read the project README, `rrp-project.dcf`, `rrp-authoring.dcf`,
-`R/produce-canonical.R`, and `R/calculate-risk.R`. The two callable files are
-the ordinary hospital mapping and provider edit surfaces. `R/register.R` is the
-same thin standard-authoring adapter used by every normal initialized project.
+The Project Authoring Guide explains the standard and raw project boundaries.
+The Provider Request Reference defines the exact current 19-field request.
+This walkthrough composes the public package operations into one reference
+path.
 
-## Generate project-owned source
+## Initialize and inspect the project
+
+Choose an absent `project_root` outside the RRP installation and initialize the
+supplied project:
+
+```r
+initialized <- rrp_initialize_fictional_project(catalog, project_root)
+stopifnot(rrp_operation_succeeded(initialized))
+```
+
+Initialization creates exactly seven files:
+
+```text
+rrp-project.dcf
+rrp-authoring.dcf
+R/register.R
+R/produce-canonical.R
+R/calculate-risk.R
+R/generate-source.R
+README.md
+```
+
+It creates no source, extension library, state, database, Git metadata,
+product, or application. Read the project README, both DCF files, and the three
+R files. `R/produce-canonical.R` and `R/calculate-risk.R` are the ordinary
+hospital logic edit surfaces. `rrp-authoring.dcf` records truthful
+implementation and mapping identities and declares `Extension-Packages: none`.
+`R/register.R` is thin stable standard-authoring wiring and is normally not
+edited. Advanced projects may deliberately replace that wiring with the raw
+producer/provider contracts described in the Project Authoring Guide.
+
+## Generate and inspect project-owned source
 
 The generator is trusted project code and must be called explicitly:
 
@@ -33,49 +69,208 @@ sys.source(file.path(project_root, "R", "generate-source.R"), generator)
 generator$rrp_generate_fictional_source(project_root)
 ```
 
-Inspect `source/generated/source.dcf`, `stays.csv`, `events.csv`, and
-`identity-crosswalk.csv`. The fixed reference time is
-`2026-01-20T12:00:00Z`. The native IDs and local event codes differ from the
-canonical vocabulary. The explicit project crosswalk assigns canonical
-identities, while the stays table retains one provider-only fictional signal
-and its availability time. Repeating generation accepts only the exact
-byte-identical realization and never overwrites changed content.
+It creates exactly:
 
-## Exercise producer and provider boundaries
+```text
+source/generated/source.dcf
+source/generated/stays.csv
+source/generated/events.csv
+source/generated/identity-crosswalk.csv
+```
 
-Produce and admit canonical data at the fixed reference time:
+The fixed reference time is `2026-01-20T12:00:00Z`. Inspect the four files.
+The source has four stays and three event notifications. Native IDs and local
+event codes differ from canonical vocabulary; `FIC STAY/001` is intentionally
+invalid under canonical identity grammar. The project-owned crosswalk assigns
+stable canonical episode, patient, and encounter identities. The stays table
+also owns the private `provider_signal` and its availability timestamp.
+
+The producer performs source-local validation, joins, identity lookup, code
+translation, and occurrence/availability filtering. Neither native identity,
+the crosswalk, local codes, nor private predictor data enter canonical output.
+The provider later resolves the request's canonical `episode_id` back through
+the private crosswalk and checks predictor availability against
+`request$as_of_time`.
+
+## Validate and inspect canonical handoff
+
+Validate the generated project, then reproduce its admitted canonical bundle:
 
 ```r
+validated <- rrp_validate_project(catalog, project_root)
+stopifnot(rrp_operation_succeeded(validated))
+
 as_of_time <- "2026-01-20T12:00:00Z"
 produced <- rrp_execute_producer(catalog, project_root, as_of_time)
 stopifnot(rrp_operation_succeeded(produced))
 bundle <- produced$value
+
+bundle$bundle_instance_id
+bundle$domains$discharge_episode
+bundle$domains$terminal_event
 ```
 
-The admitted domains contain only governed canonical fields. Native IDs, the
-crosswalk, local event codes, predictor values, and source availability
-metadata are not part of the canonical bundle.
+The admitted bundle has four discharge episodes and two available terminal
+events. The third source notification is later than the analytical cutoff and
+is excluded. Equal generated bytes, analytical time, declared producer/mapping
+identity, and canonical content reproduce the same bundle identity.
 
-The active fictional episode demonstrates the ordinary project provider:
+The provider receives only the detached provider-neutral request documented by
+`rrp.documentation.provider-request-reference`, plus `project_root` as the
+separate normal-callable argument. It does not receive patient/encounter or
+native IDs, the crosswalk, source rows, arbitrary predictors, credentials,
+provider/model identity, products, or history.
+
+## Initialize durable state
+
+State initialization is explicit and separate from project and source
+initialization:
 
 ```r
-estimated <- rrp_execute_risk(
-  catalog, project_root, bundle, "fictional.episode.001", as_of_time
-)
-stopifnot(rrp_operation_succeeded(estimated))
-estimated$value
+state <- rrp_initialize_project_state(catalog, project_root)
+stopifnot(rrp_operation_succeeded(state))
+
+rrp_inspect_project_state(catalog, project_root)
 ```
 
-RRP constructs the unchanged provider-neutral request. Project code resolves
-the canonical episode back to private source identity, retrieves the signal,
-checks its availability through the analytical cutoff, and returns one
-deterministic nonclinical probability. RRP performs provider-result validation
-and constructs the accepted estimate.
+The project now owns exactly `state/state.dcf` and `state/history.duckdb`.
+History starts empty. RRP does not pre-seed fictional results or use a
+fictional-specific schema.
 
-## Current boundary
+## Execute one complete durable scope
 
-This Increment 8.B walkthrough proves initialization, explicit generation,
-mapping, admission, and project-provider execution. Durable initialization,
-bundle execution, repeat/idempotency, and history inspection form the separate
-Increment 8.C installed end-to-end proof. No source is generated implicitly,
-and no product, application, CLI, deployment, or clinical claim exists.
+Use one caller-owned operation key with the fixed analytical time:
+
+```r
+operation_key <- "fictional-reference-complete-v1"
+executed <- rrp_execute_durable_bundle(
+  catalog, project_root, as_of_time, operation_key
+)
+stopifnot(
+  rrp_operation_succeeded(executed),
+  executed$value$expected_episode_count == 4L,
+  executed$value$dispositioned_episode_count == 4L,
+  isTRUE(executed$value$complete)
+)
+operation_run_id <- executed$value$operation_run_id
+```
+
+The operation executes the ordinary selected producer, canonical admission,
+Stage 6 episode/provider behavior, and Stage 7 history path. It has no
+fictional runtime branch. The fixed data naturally produce:
+
+- `fictional.episode.001`: eligible, accepted estimate `0.3833333333333333`;
+- `fictional.episode.002`: ineligible because already readmitted;
+- `fictional.episode.003`: ineligible because already dead; and
+- `fictional.episode.004`: ineligible because the target horizon is exhausted.
+
+Only the eligible episode invokes the project provider. These values are
+fictional and nonclinical.
+
+## Inspect scope, episode, and current history
+
+Use the public logical history operations rather than querying DuckDB:
+
+```r
+scope_history <- rrp_inspect_scope_history(
+  catalog, project_root, operation_run_id
+)
+stopifnot(rrp_operation_succeeded(scope_history))
+scope_history$value$scope
+scope_history$value$progress
+scope_history$value$dispositions
+
+target_id <- scope_history$value$scope$target_id
+episode_history <- rrp_inspect_episode_history(
+  catalog, project_root, "fictional.episode.001", target_id, as_of_time
+)
+current_history <- rrp_inspect_current_history(
+  catalog, project_root, "fictional.episode.001", target_id,
+  as_of_time, as_of_time
+)
+stopifnot(
+  rrp_operation_succeeded(episode_history),
+  rrp_operation_succeeded(current_history)
+)
+```
+
+The scope records exact admitted membership and immutable producer, mapping,
+bundle, target, project, and state provenance. It is complete only because all
+four members have exactly one initial disposition. History contains governed
+canonical/runtime evidence; it does not acquire native IDs, crosswalk rows,
+local event codes, predictor values or availability timestamps, source paths,
+or private lookup structures.
+
+## Repeat the completed operation
+
+Reproduce the producer result and invoke the same durable key:
+
+```r
+reproduced <- rrp_execute_producer(catalog, project_root, as_of_time)
+stopifnot(
+  rrp_operation_succeeded(reproduced),
+  identical(reproduced$value$bundle_instance_id, bundle$bundle_instance_id),
+  identical(reproduced$value$domains, bundle$domains)
+)
+
+repeated <- rrp_execute_durable_bundle(
+  catalog, project_root, as_of_time, operation_key
+)
+stopifnot(
+  rrp_operation_succeeded(repeated),
+  identical(repeated$value, executed$value)
+)
+```
+
+This is reuse of matching completed work, not episode-by-episode recomputation.
+No initial disposition is appended and no completed episode or provider is
+invoked again. The installed acceptance proof uses a test-owned call counter
+around the ordinary temporary-project provider to establish non-reexecution;
+no instrumentation or shortcut exists in the shipped template or runtime.
+
+Deterministic source bytes, canonical content, bundle identity, caller-owned
+operation key, and derived operation-run identity are related but distinct
+claims. State identity is created during explicit state initialization and is
+preserved when that state is copied.
+
+## Copy and reopen
+
+After all package calls have returned, copy the whole independent project to
+an unrelated absent directory by ordinary filesystem copying. Use the copied
+root explicitly:
+
+```r
+dir.create(copied_parent)
+stopifnot(file.copy(project_root, copied_parent, recursive = TRUE))
+copied_root <- file.path(copied_parent, basename(project_root))
+
+rrp_validate_project(catalog, copied_root)
+rrp_inspect_project_state(catalog, copied_root)
+rrp_inspect_scope_history(catalog, copied_root, operation_run_id)
+rrp_inspect_current_history(
+  catalog, copied_root, "fictional.episode.001", target_id,
+  as_of_time, as_of_time
+)
+```
+
+The copied project and state reopen without the original project path, the
+development repository, Git state, or a working-directory convention. This is
+ordinary path-independent copying, not migration. The only software dependency
+is the explicit installed RRP realization and its declared package closure;
+the fictional project declares no extension package and creates no extension
+library.
+
+## Ownership boundary
+
+The hospital project owns source access and meaning, local validation,
+canonical mapping and identity assignment, the private crosswalk, private
+predictors and their temporal legitimacy, model/engine behavior, and truthful
+implementation provenance. RRP owns installed contracts and documentation,
+registration adaptation, component selection, canonical/result envelopes,
+admission, the governed analytical request and target, execution containment,
+accepted estimates, project state, and durable logical history.
+
+This path proves technical conformance and traceability only. It does not
+establish clinical validity, calibration, production authorization,
+supportability, performance, or novice usability. No product, application,
+CLI, deployment, or release capability is part of this walkthrough.

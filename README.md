@@ -137,7 +137,11 @@ episode state, standard request, direct semantic-provider execution, minimal
 result, and accepted estimate behavior. Package-native checks additionally
 prove explicit state initialization/inspection, compatibility, private
 DuckDB-port roundtrip, transactions, interruption, copied-project reopen, and
-writer exclusion. The operation also checks exact package topology,
+writer exclusion. The installed Stage 8 proof also realizes a fresh fictional
+project outside Git, generates and admits its source, executes complete durable
+history, verifies scope/episode/current views and private-field exclusion,
+proves same-key provider non-reexecution, and reopens copied project state.
+The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
 `R CMD check --no-manual` results. It is maintainer evidence, not a root
@@ -165,8 +169,10 @@ generic six-file standard authoring capability and its first two installed
 product documents. Increment 8.B supplies the ordinary initialized fictional
 project, explicit deterministic source generator, meaningful private mapping
 and provider example, and third installed product document. Increment 8.C has
-not begun; no durable installed reference proof or Stage 8 acceptance is yet
-claimed.
+now completed the local installed durable reference proof and human runbook.
+Stage 8 remains in progress pending human review, exact-revision hosted
+validation, and separate formal acceptance/reconciliation; that acceptance is
+not yet claimed.
 
 ## License
 

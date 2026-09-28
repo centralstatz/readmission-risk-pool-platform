@@ -67,6 +67,7 @@ expected_files <- c(
   "packages/rrpplatform/tests/package-foundation.R",
   "packages/rrpplatform/tests/project-contracts.R",
   "packages/rrpplatform/tests/project-doctor.R",
+  "packages/rrpplatform/tests/fictional-end-to-end.R",
   "packages/rrpplatform/tests/project-initializer.R",
   "packages/rrpplatform/tests/fictional-project.R",
   "packages/rrpplatform/tests/project-loader.R",

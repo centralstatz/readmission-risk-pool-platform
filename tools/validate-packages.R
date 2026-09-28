@@ -2420,6 +2420,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "canonical-contracts.R"),
       file.path("tests", "project-contracts.R"),
       file.path("tests", "project-doctor.R"),
+      file.path("tests", "fictional-end-to-end.R"),
       file.path("tests", "project-initializer.R"),
       file.path("tests", "fictional-project.R"),
       file.path("tests", "project-loader.R"),
@@ -2829,6 +2830,26 @@ validate_source_boundaries <- function(package_roots) {
       hospital_vocabulary, grepl, logical(1L), x = generic_text, fixed = TRUE
     )),
     "Generic package source and documentation must not embed hospital mappings."
+  )
+
+  fictional_tokens <- c(
+    "fictional-reference-hospital", "fictional.episode.001",
+    "FIC STAY/001", "provider_signal"
+  )
+  fictional_source_hits <- vapply(platform_source_files, function(path) {
+    text <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"),
+                  collapse = "\n")
+    any(vapply(fictional_tokens, grepl, logical(1L), x = text, fixed = TRUE))
+  }, logical(1L))
+  require_true(
+    identical(
+      unname(basename(names(fictional_source_hits)[fictional_source_hits])),
+      "project-initializer.R"
+    ),
+    paste0(
+      "Fictional project identity or private vocabulary may appear in package ",
+      "source only in its intentionally scoped initializer."
+    )
   )
 
   source_pattern <- "(?:^|[^[:alnum:]_.])(?:sys[.])?source[[:space:]]*[(]"
@@ -4038,6 +4059,41 @@ validate_installed_state_recovery <- function(
   ))
 }
 
+validate_installed_fictional_end_to_end <- function(
+  library_root,
+  work_root,
+  environment
+) {
+  software_root <- file.path(work_root, "fictional-end-to-end-software-root")
+  project_resource_authority(repository_root, software_root)
+  proof_root <- file.path(work_root, "installed-fictional-end-to-end")
+  dir.create(proof_root)
+  script_path <- file.path(proof_root, "fictional-end-to-end.R")
+  copied <- file.copy(
+    file.path(
+      repository_root, "packages", "rrpplatform", "tests",
+      "fictional-end-to-end.R"
+    ),
+    script_path, overwrite = FALSE, copy.mode = FALSE, copy.date = FALSE
+  )
+  require_true(copied, "Could not copy installed fictional end-to-end proof.")
+  require_command_success(
+    "installed fictional project durable end-to-end lifecycle",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(script_path), shQuote(software_root),
+      shQuote(library_root)
+    ),
+    environment,
+    timeout_seconds = 600L
+  )
+  cat(paste0(
+    "PASS installed non-Git fictional initialization, explicit source, ",
+    "validation, state, durable scope/history, private-field exclusion, ",
+    "same-key no-provider reexecution, and copied-project reopen\n"
+  ))
+}
+
 validate_packages <- function() {
   cat("RRP local package, project, canonical, and state validation\n")
   cat("=============================================================\n")
@@ -4214,6 +4270,9 @@ validate_packages <- function() {
   validate_installed_producer_execution(library_root, work_root, environment)
   validate_installed_risk_execution(library_root, work_root, environment)
   validate_installed_state_recovery(library_root, work_root, environment)
+  validate_installed_fictional_end_to_end(
+    library_root, work_root, environment
+  )
 
   cat("\nResult: PASS (package, project, canonical, runtime, and history foundation)\n")
   cat(
@@ -4240,6 +4299,8 @@ validate_packages <- function() {
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
     "and exact three-document installed Markdown product resolution, ",
+    "complete installed fictional durable execution/history, same-key ",
+    "provider non-reexecution, history privacy, and copied-state reopen, ",
     "selected producer execution, closed request/result validation, exact ",
     "one-call and zero-provider behavior, admission delegation, two distinct ",
     "hospital mapping fixtures, ",
