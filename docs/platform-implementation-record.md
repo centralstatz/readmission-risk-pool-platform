@@ -4226,3 +4226,64 @@ Stage 9 has not begun.
 
 **Next task:** detail and accept Stage 9 — Logical Products and Materialization
 before beginning any Stage 9 implementation.
+
+## Stage 9 detailed-plan preparation — 2026-09-28
+
+Detailed Stage 9 planning began from clean committed baseline
+`fe1c2ebb9bf888cbc2914b38cc176510bc68fd19`, at which Stages 1–8 were accepted
+and complete. Planning reread the active authorities and implementation method,
+then inspected the realized Stage 6 target/request/estimate boundary, Stage 7
+logical history, state, DuckDB, invalidation/restatement, retry, completeness,
+and backup behavior, the accepted Stage 8 standard and fictional paths, and
+current package/resource ownership.
+
+Bounded `v0.1.0` reconnaissance inspected the three historical product
+contracts, initial set and materialization contracts, product identity,
+conformance, builders and access, the YAML adapter, Phase 6 tests, and the two
+product architecture notes. The proposed plan retains the proven separation of
+logical products from physical access, three narrow product roles,
+all-required set conformance, deterministic semantic identity, valid empty
+products, actual irregular trajectory points, immutable staged publication,
+and distinct integrity, compatibility, coherence, and freshness. It adapts
+those mechanics to the singular remaining-risk target, current Stage 7
+scope/disposition/correction semantics, installed DCF authorities, and explicit
+project state. Daily-hazard and multi-estimand semantics, automatic latest-run
+discovery, repository-root/generated-Hospital assumptions, direct DuckDB
+reads, YAML as a new dependency, partial successful sets, product/app coupling,
+and reporting/decision fields were rejected.
+
+The proposal defines one coherent, all-or-nothing initial set containing
+current accepted remaining risk, actual accepted remaining-risk trajectory,
+and an effective operational-scope summary. One explicit complete effective
+scope and history cutoff bound construction. Existing storage-neutral logical
+history reads plus repeated-view equality and a deterministic source
+fingerprint provide coherence; no Stage 7 read or port change is proposed.
+Invalidation, restatement, retry, ambiguity, and currentness remain delegated
+to Stage 7. Empty members are valid, incomplete or invalid source is
+unavailable, and no partial logical set exists.
+
+The proposed supplied realization is one staged immutable DCF/CSV
+materialization beneath project state with a validated current pointer and
+storage-neutral detached access. Products remain rebuildable derived state and
+outside the supplied history backup. The proposal therefore calls for one
+coherent `0.2.0` project-state, DuckDB-adapter compatibility, and state-backup
+authority line without changing DuckDB's physical schema or logical history.
+The three increments are logical contracts/builders, materialization/access,
+and installed fictional proof/guidance. Two deliberate choices—this explicit
+state/backup evolution and DCF/CSV rather than historical YAML—remain for human
+acceptance.
+
+Proportional planning-document validation passed the repository foundation's
+eight static checks and `git diff --check`. No package lifecycle evidence was
+rerun because neither package source nor implemented behavior changed.
+
+This entry records planning only. No product contract, source, export, state
+schema, materializer, access adapter, test, fictional behavior, application,
+or Stage 10 capability was implemented.
+
+**Current implementation state:** Stages 1–8 remain accepted and complete.
+The detailed Stage 9 proposal is ready for human review but is not accepted;
+Stage 9 implementation has not begun.
+
+**Next task:** review, revise if necessary, and explicitly accept the detailed
+Stage 9 plan before authorizing Increment 9.A.

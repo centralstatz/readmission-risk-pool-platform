@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. Stage
-9 has not begun and remains at roadmap-level detail pending separate planning
-and acceptance.
+**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. A
+detailed proposed Stage 9 plan is recorded below for human review and
+acceptance; Stage 9 implementation has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -70,8 +70,8 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 Stages 1–8 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 9 has not begun and must be detailed and
-accepted before source implementation. After a
+implementation lineage. Stage 9 is detailed below but remains pending human
+acceptance, and its source implementation has not begun. After a
 stage is implemented:
 
 1. validate its stated exit claim;
@@ -5237,16 +5237,23 @@ they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 
-**Status:** not begun; roadmap-level only pending separate detailed planning
-and acceptance.
+**Status:** detailed proposal produced on 2026-09-28; pending human review and
+acceptance. Implementation has not begun.
 
 ### Objective and responsibilities
 
-Define and build the narrow initial product family—current eligible episode
-remaining risk, retained trajectory/history, and terminal run summary—from
-valid history through storage-neutral reads. Add versioned set identity,
-freshness, lineage, partial/unavailable behavior, and one supplied
-materialization/access adapter in project state.
+Build one narrow, versioned, all-or-nothing logical product set from governed
+Stage 7 history: current accepted remaining risk, retained accepted remaining-
+risk trajectory, and one effective operational-scope summary. Products are
+consumer interfaces over attributable history, not analytical authority and
+not aliases for the supplied physical format.
+
+Stage 9 owns product contracts and conformance, deterministic logical identity,
+storage-neutral construction, lineage, explicit valid-empty and unavailable
+behavior, contextual freshness, one dependency-light materialization/access
+adapter under project state, and a complete installed fictional proof. It does
+not reinterpret hospital source, invoke a producer or provider, alter history,
+or design the Stage 10 application.
 
 ### Why here and dependencies
 
@@ -5254,25 +5261,863 @@ Products are consumer interfaces over attributable history, not substitutes
 for it. They follow the durable fictional path and precede any app so the UI
 cannot become the accidental product contract.
 
+Stages 6–8 now supply the actual upstream boundary: one singular remaining-
+risk target; detached request and estimate records; append-oriented scope,
+disposition, retry, invalidation, and restatement semantics; explicit project
+state; public storage-neutral scope, episode, and current-history reads; and
+one ordinary fictional project with complete durable history. Stage 9 must
+project those facts and may not recover an earlier daily-hazard architecture.
+
+### Governing product principles
+
+1. Stage 7 logical history is analytical authority. A product is a validated,
+   rebuildable consumer projection of an explicitly bounded history view.
+2. Logical product meaning, product-set identity, physical materialization,
+   and read access are distinct responsibilities.
+3. Builders use only the `rrpruntime` history port and logical reads. They do
+   not query DuckDB, know table names, inspect database files, or depend on an
+   adapter transaction layout.
+4. One build is anchored to one explicit effective complete operational scope,
+   one analytical cutoff from that scope, and one explicit history cutoff.
+   There is no implicit "latest database row" or ambient current scope.
+5. All three required products succeed and conform as one coherent set, or no
+   consumable logical set exists. Stage 9 has no partial logical product set.
+6. Zero rows are valid where the contract permits them. Empty is never a
+   synonym for failed or unavailable.
+7. A physically intact historical product set may remain valid while becoming
+   stale relative to explicitly supplied newer history expectations.
+8. Materialized products are derived project state. They never mutate history,
+   cannot repair it, and can be deleted and rebuilt without loss of analytical
+   truth.
+9. Consumers use validated logical access, not physical filenames or storage
+   internals.
+10. Product schemas expose the least consumer information needed. Native IDs,
+    crosswalks, predictors, source paths, credentials, and source records stay
+    private.
+
+### Reconciled realized dependencies
+
+Stage 9 inherits these accepted facts without reopening them:
+
+- `rrp.history.operational-scope@0.1.0` defines one admitted bundle, exact
+  membership evidence, analytical time, project/producer/mapping/bundle/target
+  provenance, and derived completeness;
+- `rrp.history.episode-disposition@0.1.0` retains ineligibility, accepted
+  estimate, provider failure, retry, and restatement evidence with the
+  immutable state/request/estimate that actually occurred;
+- `rrp.history.action@0.1.0` overlays invalidation and restatement without
+  deleting raw facts;
+- `rrp_history_read_scope()` returns one raw scope, its dispositions/actions,
+  and derived progress;
+- `rrp_history_read_episode()` returns bounded immutable episode history at an
+  explicit history cutoff;
+- `rrp_history_read_current()` resolves one effective disposition from only
+  complete, noninvalid scopes at explicit analytical and history cutoffs,
+  follows retry/restatement leaves, and rejects unrelated same-time ambiguity;
+- `rrpplatform` can obtain the same port from one explicit project root while
+  the DuckDB schema remains private;
+- project state is currently an exact two-file `rrp.project-state@0.1.0`
+  realization, so placing derived products under it requires an explicit
+  compatible contract evolution rather than an undeclared directory; and
+- the Stage 7 backup artifact intentionally contains authoritative state/history
+  only. Stage 9 may not silently make a derived product store part of that
+  recovery guarantee.
+
+### Settled Stage 9 scope decisions
+
+| Question | Detailed-plan decision |
+|---|---|
+| What is a logical product? | One closed, versioned, detached data-frame projection constructed from governed history and validated independently of its builder or storage format. |
+| What is the build population? | The unique admitted episode membership of one explicit effective complete source scope. |
+| What is current? | Effective history for each source member at the source scope's analytical time and the caller's explicit history cutoff. |
+| Is a complete scope required? | Yes. Incomplete, invalidated, ambiguous, unreadable, or unsupported source history is unavailable; it is not a partial product. |
+| What enters trajectory? | Only effective accepted estimates that actually occurred at distinct governed analytical times through the source analytical cutoff. |
+| What is summarized? | The effective outcome accounting for the one selected operational scope at the chosen history cutoff. |
+| Are there three independent builds? | No. One build produces exactly three required members with one source snapshot and product-set identity. |
+| Is partiality supported? | No. Analytical/provider failures remain truthful rows/counts upstream; interrupted physical writes are a materialization concern, not a partial logical set. |
+| Does Stage 7 need a new read? | No. Explicit scope selection plus bounded logical reads and optimistic start/end equality are sufficient; no port or DuckDB interface change is proposed. |
+| Where are products stored? | In a closed optional `products/` subdirectory under the manifest-owned project state root. |
+| Are products backed up? | No. The supplied Stage 7 backup remains authoritative-history-only; products are rebuildable and restore leaves them absent. |
+| Supplied format | Flat base-R DCF metadata plus three CSV member files; no new serialization dependency. |
+
+### Logical product and set model
+
+The logical layers are:
+
+```text
+governed Stage 7 history
+        ↓
+bounded source-history snapshot
+        ↓
+three logical product builders
+        ↓
+independent member conformance
+        ↓
+coherent product-set conformance
+        ↓
+optional DCF/CSV materialization
+        ↓
+validated storage-neutral access
+```
+
+A logical member is a detached list with exact class and fields for product
+contract identity/version, deterministic product instance ID, product-set ID,
+integer row count, and one exact ordered base-R data frame. It has no path,
+connection, callable, adapter, or mutable reference. An unavailable member is
+not serialized inside an apparently successful set; availability is expressed
+by success or failure of the all-required set build, while zero rows remain a
+valid available member.
+
+The product set is a detached list containing its contract and builder
+identity, deterministic set ID, project/state/target compatibility, source
+scope identity, source analytical time, source history cutoff and fingerprint,
+exact three member references, and the members. It is not a materialization
+manifest and contains no file names, checksums, build-attempt identity, or
+wall-clock build time. Equivalent source views therefore produce the same
+logical object rather than merely the same nominal identity.
+
+### Source selection, coherence, and storage-neutral reads
+
+`rrp_build_product_set()` receives one explicit `operation_run_id` and one
+explicit RFC 3339 UTC `history_cutoff`. The selected scope must exist, be
+effective rather than invalidated or superseded at that cutoff, and be derived
+complete. If a scope was restated, the original is unavailable and the caller
+supplies the replacement operation identity explicitly; the builder does not
+hide a source-selection decision.
+
+The builder obtains source membership only from unique initial dispositions
+whose count and membership fingerprint reproduce the selected scope. For every
+member it reads bounded episode history and uses `rrp_history_read_current()`
+at the source analytical time and at each distinct candidate analytical time.
+It therefore inherits Stage 7 retry, correction, cutoff, and ambiguity rules
+instead of recreating them.
+
+Construction uses an optimistic storage-neutral snapshot:
+
+1. read and validate the selected scope and all member episode/current values
+   at the explicit cutoffs;
+2. construct one canonical ordered source representation and deterministic
+   source-history fingerprint;
+3. derive and independently validate all product members and their set;
+4. repeat the same bounded logical reads; and
+5. succeed only when the second representation is identical to the first.
+
+An append affecting the bounded source during construction produces
+`product_source_changed` and no set. Records after the declared history cutoff
+are outside that set. A later backdated correction may make the old set stale
+when freshness is next evaluated, but cannot make the already built set lie
+about the exact source fingerprint it used. This gives one coherent source
+view without coupling product code to a DuckDB transaction or extending the
+history port.
+
+### Product 1 — current accepted remaining risk
+
+**Identity:** `rrp.product.current-remaining-risk@0.1.0`.
+
+**Consumer question:** for the selected complete scope, which admitted
+episodes have one effective accepted remaining-risk estimate at that scope's
+analytical time and the declared history cutoff?
+
+**Grain:** at most one row per `episode_id` plus exact target identity/version.
+The source population is the selected scope membership. Ineligible episodes
+and effective provider failures have no row. They remain accounted for in the
+scope-summary member.
+
+"Current" means the result of the Stage 7 current-history resolver using:
+
+- analytical cutoff = selected scope `analytical_time`; and
+- history cutoff = the explicit build `history_cutoff`.
+
+The builder includes a row only when that effective disposition is
+`accepted_estimate`. It never searches backward for the last accepted
+probability when the current effective disposition is a failure or
+ineligibility. A successful retry or restatement is current only because Stage
+7 resolves it as the effective leaf. A valid zero-row current product means no
+scope member has an effective accepted estimate; it is not a build failure.
+
+**Exact row fields:**
+
+- `product_row_id`;
+- `episode_id`;
+- `target_id`, `target_version`;
+- `analytical_time`;
+- `estimate_value`, `estimate_record_id`;
+- `analytical_run_id`, `source_operation_run_id`;
+- `state_id`, `request_id`;
+- `provider_id`, `provider_version`;
+- `implementation_id`, `implementation_version`;
+- paired nullable `model_id`, `model_version`; and
+- `target_interval_start`, `target_interval_end`,
+  `target_interval_boundary`.
+
+Rows order by episode ID, target ID, and target version. The row identity is
+deterministic from the member contract, product-set ID, episode ID, and target
+identity. There is no patient, encounter, native, predictor, priority, action,
+or category field.
+
+### Product 2 — accepted remaining-risk trajectory
+
+**Identity:** `rrp.product.remaining-risk-trajectory@0.1.0`.
+
+**Consumer question:** what effective accepted remaining-risk estimates were
+actually produced for each current-scope episode through the selected
+analytical and history cutoffs?
+
+**Grain:** one effective accepted analytical disposition per episode and
+analytical time. The builder enumerates distinct analytical times present in
+bounded raw history and asks the Stage 7 current resolver for each cutoff. It
+deduplicates identical effective analytical-run identities that arise when a
+later invalidated point falls back to an earlier valid point.
+
+The member contains no daily hazard, interpolation, imputed day, survival
+curve, retrospectively rerun provider result, or synthesized observation.
+Irregular runs and multiple runs on one calendar day remain separate exact
+timestamps. A one-point trajectory is valid; an episode with no effective
+accepted estimate contributes no row; the entire product may validly have zero
+rows.
+
+Invalidated estimates are absent. An analytical restatement contributes only
+the effective replacement. A successful explicit retry replaces its failed
+parent at the same analytical time; an unsuccessful or invalidated retry does
+not create an estimate point. Provider/model transitions remain attributed on
+the rows on which they actually occurred.
+
+**Exact row fields:** the current-product fields plus
+`analytical_kind` and nullable `related_analytical_run_id`. Row identity is the
+effective `analytical_run_id` under the member contract and set identity.
+Ordering is episode ID, analytical time, then analytical-run ID.
+
+### Product 3 — effective operational-scope summary
+
+**Identity:** `rrp.product.operational-scope-summary@0.1.0`.
+
+This name replaces the roadmap shorthand "terminal run summary" because the
+realized Stage 7 unit is an operational scope whose episode dispositions
+commit independently. The member summarizes one selected effective complete
+scope at the build history cutoff; it is not a dashboard, business KPI, source
+outcome rate, or mutable run-status record.
+
+**Grain:** exactly one row for the selected operational scope, including a
+zero-episode scope.
+
+**Exact row fields:**
+
+- `product_row_id`, `operation_run_id`, `scope_record_id`, `state_id`;
+- `project_id`, `project_version`;
+- `bundle_instance_id`, `canonical_profile_id`,
+  `canonical_profile_version`;
+- `producer_id`, `producer_version`, `producer_implementation_id`,
+  `producer_implementation_version`, `mapping_id`, `mapping_version`;
+- `target_id`, `target_version`, `analytical_time`, `scope_created_at`;
+- `expected_episode_count`, `initial_disposition_count`,
+  `effective_disposition_count`, `eligible_count`;
+- `accepted_estimate_count`, `provider_incompatible_count`,
+  `provider_declared_failure_count`, `detected_failure_count`;
+- `ineligible_count`, plus counts for `episode_before_discharge`,
+  `target_horizon_exhausted`, `episode_already_readmitted`, and
+  `episode_already_dead`;
+- `membership_fingerprint`; and
+- `complete`, which must be true for a successful set.
+
+Effective outcome counts use one Stage 7-resolved disposition per member at
+the source analytical time/history cutoff and must sum to expected membership.
+The initial count separately proves durable scope completeness. The summary
+does not claim one singular provider identity because a scope can contain no
+provider invocation or attributable retry/provider transitions; provider/model
+identity remains exact on estimate products. Its row identity is deterministic
+from the summary contract, product-set identity, and source scope identity.
+
+### Product-set contract, identity, and versions
+
+One installed `rrp.product-set.initial-readmission-risk@0.1.0` contract
+requires exactly the three member contracts above and builder
+`rrp.product-builder.initial-readmission-risk@0.1.0`. No member is optional.
+
+The minimum installed semantic authority is four DCF resources: the three
+member contracts and one set contract. A fifth DCF resource owns the supplied
+materialization/access adapter and its physical format. Access behavior is
+part of that adapter authority rather than a speculative separate plugin
+contract.
+
+The deterministic product-set ID is computed from a versioned length-delimited
+encoding of:
+
+- product-set contract and builder identities/versions;
+- exact three member contract identities/versions;
+- project ID and state ID;
+- source operation-run and scope-record identities;
+- source analytical time and history cutoff;
+- target identity/version; and
+- exact source-history fingerprint.
+
+Paths, adapter/format identity, checksums, publication time, and Git revision
+are excluded. Rebuilding the same logical source yields the same logical set
+and the same set/member/row identities. Product instance IDs add the member
+contract; row IDs add the contract row key. No separate product-build identity
+or generation timestamp is needed; the physical current pointer records the
+publication event.
+
+Semantic product/set versions change when fields, requiredness, grain,
+meaning, ordering, identity, build availability, or compatibility changes. The
+materialization version changes for physical layout/encoding changes without
+renaming unchanged logical semantics. Each physical publication has a
+materialization ID derived from logical set ID, adapter/format version, and
+exact physical member digests.
+
+### Lineage model
+
+Set-level lineage owns project/state, source scope/record, bundle, profile,
+producer/mapping, target, analytical time, history cutoff, source fingerprint,
+builder, and contracts. The scope-summary row exposes the bounded subset needed
+to explain cohort construction and counts.
+
+Estimate members expose row-level episode, analytical run, source operation,
+state, request, estimate, provider implementation/model, target interval, and
+probability attribution. They do not embed the complete disposition, request,
+state, scope, or action records. Consumers can use retained IDs with supported
+history operations when deeper investigation is authorized.
+
+### Validity, freshness, staleness, and availability
+
+These states are distinct:
+
+- **valid** — contracts, row types/order/identity, set coherence, and any
+  physical integrity/compatibility checks pass;
+- **fresh** — a caller supplied an expected operation-run identity and current
+  history cutoff, and the selected source plus recomputed fingerprint matches
+  the materialized set;
+- **stale** — the set remains valid and attributable, but the caller's explicit
+  expected source scope differs or the governed source fingerprint has changed;
+- **not evaluated** — no expected source context was supplied; RRP never
+  invents a time threshold or discovers an ambient latest scope; and
+- **unavailable** — governed source history cannot produce the required
+  coherent set, so the build exposes no product collection.
+
+A stale set remains readable with its truthful lineage and freshness result;
+policy may refuse it later, but Stage 9 does not silently delete it or call it
+invalid. Integrity, compatibility, or coherence failure exposes no access
+object.
+
+Freshness evaluation accepts expected operation-run identity and evaluation
+history cutoff as a paired explicit input. Different expected scope means
+stale. The same scope is reread at the evaluation cutoff and compared with the
+stored source fingerprint; later retry, invalidation, or restatement affecting
+that view means stale. A newly completed scope is recognized only when its
+identity is explicitly supplied, preserving the no-discovery boundary.
+
+### Empty, unavailable, and partial behavior
+
+Valid empty semantics are exact:
+
+- the current-risk member may have zero rows;
+- the trajectory member may have zero rows;
+- a completed zero-episode source scope yields two zero-row members and one
+  zero-count scope-summary row; and
+- provider failures can yield no estimate rows while the summary remains
+  available and truthful.
+
+Unavailable is a failed build with no product set, caused by absent/unreadable
+state, missing scope, incomplete membership, invalidated/superseded source,
+unsupported contract/version, ambiguous effective history, missing effective
+member disposition, inconsistent start/end reads, or conformance failure.
+Unavailable is never serialized as an apparently successful empty member.
+
+Stage 9 deliberately chooses **no partial logical product sets**. Stage 7's
+incomplete scope is truthful analytical partiality, but it is insufficient for
+a consumer cohort and therefore unavailable to Stage 9. Provider failures are
+complete governed dispositions, not partiality. A crashed materialization is
+an unpublished physical staging failure; the preceding complete current set
+remains visible.
+
+### Invalidation, restatement, and provider retry
+
+The source scope itself must be effective at the build history cutoff. Scope
+invalidation makes it unavailable. Scope restatement requires the caller to
+select the replacement explicitly. Existing product materializations are not
+mutated; when evaluated against corrected history they become stale.
+
+Analytical invalidation/restatement and retry are resolved only by Stage 7
+current-history semantics. Current risk represents the single effective
+disposition at the source time and includes it only when accepted. Trajectory
+contains each distinct effective accepted point and omits invalidated parents.
+A successful retry may create the effective estimate at the parent's analytical
+time. Product code does not rank attempts, fall back to a prior accepted value,
+or decide which correction wins.
+
+### Materialization ownership and project-state evolution
+
+Materialized products belong under the manifest-owned state root as optional,
+derived, rebuildable state:
+
+```text
+state/
+├── state.dcf
+├── history.duckdb
+└── products/
+    ├── current.dcf
+    └── sets/
+        └── <materialization-id>/
+            ├── product-set.dcf
+            ├── current-remaining-risk.csv
+            ├── remaining-risk-trajectory.csv
+            └── operational-scope-summary.csv
+```
+
+Increment 9.B explicitly evolves `rrp.project-state` to `0.2.0`. The root
+remains closed: the two required core files plus at most the fixed `products/`
+directory, whose own authority closes every path beneath it. State
+initialization still creates only the two authoritative history files; the
+product directory appears only after successful materialization. This is the
+smallest honest change because the accepted `0.1.0` state inventory prohibits
+all directories.
+
+The `rrp.project-state-backup` authority also advances to `0.2.0` to state
+explicitly that the supplied checkpointed backup includes authoritative
+history only and excludes derived products. Restore into absent state therefore
+creates no product store. A restored project rebuilds products explicitly.
+There is no silent Stage 7 backup expansion, product/history merge, or product
+recovery claim.
+
+The existing `rrp.adapter.duckdb-history@0.1.0` authority names the exact
+supported project-state contract/version. It therefore advances to `0.2.0`
+solely to declare compatibility with the evolved state contract; the DuckDB
+tables, history payload representation, history-port behavior, transaction
+semantics, and physical schema version remain unchanged. State, adapter, and
+backup compatibility declarations move together. Development states created
+under the old line are rejected rather than silently adopted or migrated.
+
+Whole-project copying carries materialized products and must reopen them from
+the copied root. Deleting only `state/products/` is safe and never touches
+history. Materialization cannot write to `history.duckdb` or `state.dcf`.
+
+### Supplied DCF/CSV materializer
+
+One `rrp.product-materialization@0.1.0` authority owns supplied adapter
+`rrp.materializer.dcf-csv@0.1.0`, physical format
+`rrp.product-format.dcf-csv@0.1.0`, the fixed layout, nullable CSV encoding,
+exact member names, methods, and validation categories. Flat product schemas
+make base-R CSV sufficient; DCF owns closed metadata. This avoids adding YAML
+or another runtime dependency merely for the first realization.
+
+`product-set.dcf` records materialization/adapter/format identity, exact logical
+set metadata, member contract/instance identity, row count, relative file,
+byte size, and MD5 digest. `current.dcf` points to one immutable set directory,
+repeats materialization/set identity and manifest size/digest, and records
+publication time. MD5 is bounded accidental-corruption evidence, not
+authenticity, security, or release integrity.
+
+CSV fields use exact contract order and base-R types. Nullable paired model and
+related-run fields use one explicit empty-string physical encoding and restore
+to paired logical `NA_character_` values; required strings may never be empty.
+Readers reject unknown columns, reordered columns, malformed quoting, wrong
+types, noncanonical numbers/timestamps, duplicate keys, and row-order drift.
+
+### Atomicity, replacement, and integrity
+
+Materialization proceeds as:
+
+```text
+validate complete logical set
+        ↓
+write one owned same-filesystem staging directory
+        ↓
+write members and manifest with size/digest evidence
+        ↓
+reopen and validate staged realization
+        ↓
+atomically promote immutable set directory
+        ↓
+validate through staged current pointer
+        ↓
+atomically replace current pointer
+        ↓
+reopen current access
+```
+
+Consumers observe the previous complete set, the new complete set, or a
+fail-closed unavailable pointer—never a falsely complete mixture. Pointer
+replacement failure preserves or restores the previous valid pointer. The same
+logical/physical content is idempotent; conflicting content at an existing
+materialization identity fails. Prior immutable set directories remain until a
+future explicit retention operation; Stage 9 adds no cleanup policy.
+
+The materializer removes only its owned staging path on ordinary failure.
+Recognizable nonlinked orphan staging directories are reported and may be
+removed by the next materialization before writing; access ignores unpublished
+staging while validating only the pointer-selected set. Unknown or linked
+entries fail closed rather than becoming an unrestricted product store.
+
+The immutable directory is named by materialization identity, not logical set
+identity. Equivalent DCF/CSV bytes therefore reuse the same directory, while a
+future compatible physical realization of the same logical set could have a
+different materialization identity without changing product meaning. When the
+same realization is already current, repeat publication returns its existing
+evidence without rewriting a timestamped manifest or pointer.
+
+Opening validates, in order:
+
+1. state/product root safety and closed pointer/selected-set paths;
+2. pointer and manifest parseability, inventory, sizes, and MD5 digests;
+3. adapter/format/product contract compatibility;
+4. each member's schema, types, order, row IDs, and row count;
+5. exact three-member product-set identity and shared lineage; and
+6. optional contextual freshness.
+
+Integrity or compatibility failure yields privacy-safe structured diagnostics
+and no access object. No physical digest enters logical product identity.
+
+### Access adapter and future consumer boundary
+
+The validated access object is detached and contains the opened set metadata,
+the three validated logical members, and freshness facts; it exposes no path,
+DB connection, mutable environment, or writer. The minimum consumer operations
+are:
+
+- list exact product identity/version, row count, set identity, source
+  analytical/history times, and freshness status; and
+- read one exact product identity/version from that set, returning a detached
+  copy or metadata-only copy.
+
+Stage 10 consumes these logical operations. It does not inspect DCF/CSV,
+`current.dcf`, state layout, or DuckDB. A future physical adapter may construct
+the same access object without changing product meaning or the application.
+
+### Public package interface plan
+
+All Stage 9 behavior belongs to `rrpplatform`; `rrpruntime` exports and history
+contracts remain unchanged. Five new exports are proposed:
+
+1. `rrp_build_product_set(software_catalog, project_root,
+   operation_run_id, history_cutoff)` returns a common operation result whose
+   success value is one detached conforming logical set. Existing interfaces
+   cannot own product-specific schema or set coherence.
+2. `rrp_materialize_product_set(software_catalog, project_root,
+   product_set)` validates and publishes one complete set under project state,
+   returning bounded set/materialization identity. It is separate from build
+   so logical behavior remains independently testable.
+3. `rrp_open_product_access(software_catalog, project_root,
+   expected_operation_run_id = NULL, history_cutoff = NULL)` validates and
+   opens the current materialization. Expected source inputs are both absent or
+   both supplied; they evaluate freshness without ambient discovery.
+4. `rrp_list_products(product_access)` is a pure detached inventory operation
+   over an already validated access object.
+5. `rrp_read_product(product_access, product_id, product_version,
+   metadata_only = FALSE)` returns one detached exact member or its metadata.
+
+Build, materialize, and open return the existing common structured operation
+result and privacy-safe diagnostics. List/read are pure accessors that validate
+the access object and raise one typed bounded product-access error on misuse.
+No convenience aliases, generic registration API, custom builder/materializer
+extension seam, direct store-path export, or product discovery API is added.
+
+### Failure model
+
+The contract families should keep a small bounded vocabulary:
+
+- `product_source_unavailable` — state/scope/history cannot be read;
+- `product_source_incomplete` — selected scope membership is not complete;
+- `product_source_invalidated` — selected scope is not an effective source;
+- `product_source_ambiguous` — Stage 7 cannot resolve unique effective history;
+- `product_source_changed` — optimistic start/end logical reads differ;
+- `product_incompatible` — contract/version/state/target mismatch;
+- `product_conformance_failed` — a logical member or set violates its contract;
+- `product_materialization_failed` — staging/promotion/publication failed;
+- `product_integrity_failed` — physical inventory/size/digest/parse validation failed;
+- `product_materialization_incompatible` — adapter/format/set version is unsupported; and
+- `product_access_failed` — current pointer/set cannot be opened safely.
+
+Valid empty is success. Stale and not-evaluated are freshness facts, not
+failure codes. Diagnostics never include row content, source/native identity,
+predictor values, paths, credentials, arbitrary conditions, or serialized
+history.
+
+### Privacy boundary
+
+Consumer-facing products contain canonical `episode_id` only where their
+purpose requires episode-level rows. `patient_id` and encounter ID are omitted
+from the initial suite; grouping or display need is not yet evidence for wider
+exposure. Native IDs, crosswalk values, private predictors and availability,
+source event codes, source paths, credentials/connections, raw canonical rows,
+and model artifacts are prohibited.
+
+Set manifests and diagnostics are likewise bounded. Products may contain
+provider/model identity and estimate lineage already accepted into history,
+but never provider-private input. Static and dynamic fictional proofs search
+logical objects and materialized bytes for known private markers.
+
+### Fictional Stage 9 proof
+
+The installed proof extends the accepted ordinary fictional project without a
+product-specific branch or source change:
+
+1. isolate-install packages and project exact resources outside Git;
+2. initialize the normal fictional project, explicitly generate source, and
+   initialize state;
+3. execute complete scopes at two legitimate analytical times before the late
+   fictional terminal notification is available, producing two actual
+   accepted estimates for the same episode without interpolation;
+4. select the later complete scope and build all three products;
+5. verify one current estimate, the exact two-point trajectory, effective
+   summary counts, lineage, ordering, and private-field exclusion;
+6. materialize, close, reopen, list, and read all three through logical access;
+7. repeat the same build/materialization idempotently;
+8. copy the project/state to an unrelated non-Git root and reopen the same set;
+9. execute a newer complete scope and prove the old set remains valid/readable
+   but is stale only when evaluated against that explicit newer source;
+10. build a completed zero-episode fictional scope at a pre-discharge cutoff
+    and prove two empty members plus one zero-count summary row;
+11. corrupt/incompatibly alter disposable copied materializations and prove
+    integrity/compatibility failure with no access; and
+12. prove no product/app/CLI code queries DuckDB or invokes project callables.
+
+The test may use current fictional source at earlier/later cutoffs; it does not
+change the fictional project merely to manufacture product behavior.
+
+### Historical reuse disposition
+
+Reconnaissance inspected immutable `v0.1.0` product contracts for current
+episode risk, episode risk history, operational run summary, initial product
+set, and materialization adapter; `products/R/` identity, conformance, builder,
+and access code; the YAML adapter declaration/implementation/validation/access;
+Phase 6 logical/materialized product tests; and the logical product and
+reference materialization architecture documents.
+
+| Classification | Stage 9 disposition |
+|---|---|
+| Reuse substantially | Three narrow roles; history as authority; independent product/set conformance; deterministic logical identity excluding path/time/digest; all-required coherent set; valid zero rows; no partial set; current selection delegated to history semantics; actual irregular trajectory points; provider/model attribution; list/read access; immutable bundles plus one current pointer; staged whole-set validation; distinct integrity/compatibility/coherence/freshness; old-valid-set readability without a universal stale threshold. |
+| Adapt | Replace daily-hazard/estimand/run records with the singular remaining-risk target and Stage 7 scopes/dispositions; use one explicit complete source scope and its members; add retry/restatement semantics; replace repository source loading with installed DCF authorities; place output in explicit project state; replace YAML/nested references with flat DCF/CSV; use current RRP identity grammar/hash mechanics and common operation results. |
+| Reject | Daily hazard, multi-estimand routing, old run-status families, reconstructed daily/weekly trajectories, automatic latest-run discovery, repository-root source chains, generated Hospital composition, direct DuckDB/table reads, product/app coupling, YAML as a required new dependency, Git/checksum logical identity, fixed build paths, partial successful core sets, priority/queue/decision fields, executive/readmission metrics, and synthetic-specific product branches. |
+| Defer | Custom products/materializers, retention cleanup, remote/service/object storage, authentication, application view models, scheduler/refresh policy, distribution/artifacts, performance scale, clinical validation, and production governance. |
+
+### Implementation sequence
+
+Stage 9 is proposed as three dependency-ordered increments.
+
+#### Increment 9.A — Logical product contracts and storage-neutral builders
+
+**Objective:** establish the four installed semantic authorities, exact three
+logical schemas, deterministic source/set/member/row identity, independent
+conformance, and one public builder over existing Stage 7 logical reads.
+
+**Scope:** add product contract resources and `rrpplatform` internal loading,
+snapshot/fingerprint, builders, validators, and `rrp_build_product_set()`.
+Implement complete-source, current, trajectory, summary, lineage, empty,
+unavailable, retry, invalidation/restatement, ambiguity, optimistic-coherence,
+privacy, and detachment behavior. Update resource/package ownership and local
+validators only for those realized files.
+
+**Interfaces/contracts changed:** four new product resources and one
+`rrpplatform` export. No canonical, target, request, estimate, history-port,
+history-record, project, or physical state contract changes.
+
+**Historical reuse:** reuse/adapt the identity, independent conformance,
+all-required set, zero-row, history-delegation, and invariant-focused Phase 6
+mechanics above; reject old analytical and repository shapes.
+
+**Evidence:** exact authority/catalog closure; pure builder/conformance tests
+with test-only in-memory history port; all three schemas and ordering; complete,
+zero, incomplete, retry, invalidation, restatement, ambiguity, changing-read,
+and privacy cases; equivalence through supplied DuckDB port; no DBI/DuckDB/source
+vocabulary in builder code; parsing, build/install/load, strict checks, and
+inherited regressions.
+
+**Explicit exclusions:** no physical product directory, state/backup change,
+materializer/access, fictional installed product proof, application, or CLI.
+
+**Completion condition:** a caller can build or receive a structured bounded
+failure for one exact coherent detached three-product set solely through
+existing storage-neutral history behavior.
+
+#### Increment 9.B — Project-state materialization and validated access
+
+**Objective:** publish one complete logical set into a closed, replaceable
+DCF/CSV realization under project state and reopen it through storage-neutral
+access.
+
+**Scope:** add the materialization authority; evolve project-state,
+DuckDB-adapter compatibility, and backup authorities to `0.2.0` with a closed
+optional product subroot and explicit backup exclusion; implement staging,
+immutable bundle promotion, current-pointer replacement, exact inventory/size/
+MD5/parse/contract/coherence validation, contextual freshness, reopen, list,
+and read operations; and add the remaining four exports.
+
+**Interfaces/contracts changed:** one new materialization authority; explicit
+`0.2.0` project-state, DuckDB-adapter, and state-backup authorities; four
+`rrpplatform` exports. Stage 7 logical history contracts, port behavior, and
+DuckDB physical schema remain unchanged. Because 1.0 is unreleased and no
+migration capability exists, tests recreate development state under the
+coherent `0.2.0` authority line; no silent adoption or migration of `0.1.0`
+state is claimed.
+
+**Historical reuse:** substantially reuse staged immutable bundles, current
+pointer, validation ordering, idempotent/conflicting publication, old-valid
+readability, and logical access; adapt YAML/nested metadata into DCF/flat CSV
+with current path safety and common diagnostics.
+
+**Evidence:** absent/create-only product store, exact closed layout, successful
+round trip, deterministic rebuild, replacement retaining prior valid set,
+injected interruption at each boundary, prior-pointer preservation, orphan
+staging behavior, corruption/incompatibility/coherence failures, copied-project
+reopen, stale/not-evaluated/fresh results, product deletion without history
+change, backup excluding products, restore with products absent and successful
+rebuild, exact namespaces/dependencies, strict checks, and inherited state/
+recovery regressions.
+
+**Explicit exclusions:** no product backup, migration, automated retention,
+custom/remote materializer, object storage, application, scheduler, CLI,
+distribution, or deployment.
+
+**Completion condition:** one complete set can be materialized, safely replaced,
+closed, reopened, validated, listed, and read without exposing physical format
+to consumers or weakening authoritative history.
+
+#### Increment 9.C — Installed fictional product proof and human guidance
+
+**Objective:** prove the complete Stage 9 exit state from isolated installed
+software and the ordinary fictional project.
+
+**Scope:** add one cataloged version-matched Logical Products Guide, the
+installed non-Git proof described above, validator/ownership integration, and
+only corrections revealed by that proof. No new interface is planned.
+
+**Historical reuse:** retain useful v0.1.0 human sequence and materialized
+round-trip/corruption/irregular-time expectations; reject reference-operation
+wrappers, repository roots, products/app coupling, and generated Hospital
+paths.
+
+**Evidence:** both authoritative validators; installed resource resolution;
+two actual fictional estimates; exact three-member build; valid empty set;
+lineage/privacy; materialize/reopen/access; idempotency/replacement/staleness;
+copy portability; corrupt/incompatible denial; state backup/restore boundary;
+no source-tree, Git, working-directory, ambient-library, physical-history, app,
+or privileged fictional dependency; builds, isolated install/load, strict
+checks, hygiene, and successful exact-revision hosted workflow before formal
+Stage 9 acceptance.
+
+**Explicit exclusions:** no Shiny/application data, CLI, distribution,
+deployment, release, scheduling, performance/support claim, or clinical
+validation.
+
+**Completion condition:** a human can use installed package operations to
+build, understand, materialize, reopen, inspect, compare freshness, delete/
+rebuild, and recover the initial product set from ordinary fictional history,
+including a valid empty realization, with no app or repository dependency.
+
+### Validation and hosted evidence
+
+The existing human operations remain authoritative:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+Validation grows only for cataloged product/state authorities, package-native
+logical/materialization/access tests, installed fictional proof, exact exports
+and dependencies, builds, isolated install/load, strict checks, path/privacy
+hygiene, and the existing hosted Ubuntu/R 4.4 workflow. No parallel Stage 9
+framework, Phase suite, direct SQL product test, or application test is added.
+
+Formal Stage 9 acceptance remains a separate lifecycle action after all three
+increments, human review, an exact committed successful hosted run, and
+reconciliation with True North and Platform Architecture.
+
+### Stage 9 acceptance
+
+Stage 9 is complete only when:
+
+1. the exact three logical product contracts and one coherent set contract are
+   installed, versioned, closed, and independent of physical representation;
+2. one explicit effective complete operational scope and history cutoff define
+   the build population and bounded source view;
+3. builders use only the Stage 7 port/logical reads and contain no DuckDB, SQL,
+   database path, source, producer, provider, or app behavior;
+4. optimistic repeated reads reject changing source and a deterministic source
+   fingerprint attributes the exact successful view;
+5. current risk contains only the unique effective accepted disposition at the
+   selected analytical/history cutoffs and never falls back independently to a
+   prior accepted estimate;
+6. trajectory contains only actual effective accepted estimates at governed
+   analytical times, preserves provider/model transitions, and performs no
+   interpolation, imputation, daily-hazard conversion, or replay;
+7. scope summary has exactly one row whose effective outcome counts account
+   for all admitted members and whose initial count/fingerprint prove complete
+   source membership;
+8. invalidation, restatement, and retry behavior is inherited from Stage 7;
+   ambiguous or missing effective history fails closed;
+9. all three members share exact project/state/source/target/set lineage and
+   independent conformance catches malformed builder output;
+10. set/member/row identities are deterministic and content-sensitive while
+    publication time, path, format, and digest remain nonsemantic, and an
+    equivalent rebuild produces the same logical set rather than a timestamp-
+    varied object;
+11. current and trajectory zero-row products plus one zero-count summary form
+    a valid available set for a completed zero-episode scope;
+12. incomplete or invalid source yields no consumable set, and no partial
+    logical set exists;
+13. valid, fresh, stale, not-evaluated, unavailable, invalid, and physical
+    interruption states remain distinguishable;
+14. stale but intact products remain readable with truthful lineage and no
+    invented platform time threshold;
+15. the coherent project-state, DuckDB-adapter, and state-backup `0.2.0`
+    authority line remains closed while admitting only the controlled optional
+    product store; the DuckDB physical schema is unchanged and materialization
+    cannot alter authoritative state metadata or history;
+16. the supplied DCF/CSV adapter stages and validates a complete set before
+    publishing one current pointer, retains the prior set on failure, and
+    rejects conflicting immutable identity;
+17. exact inventory, sizes, MD5, parseability, adapter/format compatibility,
+    member conformance, and set coherence are checked before access;
+18. one validated access object lists and reads detached logical products with
+    no physical filename or connection API;
+19. state backup/restore remains history-only and explicit; restored products
+    are absent and rebuildable, while ordinary whole-project copying reopens
+    products from the copied root;
+20. canonical episode ID is the only episode-level consumer identifier and no
+    patient/encounter/native/crosswalk/predictor/source-path/private data leaks;
+21. installed fictional evidence produces two actual trajectory points, one
+    current risk row, exact summary counts, a valid empty set, idempotent
+    materialization, stale comparison, copy/reopen, and corruption rejection;
+22. the cataloged Logical Products Guide truthfully explains source selection,
+    semantics, emptiness, freshness, state/backup, and access without implying
+    an app, CLI, installation, clinical, or production claim;
+23. package/repository validation, parsing, package-native tests, builds,
+    isolated install/load, strict checks, installed proof, hygiene, and exact
+    committed hosted evidence all pass; and
+24. no application, Shiny work, custom product/materializer, direct physical-
+    history query, scheduler, CLI, distribution, deployment, release, business
+    KPI, decision queue, performance/support, clinical-validation, or Stage 10
+    behavior enters.
+
 ### Plain-language exit state
 
-> RRP can build, validate, store, and reopen the initial logical product set
-> from project history, including a valid empty state. No supplied user
-> application exists yet.
+> RRP can build, validate, materialize, close, reopen, and read one coherent
+> three-product set from an explicit complete project-history scope, including
+> valid empty risk/trajectory products, truthful effective outcome summary,
+> contextual freshness, and rebuildable project-state storage. History remains
+> authoritative and no supplied user application exists yet.
 
-### Expected historical reuse
+### Major deferrals and unresolved review decisions
 
-Inspect `v0.1.0` product identity/conformance/builders, three product roles,
-YAML materializer/access adapter, integrity behavior, and tests. The logical
-separation and many mechanics are likely reusable after replacing daily-hazard
-fields/identities with remaining cumulative risk and routing reads through the
-installed/project boundaries.
+Custom/user-defined products, product registries/plugins, arbitrary
+materializers, direct physical-history access, application behavior, Shiny,
+remote product services, object storage, automated retention/cleanup,
+authentication, decision/priority queues, interventions, executive/readmission
+metrics, dashboards, scheduling, CLI, installer/distribution, deployment,
+release, production governance, performance claims, clinical validation, and
+Stage 10 implementation remain excluded.
 
-### Major deferrals
+No unresolved architectural blocker remains inside the proposed plan. Human
+acceptance should explicitly confirm two deliberate choices before 9.A begins:
 
-Custom products, direct physical-history queries by consumers, application
-behavior, remote product services, decision queues, and metrics remain later
-or explicitly deferred.
+1. evolve project-state, DuckDB-adapter compatibility, and backup authorities
+   to a coherent `0.2.0` line so a closed optional rebuildable product subroot
+   is allowed but remains outside supplied backup; and
+2. use one dependency-light flat DCF/CSV adapter instead of restoring the
+   historical YAML dependency and nested representation.
+
+Acceptance of this detailed plan authorizes only Increment 9.A. It does not
+mark Stage 9 implementation begun or complete and does not authorize Stage 10.
 
 ## Stage 10 — Supplied product-only application
 
