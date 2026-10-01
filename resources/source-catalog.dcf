@@ -365,3 +365,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/fictional-reference-walkthrough.md
 Installed-Path: resources/documentation/fictional-reference-walkthrough.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.logical-products-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/logical-products-guide.md
+Installed-Path: resources/documentation/logical-products-guide.md
+Format: md

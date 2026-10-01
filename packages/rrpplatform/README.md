@@ -27,7 +27,9 @@ risk, actual accepted remaining-risk trajectory, and effective scope summary—
 from one explicit complete history scope and history cutoff. One installed
 materialization authority governs staged immutable DCF/CSV publication under
 project state, replaceable current selection, exact validation, contextual
-freshness, and detached logical access.
+freshness, and detached logical access. The cataloged Logical Products Guide
+documents the supported human sequence, semantics, valid-empty behavior,
+freshness, backup exclusion, and rebuild path without adding another API.
 
 Its current callable interfaces are:
 

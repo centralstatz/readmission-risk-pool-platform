@@ -173,9 +173,7 @@ rrp_produce_canonical <- function(project_root, as_of_time) {
   selected_events <- events[keep_events, , drop = FALSE]
   event_types <- c(LOCAL_READMIT = "readmission", LOCAL_DEATH = "death")
   terminal_event <- data.frame(
-    terminal_event_id = paste0(
-      "fictional.event.", sprintf("%03d", which(keep_events))
-    ),
+    terminal_event_id = sprintf("fictional.event.%03d", which(keep_events)),
     episode_id = vapply(
       selected_events$native_stay_id,
       function(value) lookup("episode", value), character(1L)

@@ -58,10 +58,12 @@ an absent compatible project state. One complete logical product set can now
 be published as an immutable staged DCF/CSV realization beneath project state,
 selected by a replaceable validated pointer, and reopened through detached
 storage-neutral list/read access with contextual freshness. Products remain
-rebuildable derived state and are excluded from state backup. It has no root
-selector, persistent installed RRP distribution, scheduled/off-host backup,
-migration, complete installed Stage 9 reference proof, application,
-command-line interface, or deployment capability.
+rebuildable derived state and are excluded from state backup. A fourth
+installed product document explains this lifecycle, and the isolated non-Git
+fictional proof realizes actual, empty, stale, copied, deleted, and restored
+product states through the public package operations. It has no root selector,
+persistent installed RRP distribution, scheduled/off-host backup, migration,
+application, command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -149,7 +151,12 @@ proves same-key provider non-reexecution, and reopens copied project state.
 Package-native and installed checks also prove deterministic DCF/CSV product
 publication, idempotent reuse and replacement, interruption safety, current
 access, contextual freshness, copy/reopen, corruption rejection, and rebuild
-after product-excluding backup/restore.
+after product-excluding backup/restore. The installed Stage 9 proof additionally
+builds two actual fictional estimates for one episode, verifies the exact
+three-member and valid-empty sets, resolves the Logical Products Guide,
+reopens products in a fresh process, and proves staleness, deletion/rebuild,
+copy portability, bounded corrupt/incompatible denial, and history-only
+backup/restore recovery.
 The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
@@ -185,7 +192,10 @@ progress: Increment 9.A adds the four installed logical-product authorities and
 an explicit storage-neutral builder for one coherent detached three-product
 set. Increment 9.B adds the supplied staged DCF/CSV materializer, optional
 project-state product store, validated detached access, and explicit exclusion
-of rebuildable products from state backup. Increment 9.C is the next task.
+of rebuildable products from state backup. Increment 9.C is locally complete
+with installed fictional product evidence and human guidance. Stage 9 remains
+in progress pending exact-revision hosted evidence and separate formal
+acceptance/reconciliation.
 
 ## License
 

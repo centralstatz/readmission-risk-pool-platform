@@ -4472,3 +4472,90 @@ accepted and complete; Stage 9 remains in progress.
 
 **Next task:** Increment 9.C — Installed fictional product proof and human
 guidance. It has not begun and requires separate authorization.
+
+## Stage 9 / Increment 9.C — installed fictional product proof and human guidance — 2026-10-01
+
+Increment 9.C began from committed Increment 9.B baseline
+`952107cb6ccd02559feaf6f59d3eab53e7d7cb4c`. It completes the locally provable
+Stage 9 implementation increments without declaring formal Stage 9 acceptance,
+which still requires exact-revision hosted evidence and separate architecture
+reconciliation.
+
+The closed resource catalog now contains exactly 46 entries. New installed
+resource `rrp.documentation.logical-products-guide` is the single Stage 9
+human product document. It explains explicit complete-scope selection, the
+three logical product meanings, valid empty sets, deterministic identity,
+materialization and logical access, contextual fresh/stale/not-evaluated
+states, privacy/lineage, project copying, derived-state deletion/rebuild, and
+the product-excluding backup/restore boundary. It states the current absence of
+an application, CLI, scheduler, remote/custom materializer, distribution,
+production-support, and clinical-validation capability. It is projected and
+resolved through the existing resource catalog; no documentation-specific API
+or parallel source tree was added.
+
+New package-owned `tests/fictional-products.R` is both package-native evidence
+and a separately copied installed non-Git proof. Starting only from isolated
+installed packages/resources and the ordinary seven-file fictional project,
+it explicitly generates source and state, executes a legitimate zero-episode
+scope followed by complete scopes at `2026-01-19T12:00:00Z` and
+`2026-01-20T12:00:00Z`, and obtains actual estimates `0.39` and
+`0.3833333333333333` for the same canonical episode. The later scope builds
+the exact three-member set: one current row, the exact two actual irregular-
+time trajectory rows, and one complete four-member summary with one accepted,
+three ineligible, and exact readmitted/dead/horizon counts. Logical values and
+materialized bytes are screened for known native identity, crosswalk,
+predictor, source, credential, and connection markers.
+
+The proof materializes the set, exits to a fresh R process, reopens the copied
+installed authority and project explicitly, lists the exact inventory, and
+reads detached product and metadata objects without physical paths or handles.
+It proves deterministic rebuild and idempotent materialization, not-evaluated/
+fresh semantics including an unchanged later cutoff, whole-project copy and
+reopen, corrupt-member integrity denial, incompatible-authority denial, and
+old-valid-set readability with stale status against an explicit newer complete
+scope. The pre-discharge scope produces two zero-row members plus one complete
+zero-count summary and materializes normally. Product deletion leaves history
+bytes unchanged and supports exact rebuild. State backup contains only its two
+authoritative files; restore leaves products absent and the restored history
+rebuilds and rematerializes the same logical set.
+
+That valid-empty path revealed one bounded defect in the existing fictional
+teaching mapper: prefix concatenation converted an empty terminal-event ID
+vector into one value, so the zero-row data frame could not be constructed.
+The template now uses one equivalent `sprintf()` construction that preserves
+all existing non-empty IDs while returning a true zero-length ID vector. No
+canonical, project, producer, provider, history, state, product, or
+materialization contract changed.
+
+Bounded historical reconnaissance inspected immutable `v0.1.0`
+`tests/phase6/test-logical-products.R`, the historical logical-products and
+reference-materialization architecture documents, and relevant product tree
+inventory. The implementation retains the useful human lifecycle,
+materialized round-trip, corruption denial, and actual irregular-time
+expectations. It rejects historical repository-root operation wrappers, YAML,
+daily-hazard/multi-estimand semantics, generated Hospital composition, direct
+physical consumer access, and product/application coupling.
+
+Validation passed the focused installed 9.C proof, direct R parsing,
+`git diff --check`, and repository validation. The final authoritative package
+operation passed the exact 46-resource source/projected catalog, all inherited
+package-native and installed regressions, dependency-order builds, isolated
+install/load, negative dependency proof, and strict `R CMD check --no-manual`
+with exact `Status: OK` for both internal packages. Its separately installed
+9.C proof passed actual/empty products, fresh-process access, idempotency,
+staleness, copy, corrupt/incompatible denial, deletion/rebuild, and history-
+only recovery. Validation artifacts remained outside repository source.
+
+No public export, package dependency, contract version, raw producer/provider
+boundary, direct database product read, application, Shiny behavior, CLI,
+scheduler, custom product/materializer, distribution, deployment, release,
+performance/support claim, or clinical-validation claim was introduced.
+
+**Current implementation state:** Increment 9.C is locally complete. Stages
+1–8 remain accepted and complete. All Stage 9 implementation increments are
+locally complete, but Stage 9 remains in progress pending exact-revision hosted
+workflow evidence and separate formal acceptance/architecture reconciliation.
+
+**Next task:** obtain successful hosted package-foundation evidence for the
+exact committed 9.C revision, then perform the separately authorized formal
+Stage 9 acceptance and architecture reconciliation. Stage 10 has not begun.

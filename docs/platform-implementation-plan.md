@@ -5237,9 +5237,9 @@ they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 
-**Status:** detailed plan accepted; Increment 9.A completed on 2026-09-30 and
-Increment 9.B completed on 2026-10-01. Stage 9 remains in progress; Increment
-9.C is the next task.
+**Status:** detailed plan accepted; Increments 9.A, 9.B, and 9.C are locally
+complete as of 2026-10-01. Stage 9 remains in progress pending exact-revision
+hosted evidence and separate formal acceptance and architecture reconciliation.
 
 ### Objective and responsibilities
 
@@ -5934,8 +5934,8 @@ existing storage-neutral history behavior.
 
 #### Increment 9.B — Project-state materialization and validated access
 
-**Status:** complete on 2026-10-01. Increment 9.C is the next task and requires
-separate authorization.
+**Status:** complete on 2026-10-01. Increment 9.C subsequently completed its
+local implementation evidence on 2026-10-01.
 
 **Objective:** publish one complete logical set into a closed, replaceable
 DCF/CSV realization under project state and reopen it through storage-neutral
@@ -5979,6 +5979,9 @@ closed, reopened, validated, listed, and read without exposing physical format
 to consumers or weakening authoritative history.
 
 #### Increment 9.C — Installed fictional product proof and human guidance
+
+**Status:** locally complete on 2026-10-01. Exact-revision hosted evidence and
+formal Stage 9 acceptance/reconciliation remain separate lifecycle actions.
 
 **Objective:** prove the complete Stage 9 exit state from isolated installed
 software and the ordinary fictional project.

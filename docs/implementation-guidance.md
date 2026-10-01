@@ -176,6 +176,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/project-initializer.R` | Base-R six-file initialization plus standard-authoring producer/provider adaptation, deterministic identity, structural/dependency failure, installed-document resolution, rendering, create-only ownership, staging/rollback, portability, privacy, process-restoration, and non-invocation evidence. |
 | `packages/rrpplatform/tests/fictional-project.R` | Package-native evidence for fictional initialization, explicit byte-deterministic generation, source-local failures, crosswalk mapping, availability filtering, canonical leakage prevention, project-provider input/cutoff behavior, empty dependencies, copied-project portability, and installed walkthrough resolution. |
 | `packages/rrpplatform/tests/fictional-end-to-end.R` | Package-native and separately installed non-Git evidence for documentation resolution, fresh fictional realization, explicit generation, project validation, durable state/scope execution, exact outcomes and history completeness, private-field exclusion, deterministic reproduction, provider non-reexecution on complete same-key reuse, and copied-project/state reopen. |
+| `packages/rrpplatform/tests/fictional-products.R` | Package-native and separately installed non-Git evidence for two actual fictional estimates, exact and valid-empty logical sets, installed guidance, fresh-process materialized access, idempotency, contextual freshness/staleness, copy portability, bounded corrupt/incompatible denial, product deletion/rebuild, and history-only backup/restore recovery. |
 | `packages/rrpplatform/tests/project-loader.R` | Base-R explicit-root, ordering, registration, selection, filesystem, library-isolation, portability, privacy, and non-invocation evidence for project loading. |
 | `packages/rrpplatform/tests/project-state.R` | Package-native state-inventory, compatibility, staging, exact DuckDB roundtrip, progress, idempotency/conflict, transaction interruption, reopen, copied-project, equivalence, privacy, and writer-exclusion evidence. |
 | `packages/rrpplatform/tests/project-doctor.R` | Base-R exact result, location-status, warning, error-translation, privacy, copy-portability, execution-boundary, and non-mutation evidence for project diagnosis. |
@@ -213,8 +214,8 @@ closed to the following present paths:
 | `resources/contracts/products/*.dcf` | Platform-owned exact contracts for current remaining risk, actual remaining-risk trajectory, effective operational-scope summary, their all-required initial product set, and supplied DCF/CSV materialization/access. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-file normal project scaffold: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, and README orientation. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary seven-file fictional teaching project: the standard six responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, and `resources/documentation/fictional-reference-walkthrough.md` | The exact three version-matched installed Stage 8 product documents, resolved through the ordinary resource catalog without a repository-relative dependency. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, and supplied physical publication/access. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, and `resources/documentation/logical-products-guide.md` | The exact four version-matched installed product documents: the three Stage 8 authoring/reference documents and the Stage 9 logical-products lifecycle guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, and the installed fictional product lifecycle. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted
@@ -414,10 +415,11 @@ reconciliation accepted Stage 8. The detailed Stage 9 plan is accepted and
 Increment 9.A now supplies the exact logical product authorities and
 storage-neutral all-required builder. Increment 9.B now supplies the coherent
 0.2.0 project-state authority line, staged DCF/CSV materialization, and
-validated detached access. Increment 9.C is the next task.
+validated detached access. Increment 9.C now supplies the Logical Products
+Guide and complete installed fictional actual/empty product lifecycle proof.
 
-There is no platform acceptance operation or complete installed fictional
-Stage 9 product proof yet.
+There is no platform acceptance operation or exact-revision hosted Stage 9
+evidence yet; formal Stage 9 acceptance remains separate.
 Neither local validator nor this narrow hosted workflow implies runtime,
 clinical, installation, deployment, release, or final support-cell validity.
 
