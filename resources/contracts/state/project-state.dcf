@@ -1,6 +1,6 @@
 Record-Type: contract
 Contract-ID: rrp.project-state
-Contract-Version: 0.1.0
+Contract-Version: 0.2.0
 Format-Version: 1.0.0
 Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
@@ -10,6 +10,8 @@ Metadata-Record-Type: rrp-project-state
 Metadata-File: state.dcf
 Database-File: history.duckdb
 Inventory: history.duckdb,state.dcf
+Optional-Directory: products
+Optional-Directory-Authority: rrp.product-materialization@0.1.0
 Fields: Record-Type,State-Contract-ID,State-Contract-Version,Format-Version,Product-ID,Development-Version,State-ID,Initializing-Package-ID,Initializing-Package-Version,Project-ID,Initializing-Project-Version,Supported-RRP-API-Version,Project-API-ID,Project-API-Version,Target-ID,Target-Version,History-Scope-Contract-ID,History-Scope-Contract-Version,History-Disposition-Contract-ID,History-Disposition-Contract-Version,History-Action-Contract-ID,History-Action-Contract-Version,History-Port-Contract-ID,History-Port-Contract-Version,Logical-History-Format-Version,Adapter-ID,Adapter-Version,Physical-Schema-Version,Payload-Encoding-Version,Created-At,Inventory
 State-ID-Pattern: ^rrp[.]state[.][0-9a-f]{32}$
 State-ID-Generation: opaque_process_time_sequence_v1

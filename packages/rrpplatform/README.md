@@ -24,7 +24,10 @@ internal. Provider execution remains explicit and in memory.
 It also owns four installed logical-product authorities and a storage-neutral
 builder that derives one all-required detached set—current accepted remaining
 risk, actual accepted remaining-risk trajectory, and effective scope summary—
-from one explicit complete history scope and history cutoff.
+from one explicit complete history scope and history cutoff. One installed
+materialization authority governs staged immutable DCF/CSV publication under
+project state, replaceable current selection, exact validation, contextual
+freshness, and detached logical access.
 
 Its current callable interfaces are:
 
@@ -72,7 +75,18 @@ Its current callable interfaces are:
   scalar machine-readable success state; and
 - `rrp_build_product_set(software_catalog, project_root, operation_run_id,
   history_cutoff)` returns one coherent detached logical set or one bounded
-  structured product-construction failure.
+  structured product-construction failure;
+- `rrp_materialize_product_set(software_catalog, project_root, product_set)`
+  validates and publishes one complete logical set through the supplied
+  materializer;
+- `rrp_open_product_access(software_catalog, project_root, ...)` validates and
+  reopens the selected current set, optionally comparing it with one explicit
+  history scope and cutoff;
+- `rrp_list_products(product_access)` returns the exact bounded three-member
+  inventory; and
+- `rrp_read_product(product_access, product_id, product_version, ...)` returns
+  one detached logical product or bounded metadata without exposing physical
+  storage.
 
 The low-level resource functions fail with a typed `rrp_resource_error`
 carrying a stable `code` and bounded safe message. They do not discover a root
@@ -166,15 +180,27 @@ loaded compatible project and atomically promotes the recovered state only
 when its declared state path is absent. Restore uses ordinary state reopening
 and 7.C continuation; it adds no overwrite, merge, migration, repair, scheduled
 backup, or alternate recovery engine.
+The optional product store is derived state: backup excludes it, restore leaves
+it absent, and authoritative history can rebuild it.
 The project doctor remains inspection-only: it reports absent, compatible, or
 invalid state and never initializes, backs up, restores, or repairs it.
+
+Product materialization creates the optional `state/products` store only when
+needed. It writes a complete set in same-filesystem staging, validates it,
+promotes an immutable materialization-identity directory, and then replaces the
+small current pointer. Identical realizations are reused; conflicting or
+corrupt content fails closed. Opening revalidates inventory, sizes, MD5
+corruption evidence, DCF/CSV encoding, logical contracts, identities, and set
+coherence before returning detached access. Freshness compares an explicitly
+requested governed scope's current effective-history fingerprint; a stale but
+otherwise valid set remains readable.
 
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, physical product
-materialization/access, applications, installation, or deployment. It
+an ordinary operator command, dependency restoration, applications,
+installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.

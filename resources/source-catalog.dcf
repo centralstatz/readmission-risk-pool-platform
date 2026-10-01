@@ -231,6 +231,14 @@ Installed-Path: resources/contracts/products/initial-readmission-risk-product-se
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.product-materialization
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/products/product-materialization.dcf
+Installed-Path: resources/contracts/products/product-materialization.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform

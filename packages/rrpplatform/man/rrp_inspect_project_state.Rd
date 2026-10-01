@@ -18,13 +18,14 @@ incompatible state returns failure without physical paths or database details.
 }
 \description{
 Validate the declared project state inventory, closed metadata, DuckDB schema,
-and matching embedded metadata without creating, repairing, or migrating
-state.
+matching embedded metadata, and any optional closed product-store shell without
+creating, repairing, or migrating state.
 }
 \details{
 The operation ID is \code{rrp.inspect-project-state}. Inspection uses a private
 bounded read-only database session. It returns no DBI connection, SQL schema,
 table name, payload, history record, project callable, or filesystem path.
+Product contents are validated only by the product-access operation.
 Project version at initialization is provenance rather than an equality gate;
 project identity and all governed state, target, history, adapter, schema, and
 encoding versions must remain compatible.

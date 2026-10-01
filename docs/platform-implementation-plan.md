@@ -3,8 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative roadmap; Stages 1–8 are accepted and complete. The
-detailed Stage 9 plan is accepted, Increment 9.A is complete, and Stage 9
-remains in progress at the 9.A boundary.
+detailed Stage 9 plan is accepted, Increments 9.A and 9.B are complete, and
+Stage 9 remains in progress at the 9.B boundary.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -71,7 +71,7 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–8 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 9 is accepted and detailed below; Increment 9.A
-is complete, while 9.B and 9.C remain unimplemented. After a
+and Increment 9.B are complete, while 9.C remains unimplemented. After a
 stage is implemented:
 
 1. validate its stated exit claim;
@@ -5237,8 +5237,9 @@ they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 
-**Status:** detailed plan accepted; Increment 9.A completed on 2026-09-30.
-Stage 9 remains in progress and Increment 9.B has not begun.
+**Status:** detailed plan accepted; Increment 9.A completed on 2026-09-30 and
+Increment 9.B completed on 2026-10-01. Stage 9 remains in progress; Increment
+9.C is the next task.
 
 ### Objective and responsibilities
 
@@ -5895,8 +5896,8 @@ Stage 9 is proposed as three dependency-ordered increments.
 
 #### Increment 9.A — Logical product contracts and storage-neutral builders
 
-**Status:** complete on 2026-09-30. Increment 9.B is the next task and requires
-separate implementation authorization.
+**Status:** complete on 2026-09-30. Increment 9.B subsequently completed on
+2026-10-01.
 
 **Objective:** establish the four installed semantic authorities, exact three
 logical schemas, deterministic source/set/member/row identity, independent
@@ -5932,6 +5933,9 @@ failure for one exact coherent detached three-product set solely through
 existing storage-neutral history behavior.
 
 #### Increment 9.B — Project-state materialization and validated access
+
+**Status:** complete on 2026-10-01. Increment 9.C is the next task and requires
+separate authorization.
 
 **Objective:** publish one complete logical set into a closed, replaceable
 DCF/CSV realization under project state and reopen it through storage-neutral
@@ -6119,8 +6123,9 @@ acceptance confirmed two deliberate choices before 9.A began:
 2. use one dependency-light flat DCF/CSV adapter instead of restoring the
    historical YAML dependency and nested representation.
 
-That acceptance authorized only Increment 9.A, which is now complete. It did
-not authorize Increment 9.B, mark Stage 9 complete, or authorize Stage 10.
+That initial acceptance authorized only Increment 9.A. Increment 9.B was later
+authorized explicitly and is now complete. Neither authorization marked Stage
+9 complete or authorized Stage 10.
 
 ## Stage 10 — Supplied product-only application
 

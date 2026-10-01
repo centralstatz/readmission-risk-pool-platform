@@ -87,6 +87,13 @@ rrp_test_operation_fixture <- function() {
       resource_id = "rrp.contract.product-set-initial-readmission-risk",
       path = "resources/contracts/products/initial-readmission-risk-product-set.dcf",
       expected = product_documents$set
+    ),
+    list(
+      resource_id = "rrp.contract.product-materialization",
+      path = "resources/contracts/products/product-materialization.dcf",
+      expected = rrp_test_internal(
+        "rrp_product_materialization_contract_expected"
+      )()
     )
   )
   for (item in list(
@@ -403,7 +410,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 22L
+          resource_count = 23L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)

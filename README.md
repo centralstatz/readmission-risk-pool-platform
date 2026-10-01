@@ -54,9 +54,14 @@ writes nothing. An explicit durable operation now owns one admitted-bundle
 scope, terminal episode dispositions, deterministic continuation, bounded
 history inspection, explicit retry, and append-only correction. The repository
 also supports explicit create-only checkpointed state backup and restore into
-an absent compatible project state. It has no root selector, persistent
-installed RRP distribution, scheduled/off-host backup, migration, product,
-application, command-line interface, or deployment capability.
+an absent compatible project state. One complete logical product set can now
+be published as an immutable staged DCF/CSV realization beneath project state,
+selected by a replaceable validated pointer, and reopened through detached
+storage-neutral list/read access with contextual freshness. Products remain
+rebuildable derived state and are excluded from state backup. It has no root
+selector, persistent installed RRP distribution, scheduled/off-host backup,
+migration, complete installed Stage 9 reference proof, application,
+command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -141,6 +146,10 @@ writer exclusion. The installed Stage 8 proof also realizes a fresh fictional
 project outside Git, generates and admits its source, executes complete durable
 history, verifies scope/episode/current views and private-field exclusion,
 proves same-key provider non-reexecution, and reopens copied project state.
+Package-native and installed checks also prove deterministic DCF/CSV product
+publication, idempotent reuse and replacement, interruption safety, current
+access, contextual freshness, copy/reopen, corruption rejection, and rebuild
+after product-excluding backup/restore.
 The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
@@ -174,7 +183,9 @@ committed revision passed the hosted workflow and formal architecture
 reconciliation, so Stages 1–8 are accepted and complete. Stage 9 is in
 progress: Increment 9.A adds the four installed logical-product authorities and
 an explicit storage-neutral builder for one coherent detached three-product
-set. Physical materialization and consumer access remain absent.
+set. Increment 9.B adds the supplied staged DCF/CSV materializer, optional
+project-state product store, validated detached access, and explicit exclusion
+of rebuildable products from state backup. Increment 9.C is the next task.
 
 ## License
 

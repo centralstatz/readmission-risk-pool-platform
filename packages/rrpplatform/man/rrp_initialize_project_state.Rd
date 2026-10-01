@@ -24,7 +24,9 @@ mutation and returns success with \code{created = FALSE}.
 }
 \details{
 The operation ID is \code{rrp.initialize-project-state}. A new state contains
-exactly \code{state.dcf} and \code{history.duckdb}. The operation is create-only:
+exactly \code{state.dcf} and \code{history.duckdb}. The optional \code{products}
+directory remains absent until a successful product materialization. The
+operation is create-only:
 it does not overwrite, merge, repair, migrate, or adopt partial, unknown,
 linked, incompatible, or differently owned content. Project initialization
 remains separate and does not initialize state.

@@ -176,15 +176,23 @@ rrp_state_inventory <- function(root, contract) {
   if (!dir.exists(root) || (!is.na(root_link) && nzchar(root_link))) {
     rrp_state_abort("state_invalid", "Project state inventory is invalid.")
   }
-  files <- sort(list.files(
-    root, recursive = TRUE, all.files = TRUE, no.. = TRUE,
-    full.names = FALSE, include.dirs = FALSE
-  ), method = "radix")
-  directories <- list.dirs(root, recursive = TRUE, full.names = FALSE)
-  directories <- directories[nzchar(directories)]
+  entries <- list.files(root, recursive = FALSE, all.files = TRUE, no.. = TRUE)
+  files <- sort(entries[vapply(file.path(root, entries), function(path) {
+    info <- file.info(path, extra_cols = FALSE)
+    rrp_state_path_exists(path) && nrow(info) == 1L &&
+      !is.na(info$isdir[[1L]]) && !isTRUE(info$isdir[[1L]])
+  }, logical(1L))], method = "radix")
+  directories <- sort(entries[vapply(file.path(root, entries), function(path) {
+    info <- file.info(path, extra_cols = FALSE)
+    dir.exists(path) && nrow(info) == 1L &&
+      !is.na(info$isdir[[1L]]) && isTRUE(info$isdir[[1L]])
+  }, logical(1L))], method = "radix")
   expected <- sort(strsplit(contract[["Inventory"]], ",", fixed = TRUE)[[1L]],
     method = "radix")
-  if (!identical(files, expected) || length(directories)) {
+  optional <- contract[["Optional-Directory"]]
+  if (!all(entries %in% c(files, directories)) ||
+      !identical(files, expected) ||
+      !all(directories %in% optional) || anyDuplicated(directories)) {
     rrp_state_abort("state_invalid", "Project state inventory is invalid.")
   }
   for (relative in expected) {
@@ -195,6 +203,19 @@ rrp_state_inventory <- function(root, contract) {
         is.na(info$isdir[[1L]]) || isTRUE(info$isdir[[1L]])) {
       rrp_state_abort("state_invalid", "Project state inventory is invalid.")
     }
+  }
+  if (optional %in% directories) {
+    optional_path <- file.path(root, optional)
+    if (nzchar(Sys.readlink(optional_path)) ||
+        !isTRUE(file.info(optional_path, extra_cols = FALSE)$isdir[[1L]])) {
+      rrp_state_abort("state_invalid", "Project state inventory is invalid.")
+    }
+    tryCatch(
+      rrp_product_store_inventory(optional_path, allow_absent_pointer = TRUE),
+      rrp_materialization_error = function(condition) rrp_state_abort(
+        "state_invalid", "Project state inventory is invalid."
+      )
+    )
   }
   invisible(expected)
 }

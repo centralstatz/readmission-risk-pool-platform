@@ -101,8 +101,11 @@ state plus the supplied transactional DuckDB adapter. Increments 7.C and 7.D
 add bundle-scoped durable execution/history interpretation and explicit
 create-only checkpointed backup/absent-state restore. Increment 9.A adds the
 four logical-product authorities and exact storage-neutral three-member
-builder. No root selector, dependency environment, scheduled/off-host backup,
-migration, physical product store/access, or release procedure exists on the
+builder. Increment 9.B adds the materialization authority, coherent 0.2.0
+state/adapter/backup line, staged immutable DCF/CSV publication, validated
+detached access, contextual freshness, and product-excluding recovery. No root
+selector, dependency environment, scheduled/off-host backup, migration,
+complete installed Stage 9 fictional proof, or release procedure exists on the
 clean line. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
@@ -163,4 +166,7 @@ deviation. Stages 1–8 are accepted and complete. Increment 9.A adds four
 cataloged logical-product authorities, the 24th `rrpplatform` export, and
 storage-neutral coherent construction of the detached current-risk,
 actual-trajectory, and effective-scope-summary set. Stage 9 remains in progress;
-the next task is Increment 9.B, which has not begun.
+Increment 9.B adds the cataloged materialization authority, the 28-export
+`rrpplatform` surface, coherent state/adapter/backup versioning, and the
+supplied validated DCF/CSV publication/access lifecycle. The next task is
+Increment 9.C, which has not begun.

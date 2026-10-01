@@ -24,7 +24,9 @@ Description: Establishes the main internal implementation package for the
     project-owned state and privately realizes the storage-neutral history port
     through bounded DBI and DuckDB sessions. It derives one deterministic,
     detached, conforming three-member logical product set from an explicitly
-    selected complete governed history scope without physical materialization.
+    selected complete governed history scope. It publishes one closed staged
+    DCF/CSV product realization under project state and reopens validated,
+    detached logical product access without exposing physical storage details.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

@@ -26,6 +26,8 @@ The artifact contains one RRP backup manifest and one checkpointed DuckDB
 database. Restore reconstructs the state metadata file from the exact metadata
 already embedded in that validated database; it does not replace the project
 manifest, registration code, source inputs, or installed software. It
+deliberately excludes the derived \code{products} directory, and restore leaves
+products absent so they can be rebuilt from authoritative history. It
 does not overwrite, merge, migrate, repair, decrypt, schedule, or transport
 state. The manifest and database validation detect bounded structural,
 compatibility, inventory, and reopenability failures; they are not

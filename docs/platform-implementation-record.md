@@ -4379,3 +4379,96 @@ accepted and complete; Stage 9 remains in progress.
 
 **Next task:** Increment 9.B — Project-state materialization and validated
 access. It has not begun and requires separate authorization.
+
+## Stage 9 / Increment 9.B — project-state materialization and validated access — 2026-10-01
+
+Increment 9.B began from committed Increment 9.A baseline
+`a4363e5406ce9bd562852431fc925e156223ed42`. It adds the accepted supplied
+physical realization beneath project state without changing logical product
+meaning, the Stage 7 history port, or DuckDB's physical schema. Stage 9 remains
+in progress.
+
+One new installed authority, `rrp.product-materialization@0.1.0`, owns supplied
+adapter `rrp.materializer.dcf-csv@0.1.0`, physical format
+`rrp.product-format.dcf-csv@0.1.0`, the optional `state/products` layout, exact
+pointer/manifest/member fields, flat deterministic base-R CSV encoding, MD5 as
+accidental-corruption evidence only, staged publication, immutable published
+sets, and prohibition on physical-path exposure or backup inclusion. The
+source catalog and installed projection now contain 45 exact resources.
+
+The project-state, DuckDB-adapter, and state-backup authorities advance
+coherently to `0.2.0`. Project state admits only one optional authority-owned
+`products` directory in addition to its unchanged core two-file inventory.
+The adapter points to the new state-contract line while retaining physical
+schema `0.1.0` and unchanged logical history behavior. Backup explicitly
+excludes `products` as rebuildable derived state; restore therefore recreates
+only authoritative history state. Development `0.1.0` state is rejected rather
+than silently adopted or migrated.
+
+`rrp_materialize_product_set()` validates one detached logical set, checks its
+project/state identity, writes all three members and the set manifest in an
+owned same-filesystem staging directory, independently validates the staged
+realization, promotes it under deterministic materialization identity, and
+then replaces the small current pointer. Identical bytes under an existing
+identity are reused; conflicting or corrupt published content fails closed.
+Failures clean up only owned transient content and restore the prior pointer
+when replacement had occurred. Recognized orphan staging is invisible to
+readers and removed by the next materialization; prior valid immutable sets are
+retained.
+
+`rrp_open_product_access()` revalidates the current pointer, closed store and
+set inventories, regular-file/symlink posture, declared sizes and MD5 values,
+canonical DCF and CSV bytes, contract/version compatibility, logical member
+conformance, deterministic identities, row counts, and set coherence before
+returning detached `rrp_product_access`. Optional expected source operation and
+history cutoff arguments must appear together. Their current effective-history
+fingerprint yields `fresh` or `stale`; with neither, freshness is
+`not-evaluated`. A valid stale set remains readable, and a later cutoff with
+unchanged governed facts remains fresh. `rrp_list_products()` and
+`rrp_read_product()` expose only logical metadata and detached objects; misuse
+raises a bounded typed access error. These four exports bring `rrpplatform` to
+28 exports.
+
+Package-native and separately installed evidence covers absent product state,
+first publication and exact layout, deterministic idempotent reuse, current
+replacement while retaining the prior set, interruption after every meaningful
+write/promotion/pointer boundary, prior-pointer preservation, orphan staging,
+copy/reopen portability, typed access misuse, fresh/stale/not-evaluated states,
+and a same-scope correction changing the source fingerprint. Adversarial cases
+cover missing/extra/altered files, wrong sizes or digests, malformed/noncanonical
+CSV or DCF, incompatible authorities, wrong product contracts or identities,
+row-count/coherence disagreement, semantic invalidity, and conflicting
+published content. Recovery evidence proves backup omission, restore with
+products absent, history-based rebuild/rematerialization, and product deletion
+without history-byte mutation. Materialized bytes are also screened for known
+private fictional-source markers.
+
+Bounded `v0.1.0` reconnaissance inspected
+`implementations/products/yaml/R/adapter.R`, `validation.R`, and `access.R`, plus
+`docs/architecture/reference-product-materialization.md`. The implementation
+adapts staged immutable set publication, a small current pointer, validation
+ordering, idempotent/conflicting publication behavior, and logical detached
+access. It rejects historical YAML, repository-root assumptions, daily-hazard
+semantics, application coupling, path-bearing consumer objects, automatic
+latest discovery, and any dependency on historical source.
+
+Completion validation passed both authoritative local validators. Package
+validation proved exact 45-resource catalog closure and deterministic installed
+projection, all package-native suites including the new materialization suite,
+dependency-order builds and isolated install/load, the separately installed
+materialization lifecycle, and strict `R CMD check --no-manual` with exact
+`Status: OK` for both packages. Direct R and Rd parsing, repository hygiene,
+and `git diff --check` also passed. No generated archive, check directory,
+temporary library, project fixture, product store, or other validation artifact
+remains in repository source.
+
+No product backup, migration, retention cleanup, custom or remote materializer,
+object storage, application, scheduler, CLI, distribution, release, or
+deployment capability was introduced. Increment 9.C's complete installed
+fictional product proof and human guidance remain absent.
+
+**Current implementation state:** Increment 9.B is complete. Stages 1–8 remain
+accepted and complete; Stage 9 remains in progress.
+
+**Next task:** Increment 9.C — Installed fictional product proof and human
+guidance. It has not begun and requires separate authorization.
