@@ -22,7 +22,9 @@ Description: Establishes the main internal implementation package for the
     fictional project from cataloged templates without generating its source
     implicitly. It initializes, inspects, backs up, and restores explicit
     project-owned state and privately realizes the storage-neutral history port
-    through bounded DBI and DuckDB sessions.
+    through bounded DBI and DuckDB sessions. It derives one deterministic,
+    detached, conforming three-member logical product set from an explicitly
+    selected complete governed history scope without physical materialization.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

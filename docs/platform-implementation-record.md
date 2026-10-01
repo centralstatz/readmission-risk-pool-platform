@@ -4287,3 +4287,95 @@ Stage 9 implementation has not begun.
 
 **Next task:** review, revise if necessary, and explicitly accept the detailed
 Stage 9 plan before authorizing Increment 9.A.
+
+## Stage 9 / Increment 9.A — logical product contracts and storage-neutral builders — 2026-09-30
+
+The detailed Stage 9 plan was accepted through the explicit authorization to
+implement Increment 9.A. Work began from clean committed baseline `96b04ab`,
+with Stages 1–8 accepted and complete and no product implementation present.
+This increment adds logical meaning only; Stage 9 remains in progress.
+
+Four closed installed DCF authorities now define
+`rrp.product.current-remaining-risk@0.1.0`,
+`rrp.product.remaining-risk-trajectory@0.1.0`,
+`rrp.product.operational-scope-summary@0.1.0`, and
+`rrp.product-set.initial-readmission-risk@0.1.0`. The set requires exactly
+those three members and identifies builder
+`rrp.product-builder.initial-readmission-risk@0.1.0`. The resource catalog uses
+its existing valid logical-ID grammar; the set document therefore resolves as
+resource `rrp.contract.product-set-initial-readmission-risk` while retaining
+the required semantic contract ID inside the document. Exact contract loading,
+source and projected catalog closure, package ownership, and the repository
+closed inventory were updated together.
+
+`rrp_build_product_set(software_catalog, project_root, operation_run_id,
+history_cutoff)` is the sole new export, bringing `rrpplatform` to 24 exports.
+It obtains the existing project history port, requires one exact scope and RFC
+3339 UTC cutoff, and returns the common operation result containing either one
+detached conforming three-member logical set or one bounded privacy-safe
+product failure. It neither discovers a latest scope nor invokes a producer or
+provider.
+
+Construction rederives scope completeness at the declared cutoff, obtains
+episode and current meaning solely through the existing Stage 7 logical reads,
+and represents only effective governed facts needed by the products. The
+versioned length-delimited dual modular source fingerprint excludes the cutoff
+itself: observing unchanged facts at a later cutoff preserves the fingerprint.
+The cutoff remains explicit set lineage and participates in deterministic set
+identity. Effective retry, invalidation, or restatement changes the represented
+facts and fingerprint. Set, member, and row identities use the same bounded
+semantic hash convention and exclude paths, physical layout, publication time,
+Git state, and database order. The builder repeats all bounded logical reads
+after independent member/set conformance and fails with
+`product_source_changed` if the effective view differs.
+
+Current risk contains only effective accepted estimates as of the selected
+scope analytical time and never searches behind a current ineligible or failed
+disposition. Trajectory contains only effective accepted estimates that
+actually occurred at irregular governed analytical times, including a valid
+one-point trajectory and no interpolation, replay, baseline synthesis, or
+provider re-execution. The summary contains one row, including for a zero-
+episode scope, and reconciles exact effective outcome and ineligibility counts
+to membership. Zero-row estimate members are valid. Product columns exclude
+patient/native/crosswalk/predictor/source and other private implementation
+content, while bounded estimate attribution remains explicit.
+
+Independent internal conformance revalidates detached objects rather than
+trusting builder provenance. Focused evidence covers exact schemas and order,
+deterministic identities, cutoff-independent and change-sensitive source
+fingerprints, normal/zero/incomplete/unavailable sources, retry, analytical and
+scope invalidation, disposition restatement, ambiguity, changing reads,
+current no-fallback behavior, irregular and one-point trajectories, summary
+accounting, privacy, detachment, malformed detached objects, common-result
+failures, and equivalent logical output through the test-only in-memory and
+supplied persistent Stage 7 ports.
+
+Bounded `v0.1.0` reconnaissance inspected the historical product YAML
+contracts, `products/R/builders.R`, `products/R/conformance.R`, logical-product
+architecture notes, and `tests/phase6/test-logical-products.R`. The current
+implementation adapts deterministic semantic identity, independent
+conformance, all-required coherent sets, valid zero rows, history delegation,
+and invariant-focused tests. It rejects daily-hazard and multi-estimand
+semantics, reconstructed trajectories, automatic latest-run discovery,
+repository-root and generated-Hospital composition, direct physical-history
+reads, YAML authority, partial successful sets, application coupling, and
+reporting/decision fields.
+
+Completion validation passed both authoritative local validators. Package
+validation proved exact 44-resource catalog closure and deterministic installed
+projection, all package-native suites, dependency-order builds and isolated
+install/load, and strict `R CMD check --no-manual` with `Status: OK` for both
+packages. Direct parsing, focused test runs, repository hygiene, source-boundary
+checks, and `git diff --check` also passed. No generated archive, check tree,
+temporary library, or project fixture remains in repository source.
+
+No project-state, history-port, history-record, backup, or physical adapter
+contract changed. There is no `state/products/`, product manifest or CSV,
+materializer, access object, fictional installed product proof, application,
+CLI, scheduler, retention policy, release, or deployment capability.
+
+**Current implementation state:** Increment 9.A is complete. Stages 1–8 remain
+accepted and complete; Stage 9 remains in progress.
+
+**Next task:** Increment 9.B — Project-state materialization and validated
+access. It has not begun and requires separate authorization.

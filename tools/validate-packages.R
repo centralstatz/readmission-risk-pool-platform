@@ -1029,6 +1029,87 @@ state_contract_resources <- function() {
   )
 }
 
+product_contract_resources <- function() {
+  specifications <- list(
+    current_remaining_risk = c(
+      id = "rrp.product.current-remaining-risk",
+      path = "resources/contracts/products/current-remaining-risk.dcf",
+      type = "product-contract", key = "current_remaining_risk"
+    ),
+    remaining_risk_trajectory = c(
+      id = "rrp.product.remaining-risk-trajectory",
+      path = "resources/contracts/products/remaining-risk-trajectory.dcf",
+      type = "product-contract", key = "remaining_risk_trajectory"
+    ),
+    operational_scope_summary = c(
+      id = "rrp.product.operational-scope-summary",
+      path = "resources/contracts/products/operational-scope-summary.dcf",
+      type = "product-contract", key = "operational_scope_summary"
+    ),
+    initial_readmission_risk_product_set = c(
+      id = "rrp.contract.product-set-initial-readmission-risk",
+      path = "resources/contracts/products/initial-readmission-risk-product-set.dcf",
+      type = "product-set-contract", key = NA_character_,
+      contract_id = "rrp.product-set.initial-readmission-risk"
+    )
+  )
+  lapply(specifications, function(specification) {
+    records <- read_dcf_records(file.path(repository_root, specification[["path"]]))
+    resource_require(
+      length(records) == 1L, "product_contract",
+      "Each logical product authority must contain exactly one record."
+    )
+    document <- unlist(records[[1L]], use.names = TRUE)
+    common <- c(
+      "Record-Type" = specification[["type"]],
+      "Contract-ID" = if ("contract_id" %in% names(specification)) {
+        specification[["contract_id"]]
+      } else specification[["id"]],
+      "Contract-Version" = "0.1.0", "Format-Version" = "1.0.0",
+      "Product-ID" = "readmission-risk-pool-platform",
+      "Development-Version" = "1.0.0-dev",
+      "Status" = "development_unpublished", "Owner-Package" = "rrpplatform",
+      "Unknown-Fields" = "prohibited", "Additional-Records" = "prohibited",
+      "Executable-Content" = "prohibited"
+    )
+    resource_require(
+      all(vapply(names(common), function(field) {
+        identical(document[[field]], unname(common[[field]]))
+      }, logical(1L))),
+      "product_contract", "Logical product authority identity is unsupported."
+    )
+    if (identical(specification[["type"]], "product-contract")) {
+      resource_require(
+        identical(document[["Object-Class"]], "rrp_logical_product,list") &&
+          identical(document[["Member-Key"]], specification[["key"]]) &&
+          identical(document[["Data-Class"]], "data.frame") &&
+          identical(document[["Row-ID-Algorithm"]], "dual_modular_hash_v1") &&
+          identical(document[["Privacy-Prohibited"]], paste(c(
+            "patient_id", "encounter_id", "native_id", "crosswalk",
+            "predictor", "source_path", "credential", "connection",
+            "raw_record", "model_artifact"
+          ), collapse = ",")),
+        "product_contract", "Logical product authority semantics are unsupported."
+      )
+    } else resource_require(
+      identical(document[["Builder-ID"]],
+        "rrp.product-builder.initial-readmission-risk") &&
+        identical(document[["Builder-Version"]], "0.1.0") &&
+        identical(document[["All-Required"]], "true") &&
+        identical(document[["Partial-Success"]], "prohibited") &&
+        identical(document[["Physical-Storage"]], "prohibited") &&
+        identical(document[["Source-Fingerprint-Excludes"]],
+          "history_cutoff,paths,physical_files,materialization_time,git_state,database_order"),
+      "product_contract", "Logical product-set authority semantics are unsupported."
+    )
+    list(
+      id = specification[["id"]], owner = "rrpplatform",
+      source_path = specification[["path"]],
+      installed_path = specification[["path"]], document = document
+    )
+  })
+}
+
 software_contract_resources <- function() {
   resources <- list(
     diagnostic = list(
@@ -1294,7 +1375,8 @@ software_contract_resources <- function() {
   )
   c(
     resources, canonical_contract_resources(), runtime_contract_resources(),
-    history_contract_resources(), state_contract_resources()
+    history_contract_resources(), state_contract_resources(),
+    product_contract_resources()
   )
 }
 
@@ -1949,12 +2031,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.fictional-reference-walkthrough"
   )
   resource_require(
-    length(actual_ids) == 40L && identical(
+    length(actual_ids) == 44L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 40 known entries."
+    "The software resource inventory must contain exactly 44 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2388,6 +2470,8 @@ package_expected_files <- function(package_name) {
       file.path("R", "duckdb-history.R"),
       file.path("R", "durable-history.R"),
       file.path("R", "operation-result.R"),
+      file.path("R", "logical-products.R"),
+      file.path("R", "product-contracts.R"),
       file.path("R", "project-authoring.R"),
       file.path("R", "producer-execution.R"),
       file.path("R", "risk-execution.R"),
@@ -2401,6 +2485,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "runtime-contracts.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
+      file.path("man", "rrp_build_product_set.Rd"),
       file.path("man", "rrp_initialize_fictional_project.Rd"),
       file.path("man", "rrp_project_authoring.Rd"),
       file.path("man", "rrp_initialize_project_state.Rd"),
@@ -2417,6 +2502,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
+      file.path("tests", "logical-products.R"),
       file.path("tests", "canonical-contracts.R"),
       file.path("tests", "project-contracts.R"),
       file.path("tests", "project-doctor.R"),
@@ -2599,6 +2685,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
       "rrp_authoring_failure", "rrp_backup_project_state",
+      "rrp_build_product_set",
       "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
       "rrp_initialize_fictional_project",
@@ -2649,6 +2736,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_initialize_project_state)",
       "export(rrp_inspect_project_state)",
       "export(rrp_backup_project_state)",
+      "export(rrp_build_product_set)",
       "export(rrp_restore_project_state)",
       "export(rrp_execute_producer)",
       "export(rrp_execute_risk)",
@@ -3340,6 +3428,7 @@ load_package_fresh <- function(package_name, library_root) {
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
       "c(\"rrp_authoring_failure\", \"rrp_backup_project_state\", ",
+      "\"rrp_build_product_set\", ",
       "\"rrp_execute_durable_bundle\", ",
       "\"rrp_execute_producer\", ",
       "\"rrp_execute_risk\", ",
@@ -4274,18 +4363,24 @@ validate_packages <- function() {
     library_root, work_root, environment
   )
 
-  cat("\nResult: PASS (package, project, canonical, runtime, and history foundation)\n")
+  cat(paste0(
+    "\nResult: PASS (package, project, canonical, runtime, history, ",
+    "and logical-product foundation)\n"
+  ))
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
     "projection, explicit-root installed-package access, common result/diagnostic ",
-    "canonical, five-resource runtime, four-resource logical-history, and ",
-    "three-resource state/adapter/backup contract relationships, dependency-light ",
+    "canonical, five-resource runtime, four-resource logical-history, ",
+    "three-resource state/adapter/backup, and four-resource logical-product ",
+    "contract relationships, dependency-light ",
     "logical history records/port, explicit project-state initialize/inspect, ",
     "private transactional DuckDB roundtrip/reopen/interruption evidence, ",
     "in-memory conformance, raw/current interpretation, ",
     "bundle-scoped durable execution/continuation, explicit retry, supported ",
     "inspection/correction, create-only checkpointed backup and absent-state ",
-    "restore with bounded recovery, ",
+    "restore with bounded recovery, storage-neutral deterministic three-member ",
+    "logical product construction, independent conformance, bounded source ",
+    "fingerprinting/coherence, valid empty behavior, and persistent-port equivalence, ",
     "dependency-light canonical admission, exact eligibility and immutable episode-state ",
     "construction, provider-neutral request, direct compatible-provider ",
     "execution, accepted estimate, exact project-selected provider risk ",

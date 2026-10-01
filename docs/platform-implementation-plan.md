@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. A
-detailed proposed Stage 9 plan is recorded below for human review and
-acceptance; Stage 9 implementation has not begun.
+**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. The
+detailed Stage 9 plan is accepted, Increment 9.A is complete, and Stage 9
+remains in progress at the 9.A boundary.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -70,8 +70,8 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 Stages 1–8 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 9 is detailed below but remains pending human
-acceptance, and its source implementation has not begun. After a
+implementation lineage. Stage 9 is accepted and detailed below; Increment 9.A
+is complete, while 9.B and 9.C remain unimplemented. After a
 stage is implemented:
 
 1. validate its stated exit claim;
@@ -5237,8 +5237,8 @@ they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 
-**Status:** detailed proposal produced on 2026-09-28; pending human review and
-acceptance. Implementation has not begun.
+**Status:** detailed plan accepted; Increment 9.A completed on 2026-09-30.
+Stage 9 remains in progress and Increment 9.B has not begun.
 
 ### Objective and responsibilities
 
@@ -5895,6 +5895,9 @@ Stage 9 is proposed as three dependency-ordered increments.
 
 #### Increment 9.A — Logical product contracts and storage-neutral builders
 
+**Status:** complete on 2026-09-30. Increment 9.B is the next task and requires
+separate implementation authorization.
+
 **Objective:** establish the four installed semantic authorities, exact three
 logical schemas, deterministic source/set/member/row identity, independent
 conformance, and one public builder over existing Stage 7 logical reads.
@@ -6107,8 +6110,8 @@ metrics, dashboards, scheduling, CLI, installer/distribution, deployment,
 release, production governance, performance claims, clinical validation, and
 Stage 10 implementation remain excluded.
 
-No unresolved architectural blocker remains inside the proposed plan. Human
-acceptance should explicitly confirm two deliberate choices before 9.A begins:
+No unresolved architectural blocker remains inside the accepted plan. Its
+acceptance confirmed two deliberate choices before 9.A began:
 
 1. evolve project-state, DuckDB-adapter compatibility, and backup authorities
    to a coherent `0.2.0` line so a closed optional rebuildable product subroot
@@ -6116,8 +6119,8 @@ acceptance should explicitly confirm two deliberate choices before 9.A begins:
 2. use one dependency-light flat DCF/CSV adapter instead of restoring the
    historical YAML dependency and nested representation.
 
-Acceptance of this detailed plan authorizes only Increment 9.A. It does not
-mark Stage 9 implementation begun or complete and does not authorize Stage 10.
+That acceptance authorized only Increment 9.A, which is now complete. It did
+not authorize Increment 9.B, mark Stage 9 complete, or authorize Stage 10.
 
 ## Stage 10 — Supplied product-only application
 

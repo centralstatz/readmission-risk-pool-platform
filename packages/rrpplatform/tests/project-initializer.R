@@ -954,6 +954,7 @@ stopifnot(
 stopifnot(
   identical(sort(getNamespaceExports("rrpplatform")), c(
     "rrp_authoring_failure", "rrp_backup_project_state",
+    "rrp_build_product_set",
     "rrp_execute_durable_bundle",
     "rrp_execute_producer", "rrp_execute_risk",
     "rrp_initialize_fictional_project",

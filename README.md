@@ -171,7 +171,10 @@ project, explicit deterministic source generator, meaningful private mapping
 and provider example, and third installed product document. Increment 8.C has
 completed the installed durable reference proof and human runbook. Its exact
 committed revision passed the hosted workflow and formal architecture
-reconciliation, so Stages 1–8 are accepted and complete. Stage 9 has not begun.
+reconciliation, so Stages 1–8 are accepted and complete. Stage 9 is in
+progress: Increment 9.A adds the four installed logical-product authorities and
+an explicit storage-neutral builder for one coherent detached three-product
+set. Physical materialization and consumer access remain absent.
 
 ## License
 

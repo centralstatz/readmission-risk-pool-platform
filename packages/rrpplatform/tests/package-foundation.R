@@ -16,6 +16,7 @@ stopifnot(
     sort(getNamespaceExports("rrpplatform")),
     c(
       "rrp_authoring_failure", "rrp_backup_project_state",
+      "rrp_build_product_set",
       "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
       "rrp_initialize_fictional_project",
@@ -36,6 +37,7 @@ stopifnot(
   ),
   is.function(rrp_authoring_failure),
   is.function(rrp_backup_project_state),
+  is.function(rrp_build_product_set),
   is.function(rrp_execute_producer),
   is.function(rrp_execute_durable_bundle),
   is.function(rrp_execute_risk),

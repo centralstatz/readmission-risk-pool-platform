@@ -21,6 +21,11 @@ rendering, staging, path checks, composition, resolution, producer request and
 result validation, provider-authority agreement, and error construction remain
 internal. Provider execution remains explicit and in memory.
 
+It also owns four installed logical-product authorities and a storage-neutral
+builder that derives one all-required detached set—current accepted remaining
+risk, actual accepted remaining-risk trajectory, and effective scope summary—
+from one explicit complete history scope and history cutoff.
+
 Its current callable interfaces are:
 
 - `rrp_register_authored_project(project_root)` validates one standard-authored
@@ -64,7 +69,10 @@ Its current callable interfaces are:
 - `rrp_validate_software_resources(software_root)` returns one common
   structured success/failure result for that same explicit-root boundary; and
 - `rrp_operation_succeeded(result)` validates a common result and returns its
-  scalar machine-readable success state.
+  scalar machine-readable success state; and
+- `rrp_build_product_set(software_catalog, project_root, operation_run_id,
+  history_cutoff)` returns one coherent detached logical set or one bounded
+  structured product-construction failure.
 
 The low-level resource functions fail with a typed `rrp_resource_error`
 carrying a stable `code` and bounded safe message. They do not discover a root
@@ -165,8 +173,8 @@ The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
 runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, products, applications,
-installation, or deployment. It
+an ordinary operator command, dependency restoration, physical product
+materialization/access, applications, installation, or deployment. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.

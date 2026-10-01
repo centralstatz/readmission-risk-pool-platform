@@ -199,6 +199,38 @@ Installed-Path: resources/contracts/state/duckdb-history-adapter.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.product.current-remaining-risk
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/products/current-remaining-risk.dcf
+Installed-Path: resources/contracts/products/current-remaining-risk.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.product.remaining-risk-trajectory
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/products/remaining-risk-trajectory.dcf
+Installed-Path: resources/contracts/products/remaining-risk-trajectory.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.product.operational-scope-summary
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/products/operational-scope-summary.dcf
+Installed-Path: resources/contracts/products/operational-scope-summary.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.product-set-initial-readmission-risk
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/products/initial-readmission-risk-product-set.dcf
+Installed-Path: resources/contracts/products/initial-readmission-risk-product-set.dcf
+Format: dcf
+
+Record-Type: resource
 Resource-ID: rrp.template.project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform
