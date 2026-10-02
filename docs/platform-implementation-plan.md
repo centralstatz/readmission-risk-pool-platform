@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–8 are accepted and complete. The
-detailed Stage 9 plan is accepted, Increments 9.A and 9.B are complete, and
-Stage 9 remains in progress at the 9.B boundary.
+**Status:** authoritative roadmap; Stages 1–9 are accepted and complete. Stage
+9 was accepted on 2026-10-02 at implementation baseline
+`a13a181a09bf5b981b41030cf58e6f49225df7d4`. Stage 10 has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -69,10 +69,9 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current implementation stage is decomposed before source work.
-Stages 1–8 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 9 is accepted and detailed below; Increment 9.A
-and Increment 9.B are complete, while 9.C remains unimplemented. After a
-stage is implemented:
+Stages 1–9 are accepted and complete; their detailed plans remain as
+implementation lineage. Stage 10 remains a high-level roadmap stage and has
+not been detailed or authorized. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -5237,9 +5236,10 @@ they must not establish separate ingestion or provider architectures.
 
 ## Stage 9 — Logical products and materialization
 
-**Status:** detailed plan accepted; Increments 9.A, 9.B, and 9.C are locally
-complete as of 2026-10-01. Stage 9 remains in progress pending exact-revision
-hosted evidence and separate formal acceptance and architecture reconciliation.
+**Status:** accepted and complete on 2026-10-02 at exact committed
+implementation baseline `a13a181a09bf5b981b41030cf58e6f49225df7d4`.
+Increments 9.A–9.C, exact-revision hosted evidence, and formal architecture
+reconciliation are complete. Stage 10 has not begun.
 
 ### Objective and responsibilities
 
@@ -5980,8 +5980,10 @@ to consumers or weakening authoritative history.
 
 #### Increment 9.C — Installed fictional product proof and human guidance
 
-**Status:** locally complete on 2026-10-01. Exact-revision hosted evidence and
-formal Stage 9 acceptance/reconciliation remain separate lifecycle actions.
+**Status:** complete on 2026-10-01. Exact revision
+`a13a181a09bf5b981b41030cf58e6f49225df7d4` subsequently passed hosted
+`package-foundation` run `36922905508`, job `110573063816`, and Stage 9 was
+formally accepted on 2026-10-02.
 
 **Objective:** prove the complete Stage 9 exit state from isolated installed
 software and the ordinary fictional project.
@@ -6028,9 +6030,10 @@ and dependencies, builds, isolated install/load, strict checks, path/privacy
 hygiene, and the existing hosted Ubuntu/R 4.4 workflow. No parallel Stage 9
 framework, Phase suite, direct SQL product test, or application test is added.
 
-Formal Stage 9 acceptance remains a separate lifecycle action after all three
-increments, human review, an exact committed successful hosted run, and
-reconciliation with True North and Platform Architecture.
+Formal Stage 9 acceptance completed on 2026-10-02 after all three increments,
+human review, exact committed hosted run `36922905508` / job `110573063816`
+for `a13a181a09bf5b981b41030cf58e6f49225df7d4`, and reconciliation with True
+North and Platform Architecture.
 
 ### Stage 9 acceptance
 
@@ -6126,9 +6129,11 @@ acceptance confirmed two deliberate choices before 9.A began:
 2. use one dependency-light flat DCF/CSV adapter instead of restoring the
    historical YAML dependency and nested representation.
 
-That initial acceptance authorized only Increment 9.A. Increment 9.B was later
-authorized explicitly and is now complete. Neither authorization marked Stage
-9 complete or authorized Stage 10.
+That initial acceptance authorized only Increment 9.A. Increments 9.B and 9.C
+were later authorized explicitly and completed. Formal reconciliation found
+no implementation deviation, corrected only durable architecture/status
+documentation, and accepted Stage 9 on 2026-10-02. Stage 10 remains not begun
+and requires separate detailed planning and authorization.
 
 ## Stage 10 — Supplied product-only application
 

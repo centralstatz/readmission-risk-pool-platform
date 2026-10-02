@@ -4559,3 +4559,158 @@ workflow evidence and separate formal acceptance/architecture reconciliation.
 **Next task:** obtain successful hosted package-foundation evidence for the
 exact committed 9.C revision, then perform the separately authorized formal
 Stage 9 acceptance and architecture reconciliation. Stage 10 has not begun.
+
+## Stage 9 acceptance and architecture reconciliation — 2026-10-02
+
+Stage 9 was reviewed as one realized architectural stage at exact committed
+implementation baseline `a13a181a09bf5b981b41030cf58e6f49225df7d4` (`9.C
+complete`). The starting working tree was clean, local `main` matched
+`origin/main`, and GitHub Actions `package-foundation` push run `36922905508`,
+job `110573063816`, completed successfully for that exact SHA. The Ubuntu/R
+4.4 job passed checkout, declared dependency installation, repository
+validation, and the complete package validator. This closes Increment 9.C's
+hosted-evidence prerequisite without transferring evidence from another
+revision.
+
+The cumulative 9.A–9.C review accepted exactly three installed logical product
+contracts at version `0.1.0`: `rrp.product.current-remaining-risk`,
+`rrp.product.remaining-risk-trajectory`, and
+`rrp.product.operational-scope-summary`. They form the all-required
+`rrp.product-set.initial-readmission-risk@0.1.0`, built by
+`rrp.product-builder.initial-readmission-risk@0.1.0`. Current risk contains
+only the unique effective accepted estimate for each admitted member at the
+selected scope analytical time and history cutoff, with no fallback to an
+earlier estimate. Trajectory contains only effective accepted estimates that
+actually occurred at governed analytical times and preserves their provider,
+model, request, and run lineage. The scope summary is exactly one effective
+outcome reconciliation row over the selected scope's full admitted
+membership; it is not a business KPI or decision queue.
+
+Stage 7 logical history remains analytical authority. One build explicitly
+selects one effective complete operational scope and one history cutoff, then
+uses only the storage-neutral history port and logical reads. Repeated bounded
+reads must agree. A deterministic fingerprint covers the effective governed
+source facts and excludes cutoff, path, physical-file, materialization-time,
+Git-state, and database-order facts. Set, member, and row identities are
+content-sensitive and deterministic. Invalidation, restatement, retry,
+same-time ambiguity, and current interpretation remain owned by Stage 7; the
+product builder neither queries DuckDB nor invokes producer, provider, source,
+or project callables. Incomplete, invalid, ambiguous, or changing source fails
+closed, and no partial set is consumable.
+
+The accepted current product layer does not synthesize baseline risk,
+interpolate or replay trajectory points, convert daily hazards, or create an
+independent analytical interpretation. Providers may use external scores or
+baseline transformations privately, but products contain only accepted RRP
+remaining-risk estimates. All three members carry coherent project, state,
+scope, target, and set lineage and are independently conformant and detached.
+A completed zero-member scope is an available valid set with zero current and
+trajectory rows and one complete zero-count summary row.
+
+Physical publication is a replaceable adapter boundary rather than logical
+product authority. `rrp.product-materialization@0.1.0` supplies the flat
+DCF/CSV `rrp.materializer.dcf-csv@0.1.0` realization. It stages and validates
+one complete immutable set, checks exact inventory, sizes, MD5, parsing,
+contract identity, member conformance, and coherence, then atomically replaces
+one current pointer while retaining prior valid sets. Validated access lists
+and reads detached logical values without returning physical paths,
+connections, or writer handles. With no comparison source freshness is
+`not-evaluated`; explicit comparison distinguishes `fresh` and `stale`, an
+unchanged source remains fresh at a later cutoff, and an intact stale set
+remains readable with truthful lineage.
+
+Project state, DuckDB-adapter compatibility, and backup authority form one
+coherent `0.2.0` line that admits only the controlled optional `products/`
+subroot. The DuckDB physical history schema remains `0.1.0`; product
+materialization does not alter state identity, metadata, or authoritative
+history. Products are derived and rebuildable. Whole-project copying preserves
+and reopens them, while the supplied authoritative state backup deliberately
+excludes them. Restore recreates history with products absent, after which the
+same logical set can be rebuilt and rematerialized.
+
+The installed non-Git fictional proof starts from isolated installed packages
+and resources and the ordinary Stage 8 project. It proves actual estimates
+`0.39` at `2026-01-19T12:00:00Z` and `0.3833333333333333` at
+`2026-01-20T12:00:00Z` for one canonical episode. The later four-member scope
+produces one current row, two actual irregular-time trajectory rows, and one
+summary row with four effective dispositions: one accepted estimate and three
+ineligible outcomes, comprising one exhausted horizon, one prior readmission,
+and one prior death. It also proves the valid empty set; idempotent rebuild and
+publication; fresh-process close/reopen, list, read, and metadata-only access;
+pointer replacement; explicit fresh/stale comparison; stale readability;
+copied-project portability; bounded corrupt and incompatible denial; deletion
+and exact rebuild; and history-only backup/restore recovery.
+
+The 9.C proof's only implementation correction was the bounded fictional
+mapper change from prefix concatenation to equivalent `sprintf()` terminal-
+event identity construction. It preserves every non-empty identity and makes
+the zero-row terminal-event case genuinely length zero. It did not change a
+canonical, project, producer, provider, history, state, product, or
+materialization contract.
+
+Privacy and independence reconciliation passed. Canonical episode identity is
+the only episode-level consumer identity. Logical values, manifests, CSV
+members, diagnostics, and access objects exclude native identity, crosswalks,
+predictors, source paths/records, credentials/connections, and model artifacts.
+Builders and consumers have no repository-root, Git-state, working-directory,
+ambient-library, source-tree, direct database, or fictional-project branch.
+The cataloged Logical Products Guide resolves from installed resources and
+describes only the accepted package-level lifecycle.
+
+Historical reuse remained selective. The implementation retained the useful
+`v0.1.0` three-product roles, history-as-authority boundary, independent
+conformance, coherent all-required set, actual irregular observations,
+deterministic identity, staged immutable publication, current pointer,
+validated access, corruption denial, and human lifecycle. It adapted them to
+the singular remaining-risk target, Stage 7 effective history, installed DCF
+authorities, explicit project state, flat DCF/CSV, and common results. It
+rejected daily-hazard and multi-estimand semantics, synthesized trajectories,
+old run families, YAML as a new dependency, repository-root loading, generated
+Hospital composition, direct DuckDB access, partial product success,
+application coupling, custom/remote materializers, and privileged fictional
+behavior.
+
+Reconciliation with Platform True North passed: the products preserve one
+well-defined target, explicit hospital/project context, reproducible lineage,
+replaceable implementation boundaries, privacy-safe records, and
+human-inspectable evidence without claiming clinical validity. Reconciliation
+with Platform Architecture also passed. The realized system required no
+package or contract correction. The architecture document's earlier shorthand
+`terminal run summary` and underspecified source/materialization language were
+classified as documentation drift and corrected to the durable accepted
+current/trajectory/effective-scope, explicit-selection, coherent-set,
+contextual-freshness, validated-access, and product-excluding-backup semantics.
+No implementation discrepancy remains.
+
+Final acceptance validation passed both authoritative human operations.
+Repository validation reported eight checks and zero issues. The package
+validator proved the exact 46-resource catalog and installed projection,
+Stage 7–9 and Stage 8 fictional regressions, the installed 9.C actual/empty
+product lifecycle, privacy/source boundaries, dependency-order builds,
+isolated and fresh-process loading, R/Rd parsing, and strict
+`R CMD check --no-manual` results of exact `Status: OK` for both packages.
+Repository hygiene and `git diff --check` passed, and validation left no
+generated source artifact in the working tree.
+
+The accepted implementation revision remains the exact hosted SHA above. The
+acceptance closeout changes only governing/status documentation and does not
+alter hosted validation inputs in package, contract, resource, test,
+validator, or workflow behavior. Consistent with the established Stage 8
+closeout boundary, another hosted run is not required to transfer acceptance
+to different software; a later documentation commit may run the ordinary
+workflow without changing this accepted implementation identity.
+
+**Acceptance decision:** Stage 9 is accepted and complete. RRP can build,
+validate, materialize, close, reopen, and read one coherent versioned
+three-product set from explicitly bounded governed history, including valid
+empty products, contextual freshness, copied-state portability, corruption
+denial, deletion/rebuild, and recovery from authoritative history. No
+application, Shiny behavior, application dataset, CLI, scheduler,
+distribution, deployment, release, custom product/materializer, baseline-risk
+abstraction, production-support claim, or clinical-validation claim entered.
+
+**Current implementation state:** Stages 1–9 are accepted and complete. Stage
+10 has not begun.
+
+**Next task:** detail and accept Stage 10 — Supplied product-only application
+before beginning any Stage 10 implementation.

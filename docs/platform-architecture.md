@@ -497,12 +497,32 @@ persistence ports, not DuckDB tables, hospital sources, producer internals,
 provider code, or models. Materialized products live in project state and are
 rebuildable without rewriting history.
 
-The initial product family remains narrow: current eligible episode
-remaining risk, retained remaining-risk trajectory/history, and terminal run
-summary. Exact names/versions are plan decisions. Every product/set carries
-target, provider/model where relevant, software, history-schema, freshness,
-source-run, compatibility, and materialization provenance. Missing capability
-is explicit; zero rows are a valid empty state.
+The initial product family is one all-required coherent set: current remaining
+risk contains only effective accepted estimates at one explicitly selected
+complete operational scope; remaining-risk trajectory contains only effective
+accepted estimates that actually occurred at governed analytical times; and
+the operational-scope summary reconciles every admitted member to one
+effective outcome. It does not interpolate, replay, or synthesize trajectory
+points or baseline risk. A provider may use or transform an external baseline
+internally, but the product boundary retains only governed RRP estimates.
+
+Every build names one source operation scope and one explicit history cutoff.
+It carries target, software, history-schema, source-scope, provider/model where
+relevant, and deterministic source-fingerprint lineage. All members conform
+and succeed together, or no consumable set exists; valid current and
+trajectory products may contain zero rows while the summary still reconciles
+the completed empty scope.
+
+Logical identity and conformance are independent of physical representation.
+The supplied materializer stages and validates immutable whole-set
+realizations beneath project state and replaces one current pointer only after
+success. Consumers open validated detached logical access rather than files,
+connections, or adapter internals. Freshness is contextual: without an
+explicit comparison it is not evaluated, while comparison with an explicit
+history source distinguishes fresh from stale without making an intact stale
+set unreadable. Materialized products are derived and rebuildable, remain
+outside the authoritative state-backup payload, and may be absent after
+restore until rebuilt from history.
 
 The supplied Shiny app receives validated logical product access. It does not
 query sources, run producers/providers, interpret model features, or know

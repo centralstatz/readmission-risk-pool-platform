@@ -187,15 +187,18 @@ project, explicit deterministic source generator, meaningful private mapping
 and provider example, and third installed product document. Increment 8.C has
 completed the installed durable reference proof and human runbook. Its exact
 committed revision passed the hosted workflow and formal architecture
-reconciliation, so Stages 1–8 are accepted and complete. Stage 9 is in
-progress: Increment 9.A adds the four installed logical-product authorities and
+reconciliation, so Stages 1–8 are accepted and complete. Increment 9.A adds
+the four installed logical-product authorities and
 an explicit storage-neutral builder for one coherent detached three-product
 set. Increment 9.B adds the supplied staged DCF/CSV materializer, optional
 project-state product store, validated detached access, and explicit exclusion
-of rebuildable products from state backup. Increment 9.C is locally complete
-with installed fictional product evidence and human guidance. Stage 9 remains
-in progress pending exact-revision hosted evidence and separate formal
-acceptance/reconciliation.
+of rebuildable products from state backup. Increment 9.C adds the installed
+fictional actual/empty product evidence and Logical Products Guide. Exact
+revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
+`package-foundation` run `36922905508`, job `110573063816`, and formal
+reconciliation accepted Stage 9. Stages 1–9 are accepted and complete. Stage
+10, the supplied product-only application, has not begun and requires separate
+detailed planning and authorization.
 
 ## License
 

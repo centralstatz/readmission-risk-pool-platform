@@ -417,9 +417,11 @@ storage-neutral all-required builder. Increment 9.B now supplies the coherent
 0.2.0 project-state authority line, staged DCF/CSV materialization, and
 validated detached access. Increment 9.C now supplies the Logical Products
 Guide and complete installed fictional actual/empty product lifecycle proof.
-
-There is no platform acceptance operation or exact-revision hosted Stage 9
-evidence yet; formal Stage 9 acceptance remains separate.
+Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
+`package-foundation` run `36922905508`, job `110573063816`, and formal
+reconciliation accepted Stage 9. Stages 1–9 are accepted and complete. The
+next task is to detail and accept Stage 10 — Supplied product-only application;
+Stage 10 implementation has not begun.
 Neither local validator nor this narrow hosted workflow implies runtime,
 clinical, installation, deployment, release, or final support-cell validity.
 

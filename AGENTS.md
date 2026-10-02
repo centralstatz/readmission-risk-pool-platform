@@ -167,11 +167,14 @@ revision `87a7e2848fadbd5cd7e4a6aec11908a546d096a3` passed hosted run
 deviation. Stages 1–8 are accepted and complete. Increment 9.A adds four
 cataloged logical-product authorities, the 24th `rrpplatform` export, and
 storage-neutral coherent construction of the detached current-risk,
-actual-trajectory, and effective-scope-summary set. Stage 9 remains in progress;
-Increment 9.B adds the cataloged materialization authority, the 28-export
+actual-trajectory, and effective-scope-summary set. Increment 9.B adds the
+cataloged materialization authority, the 28-export
 `rrpplatform` surface, coherent state/adapter/backup versioning, and the
 supplied validated DCF/CSV publication/access lifecycle. Increment 9.C adds the
 Logical Products Guide and complete installed non-Git fictional actual/empty
 product, reopen, staleness, copy, denial, deletion, and history-only recovery
-proof. The next task is exact-revision hosted evidence followed by formal Stage
-9 acceptance and architecture reconciliation; Stage 10 has not begun.
+proof. Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
+run `36922905508`, job `110573063816`; formal reconciliation accepted Stage 9.
+Stages 1–9 are accepted and complete. The next task is to detail and accept
+Stage 10 — Supplied product-only application; Stage 10 implementation has not
+begun.
