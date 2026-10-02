@@ -6141,8 +6141,9 @@ and requires separate detailed planning and authorization.
 ## Stage 10 — Supplied product-only application
 
 **Planning status:** detailed and internally reconciled on 2026-10-02 from the
-accepted Stage 9 baseline. Implementation has not begun. The increments below
-are separately authorizable, beginning with 10.A.
+accepted Stage 9 baseline, then revised the same day to establish the initial
+Shiny, bslib, and Plotly UI foundation. Implementation has not begun. The
+increments below are separately authorizable, beginning with 10.A.
 
 ### Objective and exit state
 
@@ -6157,6 +6158,16 @@ The fictional project is the controlled acceptance environment; it neither
 owns nor defines the application. The same installed application must work for
 any conforming project whose current product set satisfies the accepted
 contracts.
+
+Stage 10 deliberately keeps the application small in workflows, views,
+analytical concepts, customization, and operational responsibility. That
+limited product surface does not justify a technical demonstration or default-
+widget experience: within the accepted scope, information hierarchy,
+responsive layout, typography, spacing, cards, controls, states, tables, and
+interactive graphics must form one intentionally polished modern analytical
+product. This quality intent does not authorize a broad design system, custom
+JavaScript or CSS architecture, animation framework, or general theming
+engine.
 
 > The supplied application presents the validated remaining-risk products of
 > an RRP project without querying hospital sources, executing risk providers,
@@ -6198,15 +6209,15 @@ can wrap a real stable application instead of inventing its lifecycle.
 | Question | Detailed-plan decision |
 |---|---|
 | 1. Installed source owner | `rrpplatform` owns executable application, view-model, startup, and launch code as ordinary installed package R code. No separate package, repository, or project app tree is introduced. |
-| 2. Application identity | Add one installed `rrp.application.supplied@0.1.0` DCF authority because startup, later artifacts, and compatibility need a stable app identity. It governs required product contracts, Shiny framework, presentation authority, and read-only posture; the installed implementation remains attributable to the `rrpplatform` package version. |
+| 2. Application identity | Add one installed `rrp.application.supplied@0.1.0` DCF authority because startup, later artifacts, and compatibility need a stable app identity. It governs required product contracts, the Shiny/bslib/Plotly UI foundation, presentation authority, and read-only posture; the installed implementation remains attributable to the `rrpplatform` package version. |
 | 3. Programmatic launch | Export exactly one new operation, `rrp_launch_app()`, with the signature settled below. No CLI is added. |
 | 4. Pre-Shiny validation | Revalidate software authority, project, optional presentation, current materialization/access, exact product inventory/versions, coherent set, and direct app dependencies before starting Shiny. |
 | 5. Launch input | The public operation receives an explicit software catalog and project root, plus an optional paired expected operation-run/history-cutoff freshness context. It does not accept arbitrary product frames or physical paths. |
 | 6. App data input | Platform startup opens validated access once and injects only a detached closed application model into the app constructor. UI/server code receives neither project root nor software catalog. |
-| 7. View-model boundary | Pure package functions read the three logical members and perform only ordering, formatting, paging, direct descriptive aggregation, selection, and chart-ready shaping. They do not alter product meaning. |
+| 7. View-model boundary | Pure package functions read the three logical members and perform only ordering, formatting, paging, direct descriptive aggregation, selection, and deterministic chart- and tooltip-ready shaping. They do not alter product meaning. |
 | 8. Initial views | Two top-level views: **Current Risk Pool** and **Overview**. Episode detail and trajectory appear from selection within Current Risk Pool rather than as a third global area. |
 | 9. Episode selection | Search/filter/sort a bounded current-risk table and provide one synchronized selector over the union of current and retained-trajectory canonical episode IDs, with current episodes first. This keeps historical-only trajectories discoverable without introducing a patient/native identifier. |
-| 10. Plotting technology | Use base graphics inside Shiny `plotOutput()` with native hover/click coordinates and an adjacent exact-observation detail card. Observed points may have a thin dashed visual connector, explicitly labeled as non-interpolating; no Plotly dependency is justified. |
+| 10. Plotting technology | Use Plotly as the presentation-only interactive graphics renderer. Episode trajectory points and deliberately formatted tooltips correspond only to actual governed observations. A restrained connector may show observation order but is explicitly non-interpolating; Plotly never receives project, access, history, or analytical infrastructure. |
 | 11. Table technology | Use native Shiny controls and table rendering with server-side search, sort, and bounded paging. No DT/reactable dependency is justified for the initial field set and interactions. |
 | 12. Descriptive summaries | Direct count, minimum, maximum, median, quartiles, and distribution of accepted current estimates; scope membership and accepted/failure/ineligibility counts; and the existing ineligibility subcounts. No threshold, priority, category, recommendation, or inferred outcome is allowed. |
 | 13. Product states | Valid empty is a normal polished app state; absent, corrupt, or incompatible products fail before Shiny; stale remains readable with a prominent warning; not-evaluated is shown neutrally and never called fresh. |
@@ -6219,7 +6230,7 @@ can wrap a real stable application instead of inventing its lifecycle.
 | 20. Project-contract effect | The manifest/project API and six authoring paths remain `0.3.0`/`0.1.0`. The presentation record is optional, nonexecutable, and governed by its own authority. Standard and fictional initializers add the discoverable file, becoming seven- and eight-file realizations, while existing/direct-raw projects without it remain valid. |
 | 21. Product compatibility | The app authority requires the exact initial product-set and all three member contracts at `0.1.0`; startup verifies exact inventory and versions through public logical access. Unsupported evolution fails closed until a new app contract supports it. |
 | 22. Repository-independent tests | Build and install packages/resources into temporary roots, initialize/copy an ordinary project outside Git, and construct the app only through installed code and validated access. |
-| 23. Shiny evidence | Pure view-model tests, UI/tag structure checks, `shiny::testServer()` interaction tests, native hover-selection tests, and one supervised child-process loopback launch/termination smoke test. No browser automation or pixel snapshots. |
+| 23. Application evidence | Pure view-model and chart-data tests, UI/tag structure checks, `shiny::testServer()` interaction tests, Plotly widget/data inspection, and one supervised child-process loopback launch/termination smoke test. Qualitative polish receives bounded human review; no pixel-perfect browser or rendered-output snapshots are required. |
 | 24. Acceptance | All three increments, installed generic/reference proof, exact state handling, analytical nonmutation, package checks, and exact committed hosted evidence pass, followed by separate formal Stage 10 reconciliation. |
 | 25. Later-stage boundary | Stage 11 owns CLI/distribution/install/upgrade; Stage 12 owns frozen product-only artifacts and target realizations. Stage 10 adds neither. |
 
@@ -6235,8 +6246,9 @@ The intended source ownership is package R modules for application contracts,
 startup, view models, components, and launch. Those files install through the
 ordinary R package mechanism; they are never sourced from the development
 repository or copied into a project. Stage 10 needs no custom JavaScript,
-image, font, or CSS asset directory: `bslib` and Shiny components supply the
-initial presentation. The application and presentation DCF authorities,
+image, font, or CSS asset directory: Shiny and `bslib` supply the application
+shell and Plotly supplies interactive analytical graphics. The application
+and presentation DCF authorities,
 presentation templates, and final human guide remain cataloged installed
 software resources under their existing owners.
 
@@ -6264,7 +6276,7 @@ UI execution as an extension boundary.
 ### Application and presentation authorities
 
 Add cataloged `rrp.application.supplied@0.1.0`. Its closed DCF record names the
-application owner/framework, required
+application owner/UI foundation, required
 `rrp.product-set.initial-readmission-risk@0.1.0`, the exact three product
 members at `0.1.0`, `rrp.project-presentation@0.1.0`, and the requirements for
 validated detached access and analytical read-only startup. It does not
@@ -6366,17 +6378,19 @@ rrp_product_access
 closed detached application snapshot
         ↓ pure presentation transforms
 current-pool / episode / overview view models
-        ↓
-Shiny components and selection state
+        ↓ chart-ready presentation data
+Shiny/bslib components, Plotly renderers, and selection state
 ```
 
 Product access owns integrity, compatibility, coherence, detachment, and
 freshness. View models own deterministic display ordering, bounded paging,
 string search over canonical episode identity, exact provider/model filters,
-probability/time formatting, direct descriptive summaries, chart coordinates,
-the union of current and retained-trajectory episode choices, and selected-
-episode state. UI/server owns controls, reactive selection, rendering, and
-status communication.
+probability/time formatting, direct descriptive summaries, chart-ready rows,
+deliberately formatted tooltip-ready values, the union of current and retained-
+trajectory episode choices, and selected-episode state. UI/server owns
+controls, reactive selection, rendering, and status communication. Plotly
+receives only this detached presentation data and remains replaceable without
+changing analytical or product contracts.
 
 The view-model layer may derive elapsed/remaining follow-up context only from
 the supplied analytical and target-interval timestamps and must label the
@@ -6403,6 +6417,11 @@ current estimate, labels their noncurrent state, and lists current episodes
 first. Sorting is presentation only and is labeled as neither priority nor a
 clinical recommendation.
 
+This remains primarily an operational ranked/list experience. Plotly is not
+forced into it merely because the dependency is available; a graphical element
+belongs here only if it materially improves comprehension without introducing
+new meaning.
+
 Selecting an episode opens an adjacent/detail region without another product
 read. That region supplies exact current lineage and the trajectory experience
 below. The UI does not invent patient names, encounter IDs, local IDs,
@@ -6420,13 +6439,24 @@ risk changed across actual governed evaluations?** It filters only the already
 loaded `rrp.product.remaining-risk-trajectory@0.1.0` member by the selected
 canonical episode.
 
-Large visible markers occur only at actual `analytical_time` observations on a
-fixed probability scale. Native Shiny hover reports exact time, probability,
-provider/implementation/model identity where present, analytical kind, and
-target interval. A compact exact-observation table accompanies the chart. A
-thin dashed connector may communicate observation order, but its caption must
-state that the line is not an estimate between points. No interpolated value
-is exposed through hover or table.
+Plotly renders large visible interactive markers only at actual
+`analytical_time` observations on a fixed probability scale. Deliberately
+configured tooltips may show the presentation-ready analytical time, derived
+elapsed follow-up context, probability, provider/implementation/model identity
+where present, analytical kind, and target interval already available through
+the accepted product/application model. They must be concise and formatted for
+RRP rather than dump raw Plotly fields. A compact exact-observation table
+accompanies the chart. A restrained connector may communicate observation
+order, but its caption must state that the line is not an estimate between
+points. Hover applies to actual markers rather than synthesized points, and no
+interpolated value is exposed through tooltip or table.
+
+The renderer must intentionally control typography, margins, percentage and
+axis formatting, grid prominence, markers and hover states, connector and
+legend behavior, whitespace, responsiveness, modebar behavior, and integration
+with its surrounding `bslib` card/theme. State remains understandable without
+color alone. Exact style values are implementation details, and the optional
+project primary color cannot become arbitrary Plotly configuration.
 
 One observation renders one marker and an explicit single-observation note.
 No matching history renders an unavailable detail state without changing the
@@ -6440,8 +6470,9 @@ The second top-level view answers: **What does the current accepted risk pool
 look like, and what happened in its selected source scope?**
 
 From current risk it shows the accepted-current count, minimum, maximum,
-median, quartiles, and a neutral distribution visualization when rows exist.
-It presents no high/medium/low category or threshold. From the exact one-row
+median, quartiles, and may use Plotly for a neutral remaining-risk distribution
+when that materially improves comprehension. It presents no high/medium/low
+category or threshold. From the exact one-row
 operational summary it shows expected/effective membership, accepted estimate,
 provider-incompatible, provider-declared-failure, detected-failure, and total
 ineligible counts, followed by the existing before-discharge, horizon-
@@ -6465,29 +6496,42 @@ performance evaluation.
 | Incompatible contract | Return bounded `application_products_incompatible`, start no server, and do not parse physical files directly. |
 | Presentation absent | Compose exact RRP defaults and launch normally. |
 | Presentation malformed/unsupported | Return bounded `application_presentation_invalid`, start no server, and do not silently discard the declared override. |
-| Shiny/bslib unavailable | Return bounded `application_dependency_unavailable` before construction; package installation/check evidence should normally prevent this state. |
+| Shiny/bslib/Plotly unavailable | Return bounded `application_dependency_unavailable` before construction; package installation/check evidence should normally prevent this state. |
 
 No state triggers product creation, materialization, repair, retention cleanup,
 history access by the UI, or analytical execution.
 
 ### Dependency decision
 
-Add only `shiny` and `bslib` as direct `rrpplatform` imports. Shiny is the
-accepted framework and supplies reactivity, controls, local server, base
-tables, plotting, and test-server support. `bslib` earns a direct declaration
-by providing a maintainable responsive page, navigation, cards, accessible
-theme composition, and the bounded primary-color override.
+Add only `shiny`, `bslib`, and `plotly` as direct `rrpplatform` application
+imports. Shiny owns application lifecycle, reactivity, controls, selection,
+local serving, server behavior, native tables, and test-server support.
+`bslib` owns the responsive shell, navigation, cards/panels, summary
+presentation, theme composition, status treatment, and bounded primary-color
+override. Plotly earns a direct declaration because point-native hover,
+responsive interaction, deliberate marker/line styling, configurable axes and
+labels, and controlled modebar behavior are core to presenting longitudinal
+remaining-readmission-risk trajectories at product quality. Native Shiny plot-
+coordinate hover does not provide the intended analytical interaction or
+polish.
 
-Do not add DT, reactable, Plotly, ggplot2, a dashboard framework, or a general
-theming system. Native Shiny server-side filtering/paging and plot hover cover
-the initial interactions without another widget stack. Base R performs view-
-model transforms and descriptive statistics. Exact dependency versions and
-transitive closure remain later distribution evidence; the package declares
-direct semantic dependencies now.
+Plotly is presentation-only: validated products become a closed detached
+application snapshot, pure view models produce chart-ready data, and only that
+data reaches the renderer. Plotly has no project-root, product-access, physical-
+file, history, DuckDB, producer/provider, construction, materialization, or
+hospital-source knowledge. Base R still performs view-model transforms and
+descriptive statistics. Do not add DT, reactable, ggplot2, dashboard
+frameworks, broad theming systems, Highcharter/Highcharts, or arbitrary
+JavaScript visualization libraries without another concrete requirement.
+Highcharts-based rendering is deliberately not selected for this potentially
+distributed/commercial hospital product; Plotly is the preferred open initial
+visualization foundation, without making licensing analysis part of Stage 10.
+Exact dependency versions and transitive closure remain later distribution
+evidence; the package declares direct semantic dependencies now.
 
 `rrpruntime` remains free of application dependencies. Project extension
 libraries do not supply application packages or override RRP's installed
-Shiny/bslib closure.
+Shiny/bslib/Plotly closure.
 
 ### Fictional reference and installed acceptance proof
 
@@ -6512,8 +6556,10 @@ Evidence must prove:
    `0.3833333333333333`, and the exact four-member scope accounting without a
    fictional branch;
 5. current ranking/search/sort/paging and selection are deterministic;
-6. trajectory hover/table values occur only at the two actual governed times,
-   while a separately materialized first-scope set proves one-point behavior;
+6. trajectory Plotly data and tooltip/table values contain only the two actual
+   governed observations, while a separately materialized first-scope set
+   proves intentional one-point behavior and no-history fabricates no chart
+   data;
 7. direct current-risk summaries and exact operational counts reconcile;
 8. the pre-discharge zero-member set produces the complete normal empty UX;
 9. not-evaluated, fresh, and stale statuses are visibly distinct and stale
@@ -6534,13 +6580,17 @@ Evidence must prove:
 15. the source repository, Git, working directory, ambient user library,
     physical history schema, and fictional project identity are unnecessary.
 
-Automated evidence owns contracts, pure view models, state matrices, Shiny
-server interactions, HTML/tag structure, dependency boundaries, and launch
-smoke behavior. A bounded human review checks readable labels, focus/order,
-contrast with default and accepted primary color, visible freshness/empty/
-stale language, and that the app is useful without claiming polished
-production accessibility or clinical fitness. Pixel-perfect screenshots and
-browser-specific snapshots are not acceptance gates.
+Automated evidence owns contracts, pure deterministic view models, exact
+actual-observation chart data, tooltip-to-observation correspondence, state
+matrices, selection changes, Shiny server interactions, Plotly widget/data
+structure, dependency boundaries, analytical nonmutation, repository-
+independent construction, and launch smoke behavior. It does not compare exact
+SVG/canvas output. A bounded human review checks information hierarchy,
+typography, spacing, readable customized tooltips, coherent tables/controls,
+chart/card integration, responsive behavior, default/custom primary-color
+appearance, and polished freshness/empty/stale/warning states. The review asks
+whether the narrow surface plausibly forms one modern analytical product while
+making no pixel-perfect, production-accessibility, or clinical-fitness claim.
 
 ### Historical reuse disposition
 
@@ -6553,7 +6603,7 @@ it clarified dependency and injection boundaries.
 | Classification | Stage 10 disposition |
 |---|---|
 | Reuse substantially | Product-access injection; defensive exact product startup; one detached load before reactivity; pure presentation view models; descending-risk display without priority meaning; canonical episode selection; actual observation points; provider/model attribution; zero-row state; safe unavailable startup; app-object and server-level tests; product-only dependency principle. |
-| Adapt | Replace fictional-reference identity with generic installed `rrp.application.supplied`; replace old daily-hazard/estimand/YAML products with the accepted Stage 9 cumulative-risk DCF/CSV logical access; replace source-tree `app/` sourcing with installed package code; add bslib layout, contextual freshness, useful summaries, bounded paging, native hover, and optional presentation authority. |
+| Adapt | Replace fictional-reference identity with generic installed `rrp.application.supplied`; replace old daily-hazard/estimand/YAML products with the accepted Stage 9 cumulative-risk DCF/CSV logical access; replace source-tree `app/` sourcing with installed package code; retain actual-point, canonical-selection, provider/model-attribution, and deterministic presentation-shaping concepts while evolving beyond historical/native plotting to intentional Plotly interaction; add bslib layout, contextual freshness, useful summaries, bounded paging, and optional presentation authority. |
 | Reject | Repository-root discovery; generated hospital app source; project `app/`; YAML/physical parsing in UI; materialize-on-launch; direct DuckDB/history reads; producer/provider/runtime invocation; app-driven refresh; old run/estimand semantics; fictional wording/branches; full artifact/Connect wrappers; deployment assumptions; raw error pages; arbitrary hospital UI code. |
 | Defer | Closed app artifact, standalone validator, target manifests, Connect/OCI realization, full dependency closure, authentication/authorization, logo/media, custom apps, scheduling, monitoring, production accessibility certification, performance scale, and clinical validation. |
 
@@ -6568,12 +6618,14 @@ not authorize any increment.
 product-to-application path that later UI work and the future CLI can reuse.
 
 **Scope:** add/catalog the application and presentation authorities; add
-`shiny` and `bslib` as direct `rrpplatform` dependencies; implement exact
-authority loading, optional presentation parsing/default composition,
+`shiny`, `bslib`, and `plotly` as direct `rrpplatform` dependencies; implement
+exact authority loading, optional presentation parsing/default composition,
 application-model construction, pure current/trajectory/summary view models,
-generic shell, bounded startup failures, and the single `rrp_launch_app()`
-export. Keep executable code in installed package modules. Do not yet change
-project templates or claim the final visual experiences.
+deterministic chart- and tooltip-ready data, generic shell, bounded startup
+failures, and the single `rrp_launch_app()` export. Keep executable code in
+installed package modules. Anticipate Plotly rendering in the architecture but
+do not yet claim the final visual experiences or styling. Do not yet change
+project templates.
 
 **Interfaces/contracts changed:** new `rrp.application.supplied@0.1.0` and
 `rrp.project-presentation@0.1.0` authorities plus one public launch operation.
@@ -6588,11 +6640,13 @@ YAML/fictional identity.
 
 **Evidence:** exact app authority/catalog closure; direct dependency and export
 posture; valid/not-evaluated/fresh/stale/empty application-model construction;
-absent/corrupt/incompatible prelaunch failure; pure deterministic view models;
-exact product inventory/version enforcement; app receives no roots/paths/
-handles; generic `shiny.appobj`; supervised loopback start/stop; state-byte and
-call-count nonmutation; parsing, build, isolated install/load, strict check,
-and inherited regressions.
+absent/corrupt/incompatible prelaunch failure; pure deterministic view models
+whose chart data contains only governed observations and whose tooltip-ready
+fields correspond exactly to them; exact product inventory/version
+enforcement; app and Plotly receive no roots/paths/handles; generic
+`shiny.appobj`; supervised loopback start/stop; state-byte and call-count
+nonmutation; parsing, build, isolated install/load, strict check, and inherited
+regressions.
 
 **Explicit exclusions:** no presentation template or initializer inventory
 change, final visual experiences, installed app guide, fictional full
@@ -6611,12 +6665,15 @@ no Shiny server.
 hospital-owned visual identity extension.
 
 **Scope:** implement the two-view navigation, Current Risk Pool ranking/search/
-filter/sort/page/selection, episode trajectory hover and observation table,
-scope/current overview, exact freshness/empty/stale treatments, and responsive
-bslib presentation. Add/catalog the standard and fictional presentation
-template records, apply the already governed/defaulted presentation values to
-the completed UI, and update the initializers to seven/eight files without
-changing their six authoring paths.
+filter/sort/page/selection, intentionally customized Plotly episode trajectory
+and observation table, scope/current overview with a Plotly descriptive chart
+only if it materially improves comprehension, exact freshness/empty/stale
+treatments, and responsive polished `bslib` presentation. Establish consistent
+information hierarchy, cards/panels, typography, spacing, controls, and status
+treatment across the narrow surface. Add/catalog the standard and fictional
+presentation template records, apply the already governed/defaulted
+presentation values to the completed UI, and update the initializers to seven/
+eight files without changing their six authoring paths.
 
 **Interfaces/contracts changed:** realize the already accepted optional
 nonexecutable presentation file in supplied templates. No new authority,
@@ -6626,15 +6683,21 @@ state, or materialization version change.
 **Historical reuse:** retain presentation-only sorting, selection, actual
 point, provider attribution, empty-state, and status ideas; replace raw tabs/
 tables and fictional title with the generic bslib experience and current
-fields. Do not recover generated Hospital app files or a broad theming system.
+fields; intentionally evolve historical/native plotting to Plotly while
+preserving actual observations and deterministic presentation shaping. Do not
+recover generated Hospital app files or a broad theming system.
 
 **Evidence:** exact view-model/component agreement; deterministic filtering/
-paging/selection; all three experiences; two-/one-/zero-point trajectory;
+paging/selection; all three experiences; exactly governed two-/one-/zero-point
+trajectory data; deterministic tooltip-ready values tied to actual points;
 direct summary calculations and reconciliation; no thresholds/interpolation;
-native hover and Shiny server tests; missing/default/custom/invalid
-presentation behavior; safe color/text treatment; updated initializer exact
-inventories, copied projects, raw-project omission, and no generated app
-source; inherited Stage 8 authoring and Stage 9 product regressions.
+Plotly widget/data and Shiny server tests; intentional axes, percentage,
+marker, connector, tooltip, legend/modebar, responsiveness, and card/theme
+integration without freezing style constants as contracts; missing/default/
+custom/invalid presentation behavior; safe color/text and non-color-only state
+treatment; updated initializer exact inventories, copied projects, raw-project
+omission, and no generated app source; inherited Stage 8 authoring and Stage 9
+product regressions.
 
 **Explicit exclusions:** logo/assets, secondary theme system, custom CSS/HTML/
 code, custom views, project app directory, authentication, app refresh, CLI,
@@ -6655,8 +6718,9 @@ package-level launch boundary.
 
 **Scope:** add one cataloged version-matched Supplied Application Guide; add the
 complete installed non-Git fictional acceptance proof and bounded human UX
-review; update ownership/validators/documentation only for realized behavior;
-make only corrections revealed by the proof.
+review of the coherent `bslib` + Plotly experience; update ownership/validators/
+documentation only for realized behavior; make only corrections revealed by
+the proof.
 
 **Interfaces/contracts changed:** none planned. A newly discovered contract or
 public-interface need must be reconciled explicitly rather than hidden in the
@@ -6697,9 +6761,9 @@ Rscript --vanilla tools/validate-packages.R
 
 Validation grows only for cataloged application/presentation authorities and
 templates/guide, package application/view-model/launcher tests, updated exact
-initializer inventories, installed fictional app proof, Shiny/bslib dependency
-and namespace posture, builds, isolated install/load, strict checks, path/
-privacy/process hygiene, and inherited Stage 8–9 behavior. No application-
+initializer inventories, installed fictional app proof, Shiny/bslib/Plotly
+dependency and namespace posture, builds, isolated install/load, strict checks,
+path/privacy/process hygiene, and inherited Stage 8–9 behavior. No application-
 specific framework, Phase suite, browser snapshot system, deployment test, or
 parallel product reader is added.
 
@@ -6716,7 +6780,7 @@ Stage 10 is complete only when:
 
 1. the supplied application is generic installed RRP software owned by
    `rrpplatform`, not a fictional or project-owned app;
-2. `rrp.application.supplied@0.1.0` closes application identity, framework,
+2. `rrp.application.supplied@0.1.0` closes application identity, UI foundation,
    required product compatibility, presentation authority, and read-only
    posture without duplicating product schemas or artifact concerns;
 3. exactly one public launch operation accepts explicit software/project
@@ -6730,18 +6794,22 @@ Stage 10 is complete only when:
    writer, project callable, source, provider, or history object;
 7. launch and interaction invoke no producer/provider, build, materialize,
    retry, correction, source selection, refresh, or state/history mutation;
-8. pure view models remain presentation-only and cannot introduce fallback,
-   interpolation, thresholds, priority, clinical categories, private joins, or
-   new analytical meaning;
+8. pure view models remain presentation-only, deterministically produce chart-
+   and tooltip-ready data, and cannot introduce fallback, interpolation,
+   thresholds, priority, clinical categories, private joins, or new analytical
+   meaning; Plotly receives only that detached presentation data;
 9. Current Risk Pool supplies deterministic risk ranking, exact useful timing
    and attribution, search/filter/sort/bounded paging, canonical episode
    selection, lineage/status context, and polished valid-empty behavior;
-10. Episode Risk Trajectory displays only actual governed observations with
-    exact hover/table detail, truthful optional visual connection, and correct
-    two-point, one-point, and no-history behavior;
+10. Episode Risk Trajectory displays only actual governed observations as
+    intentionally customized Plotly markers with concise corresponding
+    tooltips, exact table detail, truthful optional visual connection, and
+    correct two-point, one-point, and no-history behavior; no graphical element
+    invents intermediate or other analytical meaning;
 11. Overview presents only direct current-risk descriptive summaries and exact
-    operational-scope/outcome reconciliation, with no business KPI or clinical
-    decision semantics;
+    operational-scope/outcome reconciliation; if Plotly is used there, it is
+    only for a direct descriptive visualization that improves comprehension,
+    with no business KPI or clinical decision semantics;
 12. not-evaluated, fresh, stale, empty, unavailable, integrity-failed, and
     incompatible states remain visibly and operationally distinct, while valid
     stale products remain readable;
@@ -6751,9 +6819,10 @@ Stage 10 is complete only when:
 14. normal and fictional initialization add only the optional presentation
     record, retain six existing authoring paths, generate no app source, and
     leave direct raw/existing projects without the file valid;
-15. `shiny` and `bslib` are the only new direct dependencies, remain outside
-    `rrpruntime` and project extensions, and their use is justified by realized
-    application behavior;
+15. `shiny`, `bslib`, and `plotly` are the only new direct application
+    dependencies, remain outside `rrpruntime` and project extensions, and their
+    use is justified by realized lifecycle, responsive shell/theme, and
+    interactive analytical-graphics behavior;
 16. executable app code runs from the installed package, cataloged authorities/
     templates/docs resolve from installed resources, and no runtime repository,
     Git, working-directory, ambient-library, or sibling checkout dependency
@@ -6766,9 +6835,11 @@ Stage 10 is complete only when:
     canonical/product content and exclude known native IDs, crosswalk,
     predictor, source, credential, connection, physical path, and database
     internals;
-19. automated component/server/launch evidence plus bounded human review show
-    a small useful initial experience without making a pixel-perfect,
-    production-accessibility, clinical, performance, or support claim;
+19. automated component/server/Plotly-data/launch evidence plus bounded human
+    review show a narrow but coherent modern initial experience with deliberate
+    hierarchy, spacing, states, controls, tooltips, and chart/card integration,
+    without making a pixel-perfect, production-accessibility, clinical,
+    performance, or support claim;
 20. repository/package validation, exact catalog closure, parsing, package-
     native and installed regressions, builds, isolated/fresh-process loading,
     strict checks, process cleanup, hygiene, and exact committed hosted

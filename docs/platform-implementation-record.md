@@ -4851,3 +4851,68 @@ implementation has not begun.
 **Next task:** human review of the detailed Stage 10 plan, followed—only when
 separately authorized—by Increment 10.A. Do not begin 10.B or 10.C with that
 authorization.
+
+## Stage 10 UI and visualization planning revision — 2026-10-02
+
+Human review accepted the first detailed Stage 10 architecture at committed
+revision `3e72d5b` and requested one bounded planning correction before
+implementation: the initial supplied-application foundation is now Shiny +
+bslib + Plotly rather than Shiny + bslib with base plotting and native plot-
+coordinate hover. No ownership, product-only access, launch, presentation,
+project, Stage 11, or Stage 12 boundary was reopened.
+
+The revised plan distinguishes small application scope from product quality.
+Stage 10 remains limited to Current Risk Pool, contextual Episode Risk
+Trajectory, Overview, a bounded presentation record, and analytically read-only
+local launch. Within that surface, the planned application must use deliberate
+hierarchy, responsive cards/layout, typography, spacing, coherent controls,
+polished status/empty/warning states, and intentionally integrated interactive
+graphics rather than resemble a default technical demonstration.
+
+`shiny`, `bslib`, and `plotly` are now the only planned new direct
+`rrpplatform` application dependencies. Shiny retains lifecycle, reactivity,
+controls, selection, local serving, and test-server ownership. bslib retains
+the responsive shell, navigation, cards, status presentation, theme
+composition, and bounded primary-color integration. Plotly is justified as the
+presentation-only interactive graphics renderer for the core longitudinal
+remaining-risk experience. DT, reactable, dashboard/broad theming frameworks,
+Highcharter/Highcharts, and arbitrary JavaScript visualization libraries remain
+excluded; `rrpruntime` and hospital extension libraries remain application-
+dependency free.
+
+The Episode Risk Trajectory plan now requires deliberately configured Plotly
+markers and concise tooltips tied only to actual governed observations. A
+restrained connector remains optional and explicitly non-interpolating; one-
+point and no-history states remain intentional, and the exact-observation
+table remains the precise companion. Pure view models own deterministic chart-
+and tooltip-ready shaping, so Plotly receives no project root, product access,
+physical file, history, DuckDB, producer/provider, construction,
+materialization, or source-data object. Overview may use Plotly for a direct
+remaining-risk distribution only when it improves comprehension; Current Risk
+Pool remains primarily a ranked/list experience.
+
+Automated evidence was revised from native-hover checks to deterministic
+actual-observation chart data, tooltip correspondence, two-/one-/zero-point
+behavior, selection changes, Plotly widget/data structure, dependency
+boundaries, repository independence, and analytical nonmutation. Exact rendered
+pixels or SVG/canvas output are not acceptance gates. Bounded human UX review
+will assess hierarchy, spacing, tooltip readability, table/control coherence,
+chart/card integration, responsive behavior, default/custom color appearance,
+and state polish without creating subjective or production-accessibility
+claims.
+
+Historical reuse still retains product-only injection, actual observations,
+canonical selection, provider/model attribution, deterministic presentation
+shaping, and zero/failure behavior. The renderer is intentionally adapted
+beyond the historical base/native plotting approach to Plotly-backed
+interaction. This planning revision changed documentation only; it added no
+dependency, application code, contract, resource, template, test, Plotly
+widget, or generated artifact.
+
+**Current implementation state:** Stages 1–9 remain accepted and complete.
+The revised Stage 10 detailed plan is internally reconciled; Stage 10
+implementation has not begun.
+
+**Next task:** Increment 10.A — Installed application authority, startup, view
+models, and launch boundary—only when separately authorized. Do not begin 10.B
+or 10.C with that authorization.
