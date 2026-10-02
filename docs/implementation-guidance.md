@@ -14,7 +14,7 @@ one closed source-resource authority with a temporary installed-projection
 proof, explicit-root resource access and structured resource/project validation
 operations in the main package, one local package/resource-foundation validator,
 and one narrowly scoped hosted workflow with successful committed Stage 2
-through Stage 8 push evidence. Stages 1–8 are accepted and complete. Stage 7
+through Stage 9 push evidence. Stages 1–9 are accepted and complete. Stage 7
 supplies dependency-light logical history, explicit project state and DuckDB,
 bundle-scoped durable execution and history interpretation, and bounded backup/
 restore. Increment 8.A implements the
@@ -24,12 +24,16 @@ fictional project, explicit deterministic source generation, meaningful
 mapping/private-provider proof, and the third installed product document.
 Increment 8.C adds the installed non-Git durable reference proof and completes
 the Fictional Reference Walkthrough. The exact committed Stage 8 realization
-has passed hosted validation and formal architecture reconciliation. Stage 9
-is in progress: Increment 9.A supplies four installed logical-product
+has passed hosted validation and formal architecture reconciliation. Increment
+9.A supplies four installed logical-product
 authorities and one storage-neutral, all-required logical product-set builder.
 Increment 9.B supplies the installed materialization authority, coherent 0.2.0
 state/adapter/backup line, staged immutable DCF/CSV publication, and detached
-validated access with contextual freshness.
+validated access with contextual freshness. Increment 9.C supplies the Logical
+Products Guide and complete installed fictional actual/empty product lifecycle
+proof. The exact committed Stage 9 realization has passed hosted validation
+and formal architecture reconciliation. The detailed Stage 10 plan is
+prepared, but Stage 10 implementation has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -43,8 +47,8 @@ compatible provider through the standard request/result/estimate boundary.
 The platform risk operation prepares one eligible episode state and invokes
 exactly the explicitly selected compatible provider once, including either the
 installed nonclinical transparent provider or a project-owned substitute.
-There is no complete installed Stage 9 fictional product proof or ordinary
-operator command.
+There is no supplied application, Shiny dependency, application launcher,
+presentation authority, complete distribution, or ordinary operator command.
 
 ## Read authority before source
 
@@ -420,8 +424,10 @@ Guide and complete installed fictional actual/empty product lifecycle proof.
 Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 `package-foundation` run `36922905508`, job `110573063816`, and formal
 reconciliation accepted Stage 9. Stages 1–9 are accepted and complete. The
-next task is to detail and accept Stage 10 — Supplied product-only application;
-Stage 10 implementation has not begun.
+Stage 10 detailed plan is prepared and internally reconciled. Its first
+implementation increment, 10.A — Installed application authority, startup,
+view models, and launch boundary, requires separate authorization and has not
+begun.
 Neither local validator nor this narrow hosted workflow implies runtime,
 clinical, installation, deployment, release, or final support-cell validity.
 

@@ -175,6 +175,7 @@ Logical Products Guide and complete installed non-Git fictional actual/empty
 product, reopen, staleness, copy, denial, deletion, and history-only recovery
 proof. Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 run `36922905508`, job `110573063816`; formal reconciliation accepted Stage 9.
-Stages 1–9 are accepted and complete. The next task is to detail and accept
-Stage 10 — Supplied product-only application; Stage 10 implementation has not
-begun.
+Stages 1–9 are accepted and complete. The detailed Stage 10 plan is prepared
+and internally reconciled. Increment 10.A — Installed application authority,
+startup, view models, and launch boundary, requires separate authorization;
+Stage 10 implementation has not begun.

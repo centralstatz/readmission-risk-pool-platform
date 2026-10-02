@@ -4,7 +4,9 @@
 
 **Status:** authoritative roadmap; Stages 1–9 are accepted and complete. Stage
 9 was accepted on 2026-10-02 at implementation baseline
-`a13a181a09bf5b981b41030cf58e6f49225df7d4`. Stage 10 has not begun.
+`a13a181a09bf5b981b41030cf58e6f49225df7d4`. The detailed Stage 10 plan is
+prepared below; Stage 10 implementation has not begun and Increment 10.A
+requires separate authorization.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -70,8 +72,9 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 Stages 1–9 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 10 remains a high-level roadmap stage and has
-not been detailed or authorized. After a stage is implemented:
+implementation lineage. Stage 10 is now detailed below but remains
+unimplemented; no increment is authorized by planning alone. After a stage is
+implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -6137,37 +6140,674 @@ and requires separate detailed planning and authorization.
 
 ## Stage 10 — Supplied product-only application
 
-### Objective and responsibilities
+**Planning status:** detailed and internally reconciled on 2026-10-02 from the
+accepted Stage 9 baseline. Implementation has not begun. The increments below
+are separately authorizable, beginning with 10.A.
 
-Implement the supplied Shiny application as a consumer of validated logical
-product access only. Establish application identity, view models, empty/
-unavailable/failure presentation, startup validation, and development/reference
-launch evidence without source, provider, or persistence knowledge.
+### Objective and exit state
 
-### Why here and dependencies
+Implement one generic RRP-supplied Shiny application inside installed RRP
+software. It consumes only one validated detached Stage 9 product-access
+snapshot, transforms that snapshot through a presentation-only view-model
+layer, and presents a useful current risk pool, actual episode trajectory, and
+scope overview. Establish the narrow programmatic launch operation that later
+operator interfaces can wrap, while keeping launch analytically read-only.
 
-The app can be independently understandable only after the product interface
-is stable. Its product-only closure becomes the input to distribution and
-artifact work rather than dictating upstream semantics.
+The fictional project is the controlled acceptance environment; it neither
+owns nor defines the application. The same installed application must work for
+any conforming project whose current product set satisfies the accepted
+contracts.
 
-### Plain-language exit state
+> The supplied application presents the validated remaining-risk products of
+> an RRP project without querying hospital sources, executing risk providers,
+> building products, or reading physical history. The fictional reference
+> project proves the same installed application through the same product-only
+> interface available to any conforming RRP project. Complete installed
+> operator and deployment workflows still do not exist.
 
-> The supplied application presents fictional remaining-risk products without
-> querying sources, running a model, or reading physical history. Complete
-> installed operator and deployment workflows still do not exist.
+### Why here and governing boundary
 
-### Expected historical reuse
+Stage 9 now provides the stable consumer boundary needed to keep the
+application out of analytical execution:
 
-Inspect `v0.1.0` product-access/view-model/app separation, Shiny components,
-startup validation, and zero-row/failure tests. UI structure is likely adapted
-because product and target fields change; any repository-path, materialize-on-
-launch, or upstream-runtime coupling is rejected.
+```text
+hospital-owned source / producer / provider
+                    ↓
+             governed history
+                    ↓
+       coherent logical product set
+                    ↓
+        validated detached access
+                    ↓
+       supplied installed application
+```
+
+The app begins with validated logical access. It has no source, canonical,
+admission, eligibility, provider, history-port, DuckDB, materialization-format,
+or product-builder knowledge. Application startup never runs a producer,
+provider, retry, correction, product build, publication, source selection, or
+refresh. Product evaluation/materialization and app launch remain separate
+explicit actions.
+
+The application follows products because UI requirements cannot redefine
+their meaning. It precedes distribution and artifact work so Stages 11 and 12
+can wrap a real stable application instead of inventing its lifecycle.
+
+### Settled planning decisions
+
+| Question | Detailed-plan decision |
+|---|---|
+| 1. Installed source owner | `rrpplatform` owns executable application, view-model, startup, and launch code as ordinary installed package R code. No separate package, repository, or project app tree is introduced. |
+| 2. Application identity | Add one installed `rrp.application.supplied@0.1.0` DCF authority because startup, later artifacts, and compatibility need a stable app identity. It governs required product contracts, Shiny framework, presentation authority, and read-only posture; the installed implementation remains attributable to the `rrpplatform` package version. |
+| 3. Programmatic launch | Export exactly one new operation, `rrp_launch_app()`, with the signature settled below. No CLI is added. |
+| 4. Pre-Shiny validation | Revalidate software authority, project, optional presentation, current materialization/access, exact product inventory/versions, coherent set, and direct app dependencies before starting Shiny. |
+| 5. Launch input | The public operation receives an explicit software catalog and project root, plus an optional paired expected operation-run/history-cutoff freshness context. It does not accept arbitrary product frames or physical paths. |
+| 6. App data input | Platform startup opens validated access once and injects only a detached closed application model into the app constructor. UI/server code receives neither project root nor software catalog. |
+| 7. View-model boundary | Pure package functions read the three logical members and perform only ordering, formatting, paging, direct descriptive aggregation, selection, and chart-ready shaping. They do not alter product meaning. |
+| 8. Initial views | Two top-level views: **Current Risk Pool** and **Overview**. Episode detail and trajectory appear from selection within Current Risk Pool rather than as a third global area. |
+| 9. Episode selection | Search/filter/sort a bounded current-risk table and provide one synchronized selector over the union of current and retained-trajectory canonical episode IDs, with current episodes first. This keeps historical-only trajectories discoverable without introducing a patient/native identifier. |
+| 10. Plotting technology | Use base graphics inside Shiny `plotOutput()` with native hover/click coordinates and an adjacent exact-observation detail card. Observed points may have a thin dashed visual connector, explicitly labeled as non-interpolating; no Plotly dependency is justified. |
+| 11. Table technology | Use native Shiny controls and table rendering with server-side search, sort, and bounded paging. No DT/reactable dependency is justified for the initial field set and interactions. |
+| 12. Descriptive summaries | Direct count, minimum, maximum, median, quartiles, and distribution of accepted current estimates; scope membership and accepted/failure/ineligibility counts; and the existing ineligibility subcounts. No threshold, priority, category, recommendation, or inferred outcome is allowed. |
+| 13. Product states | Valid empty is a normal polished app state; absent, corrupt, or incompatible products fail before Shiny; stale remains readable with a prominent warning; not-evaluated is shown neutrally and never called fresh. |
+| 14. Stale launch | Yes. A valid stale set launches normally with its original lineage and a persistent stale status treatment. It is never auto-refreshed. |
+| 15. Presentation configuration | Add one optional closed project-owned presentation record with only display name and primary accent color. |
+| 16. Presentation location | Exact root path `rrp-presentation.dcf`, separate from executable authoring and state. Missing means RRP defaults. |
+| 17. Initial fields | `Display-Name` and `Primary-Color`, plus record/contract identity. Values are bounded plain text and canonical `#RRGGBB`; no HTML, CSS, URL, code, secrets, or clinical configuration. |
+| 18. Default composition | Validate an existing record and overlay its two values on immutable RRP defaults; absence returns defaults. Invalid or unsupported content fails startup rather than silently falling back. |
+| 19. Logo support | Deferred. Safe asset containment, media validation, artifact inclusion, and hosting behavior are disproportionate to Stage 10's first extension point. |
+| 20. Project-contract effect | The manifest/project API and six authoring paths remain `0.3.0`/`0.1.0`. The presentation record is optional, nonexecutable, and governed by its own authority. Standard and fictional initializers add the discoverable file, becoming seven- and eight-file realizations, while existing/direct-raw projects without it remain valid. |
+| 21. Product compatibility | The app authority requires the exact initial product-set and all three member contracts at `0.1.0`; startup verifies exact inventory and versions through public logical access. Unsupported evolution fails closed until a new app contract supports it. |
+| 22. Repository-independent tests | Build and install packages/resources into temporary roots, initialize/copy an ordinary project outside Git, and construct the app only through installed code and validated access. |
+| 23. Shiny evidence | Pure view-model tests, UI/tag structure checks, `shiny::testServer()` interaction tests, native hover-selection tests, and one supervised child-process loopback launch/termination smoke test. No browser automation or pixel snapshots. |
+| 24. Acceptance | All three increments, installed generic/reference proof, exact state handling, analytical nonmutation, package checks, and exact committed hosted evidence pass, followed by separate formal Stage 10 reconciliation. |
+| 25. Later-stage boundary | Stage 11 owns CLI/distribution/install/upgrade; Stage 12 owns frozen product-only artifacts and target realizations. Stage 10 adds neither. |
+
+### Ownership and installed-application model
+
+`rrpplatform` remains the main installed owner because it already owns
+validated product access and human-facing project operations. `rrpruntime`
+must not import Shiny or acquire application behavior. A new application
+package would add distribution and dependency boundaries without providing an
+independent extension or lifecycle, so it is rejected.
+
+The intended source ownership is package R modules for application contracts,
+startup, view models, components, and launch. Those files install through the
+ordinary R package mechanism; they are never sourced from the development
+repository or copied into a project. Stage 10 needs no custom JavaScript,
+image, font, or CSS asset directory: `bslib` and Shiny components supply the
+initial presentation. The application and presentation DCF authorities,
+presentation templates, and final human guide remain cataloged installed
+software resources under their existing owners.
+
+```text
+installed RRP software
+├── rrpruntime                       no app dependency
+├── rrpplatform
+│   ├── validated product access
+│   ├── app startup + view models
+│   ├── supplied Shiny UI/server
+│   └── programmatic launcher
+└── installed authorities/docs/templates
+
+independent project
+├── existing authoring/registration files
+├── optional rrp-presentation.dcf   presentation only
+└── state/products                  validated input, not app source
+```
+
+Project copying changes neither application source nor identity. An RRP
+software upgrade can replace the supplied application without rewriting a
+project. Stage 10 does not establish custom app source or arbitrary hospital
+UI execution as an extension boundary.
+
+### Application and presentation authorities
+
+Add cataloged `rrp.application.supplied@0.1.0`. Its closed DCF record names the
+application owner/framework, required
+`rrp.product-set.initial-readmission-risk@0.1.0`, the exact three product
+members at `0.1.0`, `rrp.project-presentation@0.1.0`, and the requirements for
+validated detached access and analytical read-only startup. It does not
+duplicate product fields, encode UI layout, freeze package dependency
+versions, or become an artifact/deployment manifest.
+
+Add cataloged `rrp.project-presentation@0.1.0`. Its optional project record is
+exactly one plain DCF record at `rrp-presentation.dcf` with:
+
+- `Record-Type`, `Presentation-Contract-ID`, and
+  `Presentation-Contract-Version` fixed by authority;
+- one bounded printable UTF-8 `Display-Name`, with no control characters,
+  markup, leading/trailing whitespace, or confidential content; and
+- one canonical six-digit hexadecimal `Primary-Color`.
+
+The RRP defaults are the product name and one accessible RRP primary color.
+Presentation never controls target meaning, eligibility, thresholds, filters,
+fields, products, provider selection, calculations, refresh, or executable
+content. A supplied initializer creates the small record so the extension
+point is visible; direct raw and pre-Stage-10 projects may omit it and receive
+defaults. Color is composed through bslib contrast behavior and is never the
+sole signal for freshness, failure, or selection state. Adding this independent
+optional file changes initializer inventory and template/catalog evidence only.
+It does not change `rrp.project@0.3.0`,
+`rrp.project-api@0.3.0`, registration, or
+`rrp.project-authoring@0.1.0`'s six executable/documentation paths.
+
+Logo, secondary palette, custom CSS, custom text blocks, arbitrary navigation,
+and executable UI modules are excluded from version `0.1.0`.
+
+### Programmatic launch and startup
+
+The one new public operation is:
+
+```r
+rrp_launch_app(
+  software_catalog,
+  project_root,
+  expected_operation_run_id = NULL,
+  history_cutoff = NULL,
+  launch_browser = interactive(),
+  port = NULL
+)
+```
+
+`expected_operation_run_id` and `history_cutoff` retain the existing all-or-
+nothing pairing. Their absence produces `not-evaluated`; their presence
+delegates unchanged contextual freshness to `rrp_open_product_access()`.
+`launch_browser` is one scalar logical. `port` is absent or a validated local
+nonprivileged integer. Stage 10 binds the development/reference server to
+loopback; public host/network exposure is not configurable here.
+
+Startup performs this sequence before `shiny::runApp()`:
+
+```text
+validate installed app/product/presentation authority
+        ↓
+validate explicit project and optional presentation
+        ↓
+open current products through rrp_open_product_access()
+        ↓
+verify exact app-required inventory and compatibility
+        ↓
+read three detached products through rrp_read_product()
+        ↓
+construct and validate one closed application model
+        ↓
+construct supplied shiny.appobj
+        ↓
+run locally on loopback
+```
+
+Expected failures return the common operation result with one bounded,
+privacy-safe application diagnostic and start no server. The operation returns
+success only after a successfully started app session exits normally. A
+missing direct dependency is detected before startup. Unexpected package
+defects remain visible under existing diagnostic policy.
+
+The internal constructor accepts only the closed application model. It has no
+catalog, root, path, DBI handle, product writer, or project callable. Products
+are read once at startup into a detached snapshot; Shiny reactivity changes
+selection and presentation only. Re-launch is the explicit way to pick up a
+new current materialization.
+
+Launching may execute the already accepted trusted project-registration load
+inside platform access, but it invokes no producer or provider. Tests prove
+that RRP-managed history, product bytes, pointer, state metadata, and source
+remain unchanged before and after startup and supervised shutdown. This is the
+precise analytical read-only claim; arbitrary trusted project registration is
+not misrepresented as a security sandbox.
+
+### View-model architecture
+
+The application boundary is:
+
+```text
+rrp_product_access
+        ↓ exact logical reads
+closed detached application snapshot
+        ↓ pure presentation transforms
+current-pool / episode / overview view models
+        ↓
+Shiny components and selection state
+```
+
+Product access owns integrity, compatibility, coherence, detachment, and
+freshness. View models own deterministic display ordering, bounded paging,
+string search over canonical episode identity, exact provider/model filters,
+probability/time formatting, direct descriptive summaries, chart coordinates,
+the union of current and retained-trajectory episode choices, and selected-
+episode state. UI/server owns controls, reactive selection, rendering, and
+status communication.
+
+The view-model layer may derive elapsed/remaining follow-up context only from
+the supplied analytical and target-interval timestamps and must label the
+derivation. It may compute ordinary descriptive statistics directly from
+accepted estimate values. It may not select another scope, substitute a prior
+estimate, infer missing points, classify risk, decide priority, join private
+data, reinterpret failure, or call an analytical operation.
+
+### Initial application experiences
+
+#### Current Risk Pool
+
+This is the landing view. It answers: **Who currently has the highest accepted
+remaining readmission risk?**
+
+The view presents current rows in descending `estimate_value`, with stable
+canonical episode tie-breaking. It displays canonical episode ID, formatted
+probability, analytical as-of time, target endpoint/follow-up context, and
+provider/model attribution where present. It includes episode-ID search,
+exact provider/model filtering when meaningful, explicit sort choice, a
+bounded page/window with displayed/total counts, and a synchronized episode
+selector. The selector includes retained-trajectory episodes that have no
+current estimate, labels their noncurrent state, and lists current episodes
+first. Sorting is presentation only and is labeled as neither priority nor a
+clinical recommendation.
+
+Selecting an episode opens an adjacent/detail region without another product
+read. That region supplies exact current lineage and the trajectory experience
+below. The UI does not invent patient names, encounter IDs, local IDs,
+diagnoses, services, units, or other hospital-private fields absent from the
+contract.
+
+A zero-row current product shows a polished **No current accepted risk
+estimates** state with scope time, freshness, and a statement that empty is
+valid—not a blank table or error.
+
+#### Episode Risk Trajectory
+
+The detail answers: **How has this episode's accepted remaining readmission
+risk changed across actual governed evaluations?** It filters only the already
+loaded `rrp.product.remaining-risk-trajectory@0.1.0` member by the selected
+canonical episode.
+
+Large visible markers occur only at actual `analytical_time` observations on a
+fixed probability scale. Native Shiny hover reports exact time, probability,
+provider/implementation/model identity where present, analytical kind, and
+target interval. A compact exact-observation table accompanies the chart. A
+thin dashed connector may communicate observation order, but its caption must
+state that the line is not an estimate between points. No interpolated value
+is exposed through hover or table.
+
+One observation renders one marker and an explicit single-observation note.
+No matching history renders an unavailable detail state without changing the
+current pool. The app never invents discharge-time baseline risk, reconstructs
+daily values, carries a prior value forward, replays a provider, or implies
+continuous monitoring.
+
+#### Overview
+
+The second top-level view answers: **What does the current accepted risk pool
+look like, and what happened in its selected source scope?**
+
+From current risk it shows the accepted-current count, minimum, maximum,
+median, quartiles, and a neutral distribution visualization when rows exist.
+It presents no high/medium/low category or threshold. From the exact one-row
+operational summary it shows expected/effective membership, accepted estimate,
+provider-incompatible, provider-declared-failure, detected-failure, and total
+ineligible counts, followed by the existing before-discharge, horizon-
+exhausted, already-readmitted, and already-dead subcounts. Count reconciliation
+and source scope/analytical time remain visible.
+
+The overview does not become executive reporting, readmission-rate
+measurement, care-management queueing, outcome attribution, or clinical
+performance evaluation.
+
+### Product-state and startup UX
+
+| State | Stage 10 behavior |
+|---|---|
+| Valid and freshness not evaluated | Launch normally. Show neutral **Freshness not evaluated** status plus source analytical time/history cutoff; do not imply fresh. |
+| Valid and fresh | Launch normally with restrained **Fresh for the supplied comparison context** status. |
+| Valid and stale | Launch normally with a persistent prominent warning, original lineage, and read-only content. Explain that refresh/materialization is a separate operation. |
+| Valid empty | Launch the normal app shell with polished empty current/trajectory summaries and the complete zero-count scope overview. |
+| Products absent | Return bounded `application_products_unavailable` startup failure, no server, and guidance that products must be built/materialized separately. |
+| Corrupt/incoherent | Preserve validated-access denial, return bounded `application_product_integrity_failed`, and expose no rows. |
+| Incompatible contract | Return bounded `application_products_incompatible`, start no server, and do not parse physical files directly. |
+| Presentation absent | Compose exact RRP defaults and launch normally. |
+| Presentation malformed/unsupported | Return bounded `application_presentation_invalid`, start no server, and do not silently discard the declared override. |
+| Shiny/bslib unavailable | Return bounded `application_dependency_unavailable` before construction; package installation/check evidence should normally prevent this state. |
+
+No state triggers product creation, materialization, repair, retention cleanup,
+history access by the UI, or analytical execution.
+
+### Dependency decision
+
+Add only `shiny` and `bslib` as direct `rrpplatform` imports. Shiny is the
+accepted framework and supplies reactivity, controls, local server, base
+tables, plotting, and test-server support. `bslib` earns a direct declaration
+by providing a maintainable responsive page, navigation, cards, accessible
+theme composition, and the bounded primary-color override.
+
+Do not add DT, reactable, Plotly, ggplot2, a dashboard framework, or a general
+theming system. Native Shiny server-side filtering/paging and plot hover cover
+the initial interactions without another widget stack. Base R performs view-
+model transforms and descriptive statistics. Exact dependency versions and
+transitive closure remain later distribution evidence; the package declares
+direct semantic dependencies now.
+
+`rrpruntime` remains free of application dependencies. Project extension
+libraries do not supply application packages or override RRP's installed
+Shiny/bslib closure.
+
+### Fictional reference and installed acceptance proof
+
+The final proof starts from isolated installed packages/resources in an
+unrelated non-Git directory, realizes the ordinary fictional project, and
+uses the accepted Stage 8–9 operations to create its inputs before app testing.
+That setup is evidence preparation, not launcher behavior.
+
+Evidence must prove:
+
+1. the generic app contract, presentation contract, templates, and guide
+   resolve from installed software, while executable app code resolves from
+   the installed `rrpplatform` namespace;
+2. the normal initialized project has seven files and the fictional project
+   eight, with only `rrp-presentation.dcf` added and no `app/`, `app.R`, UI,
+   module, `www`, or application source;
+3. app startup uses only `rrp_open_product_access()`, `rrp_list_products()`,
+   and `rrp_read_product()` at the boundary and does not invoke build,
+   materialize, producer, provider, durable execution, retry, or correction;
+4. the later fictional set renders one current estimate
+   `0.3833333333333333`, its two actual observations `0.39` and
+   `0.3833333333333333`, and the exact four-member scope accounting without a
+   fictional branch;
+5. current ranking/search/sort/paging and selection are deterministic;
+6. trajectory hover/table values occur only at the two actual governed times,
+   while a separately materialized first-scope set proves one-point behavior;
+7. direct current-risk summaries and exact operational counts reconcile;
+8. the pre-discharge zero-member set produces the complete normal empty UX;
+9. not-evaluated, fresh, and stale statuses are visibly distinct and stale
+   content remains readable;
+10. absent products fail boundedly; disposable corrupt and incompatible copies
+    are denied before Shiny construction;
+11. a project without presentation uses RRP defaults, the fictional bounded
+    override changes only display name/color, and malformed/unsupported
+    presentation fails safely;
+12. fresh-process construction and one supervised loopback launch/termination
+    work from installed software after copying the project;
+13. product/state/history/source bytes and counts are unchanged by app
+    preparation, interaction, launch, and shutdown; producer/provider call
+    counters remain zero;
+14. logical values, view models, rendered text, diagnostics, and application
+    objects contain no known native IDs, crosswalk, predictor, source path,
+    credential, connection, physical product path, or database handle; and
+15. the source repository, Git, working directory, ambient user library,
+    physical history schema, and fictional project identity are unnecessary.
+
+Automated evidence owns contracts, pure view models, state matrices, Shiny
+server interactions, HTML/tag structure, dependency boundaries, and launch
+smoke behavior. A bounded human review checks readable labels, focus/order,
+contrast with default and accepted primary color, visible freshness/empty/
+stale language, and that the app is useful without claiming polished
+production accessibility or clinical fitness. Pixel-perfect screenshots and
+browser-specific snapshots are not acceptance gates.
+
+### Historical reuse disposition
+
+Reconnaissance inspected immutable `v0.1.0` `app/application.yml`,
+`app/R/app-init.R`, `app/R/view-models.R`, `app/R/app.R`, `app/app.R`,
+`docs/architecture/reference-application.md`, product access, Phase 6
+materialized-product/app tests, and reduced application-artifact runtime where
+it clarified dependency and injection boundaries.
+
+| Classification | Stage 10 disposition |
+|---|---|
+| Reuse substantially | Product-access injection; defensive exact product startup; one detached load before reactivity; pure presentation view models; descending-risk display without priority meaning; canonical episode selection; actual observation points; provider/model attribution; zero-row state; safe unavailable startup; app-object and server-level tests; product-only dependency principle. |
+| Adapt | Replace fictional-reference identity with generic installed `rrp.application.supplied`; replace old daily-hazard/estimand/YAML products with the accepted Stage 9 cumulative-risk DCF/CSV logical access; replace source-tree `app/` sourcing with installed package code; add bslib layout, contextual freshness, useful summaries, bounded paging, native hover, and optional presentation authority. |
+| Reject | Repository-root discovery; generated hospital app source; project `app/`; YAML/physical parsing in UI; materialize-on-launch; direct DuckDB/history reads; producer/provider/runtime invocation; app-driven refresh; old run/estimand semantics; fictional wording/branches; full artifact/Connect wrappers; deployment assumptions; raw error pages; arbitrary hospital UI code. |
+| Defer | Closed app artifact, standalone validator, target manifests, Connect/OCI realization, full dependency closure, authentication/authorization, logo/media, custom apps, scheduling, monitoring, production accessibility certification, performance scale, and clinical validation. |
+
+### Implementation sequence
+
+Stage 10 is decomposed into three dependency-ordered increments. Planning does
+not authorize any increment.
+
+#### Increment 10.A — Installed application authority, startup, view models, and launch boundary
+
+**Objective:** establish the generic installed app identity and one read-only
+product-to-application path that later UI work and the future CLI can reuse.
+
+**Scope:** add/catalog the application and presentation authorities; add
+`shiny` and `bslib` as direct `rrpplatform` dependencies; implement exact
+authority loading, optional presentation parsing/default composition,
+application-model construction, pure current/trajectory/summary view models,
+generic shell, bounded startup failures, and the single `rrp_launch_app()`
+export. Keep executable code in installed package modules. Do not yet change
+project templates or claim the final visual experiences.
+
+**Interfaces/contracts changed:** new `rrp.application.supplied@0.1.0` and
+`rrp.project-presentation@0.1.0` authorities plus one public launch operation.
+Package dependencies and namespace grow only as stated. No project, product,
+history, state, materialization, producer, provider, or runtime contract
+changes.
+
+**Historical reuse:** substantially reuse access injection, defensive startup,
+pure view-model, app-object, and zero/failure mechanics; adapt them to current
+contracts and installed package ownership; reject source-tree app sourcing and
+YAML/fictional identity.
+
+**Evidence:** exact app authority/catalog closure; direct dependency and export
+posture; valid/not-evaluated/fresh/stale/empty application-model construction;
+absent/corrupt/incompatible prelaunch failure; pure deterministic view models;
+exact product inventory/version enforcement; app receives no roots/paths/
+handles; generic `shiny.appobj`; supervised loopback start/stop; state-byte and
+call-count nonmutation; parsing, build, isolated install/load, strict check,
+and inherited regressions.
+
+**Explicit exclusions:** no presentation template or initializer inventory
+change, final visual experiences, installed app guide, fictional full
+acceptance, CLI, artifact, or deployment.
+
+**Completion condition:** installed `rrpplatform` can validate one existing
+product realization, construct a generic product-only app object, and launch
+it locally through one stable read-only operation, while invalid inputs start
+no Shiny server.
+
+#### Increment 10.B — Useful core experiences and bounded presentation
+
+**Dependencies:** completed 10.A startup, view-model, and launch boundary.
+
+**Objective:** complete the useful first application and the smallest safe
+hospital-owned visual identity extension.
+
+**Scope:** implement the two-view navigation, Current Risk Pool ranking/search/
+filter/sort/page/selection, episode trajectory hover and observation table,
+scope/current overview, exact freshness/empty/stale treatments, and responsive
+bslib presentation. Add/catalog the standard and fictional presentation
+template records, apply the already governed/defaulted presentation values to
+the completed UI, and update the initializers to seven/eight files without
+changing their six authoring paths.
+
+**Interfaces/contracts changed:** realize the already accepted optional
+nonexecutable presentation file in supplied templates. No new authority,
+public export, or manifest, project API, authoring, product, target, history,
+state, or materialization version change.
+
+**Historical reuse:** retain presentation-only sorting, selection, actual
+point, provider attribution, empty-state, and status ideas; replace raw tabs/
+tables and fictional title with the generic bslib experience and current
+fields. Do not recover generated Hospital app files or a broad theming system.
+
+**Evidence:** exact view-model/component agreement; deterministic filtering/
+paging/selection; all three experiences; two-/one-/zero-point trajectory;
+direct summary calculations and reconciliation; no thresholds/interpolation;
+native hover and Shiny server tests; missing/default/custom/invalid
+presentation behavior; safe color/text treatment; updated initializer exact
+inventories, copied projects, raw-project omission, and no generated app
+source; inherited Stage 8 authoring and Stage 9 product regressions.
+
+**Explicit exclusions:** logo/assets, secondary theme system, custom CSS/HTML/
+code, custom views, project app directory, authentication, app refresh, CLI,
+artifact, or deployment.
+
+**Completion condition:** the same installed application provides the complete
+current-pool, actual-trajectory, and overview experiences under RRP defaults or
+one bounded project presentation record, without changing analytical content
+or application ownership.
+
+#### Increment 10.C — Installed fictional application proof and human guidance
+
+**Dependencies:** completed 10.A–10.B generic app and presentation behavior.
+
+**Objective:** prove the complete Stage 10 exit state through installed
+software and the ordinary fictional project, and document the exact human
+package-level launch boundary.
+
+**Scope:** add one cataloged version-matched Supplied Application Guide; add the
+complete installed non-Git fictional acceptance proof and bounded human UX
+review; update ownership/validators/documentation only for realized behavior;
+make only corrections revealed by the proof.
+
+**Interfaces/contracts changed:** none planned. A newly discovered contract or
+public-interface need must be reconciled explicitly rather than hidden in the
+proof.
+
+**Historical reuse:** adapt useful Phase 6 app initialization, server test,
+zero/failure, and teaching sequence; reject Phase aggregation, repository
+operations, artifact/deployment coupling, and fictional-specific application
+identity.
+
+**Evidence:** the complete 15-point installed proof above; guide resolution and
+agreement; source/package/Rd parsing; exact resource closure; package-native
+application and inherited regressions; dependency-order builds; isolated
+install/load; fresh-process construction; strict checks; unrelated non-Git
+execution; supervised launch cleanup; process/artifact hygiene; both human
+validators; and successful exact-revision hosted workflow before formal Stage
+10 acceptance.
+
+**Explicit exclusions:** CLI/distribution/install, product-only artifact,
+Connect/OCI realization, authentication, remote hosting, deployment,
+publication, support/performance claim, or clinical validation.
+
+**Completion condition:** a human using installed RRP package operations can
+launch the same generic useful supplied app for the ordinary fictional or any
+conforming project with existing validated products, understand its state and
+limited presentation override, and observe no analytical mutation or project-
+owned app source. Formal acceptance/reconciliation remains a separate
+lifecycle action, not Increment 10.D.
+
+### Validation and hosted evidence
+
+The existing human operations remain authoritative:
+
+```sh
+Rscript --vanilla tools/validate-repository.R
+Rscript --vanilla tools/validate-packages.R
+```
+
+Validation grows only for cataloged application/presentation authorities and
+templates/guide, package application/view-model/launcher tests, updated exact
+initializer inventories, installed fictional app proof, Shiny/bslib dependency
+and namespace posture, builds, isolated install/load, strict checks, path/
+privacy/process hygiene, and inherited Stage 8–9 behavior. No application-
+specific framework, Phase suite, browser snapshot system, deployment test, or
+parallel product reader is added.
+
+The existing read-only Ubuntu/R 4.4 `package-foundation` workflow continues to
+invoke those same human operations. CI behavior changes only if the new direct
+application dependencies demonstrate a real provisioning requirement. Formal
+Stage 10 acceptance remains separate after all three increments, bounded human
+review, a successful hosted run for the exact committed complete Stage 10
+implementation, and reconciliation with True North and Platform Architecture.
+
+### Stage 10 acceptance
+
+Stage 10 is complete only when:
+
+1. the supplied application is generic installed RRP software owned by
+   `rrpplatform`, not a fictional or project-owned app;
+2. `rrp.application.supplied@0.1.0` closes application identity, framework,
+   required product compatibility, presentation authority, and read-only
+   posture without duplicating product schemas or artifact concerns;
+3. exactly one public launch operation accepts explicit software/project
+   context, optional paired freshness context, local browser/port controls,
+   starts only on loopback, and is suitable for later CLI wrapping;
+4. startup validates software, project, presentation, current product access,
+   exact three-member inventory/versions, and dependencies before Shiny;
+5. absent, corrupt, incoherent, or incompatible products start no server and
+   return bounded privacy-safe failures without physical fallback;
+6. the app receives one closed detached snapshot and no root, path, connection,
+   writer, project callable, source, provider, or history object;
+7. launch and interaction invoke no producer/provider, build, materialize,
+   retry, correction, source selection, refresh, or state/history mutation;
+8. pure view models remain presentation-only and cannot introduce fallback,
+   interpolation, thresholds, priority, clinical categories, private joins, or
+   new analytical meaning;
+9. Current Risk Pool supplies deterministic risk ranking, exact useful timing
+   and attribution, search/filter/sort/bounded paging, canonical episode
+   selection, lineage/status context, and polished valid-empty behavior;
+10. Episode Risk Trajectory displays only actual governed observations with
+    exact hover/table detail, truthful optional visual connection, and correct
+    two-point, one-point, and no-history behavior;
+11. Overview presents only direct current-risk descriptive summaries and exact
+    operational-scope/outcome reconciliation, with no business KPI or clinical
+    decision semantics;
+12. not-evaluated, fresh, stale, empty, unavailable, integrity-failed, and
+    incompatible states remain visibly and operationally distinct, while valid
+    stale products remain readable;
+13. `rrp.project-presentation@0.1.0` admits only display name and primary color,
+    missing configuration uses immutable defaults, invalid declared content
+    fails startup, and presentation cannot affect product interpretation;
+14. normal and fictional initialization add only the optional presentation
+    record, retain six existing authoring paths, generate no app source, and
+    leave direct raw/existing projects without the file valid;
+15. `shiny` and `bslib` are the only new direct dependencies, remain outside
+    `rrpruntime` and project extensions, and their use is justified by realized
+    application behavior;
+16. executable app code runs from the installed package, cataloged authorities/
+    templates/docs resolve from installed resources, and no runtime repository,
+    Git, working-directory, ambient-library, or sibling checkout dependency
+    exists;
+17. the ordinary fictional proof exercises the exact generic app with actual
+    `0.39` and `0.3833333333333333` observations, exact later current/scope
+    content, one-point and valid-empty sets, freshness states, copying, and
+    bounded denial;
+18. application models, rendered values, diagnostics, and tests retain only
+    canonical/product content and exclude known native IDs, crosswalk,
+    predictor, source, credential, connection, physical path, and database
+    internals;
+19. automated component/server/launch evidence plus bounded human review show
+    a small useful initial experience without making a pixel-perfect,
+    production-accessibility, clinical, performance, or support claim;
+20. repository/package validation, exact catalog closure, parsing, package-
+    native and installed regressions, builds, isolated/fresh-process loading,
+    strict checks, process cleanup, hygiene, and exact committed hosted
+    evidence pass; and
+21. no CLI, distribution, installer, artifact, Connect/OCI target,
+    authentication, remote hosting, deployment, custom app, logo/theming
+    framework, scheduler, production monitoring, or Stage 11–12 behavior enters.
+
+### Relationship to Stages 11 and 12
+
+Stage 10 supplies the installed app, application authority, pure view models,
+programmatic loopback launcher, presentation input, and package-level human
+guide. Stage 11 may expose a CLI command over `rrp_launch_app()` and must close
+the installed distribution, dependency resolution, installation, activation,
+upgrade, and uninstall lifecycle without changing app semantics. Stage 10 does
+not preselect that command syntax or installer.
+
+Stage 12 consumes the accepted installed app and a frozen validated coherent
+product set to build target-neutral product-only artifacts and Posit/OCI
+realizations. It owns standalone artifact inventory, dependency closure,
+entrypoints, self-validation, and target behavior. Stage 10 does not copy its
+app into an artifact or introduce deployment configuration.
 
 ### Major deferrals
 
-Authentication, production authorization, custom apps, application-triggered
-refresh, remote hosting, and deployment-specific behavior remain outside this
-stage.
+Authentication; authorization and roles; production identity management;
+custom hospital apps or executable UI code; logo/media assets; secondary or
+arbitrary theming; custom CSS/HTML; clinical thresholds, priorities, queues,
+recommendations, or hidden filtering; application-triggered build/refresh;
+producer/provider/history execution; scheduler/background work; CLI;
+distribution/installer/upgrade; standalone artifacts; Connect/OCI/remote
+hosting; object-storage product access; deployment; monitoring/telemetry;
+production accessibility certification; performance/SLA/support claims;
+clinical validation; browser/pixel snapshot matrices; and Stage 11–12
+implementation remain outside Stage 10.
+
+No unresolved architectural question blocks 10.A. Planning selected reversible
+package-level choices and deliberately leaves deployment-scale, media, custom-
+app, and operator syntax decisions with their later owners.
 
 ## Stage 11 — CLI, closed distribution, installation, and upgrade
 

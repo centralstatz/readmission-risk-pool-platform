@@ -197,8 +197,8 @@ fictional actual/empty product evidence and Logical Products Guide. Exact
 revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 `package-foundation` run `36922905508`, job `110573063816`, and formal
 reconciliation accepted Stage 9. Stages 1–9 are accepted and complete. Stage
-10, the supplied product-only application, has not begun and requires separate
-detailed planning and authorization.
+10's detailed supplied product-only application plan is prepared, but Stage 10
+implementation has not begun. Increment 10.A requires separate authorization.
 
 ## License
 

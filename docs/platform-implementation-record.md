@@ -4714,3 +4714,140 @@ abstraction, production-support claim, or clinical-validation claim entered.
 
 **Next task:** detail and accept Stage 10 — Supplied product-only application
 before beginning any Stage 10 implementation.
+
+## Stage 10 detailed-plan preparation — 2026-10-02
+
+Detailed Stage 10 planning began from clean committed Stage 9 closeout baseline
+`4f83aca43fe6126dadc12a746c466c14abc04d74`. Stages 1–9 were accepted and
+complete; no application, Shiny dependency, launcher, presentation authority,
+project presentation file, application test, or Stage 10 implementation
+existed.
+
+Planning reread the active authority chain and reconciled the accepted Stage 9
+product contracts, DCF/CSV materialization/access authority, detached access
+object, Logical Products Guide, project/authoring contracts and templates,
+package topology, ownership map, fictional product proof, and Stage 8–9
+implementation evidence. The detailed plan preserves governed history as
+analytical authority and makes validated logical product access the sole input
+to the supplied application.
+
+The plan corrects the former fictional-app shorthand. The supplied app is
+generic installed RRP software owned by `rrpplatform`; the fictional project is
+only its controlled acceptance environment. Executable app, startup,
+view-model, component, and launch code will install as ordinary package code.
+No app source is generated or copied into an independent project, and no
+separate package or repository is justified.
+
+The settled programmatic boundary is one future export,
+`rrp_launch_app(software_catalog, project_root,
+expected_operation_run_id = NULL, history_cutoff = NULL,
+launch_browser = interactive(), port = NULL)`. It will bind only to loopback,
+open existing validated products, construct one detached closed application
+model, and invoke Shiny. Expected startup failures return bounded common
+operation results before a server starts. Launch never produces, admits,
+estimates, retries, corrects, builds, materializes, refreshes, or mutates
+analytical state. Optional freshness context delegates unchanged Stage 9
+semantics; without it the app truthfully reports `not-evaluated`.
+
+One planned installed `rrp.application.supplied@0.1.0` authority will govern
+app identity, framework, exact required product-set/member compatibility,
+presentation authority, and read-only posture without duplicating product
+schemas or artifact concerns. One optional project-root
+`rrp-presentation.dcf`, governed by
+`rrp.project-presentation@0.1.0`, will contain only bounded display name and
+canonical primary color. Missing means immutable RRP defaults; invalid declared
+content fails startup. Logo/media, secondary palettes, CSS/HTML/code, clinical
+thresholds, filters that change meaning, and custom application modules are
+excluded.
+
+The optional presentation record does not change the `rrp.project@0.3.0`
+manifest, `rrp.project-api@0.3.0`, registration, or the six paths governed by
+`rrp.project-authoring@0.1.0`. The standard and fictional initializers will
+eventually add the discoverable record as their seventh and eighth files;
+existing and direct-raw projects may omit it and remain valid. Hospitals own
+only this bounded presentation input, not supplied application code or product
+interpretation.
+
+The app design has two top-level views. **Current Risk Pool** ranks current
+accepted estimates, provides canonical-episode search/filter/sort/bounded
+paging and selection, and opens episode detail. The detail shows only actual
+governed trajectory observations through native Shiny hover and an exact table;
+an optional thin dashed connector is explicitly non-interpolating. **Overview**
+shows only direct descriptive current-risk statistics and exact operational-
+scope/outcome reconciliation. No baseline, replay, interpolation, risk class,
+threshold, priority, recommendation, decision queue, or new patient/private
+field is introduced.
+
+Startup behavior is explicit. Valid empty products launch a polished normal
+empty application. Valid stale products remain readable with a persistent
+warning. Fresh and not-evaluated are distinct. Absent, corrupt, incoherent, or
+incompatible products and invalid presentation stop before Shiny, preserve
+validated-access denial, and expose no product rows. Products are loaded once
+as a detached startup snapshot; reactivity is presentation-only and relaunch is
+required to observe another current materialization.
+
+The direct dependency decision is limited to `shiny` and `bslib` under
+`rrpplatform`. Shiny owns server/reactivity/native controls, tables, base-plot
+hover, and test-server evidence; bslib owns responsive navigation/cards/theme
+composition and the bounded primary-color override. DT, reactable, Plotly,
+ggplot2, dashboard frameworks, and broad theming are rejected as unnecessary
+for the accepted initial interactions. `rrpruntime` remains application-free.
+
+Bounded immutable `v0.1.0` reconnaissance inspected
+`app/application.yml`, `app/R/app-init.R`, `app/R/view-models.R`,
+`app/R/app.R`, `app/app.R`, `docs/architecture/reference-application.md`,
+product access, Phase 6 materialized-product/app tests, and relevant reduced
+artifact runtime. The plan substantially reuses product-access injection,
+defensive compatibility checks, single detached load, pure presentation view
+models, descending-risk display without priority meaning, canonical selection,
+actual points, provider attribution, empty/unavailable behavior, and
+app-object/server tests. It adapts those ideas to current cumulative-risk
+products, generic installed package ownership, bslib, contextual freshness,
+useful summaries, native hover, and bounded presentation. It rejects
+repository/source-tree loading, YAML/physical parsing in UI, fictional app
+identity, generated Hospital app source, materialize-on-launch, direct
+history/DuckDB access, analytical execution, old estimand/daily-hazard
+semantics, and artifact/deployment coupling.
+
+Stage 10 is detailed as three separately authorizable increments:
+
+1. **10.A — Installed application authority, startup, view models, and launch
+   boundary** establishes both planned authorities, two direct dependencies,
+   optional-presentation parsing/defaults, pure model, generic shell, one
+   export, prelaunch failures, and read-only launch proof.
+2. **10.B — Useful core experiences and bounded presentation** completes the
+   Current Risk Pool, episode trajectory, Overview, exact state UX, optional
+   presentation authority/templates, and seven/eight-file initializer
+   evolution without changing authoring or project contracts.
+3. **10.C — Installed fictional application proof and human guidance** adds the
+   version-matched guide, complete installed non-Git generic/reference proof,
+   bounded human UX review, and exact-revision hosted evidence before separate
+   formal Stage 10 acceptance.
+
+The accepted proof strategy covers installed resolution, generic and copied
+projects, exact current/two-point/one-point/empty behavior, summary
+reconciliation, not-evaluated/fresh/stale states, absent/corrupt/incompatible
+denial, default/custom/invalid presentation, pure view-model and
+`shiny::testServer()` interaction evidence, supervised loopback launch cleanup,
+privacy/source-boundary scans, and byte/count evidence that app preparation and
+interaction do not mutate source, history, state, or products. Pixel-perfect
+browser snapshots are not required.
+
+Authentication/authorization, logo/media and broad theming, custom hospital
+apps, app-triggered refresh or analytical execution, scheduler, CLI,
+distribution/install/upgrade, target-neutral artifacts, Connect/OCI/remote
+hosting, object storage, deployment, monitoring, performance/SLA/support,
+production accessibility certification, and clinical validation remain
+deferred to later owners or future evidence.
+
+This planning task changed documentation only. It introduced no application
+source, package dependency, export, contract resource, template, project file,
+test, validator, workflow, or generated artifact.
+
+**Current implementation state:** Stages 1–9 remain accepted and complete.
+The Stage 10 detailed plan is prepared and internally reconciled; Stage 10
+implementation has not begun.
+
+**Next task:** human review of the detailed Stage 10 plan, followed—only when
+separately authorized—by Increment 10.A. Do not begin 10.B or 10.C with that
+authorization.
