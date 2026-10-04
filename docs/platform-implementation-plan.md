@@ -6141,9 +6141,11 @@ and requires separate detailed planning and authorization.
 ## Stage 10 — Supplied product-only application
 
 **Planning status:** detailed and internally reconciled on 2026-10-02 from the
-accepted Stage 9 baseline, then revised the same day to establish the initial
-Shiny, bslib, and Plotly UI foundation. Implementation has not begun. The
-increments below are separately authorizable, beginning with 10.A.
+accepted Stage 9 baseline, revised on 2026-10-02 to establish the initial
+Shiny, bslib, and Plotly UI foundation, and revised again on 2026-10-04 for
+Reactable, standard `_brand.yml`, and bounded installed frontend assets.
+Implementation has not begun. The increments below are separately
+authorizable, beginning with 10.A.
 
 ### Objective and exit state
 
@@ -6165,9 +6167,10 @@ limited product surface does not justify a technical demonstration or default-
 widget experience: within the accepted scope, information hierarchy,
 responsive layout, typography, spacing, cards, controls, states, tables, and
 interactive graphics must form one intentionally polished modern analytical
-product. This quality intent does not authorize a broad design system, custom
-JavaScript or CSS architecture, animation framework, or general theming
-engine.
+product. This quality intent permits bounded RRP-owned installed CSS and, only
+when a concrete selected-component interaction requires it, JavaScript. It
+does not authorize a broad design system, JavaScript application, animation
+framework, or general theming engine.
 
 > The supplied application presents the validated remaining-risk products of
 > an RRP project without querying hospital sources, executing risk providers,
@@ -6209,28 +6212,28 @@ can wrap a real stable application instead of inventing its lifecycle.
 | Question | Detailed-plan decision |
 |---|---|
 | 1. Installed source owner | `rrpplatform` owns executable application, view-model, startup, and launch code as ordinary installed package R code. No separate package, repository, or project app tree is introduced. |
-| 2. Application identity | Add one installed `rrp.application.supplied@0.1.0` DCF authority because startup, later artifacts, and compatibility need a stable app identity. It governs required product contracts, the Shiny/bslib/Plotly UI foundation, presentation authority, and read-only posture; the installed implementation remains attributable to the `rrpplatform` package version. |
+| 2. Application identity | Add one installed `rrp.application.supplied@0.1.0` DCF authority because startup, later artifacts, and compatibility need a stable app identity. It governs required product contracts, the Shiny/bslib/Plotly/Reactable component foundation, RRP-owned installed presentation assets, brand-interpretation authority, and read-only posture; the installed implementation remains attributable to the `rrpplatform` package version. |
 | 3. Programmatic launch | Export exactly one new operation, `rrp_launch_app()`, with the signature settled below. No CLI is added. |
-| 4. Pre-Shiny validation | Revalidate software authority, project, optional presentation, current materialization/access, exact product inventory/versions, coherent set, and direct app dependencies before starting Shiny. |
+| 4. Pre-Shiny validation | Revalidate software authority, project, optional standard branding and contained assets, current materialization/access, exact product inventory/versions, coherent set, and direct app dependencies before starting Shiny. |
 | 5. Launch input | The public operation receives an explicit software catalog and project root, plus an optional paired expected operation-run/history-cutoff freshness context. It does not accept arbitrary product frames or physical paths. |
 | 6. App data input | Platform startup opens validated access once and injects only a detached closed application model into the app constructor. UI/server code receives neither project root nor software catalog. |
-| 7. View-model boundary | Pure package functions read the three logical members and perform only ordering, formatting, paging, direct descriptive aggregation, selection, and deterministic chart- and tooltip-ready shaping. They do not alter product meaning. |
+| 7. View-model boundary | Pure package functions read the three logical members and perform only ordering, formatting, paging, direct descriptive aggregation, selection, and deterministic table-, sparkline-, chart-, and tooltip-ready shaping. They do not alter product meaning. Standard branding is separately adapted into a closed detached presentation model before component rendering. |
 | 8. Initial views | Two top-level views: **Current Risk Pool** and **Overview**. Episode detail and trajectory appear from selection within Current Risk Pool rather than as a third global area. |
 | 9. Episode selection | Search/filter/sort a bounded current-risk table and provide one synchronized selector over the union of current and retained-trajectory canonical episode IDs, with current episodes first. This keeps historical-only trajectories discoverable without introducing a patient/native identifier. |
 | 10. Plotting technology | Use Plotly as the presentation-only interactive graphics renderer. Episode trajectory points and deliberately formatted tooltips correspond only to actual governed observations. A restrained connector may show observation order but is explicitly non-interpolating; Plotly never receives project, access, history, or analytical infrastructure. |
-| 11. Table technology | Use native Shiny controls and table rendering with server-side search, sort, and bounded paging. No DT/reactable dependency is justified for the initial field set and interactions. |
-| 12. Descriptive summaries | Direct count, minimum, maximum, median, quartiles, and distribution of accepted current estimates; scope membership and accepted/failure/ineligibility counts; and the existing ineligibility subcounts. No threshold, priority, category, recommendation, or inferred outcome is allowed. |
+| 11. Table technology | Use Reactable as the RRP-owned interactive operational-table foundation for Current Risk Pool, with deliberate cell/control styling, deterministic search/filter/sort/paging/selection, and actual-observation sparklines. Do not add DT or expose arbitrary project table schemas/renderers. |
+| 12. Descriptive summaries and risk encoding | Direct count, minimum, maximum, median, quartiles, and distribution of accepted current estimates; scope membership and accepted/failure/ineligibility counts; and the existing ineligibility subcounts. A direct monotonic continuous visual encoding of accepted probability is permitted when exact numeric probability remains visible and color is not the sole signal. No threshold, bin, named risk category, priority, recommendation, or inferred outcome is allowed. |
 | 13. Product states | Valid empty is a normal polished app state; absent, corrupt, or incompatible products fail before Shiny; stale remains readable with a prominent warning; not-evaluated is shown neutrally and never called fresh. |
 | 14. Stale launch | Yes. A valid stale set launches normally with its original lineage and a persistent stale status treatment. It is never auto-refreshed. |
-| 15. Presentation configuration | Add one optional closed project-owned presentation record with only display name and primary accent color. |
-| 16. Presentation location | Exact root path `rrp-presentation.dcf`, separate from executable authoring and state. Missing means RRP defaults. |
-| 17. Initial fields | `Display-Name` and `Primary-Color`, plus record/contract identity. Values are bounded plain text and canonical `#RRGGBB`; no HTML, CSS, URL, code, secrets, or clinical configuration. |
-| 18. Default composition | Validate an existing record and overlay its two values on immutable RRP defaults; absence returns defaults. Invalid or unsupported content fails startup rather than silently falling back. |
-| 19. Logo support | Deferred. Safe asset containment, media validation, artifact inclusion, and hosting behavior are disproportionate to Stage 10's first extension point. |
-| 20. Project-contract effect | The manifest/project API and six authoring paths remain `0.3.0`/`0.1.0`. The presentation record is optional, nonexecutable, and governed by its own authority. Standard and fictional initializers add the discoverable file, becoming seven- and eight-file realizations, while existing/direct-raw projects without it remain valid. |
+| 15. Branding input | Use one optional standard project-root `_brand.yml`; do not retain `rrp-presentation.dcf` or define an RRP-specific branding syntax. RRP consumes it through appropriate existing Posit branding tooling identified during 10.A reconnaissance. |
+| 16. Brand interpretation | Add `rrp.project-brand@0.1.0` to govern RRP's supported interpretation, defaults, containment, closed-model conversion, and failure policy—not the external `_brand.yml` schema. Valid unsupported concepts are ignored; malformed branding fails startup. |
+| 17. Initial supported concepts | Resolve the actual standard fields/API in 10.A, then interpret only organization/display identity where the standard supplies a suitable concept, primary brand color, and one bounded project-local logo suitable for app identity/header treatment. Do not invent an RRP field when the standard differs. |
+| 18. Default composition | Absence returns immutable RRP defaults. Supported standard concepts overlay only their bounded presentation roles. Branding cannot alter analytical meaning, filtering, product content, freshness, runtime, or behavior. |
+| 19. Logo and assets | Support one standard `_brand.yml` logo role when a suitable upstream representation exists. The asset must be safely contained in the project; absolute paths and remote runtime dependencies are rejected. Exact project-local containment and initializer inventory are settled in 10.A from actual upstream semantics. |
+| 20. Project-contract effect | The manifest/project API and six authoring paths remain `0.3.0`/`0.1.0`. `_brand.yml` and a contained logo asset where used are optional, declarative, and governed by the independent RRP interpretation authority. Standard and fictional initializers make the supported input discoverable; exact new inventories follow 10.A reconnaissance rather than a speculative file count. Existing/direct-raw projects without branding remain valid. |
 | 21. Product compatibility | The app authority requires the exact initial product-set and all three member contracts at `0.1.0`; startup verifies exact inventory and versions through public logical access. Unsupported evolution fails closed until a new app contract supports it. |
 | 22. Repository-independent tests | Build and install packages/resources into temporary roots, initialize/copy an ordinary project outside Git, and construct the app only through installed code and validated access. |
-| 23. Application evidence | Pure view-model and chart-data tests, UI/tag structure checks, `shiny::testServer()` interaction tests, Plotly widget/data inspection, and one supervised child-process loopback launch/termination smoke test. Qualitative polish receives bounded human review; no pixel-perfect browser or rendered-output snapshots are required. |
+| 23. Application evidence | Pure table/sparkline/chart/tooltip view-model tests, Reactable and Plotly widget/data inspection, UI/tag structure checks, `shiny::testServer()` interaction tests, installed-asset and standard-branding proof, and one supervised child-process loopback launch/termination smoke test. Qualitative polish receives bounded human review; no pixel-perfect browser or rendered-output snapshots are required. |
 | 24. Acceptance | All three increments, installed generic/reference proof, exact state handling, analytical nonmutation, package checks, and exact committed hosted evidence pass, followed by separate formal Stage 10 reconciliation. |
 | 25. Later-stage boundary | Stage 11 owns CLI/distribution/install/upgrade; Stage 12 owns frozen product-only artifacts and target realizations. Stage 10 adds neither. |
 
@@ -6243,14 +6246,16 @@ package would add distribution and dependency boundaries without providing an
 independent extension or lifecycle, so it is rejected.
 
 The intended source ownership is package R modules for application contracts,
-startup, view models, components, and launch. Those files install through the
-ordinary R package mechanism; they are never sourced from the development
-repository or copied into a project. Stage 10 needs no custom JavaScript,
-image, font, or CSS asset directory: Shiny and `bslib` supply the application
-shell and Plotly supplies interactive analytical graphics. The application
-and presentation DCF authorities,
-presentation templates, and final human guide remain cataloged installed
-software resources under their existing owners.
+startup, view models, components, and launch, plus bounded application-owned
+web assets installed with `rrpplatform`. RRP may ship CSS needed to integrate
+the bslib shell, Reactable table, Plotly graphics, branding, and application
+states into one visual language. JavaScript is permitted only when a concrete
+interaction cannot reasonably be realized through the selected R/Shiny
+component stack. These assets are RRP implementation, never hospital-owned
+executable customization. They are never sourced from the development
+repository or copied into a project. The application and brand-interpretation
+authorities, branding templates/assets, RRP web assets, and final human guide
+remain cataloged installed software resources under their existing owners.
 
 ```text
 installed RRP software
@@ -6258,54 +6263,89 @@ installed RRP software
 ├── rrpplatform
 │   ├── validated product access
 │   ├── app startup + view models
-│   ├── supplied Shiny UI/server
+│   ├── supplied Shiny/bslib UI/server
+│   ├── Reactable + Plotly components
+│   ├── installed RRP CSS + justified JS
 │   └── programmatic launcher
 └── installed authorities/docs/templates
 
 independent project
 ├── existing authoring/registration files
-├── optional rrp-presentation.dcf   presentation only
+├── optional _brand.yml            declarative branding only
+├── optional contained logo asset  bounded branding input
 └── state/products                  validated input, not app source
 ```
 
 Project copying changes neither application source nor identity. An RRP
 software upgrade can replace the supplied application without rewriting a
-project. Stage 10 does not establish custom app source or arbitrary hospital
-UI execution as an extension boundary.
+project. Hospital projects may provide standard `_brand.yml` and its accepted
+contained logo, but no arbitrary CSS, JavaScript, HTML, Shiny modules,
+component configuration, Plotly configuration, Reactable renderers, or other
+executable UI hooks. Stage 10 does not establish custom app source or arbitrary
+hospital UI execution as an extension boundary.
 
-### Application and presentation authorities
+### Application and brand-interpretation authorities
 
 Add cataloged `rrp.application.supplied@0.1.0`. Its closed DCF record names the
 application owner/UI foundation, required
 `rrp.product-set.initial-readmission-risk@0.1.0`, the exact three product
-members at `0.1.0`, `rrp.project-presentation@0.1.0`, and the requirements for
-validated detached access and analytical read-only startup. It does not
-duplicate product fields, encode UI layout, freeze package dependency
-versions, or become an artifact/deployment manifest.
+members at `0.1.0`, the Shiny/bslib/Plotly/Reactable component foundation,
+`rrp.project-brand@0.1.0`, RRP-owned installed web assets where required, and
+the requirements for validated detached access and analytical read-only
+startup. It does not duplicate product fields, reproduce the external branding
+schema, encode CSS selectors or component styling constants, freeze package
+versions, prescribe the sparkline renderer, or become an artifact/deployment
+manifest.
 
-Add cataloged `rrp.project-presentation@0.1.0`. Its optional project record is
-exactly one plain DCF record at `rrp-presentation.dcf` with:
+Add cataloged `rrp.project-brand@0.1.0`. It governs RRP's interpretation of an
+optional standard project-root `_brand.yml`, not the standard branding
+specification itself. It defines:
 
-- `Record-Type`, `Presentation-Contract-ID`, and
-  `Presentation-Contract-Version` fixed by authority;
-- one bounded printable UTF-8 `Display-Name`, with no control characters,
-  markup, leading/trailing whitespace, or confidential content; and
-- one canonical six-digit hexadecimal `Primary-Color`.
+- the exact project-local discovery location;
+- use of appropriate existing Posit branding parsing/validation tooling rather
+  than a parallel YAML parser or RRP-owned branding schema;
+- the small RRP 1.0 supported concept set and immutable defaults;
+- conversion into a closed detached RRP presentation model;
+- project-local logo containment and validation;
+- safe failure for malformed branding and ignoring valid unsupported concepts;
+  and
+- the prohibition on branding changing analytical or application behavior.
 
-The RRP defaults are the product name and one accessible RRP primary color.
-Presentation never controls target meaning, eligibility, thresholds, filters,
-fields, products, provider selection, calculations, refresh, or executable
-content. A supplied initializer creates the small record so the extension
-point is visible; direct raw and pre-Stage-10 projects may omit it and receive
-defaults. Color is composed through bslib contrast behavior and is never the
-sole signal for freshness, failure, or selection state. Adding this independent
-optional file changes initializer inventory and template/catalog evidence only.
-It does not change `rrp.project@0.3.0`,
+Increment 10.A reconnaissance must confirm the actual upstream package/API and
+standard field names before implementation. The intended initial concepts are
+organization/display identity or the closest suitable standard metadata,
+primary brand color, and one standard logo role suitable for the app header.
+If no suitable standard display-identity concept exists, RRP documents the
+actual supported mechanism rather than inventing a proprietary field. A logo
+must resolve within the project under explicit safe containment rules; remote
+runtime assets and absolute filesystem paths are not accepted. The exact
+contained project location and initializer inventory follow that
+reconnaissance rather than this plan guessing the external schema.
+
+Absent `_brand.yml` produces the RRP product name, accessible default theme,
+and default identity treatment. A richer valid standard file may contain
+concepts RRP does not yet interpret; those concepts do not expand behavior and
+do not fail merely for being unsupported. Malformed branding or an invalid/
+unsafe supported value fails before app construction. Supported branding may
+influence identity, primary accent, logo, bslib theme composition, and bounded
+Reactable/Plotly/RRP-CSS styling. It never controls target meaning,
+eligibility, probability semantics, thresholds, filters, hidden rows,
+products, provider/source selection, calculations, freshness, refresh, or
+runtime behavior.
+
+Brand color and analytical probability encoding remain distinct. RRP may
+harmonize them visually, but a project's primary color never defines the
+direction or meaning of the probability scale. Exact probability remains text,
+and freshness, failure, selection, and risk remain understandable without
+color alone.
+
+Adding optional standard branding changes initializer inventory and cataloged
+template/asset evidence only. It does not change `rrp.project@0.3.0`,
 `rrp.project-api@0.3.0`, registration, or
-`rrp.project-authoring@0.1.0`'s six executable/documentation paths.
-
-Logo, secondary palette, custom CSS, custom text blocks, arbitrary navigation,
-and executable UI modules are excluded from version `0.1.0`.
+`rrp.project-authoring@0.1.0`'s six executable/documentation paths. Broad
+typography, secondary/tertiary palettes, component-specific color settings,
+custom text/navigation/layout, hospital CSS/HTML/JavaScript, and executable UI
+modules remain excluded from version `0.1.0`.
 
 ### Programmatic launch and startup
 
@@ -6332,9 +6372,9 @@ loopback; public host/network exposure is not configurable here.
 Startup performs this sequence before `shiny::runApp()`:
 
 ```text
-validate installed app/product/presentation authority
+validate installed app/product/brand-interpretation authority and assets
         ↓
-validate explicit project and optional presentation
+validate explicit project and optional standard branding/contained logo
         ↓
 open current products through rrp_open_product_access()
         ↓
@@ -6355,11 +6395,13 @@ success only after a successfully started app session exits normally. A
 missing direct dependency is detected before startup. Unexpected package
 defects remain visible under existing diagnostic policy.
 
-The internal constructor accepts only the closed application model. It has no
-catalog, root, path, DBI handle, product writer, or project callable. Products
-are read once at startup into a detached snapshot; Shiny reactivity changes
+The internal constructor accepts only the closed application model, including
+separate detached analytical and presentation parts. It has no catalog, root,
+path, DBI handle, product writer, or project callable. Products are read once
+at startup into a detached snapshot; supported branding is parsed and reduced
+to the closed presentation model before construction. Shiny reactivity changes
 selection and presentation only. Re-launch is the explicit way to pick up a
-new current materialization.
+new current materialization or project-local branding change.
 
 Launching may execute the already accepted trusted project-registration load
 inside platform access, but it invokes no producer or provider. Tests prove
@@ -6373,24 +6415,27 @@ not misrepresented as a security sandbox.
 The application boundary is:
 
 ```text
-rrp_product_access
-        ↓ exact logical reads
-closed detached application snapshot
-        ↓ pure presentation transforms
+rrp_product_access              supported project branding
+        ↓ exact logical reads             ↓
+closed detached product snapshot   closed detached presentation model
+                 ↓                              ↓
+          pure presentation transforms and composition
+                 ↓
 current-pool / episode / overview view models
-        ↓ chart-ready presentation data
-Shiny/bslib components, Plotly renderers, and selection state
+                 ↓ table/sparkline/chart/tooltip-ready data
+Reactable + Plotly inside bslib, RRP assets, and Shiny selection state
 ```
 
 Product access owns integrity, compatibility, coherence, detachment, and
 freshness. View models own deterministic display ordering, bounded paging,
 string search over canonical episode identity, exact provider/model filters,
-probability/time formatting, direct descriptive summaries, chart-ready rows,
-deliberately formatted tooltip-ready values, the union of current and retained-
-trajectory episode choices, and selected-episode state. UI/server owns
-controls, reactive selection, rendering, and status communication. Plotly
-receives only this detached presentation data and remains replaceable without
-changing analytical or product contracts.
+probability/time formatting, direct descriptive summaries, table-ready rows,
+actual-observation sparkline data, chart-ready rows, deliberately formatted
+tooltip-ready values, optional deterministic continuous probability encoding,
+the union of current and retained-trajectory episode choices, and selected-
+episode state. UI/server owns controls, reactive selection, rendering, and
+status communication. Reactable and Plotly receive only detached presentation
+data and remain replaceable without changing analytical or product contracts.
 
 The view-model layer may derive elapsed/remaining follow-up context only from
 the supplied analytical and target-interval timestamps and must label the
@@ -6406,21 +6451,40 @@ data, reinterpret failure, or call an analytical operation.
 This is the landing view. It answers: **Who currently has the highest accepted
 remaining readmission risk?**
 
-The view presents current rows in descending `estimate_value`, with stable
-canonical episode tie-breaking. It displays canonical episode ID, formatted
-probability, analytical as-of time, target endpoint/follow-up context, and
-provider/model attribution where present. It includes episode-ID search,
-exact provider/model filtering when meaningful, explicit sort choice, a
-bounded page/window with displayed/total counts, and a synchronized episode
-selector. The selector includes retained-trajectory episodes that have no
-current estimate, labels their noncurrent state, and lists current episodes
-first. Sorting is presentation only and is labeled as neither priority nor a
-clinical recommendation.
+Reactable presents current rows in descending `estimate_value`, with stable
+canonical episode tie-breaking. It displays canonical episode ID, exact
+formatted probability, analytical as-of time, target endpoint/follow-up
+context, provider/model attribution where present, and one compact truthful
+trajectory sparkline. It includes episode-ID search, exact provider/model
+filtering when meaningful, explicit sorting, bounded paging/window behavior,
+displayed/total counts, row selection, and a synchronized episode selector.
+The selector includes retained-trajectory episodes that have no current
+estimate, labels their noncurrent state, and lists current episodes first.
+Sorting is presentation only and is labeled as neither priority nor a clinical
+recommendation.
 
-This remains primarily an operational ranked/list experience. Plotly is not
-forced into it merely because the dependency is available; a graphical element
-belongs here only if it materially improves comprehension without introducing
-new meaning.
+Each sparkline contains only that episode's actual governed trajectory
+observations in their real order. It never synthesizes daily values,
+interpolates analytical estimates, invents a discharge baseline, carries a
+prior value forward, replays a provider, or implies continuous monitoring. One
+actual observation is a valid intentional one-point sparkline; no observation
+produces an explicit unavailable/no-history state. The sparkline is a scanning
+aid, not another product or a replacement for the full Plotly detail. Its exact
+renderer is an implementation choice within the accepted stack; Stage 10 adds
+no dependency solely for sparklines without demonstrated need.
+
+The exact numeric probability always remains visible. A cell may additionally
+use a deterministic continuous intensity, bar, accent, or comparable encoding
+that maps directly and monotonically from the accepted probability. It may not
+introduce a cutoff, bin, named class, recommendation, or sole color-only signal,
+and the hospital brand color does not define its semantic scale.
+
+This is a deliberately styled RRP operational experience, not a generic data-
+grid framework. Density, headers, typography, alignment, numeric formatting,
+selection/hover, risk emphasis, sparkline sizing, pagination, responsiveness,
+empty states, provider/model display, and bslib-card integration must form the
+same visual language as the Plotly detail. DT, arbitrary hospital table
+schemas, and project-defined cell renderers are excluded.
 
 Selecting an episode opens an adjacent/detail region without another product
 read. That region supplies exact current lineage and the trajectory experience
@@ -6494,44 +6558,66 @@ performance evaluation.
 | Products absent | Return bounded `application_products_unavailable` startup failure, no server, and guidance that products must be built/materialized separately. |
 | Corrupt/incoherent | Preserve validated-access denial, return bounded `application_product_integrity_failed`, and expose no rows. |
 | Incompatible contract | Return bounded `application_products_incompatible`, start no server, and do not parse physical files directly. |
-| Presentation absent | Compose exact RRP defaults and launch normally. |
-| Presentation malformed/unsupported | Return bounded `application_presentation_invalid`, start no server, and do not silently discard the declared override. |
-| Shiny/bslib/Plotly unavailable | Return bounded `application_dependency_unavailable` before construction; package installation/check evidence should normally prevent this state. |
+| `_brand.yml` absent | Compose exact RRP presentation defaults and launch normally. |
+| Valid branding with unsupported concepts | Ignore unsupported concepts, apply only the declared RRP subset, and launch normally. |
+| Branding malformed or supported logo/value unsafe | Return bounded `application_brand_invalid`, start no server, and do not silently apply invalid supported input. |
+| Required application/branding dependency unavailable | Return bounded `application_dependency_unavailable` before construction; package installation/check evidence should normally prevent this state. |
 
 No state triggers product creation, materialization, repair, retention cleanup,
 history access by the UI, or analytical execution.
 
 ### Dependency decision
 
-Add only `shiny`, `bslib`, and `plotly` as direct `rrpplatform` application
-imports. Shiny owns application lifecycle, reactivity, controls, selection,
-local serving, server behavior, native tables, and test-server support.
+Add `shiny`, `bslib`, `plotly`, and `reactable` as direct `rrpplatform`
+application dependencies. Shiny owns application lifecycle, reactivity,
+controls, selection, local serving, server behavior, and test-server support.
 `bslib` owns the responsive shell, navigation, cards/panels, summary
 presentation, theme composition, status treatment, and bounded primary-color
-override. Plotly earns a direct declaration because point-native hover,
+integration. Plotly earns a direct declaration because point-native hover,
 responsive interaction, deliberate marker/line styling, configurable axes and
 labels, and controlled modebar behavior are core to presenting longitudinal
-remaining-readmission-risk trajectories at product quality. Native Shiny plot-
-coordinate hover does not provide the intended analytical interaction or
-polish.
+remaining-readmission-risk trajectories at product quality. Reactable earns a
+direct declaration because Current Risk Pool is a primary operational product
+experience requiring responsive deterministic search/filter/sort/paging/
+selection, deliberate cell presentation, and compact trajectory context rather
+than incidental raw table output.
 
-Plotly is presentation-only: validated products become a closed detached
-application snapshot, pure view models produce chart-ready data, and only that
-data reaches the renderer. Plotly has no project-root, product-access, physical-
-file, history, DuckDB, producer/provider, construction, materialization, or
-hospital-source knowledge. Base R still performs view-model transforms and
-descriptive statistics. Do not add DT, reactable, ggplot2, dashboard
+Use the narrow existing Posit branding dependency/API actually required to
+parse and validate standard `_brand.yml`; 10.A reconnaissance must confirm the
+mechanism rather than this plan guessing a package relationship or freezing an
+unnecessary dependency. RRP adapts the validated upstream representation into
+its closed presentation model and does not implement a parallel YAML parser or
+branding specification.
+
+Plotly and Reactable are presentation-only: validated products become a closed
+detached application snapshot, pure view models produce component-ready data,
+and only that data reaches the renderers. They have no project-root, product-
+access, physical-file, history, DuckDB, producer/provider, construction,
+materialization, or hospital-source knowledge. Base R still performs view-
+model transforms and descriptive statistics. Do not add DT, ggplot2, dashboard
 frameworks, broad theming systems, Highcharter/Highcharts, or arbitrary
 JavaScript visualization libraries without another concrete requirement.
-Highcharts-based rendering is deliberately not selected for this potentially
-distributed/commercial hospital product; Plotly is the preferred open initial
-visualization foundation, without making licensing analysis part of Stage 10.
-Exact dependency versions and transitive closure remain later distribution
-evidence; the package declares direct semantic dependencies now.
+Highcharts-based rendering remains unselected for this potentially distributed/
+commercial hospital product. Exact dependency versions and transitive closure
+remain later distribution evidence; direct semantic dependencies are declared
+when implemented.
 
+The frontend responsibility split is:
+
+```text
+Shiny                 lifecycle, reactivity, controls, local serving
+bslib                 responsive shell, layout, cards, theme composition
+Reactable             interactive operational Current Risk Pool table
+Plotly                 detailed interactive analytical graphics
+RRP installed assets  bounded coherent styling and justified interaction
+```
+
+RRP-owned CSS is an accepted implementation capability. JavaScript is added
+only for a concrete unmet interaction, not because an asset mechanism exists.
+Neither becomes a hospital extension seam or standalone frontend framework.
 `rrpruntime` remains free of application dependencies. Project extension
 libraries do not supply application packages or override RRP's installed
-Shiny/bslib/Plotly closure.
+application or branding dependency closure.
 
 ### Fictional reference and installed acceptance proof
 
@@ -6542,12 +6628,12 @@ That setup is evidence preparation, not launcher behavior.
 
 Evidence must prove:
 
-1. the generic app contract, presentation contract, templates, and guide
-   resolve from installed software, while executable app code resolves from
-   the installed `rrpplatform` namespace;
-2. the normal initialized project has seven files and the fictional project
-   eight, with only `rrp-presentation.dcf` added and no `app/`, `app.R`, UI,
-   module, `www`, or application source;
+1. the generic app and brand-interpretation contracts, branding templates,
+   RRP web assets, and guide resolve from installed software, while executable
+   app code resolves from the installed `rrpplatform` namespace;
+2. normal and fictional initialization add the exact accepted `_brand.yml` and
+   contained logo inputs established by 10.A–10.B, with no `app/`, `app.R`, UI,
+   module, `www`, arbitrary CSS/JS/HTML, or application source;
 3. app startup uses only `rrp_open_product_access()`, `rrp_list_products()`,
    and `rrp_read_product()` at the boundary and does not invoke build,
    materialize, producer, provider, durable execution, retry, or correction;
@@ -6555,42 +6641,53 @@ Evidence must prove:
    `0.3833333333333333`, its two actual observations `0.39` and
    `0.3833333333333333`, and the exact four-member scope accounting without a
    fictional branch;
-5. current ranking/search/sort/paging and selection are deterministic;
-6. trajectory Plotly data and tooltip/table values contain only the two actual
-   governed observations, while a separately materialized first-scope set
-   proves intentional one-point behavior and no-history fabricates no chart
-   data;
+5. Reactable ranking/search/filter/sort/paging and row/episode selection are
+   deterministic; displayed probabilities remain exact; any continuous
+   encoding is monotonic, noncategorical, and not the sole signal;
+6. per-row sparklines and full Plotly trajectory/tooltip/table data contain only
+   actual governed observations, while separately materialized first-scope and
+   no-history cases prove intentional one-point and unavailable behavior
+   without fabricated points;
 7. direct current-risk summaries and exact operational counts reconcile;
 8. the pre-discharge zero-member set produces the complete normal empty UX;
 9. not-evaluated, fresh, and stale statuses are visibly distinct and stale
    content remains readable;
 10. absent products fail boundedly; disposable corrupt and incompatible copies
     are denied before Shiny construction;
-11. a project without presentation uses RRP defaults, the fictional bounded
-    override changes only display name/color, and malformed/unsupported
-    presentation fails safely;
-12. fresh-process construction and one supervised loopback launch/termination
-    work from installed software after copying the project;
+11. absent `_brand.yml` uses RRP defaults; valid supported standard branding
+    applies only the accepted identity/color/logo subset; richer valid content
+    adds no unsupported behavior; malformed input and unsafe logo containment
+    fail safely;
+12. fresh-process construction, installed RRP asset resolution, and one
+    supervised loopback launch/termination work after copying the project to an
+    unrelated non-Git location, without external branding dependencies;
 13. product/state/history/source bytes and counts are unchanged by app
     preparation, interaction, launch, and shutdown; producer/provider call
     counters remain zero;
 14. logical values, view models, rendered text, diagnostics, and application
     objects contain no known native IDs, crosswalk, predictor, source path,
-    credential, connection, physical product path, or database handle; and
+    credential, connection, physical product path, or database handle; project
+    branding supplies no arbitrary executable frontend content and cannot
+    change analytical values, filtering, or products; and
 15. the source repository, Git, working directory, ambient user library,
     physical history schema, and fictional project identity are unnecessary.
 
-Automated evidence owns contracts, pure deterministic view models, exact
-actual-observation chart data, tooltip-to-observation correspondence, state
-matrices, selection changes, Shiny server interactions, Plotly widget/data
-structure, dependency boundaries, analytical nonmutation, repository-
-independent construction, and launch smoke behavior. It does not compare exact
-SVG/canvas output. A bounded human review checks information hierarchy,
-typography, spacing, readable customized tooltips, coherent tables/controls,
-chart/card integration, responsive behavior, default/custom primary-color
-appearance, and polished freshness/empty/stale/warning states. The review asks
-whether the narrow surface plausibly forms one modern analytical product while
-making no pixel-perfect, production-accessibility, or clinical-fitness claim.
+Automated evidence owns contracts; pure deterministic table, sparkline, chart,
+and tooltip view models; exact probability text; search/filter/paging/selection
+behavior; actual-observation-only two-/one-/zero-point component data;
+monotonic noncategorical probability encoding if realized; Shiny server and
+Reactable/Plotly widget-data structure; brand defaults/supported/unsupported/
+malformed behavior; logo containment; installed RRP asset resolution; copied-
+project portability; executable-customization denial; dependency boundaries;
+analytical nonmutation; repository-independent construction; and launch smoke
+behavior. It does not freeze exact HTML/CSS selectors or compare SVG/canvas
+pixels. A bounded human review checks Reactable density/readability and polish,
+sparkline usefulness, probability encoding, table/chart coherence, branding
+and logo treatment, information hierarchy, typography, spacing, controls,
+customized tooltips, responsive behavior, and polished freshness/empty/stale/
+warning states. The review asks whether the narrow surface plausibly forms one
+coherent modern analytical product rather than unrelated default widgets,
+without making a production-accessibility or clinical-fitness claim.
 
 ### Historical reuse disposition
 
@@ -6603,9 +6700,9 @@ it clarified dependency and injection boundaries.
 | Classification | Stage 10 disposition |
 |---|---|
 | Reuse substantially | Product-access injection; defensive exact product startup; one detached load before reactivity; pure presentation view models; descending-risk display without priority meaning; canonical episode selection; actual observation points; provider/model attribution; zero-row state; safe unavailable startup; app-object and server-level tests; product-only dependency principle. |
-| Adapt | Replace fictional-reference identity with generic installed `rrp.application.supplied`; replace old daily-hazard/estimand/YAML products with the accepted Stage 9 cumulative-risk DCF/CSV logical access; replace source-tree `app/` sourcing with installed package code; retain actual-point, canonical-selection, provider/model-attribution, and deterministic presentation-shaping concepts while evolving beyond historical/native plotting to intentional Plotly interaction; add bslib layout, contextual freshness, useful summaries, bounded paging, and optional presentation authority. |
-| Reject | Repository-root discovery; generated hospital app source; project `app/`; YAML/physical parsing in UI; materialize-on-launch; direct DuckDB/history reads; producer/provider/runtime invocation; app-driven refresh; old run/estimand semantics; fictional wording/branches; full artifact/Connect wrappers; deployment assumptions; raw error pages; arbitrary hospital UI code. |
-| Defer | Closed app artifact, standalone validator, target manifests, Connect/OCI realization, full dependency closure, authentication/authorization, logo/media, custom apps, scheduling, monitoring, production accessibility certification, performance scale, and clinical validation. |
+| Adapt | Replace fictional-reference identity with generic installed `rrp.application.supplied`; replace old daily-hazard/estimand/YAML product configuration with accepted Stage 9 DCF/CSV logical access; use standard `_brand.yml` only as declarative branding input; replace source-tree `app/` sourcing with installed package code/assets; retain actual-point, canonical-selection, provider/model-attribution, and deterministic presentation-shaping concepts while evolving to Reactable, truthful sparklines, Plotly, bslib, contextual freshness, and the bounded brand-interpretation authority. |
+| Reject | Repository-root discovery; generated hospital app source; project `app/`; YAML analytical/product parsing in UI; materialize-on-launch; direct DuckDB/history reads; producer/provider/runtime invocation; app-driven refresh; old run/estimand semantics; fictional wording/branches; full artifact/Connect wrappers; deployment assumptions; raw error pages; arbitrary hospital CSS/JS/HTML/modules or table/chart definitions. |
+| Defer | Closed app artifact, standalone validator, target manifests, Connect/OCI realization, full dependency closure, authentication/authorization, full `_brand.yml` coverage, advanced typography and complex palettes, remote brand assets, custom navigation/layout/apps, scheduling, monitoring, production accessibility certification, performance scale, and clinical validation. |
 
 ### Implementation sequence
 
@@ -6617,40 +6714,47 @@ not authorize any increment.
 **Objective:** establish the generic installed app identity and one read-only
 product-to-application path that later UI work and the future CLI can reuse.
 
-**Scope:** add/catalog the application and presentation authorities; add
-`shiny`, `bslib`, and `plotly` as direct `rrpplatform` dependencies; implement
-exact authority loading, optional presentation parsing/default composition,
-application-model construction, pure current/trajectory/summary view models,
-deterministic chart- and tooltip-ready data, generic shell, bounded startup
-failures, and the single `rrp_launch_app()` export. Keep executable code in
-installed package modules. Anticipate Plotly rendering in the architecture but
-do not yet claim the final visual experiences or styling. Do not yet change
-project templates.
+**Scope:** add/catalog the application and brand-interpretation authorities;
+add Shiny, bslib, Plotly, and Reactable as direct `rrpplatform` application
+dependencies; perform bounded reconnaissance of the actual Posit branding
+package/API and standard fields; declare the narrow required branding
+dependency; implement standard `_brand.yml` parsing/adaptation, defaults, one
+closed presentation model, and project-local logo containment; establish
+installed RRP frontend-asset ownership/resolution; implement application-model
+construction, pure current/trajectory/summary view models, deterministic table-
+/sparkline-/chart-/tooltip-ready data, generic shell, bounded startup failures,
+and the single `rrp_launch_app()` export. Keep executable code and RRP assets in
+installed package ownership. Anticipate the selected components but do not yet
+claim final table, sparkline, chart, branding, or cross-component polish. Do
+not yet change project templates.
 
 **Interfaces/contracts changed:** new `rrp.application.supplied@0.1.0` and
-`rrp.project-presentation@0.1.0` authorities plus one public launch operation.
+`rrp.project-brand@0.1.0` authorities plus one public launch operation. The
+brand authority governs RRP interpretation, not a replacement YAML schema.
 Package dependencies and namespace grow only as stated. No project, product,
 history, state, materialization, producer, provider, or runtime contract
 changes.
 
 **Historical reuse:** substantially reuse access injection, defensive startup,
 pure view-model, app-object, and zero/failure mechanics; adapt them to current
-contracts and installed package ownership; reject source-tree app sourcing and
-YAML/fictional identity.
+contracts, installed package/assets ownership, Reactable/Plotly, and standard
+branding; reject source-tree app sourcing, old YAML analytical configuration,
+and fictional identity.
 
 **Evidence:** exact app authority/catalog closure; direct dependency and export
 posture; valid/not-evaluated/fresh/stale/empty application-model construction;
-absent/corrupt/incompatible prelaunch failure; pure deterministic view models
-whose chart data contains only governed observations and whose tooltip-ready
-fields correspond exactly to them; exact product inventory/version
-enforcement; app and Plotly receive no roots/paths/handles; generic
+absent/corrupt/incompatible prelaunch failure; absent/supported/unsupported/
+malformed brand behavior; safe logo containment; installed asset resolution;
+pure deterministic view models whose table, sparkline, chart, and tooltip data
+contain only governed values/observations; exact product inventory/version
+enforcement; app components receive no roots/paths/handles; generic
 `shiny.appobj`; supervised loopback start/stop; state-byte and call-count
 nonmutation; parsing, build, isolated install/load, strict check, and inherited
 regressions.
 
-**Explicit exclusions:** no presentation template or initializer inventory
-change, final visual experiences, installed app guide, fictional full
-acceptance, CLI, artifact, or deployment.
+**Explicit exclusions:** no branding template or initializer inventory change,
+final component styling or visual experiences, installed app guide, fictional
+full acceptance, CLI, artifact, or deployment.
 
 **Completion condition:** installed `rrpplatform` can validate one existing
 product realization, construct a generic product-only app object, and launch
@@ -6664,53 +6768,61 @@ no Shiny server.
 **Objective:** complete the useful first application and the smallest safe
 hospital-owned visual identity extension.
 
-**Scope:** implement the two-view navigation, Current Risk Pool ranking/search/
-filter/sort/page/selection, intentionally customized Plotly episode trajectory
-and observation table, scope/current overview with a Plotly descriptive chart
-only if it materially improves comprehension, exact freshness/empty/stale
-treatments, and responsive polished `bslib` presentation. Establish consistent
-information hierarchy, cards/panels, typography, spacing, controls, and status
-treatment across the narrow surface. Add/catalog the standard and fictional
-presentation template records, apply the already governed/defaulted
-presentation values to the completed UI, and update the initializers to seven/
-eight files without changing their six authoring paths.
+**Scope:** implement the two-view navigation; a deliberately styled Reactable
+Current Risk Pool with deterministic ranking/search/filter/sort/paging/
+selection, truthful required sparklines, and useful continuous probability
+encoding if realized; the intentionally customized full Plotly episode
+trajectory and exact observation table; the scope/current overview with a
+Plotly descriptive chart only if it materially improves comprehension; exact
+freshness/empty/stale treatments; and responsive polished bslib composition.
+Use bounded installed RRP CSS for cross-component integration and JavaScript
+only if one concrete interaction cannot reasonably be achieved otherwise.
+Add/catalog standard and fictional `_brand.yml` plus the accepted contained
+logo asset where applicable, apply the governed default/custom identity,
+primary color, and logo treatment, and update initializer inventories exactly
+without changing their six authoring paths or generating app source.
 
 **Interfaces/contracts changed:** realize the already accepted optional
-nonexecutable presentation file in supplied templates. No new authority,
-public export, or manifest, project API, authoring, product, target, history,
-state, or materialization version change.
+standard branding input and contained asset in supplied templates. No new
+authority, public export, or manifest, project API, authoring, product, target,
+history, state, or materialization version change.
 
 **Historical reuse:** retain presentation-only sorting, selection, actual
 point, provider attribution, empty-state, and status ideas; replace raw tabs/
-tables and fictional title with the generic bslib experience and current
-fields; intentionally evolve historical/native plotting to Plotly while
-preserving actual observations and deterministic presentation shaping. Do not
-recover generated Hospital app files or a broad theming system.
+tables and fictional title with the generic bslib/Reactable/Plotly experience
+and current fields; intentionally add truthful compact trajectory context and
+standard branding while preserving actual observations and deterministic
+presentation shaping. Do not recover generated Hospital app files or a broad
+theming system.
 
-**Evidence:** exact view-model/component agreement; deterministic filtering/
-paging/selection; all three experiences; exactly governed two-/one-/zero-point
-trajectory data; deterministic tooltip-ready values tied to actual points;
-direct summary calculations and reconciliation; no thresholds/interpolation;
-Plotly widget/data and Shiny server tests; intentional axes, percentage,
-marker, connector, tooltip, legend/modebar, responsiveness, and card/theme
-integration without freezing style constants as contracts; missing/default/
-custom/invalid presentation behavior; safe color/text and non-color-only state
-treatment; updated initializer exact inventories, copied projects, raw-project
-omission, and no generated app source; inherited Stage 8 authoring and Stage 9
-product regressions.
+**Evidence:** exact view-model/component agreement; deterministic Reactable
+filtering/paging/selection and exact numeric values; actual-observation-only
+two-/one-/zero-point sparklines and full trajectories; deterministic tooltip-
+ready values; direct summary calculations and reconciliation; monotonic
+continuous probability encoding if used; no thresholds/bins/categories/
+interpolation; Reactable/Plotly widget-data and Shiny server tests; intentional
+table density, cell, axes, percentage, marker, connector, tooltip, controls,
+legend/modebar, responsiveness, and card/theme integration without freezing
+style constants as contracts; default/supported/unsupported/invalid branding;
+logo containment; safe color/text and non-color-only state treatment; installed
+asset resolution; updated initializer exact inventories, copied projects, raw-
+project omission, and no generated app source or hospital CSS/JS/HTML;
+inherited Stage 8 authoring and Stage 9 product regressions.
 
-**Explicit exclusions:** logo/assets, secondary theme system, custom CSS/HTML/
-code, custom views, project app directory, authentication, app refresh, CLI,
-artifact, or deployment.
+**Explicit exclusions:** full branding coverage, advanced typography/complex
+palettes, remote brand assets, hospital CSS/JS/HTML, custom views/navigation,
+project app directory, authentication, app refresh, CLI, artifact, or
+deployment.
 
 **Completion condition:** the same installed application provides the complete
 current-pool, actual-trajectory, and overview experiences under RRP defaults or
-one bounded project presentation record, without changing analytical content
-or application ownership.
+one bounded standard project brand, without changing analytical content or
+application ownership.
 
 #### Increment 10.C — Installed fictional application proof and human guidance
 
-**Dependencies:** completed 10.A–10.B generic app and presentation behavior.
+**Dependencies:** completed 10.A–10.B generic app, component, branding, and
+presentation behavior.
 
 **Objective:** prove the complete Stage 10 exit state through installed
 software and the ordinary fictional project, and document the exact human
@@ -6718,9 +6830,9 @@ package-level launch boundary.
 
 **Scope:** add one cataloged version-matched Supplied Application Guide; add the
 complete installed non-Git fictional acceptance proof and bounded human UX
-review of the coherent `bslib` + Plotly experience; update ownership/validators/
-documentation only for realized behavior; make only corrections revealed by
-the proof.
+review of the coherent bslib + Reactable + Plotly + RRP-assets experience;
+update ownership/validators/documentation only for realized behavior; make
+only corrections revealed by the proof.
 
 **Interfaces/contracts changed:** none planned. A newly discovered contract or
 public-interface need must be reconciled explicitly rather than hidden in the
@@ -6731,13 +6843,15 @@ zero/failure, and teaching sequence; reject Phase aggregation, repository
 operations, artifact/deployment coupling, and fictional-specific application
 identity.
 
-**Evidence:** the complete 15-point installed proof above; guide resolution and
-agreement; source/package/Rd parsing; exact resource closure; package-native
-application and inherited regressions; dependency-order builds; isolated
-install/load; fresh-process construction; strict checks; unrelated non-Git
-execution; supervised launch cleanup; process/artifact hygiene; both human
-validators; and successful exact-revision hosted workflow before formal Stage
-10 acceptance.
+**Evidence:** the complete 15-point installed proof above, including Reactable,
+sparklines, Plotly, default/custom standard branding, accepted logo, installed
+RRP assets, copied/non-Git operation, product states, analytical nonmutation,
+privacy, and executable-customization denial; guide resolution and agreement;
+source/package/Rd parsing; exact resource closure; package-native application
+and inherited regressions; dependency-order builds; isolated install/load;
+fresh-process construction; strict checks; supervised launch cleanup; process/
+artifact hygiene; both human validators; and successful exact-revision hosted
+workflow before formal Stage 10 acceptance.
 
 **Explicit exclusions:** CLI/distribution/install, product-only artifact,
 Connect/OCI realization, authentication, remote hosting, deployment,
@@ -6746,9 +6860,9 @@ publication, support/performance claim, or clinical validation.
 **Completion condition:** a human using installed RRP package operations can
 launch the same generic useful supplied app for the ordinary fictional or any
 conforming project with existing validated products, understand its state and
-limited presentation override, and observe no analytical mutation or project-
-owned app source. Formal acceptance/reconciliation remains a separate
-lifecycle action, not Increment 10.D.
+bounded standard branding, and observe no analytical mutation, arbitrary
+hospital frontend execution, or project-owned app source. Formal acceptance/
+reconciliation remains a separate lifecycle action, not Increment 10.D.
 
 ### Validation and hosted evidence
 
@@ -6759,13 +6873,14 @@ Rscript --vanilla tools/validate-repository.R
 Rscript --vanilla tools/validate-packages.R
 ```
 
-Validation grows only for cataloged application/presentation authorities and
-templates/guide, package application/view-model/launcher tests, updated exact
-initializer inventories, installed fictional app proof, Shiny/bslib/Plotly
-dependency and namespace posture, builds, isolated install/load, strict checks,
-path/privacy/process hygiene, and inherited Stage 8–9 behavior. No application-
-specific framework, Phase suite, browser snapshot system, deployment test, or
-parallel product reader is added.
+Validation grows only for cataloged application/brand-interpretation
+authorities and branding templates/assets/guide, package application/view-
+model/launcher tests, updated exact initializer inventories, installed
+fictional app proof, Shiny/bslib/Plotly/Reactable and upstream-branding-tool
+dependency/namespace posture, installed RRP asset resolution, builds, isolated
+install/load, strict checks, path/privacy/process hygiene, and inherited Stage
+8–9 behavior. No application-specific framework, Phase suite, browser snapshot
+system, deployment test, or parallel product reader is added.
 
 The existing read-only Ubuntu/R 4.4 `package-foundation` workflow continues to
 invoke those same human operations. CI behavior changes only if the new direct
@@ -6780,82 +6895,105 @@ Stage 10 is complete only when:
 
 1. the supplied application is generic installed RRP software owned by
    `rrpplatform`, not a fictional or project-owned app;
-2. `rrp.application.supplied@0.1.0` closes application identity, UI foundation,
-   required product compatibility, presentation authority, and read-only
-   posture without duplicating product schemas or artifact concerns;
+2. `rrp.application.supplied@0.1.0` closes application identity, the Shiny/
+   bslib/Plotly/Reactable foundation, required product compatibility,
+   `rrp.project-brand@0.1.0`, installed RRP asset ownership, and read-only
+   posture without duplicating product, branding, style, or artifact schemas;
 3. exactly one public launch operation accepts explicit software/project
    context, optional paired freshness context, local browser/port controls,
    starts only on loopback, and is suitable for later CLI wrapping;
-4. startup validates software, project, presentation, current product access,
-   exact three-member inventory/versions, and dependencies before Shiny;
+4. startup validates software, project, optional standard branding/contained
+   assets, current product access, exact three-member inventory/versions, and
+   dependencies before Shiny;
 5. absent, corrupt, incoherent, or incompatible products start no server and
    return bounded privacy-safe failures without physical fallback;
-6. the app receives one closed detached snapshot and no root, path, connection,
-   writer, project callable, source, provider, or history object;
+6. the app receives one closed detached product snapshot plus one closed
+   detached presentation model and no root, path, connection, writer, project
+   callable, source, provider, or history object;
 7. launch and interaction invoke no producer/provider, build, materialize,
    retry, correction, source selection, refresh, or state/history mutation;
-8. pure view models remain presentation-only, deterministically produce chart-
-   and tooltip-ready data, and cannot introduce fallback, interpolation,
-   thresholds, priority, clinical categories, private joins, or new analytical
-   meaning; Plotly receives only that detached presentation data;
-9. Current Risk Pool supplies deterministic risk ranking, exact useful timing
-   and attribution, search/filter/sort/bounded paging, canonical episode
-   selection, lineage/status context, and polished valid-empty behavior;
-10. Episode Risk Trajectory displays only actual governed observations as
+8. pure view models remain presentation-only, deterministically produce table-
+   /sparkline-/chart-/tooltip-ready data, and cannot introduce fallback,
+   fabricated points, interpolation, thresholds, priority, clinical
+   categories, private joins, or new analytical meaning; Reactable and Plotly
+   receive only detached presentation data;
+9. Current Risk Pool uses a deliberately styled interactive Reactable
+   experience with deterministic risk ranking, exact useful timing and
+   attribution, search/filter/sort/bounded paging, synchronized row/canonical-
+   episode selection, lineage/status context, and polished valid-empty behavior;
+10. each Current Risk Pool sparkline contains only its episode's actual
+    governed observations with correct two-/one-/zero-point behavior; any
+    continuous probability encoding is direct, deterministic, monotonic, non-
+    categorical, not the sole signal, and accompanied by exact numeric text;
+11. Episode Risk Trajectory displays only actual governed observations as
     intentionally customized Plotly markers with concise corresponding
     tooltips, exact table detail, truthful optional visual connection, and
     correct two-point, one-point, and no-history behavior; no graphical element
     invents intermediate or other analytical meaning;
-11. Overview presents only direct current-risk descriptive summaries and exact
+12. Overview presents only direct current-risk descriptive summaries and exact
     operational-scope/outcome reconciliation; if Plotly is used there, it is
     only for a direct descriptive visualization that improves comprehension,
     with no business KPI or clinical decision semantics;
-12. not-evaluated, fresh, stale, empty, unavailable, integrity-failed, and
+13. not-evaluated, fresh, stale, empty, unavailable, integrity-failed, and
     incompatible states remain visibly and operationally distinct, while valid
     stale products remain readable;
-13. `rrp.project-presentation@0.1.0` admits only display name and primary color,
-    missing configuration uses immutable defaults, invalid declared content
-    fails startup, and presentation cannot affect product interpretation;
-14. normal and fictional initialization add only the optional presentation
-    record, retain six existing authoring paths, generate no app source, and
-    leave direct raw/existing projects without the file valid;
-15. `shiny`, `bslib`, and `plotly` are the only new direct application
-    dependencies, remain outside `rrpruntime` and project extensions, and their
-    use is justified by realized lifecycle, responsive shell/theme, and
-    interactive analytical-graphics behavior;
-16. executable app code runs from the installed package, cataloged authorities/
-    templates/docs resolve from installed resources, and no runtime repository,
-    Git, working-directory, ambient-library, or sibling checkout dependency
-    exists;
-17. the ordinary fictional proof exercises the exact generic app with actual
+14. `rrp.project-brand@0.1.0` governs RRP's bounded interpretation of standard
+    project-root `_brand.yml`; appropriate existing Posit tooling parses and
+    validates it, RRP does not reproduce the schema, absent branding uses
+    immutable defaults, valid unsupported concepts are ignored, malformed or
+    unsafe supported input fails, and branding remains presentation-only;
+15. the supported branding subset is limited to a suitable standard
+    organization/display identity concept, primary color, and one bounded
+    contained logo as confirmed in 10.A; brand identity never defines the
+    analytical probability scale, and absolute/remote assets are denied;
+16. normal and fictional initialization add only the exact optional standard
+    branding/contained-asset inventory accepted after 10.A reconnaissance,
+    retain six existing authoring paths, generate no app source or hospital
+    CSS/JS/HTML, and leave direct raw/existing projects without branding valid;
+17. `shiny`, `bslib`, `plotly`, and `reactable`, plus only the narrow upstream
+    branding dependency actually required, remain outside `rrpruntime` and
+    project extensions and are justified by realized behavior;
+18. executable app code and bounded RRP-owned CSS/justified JavaScript run from
+    installed software; cataloged authorities/templates/assets/docs resolve
+    from installed resources; hospital projects cannot inject arbitrary CSS,
+    JavaScript, HTML, UI modules, or component definitions; and no runtime
+    repository, Git, working-directory, ambient-library, or sibling checkout
+    dependency exists;
+19. the ordinary fictional proof exercises the exact generic app with actual
     `0.39` and `0.3833333333333333` observations, exact later current/scope
-    content, one-point and valid-empty sets, freshness states, copying, and
-    bounded denial;
-18. application models, rendered values, diagnostics, and tests retain only
+    content, Reactable/sparkline/Plotly behavior, one-point and valid-empty sets,
+    default/custom branding and logo, freshness states, copying, installed
+    assets, and bounded denial;
+20. application models, rendered values, diagnostics, and tests retain only
     canonical/product content and exclude known native IDs, crosswalk,
     predictor, source, credential, connection, physical path, and database
-    internals;
-19. automated component/server/Plotly-data/launch evidence plus bounded human
-    review show a narrow but coherent modern initial experience with deliberate
-    hierarchy, spacing, states, controls, tooltips, and chart/card integration,
-    without making a pixel-perfect, production-accessibility, clinical,
-    performance, or support claim;
-20. repository/package validation, exact catalog closure, parsing, package-
+    internals; branding cannot change analytical values, filtering semantics,
+    product content, freshness, or runtime behavior;
+21. automated component/server/Reactable/Plotly/branding/asset/launch evidence
+    plus bounded human review show a narrow coherent modern experience with
+    deliberate hierarchy, table density, sparklines, probability encoding,
+    branding/logo, spacing, states, controls, tooltips, responsiveness, and
+    chart/card integration rather than unrelated default widgets, without a
+    pixel-perfect, production-accessibility, clinical, performance, or support
+    claim;
+22. repository/package validation, exact catalog closure, parsing, package-
     native and installed regressions, builds, isolated/fresh-process loading,
     strict checks, process cleanup, hygiene, and exact committed hosted
     evidence pass; and
-21. no CLI, distribution, installer, artifact, Connect/OCI target,
-    authentication, remote hosting, deployment, custom app, logo/theming
-    framework, scheduler, production monitoring, or Stage 11–12 behavior enters.
+23. no CLI, distribution, installer, artifact, Connect/OCI target,
+    authentication, remote hosting, deployment, custom-app or unrestricted
+    theming framework, hospital executable frontend hook, scheduler, production
+    monitoring, or Stage 11–12 behavior enters.
 
 ### Relationship to Stages 11 and 12
 
 Stage 10 supplies the installed app, application authority, pure view models,
-programmatic loopback launcher, presentation input, and package-level human
-guide. Stage 11 may expose a CLI command over `rrp_launch_app()` and must close
-the installed distribution, dependency resolution, installation, activation,
-upgrade, and uninstall lifecycle without changing app semantics. Stage 10 does
-not preselect that command syntax or installer.
+programmatic loopback launcher, bounded standard branding interpretation,
+installed presentation assets, and package-level human guide. Stage 11 may
+expose a CLI command over `rrp_launch_app()` and must close the installed
+distribution, dependency resolution, installation, activation, upgrade, and
+uninstall lifecycle without changing app semantics. Stage 10 does not
+preselect that command syntax or installer.
 
 Stage 12 consumes the accepted installed app and a frozen validated coherent
 product set to build target-neutral product-only artifacts and Posit/OCI
@@ -6866,19 +7004,21 @@ app into an artifact or introduce deployment configuration.
 ### Major deferrals
 
 Authentication; authorization and roles; production identity management;
-custom hospital apps or executable UI code; logo/media assets; secondary or
-arbitrary theming; custom CSS/HTML; clinical thresholds, priorities, queues,
-recommendations, or hidden filtering; application-triggered build/refresh;
-producer/provider/history execution; scheduler/background work; CLI;
-distribution/installer/upgrade; standalone artifacts; Connect/OCI/remote
-hosting; object-storage product access; deployment; monitoring/telemetry;
-production accessibility certification; performance/SLA/support claims;
-clinical validation; browser/pixel snapshot matrices; and Stage 11–12
-implementation remain outside Stage 10.
+custom hospital apps; hospital-authored CSS, JavaScript, HTML, UI modules, or
+component definitions; unrestricted theming; full `_brand.yml` feature
+coverage; advanced typography and secondary/complex palette interpretation;
+remote brand assets; custom navigation/layout; multi-logo/media management;
+clinical thresholds, priorities, queues, recommendations, or hidden filtering;
+application-triggered build/refresh; producer/provider/history execution;
+scheduler/background work; CLI; distribution/installer/upgrade; standalone
+artifacts; Connect/OCI/remote hosting; object-storage product access;
+deployment; monitoring/telemetry; production accessibility certification;
+performance/SLA/support claims; clinical validation; browser/pixel snapshot
+matrices; and Stage 11–12 implementation remain outside Stage 10.
 
 No unresolved architectural question blocks 10.A. Planning selected reversible
-package-level choices and deliberately leaves deployment-scale, media, custom-
-app, and operator syntax decisions with their later owners.
+package-level choices and deliberately leaves deployment-scale, broader media/
+branding, custom-app, and operator syntax decisions with their later owners.
 
 ## Stage 11 — CLI, closed distribution, installation, and upgrade
 

@@ -4916,3 +4916,107 @@ implementation has not begun.
 **Next task:** Increment 10.A — Installed application authority, startup, view
 models, and launch boundary—only when separately authorized. Do not begin 10.B
 or 10.C with that authorization.
+
+## Stage 10 frontend and branding planning revision — 2026-10-04
+
+Human review of the committed reconciled Stage 10 plan at baseline `bfe3bc0`
+requested a second bounded planning revision before implementation. The
+revision does not reopen generic installed ownership, detached product-only
+access, analytical read-only launch, the two top-level views, contextual
+episode detail, the public launch boundary, or the Stage 11–12 lifecycle
+owners. Stage 10 implementation remains unstarted.
+
+The accepted component foundation now consists of Shiny for lifecycle and
+reactivity, bslib for responsive shell/theme composition, Plotly for detailed
+interactive analytical graphics, and Reactable for the operational Current
+Risk Pool. Reactable is justified because the risk pool is a primary product
+experience requiring deterministic search/filter/sort/paging/selection,
+deliberate cell presentation, and compact longitudinal context. DT and other
+parallel grid/dashboard/component frameworks remain excluded. The exact narrow
+Posit branding dependency/API is deliberately left to 10.A reconnaissance
+rather than guessed in planning.
+
+Current Risk Pool now requires actual-observation sparklines from its initial
+useful 10.B realization. They contain only accepted retained observations in
+actual order, admit truthful one-point and no-history states, and never
+interpolate, synthesize daily values, invent a baseline, carry estimates
+forward, replay a provider, or imply continuous monitoring. The full Plotly
+trajectory remains the detailed interactive authority. Exact numeric
+probability remains visible; an additional deterministic monotonic continuous
+encoding is allowed when it creates no threshold, bin, category,
+recommendation, or color-only meaning. Hospital brand color does not define
+that analytical scale.
+
+RRP may now ship bounded CSS and concretely justified JavaScript as installed
+`rrpplatform` application assets so bslib, Reactable, Plotly, branding, states,
+and controls form one visual language. This is RRP-owned implementation, not a
+new adopter extension seam. Hospital projects still cannot inject arbitrary
+CSS, JavaScript, HTML, Shiny modules, component definitions, table renderers,
+or Plotly configuration; JavaScript is not required merely because installed
+asset ownership exists.
+
+Standard project-root `_brand.yml` replaces the planned proprietary
+`rrp-presentation.dcf`; both formats will not coexist. The final planned
+authority name is `rrp.project-brand@0.1.0`. It governs where RRP discovers the
+standard file, its small supported interpretation, defaults, contained assets,
+closed-model conversion, and failure behavior. It does not reproduce the
+external schema or authorize a parallel YAML parser. Appropriate existing
+Posit tooling must parse/validate branding. Valid unsupported concepts are
+ignored, malformed or unsafe supported inputs fail before app construction,
+and absence uses RRP defaults.
+
+The intended initial subset is a suitable standard organization/display-
+identity concept, primary brand color, and one bounded project-local logo for
+app identity/header use. Increment 10.A must confirm actual standard fields and
+tooling; if no assumed identity field exists, RRP documents the actual
+standard mechanism rather than inventing one. Logo assets must remain under
+explicit project containment; absolute and remote runtime assets are rejected.
+Exact containment and initializer inventories follow reconnaissance instead of
+preserving the superseded seven/eight-file assumptions. Branding is reduced to
+a closed detached presentation model and cannot change analytical values,
+filtering, products, freshness, runtime, or behavior.
+
+Increment 10.A now owns the four-component dependency posture, upstream
+branding reconnaissance/adaptation, both authorities, logo containment,
+installed asset resolution, closed application/presentation models, component-
+ready pure data, generic shell, startup, and launch foundation—but not final
+polish. Increment 10.B owns the polished Reactable table, required sparklines,
+any accepted continuous probability encoding, customized Plotly detail,
+coherent bslib/CSS composition, standard branding and logo realization, exact
+initializer updates, and JavaScript only for a demonstrated interaction need.
+Increment 10.C retains installed fictional/non-Git proof, human guidance,
+hosted evidence, and bounded UX review across Reactable, sparklines, Plotly,
+branding, logo, installed assets, product states, portability, privacy, and
+analytical nonmutation. No fourth increment was added.
+
+Automated evidence now covers deterministic table behavior and exact values,
+actual-observation-only sparkline/trajectory data, two-/one-/zero-point states,
+selection synchronization, monotonic noncategorical encoding if used,
+component-data isolation, brand defaults/supported/unsupported/malformed
+behavior, logo containment, installed asset resolution, copied-project
+portability, hospital executable-customization denial, and analytical
+nonmutation. Exact HTML/CSS selectors and rendered pixels remain outside
+acceptance. Human review now explicitly covers Reactable density/readability,
+sparkline usefulness, probability encoding, table/chart coherence, brand/logo
+treatment, hierarchy, spacing, controls, tooltips, responsiveness, and state
+polish without claiming production accessibility or clinical fitness.
+
+Historical reuse continues to preserve product-only injection, defensive
+startup, detached loading, pure view models, canonical selection, descending
+risk without priority meaning, actual observations, provider/model attribution,
+and zero/failure behavior. Standard `_brand.yml` is new declarative branding
+input, not a restoration of historical YAML product/analytical configuration.
+Generated hospital app source, repository-root sourcing, daily-hazard semantics,
+and deployment coupling remain rejected.
+
+This planning revision changed documentation only. It added no dependency,
+application code, CSS, JavaScript, `_brand.yml`, logo, contract resource,
+template, test, validator, workflow, or generated artifact.
+
+**Current implementation state:** Stages 1–9 remain accepted and complete.
+The twice-revised Stage 10 detailed plan is internally reconciled; Stage 10
+implementation has not begun.
+
+**Next task:** Increment 10.A — Installed application authority, startup, view
+models, and launch boundary—only when separately authorized. Do not begin 10.B
+or 10.C with that authorization.
