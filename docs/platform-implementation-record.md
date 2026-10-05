@@ -5256,3 +5256,88 @@ human application guidance remain absent.
 
 **Next task:** implement only Increment 10.C — Installed fictional application
 proof and human guidance—when separately authorized. Do not begin Stage 11.
+
+## Stage 10 / Increment 10.B — validation and macOS security reconciliation (2026-10-05)
+
+A bounded post-commit review reconciled candidate revision
+`3b0e1f19badca84581335657b9d160e8a53e3db0` against accepted 10.A revision
+`9a156577228d7518d0809f1d506069f1284f3953`, the Stage 10 plan, the complete
+10.B diff, local command evidence, macOS power/security logs, and current
+process and artifact state. The candidate was clean at review start. This
+review introduced no application, package, resource, test, or validator
+behavior.
+
+The long implementation session was not an eight-hour package check. The last
+uninterrupted successful package matrix completed in about five minutes and
+twenty seconds. Its largest measured phase was the `rrpplatform` strict check
+at about 160 seconds; installed product materialization took about 37 seconds,
+fictional product/recovery proof about 26 seconds, state backup/recovery about
+20 seconds, and producer, provider, and fictional durable proofs about seven
+to ten seconds each. Repeated matrices were prompted first by real incremental
+findings: stale CSS validation, a non-ASCII source character, two test-private
+catalog fixtures missing the new brand resources, binary PNG input reaching a
+text-only vocabulary scan, and the final selection-synchronization omission.
+Repeated package installation/check work, bounded browser review and image
+generation added cost, but extensive system sleep and session reconnection
+gaps dominate the elapsed calendar span. No dependency download or network
+package installation occurred.
+
+The complete successful matrix preceded only the PNG text-scan exclusion and
+the selection-only synchronization correction. Repository validation plus
+R/Rd parsing covered the former. The final outer matrix attempted to cover the
+latter but crossed system sleep and timed out; the finalized archive was then
+run through direct isolated `R CMD check --no-manual`, including all package-
+native tests, with exact `Status: OK`. The earlier complete matrix had already
+passed the subsequent installed lifecycle regressions. This combination is
+sufficient for the bounded correction and leaves no material unvalidated 10.B
+execution path.
+
+The original record's phrase `supervisor clock defect` is refined by recovered
+evidence. The shell watchdog records `date +%s` before its polling loop and
+subtracts the current epoch time once per second; the outer R process reports
+its own elapsed time with `proc.time()[["elapsed"]]`. Marker and output paths
+are fresh per invocation, and no units conversion or stale shared timestamp
+was found. macOS power logs show repeated sleep intervals during validation,
+including approximately 2,111 seconds across the interval associated with the
+reported 2,115 seconds. The watchdog therefore measured suspended wall time,
+not roughly one minute of active execution. Its 900-second wall-clock policy
+operates as implemented, but its diagnostics do not distinguish active work
+from system suspension. The diagnostic 1,800-second allowance was removed;
+committed checks use 900 seconds. A future validation-method improvement may
+choose and document active/monotonic versus elapsed-wall-time policy and report
+per-phase duration; that is independent of 10.B acceptance.
+
+The macOS warning has a confirmed process-level cause. Unified logs at
+2026-10-05 03:52:09 CDT identify Google Chrome, launched by the development
+session under responsible application Positron, requesting the protected
+`kTCCServiceSystemPolicyAppBundles` service. macOS denied the request because
+the child binary could not prompt and presented the warning. This coincides
+with the first explicit headless-Chrome screenshot command used for the
+bounded temporary visual review. The logs do not disclose the target
+application-bundle path, so they do not establish what Chrome tried to touch;
+they do establish the attributed process, protected service, denial, and lack
+of a successful protected modification. No committed RRP source or validator
+launches Chrome or Positron, uses `open`/AppleScript, invokes an installer,
+changes quarantine/signing/security state, requests privilege, or writes to an
+application bundle or system-owned installation location.
+
+The manual preview scripts and HTML wrapper operated in `/tmp`, used a
+loopback Shiny application or static rendered model, and did not enter the
+repository or installed package. Review found one orphaned headless-Chrome
+process group from that preview; it was reported, terminated without touching
+unrelated processes, and verified absent. No R/Rscript, package-check, Shiny,
+validation, preview, repository archive, check directory, or RRP temporary
+artifact remained. Both contained brand images decode as ordinary 640 by 320
+8-bit RGBA PNGs, remain closed catalog entries with source/projection byte
+checks, and are referenced only through contained relative paths. They do not
+explain the protected-service event except that Chrome was manually used to
+review the surrounding application presentation.
+
+**Reconciliation result:** the committed Increment 10.B candidate is safe and
+technically sufficient for human acceptance. No 10.B code or validator
+correction is required. A later, separately planned validation-method change
+should distinguish fast focused checks, package-local regression, and the full
+acceptance matrix; consider package-test partitioning, run expensive fictional
+and product lifecycle proofs once at acceptance, expose phase durations, and
+make supervisor sleep behavior explicit without weakening the authoritative
+matrix. Increment 10.C remains the next separately authorized task.
