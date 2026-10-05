@@ -1767,6 +1767,10 @@ validate_installed_documentation_resources <- function(
     logical_products = c(
       id = "rrp.documentation.logical-products-guide",
       path = "resources/documentation/logical-products-guide.md"
+    ),
+    supplied_application = c(
+      id = "rrp.documentation.supplied-application-guide",
+      path = "resources/documentation/supplied-application-guide.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -1802,6 +1806,24 @@ validate_installed_documentation_resources <- function(
       paste0(specification[["id"]], " is not closed installed guidance.")
     )
   }
+  application_guide <- paste(readLines(file.path(
+    root, documents$supplied_application[["path"]]
+  ), warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  resource_require(
+    all(vapply(c(
+      "rrp.application.supplied@0.1.0", "rrp.project-brand@0.1.0",
+      "rrp_open_resource_catalog", "rrp_launch_app", "rrp_operation_succeeded"
+    ), grepl, logical(1L), x = application_guide, fixed = TRUE)) &&
+      !grepl("source\\s*\\(", application_guide) &&
+      !grepl("setwd\\s*\\(", application_guide) &&
+      !grepl("devtools::load_all", application_guide, fixed = TRUE) &&
+      !grepl(":::", application_guide, fixed = TRUE),
+    "supplied_application_documentation_content",
+    paste0(
+      "The Supplied Application Guide must describe the matching public ",
+      "installed application boundary without developer-only operations."
+    )
+  )
 }
 
 validate_application_asset_resource <- function(authority, root, projection) {
@@ -2238,15 +2260,16 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.provider-request-reference",
     "rrp.documentation.fictional-reference-walkthrough",
     "rrp.documentation.logical-products-guide",
+    "rrp.documentation.supplied-application-guide",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 53L && identical(
+    length(actual_ids) == 54L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 53 known entries."
+    "The software resource inventory must contain exactly 54 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2729,6 +2752,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "project-doctor.R"),
       file.path("tests", "fictional-end-to-end.R"),
       file.path("tests", "fictional-products.R"),
+      file.path("tests", "fictional-application.R"),
       file.path("tests", "project-initializer.R"),
       file.path("tests", "fictional-project.R"),
       file.path("tests", "project-loader.R"),
@@ -3871,7 +3895,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     project_authoring_guide = "resources/documentation/project-authoring-guide.md",
     provider_request_reference = "resources/documentation/provider-request-reference.md",
     fictional_reference_walkthrough = "resources/documentation/fictional-reference-walkthrough.md",
-    logical_products_guide = "resources/documentation/logical-products-guide.md"
+    logical_products_guide = "resources/documentation/logical-products-guide.md",
+    supplied_application_guide =
+      "resources/documentation/supplied-application-guide.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -3981,6 +4007,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["fictional_reference_walkthrough"]], quote = "\""),
     ", logical_products_guide = ",
     encodeString(expected_copies[["logical_products_guide"]], quote = "\""),
+    ", supplied_application_guide = ",
+    encodeString(expected_copies[["supplied_application_guide"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -4058,7 +4086,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.template.fictional-project-brand-logo', fictional_generator_template = ",
     "'rrp.template.fictional-project-source-generator', fictional_reference_walkthrough = ",
     "'rrp.documentation.fictional-reference-walkthrough', logical_products_guide = ",
-    "'rrp.documentation.logical-products-guide'); ",
+    "'rrp.documentation.logical-products-guide', supplied_application_guide = ",
+    "'rrp.documentation.supplied-application-guide'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -4568,6 +4597,39 @@ validate_installed_fictional_products <- function(
   ))
 }
 
+validate_installed_fictional_application <- function(
+  library_root, work_root, environment
+) {
+  software_root <- file.path(work_root, "fictional-application-software-root")
+  project_resource_authority(repository_root, software_root)
+  proof_root <- file.path(work_root, "installed-fictional-application")
+  dir.create(proof_root)
+  script_path <- file.path(proof_root, "fictional-application.R")
+  copied <- file.copy(
+    file.path(
+      repository_root, "packages", "rrpplatform", "tests",
+      "fictional-application.R"
+    ),
+    script_path, overwrite = FALSE, copy.mode = FALSE, copy.date = FALSE
+  )
+  require_true(copied, "Could not copy installed fictional-application proof.")
+  require_command_success(
+    "installed fictional supplied-application lifecycle",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(script_path), shQuote(software_root),
+      shQuote(library_root)
+    ),
+    environment,
+    timeout_seconds = 600L
+  )
+  cat(paste0(
+    "PASS installed fictional supplied application, guide, current pool, ",
+    "actual trajectories, overview, product states, bounded branding, ",
+    "nonmutation, privacy, executable denial, relocation, and loopback cleanup\n"
+  ))
+}
+
 validate_packages <- function() {
   cat("RRP local package, project, canonical, and state validation\n")
   cat("=============================================================\n")
@@ -4754,10 +4816,13 @@ validate_packages <- function() {
   validate_installed_fictional_products(
     library_root, work_root, environment
   )
+  validate_installed_fictional_application(
+    library_root, work_root, environment
+  )
 
   cat(paste0(
     "\nResult: PASS (package, project, canonical, runtime, history, logical-",
-    "product, and product-materialization foundation)\n"
+    "product, materialization, and supplied-application foundation)\n"
   ))
   cat(
     "Scope: closed source-resource authority, temporary deterministic installed ",
@@ -4791,11 +4856,14 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "and exact four-document installed Markdown product resolution, ",
+    "and exact five-document installed Markdown product resolution, ",
     "complete installed fictional durable execution/history, same-key ",
     "provider non-reexecution, history privacy, and copied-state reopen, ",
     "installed fictional actual/empty logical products, fresh-process access, ",
     "idempotency, staleness, copy, corruption denial, and history-only recovery, ",
+    "installed fictional supplied-application composition, bounded branding, ",
+    "product-state UX, analytical nonmutation, privacy, executable denial, ",
+    "relocation, and supervised loopback cleanup, ",
     "selected producer execution, closed request/result validation, exact ",
     "one-call and zero-provider behavior, admission delegation, two distinct ",
     "hospital mapping fixtures, ",

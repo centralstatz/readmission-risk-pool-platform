@@ -50,8 +50,10 @@ compatible provider through the standard request/result/estimate boundary.
 The platform risk operation prepares one eligible episode state and invokes
 exactly the explicitly selected compatible provider once, including either the
 installed nonclinical transparent provider or a project-owned substitute.
-There is no completed Stage 10 visual experience, installed application guide,
-complete distribution, or ordinary operator command.
+The installed Stage 10 supplied application experience and its cataloged human
+guide now exist and have complete local fictional acceptance evidence. Formal
+Stage 10 hosted acceptance and architecture reconciliation remain pending.
+There is no complete distribution or ordinary operator command.
 
 ## Read authority before source
 
@@ -198,6 +200,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/product-materialization.R` | Package-native and separately installed evidence for absent/create-only product state, staged publication, idempotency/replacement, interruption recovery, closed validation, contextual freshness, detached access, copy/reopen, and backup/delete/rebuild behavior. |
 | `packages/rrpplatform/tests/application-foundation.R` | Package-native authority, branding/default/containment, deterministic view-model, closed-model, real-product freshness, supervised child-process launch, and analytical nonmutation evidence for Increment 10.A. |
 | `packages/rrpplatform/tests/application-experience.R` | Focused deterministic table/filter/page/selection, exact probability, actual-observation sparkline/trajectory, Plotly/Reactable structure, summary, branding, state, and Shiny-server evidence for Increment 10.B. |
+| `packages/rrpplatform/tests/fictional-application.R` | Package-native and separately installed coherent Stage 10 proof for the ordinary non-Git fictional project, installed guide/assets, actual product-derived application composition, product states, bounded branding/logo behavior, executable-customization denial, exact nonmutation, privacy, relocation, and supervised loopback cleanup. |
 | `packages/rrpruntime/DESCRIPTION` and `packages/rrpruntime/NAMESPACE` | Internal runtime-package identity, dependency posture, and exact 15-export namespace. |
 | `packages/rrpruntime/R/canonical-admission.R` | Pure closed-value canonical candidate validation, exact identity/capability agreement, domain/temporal rules, typed safe failures, and detached admitted-bundle construction. |
 | `packages/rrpruntime/R/episode-state.R` | Pure admitted-bundle revalidation, exact as-of and eligibility enforcement, terminal precedence, deterministic state identity, typed safe failures, and detached immutable episode-state construction. |
@@ -228,8 +231,8 @@ closed to the following present paths:
 | `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, and `resources/documentation/logical-products-guide.md` | The exact four version-matched installed product documents: the three Stage 8 authoring/reference documents and the Stage 9 logical-products lifecycle guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, and the installed fictional product lifecycle. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, and `resources/documentation/supplied-application-guide.md` | The exact five version-matched installed product documents: the three Stage 8 authoring/reference documents, the Stage 9 logical-products lifecycle guide, and the Stage 10 supplied-application guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, and the installed fictional product/application lifecycle. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted

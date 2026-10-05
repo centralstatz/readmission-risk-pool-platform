@@ -121,7 +121,8 @@ stopifnot(
   ), 1L),
   is.na(internal("rrp_application_selected_row")(
     current_view, "episode.historical"
-  ))
+  )),
+  is.na(internal("rrp_application_selected_row")(current_view, NULL))
 )
 
 sparks <- internal("rrp_application_sparklines")(

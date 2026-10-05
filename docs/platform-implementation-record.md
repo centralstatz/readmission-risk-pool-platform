@@ -5410,3 +5410,105 @@ and the complete corrected package-foundation validation. Hosted Linux
 acceptance is therefore reconciled and Increment 10.B is accepted. Stage 10
 remains in progress; Increment 10.C remains the next separately authorized
 task and was not begun here.
+
+## Stage 10 / Increment 10.C — Installed fictional application proof and human guidance (2026-10-05)
+
+Increment 10.C began from clean HEAD
+`a1b4359a27b5888203983cb5840617c0f3dc7deb`. Its only change from accepted
+10.B reconciliation revision `bc4ccc71da2bb54b3012bb94d90ab461f1bd4821`
+was the preceding implementation-record hosted closeout for successful
+`package-foundation` run `37339365839`, job `111862204197`. The current HEAD
+was therefore accepted as the unambiguous 10.C baseline.
+
+Immutable `v0.1.0` reconnaissance inspected `app/R/app-init.R`, `app/R/app.R`,
+`app/R/view-models.R`, `tests/phase6/test-materialized-products-app.R`, and
+`operations/launch-reference-app.R`. The implementation adapted bounded
+initialization, safe startup failure, valid-empty behavior, actual-only
+trajectory presentation, server testing, supervised launch, nonmutation, and
+fictional teaching order. It rejected repository-root sourcing and operations,
+YAML/direct-storage application coupling, daily-hazard semantics,
+fictional-specific application identity, and artifact/deployment assumptions.
+
+The closed resource catalog now owns
+`rrp.documentation.supplied-application-guide` at
+`resources/documentation/supplied-application-guide.md`. It is the fifth exact
+version-matched installed Markdown product document, projects byte-for-byte,
+resolves through `rrp_resource_path()`, and accompanies
+`rrp.application.supplied@0.1.0` and `rrp.project-brand@0.1.0`. Its executable
+examples use only public installed package operations. The guide explains
+prerequisites, existing-product launch, startup, freshness and product states,
+Current Risk Pool, actual trajectory, Overview, bounded/default branding,
+contained logos, read-only analytical behavior, loopback stop/relaunch, and
+the later distribution/deployment boundary. It teaches no repository sourcing,
+internal helper, hospital executable frontend, hidden refresh, or deployment
+procedure.
+
+`packages/rrpplatform/tests/fictional-application.R` is one coherent
+package-native and separately installed acceptance proof. It creates the exact
+nine-file ordinary fictional project outside Git from installed software,
+explicitly generates its fictional source, initializes state, executes the
+existing empty/first/second/newer durable scopes, builds and materializes the
+existing Stage 9 products, and constructs the generic installed application.
+The realized current value is `0.3833333333333333`; the actual trajectory is
+exactly `0.39` then `0.3833333333333333`. Installed Reactable, actual-only
+sparklines, fixed-scale Plotly, exact observation detail, direct Overview
+reconciliation, search/filter/sort/page/selection mechanics, not-evaluated,
+fresh, stale, one-point, and valid-empty states are checked against detached
+product facts. Missing, corrupt, and incompatible products remain bounded
+pre-server failures.
+
+The same proof covers supplied fictional branding, no-brand RRP defaults, one
+custom supported display/color/contained-logo realization with unsupported
+typography ignored, and bounded invalid remote-logo rejection. Branding leaves
+the product snapshot, view models, and fixed analytical risk encoding
+unchanged. Test-only producer/provider/app-module/app/CSS/JavaScript/HTML
+sentinels remain untouched, establishing that project presentation is
+declarative only. Exact before/after project file names and MD5 digests prove
+that supervised public launch performs no analytical or product mutation. The
+detached model is checked for native IDs, crosswalk/predictor terms, source
+paths, credentials, connections, database internals, and executable source.
+An exact relocated non-Git copy validates, opens the same existing products,
+resolves the same brand, constructs the same model, and launches without
+rebuilding or modifying files.
+
+The focused installed proof exposed one real valid-empty defect: the server's
+selection synchronizer supplied `NULL` when no episode existed, while
+`rrp_application_selected_row()` assumed a scalar match. The internal helper
+now returns `NA_integer_` for no selection, and focused component plus live
+empty-server evidence covers that case. No public signature, export, contract,
+product behavior, or analytical meaning changed.
+
+The bounded human UX review used the actual installed detached model, rendered
+bslib tag structure, Reactable/Plotly objects, exact sparkline/risk markup,
+Shiny `testServer`, and supervised public loopback launch. It required no
+external browser or browser automation. The installed shell/navigation,
+current-pool density and controls, direct probability encoding, actual-marker
+trajectory and table, Overview hierarchy, status/empty messages, default and
+custom identities, contained logo, responsive installed CSS, and component
+integration were coherent and truthful for planned Stage 10 scope. The empty-
+selection correction above was the only defect found; no aesthetic expansion
+was made.
+
+Validation evidence: the single final authoritative local matrix passed.
+Repository validation passed all eight checks. Package validation passed exact
+54-resource source/catalog/schema closure and deterministic installed
+projection; dependency-order builds; isolated installs and fresh-process loads;
+all package-native application and inherited project/producer/provider/history/
+product regressions; exact `Status: OK` strict checks for both packages; and
+every installed lifecycle proof. The platform strict check completed in
+234.28 seconds. The separately installed fictional supplied-application proof
+completed in 37.22 seconds with guide/assets, current pool, actual trajectories,
+Overview, product states, branding, nonmutation, privacy, executable denial,
+relocation, and loopback cleanup all passing. Source R, Rd, DCF/resource parsing,
+exact inventory, generated-artifact/process hygiene, and `git diff --check`
+passed. Loopback tests required the permitted network-capable sandbox because
+the default sandbox cannot allocate a local port; no external network or
+browser was used.
+
+**Current implementation state:** Increment 10.C is locally complete. Stage 10
+formal acceptance is not claimed. It still requires human commit/push, a
+successful hosted workflow for the exact candidate revision, and a separate
+acceptance/architecture reconciliation. Stage 11 was not begun; no CLI,
+distribution, installer, upgrade, artifact, deployment, hosting,
+authentication, publication, release, clinical, performance, or support
+capability was added.

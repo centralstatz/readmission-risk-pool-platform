@@ -292,6 +292,7 @@ rrp_application_current_view <- function(
 }
 
 rrp_application_selected_row <- function(view, episode_id) {
+  if (is.null(episode_id)) return(NA_integer_)
   selected <- match(episode_id, view$rows$episode_id)
   if (is.na(selected)) NA_integer_ else as.integer(selected)
 }

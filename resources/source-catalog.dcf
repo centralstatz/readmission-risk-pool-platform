@@ -429,3 +429,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/logical-products-guide.md
 Installed-Path: resources/documentation/logical-products-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.supplied-application-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/supplied-application-guide.md
+Installed-Path: resources/documentation/supplied-application-guide.md
+Format: md

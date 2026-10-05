@@ -83,6 +83,7 @@ expected_files <- c(
   "packages/rrpplatform/tests/project-doctor.R",
   "packages/rrpplatform/tests/fictional-end-to-end.R",
   "packages/rrpplatform/tests/fictional-products.R",
+  "packages/rrpplatform/tests/fictional-application.R",
   "packages/rrpplatform/tests/project-initializer.R",
   "packages/rrpplatform/tests/fictional-project.R",
   "packages/rrpplatform/tests/project-loader.R",
@@ -164,6 +165,7 @@ expected_files <- c(
   "resources/documentation/provider-request-reference.md",
   "resources/documentation/fictional-reference-walkthrough.md",
   "resources/documentation/logical-products-guide.md",
+  "resources/documentation/supplied-application-guide.md",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/validate-packages.R", "tools/validate-repository.R"
 )

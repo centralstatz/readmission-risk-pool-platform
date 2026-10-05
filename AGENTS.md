@@ -78,7 +78,7 @@ exact standard-authoring adaptation to the raw producer/provider contracts,
 transactional seven-authoring-path fictional-project initialization with the
 same branding resources, explicit
 byte-deterministic source generation, private identity-crosswalk mapping,
-time-aware project-provider execution, and exact four-document installed
+time-aware project-provider execution, and exact five-document installed
 guidance,
 complete installed non-Git fictional durable execution, scope/episode/current
 history, private-field exclusion, same-key provider non-reexecution, and
@@ -188,6 +188,7 @@ application authority, detached product-only startup/view models, bounded
 branding interpretation, and loopback launch. Increment 10.B adds the complete
 Current Risk Pool and Overview experiences, actual-observation sparklines and
 Plotly detail, exact observation and scope presentation, responsive RRP-owned
-CSS, and initialized standard/fictional branding resources. Stage 10 remains
-in progress; Increment 10.C installed fictional proof and human guidance
-remain.
+CSS, and initialized standard/fictional branding resources. Increment 10.C
+adds the cataloged Supplied Application Guide and coherent installed non-Git
+fictional application proof. Stage 10 hosted acceptance and formal
+reconciliation remain pending.

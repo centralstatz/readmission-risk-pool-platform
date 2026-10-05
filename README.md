@@ -61,13 +61,15 @@ storage-neutral list/read access with contextual freshness. Products remain
 rebuildable derived state and are excluded from state backup. A fourth
 installed product document explains this lifecycle, and the isolated non-Git
 fictional proof realizes actual, empty, stale, copied, deleted, and restored
-product states through the public package operations. It has no root selector,
-persistent installed RRP distribution, scheduled/off-host backup, migration,
-completed application experience, command-line interface, or deployment
-capability. Increment 10.A adds the installed application/brand authorities,
-one-time detached product startup, pure presentation view models, a generic
-Shiny/bslib shell, and the loopback-only `rrp_launch_app()` operation; the final
-Stage 10 experience and guide remain absent.
+product states through the public package operations. The installed generic
+supplied application now adds a product-only Current Risk Pool, actual
+trajectory detail, exact Overview, bounded declarative branding, and a
+cataloged Supplied Application Guide. Its complete local non-Git fictional
+proof covers product states, portability, nonmutation, privacy, executable-
+customization denial, and supervised loopback cleanup. Formal Stage 10 hosted
+acceptance and reconciliation remain pending. The repository has no root
+selector, persistent installed RRP distribution, scheduled/off-host backup,
+migration, command-line interface, or deployment capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.

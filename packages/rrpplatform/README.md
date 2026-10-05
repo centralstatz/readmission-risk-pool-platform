@@ -46,6 +46,9 @@ sparklines, one Plotly trajectory detail with an exact observation table,
 direct descriptive scope summaries, and explicit freshness/empty states. The
 primary brand color affects identity and composition only; the continuous risk
 bar retains a fixed RRP-owned neutral analytical scale.
+The cataloged Supplied Application Guide documents the installed package-level
+launch, product-state, branding, read-only, loopback, and later-deployment
+boundaries without requiring repository source.
 
 Its current callable interfaces are:
 
