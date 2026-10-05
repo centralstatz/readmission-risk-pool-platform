@@ -12,9 +12,11 @@ manifest and `rrp.project-registration@0.3.0` registration-result structures,
 the installed canonical specification family, the five singular runtime
 authorities, semantic provider declarations, one explicit project-loading
 boundary, the installed `rrp.project-authoring@0.1.0` authority and raw-contract
-adapter, transactional six-file standard-project initialization from cataloged
-software-owned templates, transactional seven-file fictional-project
-realization with separate explicit project-owned source generation, explicit
+adapter, transactional six-path standard-project initialization plus two
+bounded declarative branding resources from cataloged software-owned
+templates, transactional seven-path fictional-project realization with the
+same branding resources and separate explicit project-owned source generation,
+explicit
 project-state lifecycle operations, and the
 private DuckDB realization of the runtime-owned logical history port. Contract
 parsers, registration evaluation,
@@ -38,6 +40,12 @@ three validated products once, converts optional project-root `_brand.yml`
 through the upstream parser into a closed detached presentation model, creates
 pure component-ready view models, and launches one generic Shiny application
 on loopback without analytical execution or mutation.
+The useful installed experience provides the Current Risk Pool and Overview,
+deterministic Reactable filtering/paging/selection, truthful actual-observation
+sparklines, one Plotly trajectory detail with an exact observation table,
+direct descriptive scope summaries, and explicit freshness/empty states. The
+primary brand color affects identity and composition only; the continuous risk
+bar retains a fixed RRP-owned neutral analytical scale.
 
 Its current callable interfaces are:
 
@@ -62,9 +70,10 @@ Its current callable interfaces are:
   one closed `rrp_project_context` after exact semantic producer/provider
   validation and selection;
 - `rrp_initialize_project(software_catalog, project_root, project_id,
-  project_version)` creates exactly the six-file standard authoring scaffold in
-  a previously absent destination, validates staged and promoted output through
-  the loader, and returns one common operation result;
+  project_version)` creates exactly the six standard authoring paths plus
+  `_brand.yml` and its contained logo in a previously absent destination,
+  validates staged and promoted output through the loader, and returns one
+  common operation result;
 - `rrp_initialize_fictional_project(software_catalog, project_root)` creates
   the supplied ordinary fictional teaching project at an absent destination;
   its project-owned source generator remains a separate explicit action;

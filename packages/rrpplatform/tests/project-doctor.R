@@ -54,6 +54,14 @@ rrp_doctor_provider_template <- c(
   "  stop('selected callable executed', call. = FALSE)", "}"
 )
 rrp_doctor_readme_template <- "# RRP hospital project"
+rrp_doctor_brand_template <- c(
+  "meta:", "  name:", "    full: '@@RRP_PROJECT_ID@@'",
+  "    short: '@@RRP_PROJECT_ID@@'", "color:", "  primary: '#1F4E79'",
+  "logo:", "  medium:", "    path: assets/project-logo.png"
+)
+rrp_doctor_brand_logo <- as.raw(c(
+  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00
+))
 
 rrp_doctor_software_root <- function(root) {
   resources <- list(
@@ -116,6 +124,16 @@ rrp_doctor_software_root <- function(root) {
       id = "rrp.template.project-readme", class = "template", format = "md",
       path = "resources/templates/project/README.md",
       value = rrp_doctor_readme_template
+    ),
+    list(
+      id = "rrp.template.project-brand", class = "template", format = "yml",
+      path = "resources/templates/project/_brand.yml",
+      value = rrp_doctor_brand_template
+    ),
+    list(
+      id = "rrp.template.project-brand-logo", class = "template", format = "png",
+      path = "resources/templates/project/assets/project-logo.png",
+      value = rrp_doctor_brand_logo
     )
   )
   canonical_definitions <- rrp_doctor_internal(
@@ -159,7 +177,11 @@ rrp_doctor_software_root <- function(root) {
   }))
   for (resource in resources) {
     path <- file.path(root, resource$path)
-    if (identical(resource$format, "dcf") && !is.null(names(resource$value))) {
+    if (is.raw(resource$value)) {
+      dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+      writeBin(resource$value, path)
+    } else if (identical(resource$format, "dcf") &&
+               !is.null(names(resource$value))) {
       rrp_doctor_write_record(resource$value, path)
     } else {
       dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)

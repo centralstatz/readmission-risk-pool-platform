@@ -72,9 +72,11 @@ projection, explicit-root installed-package access, common resource-validation
 result and privacy-safe diagnostic behavior, the exact canonical and five-
 resource runtime specification families and relationships, strict 0.3.0 project
 contracts, explicit trusted
-project loading, transactional six-file standard-project initialization,
+project loading, transactional six-authoring-path standard-project
+initialization plus bounded declarative branding resources,
 exact standard-authoring adaptation to the raw producer/provider contracts,
-transactional seven-file fictional-project initialization, explicit
+transactional seven-authoring-path fictional-project initialization with the
+same branding resources, explicit
 byte-deterministic source generation, private identity-crosswalk mapping,
 time-aware project-provider execution, and exact four-document installed
 guidance,
@@ -181,6 +183,11 @@ Logical Products Guide and complete installed non-Git fictional actual/empty
 product, reopen, staleness, copy, denial, deletion, and history-only recovery
 proof. Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 run `36922905508`, job `110573063816`; formal reconciliation accepted Stage 9.
-Stages 1–9 are accepted and complete. Increment 10.A is complete locally;
-Stage 10 remains in progress. Increment 10.B — Useful core experiences and
-bounded presentation—requires separate authorization.
+Stages 1–9 are accepted and complete. Increment 10.A established installed
+application authority, detached product-only startup/view models, bounded
+branding interpretation, and loopback launch. Increment 10.B adds the complete
+Current Risk Pool and Overview experiences, actual-observation sparklines and
+Plotly detail, exact observation and scope presentation, responsive RRP-owned
+CSS, and initialized standard/fictional branding resources. Stage 10 remains
+in progress; Increment 10.C installed fictional proof and human guidance
+remain.

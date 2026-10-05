@@ -5125,3 +5125,134 @@ installed application guide and full fictional Stage 10 proof.
 
 **Next task:** implement only Increment 10.B — Useful core experiences and
 bounded presentation—when separately authorized. Do not begin Increment 10.C.
+
+## Stage 10 / Increment 10.B — Useful core experiences and bounded presentation (complete, 2026-10-05)
+
+Implementation began from accepted committed 10.A revision
+`9a156577228d7518d0809f1d506069f1284f3953`. The installed supplied application
+now has exactly two top-level views: Current Risk Pool and Overview. Current
+Risk Pool uses deterministic external search, exact provider/model filters,
+explicit risk/episode sorting, bounded paging, displayed/matching counts,
+single-row selection, and a synchronized current-first episode selector around
+one deliberately styled Reactable. Retained-trajectory episodes without a
+current estimate remain discoverable and explicitly labeled. Exact accepted
+probability, canonical episode, analytical time, derived days-to-target
+context, provider/model attribution, and compact trajectory evidence remain
+visible. Sorting is expressly presentation-only rather than clinical priority
+or recommendation.
+
+Each row sparkline is constructed solely from that episode's ordered governed
+trajectory observations on the fixed probability scale. Two-or-more points
+use actual markers and a restrained connector; one point is intentionally one
+marker; no point says `No history`. The full contextual Plotly detail uses the
+same actual rows, fixed zero-to-one percentage axis, concise exact tooltips,
+large visible markers, a connector only for multiple observations, no legend
+or modebar, and a companion exact-observation Reactable. Its note states that
+the connector shows order rather than estimates between points. No daily
+values, interpolation, baseline, carry-forward, fallback estimate, provider
+replay, or continuous-monitoring implication entered.
+
+The exact numeric probability is supplemented by one monotonic continuous bar
+whose width is the accepted value. It has no threshold, bin, named risk class,
+or recommendation and uses a fixed RRP analytical teal rather than the project
+brand color. Overview deliberately omits an additional distribution chart: at
+the first bounded scope, exact count/minimum/quartiles/median/maximum cards and
+the full exact operational-scope count reconciliation communicate the direct
+product facts more clearly without another visual encoding. It adds no outcome,
+rate, care-management, prioritization, or performance claim.
+
+Freshness now has persistent non-color-only not-evaluated, fresh, and stale
+treatments with source lineage and separate-refresh language. Valid empty
+products retain the normal shell, an explicit `No current accepted risk
+estimates` explanation, unavailable trajectory state, and zero-count overview.
+Installed RRP CSS now coherently owns responsive shell, navigation, cards,
+controls, table density and selection, probability cells, sparklines,
+trajectory notes, summary cards, empty states, and reduced-motion behavior.
+The application requires no custom JavaScript. A bounded desktop human review
+plus direct responsive-CSS inspection found clear hierarchy, readable exact
+values and state language, useful table/trajectory adjacency, and explicit
+column-collapse behavior.
+That review also found and corrected globally scoped primary-color application
+and Plotly y-axis title spacing; it makes no production-accessibility or
+clinical-fitness claim.
+
+The source resource schema now admits concrete `yml` and `png` formats and the
+closed catalog grows from 49 to exactly 53 entries. Standard and fictional
+initializers now add cataloged `_brand.yml` and contained
+`assets/project-logo.png` resources through the same transactional staging,
+inventory, promotion, loading, copy, and rollback machinery as their existing
+six or seven authoring paths. The standard display identity is rendered from
+project ID; the fictional project uses explicit fictional identity. The
+application applies display name, contained logo bytes/alternative text, and
+primary color only to bounded identity and composition. No `app/`, app source,
+hospital CSS/JavaScript/HTML, custom view, or analytical configuration is
+generated. The six standard authoring paths, project/authoring contracts,
+public export surface, manifest/API versions, and provider/producer boundaries
+remain unchanged.
+
+The two contained PNG assets were created specifically for this repository as
+compact abstract brand marks: a generic navy/teal protected-pathway mark and a
+visibly distinct fictional plum/coral connected-tile mark. Both are
+transparent, text-free, nonclinical identity assets; neither depicts a medical
+cross, person, patient fact, or risk category. They are ordinary cataloged
+template bytes rather than remote runtime assets.
+
+Historical reconnaissance revisited immutable `v0.1.0` application startup,
+view models, initialization, and Phase 6 application evidence. The increment
+retained one-time product-only injection, descending display with canonical
+tie-breaking, canonical selection, actual observations, provider attribution,
+empty/status handling, and server interaction tests. It adapted those ideas to
+the current remaining-risk products and bslib/Reactable/Plotly components. It
+rejected source-tree application sourcing, generated Hospital app files,
+fictional-only app identity, raw generic tables, old YAML analytics and daily-
+hazard semantics, base plots, direct storage reads, and deployment coupling.
+
+Focused package-native evidence proves deterministic tie-breaking,
+search/filter/sort/page behavior, historical-only selection labels, exact
+values and follow-up derivation, monotonic probability bars, two/one/zero
+sparkline and trajectory states, actual marker counts, noninterpolating Plotly
+configuration, exact observation tables, overview statistics/counts, all
+freshness states, brand identity/embedded bytes, Reactable objects, and Shiny
+server paging/filter reactivity. Existing application evidence continues to
+prove defaults, supported/unsupported/invalid branding, logo containment,
+real fresh/stale/empty models, prelaunch denial, loopback lifecycle, and
+project-byte nonmutation. Initializer and installed regression evidence now
+requires exact eight-path standard and nine-path fictional inventories and
+valid copied branding bytes while retaining all Stage 8–9 behavior.
+
+The complete repository/package validation matrix passes locally: repository
+foundation validation; source catalog/schema/contract closure and deterministic
+installed projection; both package builds and dependency-order isolated
+installs/loads; package-native tests; strict `R CMD check --no-manual` with
+exact `Status: OK`; installed resource/project/producer/provider/history/
+product/application regressions; source/Rd/DCF parsing; and `git diff --check`.
+The first strict platform check exposed a non-ASCII presentation dash, which
+was replaced. One supervised rerun incorrectly reported expiration of the
+existing 900-second allowance while its then-current test completed normally
+in isolation; no timeout, check, assertion, cleanup proof, or test was removed
+or weakened in the final implementation.
+The longer check then exposed two test-private standard-project catalogs that
+still omitted the new brand template/logo inputs; the doctor and state fixtures
+were reconciled and their focused tests passed. A generic vocabulary scan was
+also made explicitly text-only so cataloged PNG bytes are not passed to a text
+reader; PNG closure, signature, projection, and byte-equality checks remain.
+Final diff review added the missing selector-to-table half of bidirectional
+selection synchronization and pure mapping evidence. A final outer-validator
+rerun with a diagnostic longer allowance then reproduced the existing
+supervisor clock defect, reporting 2,115 elapsed seconds after roughly one
+minute and terminating during an inherited
+test that had already passed independently. The finalized source archive was
+therefore checked directly with the same isolated dependency library, projected
+software root, package-native tests, and loopback permission; `R CMD check
+--no-manual` completed with exact `Status: OK`. The prior complete validator
+run had already passed all subsequent installed lifecycle regressions, and the
+selection-only correction does not enter those execution paths.
+The accepted 900-second supervisor allowance was retained.
+No hosted run is claimed for this uncommitted tree.
+
+**Current implementation state:** Increment 10.B is complete locally. Stage 10
+remains in progress. The installed fictional application proof and complete
+human application guidance remain absent.
+
+**Next task:** implement only Increment 10.C — Installed fictional application
+proof and human guidance—when separately authorized. Do not begin Stage 11.

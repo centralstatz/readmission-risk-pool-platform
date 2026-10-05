@@ -7,13 +7,21 @@ RRP source, an installation, or project state.
 
 ## Standard project
 
-A normally initialized project contains exactly six source files:
+A normally initialized project contains exactly six authoring paths:
 `rrp-project.dcf`, `rrp-authoring.dcf`, `R/register.R`,
 `R/produce-canonical.R`, `R/calculate-risk.R`, and `README.md`. Normal hospital
 authors edit the manifest and authoring metadata when their declared identities
 or paths change, and put executable hospital logic only in the producer and
 provider files. The generated registration file is thin RRP wiring and normally
 does not change.
+
+It also contains two declarative presentation resources: `_brand.yml` and
+`assets/project-logo.png`. The installed supplied application supports only a
+bounded standard subset: display identity, one primary color, and one
+contained PNG/JPEG logo. These resources do not add hospital application code,
+change analytical behavior, or alter the six authoring paths. Valid projects
+may remove `_brand.yml` to use RRP defaults; any referenced logo must remain a
+safe project-relative regular file.
 
 `rrp-project.dcf` owns project identity and version, the exact selected producer
 and provider identities, the canonical profile, extension-library path, and

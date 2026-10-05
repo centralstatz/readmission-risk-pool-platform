@@ -179,7 +179,7 @@ rrp_project_initialization_inventory <- function(root, extra_files = character()
     "R/calculate-risk.R", "R/produce-canonical.R", "R/register.R",
     "README.md", "rrp-authoring.dcf", "rrp-project.dcf", extra_files
   ), method = "radix")) &&
-    identical(directories[nzchar(directories)], "R")
+    identical(directories[nzchar(directories)], c("R", "assets"))
 }
 
 rrp_project_initialization_assert_context <- function(context, inputs, root) {
@@ -258,7 +258,9 @@ rrp_project_initialize <- function(
     authoring = paste0(prefix, "authoring-metadata"),
     producer = paste0(prefix, "producer"),
     provider = paste0(prefix, "provider"),
-    readme = paste0(prefix, "readme")
+    readme = paste0(prefix, "readme"),
+    brand = paste0(prefix, "brand"),
+    brand_logo = paste0(prefix, "brand-logo")
   )
   template_paths <- vapply(resource_ids, function(resource_id) {
     rrp_resource_path(software_catalog, resource_id)
@@ -307,6 +309,10 @@ rrp_project_initialize <- function(
     readLines(template_paths[["readme"]], warn = FALSE, encoding = "UTF-8"),
     character()
   )
+  brand <- rrp_project_render_template(
+    readLines(template_paths[["brand"]], warn = FALSE, encoding = "UTF-8"),
+    if (fictional) character() else c(PROJECT_ID = inputs$project_id)
+  )
   generator <- if (fictional) rrp_project_render_template(
     readLines(generator_template, warn = FALSE, encoding = "UTF-8"),
     character()
@@ -326,7 +332,8 @@ rrp_project_initialize <- function(
     }
   }, add = TRUE)
 
-  if (!dir.create(file.path(staging, "R"), showWarnings = FALSE)) {
+  if (!dir.create(file.path(staging, "R"), showWarnings = FALSE) ||
+      !dir.create(file.path(staging, "assets"), showWarnings = FALSE)) {
     rrp_project_initialization_abort(
       "project_render_failed", "Project template rendering failed."
     )
@@ -338,13 +345,24 @@ rrp_project_initialize <- function(
     writeLines(producer, file.path(staging, "R", "produce-canonical.R"), useBytes = TRUE)
     writeLines(provider, file.path(staging, "R", "calculate-risk.R"), useBytes = TRUE)
     writeLines(readme, file.path(staging, "README.md"), useBytes = TRUE)
+    writeLines(brand, file.path(staging, "_brand.yml"), useBytes = TRUE)
+    if (!file.copy(
+      template_paths[["brand_logo"]],
+      file.path(staging, "assets", "project-logo.png"),
+      overwrite = FALSE, copy.mode = FALSE, copy.date = FALSE
+    )) rrp_project_initialization_abort(
+      "project_render_failed", "Project template rendering failed."
+    )
     if (fictional) writeLines(
       generator, file.path(staging, "R", "generate-source.R"), useBytes = TRUE
     )
   }, error = function(condition) rrp_project_initialization_abort(
     "project_render_failed", "Project template rendering failed."
   ))
-  extra_files <- if (fictional) "R/generate-source.R" else character()
+  extra_files <- c(
+    "_brand.yml", "assets/project-logo.png",
+    if (fictional) "R/generate-source.R" else character()
+  )
   if (!rrp_project_initialization_inventory(staging, extra_files)) {
     rrp_project_initialization_abort(
       "project_render_failed", "Project template rendering failed."
@@ -393,7 +411,9 @@ rrp_project_initialize <- function(
     extension_packages = list(),
     created_paths = c(
       "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
-      "R/produce-canonical.R", "R/calculate-risk.R", "README.md", extra_files
+      "R/produce-canonical.R", "R/calculate-risk.R", "README.md",
+      "_brand.yml", "assets/project-logo.png",
+      if (fictional) "R/generate-source.R" else character()
     )
   )
   result <- rrp_new_operation_result(
@@ -412,8 +432,8 @@ rrp_project_initialize <- function(
 
 #' Initialize a minimal independent RRP project
 #'
-#' Transactionally render the six installed standard-authoring templates into
-#' one absent
+#' Transactionally render the six installed standard-authoring paths and two
+#' declarative branding resources into one absent
 #' explicit destination, prove the staged output through [rrp_load_project()],
 #' atomically promote it, and load it again at its final physical location.
 #'

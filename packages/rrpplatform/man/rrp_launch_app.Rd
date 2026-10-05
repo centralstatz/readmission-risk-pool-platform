@@ -26,3 +26,17 @@ branding, constructs a closed detached application model, and runs the
 installed supplied application on the loopback interface. The operation
 returns after the application session exits.
 }
+\details{
+The application has two top-level views. Current Risk Pool provides
+deterministic episode search, exact provider/model filtering, presentation-only
+sorting, bounded paging, row/episode selection, exact accepted probabilities,
+actual-observation sparklines, and contextual Plotly trajectory detail with an
+exact observation table. Overview provides direct current-risk descriptive
+statistics and exact selected-scope counts. Freshness and valid-empty states
+remain explicit.
+
+The operation reads only the validated materialized products supplied at
+startup. It does not execute analytical components, refresh or materialize
+products, or give project branding control over analytical meaning or
+application behavior.
+}

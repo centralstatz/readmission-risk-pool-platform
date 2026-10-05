@@ -1,0 +1,10 @@
+meta:
+  name:
+    full: "Fictional Reference Hospital"
+    short: "Fictional Hospital"
+color:
+  primary: "#6A1B5D"
+logo:
+  medium:
+    path: assets/project-logo.png
+    alt: "Fictional Reference Hospital logo"

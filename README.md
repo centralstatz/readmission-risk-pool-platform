@@ -133,7 +133,8 @@ authorities, and their cross-references,
 resource/path safety, source closure, deterministic byte-preserving temporary
 installed projection, explicit-root access through the installed main package,
 common result/diagnostic behavior, strict project-contract behavior, explicit
-trusted project loading, transactional six-file standard-project initialization,
+trusted project loading, transactional six-authoring-path standard-project
+initialization plus bounded declarative branding resources,
 standard-authoring adaptation into the unchanged raw contracts, installed
 product-document resolution, exact semantic producer and structural provider
 selection, structured project
@@ -167,6 +168,12 @@ detached product/presentation/application models, deterministic table/
 sparkline/trajectory/tooltip/overview data, valid freshness and empty states,
 prelaunch denial, a supervised loopback child-process session, and unchanged
 project bytes across launch and shutdown.
+Increment 10.B validation additionally proves the complete deterministic
+Current Risk Pool and Overview experiences, actual-observation-only
+sparklines/Plotly detail and exact tables, direct descriptive summaries,
+freshness and empty-state presentation, bounded responsive CSS integration,
+and standard/fictional `_brand.yml` plus contained-logo initialization without
+project app source or analytical influence.
 The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
@@ -207,8 +214,9 @@ fictional actual/empty product evidence and Logical Products Guide. Exact
 revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 `package-foundation` run `36922905508`, job `110573063816`, and formal
 reconciliation accepted Stage 9. Stages 1–9 are accepted and complete.
-Increment 10.A implements the installed supplied-application foundation; Stage
-10 remains in progress and Increments 10.B–10.C remain unimplemented.
+Increments 10.A–10.B implement the installed supplied-application foundation
+and useful bounded presentation; Stage 10 remains in progress and Increment
+10.C remains unimplemented.
 
 ## License
 

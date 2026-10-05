@@ -142,7 +142,7 @@ resource_schema_expected <- function() {
       "static_application_asset"
     ), collapse = ","),
     "Owner-Packages" = "rrpplatform,rrpruntime",
-    "Resource-Formats" = "dcf,r,md,css",
+    "Resource-Formats" = "dcf,r,md,css,yml,png",
     "Status-Values" = "development_unpublished",
     "Unique-Fields" = "Resource-ID,Source-Path,Installed-Path",
     "Case-Folded-Path-Fields" = "Source-Path,Installed-Path",
@@ -1602,6 +1602,15 @@ validate_software_template_resources <- function(authority, root, projection) {
       id = "rrp.template.project-readme",
       path = "resources/templates/project/README.md", format = "md"
     ),
+    project_brand = c(
+      id = "rrp.template.project-brand",
+      path = "resources/templates/project/_brand.yml", format = "yml"
+    ),
+    project_brand_logo = c(
+      id = "rrp.template.project-brand-logo",
+      path = "resources/templates/project/assets/project-logo.png",
+      format = "png"
+    ),
     fictional_project_manifest = c(
       id = "rrp.template.fictional-project-manifest",
       path = "resources/templates/fictional-project/rrp-project.dcf",
@@ -1630,6 +1639,15 @@ validate_software_template_resources <- function(authority, root, projection) {
       id = "rrp.template.fictional-project-readme",
       path = "resources/templates/fictional-project/README.md", format = "md"
     ),
+    fictional_project_brand = c(
+      id = "rrp.template.fictional-project-brand",
+      path = "resources/templates/fictional-project/_brand.yml", format = "yml"
+    ),
+    fictional_project_brand_logo = c(
+      id = "rrp.template.fictional-project-brand-logo",
+      path = "resources/templates/fictional-project/assets/project-logo.png",
+      format = "png"
+    ),
     fictional_project_source_generator = c(
       id = "rrp.template.fictional-project-source-generator",
       path = "resources/templates/fictional-project/R/generate-source.R",
@@ -1649,6 +1667,8 @@ validate_software_template_resources <- function(authority, root, projection) {
     ),
     project_producer = character(), project_provider = character(),
     project_readme = character(),
+    project_brand = "@@RRP_PROJECT_ID@@",
+    project_brand_logo = character(),
     fictional_project_manifest = c(
       "@@RRP_PROJECT_ID@@", "@@RRP_PROJECT_VERSION@@",
       "@@RRP_PRODUCER_ID@@", "@@RRP_PROVIDER_ID@@"
@@ -1661,6 +1681,8 @@ validate_software_template_resources <- function(authority, root, projection) {
     fictional_project_producer = character(),
     fictional_project_provider = character(),
     fictional_project_readme = character(),
+    fictional_project_brand = character(),
+    fictional_project_brand_logo = character(),
     fictional_project_source_generator = character()
   )
   for (name in names(templates)) {
@@ -1685,9 +1707,19 @@ validate_software_template_resources <- function(authority, root, projection) {
       paste0(name, "_template_catalog"),
       paste0(specification[["id"]], " has an unsupported catalog mapping.")
     )
-    lines <- readLines(
-      file.path(root, specification[["path"]]), warn = FALSE, encoding = "UTF-8"
-    )
+    resource_path <- file.path(root, specification[["path"]])
+    if (identical(specification[["format"]], "png")) {
+      bytes <- readBin(resource_path, "raw", n = file.info(resource_path)$size)
+      resource_require(
+        length(bytes) > 8L && identical(bytes[1:8], as.raw(c(
+          0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
+        ))),
+        paste0(name, "_template_content"),
+        paste0(specification[["id"]], " is not a valid PNG resource.")
+      )
+      next
+    }
+    lines <- readLines(resource_path, warn = FALSE, encoding = "UTF-8")
     discovered <- unique(unlist(regmatches(
       lines, gregexpr("@@RRP_[A-Z_]+@@", lines, perl = TRUE)
     ), use.names = FALSE))
@@ -1697,7 +1729,7 @@ validate_software_template_resources <- function(authority, root, projection) {
     )
     if (identical(specification[["format"]], "dcf")) {
       resource_require(
-        length(read_dcf_records(file.path(root, specification[["path"]]))) == 1L,
+        length(read_dcf_records(resource_path)) == 1L,
         "project_manifest_template", "Project manifest template is malformed."
       )
     } else if (identical(specification[["format"]], "r")) {
@@ -1795,8 +1827,16 @@ validate_application_asset_resource <- function(authority, root, projection) {
     "application_asset_catalog", "The supplied application CSS mapping is invalid."
   )
   css <- readLines(file.path(root, path), warn = FALSE, encoding = "UTF-8")
+  required_classes <- c(
+    ".rrp-page", ".rrp-status", ".rrp-current-table", ".rrp-risk-cell",
+    ".rrp-sparkline", ".rrp-trajectory-note", ".rrp-stat-grid"
+  )
   resource_require(
-    length(css) > 0L && any(grepl("rrp-application", css, fixed = TRUE)) &&
+    length(css) > 0L && all(vapply(
+      required_classes, function(class_name) any(grepl(
+        class_name, css, fixed = TRUE
+      )), logical(1L)
+    )) &&
       !any(grepl("<script|javascript:|@import|url[(]", css, ignore.case = TRUE)),
     "application_asset_content", "The supplied application CSS is invalid."
   )
@@ -2183,13 +2223,16 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.template.project-manifest", "rrp.template.project-registration",
     "rrp.template.project-authoring-metadata",
     "rrp.template.project-producer", "rrp.template.project-provider",
-    "rrp.template.project-readme",
+    "rrp.template.project-readme", "rrp.template.project-brand",
+    "rrp.template.project-brand-logo",
     "rrp.template.fictional-project-manifest",
     "rrp.template.fictional-project-registration",
     "rrp.template.fictional-project-authoring-metadata",
     "rrp.template.fictional-project-producer",
     "rrp.template.fictional-project-provider",
     "rrp.template.fictional-project-readme",
+    "rrp.template.fictional-project-brand",
+    "rrp.template.fictional-project-brand-logo",
     "rrp.template.fictional-project-source-generator",
     "rrp.documentation.project-authoring-guide",
     "rrp.documentation.provider-request-reference",
@@ -2198,12 +2241,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 49L && identical(
+    length(actual_ids) == 53L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 46 known entries."
+    "The software resource inventory must contain exactly 53 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2678,6 +2721,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
       file.path("tests", "application-foundation.R"),
+      file.path("tests", "application-experience.R"),
       file.path("tests", "logical-products.R"),
       file.path("tests", "product-materialization.R"),
       file.path("tests", "canonical-contracts.R"),
@@ -3083,7 +3127,8 @@ validate_source_boundaries <- function(package_roots) {
   )
   generic_resource_files <- resource_files[
     !startsWith(resource_files, paste0(fictional_resource_root, .Platform$file.sep)) &
-      resource_files != fictional_walkthrough
+      resource_files != fictional_walkthrough &
+      !grepl("[.]png$", resource_files, ignore.case = TRUE)
   ]
   generic_text <- paste(unlist(lapply(c(
     platform_source_files,
@@ -3810,12 +3855,18 @@ validate_installed_resource_access <- function(library_root, work_root) {
     project_producer_template = "resources/templates/project/R/produce-canonical.R",
     project_provider_template = "resources/templates/project/R/calculate-risk.R",
     project_readme_template = "resources/templates/project/README.md",
+    project_brand_template = "resources/templates/project/_brand.yml",
+    project_brand_logo_template =
+      "resources/templates/project/assets/project-logo.png",
     fictional_manifest_template = "resources/templates/fictional-project/rrp-project.dcf",
     fictional_registration_template = "resources/templates/fictional-project/R/register.R",
     fictional_authoring_template = "resources/templates/fictional-project/rrp-authoring.dcf",
     fictional_producer_template = "resources/templates/fictional-project/R/produce-canonical.R",
     fictional_provider_template = "resources/templates/fictional-project/R/calculate-risk.R",
     fictional_readme_template = "resources/templates/fictional-project/README.md",
+    fictional_brand_template = "resources/templates/fictional-project/_brand.yml",
+    fictional_brand_logo_template =
+      "resources/templates/fictional-project/assets/project-logo.png",
     fictional_generator_template = "resources/templates/fictional-project/R/generate-source.R",
     project_authoring_guide = "resources/documentation/project-authoring-guide.md",
     provider_request_reference = "resources/documentation/provider-request-reference.md",
@@ -3991,7 +4042,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.template.project-authoring-metadata', project_producer_template = ",
     "'rrp.template.project-producer', project_provider_template = ",
     "'rrp.template.project-provider', project_readme_template = ",
-    "'rrp.template.project-readme', project_authoring_guide = ",
+    "'rrp.template.project-readme', project_brand_template = ",
+    "'rrp.template.project-brand', project_brand_logo_template = ",
+    "'rrp.template.project-brand-logo', project_authoring_guide = ",
     "'rrp.documentation.project-authoring-guide', provider_request_reference = ",
     "'rrp.documentation.provider-request-reference'); ",
     "ids <- c(ids, fictional_manifest_template = ",
@@ -4000,7 +4053,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.template.fictional-project-authoring-metadata', fictional_producer_template = ",
     "'rrp.template.fictional-project-producer', fictional_provider_template = ",
     "'rrp.template.fictional-project-provider', fictional_readme_template = ",
-    "'rrp.template.fictional-project-readme', fictional_generator_template = ",
+    "'rrp.template.fictional-project-readme', fictional_brand_template = ",
+    "'rrp.template.fictional-project-brand', fictional_brand_logo_template = ",
+    "'rrp.template.fictional-project-brand-logo', fictional_generator_template = ",
     "'rrp.template.fictional-project-source-generator', fictional_reference_walkthrough = ",
     "'rrp.documentation.fictional-reference-walkthrough', logical_products_guide = ",
     "'rrp.documentation.logical-products-guide'); ",
@@ -4275,11 +4330,11 @@ validate_installed_project_initialization <- function(library_root, work_root) {
     "  catalog <- rrp_open_resource_catalog(software_root)",
     "  stopifnot(!file.exists(destination), !dir.exists(destination))",
     "  result <- rrp_initialize_project(catalog, destination, 'maintainer-initialized', '1.2.3')",
-    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', producer_implementation_id = 'maintainer-initialized.producer-implementation', producer_implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', provider_implementation_id = 'maintainer-initialized.provider-implementation', provider_implementation_version = '1.2.3', model_id = NULL, model_version = NULL, extension_packages = list(), created_paths = c('rrp-project.dcf', 'rrp-authoring.dcf', 'R/register.R', 'R/produce-canonical.R', 'R/calculate-risk.R', 'README.md'))",
+    "  expected_value <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', producer_id = 'maintainer-initialized.producer', producer_version = '1.2.3', producer_implementation_id = 'maintainer-initialized.producer-implementation', producer_implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', canonical_profile_id = 'rrp.canonical-profile.readmission', canonical_profile_version = '0.1.0', provider_id = 'maintainer-initialized.provider', provider_version = '1.2.3', provider_implementation_id = 'maintainer-initialized.provider-implementation', provider_implementation_version = '1.2.3', model_id = NULL, model_version = NULL, extension_packages = list(), created_paths = c('rrp-project.dcf', 'rrp-authoring.dcf', 'R/register.R', 'R/produce-canonical.R', 'R/calculate-risk.R', 'README.md', '_brand.yml', 'assets/project-logo.png'))",
     "  context <- rrp_load_project(catalog, destination)",
     "  doctor <- rrp_validate_project(catalog, destination)",
     "  expected_doctor <- list(project_id = 'maintainer-initialized', project_version = '1.2.3', project_contract_id = 'rrp.project', project_contract_version = '0.3.0', supported_rrp_api_version = '0.3.0', canonical_profile = list(profile_id = 'rrp.canonical-profile.readmission', profile_version = '0.1.0'), producer = list(component_id = 'maintainer-initialized.producer', component_version = '1.2.3', implementation_id = 'maintainer-initialized.producer-implementation', implementation_version = '1.2.3', mapping_id = 'maintainer-initialized.mapping', mapping_version = '1.2.3', origin = 'project'), provider = list(component_id = 'maintainer-initialized.provider', component_version = '1.2.3', implementation_id = 'maintainer-initialized.provider-implementation', implementation_version = '1.2.3', model_id = NULL, model_version = NULL, origin = 'project'), extension_library_status = 'not_initialized', state_status = 'not_initialized')",
-    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('R/calculate-risk.R', 'R/produce-canonical.R', 'R/register.R', 'README.md', 'rrp-authoring.dcf', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
+    "  stopifnot(identical(class(result), c('rrp_operation_result', 'list')), identical(result$operation_id, 'rrp.initialize-project'), identical(result$status, 'success'), identical(result$value, expected_value), identical(result$diagnostics, list()), identical(sort(list.files(destination, recursive = TRUE, all.files = TRUE, no.. = TRUE, include.dirs = FALSE)), c('_brand.yml', 'assets/project-logo.png', 'R/calculate-risk.R', 'R/produce-canonical.R', 'R/register.R', 'README.md', 'rrp-authoring.dcf', 'rrp-project.dcf')), !dir.exists(file.path(destination, 'extensions')), !dir.exists(file.path(destination, 'state')), !dir.exists(file.path(destination, '.git')), identical(context$producer$origin, 'project'), identical(context$provider$origin, 'project'), identical(doctor$operation_id, 'rrp.validate-project'), identical(doctor$status, 'success'), identical(doctor$value, expected_doctor), length(doctor$diagnostics) == 1L, identical(doctor$diagnostics[[1L]]$code, 'project_state_not_initialized'), identical(doctor$diagnostics[[1L]]$severity, 'warning'), identical(doctor$diagnostics[[1L]]$message, 'Project state has not been initialized.'), identical(rrp_operation_succeeded(doctor), TRUE), !grepl(destination, paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE), !grepl('function', paste(capture.output(str(doctor)), collapse = ' '), fixed = TRUE))",
     "  stopifnot(file.copy(destination, copy_parent, recursive = TRUE, copy.mode = FALSE))",
     "  copied_root <- file.path(copy_parent, basename(destination)); copied <- rrp_load_project(catalog, copied_root); copied_doctor <- rrp_validate_project(catalog, copied_root)",
     "  text <- paste(unlist(lapply(c(file.path(destination, 'rrp-project.dcf'), file.path(destination, 'rrp-authoring.dcf'), file.path(destination, 'R', 'register.R'), file.path(destination, 'R', 'produce-canonical.R'), file.path(destination, 'R', 'calculate-risk.R'), file.path(destination, 'README.md')), readLines, warn = FALSE)), collapse = '\\n')",
@@ -4728,8 +4783,10 @@ validate_packages <- function() {
     "execution, installed transparent/project provider substitution, ",
     "and kind-specific project contracts, ",
     "explicit trusted project loading, exact semantic producer and provider ",
-    "selection, transactional six-file standard-project initialization, ",
-    "transactional seven-file fictional-project initialization, explicit ",
+    "selection, transactional six-authoring-path standard-project ",
+    "initialization plus bounded branding resources, transactional seven-",
+    "authoring-path fictional-project initialization with the same branding, ",
+    "explicit ",
     "byte-deterministic source generation, private identity-crosswalk mapping ",
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",

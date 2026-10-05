@@ -52,7 +52,7 @@ initialized_files <- sort(list.files(
 expected_initialized <- sort(c(
   "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
   "R/produce-canonical.R", "R/calculate-risk.R", "R/generate-source.R",
-  "README.md"
+  "README.md", "_brand.yml", "assets/project-logo.png"
 ), method = "radix")
 stopifnot(
   identical(initialized_files, expected_initialized),

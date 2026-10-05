@@ -7,7 +7,8 @@ Description: Establishes the main internal implementation package for the
     Readmission Risk Pool software and its one-way dependency on the focused
     runtime package. It opens validated installed-resource catalogs from an
     explicit software root, resolves declared resources by logical identity,
-    compiles a supported six-file standard project-authoring convention into
+    compiles a supported six-path standard project-authoring convention plus
+    bounded declarative branding resources into
     the unchanged raw producer and provider registration contracts,
     reports resource validation through a common privacy-safe result,
     normalizes installed canonical and five-resource runtime authority into

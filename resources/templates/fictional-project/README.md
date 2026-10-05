@@ -10,6 +10,11 @@ generated wiring and is not normally edited. `rrp-project.dcf` selects the
 project producer/provider, and `rrp-authoring.dcf` records implementation and
 mapping identities with an explicitly empty extension-package inventory.
 
+`_brand.yml` and `assets/project-logo.png` provide the fictional hospital's
+bounded visual identity to the same installed RRP application used by every
+project. They contain no Shiny application, CSS, JavaScript, or analytical
+configuration.
+
 `R/generate-source.R` is an extra project-owned teaching surface. Explicitly
 source it and call its one function before producer execution:
 

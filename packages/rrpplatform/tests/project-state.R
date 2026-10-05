@@ -52,6 +52,14 @@ state_provider_template <- c(
   "rrp_calculate_risk <- function(project_root, request) {",
   "  stop('selected callable executed', call. = FALSE)", "}"
 )
+state_brand_template <- c(
+  "meta:", "  name:", "    full: '@@RRP_PROJECT_ID@@'",
+  "    short: '@@RRP_PROJECT_ID@@'", "color:", "  primary: '#1F4E79'",
+  "logo:", "  medium:", "    path: assets/project-logo.png"
+)
+state_brand_logo <- as.raw(c(
+  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00
+))
 
 state_software_root <- function(root) {
   resources <- list(
@@ -129,6 +137,16 @@ state_software_root <- function(root) {
       id = "rrp.template.project-readme", owner = "rrpplatform",
       path = "resources/templates/project/README.md", format = "md",
       value = "# RRP hospital project"
+    ),
+    list(
+      id = "rrp.template.project-brand", owner = "rrpplatform",
+      path = "resources/templates/project/_brand.yml", format = "yml",
+      value = state_brand_template
+    ),
+    list(
+      id = "rrp.template.project-brand-logo", owner = "rrpplatform",
+      path = "resources/templates/project/assets/project-logo.png",
+      format = "png", value = state_brand_logo
     )
   )
   canonical <- state_internal("rrp_canonical_contract_definitions")()
@@ -143,7 +161,11 @@ state_software_root <- function(root) {
   )))
   for (resource in resources) {
     path <- file.path(root, resource$path)
-    if (identical(resource$format, "dcf") && !is.null(names(resource$value))) {
+    if (is.raw(resource$value)) {
+      dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+      writeBin(resource$value, path)
+    } else if (identical(resource$format, "dcf") &&
+               !is.null(names(resource$value))) {
       state_write_record(resource$value, path)
     } else {
       dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)

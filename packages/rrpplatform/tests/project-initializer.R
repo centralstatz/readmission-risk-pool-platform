@@ -69,6 +69,17 @@ rrp_init_readme_template <- c(
   "`rrp.documentation.provider-request-reference`."
 )
 
+rrp_init_brand_template <- c(
+  "meta:", "  name:", "    full: '@@RRP_PROJECT_ID@@'",
+  "    short: '@@RRP_PROJECT_ID@@'", "color:", "  primary: '#1F4E79'",
+  "logo:", "  medium:", "    path: assets/project-logo.png",
+  "    alt: '@@RRP_PROJECT_ID@@ logo'"
+)
+
+rrp_init_brand_logo <- as.raw(c(
+  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00
+))
+
 rrp_init_authoring_guide <- c(
   "# Project Authoring Guide",
   "The standard scaffold has exactly six files, including `rrp-authoring.dcf`,",
@@ -167,6 +178,18 @@ rrp_init_software_root <- function(root) {
     rrp_init_readme_template,
     file.path(project_template_root, "README.md"), useBytes = TRUE
   )
+  writeLines(
+    rrp_init_brand_template,
+    file.path(project_template_root, "_brand.yml"), useBytes = TRUE
+  )
+  dir.create(
+    file.path(project_template_root, "assets"),
+    recursive = TRUE, showWarnings = FALSE
+  )
+  writeBin(
+    rrp_init_brand_logo,
+    file.path(project_template_root, "assets", "project-logo.png")
+  )
   documentation_root <- file.path(root, "resources", "documentation")
   dir.create(documentation_root, recursive = TRUE, showWarnings = FALSE)
   writeLines(
@@ -193,6 +216,8 @@ rrp_init_software_root <- function(root) {
     c("rrp.template.project-producer", "template", "resources/templates/project/R/produce-canonical.R", "r", "rrpplatform"),
     c("rrp.template.project-provider", "template", "resources/templates/project/R/calculate-risk.R", "r", "rrpplatform"),
     c("rrp.template.project-readme", "template", "resources/templates/project/README.md", "md", "rrpplatform"),
+    c("rrp.template.project-brand", "template", "resources/templates/project/_brand.yml", "yml", "rrpplatform"),
+    c("rrp.template.project-brand-logo", "template", "resources/templates/project/assets/project-logo.png", "png", "rrpplatform"),
     c("rrp.documentation.project-authoring-guide", "documentation", "resources/documentation/project-authoring-guide.md", "md", "rrpplatform"),
     c("rrp.documentation.provider-request-reference", "documentation", "resources/documentation/provider-request-reference.md", "md", "rrpplatform")
   )
@@ -309,7 +334,8 @@ expected_value <- list(
   model_id = NULL, model_version = NULL, extension_packages = list(),
   created_paths = c(
     "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
-    "R/produce-canonical.R", "R/calculate-risk.R", "README.md"
+    "R/produce-canonical.R", "R/calculate-risk.R", "README.md",
+    "_brand.yml", "assets/project-logo.png"
   )
 )
 stopifnot(
@@ -324,15 +350,22 @@ stopifnot(
     destination, recursive = TRUE, all.files = TRUE, no.. = TRUE,
     include.dirs = FALSE
   )), c(
-    "R/calculate-risk.R", "R/produce-canonical.R", "R/register.R",
-    "README.md", "rrp-authoring.dcf", "rrp-project.dcf"
+    "_brand.yml", "assets/project-logo.png", "R/calculate-risk.R",
+    "R/produce-canonical.R", "R/register.R", "README.md",
+    "rrp-authoring.dcf", "rrp-project.dcf"
   )),
-  identical(list.dirs(destination, recursive = TRUE, full.names = FALSE), c("", "R")),
+  identical(
+    list.dirs(destination, recursive = TRUE, full.names = FALSE),
+    c("", "assets", "R")
+  ),
   !dir.exists(file.path(destination, "extensions")),
   !dir.exists(file.path(destination, "state")),
   !dir.exists(file.path(destination, ".git"))
 )
 manifest <- read.dcf(file.path(destination, "rrp-project.dcf"))
+brand_text <- paste(readLines(
+  file.path(destination, "_brand.yml"), warn = FALSE, encoding = "UTF-8"
+), collapse = "\n")
 stopifnot(
   identical(colnames(manifest), c(
     "Record-Type", "Project-Contract-ID", "Project-Contract-Version",
@@ -348,6 +381,11 @@ stopifnot(
     "rrp.canonical-profile.readmission"
   ),
   identical(manifest[[1L, "Producer-ID"]], "example-health.producer"),
+  grepl("example-health", brand_text, fixed = TRUE),
+  !grepl("@@RRP_", brand_text, fixed = TRUE),
+  identical(readBin(
+    file.path(destination, "assets", "project-logo.png"), "raw", n = 8L
+  ), as.raw(c(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a))),
   identical(manifest[[1L, "Provider-ID"]], "example-health.provider"),
   identical(manifest[[1L, "Producer-Version"]], "2.3.4-rc.1"),
   identical(manifest[[1L, "Provider-Version"]], "2.3.4-rc.1"),

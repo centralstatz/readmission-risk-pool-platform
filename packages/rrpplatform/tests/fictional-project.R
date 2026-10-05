@@ -17,6 +17,7 @@ initialized <- rrp_initialize_fictional_project(catalog, project_root)
 expected_created <- c(
   "rrp-project.dcf", "rrp-authoring.dcf", "R/register.R",
   "R/produce-canonical.R", "R/calculate-risk.R", "README.md",
+  "_brand.yml", "assets/project-logo.png",
   "R/generate-source.R"
 )
 stopifnot(
@@ -33,7 +34,16 @@ stopifnot(
   ), method = "radix"), sort(expected_created, method = "radix")),
   !dir.exists(file.path(project_root, "source")),
   !dir.exists(file.path(project_root, "state")),
-  !dir.exists(file.path(project_root, "extensions"))
+  !dir.exists(file.path(project_root, "extensions")),
+  grepl("Fictional Reference Hospital", paste(readLines(
+    file.path(project_root, "_brand.yml"), warn = FALSE
+  ), collapse = "\n"), fixed = TRUE),
+  identical(
+    readBin(
+      file.path(project_root, "assets", "project-logo.png"), "raw", n = 8L
+    ),
+    as.raw(c(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a))
+  )
 )
 
 context <- rrp_load_project(catalog, project_root)

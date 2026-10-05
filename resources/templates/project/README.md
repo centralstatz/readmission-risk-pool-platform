@@ -14,6 +14,12 @@ The six standard files are:
 - `R/register.R` — generated thin RRP wiring, normally left unchanged; and
 - `README.md` — this orientation.
 
+The initializer also supplies `_brand.yml` and the contained
+`assets/project-logo.png`. They are declarative presentation resources for the
+installed RRP application, not additional authoring callables or application
+source. Edit the standard display name, primary color, and logo deliberately;
+removing `_brand.yml` makes the application use RRP defaults.
+
 Normally, hospital logic changes only the two callable files. Declare every
 installed project extension package and exact version in `rrp-authoring.dcf`;
 RRP does not install dependencies. Advanced projects may deliberately replace

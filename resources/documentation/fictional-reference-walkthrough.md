@@ -38,7 +38,7 @@ initialized <- rrp_initialize_fictional_project(catalog, project_root)
 stopifnot(rrp_operation_succeeded(initialized))
 ```
 
-Initialization creates exactly seven files:
+Initialization creates exactly nine files:
 
 ```text
 rrp-project.dcf
@@ -48,10 +48,14 @@ R/produce-canonical.R
 R/calculate-risk.R
 R/generate-source.R
 README.md
+_brand.yml
+assets/project-logo.png
 ```
 
 It creates no source, extension library, state, database, Git metadata,
-product, or application. Read the project README, both DCF files, and the three
+product, or application source. The final two files are bounded declarative
+branding consumed by the installed supplied application. Read the project
+README, both DCF files, and the three
 R files. `R/produce-canonical.R` and `R/calculate-risk.R` are the ordinary
 hospital logic edit surfaces. `rrp-authoring.dcf` records truthful
 implementation and mapping identities and declares `Extension-Packages: none`.

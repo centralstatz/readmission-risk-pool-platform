@@ -177,10 +177,14 @@ stopifnot(
   identical(view$current$rows$estimate_display, c("80.0%", "80.0%", "20.0%")),
   identical(view$current$episode_choices,
     c("episode.a", "episode.b", "episode.c", "episode.historical")),
-  nrow(view$sparklines$episode.a) == 2L,
-  nrow(view$sparklines$episode.b) == 0L,
-  nrow(view$sparklines$episode.historical) == 1L,
-  identical(view$trajectory$estimate_value, c(0.7, 0.8)),
+  identical(view$sparklines$episode.a$state, "multiple"),
+  nrow(view$sparklines$episode.a$rows) == 2L,
+  identical(view$sparklines$episode.b$state, "unavailable"),
+  nrow(view$sparklines$episode.b$rows) == 0L,
+  identical(view$sparklines$episode.historical$state, "single"),
+  nrow(view$sparklines$episode.historical$rows) == 1L,
+  identical(view$trajectory$state, "multiple"),
+  identical(view$trajectory$rows$estimate_value, c(0.7, 0.8)),
   identical(view$overview$accepted_current_count, 3L),
   identical(view$overview$minimum, 0.2), identical(view$overview$maximum, 0.8),
   identical(view$overview$median, 0.8),
@@ -214,7 +218,8 @@ stopifnot(
   identical(empty_model$view_models$current$displayed_count, 0L),
   identical(empty_model$view_models$current$total_count, 0L),
   length(empty_model$view_models$current$episode_choices) == 0L,
-  nrow(empty_model$view_models$trajectory) == 0L,
+  identical(empty_model$view_models$trajectory$state, "unavailable"),
+  nrow(empty_model$view_models$trajectory$rows) == 0L,
   identical(empty_model$view_models$overview$accepted_current_count, 0L),
   inherits(rrpplatform:::rrp_application_shiny(empty_model), "shiny.appobj")
 )
@@ -349,6 +354,9 @@ status <- system2(file.path(R.home("bin"), "Rscript"), c(
   shQuote(project), shQuote(second_run$value$operation_run_id),
   shQuote(second_time), shQuote(launch_result)
 ), stdout = TRUE, stderr = TRUE, env = "R_TESTS=")
+if (!identical(attr(status, "status"), NULL)) {
+  stop(paste(status, collapse = "\n"), call. = FALSE)
+}
 stopifnot(identical(attr(status, "status"), NULL), file.exists(launch_result))
 launched <- readRDS(launch_result)
 project_files_after <- all_project_files(project)

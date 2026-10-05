@@ -74,6 +74,7 @@ expected_files <- c(
   "packages/rrpplatform/man/rrpplatform-package.Rd",
   "packages/rrpplatform/tests/operation-results.R",
   "packages/rrpplatform/tests/application-foundation.R",
+  "packages/rrpplatform/tests/application-experience.R",
   "packages/rrpplatform/tests/logical-products.R",
   "packages/rrpplatform/tests/product-materialization.R",
   "packages/rrpplatform/tests/canonical-contracts.R",
@@ -148,6 +149,8 @@ expected_files <- c(
   "resources/templates/project/rrp-project.dcf",
   "resources/templates/project/rrp-authoring.dcf",
   "resources/templates/project/README.md",
+  "resources/templates/project/_brand.yml",
+  "resources/templates/project/assets/project-logo.png",
   "resources/templates/fictional-project/R/register.R",
   "resources/templates/fictional-project/R/generate-source.R",
   "resources/templates/fictional-project/R/produce-canonical.R",
@@ -155,6 +158,8 @@ expected_files <- c(
   "resources/templates/fictional-project/rrp-project.dcf",
   "resources/templates/fictional-project/rrp-authoring.dcf",
   "resources/templates/fictional-project/README.md",
+  "resources/templates/fictional-project/_brand.yml",
+  "resources/templates/fictional-project/assets/project-logo.png",
   "resources/documentation/project-authoring-guide.md",
   "resources/documentation/provider-request-reference.md",
   "resources/documentation/fictional-reference-walkthrough.md",
@@ -177,8 +182,10 @@ expected_directories <- c(
   "resources/contracts/runtime",
   "resources/documentation",
   "resources/templates", "resources/templates/project",
-  "resources/templates/project/R", "resources/templates/fictional-project",
-  "resources/templates/fictional-project/R", "tools"
+  "resources/templates/project/R", "resources/templates/project/assets",
+  "resources/templates/fictional-project",
+  "resources/templates/fictional-project/R",
+  "resources/templates/fictional-project/assets", "tools"
 )
 check_ids <- c(
   "foundational_files", "local_documentation_links",
@@ -463,7 +470,7 @@ release_claim <- paste0(
   "(?i)(^|[^a-z])(RRP[[:space:]]+)?1[.]0[.]0[[:space:]]+",
   "(is|has[[:space:]]+been)[[:space:]]+(now[[:space:]]+)?released"
 )
-for (path in actual_files) {
+for (path in actual_files[!grepl("[.]png$", actual_files, ignore.case = TRUE)]) {
   lines <- read_text(file.path(repository_root, path))
   for (line_number in grep(release_claim, lines, perl = TRUE)) {
     add_issue(
@@ -596,7 +603,8 @@ for (path in unique(portable_paths[duplicated(portable_paths)])) {
 }
 
 text_entries <- source_entries[
-  !source_entries$is_directory & !source_entries$is_link, , drop = FALSE
+  !source_entries$is_directory & !source_entries$is_link &
+    !grepl("[.]png$", source_entries$path, ignore.case = TRUE), , drop = FALSE
 ]
 for (index in seq_len(nrow(text_entries))) {
   path <- text_entries$absolute_path[[index]]

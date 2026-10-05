@@ -13,7 +13,7 @@ rrp_initialize_fictional_project(software_catalog, project_root)
 \value{
 One validated \code{rrp_operation_result}. Success identifies the fixed
 fictional project, its selected producer/provider and implementation/mapping
-identities, its empty extension-package inventory, and the seven created
+identities, its empty extension-package inventory, and the nine created
 relative file paths.
 }
 \description{
@@ -23,9 +23,11 @@ the same standard-authoring loader used for ordinary independent projects.
 }
 \details{
 Initialization is create-only and leaves source generation explicit. The
-result contains the normal six-file standard-authoring scaffold plus
-\file{R/generate-source.R}; it contains no generated source, extension library,
-state, database, or Git metadata. Run the project-owned generator described in
+result contains the normal six-path standard-authoring scaffold, bounded
+\file{_brand.yml} and \file{assets/project-logo.png} presentation resources,
+plus \file{R/generate-source.R}; it contains no generated source, extension
+library, state, database, Git metadata, or application source. Run the
+project-owned generator described in
 its README before producer execution. This initializer adds no privileged
 fictional registration, producer, provider, runtime, or history branch.
 }

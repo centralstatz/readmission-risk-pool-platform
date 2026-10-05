@@ -311,6 +311,22 @@ Installed-Path: resources/templates/project/README.md
 Format: md
 
 Record-Type: resource
+Resource-ID: rrp.template.project-brand
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/_brand.yml
+Installed-Path: resources/templates/project/_brand.yml
+Format: yml
+
+Record-Type: resource
+Resource-ID: rrp.template.project-brand-logo
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/project/assets/project-logo.png
+Installed-Path: resources/templates/project/assets/project-logo.png
+Format: png
+
+Record-Type: resource
 Resource-ID: rrp.template.fictional-project-manifest
 Resource-Class: template
 Owner-Package: rrpplatform
@@ -357,6 +373,22 @@ Owner-Package: rrpplatform
 Source-Path: resources/templates/fictional-project/README.md
 Installed-Path: resources/templates/fictional-project/README.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.template.fictional-project-brand
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/fictional-project/_brand.yml
+Installed-Path: resources/templates/fictional-project/_brand.yml
+Format: yml
+
+Record-Type: resource
+Resource-ID: rrp.template.fictional-project-brand-logo
+Resource-Class: template
+Owner-Package: rrpplatform
+Source-Path: resources/templates/fictional-project/assets/project-logo.png
+Installed-Path: resources/templates/fictional-project/assets/project-logo.png
+Format: png
 
 Record-Type: resource
 Resource-ID: rrp.template.fictional-project-source-generator

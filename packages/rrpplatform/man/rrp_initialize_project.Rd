@@ -23,11 +23,12 @@ rrp_initialize_project(
 One validated \code{rrp_operation_result}. Success contains project, producer,
 producer-implementation, mapping, canonical-profile, provider,
 provider-implementation, optional-model, and extension-inventory facts plus the
-six created relative file paths. Expected resource, project, authoring, and
+eight created relative paths. Expected resource, project, authoring, and
 initialization failures return one privacy-safe error diagnostic.
 }
 \description{
-Renders the six installed software-owned project templates into a uniquely
+Renders the six installed software-owned authoring templates and two bounded
+branding resources into a uniquely
 owned sibling staging directory, validates the staged project with
 \code{rrp_load_project()}, atomically promotes it to the still-absent requested
 destination, and loads it again at its final physical location.
@@ -37,8 +38,15 @@ Initialization is create-only. It never overwrites, merges, repairs, or adopts
 an existing filesystem object. Failure removes only staging or final content
 created by the current operation. The resulting project contains exactly
 \file{rrp-project.dcf}, \file{rrp-authoring.dcf}, \file{R/register.R},
-\file{R/produce-canonical.R}, \file{R/calculate-risk.R}, and \file{README.md};
+\file{R/produce-canonical.R}, \file{R/calculate-risk.R}, and \file{README.md},
+plus declarative \file{_brand.yml} and
+\file{assets/project-logo.png};
 declared extension-library and state directories remain absent.
+
+The branding resources affect only the installed supplied application's
+bounded presentation model. They are not project application source and do not
+change either hospital-authored callable or the raw producer/provider
+contracts.
 
 The thin registration delegates to the standard authoring adapter. Its
 producer and provider declarations remain the unchanged raw 0.1.0 contracts;

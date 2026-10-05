@@ -11,8 +11,9 @@ minimal common operation-result boundary with privacy-safe diagnostics. It
 also owns strict project-manifest and trusted-registration validation, one
 exact installed canonical specification authority, all five singular runtime
 authorities, semantic provider declarations, an explicit project-loading boundary,
-the supported six-file standard project-authoring adapter, transactional
-standard-project initialization, supplied fictional-project realization, and
+the supported six-path standard project-authoring adapter, transactional
+standard-project initialization with bounded declarative branding resources,
+supplied fictional-project realization, and
 a bounded structured project doctor. It
 can normalize installed authority into the exact contexts consumed
 by runtime admission, episode-state preparation, and direct runtime provider
