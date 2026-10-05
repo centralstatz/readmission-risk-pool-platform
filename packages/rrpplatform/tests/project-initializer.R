@@ -338,6 +338,15 @@ expected_value <- list(
     "_brand.yml", "assets/project-logo.png"
   )
 )
+actual_files <- sort(list.files(
+  destination, recursive = TRUE, all.files = TRUE, no.. = TRUE,
+  include.dirs = FALSE
+), method = "radix")
+expected_files <- sort(expected_value$created_paths, method = "radix")
+actual_directories <- sort(list.dirs(
+  destination, recursive = TRUE, full.names = FALSE
+), method = "radix")
+expected_directories <- sort(c("", "R", "assets"), method = "radix")
 stopifnot(
   identical(class(result), c("rrp_operation_result", "list")),
   identical(names(result), c("operation_id", "status", "value", "diagnostics")),
@@ -346,18 +355,8 @@ stopifnot(
   identical(result$diagnostics, list()),
   identical(rrp_operation_succeeded(result), TRUE),
   identical(Sys.getenv("RRP_INIT_SELECTED_CALLED"), "no"),
-  identical(sort(list.files(
-    destination, recursive = TRUE, all.files = TRUE, no.. = TRUE,
-    include.dirs = FALSE
-  )), c(
-    "_brand.yml", "assets/project-logo.png", "R/calculate-risk.R",
-    "R/produce-canonical.R", "R/register.R", "README.md",
-    "rrp-authoring.dcf", "rrp-project.dcf"
-  )),
-  identical(
-    list.dirs(destination, recursive = TRUE, full.names = FALSE),
-    c("", "assets", "R")
-  ),
+  identical(actual_files, expected_files),
+  identical(actual_directories, expected_directories),
   !dir.exists(file.path(destination, "extensions")),
   !dir.exists(file.path(destination, "state")),
   !dir.exists(file.path(destination, ".git"))
