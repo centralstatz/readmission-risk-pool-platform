@@ -5397,3 +5397,16 @@ human commit/push, but Increment 10.B hosted acceptance remains pending. The
 required sequence is: commit and push this reconciliation, obtain a successful
 `package-foundation` run for that exact revision, record the hosted identity
 and result, and only then accept 10.B. Increment 10.C was not begun.
+
+**Hosted acceptance closeout:** the bounded reconciliation was committed and
+pushed as exact revision `bc4ccc71da2bb54b3012bb94d90ab461f1bd4821`.
+GitHub Actions `package-foundation` push run
+[`37339365839`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/37339365839),
+job
+[`111862204197`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/37339365839/job/111862204197),
+completed successfully for that exact SHA. The hosted Ubuntu/R 4.4 job passed
+checkout, declared dependency installation, repository-foundation validation,
+and the complete corrected package-foundation validation. Hosted Linux
+acceptance is therefore reconciled and Increment 10.B is accepted. Stage 10
+remains in progress; Increment 10.C remains the next separately authorized
+task and was not begun here.
