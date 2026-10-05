@@ -108,7 +108,13 @@ Increment 9.C adds the Logical Products Guide and complete installed non-Git
 fictional actual/empty product, reopen, staleness, copy, denial, deletion, and
 history-only recovery proof. No root selector, dependency environment,
 scheduled/off-host backup, migration, or release procedure exists on the clean
-line. The
+line. Increment 10.A adds two cataloged authorities, one installed RRP-owned
+CSS asset, bounded standard `_brand.yml` interpretation, safe contained
+PNG/JPEG logo detachment, one-time exact product snapshots, pure component-
+ready view models, a generic Shiny/bslib + Reactable/Plotly shell, and the 29th
+`rrpplatform` export for loopback-only read-only launch. Final application
+experiences, initializer branding, and the installed guide remain deferred to
+10.B–10.C. The
 read-only package-foundation workflow invokes these same two commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -175,7 +181,6 @@ Logical Products Guide and complete installed non-Git fictional actual/empty
 product, reopen, staleness, copy, denial, deletion, and history-only recovery
 proof. Exact revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 run `36922905508`, job `110573063816`; formal reconciliation accepted Stage 9.
-Stages 1–9 are accepted and complete. The detailed Stage 10 plan is prepared
-and internally reconciled. Increment 10.A — Installed application authority,
-startup, view models, and launch boundary, requires separate authorization;
-Stage 10 implementation has not begun.
+Stages 1–9 are accepted and complete. Increment 10.A is complete locally;
+Stage 10 remains in progress. Increment 10.B — Useful core experiences and
+bounded presentation—requires separate authorization.

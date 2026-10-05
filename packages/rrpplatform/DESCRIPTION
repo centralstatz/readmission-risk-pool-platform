@@ -27,9 +27,12 @@ Description: Establishes the main internal implementation package for the
     selected complete governed history scope. It publishes one closed staged
     DCF/CSV product realization under project state and reopens validated,
     detached logical product access without exposing physical storage details.
+    It also constructs and launches one installed, analytically read-only
+    supplied Shiny application from a detached product snapshot and a bounded
+    interpretation of standard project branding.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues
 Encoding: UTF-8
 Depends: R (>= 4.4.0)
-Imports: DBI, duckdb, rrpruntime
+Imports: DBI, duckdb, rrpruntime, shiny, bslib, plotly, reactable, brand.yml

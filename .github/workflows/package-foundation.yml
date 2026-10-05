@@ -27,7 +27,10 @@ jobs:
           dir.create(dependency_library, recursive = TRUE, showWarnings = FALSE)
           repository <- Sys.getenv("RSPM")
           if (!nzchar(repository)) repository <- "https://cloud.r-project.org"
-          install.packages(c("DBI", "duckdb"), lib = dependency_library,
+          install.packages(c(
+            "DBI", "duckdb", "shiny", "bslib", "plotly", "reactable",
+            "brand.yml"
+          ), lib = dependency_library,
                            repos = repository)
       - name: Validate repository foundation
         run: Rscript --vanilla tools/validate-repository.R

@@ -63,7 +63,11 @@ installed product document explains this lifecycle, and the isolated non-Git
 fictional proof realizes actual, empty, stale, copied, deleted, and restored
 product states through the public package operations. It has no root selector,
 persistent installed RRP distribution, scheduled/off-host backup, migration,
-application, command-line interface, or deployment capability.
+completed application experience, command-line interface, or deployment
+capability. Increment 10.A adds the installed application/brand authorities,
+one-time detached product startup, pure presentation view models, a generic
+Shiny/bslib shell, and the loopback-only `rrp_launch_app()` operation; the final
+Stage 10 experience and guide remain absent.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -157,6 +161,12 @@ three-member and valid-empty sets, resolves the Logical Products Guide,
 reopens products in a fresh process, and proves staleness, deletion/rebuild,
 copy portability, bounded corrupt/incompatible denial, and history-only
 backup/restore recovery.
+Increment 10.A validation additionally proves the exact installed application
+and brand authorities, bounded standard-brand parsing and logo containment,
+detached product/presentation/application models, deterministic table/
+sparkline/trajectory/tooltip/overview data, valid freshness and empty states,
+prelaunch denial, a supervised loopback child-process session, and unchanged
+project bytes across launch and shutdown.
 The operation also checks exact package topology,
 metadata, one-way dependency, exports, source independence, builds,
 dependency-order isolated installation/loading, package-native tests, and exact
@@ -196,9 +206,9 @@ of rebuildable products from state backup. Increment 9.C adds the installed
 fictional actual/empty product evidence and Logical Products Guide. Exact
 revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 `package-foundation` run `36922905508`, job `110573063816`, and formal
-reconciliation accepted Stage 9. Stages 1–9 are accepted and complete. Stage
-10's detailed supplied product-only application plan is prepared, but Stage 10
-implementation has not begun. Increment 10.A requires separate authorization.
+reconciliation accepted Stage 9. Stages 1–9 are accepted and complete.
+Increment 10.A implements the installed supplied-application foundation; Stage
+10 remains in progress and Increments 10.B–10.C remain unimplemented.
 
 ## License
 

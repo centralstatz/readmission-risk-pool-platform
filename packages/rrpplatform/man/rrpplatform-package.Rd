@@ -22,26 +22,16 @@ owns explicit project-state initialization/inspection and the private DuckDB
 adapter behind the runtime-owned logical history port, plus bundle-scoped
 durable execution, supported history interpretation/correction, and explicit
 create-only checkpointed state backup/absent-state restore.
+It additionally owns the installed supplied-application and bounded standard-
+branding authorities, detached presentation/view models, and loopback-only
+analytically read-only application launch boundary.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 23
-technical interfaces: \code{rrp_authoring_failure()},
-\code{rrp_backup_project_state()},
-\code{rrp_execute_durable_bundle()},
-\code{rrp_execute_producer()}, \code{rrp_execute_risk()},
-\code{rrp_initialize_fictional_project()},
-\code{rrp_initialize_project()}, \code{rrp_initialize_project_state()},
-\code{rrp_inspect_current_history()}, \code{rrp_inspect_episode_history()},
-\code{rrp_inspect_project_state()}, \code{rrp_inspect_scope_history()},
-\code{rrp_invalidate_history()},
-\code{rrp_load_project()},
-\code{rrp_open_resource_catalog()},
-\code{rrp_operation_succeeded()}, \code{rrp_resource_path()},
-\code{rrp_register_authored_project()},
-\code{rrp_restate_history()}, \code{rrp_restore_project_state()},
-\code{rrp_retry_episode()},
-\code{rrp_validate_project()}, and
-\code{rrp_validate_software_resources()}. It does not discover or select a
+The package imports the \pkg{rrpruntime} namespace and exports exactly 29
+technical interfaces. These include project, execution, history, state,
+logical-product, materialization/access, resource-validation, and supplied-
+application operations. \code{rrp_launch_app()} is the sole application launch
+operation. It does not discover or select a
 software or project root. The loader evaluates trusted project registration in
 a controlled environment that is not a security sandbox and never invokes a
 component. Initialization is create-only, uses the loader as its acceptance
@@ -62,6 +52,9 @@ the physical adapter remains protected and opens DBI/DuckDB only for bounded
 work. The installed transparent provider is a protected,
 nonclinical deterministic reference that must be selected explicitly; it is
 not a default or fallback.
+The supplied application reads one validated logical product realization once,
+constructs closed detached presentation state, and runs only on loopback. It
+does not build products or execute analytical components.
 }
 \author{RRP maintainers}
 \keyword{internal}

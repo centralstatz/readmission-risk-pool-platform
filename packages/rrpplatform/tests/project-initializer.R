@@ -961,7 +961,7 @@ stopifnot(
     "rrp_initialize_project", "rrp_initialize_project_state",
     "rrp_inspect_current_history", "rrp_inspect_episode_history",
     "rrp_inspect_project_state", "rrp_inspect_scope_history",
-    "rrp_invalidate_history",
+    "rrp_invalidate_history", "rrp_launch_app",
     "rrp_list_products", "rrp_load_project", "rrp_materialize_product_set",
     "rrp_open_product_access",
     "rrp_open_resource_catalog",

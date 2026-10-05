@@ -4,7 +4,8 @@
 Its package version is `0.1.0.9000`, independently of `rrpruntime` version
 `0.4.0.9000` and the RRP product development identity `1.0.0-dev`.
 
-The package imports `rrpruntime`, `DBI`, and `duckdb` while retaining the
+The package imports `rrpruntime`, `DBI`, `duckdb`, `shiny`, `bslib`, `plotly`,
+`reactable`, and `brand.yml` while retaining the
 accepted one-way internal-package dependency. It owns strict validation of the
 cataloged `rrp.project@0.3.0`
 manifest and `rrp.project-registration@0.3.0` registration-result structures,
@@ -30,6 +31,13 @@ project state, replaceable current selection, exact validation, contextual
 freshness, and detached logical access. The cataloged Logical Products Guide
 documents the supported human sequence, semantics, valid-empty behavior,
 freshness, backup exclusion, and rebuild path without adding another API.
+
+It also owns the installed `rrp.application.supplied@0.1.0` and
+`rrp.project-brand@0.1.0` authorities. The application boundary reads the exact
+three validated products once, converts optional project-root `_brand.yml`
+through the upstream parser into a closed detached presentation model, creates
+pure component-ready view models, and launches one generic Shiny application
+on loopback without analytical execution or mutation.
 
 Its current callable interfaces are:
 
@@ -88,7 +96,10 @@ Its current callable interfaces are:
   inventory; and
 - `rrp_read_product(product_access, product_id, product_version, ...)` returns
   one detached logical product or bounded metadata without exposing physical
-  storage.
+  storage; and
+- `rrp_launch_app(software_catalog, project_root, ...)` validates existing
+  products and bounded standard branding, constructs the installed supplied
+  application, and runs it on loopback until the local session exits.
 
 The low-level resource functions fail with a typed `rrp_resource_error`
 carrying a stable `code` and bounded safe message. They do not discover a root

@@ -164,6 +164,7 @@ rrp_validate_software_resources <- function(software_root) {
     rrp_state_contracts(catalog)
     rrp_product_contracts(catalog)
     rrp_product_materialization_contract(catalog)
+    rrp_application_contracts(catalog)
     header <- catalog$catalog$header
     value <- list(
       catalog_id = header[["Catalog-ID"]],

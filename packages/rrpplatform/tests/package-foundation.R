@@ -2,12 +2,18 @@ library(rrpplatform)
 
 description <- utils::packageDescription("rrpplatform")
 namespace_imports <- getNamespaceImports("rrpplatform")
+description_imports <- trimws(strsplit(
+  gsub("[[:space:]]+", " ", description[["Imports"]]), ",", fixed = TRUE
+)[[1L]])
 
 stopifnot(
   identical(description[["Package"]], "rrpplatform"),
   identical(as.character(utils::packageVersion("rrpplatform")), "0.1.0.9000"),
   identical(description[["Depends"]], "R (>= 4.4.0)"),
-  identical(description[["Imports"]], "DBI, duckdb, rrpruntime"),
+  identical(description_imports, c(
+    "DBI", "duckdb", "rrpruntime", "shiny", "bslib", "plotly",
+    "reactable", "brand.yml"
+  )),
   is.null(description[["Suggests"]]),
   is.null(description[["LinkingTo"]]),
   "rrpruntime" %in% names(namespace_imports),
@@ -25,6 +31,7 @@ stopifnot(
       "rrp_inspect_current_history", "rrp_inspect_episode_history",
       "rrp_inspect_project_state", "rrp_inspect_scope_history",
       "rrp_invalidate_history",
+      "rrp_launch_app",
       "rrp_list_products", "rrp_load_project",
       "rrp_materialize_product_set",
       "rrp_open_product_access",
@@ -51,6 +58,7 @@ stopifnot(
   is.function(rrp_inspect_episode_history),
   is.function(rrp_inspect_scope_history),
   is.function(rrp_invalidate_history),
+  is.function(rrp_launch_app),
   is.function(rrp_list_products),
   is.function(rrp_load_project),
   is.function(rrp_materialize_product_set),

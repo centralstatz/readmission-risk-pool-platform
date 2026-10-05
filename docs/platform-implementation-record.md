@@ -5020,3 +5020,108 @@ implementation has not begun.
 **Next task:** Increment 10.A — Installed application authority, startup, view
 models, and launch boundary—only when separately authorized. Do not begin 10.B
 or 10.C with that authorization.
+
+## Stage 10 / Increment 10.A — Installed application foundation (complete, 2026-10-04)
+
+Implementation began from clean revision `812879b`. It added the cataloged
+`rrp.application.supplied@0.1.0` and `rrp.project-brand@0.1.0` authorities,
+one cataloged installed RRP-owned CSS asset, and the 29th `rrpplatform` export:
+`rrp_launch_app(software_catalog, project_root,
+expected_operation_run_id = NULL, history_cutoff = NULL,
+launch_browser = interactive(), port = NULL)`. The operation validates inputs
+and installed authorities, interprets optional project-root branding, opens
+one existing validated Stage 9 realization, enforces the exact three-member
+product inventory, reads those members once, constructs detached presentation
+and application state, builds the generic supplied `shiny.appobj`, and runs it
+only on `127.0.0.1`. Success is returned only after normal session exit.
+
+Bounded official-tooling reconnaissance selected CRAN/Posit `brand.yml` 0.1.0
+and `brand.yml::read_brand_yml()` as the direct parser dependency. The supported
+standard subset is `meta.name` (short preferred, then full), `color.primary`,
+and one simple or medium logo role; valid other concepts are ignored after
+upstream validation. Absence produces immutable RRP defaults. The closed model
+retains no raw parsed object or path. A logo must use a safe relative path,
+resolve through exact nonlinked project-contained segments to a regular file,
+be no larger than 2 MiB, and have PNG or JPEG signature bytes. It is detached
+as bytes plus media type and bounded alternative text. Absolute, remote,
+traversing, linked, missing, oversized, and unsupported-content logos fail
+boundedly. SVG and broader media/branding behavior remain deliberately outside
+the first supported subset.
+
+`rrpplatform` now directly declares `shiny`, `bslib`, `plotly`, `reactable`,
+and `brand.yml` in addition to its prior dependencies; `rrpruntime` remains
+unchanged and application-free. The hosted workflow installs these declared
+external dependencies before invoking the unchanged human validators. The
+resource schema admits the concrete `css` format, while catalog closure grows
+from 46 to exactly 49 entries. No JavaScript, project branding template,
+initializer inventory, hospital frontend hook, new project path, application
+guide, CLI, artifact, deployment, or analytical contract was introduced.
+
+Pure internal view models prepare deterministic descending-risk rows with
+canonical-episode ties, exact/formatted probabilities, attribution, search,
+exact filters, bounded paging, current-plus-historical selection, actual-only
+zero/one/many-point sparkline and Plotly rows, deterministic tooltips, and
+direct current-risk/scope summaries. No interpolation, synthesized values,
+thresholds, categories, priority semantics, fallback estimates, or analytical
+color scale entered. The closed application model contains only a detached
+product snapshot, detached presentation state, and those view models; its
+validator rejects reference-bearing values. The generic 10.A shell establishes
+the bslib/Reactable/Plotly seams without claiming the final 10.B experiences or
+visual polish.
+
+Historical reconnaissance inspected immutable `v0.1.0` application startup,
+view-model, Shiny shell, and Phase 6 materialized-product application tests.
+The implementation adapted one-time injected product loading, exact required-
+product checks, defensive startup, descending value/canonical-ID ordering,
+actual-observation trajectories, provider/model attribution, empty behavior,
+application-object tests, and read-only presentation reactivity. It rejected
+repository-root discovery and sourcing, generated Hospital app source,
+fictional application identity, old YAML product/analytical configuration,
+daily-hazard/old-estimand semantics, base plotting, direct storage access,
+materialize-on-launch behavior, and deployment coupling.
+
+Focused and integrated evidence covers exact installed authority/resource
+resolution, defaults and supported/richer/malformed/unsafe branding, detached
+contained-logo bytes, branding noninterference, exact inventory/version
+denial, deterministic searches/filters/paging/order/selection/summary and
+two-/one-/zero-observation data, closed model boundaries, generic
+`shiny.appobj`, not-evaluated/fresh/stale/empty product states, absent/corrupt/
+incompatible prelaunch failures, and a supervised child-process loopback
+launch with normal stop. Every project file is hashed before and after the
+complete preparation/construction/session path; source, state metadata, DuckDB
+history, product pointer/member bytes, and project registration remain
+unchanged. Test-only producer/provider invocation sentinels remain absent,
+proving zero analytical component calls across preparation and launch.
+
+Final reconciliation retained one bounded diagnostic realization. Stage 9
+logical access deliberately reports an absent current realization through its
+closed `product_integrity_failed` denial, the same public code used when the
+required physical realization cannot be admitted. The application therefore
+returns `application_product_integrity_failed` for that absent-state case
+rather than inspect physical product paths to manufacture a separate
+availability distinction. It still fails before server construction with no
+rows exposed; no Stage 9 contract or product-only boundary was weakened.
+
+The first full package matrix exposed a test-only macOS temporary-root spelling
+comparison after the installed CSS had already resolved correctly. The test
+was corrected to retain catalog resolution as the substantive gate and assert
+that the result is a regular file with the exact expected basename. Recovery
+checking then exposed three older exact-export assertions that omitted the new
+29th export; those assertions were reconciled without changing behavior. The
+focused application test and rebuilt strict package check passed before the
+authoritative full validator was rerun.
+
+The authoritative repository and package validators, dependency-order builds,
+isolated installs and fresh-process loads, package-native tests, strict
+`R CMD check --no-manual`, source/Rd/DCF parsing, repository hygiene, and
+`git diff --check` pass locally. The new loopback smoke test required normal
+local socket permission; it exited cleanly without an orphan. No hosted run is
+claimed for the uncommitted working tree.
+
+**Current implementation state:** Increment 10.A is complete locally; Stage 10
+remains in progress. Final Reactable/sparkline/Plotly experiences, bounded
+presentation realization and initializer branding remain absent, as do the
+installed application guide and full fictional Stage 10 proof.
+
+**Next task:** implement only Increment 10.B — Useful core experiences and
+bounded presentation—when separately authorized. Do not begin Increment 10.C.

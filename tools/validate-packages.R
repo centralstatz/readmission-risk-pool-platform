@@ -25,11 +25,16 @@ package_specs <- list(
   ),
   rrpplatform = list(
     version = "0.1.0.9000",
-    imports = c("DBI", "duckdb", "rrpruntime")
+    imports = c(
+      "DBI", "duckdb", "rrpruntime", "shiny", "bslib", "plotly",
+      "reactable", "brand.yml"
+    )
   )
 )
 
-external_package_names <- c("DBI", "duckdb")
+external_package_names <- c(
+  "DBI", "duckdb", "shiny", "bslib", "plotly", "reactable", "brand.yml"
+)
 
 fail <- function(...) {
   stop(paste0(...), call. = FALSE)
@@ -137,7 +142,7 @@ resource_schema_expected <- function() {
       "static_application_asset"
     ), collapse = ","),
     "Owner-Packages" = "rrpplatform,rrpruntime",
-    "Resource-Formats" = "dcf,r,md",
+    "Resource-Formats" = "dcf,r,md,css",
     "Status-Values" = "development_unpublished",
     "Unique-Fields" = "Resource-ID,Source-Path,Installed-Path",
     "Case-Folded-Path-Fields" = "Source-Path,Installed-Path",
@@ -1172,6 +1177,69 @@ product_contract_resources <- function() {
   )))
 }
 
+application_contract_resources <- function() {
+  application <- c(
+    "Record-Type" = "application-contract",
+    "Contract-ID" = "rrp.application.supplied",
+    "Contract-Version" = "0.1.0", "Format-Version" = "1.0.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev",
+    "Status" = "development_unpublished", "Owner-Package" = "rrpplatform",
+    "Application-Class" = "shiny.appobj",
+    "Launch-Operation" = "rrp_launch_app",
+    "Product-Set-Contract" =
+      "rrp.product-set.initial-readmission-risk@0.1.0",
+    "Required-Product-Members" = paste(c(
+      "rrp.product.current-remaining-risk@0.1.0",
+      "rrp.product.remaining-risk-trajectory@0.1.0",
+      "rrp.product.operational-scope-summary@0.1.0"
+    ), collapse = ","),
+    "Component-Foundation" = "shiny,bslib,plotly,reactable",
+    "Brand-Contract" = "rrp.project-brand@0.1.0",
+    "Frontend-Asset-IDs" = "rrp.asset.supplied-application-css",
+    "Product-Access" = "validated_detached_once_at_startup",
+    "Presentation-Model" = "closed_detached",
+    "Application-Model" = "closed_detached", "Network-Binding" = "loopback_only",
+    "Analytical-Posture" = "read_only", "Analytical-Execution" = "prohibited",
+    "State-Or-Product-Mutation" = "prohibited", "Unknown-Fields" = "prohibited",
+    "Additional-Records" = "prohibited"
+  )
+  brand <- c(
+    "Record-Type" = "brand-interpretation-contract",
+    "Contract-ID" = "rrp.project-brand", "Contract-Version" = "0.1.0",
+    "Format-Version" = "1.0.0", "Product-ID" = "readmission-risk-pool-platform",
+    "Development-Version" = "1.0.0-dev", "Status" = "development_unpublished",
+    "Owner-Package" = "rrpplatform", "Brand-Path" = "_brand.yml",
+    "Parser-Package" = "brand.yml", "Parser-Function" = "read_brand_yml",
+    "Supported-Concepts" = "meta.name,color.primary,logo,logo.medium",
+    "Default-Display-Name" = "Readmission Risk Pool",
+    "Default-Primary-Color" = "#1F4E79",
+    "Logo-Role" = "application_header_identity",
+    "Logo-Path" = "safe_project_relative_regular_nonlinked",
+    "Logo-Formats" = "png,jpeg", "Logo-Max-Bytes" = "2097152",
+    "Remote-Or-Absolute-Logo" = "prohibited",
+    "Unsupported-Valid-Concepts" = "ignored",
+    "Malformed-Or-Unsafe-Supported-Input" = "startup_failure",
+    "Presentation-Only" = "required", "Analytical-Influence" = "prohibited",
+    "Raw-Brand-Retention" = "prohibited", "Unknown-Fields" = "prohibited",
+    "Additional-Records" = "prohibited"
+  )
+  list(
+    supplied_application = list(
+      id = "rrp.contract.supplied-application", owner = "rrpplatform",
+      source_path = "resources/contracts/application/supplied-application.dcf",
+      installed_path = "resources/contracts/application/supplied-application.dcf",
+      document = application
+    ),
+    project_brand = list(
+      id = "rrp.contract.project-brand", owner = "rrpplatform",
+      source_path = "resources/contracts/application/project-brand.dcf",
+      installed_path = "resources/contracts/application/project-brand.dcf",
+      document = brand
+    )
+  )
+}
+
 software_contract_resources <- function() {
   resources <- list(
     diagnostic = list(
@@ -1438,7 +1506,7 @@ software_contract_resources <- function() {
   c(
     resources, canonical_contract_resources(), runtime_contract_resources(),
     history_contract_resources(), state_contract_resources(),
-    product_contract_resources()
+    product_contract_resources(), application_contract_resources()
   )
 }
 
@@ -1702,6 +1770,37 @@ validate_installed_documentation_resources <- function(
       paste0(specification[["id"]], " is not closed installed guidance.")
     )
   }
+}
+
+validate_application_asset_resource <- function(authority, root, projection) {
+  ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
+  matched <- which(ids == "rrp.asset.supplied-application-css")
+  resource_require(
+    length(matched) == 1L, "application_asset_catalog",
+    "The supplied application CSS must be cataloged exactly once."
+  )
+  entry <- authority$entries[[matched]]
+  path <- "resources/application/supplied-application.css"
+  expected <- c(
+    "Resource-ID" = "rrp.asset.supplied-application-css",
+    "Resource-Class" = "static_application_asset",
+    "Owner-Package" = "rrpplatform", "Installed-Path" = path,
+    "Format" = "css"
+  )
+  if (!projection) expected <- append(
+    expected, c("Source-Path" = path), after = 3L
+  )
+  for (field in names(expected)) resource_require(
+    identical(entry[[field]], unname(expected[[field]])),
+    "application_asset_catalog", "The supplied application CSS mapping is invalid."
+  )
+  css <- readLines(file.path(root, path), warn = FALSE, encoding = "UTF-8")
+  resource_require(
+    length(css) > 0L && any(grepl("rrp-application", css, fixed = TRUE)) &&
+      !any(grepl("<script|javascript:|@import|url[(]", css, ignore.case = TRUE)),
+    "application_asset_content", "The supplied application CSS is invalid."
+  )
+  invisible(authority)
 }
 
 validate_resource_schema <- function(record) {
@@ -2095,10 +2194,11 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.project-authoring-guide",
     "rrp.documentation.provider-request-reference",
     "rrp.documentation.fictional-reference-walkthrough",
-    "rrp.documentation.logical-products-guide"
+    "rrp.documentation.logical-products-guide",
+    "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 46L && identical(
+    length(actual_ids) == 49L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
@@ -2108,6 +2208,7 @@ validate_resource_authority <- function(root, projection = FALSE) {
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
   validate_installed_documentation_resources(authority, root, projection)
+  validate_application_asset_resource(authority, root, projection)
   authority
 }
 
@@ -2533,6 +2634,8 @@ package_expected_files <- function(package_name) {
   if (identical(package_name, "rrpplatform")) {
     files <- c(
       files,
+      file.path("R", "application-contracts.R"),
+      file.path("R", "application.R"),
       file.path("R", "canonical-contracts.R"),
       file.path("R", "duckdb-history.R"),
       file.path("R", "durable-history.R"),
@@ -2553,6 +2656,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "runtime-contracts.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
+      file.path("man", "rrp_launch_app.Rd"),
       file.path("man", "rrp_build_product_set.Rd"),
       file.path("man", "rrp_materialize_product_set.Rd"),
       file.path("man", "rrp_open_product_access.Rd"),
@@ -2573,6 +2677,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_project.Rd"),
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
+      file.path("tests", "application-foundation.R"),
       file.path("tests", "logical-products.R"),
       file.path("tests", "product-materialization.R"),
       file.path("tests", "canonical-contracts.R"),
@@ -2767,7 +2872,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_inspect_current_history", "rrp_inspect_episode_history",
       "rrp_inspect_project_state", "rrp_inspect_scope_history",
       "rrp_invalidate_history",
-      "rrp_list_products", "rrp_load_project",
+      "rrp_launch_app", "rrp_list_products", "rrp_load_project",
       "rrp_materialize_product_set",
       "rrp_open_product_access",
       "rrp_open_resource_catalog",
@@ -2816,6 +2921,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_open_product_access)",
       "export(rrp_list_products)",
       "export(rrp_read_product)",
+      "export(rrp_launch_app)",
       "export(rrp_restore_project_state)",
       "export(rrp_execute_producer)",
       "export(rrp_execute_risk)",
@@ -3424,6 +3530,40 @@ locate_external_packages <- function(package_names) {
   locations
 }
 
+external_dependency_closure <- function(package_names) {
+  pending <- package_names
+  discovered <- character()
+  while (length(pending)) {
+    package_name <- pending[[1L]]
+    pending <- pending[-1L]
+    if (package_name %in% discovered || identical(package_name, "R")) next
+    path <- find.package(package_name, quiet = TRUE)
+    require_true(
+      nzchar(path), paste0("External dependency `", package_name, "` is unavailable.")
+    )
+    discovered <- c(discovered, package_name)
+    description <- read.dcf(file.path(path, "DESCRIPTION"))
+    dependencies <- unique(unlist(lapply(
+      intersect(c("Depends", "Imports", "LinkingTo"), colnames(description)),
+      function(field) package_dependency_names(description, field)
+    ), use.names = FALSE))
+    dependencies <- setdiff(dependencies, c("R", discovered))
+    if (length(dependencies)) {
+      system_library <- normalizePath(.Library, winslash = "/", mustWork = TRUE)
+      copy_needed <- vapply(dependencies, function(dependency) {
+        dependency_path <- find.package(dependency, quiet = TRUE)
+        require_true(nzchar(dependency_path), paste0(
+          "Dependency closure package `", dependency, "` is unavailable."
+        ))
+        normalized <- normalizePath(dependency_path, winslash = "/", mustWork = TRUE)
+        !identical(normalized, file.path(system_library, dependency))
+      }, logical(1L))
+      pending <- c(pending, dependencies[copy_needed])
+    }
+  }
+  unique(discovered)
+}
+
 provision_external_packages <- function(locations, library_roots) {
   for (library_root in library_roots) {
     for (package_name in names(locations)) {
@@ -3519,6 +3659,7 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_inspect_project_state\", ",
       "\"rrp_inspect_scope_history\", ",
       "\"rrp_invalidate_history\", ",
+      "\"rrp_launch_app\", ",
       "\"rrp_list_products\", ",
       "\"rrp_load_project\", ",
       "\"rrp_materialize_product_set\", ",
@@ -3563,7 +3704,11 @@ load_package_fresh <- function(package_name, library_root) {
     expected_exports, "))",
     if (identical(package_name, "rrpplatform")) {
       paste0(
-        "; dependencies <- c(\"DBI\", \"duckdb\", \"rrpruntime\"); ",
+        paste0("; dependencies <- c(", paste(vapply(
+          c("DBI", "duckdb", "rrpruntime", "shiny", "bslib", "plotly",
+            "reactable", "brand.yml"),
+          encodeString, character(1L), quote = "\""
+        ), collapse = ", "), "); "),
         "dependency_paths <- vapply(dependencies, find.package, character(1L)); ",
         "stopifnot(\"rrpruntime\" %in% loadedNamespaces(), ",
         "all(startsWith(normalizePath(dependency_paths), ",
@@ -3654,6 +3799,11 @@ validate_installed_resource_access <- function(library_root, work_root) {
     duckdb_history_adapter = "resources/contracts/state/duckdb-history-adapter.dcf",
     product_materialization =
       "resources/contracts/products/product-materialization.dcf",
+    supplied_application =
+      "resources/contracts/application/supplied-application.dcf",
+    project_brand = "resources/contracts/application/project-brand.dcf",
+    supplied_application_css =
+      "resources/application/supplied-application.css",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R",
     project_authoring_template = "resources/templates/project/rrp-authoring.dcf",
@@ -3740,6 +3890,12 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["duckdb_history_adapter"]], quote = "\""),
     ", product_materialization = ",
     encodeString(expected_copies[["product_materialization"]], quote = "\""),
+    ", supplied_application = ",
+    encodeString(expected_copies[["supplied_application"]], quote = "\""),
+    ", project_brand = ",
+    encodeString(expected_copies[["project_brand"]], quote = "\""),
+    ", supplied_application_css = ",
+    encodeString(expected_copies[["supplied_application_css"]], quote = "\""),
     ", project_manifest_template = ",
     encodeString(expected_copies[["project_manifest_template"]], quote = "\""),
     ", project_registration_template = ",
@@ -3787,7 +3943,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
     "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",
     "'rrp_inspect_project_state', 'rrp_inspect_scope_history', ",
-    "'rrp_invalidate_history', 'rrp_list_products', 'rrp_load_project', ",
+    "'rrp_invalidate_history', 'rrp_launch_app', 'rrp_list_products', ",
+    "'rrp_load_project', ",
     "'rrp_materialize_product_set', 'rrp_open_product_access', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
@@ -3824,7 +3981,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "project_state = 'rrp.contract.project-state', ",
     "project_state_backup = 'rrp.contract.project-state-backup', ",
     "duckdb_history_adapter = 'rrp.contract.duckdb-history-adapter', ",
-    "product_materialization = 'rrp.contract.product-materialization'); ",
+    "product_materialization = 'rrp.contract.product-materialization', ",
+    "supplied_application = 'rrp.contract.supplied-application', ",
+    "project_brand = 'rrp.contract.project-brand', ",
+    "supplied_application_css = 'rrp.asset.supplied-application-css'); ",
     "ids <- c(ids, project_manifest_template = 'rrp.template.project-manifest', ",
     "project_registration_template = 'rrp.template.project-registration'); ",
     "ids <- c(ids, project_authoring_template = ",
@@ -3876,6 +4036,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.product-materialization'), identical(materialization_contract[[",
     "'Contract-Version']], '0.1.0'), identical(materialization_contract[[",
     "'State-Contract-Version']], '0.2.0')); ",
+    "application_contracts <- getFromNamespace('rrp_application_contracts', ",
+    "'rrpplatform')(catalog); stopifnot(identical(application_contracts$application[[",
+    "'Contract-ID']], 'rrp.application.supplied'), identical(application_contracts$brand[[",
+    "'Contract-ID']], 'rrp.project-brand')); ",
     "canonical_contracts <- getFromNamespace('rrp_canonical_contracts', ",
     "'rrpplatform')(catalog); stopifnot(identical(names(canonical_contracts), ",
     "c('specification_envelope', 'canonical_producer', 'canonical_bundle', ",
@@ -4384,7 +4548,8 @@ validate_packages <- function() {
   validate_source_boundaries(package_roots)
   cat("PASS one-way dependency and repository-independence boundary\n")
 
-  external_package_locations <- locate_external_packages(external_package_names)
+  dependency_closure <- external_dependency_closure(external_package_names)
+  external_package_locations <- locate_external_packages(dependency_closure)
   cat("PASS declared external package dependency availability\n")
 
   work_root <- tempfile("rrp-package-validation-")
@@ -4409,9 +4574,9 @@ validate_packages <- function() {
     external_package_locations,
     c(library_root, missing_dependency_library)
   )
-  validate_external_package_locations(library_root, external_package_names)
+  validate_external_package_locations(library_root, dependency_closure)
   validate_external_package_locations(
-    missing_dependency_library, external_package_names
+    missing_dependency_library, dependency_closure
   )
   cat("PASS controlled external dependency provisioning\n")
 

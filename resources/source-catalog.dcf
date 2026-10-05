@@ -7,6 +7,30 @@ Development-Version: 1.0.0-dev
 Status: development_unpublished
 
 Record-Type: resource
+Resource-ID: rrp.contract.supplied-application
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/application/supplied-application.dcf
+Installed-Path: resources/contracts/application/supplied-application.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.project-brand
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/application/project-brand.dcf
+Installed-Path: resources/contracts/application/project-brand.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.asset.supplied-application-css
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/supplied-application.css
+Installed-Path: resources/application/supplied-application.css
+Format: css
+
+Record-Type: resource
 Resource-ID: rrp.contract.resource-catalog
 Resource-Class: contract
 Owner-Package: rrpplatform

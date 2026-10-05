@@ -96,6 +96,18 @@ rrp_test_operation_fixture <- function() {
       )()
     )
   )
+  application_definitions <- list(
+    list(
+      resource_id = "rrp.contract.supplied-application",
+      path = "resources/contracts/application/supplied-application.dcf",
+      expected = rrp_test_internal("rrp_application_contract_expected")()
+    ),
+    list(
+      resource_id = "rrp.contract.project-brand",
+      path = "resources/contracts/application/project-brand.dcf",
+      expected = rrp_test_internal("rrp_brand_contract_expected")()
+    )
+  )
   for (item in list(
     list(
       value = manifest_contract,
@@ -145,6 +157,20 @@ rrp_test_operation_fixture <- function() {
       path, useBytes = TRUE
     )
   }
+  for (definition in application_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines(
+      paste0(names(definition$expected), ": ", unname(definition$expected)),
+      path, useBytes = TRUE
+    )
+  }
+  asset_path <- file.path(
+    root, "resources", "application", "supplied-application.css"
+  )
+  dir.create(dirname(asset_path), recursive = TRUE, showWarnings = FALSE)
+  writeLines(".rrp-application-shell { min-height: 100%; }", asset_path,
+    useBytes = TRUE)
   entries <- list(
     list(
       "Record-Type" = "resource",
@@ -204,6 +230,19 @@ rrp_test_operation_fixture <- function() {
     "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
     "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
     "Installed-Path" = definition$path, "Format" = "dcf"
+  )))
+  entries <- c(entries, lapply(application_definitions, function(definition) list(
+    "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
+    "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
+    "Installed-Path" = definition$path, "Format" = "dcf"
+  )))
+  entries <- c(entries, list(list(
+    "Record-Type" = "resource",
+    "Resource-ID" = "rrp.asset.supplied-application-css",
+    "Resource-Class" = "static_application_asset",
+    "Owner-Package" = "rrpplatform",
+    "Installed-Path" = "resources/application/supplied-application.css",
+    "Format" = "css"
   )))
   header <- list(
     "Record-Type" = "catalog",
@@ -410,7 +449,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 23L
+          resource_count = 26L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)
