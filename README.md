@@ -66,10 +66,12 @@ supplied application now adds a product-only Current Risk Pool, actual
 trajectory detail, exact Overview, bounded declarative branding, and a
 cataloged Supplied Application Guide. Its complete local non-Git fictional
 proof covers product states, portability, nonmutation, privacy, executable-
-customization denial, and supervised loopback cleanup. Formal Stage 10 hosted
-acceptance and reconciliation remain pending. The repository has no root
-selector, persistent installed RRP distribution, scheduled/off-host backup,
-migration, command-line interface, or deployment capability.
+customization denial, and supervised loopback cleanup. Exact revision
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
+architecture reconciliation; Stages 1–10 are accepted and complete. The
+repository has no root selector, persistent installed RRP distribution,
+scheduled/off-host backup, migration, command-line interface, or deployment
+capability.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -216,9 +218,12 @@ fictional actual/empty product evidence and Logical Products Guide. Exact
 revision `a13a181a09bf5b981b41030cf58e6f49225df7d4` passed hosted
 `package-foundation` run `36922905508`, job `110573063816`, and formal
 reconciliation accepted Stage 9. Stages 1–9 are accepted and complete.
-Increments 10.A–10.B implement the installed supplied-application foundation
-and useful bounded presentation; Stage 10 remains in progress and Increment
-10.C remains unimplemented.
+Increments 10.A–10.C implement the installed supplied-application foundation,
+useful bounded presentation, installed human guide, and complete non-Git
+fictional proof. Exact revision
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
+reconciliation, so Stages 1–10 are accepted and complete. Stage 11 planning is
+the next task; no CLI or distribution capability exists yet.
 
 ## License
 

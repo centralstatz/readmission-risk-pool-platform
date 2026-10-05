@@ -5512,3 +5512,199 @@ acceptance/architecture reconciliation. Stage 11 was not begun; no CLI,
 distribution, installer, upgrade, artifact, deployment, hosting,
 authentication, publication, release, clinical, performance, or support
 capability was added.
+
+## Stage 10 — formal acceptance and architecture reconciliation (2026-10-05)
+
+**Stage 10 — Supplied Product-Only Application: Accepted.**
+
+The exact accepted candidate is
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68` (`10.C complete`) on `main`.
+At reconciliation start, local `HEAD`, `origin/main`, and the hosted workflow
+SHA were identical and the working tree was clean. The Stage 10 lineage is:
+accepted 10.A baseline `9a156577228d7518d0809f1d506069f1284f3953`;
+10.B implementation/review revisions `3b0e1f19badca84581335657b9d160e8a53e3db0`
+and `cec1c7251450bdc837c276285d8552260bda1fa7`; accepted 10.B reconciliation
+`bc4ccc71da2bb54b3012bb94d90ab461f1bd4821`; documentation-only 10.B hosted
+closeout `a1b4359a27b5888203983cb5840617c0f3dc7deb`; and 10.C candidate
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68`.
+
+GitHub Actions `package-foundation` push run
+[`37348810704`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/37348810704),
+job
+[`111894155548`](https://github.com/centralstatz/readmission-risk-pool-platform/actions/runs/37348810704/job/111894155548),
+completed successfully on Ubuntu with R 4.4 for that exact candidate SHA. Its
+repository-foundation and complete package-foundation steps both passed. This
+is distinct from accepted 10.B run `37339365839`, job `111862204197`, for
+`bc4ccc71da2bb54b3012bb94d90ab461f1bd4821`.
+
+Reconciliation read Platform True North, Platform Architecture, the detailed
+Stage 10 plan, all 10.A–10.C implementation/reconciliation records, the
+application/brand contracts and resource catalog, package metadata and
+exports, installed application source/CSS, project initializer, package-native
+application tests, the separately installed fictional application proof, and
+the Supplied Application Guide. Realized behavior preserves the authoritative
+boundary:
+
+```text
+governed history
+    ↓
+logical Stage 9 products
+    ↓
+validated detached product access
+    ↓
+presentation-only application view models
+    ↓
+installed RRP-supplied Shiny application
+```
+
+`rrp_application_prepare()` opens only the existing validated three-member
+product access, copies a closed product snapshot, constructs a detached bounded
+presentation model, and creates view models. Application code has no canonical
+production, eligibility/admission, provider execution, history writing,
+retry/correction, product build/materialization/refresh, or analytical-state
+mutation path. Shiny owns lifecycle/reactivity, bslib owns shell/layout,
+Reactable owns the Current Risk Pool and exact observation tables, Plotly owns
+the contextual trajectory, and installed RRP CSS owns bounded presentation.
+`rrpruntime` remains free of every application dependency.
+
+Application ownership remains generic installed `rrpplatform` software under
+`rrp.application.supplied@0.1.0`. Exactly one planned application export,
+`rrp_launch_app(software_catalog, project_root,
+expected_operation_run_id = NULL, history_cutoff = NULL,
+launch_browser = interactive(), port = NULL)`, entered Stage 10. There is no
+second launcher, refresh API, fictional launcher, frontend extension API,
+analytical app API, or deployment API. The UI has exactly two top-level views,
+Current Risk Pool and Overview; Episode Risk Trajectory is contextual detail
+within Current Risk Pool.
+
+Current Risk Pool derives canonical episode, accepted probability, analytical
+time, remaining follow-up, and provider/model attribution only from Stage 9
+products. Deterministic descending-risk/canonical-ID ordering, exact search and
+provider/model filters, explicit sorting, bounded paging/counts, single
+selection, table/selector synchronization, and clearly labeled retained
+historical-only choices are preserved. Exact probability text accompanies a
+direct monotonic continuous bar whose RRP-owned color is independent of
+branding. There is no threshold, named risk class, clinical priority,
+synthetic baseline, discharge comparator, or new risk interpretation.
+
+Sparklines and the Plotly trajectory use only ordered actual governed
+observations. Two-or-more observations receive actual markers plus a restrained
+order connector; one receives one marker; zero is explicitly unavailable. The
+fixed zero-to-one trajectory, exact tooltips/table, analytical time, follow-up,
+probability, provider/model attribution, analytical kind, and product target
+interval facts introduce no interpolation, daily series, smoothing,
+carry-forward, or fabricated baseline. Overview presents only direct current
+count/minimum/quartiles/median/maximum and the exact effective-scope/outcome
+reconciliation. It adds no rate, KPI, quality score, queue, recommendation,
+performance, or outcome claim.
+
+Not-evaluated, fresh, stale, valid-empty, missing, corrupt, and incompatible
+states remain distinct. Stale products are readable with a persistent warning
+and no refresh. Valid empty retains the normal shell and zero/unavailable facts
+without fabrication. Missing/corrupt/incompatible realizations fail boundedly
+before server construction. The 10.C `NULL`-selection correction is an
+internal empty-server defect fix only; it changes no public interface,
+analytical contract, or product semantic.
+
+`rrp.project-brand@0.1.0` remains a bounded interpretation of standard
+project-root `_brand.yml`: display identity, primary composition color, and one
+safe contained PNG/JPEG logo. Absence uses RRP defaults; malformed or unsafe
+supported input fails; valid unsupported fields are ignored; remote, absolute,
+escaping, linked, unsupported, and oversized logos are denied; accepted logo
+bytes are detached from paths. Projects cannot contribute application CSS,
+JavaScript, HTML, Shiny modules, source, or component definitions. Their
+governed `R/register.R`, `R/produce-canonical.R`, and `R/calculate-risk.R`
+remain legitimate analytical authoring boundaries and are not application
+extensions.
+
+The fictional project remains an ordinary deterministic consumer with the
+exact nine-file initialized inventory: `rrp-project.dcf`,
+`rrp-authoring.dcf`, `R/register.R`, `R/produce-canonical.R`,
+`R/calculate-risk.R`, `README.md`, `_brand.yml`,
+`assets/project-logo.png`, and `R/generate-source.R`. The exact six standard
+authoring paths remain unchanged; standard and fictional projects add only
+bounded declarative brand/logo resources, and fictional adds its controlled
+source generator. No project app source, special application identity, or
+fictional frontend branch exists.
+
+The separately installed proof uses dependency-order built packages in an
+isolated library, fresh R processes, a temporary project outside Git, installed
+resource resolution, the existing Stage 8–9 analytical/product workflow, the
+public loopback launcher, and an exact relocated project copy. It is distinct
+from package-native component evidence and requires no checkout, Git metadata,
+ambient source, or repository fallback.
+
+The required installed-proof reconciliation is:
+
+| Property | Result |
+| --- | --- |
+| 1. Installed software only | Satisfied |
+| 2. Ordinary fictional project | Satisfied |
+| 3. Existing governed Stage 9 products | Satisfied |
+| 4. Current Risk Pool | Satisfied |
+| 5. Truthful trajectory evidence | Satisfied |
+| 6. Overview | Satisfied |
+| 7. Product-state UX | Satisfied |
+| 8. Standard/default branding | Satisfied |
+| 9. Custom standard branding | Satisfied |
+| 10. Accepted contained logo | Satisfied |
+| 11. Installed RRP assets | Satisfied |
+| 12. Copied/non-Git operation | Satisfied |
+| 13. Analytical nonmutation | Satisfied |
+| 14. Bounded privacy/exposure | Satisfied |
+| 15. Executable-customization denial | Satisfied |
+
+Nonmutation is behavioral evidence: after analytical/product preparation and
+test-only producer/provider/application sentinels, every project regular-file
+name and MD5 digest—including state metadata, DuckDB history, product pointer,
+and product members—matches exactly before and after supervised public launch;
+all invocation/executable-presentation sentinels remain absent. The copied
+project has the same result. Privacy evidence validates the closed detached
+model and excludes known native identifiers, crosswalk/predictor terms,
+credentials, connections, database internals, executable source, repository
+paths, project roots, writers, history ports, and live
+function/environment/connection references. This is architectural boundary
+evidence, not security certification.
+
+The catalog has exactly 54 resources. Application ownership comprises the
+supplied-application contract, project-brand contract, installed application
+CSS, project/fictional brand and logo templates, and
+`rrp.documentation.supplied-application-guide`, all owned by `rrpplatform` at
+closed installed paths. Catalog validation proves every declaration exists,
+every governed source resource is declared, deterministic byte-preserving
+projection, exact guide resolution through `rrp_resource_path()`, and no
+undeclared or generated validation/browser artifact. The guide accurately
+teaches public installed operations, existing products, manual relaunch,
+bounded branding, read-only loopback behavior, and later-stage deployment
+limits without source workflows, internal calls, automatic refresh, or Stage
+11 claims.
+
+Historical reuse adapted one-time product injection, safe startup/empty
+handling, actual-observation presentation, server testing, supervised launch,
+and nonmutation techniques. It did not restore Phase aggregation, generated
+Hospital repositories/apps, YAML analytical coupling, direct storage access,
+daily-hazard semantics, fictional app identity, or artifact/deployment
+coupling.
+
+The complete authoritative local matrix already recorded by 10.C passed both
+human validators, exact resource closure/projection, package-native and
+installed regressions, dependency-order builds, isolated installs and fresh
+loads, and strict checks with exact `Status: OK`. Hosted evidence independently
+passed the same repository/package operations on the exact candidate. No
+implementation-record claim was found to substitute source-only testing for
+installed proof, code inspection for nonmutation, helper existence for
+assembled Reactable/Plotly composition, or documentation for realized
+ownership. No unresolved architecture, contract, interface, evidence, or
+scope discrepancy remains.
+
+Stage 10 introduced no CLI, closed distribution, installer, upgrade,
+product-only artifact, Connect/OCI realization, hosting, authentication,
+authorization, multi-user service, deployment configuration, publication,
+release/licensing machinery, support/performance claim, clinical validation,
+care-management workflow, automatic refresh, or remote synchronization.
+
+**Accepted exit state:** Stages 1–10 are accepted and complete at exact
+revision `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. This revision establishes
+the Stage 11 baseline. Stage 11 — CLI, closed distribution, installation, and
+upgrade—is the next implementation stage and requires separate detailed
+planning/authorization. No Stage 11 implementation occurred during acceptance.

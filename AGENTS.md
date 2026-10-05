@@ -190,5 +190,7 @@ Current Risk Pool and Overview experiences, actual-observation sparklines and
 Plotly detail, exact observation and scope presentation, responsive RRP-owned
 CSS, and initialized standard/fictional branding resources. Increment 10.C
 adds the cataloged Supplied Application Guide and coherent installed non-Git
-fictional application proof. Stage 10 hosted acceptance and formal
-reconciliation remain pending.
+fictional application proof. Exact revision
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted run `37348810704`,
+job `111894155548`; formal reconciliation accepted Stage 10. Stages 1–10 are
+accepted and complete. Stage 11 detailed planning is next and has not begun.

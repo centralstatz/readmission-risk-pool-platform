@@ -36,7 +36,10 @@ proof. The exact committed Stage 9 realization has passed hosted validation
 and formal architecture reconciliation. Increment 10.A now supplies the
 installed application and brand-interpretation authorities, detached startup
 and view-model path, generic Shiny shell, and loopback-only launch boundary;
-Stage 10 remains in progress.
+Increments 10.B–10.C add the useful product-only experience, bounded branding,
+installed guide, and complete installed fictional proof. Exact revision
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
+architecture reconciliation; Stages 1–10 are accepted and complete.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -51,9 +54,8 @@ The platform risk operation prepares one eligible episode state and invokes
 exactly the explicitly selected compatible provider once, including either the
 installed nonclinical transparent provider or a project-owned substitute.
 The installed Stage 10 supplied application experience and its cataloged human
-guide now exist and have complete local fictional acceptance evidence. Formal
-Stage 10 hosted acceptance and architecture reconciliation remain pending.
-There is no complete distribution or ordinary operator command.
+guide have complete local and hosted fictional acceptance evidence. There is
+no complete distribution or ordinary operator command.
 
 ## Read authority before source
 
