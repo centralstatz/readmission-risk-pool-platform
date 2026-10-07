@@ -4,9 +4,10 @@
 
 **Status:** authoritative roadmap; Stages 1–10 are accepted and complete. Stage
 10 was accepted on 2026-10-05 at implementation baseline
-`433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The detailed Stage 11 plan is
-prepared below for human review; Stage 11 implementation has not begun and
-Increment 11.A requires separate authorization.
+`433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
+11 plan is prepared below after human resolution of its initial seven planning
+questions; Stage 11 implementation has not begun and Increment 11.A requires
+separate authorization.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -102,7 +103,7 @@ Their bounded decisions are resolved just before they become material.
 | 8 | Fictional reference path | A normal independent fictional project exercises producer, admission, runtime, provider, and history end to end, but RRP has no application-facing products. |
 | 9 | Logical products and materialization | RRP can build and validate the initial remaining-risk product family from history and materialize it in project state, but it has no supplied user application. |
 | 10 | Supplied product-only application | The supplied application works only through validated products and proves the application boundary, but normal operators do not yet have the complete installed CLI and distribution. |
-| 11 | CLI, closed distribution, installation, and upgrade | A human can build, install, verify, activate, operate, upgrade, roll back, and uninstall versioned RRP software without mutating a project, but deployment artifacts are not yet available. |
+| 11 | CLI, closed RRP-owned-payload distribution, installation, and upgrade | A human can build, install, verify, activate, operate, upgrade, roll back, and uninstall versioned RRP software without mutating a project, but deployment artifacts are not yet available. |
 | 12 | Product-only artifacts and deployment realizations | Installed RRP can build independently valid product-only artifacts and both Posit-compatible and OCI realizations without upstream compute capability. |
 | 13 | Clean-system and adopter acceptance | Supported clean environments prove installed RRP, the fictional project, and a separate adopter implementation through the full implemented lifecycle, but no 1.0.0 release is yet authorized. |
 | 14 | Release qualification and publication | Exact accepted bytes can be prepared, explicitly published, publicly reacquired, and verified as immutable RRP 1.0.0. |
@@ -133,7 +134,7 @@ logical products
     ↓
 product-only application
     ↓
-CLI + closed software installation lifecycle
+CLI + closed RRP-owned payload + private installation lifecycle
     ↓
 product-only deployment artifacts
     ↓
@@ -7020,22 +7021,37 @@ No unresolved architectural question blocks 10.A. Planning selected reversible
 package-level choices and deliberately leaves deployment-scale, broader media/
 branding, custom-app, and operator syntax decisions with their later owners.
 
-## Stage 11 — CLI, closed distribution, installation, and upgrade
+## Stage 11 — CLI, closed RRP-owned-payload distribution, installation, and upgrade
 
-**Planning status:** detailed for human review; implementation has not begun.
-Stages 1–10 remain the accepted baseline. This plan does not authorize an
-increment, select release bytes, or claim an installed distribution exists.
+**Planning status:** second-edition detailed plan prepared after human review;
+implementation has not begun. Stages 1–10 remain the accepted baseline. This
+plan does not authorize an increment, select release bytes, or claim an
+installed distribution exists.
+
+The reviewed decisions settle the `rrp` command taxonomy, exact-current-
+directory project default, versioned JSON output, base-R first-install
+bootstrap, repository-restored dependency model, OS-standard user locations,
+project-independent activation, and release-version provenance. They govern
+this Stage 11 construction plan. Package APIs still receive explicit normalized
+software/project contexts; the CLI merely resolves the exact working directory
+when a project argument is omitted. Likewise, an operator may validate a
+project before changing versions, but installation and activation themselves
+have no project input or project awareness. Compatibility is enforced when
+software is explicitly asked to operate on a project.
 
 ### Objective and stage boundary
 
 Complete only the stable programmatic operations needed for human lifecycle
 intent and place one thin canonical CLI over them. Build an intentional closed
-software distribution; install it user-scoped in immutable side-by-side
-versions; verify, activate, roll back, and uninstall those versions; and
-operate explicit independent projects without making a project part of an
+RRP-owned software payload with a reproducible third-party dependency
+specification; install it user-scoped in immutable side-by-side versions;
+restore each version's dependencies from configured R repositories into its
+private library; verify, activate, roll back, and uninstall those versions;
+and operate independent projects without making a project part of an
 installation. The installed product carries its exact private R package
 library, governed resources, reference resources, launcher, version-matched
-human documentation, inventory, digests, and provenance.
+human documentation, inventory, integrity and dependency-realization evidence,
+and provenance.
 
 The distribution and CLI expose the already accepted producer, provider,
 history, product, and application behavior. Stage 11 may add package-owned
@@ -7043,10 +7059,14 @@ orchestration where the manual assessment demonstrated a missing stable
 operator intention, but it may not reimplement those semantics in command
 parsing or redesign an accepted Stage 1–10 boundary without specific evidence.
 
-Product-only artifacts and target deployment remain Stage 12. Clean support-
-cell and independent-adopter qualification remain Stage 13. Release
-qualification, signing/publication decisions, remote publication, and public
-acquisition remain Stage 14.
+Internet access to configured R package repositories is an acceptable install
+prerequisite. A distribution does not redistribute or physically close every
+third-party package artifact, and offline installation is not a Stage 11
+claim. Product-only artifacts and target deployment remain Stage 12. Clean
+support-cell, dependency restoration on each claimed OS/R cell, and independent-
+adopter qualification remain Stage 13. Release qualification,
+signing/publication decisions, remote publication, and public acquisition
+remain Stage 14.
 
 ### Accepted starting model
 
@@ -7083,8 +7103,8 @@ The following identities and locations remain distinct throughout Stage 11:
 | Boundary | Meaning and owner | Stage 11 rule |
 | --- | --- | --- |
 | Development/source repository | Maintainer-owned packages, resources, tests, assessments, governing records, and build tools | A build input only; never an installed payload or project prerequisite. |
-| Built RRP distribution | One closed, validated, target-described software artifact assembled from an inclusion authority | Immutable acquisition input; not yet an installation and contains no hospital project. |
-| Installed RRP version | One verified distribution realized beneath a user-owned RRP software root with its private library and matching resources | Immutable after promotion and independently addressable by product/distribution identity. |
+| Built RRP distribution | One validated, target-described artifact with a closed RRP-owned payload and reproducible dependency specification | Acquisition input; not yet an installation, not an offline CRAN mirror, and contains no hospital project. |
+| Installed RRP version | One verified distribution realized beneath a user-owned RRP software root after dependency restoration into its private library | Immutable after promotion and independently addressable by software version and integrity metadata. |
 | Active RRP version | The installed version selected by one small atomic user activation record, or an explicit per-invocation selector | Selection state only; activation does not copy into or edit projects. |
 | Independent project root | Explicit hospital-owned manifest, registration/authoring code, configuration, branding, and declared paths | Never stored inside, inventoried by, or deleted with an installation. |
 | Project-owned source and state | Hospital source/mapping/model inputs plus RRP-managed history/products beneath the project's declared state path | Operated through compatible installed software; never silently migrated by installation or activation. |
@@ -7100,11 +7120,11 @@ Stage 11 treats its steps as follows:
 
 | Manual action | Lifecycle owner | Stage 11 treatment |
 | --- | --- | --- |
-| Choose source, archive, isolated-library, software-resource, and project roots | Build/install/project responsibilities were mixed | The builder owns build roots, the installer owns the user software root, the launcher resolves the selected installation, and only the project root remains an explicit operator input. |
-| Install third-party dependencies, build two internal packages, and install them in order | Distribution build and installation | Remove from normal adopter work. The closed build declares the exact closure; installation realizes it in one version-private library. |
+| Choose source, archive, isolated-library, software-resource, and project roots | Build/install/project responsibilities were mixed | The builder owns build roots, the installer owns the OS-standard user software root, and the launcher resolves the selected installation. A project command uses `--project PATH` when supplied and otherwise the exact current directory. |
+| Install third-party dependencies, build two internal packages, and install them in order | Distribution build and installation | Remove from normal adopter work. The distribution carries the reproducible dependency specification and exact RRP packages; installation restores from configured repositories into one version-private library, then verifies it. |
 | Project 54 resources and remove source-only catalog fields | Distribution build | Perform deterministically at build time and validate inside the distribution. No adopter sees or reproduces `Source-Path`. |
 | Set library/environment variables, start vanilla R, load packages, and open the software catalog | Launcher/runtime selection | Hide behind the version launcher. It fixes the private library, package paths, resource root, and R process environment before package dispatch. |
-| Initialize the ordinary or fictional project | Project lifecycle | Expose a CLI intention over the existing package initializer at an explicit absent destination. |
+| Initialize the ordinary or fictional project | Project lifecycle | Expose a CLI intention over the existing package initializer with the absent destination as a natural positional path. |
 | Edit project manifest, source mapping, provider/model, and configuration | Project/hospital | Retain as explicit human-owned work. The CLI may orient and validate it but must not synthesize hospital semantics. |
 | Source and invoke the fictional generator | Fictional/reference-only behavior | Add a narrowly named installed reference operation and CLI path. Do not invent a generic hospital source-acquisition protocol. |
 | Validate the project and initialize state | Project lifecycle | Expose separate validation and explicit state initialization; neither runs implicitly during install or activation. |
@@ -7116,21 +7136,22 @@ Stage 11 treats its steps as follows:
 | Exercise later fictional death/source scenarios | Fictional teaching behavior | Retain in the reference walkthrough/API evidence; do not turn scenarios into generic platform modes. |
 | Manually remember package/resource/project compatibility | Software and project diagnostics | Add separate installed and project doctors with bounded responsibilities and shared diagnostics. |
 
-This preserves meaningful explicit choices—project root, analytical time,
-operation key, source scope, history cutoff, backup destination, and corrective
-intent—while removing build layout, dependency order, library selection,
-resource projection, and package-loading knowledge from ordinary operation.
+This preserves meaningful explicit choices—project location (a path or the
+exact current directory), analytical time, operation key, source scope,
+history cutoff, backup destination, and corrective intent—while removing build
+layout, dependency order, library selection, resource projection, and package-
+loading knowledge from ordinary operation.
 
 ### Two lifecycles and their intersection
 
 The software lifecycle is:
 
 ```text
-acquire one closed local distribution
+acquire and unpack one RRP distribution
         ↓
-validate distribution bytes and prerequisites
+validate its closed RRP-owned payload, dependency specification, and prerequisites
         ↓
-install one immutable user-scoped version
+restore dependencies and install one immutable user-scoped version
         ↓
 verify installed inventory, private library, resources, and launcher
         ↓
@@ -7138,7 +7159,7 @@ activate/select that verified version
         ↓
 install and verify another version beside it
         ↓
-activate the compatible new version or reselect the prior version
+activate the new version or reselect the prior version
         ↓
 uninstall only an inactive explicitly selected installation
 ```
@@ -7146,7 +7167,7 @@ uninstall only an inactive explicitly selected installation
 The project lifecycle is:
 
 ```text
-initialize one independent project at an explicit destination
+initialize one independent project at a chosen destination
         ↓
 hospital configures source/mapping/provider and dependencies
         ↓
@@ -7175,15 +7196,23 @@ accepted project/package operation
 independent project source/state
 ```
 
-The launcher never discovers projects, and no project registry is required.
-Project-mutating operations require an explicit `--project` value; explicitly
-passing the current directory remains a choice, not upward discovery. Every
-project operation validates the manifest/API line against the selected
-software before mutation.
-Changing the activation record changes only future default software selection.
-An explicit software selector may address another installed version without
-changing the default. Neither path rewrites project manifests, registration,
-code, extension declarations, state, or products.
+The launcher never discovers or registers projects. A project-oriented command
+uses exactly `--project PATH` when supplied; otherwise it normalizes the exact
+current working directory once and passes that explicit root to the package
+API. It never searches parents, remembers a last project, interprets Git, or
+scans sibling directories. Project/reference creation takes its destination as
+a positional path where natural. Every operation on an existing project checks
+the manifest/API and other owning compatibility boundaries against the
+selected software before mutation.
+
+Installation, activation, rollback, and uninstall accept no project arguments,
+inspect no projects, and persist no project/software association. Changing the
+activation record changes only future default software selection. An explicit
+software selector may address another installed version without changing the
+default. The two lifecycles meet only when the selected software is asked to
+operate on a resolved project root. An incompatible operation fails clearly
+without modifying the project; the operator may change the project separately
+or reactivate an older compatible software version.
 
 ### Proposed on-disk ownership and runtime model
 
@@ -7194,9 +7223,9 @@ macOS/Linux spellings are finalized in 11.A, using platform conventions rather
 than a hard-coded home expansion. The logical shape is:
 
 ```text
-RRP user home/
+RRP user application-data root/
 ├── installations/
-│   └── <product-version>/<distribution-id>/
+│   └── <software-version>/<distribution-integrity-id>/
 │       ├── INSTALLATION.dcf
 │       ├── distribution manifest, inventory, and digests
 │       ├── bin/                 version-specific launcher/entry material
@@ -7209,31 +7238,35 @@ user executable location/
 └── rrp                          small shared selector, not version logic
 ```
 
-Each installation is self-contained. No authoritative package or dependency
-is shared across version roots, so verification and uninstall have exact
-ownership. A download/build cache, if later added, is non-authoritative and is
-not searched at runtime. `active.dcf` names an exact installed distribution
-through a safe relative identity and is replaced atomically only after full
-verification. A regular record is preferred to a symlink for portable,
-inspectable, no-link safety. The shared selector contains no RRP domain logic;
-it validates selection enough to reach the version launcher.
+Each installation is self-contained after restoration. No authoritative
+package or dependency is shared across version roots, so verification and
+uninstall have exact ownership. A package download/cache used by the selected
+restoration engine is non-authoritative and is never searched as a runtime
+library. `active.dcf` names an exact verified installation through a safe
+relative identity and is replaced atomically only after software verification.
+A regular record is preferred to a symlink for portable, inspectable, no-link
+safety. The stable per-user `rrp` shim contains no RRP domain logic; it validates
+selection enough to reach the version launcher.
 
 One installation records the canonical absolute path to the supplied host R
-4.4.x executable, exact R version/platform/architecture, distribution identity,
-installation time/path, and manifest digest. R itself is not bundled. The
-version launcher starts that R with vanilla user startup behavior, constructs
-`.libPaths()` as version-private library then base R only, verifies that
-`rrpruntime` and `rrpplatform` resolve beneath that library, and passes the
-matching resource root directly to package dispatch. Ambient user/site
-libraries cannot satisfy declared RRP closure. Project extension packages are
-added later by the accepted trusted loader, after the RRP library, under the
-existing anti-shadowing rules.
+4.4.x executable, exact R version/platform/architecture, software version,
+distribution integrity, dependency specification and restoration evidence,
+configured repository provenance safe to retain, installation time/path, and
+manifest digest. R itself is not bundled. The version launcher starts that R
+with vanilla user startup behavior, constructs `.libPaths()` as version-private
+library then base R only, verifies that `rrpruntime`, `rrpplatform`, and every
+declared runtime dependency resolve at the required version beneath that
+library, and passes the matching resource root directly to package dispatch.
+Ambient user/site libraries cannot satisfy or substitute the dependency
+specification. Project extension packages are added later by the accepted
+trusted loader, after the RRP library, under the existing anti-shadowing rules.
 
 Subprocesses inherit an explicit immutable execution context—R executable,
-installation root, private library, resources, product/distribution identity,
-and explicit project root—rather than recomputing selection from a current
-directory or user profile. Long-running app launch receives and reports the
-same context and has conventional signal/exit behavior. Advanced direct R use
+installation root, private library, resources, and software/integrity identity.
+For a project command, the CLI additionally resolves the supplied path or exact
+working directory once and passes that explicit project root; subprocesses do
+not rediscover it. Long-running app launch receives and reports the same
+context and has conventional signal/exit behavior. Advanced direct R use
 remains possible through documented explicit library and software-root inputs,
 but ambient `library(rrpplatform)` is not the canonical installed experience.
 
@@ -7243,40 +7276,46 @@ write, inventory, back up, migrate, or delete a project root. Uninstall refuses
 the active installation, refuses ambiguous/tampered ownership, and removes
 only an exact version root after its installed ownership record is validated.
 
-### Closed distribution model
+### Distribution and dependency-restoration model
 
 Three claims remain separate:
 
-1. **Build:** a maintainer operation assembles and validates one closed
-   distribution from declared source inputs and target/dependency evidence.
+1. **Build:** a maintainer operation assembles and validates one distribution
+   containing a closed RRP-owned payload and reproducible dependency
+   specification from declared source inputs and resolution evidence.
 2. **Acquire:** an operator obtains those exact bytes and verifies their
    manifest/digests. Stage 11 accepts a local path; network discovery/download
    and signing policy remain deferred.
-3. **Install:** a user-scoped bootstrap validates the acquired artifact and
-   realizes it beneath the RRP home without consulting the source repository.
+3. **Restore/install:** a user-scoped bootstrap validates the acquired RRP
+   artifact, obtains exact third-party dependencies from explicitly configured
+   R repositories, and realizes/validates one private installation without the
+   development repository or ambient R library.
 
 The source inclusion authority is a positive role-classified allowlist, not
 Git tracking minus ignores. The generated distribution manifest records at
 least product and development/distribution versions, distribution and build
 identities, source revision/state, builder identity/version, target R/platform/
-architecture, package identities, exact dependency resolution and acquisition
-evidence, resource catalog identity, licenses/notices, normalization claim,
-validation evidence, and every output path/role/size/SHA-256 digest. The build
-rejects missing, duplicate, unsafe, linked, case-conflicting, unclassified, or
-unexpected members. Normalized-content reproducibility is required; byte-
-identical compressed archives are not claimed until separately proved.
+architecture, package identities, the reproducible dependency specification
+and repository/source resolution evidence, resource catalog identity,
+licenses/notices, normalization claim, validation evidence, and every RRP-owned
+output path/role/size/SHA-256 digest. The build rejects missing, duplicate,
+unsafe, linked, case-conflicting, unclassified, or unexpected RRP-owned
+members. Normalized-content reproducibility is required for those declared
+inputs; byte-identical compressed archives are not claimed until separately
+proved.
 
 A local builder may optionally label a fully inventoried working-tree build as
 an unqualified development artifact, but it may not hide dirty/uncommitted
-provenance or imply release readiness. The authoritative 11.G acceptance build
+provenance or imply release readiness. The authoritative 11.H acceptance build
 comes from one exact clean committed revision. This is a maintainer build-input
 rule, not a Git-state requirement for installing software or operating a
 project.
 
 The payload contains only intentional installed-software material:
 
-- built `rrpruntime` and `rrpplatform` inputs plus the exact tested transitive
-  runtime dependency closure in the form chosen for the declared target;
+- exact `rrpruntime` and `rrpplatform` package artifacts plus a reproducible,
+  validated specification of the complete tested third-party runtime closure,
+  but not necessarily the third-party package artifacts themselves;
 - the projected installed resource catalog and all governed contracts,
   templates, application assets, fictional/reference templates, and existing
   five product documents;
@@ -7295,31 +7334,49 @@ public resource operation. The installed artifact contains neither the source
 catalog nor a development source-path dependency.
 
 The payload excludes governing plans/records/assessments, maintainer tests and
-CI, repository validators and release tools, `.git`, development locks as
-runtime authority, package check/build output, arbitrary repository files,
-local caches, credentials, patient-like private inputs, an initialized project,
-project source/state/products, and Stage 12 deployment artifacts. The supplied
-fictional material remains cataloged template/document content; no generated
-fictional source, history, or product state ships.
+CI, repository validators and release tools, `.git`, the development dependency
+environment as installed authority, package check/build output, arbitrary
+repository files, local caches, credentials, patient-like private inputs, an
+initialized project, project source/state/products, and Stage 12 deployment
+artifacts. The supplied fictional material remains cataloged template/document
+content; no generated fictional source, history, or product state ships.
 
-The distribution's dependency realization remains target-keyed. The first
-Stage 11 proof may install from a closed local package repository of exact
-package artifacts into the version-private library, but it may not download a
-floating dependency or accept an ambient installed package. Whether supported
-release cells ultimately use source artifacts, platform binaries, or a
-validated prebuilt relocatable library is an explicit decision below and must
-not change logical distribution ownership.
+The dependency specification fixes the tested package graph sufficiently to
+restore and verify it reproducibly for the declared R/platform target. The
+installer uses explicit configured repository URLs or snapshots and records
+safe repository/package/version/source/integrity evidence; credentials remain
+external and are never retained. Network/repository failure leaves staging
+unpromoted. A package absent from the private library, at the wrong version, or
+resolved only from an ambient library is installation failure.
+
+`renv` is a strong candidate restoration engine and must be evaluated during
+implementation. If selected, its lock and machinery are internal distribution,
+installer, and release details—not the permanent public architecture. No RRP
+project gains `renv/`, `renv.lock`, `.Rprofile`, repository settings, or a new
+dependency mental model as a result. The public requirement is the reproducible
+dependency specification, configured-repository restoration, isolated private
+library, and verified realization. Stage 11 does not promise offline install or
+redistribute the entire CRAN closure.
+
+The distribution-local bootstrap is exactly one small base-R entry such as
+`Rscript --vanilla install.R`. It validates the RRP-owned manifest/inventory and
+dependency specification, then invokes the same shared installation mechanics
+used later by `rrp software install PATH`. It does not separately implement
+dependency resolution, package installation, activation, or repair. Human
+guidance is simply download, unpack, enter the directory, and run that one
+command with compatible host R and repository access.
 
 ### Canonical CLI design
 
-The command is provisionally named `rrp`. It is a thin transport over stable
-package operations. It owns argument parsing, explicit software/project path
-resolution, confirmation for destructive/corrective intent, invocation,
+The canonical command is `rrp`, with the accepted shallow noun-based taxonomy.
+It is a thin transport over stable package operations. It owns argument
+parsing, software selection, exact project-root resolution, confirmation for
+destructive/corrective intent, invocation,
 privacy-safe rendering, process/signal handling, and exit status. It does not
 parse clinical data, construct canonical bundles/requests/history/products,
 query DuckDB, interpret product semantics, or implement recovery itself.
 
-The recommended taxonomy is shallow and intent-oriented:
+The accepted taxonomy is shallow and intent-oriented; 1.0 adds no flat aliases:
 
 | Proposed command/family | Operator intent and underlying owner | Inputs and meaningful output | Mutation | Stage 11 status |
 | --- | --- | --- | --- | --- |
@@ -7327,26 +7384,26 @@ The recommended taxonomy is shallow and intent-oriented:
 | `rrp software list/current` | Inspect installed versions and active selection; installation registry | User software home; verified/tampered/active status | Read-only | Required |
 | `rrp software verify` | Strictly prove one installed inventory, digests, packages, resources, launcher, and recorded R; installation verifier plus `rrp_validate_software_resources()` | Exact selector; structured pass/failure evidence | Read-only with removed temporary probes | Required |
 | `rrp software doctor` | Explain whether the selected installation can operate and how to recover; installed doctor | Optional selector; checks/warnings/failures/recovery | Read-only with removed probes | Required |
-| distribution-local `install` and later `rrp software install PATH` | Realize exact acquired bytes user-scoped; bootstrap installer | Local distribution path, optional R executable/user root; installed identity | Creates one immutable installation and possibly initial activation | Required; canonical post-bootstrap convenience uses same installer API |
-| `rrp software activate SELECTOR` | Change the atomic default after verification and optional explicit project compatibility checks | Exact installed selector and zero or more explicit project roots; prior/new selection | Replaces activation record only | Required |
+| distribution-local `Rscript --vanilla install.R` and later `rrp software install PATH` | Validate the RRP payload, restore its exact dependencies, and realize it user-scoped through shared installation mechanics | Unpacked distribution path, compatible R, configured repositories, optional test-only installation root; installed identity/evidence | Creates one immutable installation; does not activate or inspect projects | Required |
+| `rrp software activate SELECTOR` | Change the atomic default after software-only verification | Exact installed selector; prior/new selection | Replaces activation record only; accepts no project input | Required |
 | `rrp software uninstall SELECTOR` | Remove one verified inactive owned installation | Exact selector and confirmation; deleted installation identity | Deletes only exact inactive version root | Required |
-| `rrp project init --project PATH` | Create the standard independent scaffold; `rrp_initialize_project()` | Explicit absent destination and project tokens; created inventory | Creates project source only | Required |
-| `rrp reference init/prepare-source --project PATH` | Create and prepare the supplied fictional teaching project; bounded reference operation | Explicit destination/project root; fictional source identity/inventory | Creates fictional project or its absent deterministic source area | Required for reference acceptance; never generic ingestion |
-| `rrp project validate --project PATH` | Validate manifest, trusted registration, selections, extensions, and software compatibility without invoking producer/provider; `rrp_validate_project()` | Explicit project root; structured conformance | Read-only | Required |
-| `rrp project doctor/status --project PATH` | Diagnose operational readiness or summarize nonmutating lifecycle state; new package-owned composition of existing validators/readers | Explicit root and optional freshness comparison; bounded state/history/product/app facts and recovery | Read-only with removed probes | Required |
-| `rrp state init/inspect/backup/restore --project PATH` | Manage the already accepted explicit project-state lifecycle; existing state/recovery APIs | Explicit project and backup path; state/backup identity and status | Read-only, create-only state/backup, or explicit absent-state restore as named | Required; restore retains existing safeguards and confirmation |
-| `rrp run --project PATH --at TIME --operation-key KEY` | Execute one durable admitted bundle; `rrp_execute_durable_bundle()` | Explicit analytical time/key; operation-run ID, membership/outcome summary | Append/idempotent project history | Required |
-| `rrp history scope/episode/current ...` | Inspect logical history without storage knowledge; accepted history readers | Explicit project plus exact identities/cutoffs | Read-only | Required |
-| `rrp history retry/invalidate/restate ...` | Invoke existing explicit corrective semantics with reason/identity and confirmation | Exact scope/episode/action inputs; action/result identity | Append-only correction or retry semantics | Required advanced recovery, not part of a normal run |
-| `rrp products materialize --project PATH --scope ID --cutoff TIME` | Construct and atomically publish one coherent product set; new package-owned composition of existing build/materialize APIs | Explicit complete scope/cutoff; product-set identity, inventory, freshness context | Adds immutable set and advances current pointer | Required |
-| `rrp products status --project PATH [...]` | Inspect current validated realization/freshness; product access APIs | Explicit project and optional comparison context; current set/member/freshness status | Read-only | Required |
-| `rrp app launch --project PATH [--scope ID --cutoff TIME]` | Launch the accepted product-only app; `rrp_launch_app()` | Explicit project and optional freshness context, loopback host/port/browser flags | Long-running read-only process | Required |
+| `rrp project init PATH` | Create the standard independent scaffold; `rrp_initialize_project()` | Positional absent destination and project tokens; created inventory | Creates project source only | Required |
+| `rrp reference init PATH` / `rrp reference prepare-source [--project PATH]` | Create and prepare the supplied fictional teaching project; bounded reference operation | Positional absent destination for creation; otherwise supplied path or exact current directory; fictional source identity/inventory | Creates fictional project or its absent deterministic source area | Required for reference acceptance; never generic ingestion |
+| `rrp project validate [--project PATH]` | Validate manifest, trusted registration, selections, extensions, and selected-software compatibility without invoking producer/provider; `rrp_validate_project()` | Supplied path or exact current directory; structured conformance | Read-only | Required; also the explicit compatibility preflight when desired |
+| `rrp project doctor/status [--project PATH]` | Diagnose operational readiness or summarize nonmutating lifecycle state; new package-owned composition of existing validators/readers | Supplied path or exact current directory plus optional freshness comparison; bounded state/history/product/app facts and recovery | Read-only with removed probes | Required |
+| `rrp state init/inspect/backup/restore [--project PATH]` | Manage the already accepted explicit project-state lifecycle; existing state/recovery APIs | Resolved project and backup path; state/backup identity and status | Read-only, create-only state/backup, or explicit absent-state restore as named | Required; restore retains existing safeguards and confirmation |
+| `rrp run --at TIME --operation-key KEY [--project PATH]` | Execute one durable admitted bundle; `rrp_execute_durable_bundle()` | Resolved project plus explicit analytical time/key; operation-run ID and outcome summary | Append/idempotent project history | Required |
+| `rrp history scope/episode/current ... [--project PATH]` | Inspect logical history without storage knowledge; accepted history readers | Resolved project plus exact identities/cutoffs | Read-only | Required |
+| `rrp history retry/invalidate/restate ... [--project PATH]` | Invoke existing explicit corrective semantics with reason/identity and confirmation | Resolved project plus exact scope/episode/action inputs; action/result identity | Append-only correction or retry semantics | Required advanced recovery, not part of a normal run |
+| `rrp products materialize --scope ID --cutoff TIME [--project PATH]` | Construct and atomically publish one coherent product set; new package-owned composition of existing build/materialize APIs | Resolved project plus explicit complete scope/cutoff; product-set identity, inventory, freshness | Adds immutable set and advances current pointer | Required |
+| `rrp products status [--project PATH] [...]` | Inspect current validated realization/freshness; product access APIs | Resolved project and optional comparison context; current set/member/freshness status | Read-only | Required |
+| `rrp app launch [--project PATH] [--scope ID --cutoff TIME]` | Launch the accepted product-only app; `rrp_launch_app()` | Resolved project and optional freshness context, loopback host/port/browser flags | Long-running read-only process | Required |
 
 `software upgrade` is deliberately not a separate mutating primitive: upgrade
-is install, verify, compatibility-check, then activate. Rollback is activation
-of an exact retained prior installation. Friendly aliases may be reconsidered
-after the underlying lifecycle is proved, but they may not collapse activation
-into installation or hide a failed compatibility check.
+is install, verify, then activate. Project compatibility is checked later when
+that software is asked to validate or operate on a project. Rollback is
+activation of an exact retained prior installation. The accepted 1.0 taxonomy
+adds no convenience aliases that collapse these lifecycle steps.
 
 Standalone producer/provider inspection remains available through the public R
 APIs and tests. It does not enter the first normal CLI merely because a method
@@ -7356,13 +7413,16 @@ hospital stays project-owned; only the supplied fictional generator has a
 reference command.
 
 Default output is concise human text with stable diagnostic codes and recovery
-guidance. Success is exit 0; operation/conformance failure is nonzero; invalid
-usage is distinguishable; interrupted long-running commands use conventional
-signal status. If structured output is accepted, it is one versioned rendering
-of the same operation result, with machine output isolated from progress text
-and the same private-field exclusions. The CLI never treats a warning as
-success silently and never prints raw project callables, environment contents,
-connections, patient records, credentials, or private mappings.
+guidance. `--json` explicitly requests the one canonical machine-readable
+rendering. Its public schema is stable and versioned; it maps deliberately
+selected privacy-safe fields from the same underlying operation result and
+never blindly serializes an internal R object or takes a second behavior path.
+Human progress is separated from JSON output. DCF/tabular output is not another
+public CLI contract. Success is exit 0; operation/conformance failure is
+nonzero; invalid usage is distinguishable; interrupted long-running commands
+use conventional signal status in both modes. Neither rendering exposes raw
+project callables, environment contents, connections, patient records,
+credentials, private mappings, or other internal/private material.
 
 ### Verification and doctor boundaries
 
@@ -7371,8 +7431,8 @@ operation:
 
 | Operation | Owns | Does not own |
 | --- | --- | --- |
-| Distribution validation | Acquired archive manifest, closed inventory/digests, package/dependency artifacts, projected resources, licenses/docs, target/build provenance, safe paths/links | Host installation paths, active selection, or any project |
-| Installed verification | Exact installed manifest/inventory/digests, recorded host R, private package paths/versions, resource catalog, launcher/activation agreement | Project configuration, source behavior, history contents, or repair |
+| Distribution validation | Acquired RRP-owned manifest/inventory/digests, exact internal package artifacts, reproducible dependency specification, projected resources, licenses/docs, target/build provenance, safe paths/links | Downloaded third-party bytes, host installation paths, active selection, or any project |
+| Installed verification | Exact installed manifest/inventory/digests, dependency-specification agreement and restoration evidence, recorded host R, private package paths/versions, resource catalog, launcher/activation agreement | Project configuration, source behavior, history contents, or repair |
 | Installed doctor | Verification result plus host R executability/compatibility, activation resolution, permissions/temp probes, dependency loadability, and actionable warnings | Project discovery, installation repair, package download, activation, or migration |
 | Project validation/doctor | Explicit project identity/API compatibility, trusted registration/selections/extensions, state compatibility, safe history/product lifecycle summaries, freshness when comparison is supplied, and recovery guidance | Installation inventory, source/EHR connectivity by default, clinical/model validity, state mutation, automatic product refresh, or database repair |
 
@@ -7394,40 +7454,51 @@ repairs, migrates, runs, rebuilds, activates, or deletes.
 
 ### Upgrade, rollback, uninstall, and compatibility
 
-Installation stages a new version under a temporary sibling, builds/installs
-its private closure using the recorded R, validates package paths/resources/
-inventory in fresh processes, writes the installation record last, and
-atomically promotes only after success. Failure leaves the existing active
+Installation stages a new version under a temporary sibling, restores the
+declared dependency graph from configured repositories into that version's
+private library, installs the exact RRP packages using the recorded R, validates
+package paths/versions/resources/inventory in fresh processes, writes the
+installation record last, and atomically promotes only after success. Network,
+repository, compilation, dependency, or verification failure leaves the active
 record and all prior installations unchanged; incomplete staging is bounded
 and recoverable. An identical exact installation is idempotent. A conflicting
 immutable identity fails loudly.
 
-Activation first verifies the candidate installation. For every explicitly
-supplied project it then performs read-only project/API/state/product
-compatibility checks with the candidate version. Any failure preserves the
-old activation record and reports the incompatible boundary. Because RRP does
-not own a global project registry, activation never scans for projects; an
-operator supplies the projects they want preflighted, and every later project
-operation repeats compatibility before mutation. Initial activation with no
-project is valid because no project exists to check.
+Activation is a software-only operation. It verifies one candidate installation
+and atomically replaces the active selection. It accepts no project path,
+discovers and opens no project, retains no project registry or association, and
+does not claim project compatibility. Failure preserves the old activation
+record. An operator who wants advance compatibility evidence runs an explicit
+`rrp project validate` with the candidate selected; that is project convenience,
+not an activation prerequisite.
 
-Software compatibility is governed by product/API, canonical, target,
+Software/project compatibility is governed by product/API, canonical, target,
 producer/provider, state, history, product, application, and dependency
-versions at their existing owners. A compatible new version may append new
-history; the operational scope already retains product/development/API and
-component attribution. Installation paths and the user's active pointer are
-not analytical identity. Before 11.A closes, confirm whether immutable product
-version plus existing component attribution is sufficient for exact release
-provenance or whether a distribution-build identity must enter a backward-
-compatible operation context. Do not silently revise history storage or invoke
-a migration to solve that question.
+versions at their existing owners. It is checked when the selected software is
+asked to validate, diagnose, or operate on the resolved project. An
+incompatible operation fails before mutation and explains the boundary. The
+operator may separately update the project through an authorized process or
+reactivate an older version; activation itself does neither.
 
-Rollback reselects a still-installed verified prior version and applies the
-same project compatibility preflight. It does not undo runs, products,
-manifest edits, state migration, or project changes made while another version
-was active. If older software cannot read current project/state contracts,
-rollback is refused and the newer activation remains. This is compatibility
-failure, not permission to rewrite state.
+Durable operational scope already retains product/development/API and component
+attribution. No distribution/build/installation identity is added to history.
+Platform Architecture principle 16 and its release section establish that a
+published version/tag/assets are immutable, reproducible from declared
+evidence, never rewritten for forward development, and never rebuilt in place.
+The historical `v0.1.0` publication procedure demonstrates the same authority:
+after verified publication it advanced development to `0.2.0-dev` and never
+changed the published tag. Therefore one published product version identifies
+one official release content; a materially different official build under the
+same version is invalid, not another provenance case to encode. Development
+executions continue to use existing development/component provenance. Install
+manifests and digests still prove local integrity but are not analytical
+identity and require no history/state schema change or migration.
+
+Rollback is the software-only reactivation of a still-installed verified prior
+version. It does not inspect projects or undo runs, products, manifest edits,
+state migration, or project changes made while another version was active. A
+later project operation through that version performs compatibility checks and
+may fail without mutation. This is not permission to rewrite project state.
 
 Uninstall requires an exact inactive selector. It validates ownership against
 the installation manifest, refuses unexpected or linked content rather than
@@ -7456,79 +7527,40 @@ and the later pre-reset installed-software/project-model assessment.
 | Doctor rows, pass/warning/failure aggregation, no-repair behavior, removed write probes, and nonzero blocking status | Reusable after adaptation | Split into installed and project doctors and reuse current 1.0 operation-result/diagnostic contracts. |
 | Positive source map, safe regular-file copying, no-link/path checks, exact inventories, SHA-256, staged validation/promotion, idempotency/conflict, and standalone copied validation | Directly reusable in mechanics after owner/format adaptation | Apply to a package/resource/launcher distribution and version installation, not a Hospital or whole-repository tree. |
 | Logical instance identity separate from build occurrence/path/time | Directly reusable | Define distribution content identity separately from build and installation occurrence; exclude output/project paths. |
-| Clean acquisition proof with no authoritative/sibling lookup | Reusable after adaptation | Validate a local closed distribution, installed private library/resources, and non-Git project outside source. Publication/network claims wait. |
-| Release-preparation clean revision, governance/license checks, and publication absence evidence | Conceptually useful; implementation partly reusable later | Use exact source/build provenance for accepted development builds; keep release authorization/publication in Stage 14. |
-| Platform candidate as full tracked tree, embedded Platform archive, managed extraction, top-level `renv`, generated Hospital distribution/Git realization | Obsolete under RRP 1.0 | Do not restore. The payload is installed software and an independent project remains separately owned. |
+| Clean acquisition proof with no authoritative/sibling lookup | Reusable after adaptation | Validate a local distribution, repository-restored private library/resources, and non-Git project outside source. Network use for configured dependency repositories is recorded rather than prohibited. |
+| Release-preparation clean revision, governance/license checks, immutable tag/assets, conflict behavior, and post-release development transition | Directly reusable policy; implementation partly later | Use exact source/build provenance for accepted development builds and preserve one-content-per-published-version authority; keep release authorization/publication in Stage 14. |
+| Historical root/top-level `renv` environment | Conceptually useful only as restoration evidence | Evaluate `renv` as internal per-installation machinery; never expose its files or mental model in hospital projects or normal CLI operation. |
+| Platform candidate as full tracked tree, embedded Platform archive, managed extraction, generated Hospital distribution/Git realization | Obsolete under RRP 1.0 | Do not restore. The payload is installed software and an independent project remains separately owned. |
 | Root `Rscript operations/*`, repository-root inference/source chains, temporary `rrpruntime` installation per command | Obsolete | Replace with installed namespaced dispatch through a version launcher. |
 | Closed checksums over recipient-editable hospital implementation and pristine Git/remote rules | Obsolete | Inventory immutable software only; validate project contracts/compatibility without Git requirements. |
 | Pre-reset recommendation for installed contracts/default adapters/app, explicit project context, private software library, and separation of maintainer/project validation | Directly reusable architecture intent | Already realized in Stages 2–10; Stage 11 supplies its distribution and human lifecycle. |
 
 Historical code is a test/mechanics reservoir. It is not copied wholesale and
-does not establish a second active operation registry or YAML-based executable
-configuration.
+does not establish a second active operation registry, YAML-based executable
+configuration, generated Hospital product, ambient library path, global project
+ownership, or byte-closed/offline third-party package mirror.
 
-### Open questions / decisions required before implementation
+### Open questions after planning iteration 2
 
-These questions materially affect the named increment and require owner review
-before that increment begins. Recommendations are provisional planning choices,
-not hidden architecture decisions.
+**Remaining implementation-blocking questions: none.** Human review resolved
+the prior seven questions as recorded throughout this second-edition plan.
+Exact flag spelling beyond the accepted command forms, colors, progress
+indicators, archive filenames, internal function names, selection of a capable
+dependency-restoration engine, and repository-client mechanics are bounded
+implementation choices. They must satisfy the contracts and evidence here but
+do not require another product/architecture decision unless implementation
+uncovers contradictory evidence.
 
-1. **Exact command spelling and launcher name (blocks 11.B).** Alternatives are
-   a shallow noun taxonomy under `rrp`, flat verb commands, or separate
-   installer/operator executables. A single `rrp` launcher with the shallow
-   `software`, `project`, `state`, `history`, `products`, `app`, and `reference`
-   families is recommended because it exposes lifecycle ownership without
-   recreating every R function. Naming changes do not change package APIs.
-2. **Machine-readable CLI output (blocks final 11.B contract).** Alternatives
-   are human text plus exit status only, a DCF/tabular subset, or versioned JSON.
-   Versioned JSON is recommended for automation/agents if a maintained JSON
-   dependency and explicit privacy-safe schema are accepted; otherwise defer
-   structured CLI output and direct automation to the stable R API rather than
-   hand-rolling serialization.
-3. **First-install bootstrap boundary (blocks 11.D–11.E handoff).** A CLI cannot
-   install itself before it exists. Alternatives are a distribution-local
-   base-R installer, a shell installer, or asking users to run package commands
-   manually. A small distribution-local `Rscript --vanilla` bootstrap that
-   validates the distribution then calls shared base-R installation mechanics
-   is recommended. Once installed, `rrp software install PATH` invokes the same
-   mechanics for later versions.
-4. **Dependency artifact form (blocks 11.D).** Alternatives are exact source
-   package archives installed locally, target-specific binary package artifacts,
-   or a proved relocatable prebuilt library. A target-keyed closed local package
-   repository with every exact artifact and checksum is recommended as the
-   logical contract. Stage 11 may first prove source artifacts on the local
-   development target; Stage 13 must choose/prove the supported macOS/Ubuntu
-   forms and cannot silently add network resolution.
-5. **Default user installation/executable paths (blocks 11.E).** Alternatives
-   are R-specific user-library paths, one portable user-selected root, or OS
-   application-data conventions plus an executable shim location. OS per-user
-   data conventions with a documented explicit override for testing are
-   recommended. An R user library is rejected because it invites ambient
-   resolution; a project-local installation is rejected by architecture.
-6. **Activation preflight scope (blocks 11.E).** Alternatives are a persistent
-   project registry, mandatory one-project activation, or explicit zero-or-more
-   project arguments plus compatibility at every operation. The last is
-   recommended: it supports first install, avoids project discovery/ownership,
-   and lets cautious operators preflight known projects. No global project
-   registry should be introduced without demonstrated need.
-7. **Exact distribution attribution in durable operation evidence (blocks
-   11.A).** Existing scope records contain product/development/API and component
-   versions, while the new installed manifest has an exact distribution/build
-   identity. Determine whether immutable product-version resolution is enough
-   for 1.0 history or whether a backward-compatible execution-context field is
-   required. Prefer no history change if exact published product version maps
-   unambiguously to immutable target bytes; if it does not, revise the owning
-   contract deliberately without implicit state migration.
-
-Minor flag spelling, colors, progress indicators, archive filename, and helper
-function names remain implementation choices unless testing shows they affect
-compatibility or safety.
+The first edition's seven-increment sequence becomes eight increments below.
+Distribution assembly and network-backed private-library realization are now
+separate evidence boundaries, and project-independent activation/installed
+diagnosis is proved before the side-by-side transition lifecycle.
 
 ### Increment 11.A — Lifecycle authorities and stable operation completion
 
-**Objective:** settle the material open decisions and add only the contracts
-and stable package operations that the later CLI/distribution lifecycle must
-delegate to.
+**Objective:** encode the reviewed lifecycle/output decisions and add only the
+contracts and stable package operations that later CLI/distribution behavior
+must delegate to.
 
 **Architectural responsibility:** `rrpplatform` continues to own project and
 product orchestration; distribution/installation authorities own software
@@ -7537,9 +7569,10 @@ none of their semantics.
 
 **Concrete scope and expected surfaces:**
 
-- decide and catalog exact distribution, installation, activation, installed-
-  doctor, project-status/doctor, and CLI-result authorities needed by the
-  accepted decisions, using dependency-light parseable formats;
+- catalog exact distribution, dependency-specification, installation,
+  activation, installed-doctor, project-status/doctor, and versioned JSON CLI-
+  result authorities needed by the accepted decisions, using dependency-light
+  parseable formats;
 - define product/distribution/build/installation/activation identities and
   compatibility without conflating them with package/project/state identity;
 - add a package-owned read-only project lifecycle diagnosis/status operation
@@ -7549,14 +7582,15 @@ none of their semantics.
   publication;
 - add the narrow installed fictional-source preparation operation required by
   reference acceptance without generalizing hospital ingestion; and
-- resolve the distribution-attribution question and change history only if an
-  explicit backward-compatible requirement is accepted.
+- preserve existing durable product/development/API/component attribution;
+  distribution/build/installation identity remains software integrity evidence
+  and does not change history contracts or state.
 
 **Non-goals:** no CLI parser, distribution archive, installer, launcher,
-activation, dependency download, project migration, source adapter, new risk
-semantics, automatic run/product refresh, or app change.
+activation, dependency restoration, project migration, source adapter, history
+schema, new risk semantics, automatic run/product refresh, or app change.
 
-**Dependencies:** accepted Stages 1–10 and owner decisions 2 and 7 above.
+**Dependencies:** accepted Stages 1–10 and the reviewed decisions above.
 
 **Acceptance and evidence:** exact contract/resource closure; package-native
 positive/adversarial tests; status/doctor read-only and privacy evidence;
@@ -7571,7 +7605,7 @@ semantics; do not restore the old operation registry or repository doctor.
 
 **Documentation:** update installed technical/user documents only for realized
 operations, ownership guidance, source catalog, package references, and the
-implementation record. Record each open decision actually accepted.
+implementation record. Record the reviewed decisions actually realized.
 
 ### Increment 11.B — Version-specific CLI foundation and deterministic runtime
 
@@ -7582,25 +7616,27 @@ version-specific invocation boundary before adding broad project commands.
 resource context; `rrpplatform` parses and dispatches to stable operations and
 renders common results.
 
-**Concrete scope and expected surfaces:** implement accepted command grammar,
-help/version, common explicit path/time/identity parsing, text output, optional
-accepted structured output, diagnostic/exit mapping, safe confirmation,
-subprocess context, signal behavior, and exact software-root/private-library
-preflight. Initially prove `version` and bounded read-only dispatcher commands
-against an explicitly supplied installed context; active selection arrives in
-11.E.
+**Concrete scope and expected surfaces:** implement the accepted single `rrp`
+launcher grammar and shallow noun families, help/version, common path/time/
+identity parsing, exact-working-directory project resolution, default human
+output, explicit `--json` against the versioned privacy-safe schema,
+diagnostic/exit mapping, safe confirmation, subprocess context, signal
+behavior, and exact software-root/private-library preflight. Initially prove
+`version` and bounded read-only dispatcher commands against an explicitly
+supplied installed context; active selection arrives in 11.F.
 
 **Non-goals:** no domain logic, distribution build, installation registry,
 shared active launcher, implicit project discovery, shell completion, remote
 calls, telemetry, or styled interactive framework.
 
-**Dependencies:** 11.A and decisions 1–2.
+**Dependencies:** 11.A.
 
 **Acceptance and evidence:** fresh-process invocation from unrelated working
 directories; exact package/resource resolution; ambient-library and user-
-profile exclusion; usage/success/warning/failure/interruption statuses; text
-and any structured-output schema; privacy-safe diagnostics; no mutation for
-read-only commands; package-native and isolated-installed tests.
+profile exclusion; usage/success/warning/failure/interruption statuses; exact
+human/JSON semantic equivalence; curated JSON fields/schema version and
+invalid-object denial; privacy-safe diagnostics; no mutation for read-only
+commands; package-native and isolated-installed tests.
 
 **Historical reuse:** operation purpose/mutation metadata and wrapper exit
 semantics are adaptable; root script path inference/source chains are rejected.
@@ -7618,12 +7654,15 @@ context; packages remain the behavior owner; project code/state remain outside
 the installation.
 
 **Concrete scope and expected surfaces:** implement standard/reference project
-initialization, fictional source preparation, project validate/doctor/status,
-state initialize/inspect/backup/restore, durable run, focused history reads and
-corrections, product materialization/status, and app launch from the command
-table. Require explicit project roots and explicit analytical/correction
-identities. Render returned IDs so subsequent commands are usable. Preserve
-separation among run, products, and app.
+initialization with positional destinations, fictional source preparation,
+project validate/doctor/status, state initialize/inspect/backup/restore,
+durable run, focused history reads and corrections, product materialization/
+status, and app launch from the command table. For operations on an existing
+project, use exactly `--project PATH` when supplied and otherwise the exact
+current directory; never search parents or retain project state. Continue to
+require explicit analytical/correction identities. Render returned IDs so
+subsequent commands are usable. Preserve separation among run, products, and
+app.
 
 **Non-goals:** no generic source acquisition, project editor/wizard, scheduled
 runs, daemon, automatic refresh, arbitrary SQL, clinical/model validation,
@@ -7633,9 +7672,11 @@ project discovery/registry, migration, custom app logic, or deployment.
 
 **Acceptance and evidence:** command-level success/failure tests over standard,
 fictional, copied non-Git, empty, incompatible, stale, and corrupt-safe
-fixtures; exact mutation assertions per command; controlled confirmation for
-restore/corrections; no direct DuckDB/source internals; app supervision; API-
-versus-CLI result equivalence; all package regressions/build/check/install.
+fixtures; supplied-path precedence, exact-CWD default, and parent-search/
+remembered-project denial; exact mutation assertions per command; controlled
+confirmation for restore/corrections; no direct DuckDB/source internals; app
+supervision; API-versus-human/JSON result equivalence; all package regressions/
+build/check/install.
 
 **Historical reuse:** adapt the old operator manual's intent/recovery teaching
 and thin-wrapper discipline; reject reference-default roots and repository
@@ -7646,38 +7687,44 @@ project context, command intents, IDs/cutoffs, mutation/recovery, advanced R
 APIs, and the reference-versus-hospital boundary; update help, ownership,
 validators, and implementation record.
 
-### Increment 11.D — Closed distribution foundation and standalone validation
+### Increment 11.D — Closed RRP payload and reproducible dependency specification
 
-**Objective:** transform exact maintained source and dependency inputs into one
-independently verifiable distribution foundation containing the completed
-version CLI, packages, resources, documentation, and standalone verifier.
+**Objective:** transform exact maintained source into one independently
+verifiable distribution foundation containing the completed RRP-owned CLI,
+packages, resources, documentation, standalone verifier, and reproducible
+third-party dependency specification.
 
 **Architectural responsibility:** maintainer build tooling owns assembly; the
 generated distribution manifest/inventory owns payload discovery; ordinary
 installed code never reads development source paths.
 
-**Concrete scope and expected surfaces:** add the positive source inclusion
-authority, target-keyed dependency resolution evidence, package artifacts,
-resource projection, license/document/version-launcher inclusion, generated
-manifest/inventory/SHA-256, normalized-content identity, staging/promotion,
-archive creation, and a distribution-contained standalone validator. Require
-one explicit output destination and preserve existing output on failure. Do
-not add a placeholder first-install bootstrap: 11.E adds the real bootstrap
-and shared selector to this positive authority when their behavior exists,
-then rebuilds and revalidates the complete installable distribution.
+**Concrete scope and expected surfaces:** add the positive RRP source inclusion
+authority; exact `rrpruntime`/`rrpplatform` artifacts; target-keyed tested
+dependency graph, repository/source/integrity provenance, and reproducible
+specification; resource projection; license/document/version-launcher
+inclusion; generated manifest/inventory/SHA-256 for the RRP-owned payload;
+normalized-content identity; staging/promotion; archive creation; and a
+distribution-contained standalone validator. Require one explicit output
+destination and preserve existing output on failure. Evaluate `renv` and other
+capable restoration engines against the public requirements without making the
+engine a project or CLI contract. Do not add a placeholder bootstrap: 11.E
+adds the real small bootstrap when shared installation mechanics exist.
 
-**Non-goals:** no whole-tree archive, development `renv` as payload authority,
-network acquisition, package registry publication, signing, bootstrap/user
+**Non-goals:** no whole-tree archive, root development environment as installed
+authority, bundled transitive CRAN artifacts/local package mirror, offline-
+installation claim, package registry publication, signing, bootstrap/user
 installation, active pointer, project content, artifact/deployment build, or
 release claim.
 
-**Dependencies:** 11.C, decision 4, and the clean accepted-build policy above.
+**Dependencies:** 11.C and the clean accepted-build policy above.
 
 **Acceptance and evidence:** deterministic logical identity for equal declared
 inputs; exact inventory/digests/roles; missing/extra/altered/linked/traversing/
-case-conflicting/dependency-drift failures; standalone copied validation with
-no checkout/sibling lookup; projected 54-plus-Stage-11 resource closure;
-package artifact/dependency/license agreement; source-tree hygiene and cleanup.
+case-conflicting/dependency-specification drift failures; standalone copied
+payload validation with no checkout/sibling lookup; projected 54-plus-Stage-11
+resource closure; exact internal package and dependency-specification/license
+agreement; no bundled third-party-closure assumption; source-tree hygiene and
+cleanup.
 
 **Historical reuse:** adapt v0.1.0's positive source map, safe copy, tar/inventory,
 SHA-256, instance/build identity, atomic promotion, standalone validation, and
@@ -7687,77 +7734,127 @@ adversarial tests. Reject embedded full Platform and Hospital payloads.
 distribution contents/acquisition-integrity guidance; update ownership,
 validators, and implementation record.
 
-### Increment 11.E — User-scoped installation, verification, and activation
+### Increment 11.E — Bootstrap installation and private dependency restoration
 
-**Objective:** install a local closed distribution into an immutable private
-version root, verify it, select it safely, and invoke it through the shared
-launcher.
+**Objective:** install one local distribution into an immutable OS-standard
+per-user version root by restoring and verifying its dependency specification
+inside a private R library.
 
-**Architectural responsibility:** dependency-light bootstrap/installation code
-owns the user software home and activation record; the version launcher owns R
-selection; installed packages own software-resource and operation validation.
+**Architectural responsibility:** a small base-R bootstrap delegates to shared
+installation mechanics that own staging, configured-repository restoration,
+private-library realization, and promotion. It owns no project behavior or
+second installer implementation.
 
-**Concrete scope and expected surfaces:** realize the accepted per-user layout;
-record/validate host R; install the exact closure without ambient/network
-substitution; write installation inventory/metadata; stage, verify, and
-promote; add the completed distribution-local bootstrap and shared-selector
-material to the closed inclusion authority; rebuild and independently validate
-the complete installable distribution; install the shared selector; implement
-list/current/verify/doctor and activation; pass explicit install context to
-fresh R processes; support an injectable root for tests; and prove optional
-explicit project preflight.
+**Concrete scope and expected surfaces:** realize the accepted OS-standard per-
+user application-data layout and test override; record/validate host R; accept
+explicit configured R repositories; restore the exact dependency specification
+into a staged version-private library without ambient substitution; install
+the exact RRP packages; validate package/resource/dependency agreement in fresh
+processes; write installation evidence; and promote only after success. Add
+the small distribution-local `install.R` and installed `rrp software install
+PATH` path over the same mechanics; include bootstrap/shared-install material
+in the positive distribution authority; rebuild and independently validate the
+complete installable distribution. Do not activate in this increment.
 
-**Non-goals:** no system/root install, bundled R, PATH/profile editing without
-explicit operator action, project registry, source/state changes, migration,
-shared mutable package library, background update, or remote acquisition.
+**Non-goals:** no system/root install, bundled R, offline guarantee, bundled
+third-party closure, PATH/profile editing without explicit operator action,
+activation, project input/registry/source/state change, migration, shared
+runtime library, background update, distribution discovery, or publication.
 
-**Dependencies:** 11.D and decisions 3, 5, and 6.
+**Dependencies:** 11.D.
 
-**Acceptance and evidence:** install from a copied local distribution outside
-Git; offline/no-source lookup; idempotent exact reinstall and loud conflict;
-failed staging/verification preserves active version; exact private package
-resolution in fresh processes; installed and project doctor boundaries;
-atomic activation; explicit selector override; ambient-library adversarial
-proof; project file/state digest nonmutation across install/activate.
+**Acceptance and evidence:** the documented download/unpack/`Rscript --vanilla
+install.R` path from a copied distribution outside Git; configured-repository
+restoration with recorded safe provenance; network/repository/lock/package/
+compile failures preserve existing installations; idempotent exact reinstall
+and loud conflict; exact private package resolution in fresh processes;
+ambient/user/site-library adversarial proof; bootstrap and later CLI install
+equivalence; no project lookup or project file access; no `renv` or equivalent
+files in initialized projects; source-tree and staging cleanup.
 
-**Historical reuse:** staged extraction/promotion and doctor preflight mechanics
-are adaptable; nested Platform extraction, top-level `renv`, and repository
-doctor are rejected.
+**Historical reuse:** staged extraction/promotion and dependency restoration
+evidence are adaptable; nested Platform extraction, a hospital top-level
+`renv`, offline embedded closure, and repository doctor are rejected.
 
 **Documentation:** catalog Installation and Software Lifecycle guides covering
-prerequisites, local acquisition, roots, R selection, verification, activation,
-direct API access, recovery, and ownership; update help/ownership/validators/
-record.
+prerequisites, local acquisition, configured repositories, private restoration,
+roots, R selection, failure recovery, internal-only restoration machinery, and
+ownership; update help/ownership/validators/record.
 
-### Increment 11.F — Side-by-side upgrade, rollback, and exact uninstall
+### Increment 11.F — Active-version resolution, installed verification, and software doctor
+
+**Objective:** install the stable per-user `rrp` shim, select verified software
+independently of projects, and make installed health understandable.
+
+**Architectural responsibility:** the shared shim and activation owner resolve
+only installed software; the version launcher establishes deterministic R/
+library/resource context; installed verification and doctor inspect only
+software/environment readiness.
+
+**Concrete scope and expected surfaces:** install the stable executable shim in
+the appropriate per-user executable convention; implement list/current, exact
+software selector override, strict installed verification, software doctor,
+and atomic activation; pass the immutable version context to fresh R processes;
+record no project path; and preserve prior activation on any verification or
+pointer failure. Activation accepts only an installed selector. An operator may
+separately run project validation under an explicitly selected version, but no
+association is stored.
+
+**Non-goals:** no project input/discovery/registry/compatibility gate,
+dependency repair, automatic activation during later installs, project/state
+mutation, migration, background updater, remote discovery, or uninstall.
+
+**Dependencies:** 11.E.
+
+**Acceptance and evidence:** OS-standard default and isolated test-root
+behavior; shared-shim invocation from unrelated directories; exact active and
+explicit-selector resolution; atomic activation and failure preservation;
+strict manifest/dependency/private-library/resource verification; doctor
+pass/warning/failure/recovery semantics; ambient-library denial; explicit proof
+that install/verify/doctor/activate neither locate nor access a project; human
+and JSON equivalence; conventional signals/status.
+
+**Historical reuse:** adapt doctor aggregation, removed probes, pointer
+promotion, and thin wrapper behavior. Reject repository defaults, project
+preflight inside activation, and any last-project state.
+
+**Documentation:** complete installed verification, activation, selector, shim,
+and software-doctor guidance; document that project compatibility begins only
+at a project command; update ownership/validators/record.
+
+### Increment 11.G — Side-by-side upgrade, rollback, and exact uninstall
 
 **Objective:** prove the complete non-mutating software version transition
 lifecycle over retained independent projects.
 
 **Architectural responsibility:** version management changes only installed
-software and activation state; package compatibility operations decide whether
-the selected software may operate an explicit project.
+software and activation state. A subsequent project operation, not activation,
+decides whether selected software may operate on its resolved project.
 
-**Concrete scope and expected surfaces:** install two distinct compatible
-development distributions side by side; verify and activate the newer one;
-refuse incompatible activation without pointer change; operate the same
-project through the compatible selected version; reactivate the prior version;
-enforce rollback compatibility; uninstall an exact inactive version; handle
-final-version/shared-launcher rules; and preserve actionable evidence/recovery.
+**Concrete scope and expected surfaces:** install two distinct development
+versions/builds side by side; verify and activate the newer one without project
+access; show that an incompatible project operation fails clearly without
+mutation; reactivate the prior verified version without project access; show
+that the project can then be separately operated when compatible; uninstall an
+exact inactive version; handle final-version/shared-launcher rules; and
+preserve actionable evidence/recovery. Official published-version conflicts
+fail rather than model multiple materially different official builds under one
+version.
 
 **Non-goals:** no in-place overwrite, automatic project/state migration,
 downgrade transformation, automatic deletion/retention policy, remote updater,
 release channel, or rollback of analytical history/products.
 
-**Dependencies:** 11.E and two controlled distinct distribution identities
+**Dependencies:** 11.F and two controlled distinct development identities
 whose compatibility claims are explicit.
 
 **Acceptance and evidence:** side-by-side inventory isolation; activation and
-rollback atomicity; candidate incompatibility/failure retains prior active
-selection; project regular-file/state digests prove lifecycle nonmutation;
-history produced by compatible versions retains accepted software/component
-attribution; active/tampered/unknown uninstall refusal; inactive exact removal;
-other versions/shared launcher remain functional; repeated cleanup is bounded.
+rollback atomicity; activation has no project input; incompatible project
+operation fails before mutation; project regular-file/state digests prove all
+software lifecycle operations are nonmutating; history retains existing
+software/component attribution without distribution fields; active/tampered/
+unknown uninstall refusal; inactive exact removal; other versions/shared
+launcher remain functional; repeated cleanup is bounded.
 
 **Historical reuse:** immutable build/pointer/idempotency/conflict patterns are
 adaptable. v0.1.0 two-product release coupling and publication rollback are not.
@@ -7766,22 +7863,25 @@ adaptable. v0.1.0 two-product release coupling and publication rollback are not.
 recovery guidance; update help, validators, ownership, and implementation
 record.
 
-### Increment 11.G — Clean installed operation proof and Stage 11 closeout
+### Increment 11.H — Clean installed operation proof and Stage 11 closeout
 
 **Objective:** prove the complete Stage 11 operator experience from exact local
 distribution bytes outside the repository and reconcile it with True North and
 the architecture.
 
-**Architectural responsibility:** acceptance composes the public distribution,
+**Architectural responsibility:** acceptance composes the supported development distribution,
 installer, launcher, CLI, package APIs, independent project, and software
 lifecycle without adding behavior.
 
 **Concrete scope and expected surfaces:** run a supervised clean temporary-user
-proof from a copied closed build; install/verify/activate; initialize and prepare
+proof from a copied distribution; restore dependencies/install/verify/activate;
+record configured repository/restoration evidence; initialize and prepare
 the fictional project; validate and initialize state; execute two governed
 analytical times; inspect history; materialize products; construct/launch the
-app; run both doctors; install/verify/activate a second compatible build;
-operate the unchanged project; roll back; uninstall the inactive build; and
+app; run both doctors; install/verify/activate a second development version;
+encounter a controlled incompatible project operation without mutation;
+operate the unchanged project with a compatible selection; roll back by
+software-only activation; uninstall the inactive version; and
 retain bounded privacy-safe acceptance evidence. Complete version-matched
 human guidance and hosted verification appropriate to the new build/install
 claim.
@@ -7790,18 +7890,20 @@ claim.
 deployment artifact/target (Stage 12), public download/publication (Stage 14),
 clinical validation, migration, or production support claim.
 
-**Dependencies:** 11.A–11.F complete and locally accepted.
+**Dependencies:** 11.A–11.G complete and locally accepted.
 
 **Acceptance and evidence:** repository/package/CLI/distribution/install tests;
-both package build/check/install; standalone distribution verification; no
-source/sibling/network/ambient-library lookup after acquisition; exact
-inventory/digests/provenance; copied non-Git project; run/history/product/app
+both package build/check/install; standalone RRP payload validation; no
+source/sibling/ambient-library lookup after acquisition; exact configured-
+repository dependency restoration and failure evidence; exact RRP inventory/
+digests/provenance; copied non-Git project; run/history/product/app
 equivalence with Stage 10; signal/process cleanup; two-version lifecycle;
 project nonmutation by software changes; privacy/adversarial failures; hosted
 workflow success on the exact committed candidate before formal acceptance.
 
-**Historical reuse:** adapt clean acquisition and standalone copied validation,
-not release publication or generated Hospital acceptance.
+**Historical reuse:** adapt clean acquisition and standalone copied validation
+while permitting declared dependency-repository access; do not restore release
+publication or generated Hospital acceptance.
 
 **Documentation:** finalize installed Operator, Installation, and Software
 Lifecycle guides; append actual implementation/evidence to the implementation
@@ -7811,103 +7913,125 @@ passes.
 
 ### Final Stage 11 operator acceptance experience
 
-Exact command spelling remains subject to the decisions above, but the final
-human workflow must be no more complex than this illustrative sequence:
+The accepted command taxonomy permits a final human workflow no more complex
+than this illustrative sequence:
 
 ```text
-obtain one local closed RRP development distribution
+download and unpack the appropriate RRP development distribution
         ↓
-run its small bootstrap installer with the intended host R
+cd <unpacked-distribution>
+Rscript --vanilla install.R
+  (restores the declared dependencies from configured R repositories)
         ↓
 rrp software verify
 rrp software doctor
         ↓
-rrp reference init --project /explicit/fictional-project
-rrp reference prepare-source --project /explicit/fictional-project
-rrp project validate --project /explicit/fictional-project
-rrp state init --project /explicit/fictional-project
+rrp reference init ~/Projects/fictional-hospital
+cd ~/Projects/fictional-hospital
+rrp reference prepare-source
+rrp project validate
+rrp state init
         ↓
-rrp run --project /explicit/fictional-project \
-  --at 2026-01-19T12:00:00Z --operation-key accepted-first
-rrp history scope --project /explicit/fictional-project --scope <returned-id>
-rrp products materialize --project /explicit/fictional-project \
+rrp run --at 2026-01-19T12:00:00Z --operation-key accepted-first
+rrp history scope --scope <returned-id>
+rrp products materialize \
   --scope <returned-id> --cutoff 2026-01-19T12:00:00Z
-rrp app launch --project /explicit/fictional-project \
+rrp app launch \
   --scope <returned-id> --cutoff 2026-01-19T12:00:00Z
         ↓
 repeat run + materialization at a later analytical time
 and observe the actual two-point trajectory after relaunch
         ↓
-rrp project doctor --project /explicit/fictional-project
-rrp project status --project /explicit/fictional-project
+rrp project doctor
+rrp project status --json
         ↓
 rrp software install /local/newer-distribution
 rrp software verify --software <newer-selector>
-rrp software activate <newer-selector> \
-  --project /explicit/fictional-project
+rrp software activate <newer-selector>
         ↓
-operate the same compatible unchanged project
+rrp project validate
+operate the same project if compatible;
+otherwise fail without mutation and select compatible software
         ↓
-rrp software activate <prior-selector> \
-  --project /explicit/fictional-project
+rrp software activate <prior-selector>
 rrp software uninstall <inactive-selector>
 ```
 
 The human no longer builds packages, resolves dependency order, projects
 resources, configures R libraries, opens catalogs, loads packages, or knows
-repository paths. They still deliberately choose project location, configure
-hospital-owned source/model behavior, name analytical time and operation
-identity, select product/history context, authorize corrective/destructive
-actions, and decide which verified software version is active.
+source-repository paths. They need access to the configured R package
+repositories during installation but do not manage restoration internals.
+They still deliberately choose project location,
+configure hospital-owned source/model behavior, name analytical time and
+operation identity, select product/history context, authorize corrective/
+destructive actions, and decide which verified software version is active.
 
 ### Stage 11 acceptance criteria and plain-language exit state
 
 Stage 11 is acceptable only when:
 
-1. one positive inclusion authority builds a closed non-repository software
-   distribution with exact package/dependency/resource/document/launcher
-   content, inventory, SHA-256, and provenance;
-2. copied distribution bytes validate without source, sibling, Git, network,
-   ambient user library, project, or maintainer state;
-3. user-scoped install stages and promotes one exact self-contained immutable
-   version with its own private library/resources and recorded host R;
+1. one positive inclusion authority builds a non-repository distribution with
+   exact closed RRP-owned package/resource/document/installer/launcher content,
+   reproducible dependency specification, inventory, SHA-256, and provenance;
+2. copied RRP payload bytes validate without source, sibling, Git, project, or
+   maintainer state; installation may access only configured dependency
+   repositories and never an ambient user/site library;
+3. the one-command base-R bootstrap and later `rrp software install PATH` share
+   installation mechanics, restore the specified closure, and promote one
+   exact immutable version with its own private library/resources and recorded
+   host R;
 4. the shared launcher deterministically reaches the active or explicitly
    selected version and cannot resolve RRP packages from ambient libraries;
 5. installed verify/doctor and project validate/doctor have distinct truthful
    scope, structured results, exit status, and recovery without repair;
-6. the canonical CLI invokes package-owned operations for the complete
-   reference project run/history/product/app path and introduces no parallel
-   domain implementation;
-7. install, activate, failed activation, compatible upgrade, rollback, and
-   uninstall never silently alter or delete project source/state;
-8. incompatible software/project combinations fail before mutation and retain
-   a usable prior installation/activation path;
-9. exact inactive uninstall removes only owned installed content and refuses
+6. the canonical `rrp` noun taxonomy invokes package-owned operations for the
+   complete reference project run/history/product/app path, defaults existing-
+   project commands to the exact current directory, honors explicit
+   `--project`, never searches parents, and introduces no parallel domain
+   implementation;
+7. default human output and explicit `--json` are equivalent renderings with
+   meaningful exit status, a stable versioned JSON schema, and deliberate
+   privacy-safe fields;
+8. install, activate, failed activation, rollback, and uninstall accept no
+   project input, discover/associate no project, and never silently alter or
+   delete project source/state;
+9. incompatible software/project combinations fail when a project operation is
+   requested and before project mutation, while prior installed versions remain
+   independently selectable;
+10. exact inactive uninstall removes only owned installed content and refuses
    active, unknown, linked, unexpected, or tampered targets;
-10. version-matched installed guidance teaches acquisition integrity,
+11. version-matched installed guidance teaches acquisition integrity,
+    configured-repository restoration and private-library isolation without
+    exposing restoration-engine machinery as the project/user model,
     installation, CLI, project operation, diagnostics, upgrade/rollback,
     uninstall, advanced R access, and all deferrals; and
-11. clean local and hosted evidence passes on the exact candidate, followed by
+12. clean local and hosted evidence passes on the exact candidate, followed by
     formal reconciliation against True North and Platform Architecture.
 
-> A human can acquire a closed development build, install and verify it outside
-> the source tree, initialize and operate an explicit independent project
-> through one CLI, and select, upgrade, roll back, and uninstall side-by-side
-> RRP software without silently modifying project source or state. Product-only
-> deployment artifacts are not yet implemented.
+> A human can acquire a development distribution with a closed RRP-owned
+> payload and reproducible dependency specification, restore/install and verify
+> it outside the source tree, initialize and operate an independent project
+> naturally from its directory through one CLI, and select, upgrade, roll back,
+> and uninstall side-by-side RRP software without any software lifecycle action
+> inspecting or modifying project source/state. Product-only deployment
+> artifacts are not yet implemented.
 
 ### Major deferrals
 
 System-wide/root installation; bundled or automatically installed R; Windows
 support beyond a separately accepted support cell; automatic PATH/profile
-editing; remote distribution discovery/download, channels, mirrors, package
-registries, or update services; signing/key/transparency policy; shared mutable
-dependency caches as runtime authority; automated project or state migration;
+editing; remote RRP-distribution discovery/download, release channels, RRP
+package registries, or update services; offline installation and redistribution
+of the full third-party package closure; signing/key/transparency policy;
+shared mutable dependency caches as runtime authority; automated project or
+state migration;
 project discovery/registry; scheduling/daemons/background refresh; generic
 hospital source acquisition; authentication/authorization; telemetry/remote
 monitoring; product-only artifacts; Posit Connect/Connect Cloud or other target
 realizations; OCI/container deployment; remote deployment; Stage 13 clean
-independent-adopter/support-matrix acceptance; Stage 14 release qualification,
+independent-adopter/support-matrix acceptance, including clean restoration from
+configured package repositories on each claimed OS/R cell but not an artificial
+offline/bundled-closure test; Stage 14 release qualification,
 tagging, publication, public acquisition, and public immutability evidence; and
 clinical validation remain outside Stage 11.
 
@@ -7954,9 +8078,12 @@ remain operator-owned or future work.
 Prove the architecture's complete clean-install matrix on declared macOS arm64
 and Ubuntu x86_64 evidence cells: distribution install/doctor, fictional
 project, separate adopter project, custom producer and provider, dependency
-isolation, durable history, products/app, both artifact families, version
-activation/rollback, and privacy/safety failures. Close all temporary
-development bridges whose replacement conditions have passed.
+isolation, reproducible dependency restoration from configured repositories,
+durable history, products/app, both artifact families, version activation/
+rollback, and privacy/safety failures. This matrix does not require bundled
+third-party artifacts or offline installation unless later evidence creates
+that distinct product requirement. Close all temporary development bridges
+whose replacement conditions have passed.
 
 ### Why here and dependencies
 

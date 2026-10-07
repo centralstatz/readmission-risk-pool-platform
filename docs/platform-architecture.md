@@ -682,12 +682,14 @@ A project declares supported RRP software/API and project-contract versions.
 RRP checks canonical, target, provider, dependency, state, product, and
 artifact compatibility at their owning boundaries.
 
-A software upgrade installs a new immutable version beside the active version,
-verifies it, and validates projects before activation. It never changes project
-manifest, registration, producer/provider code, dependency declarations,
-models, history, products, or configuration. Activation is separate from
-installation; the previous version remains selectable for rollback until an
-explicit uninstall/retention action. Rollback does not reverse migrations.
+A software upgrade installs a new immutable version beside the active version
+and verifies it. Project validation under that version is an explicit optional
+compatibility preflight, not an activation input or prerequisite. Activation
+is project-independent; compatibility is checked when the selected software is
+asked to validate or operate on a project. Installation, activation, rollback,
+and uninstall never discover, associate, inspect, or change projects. The
+previous version remains selectable for rollback until an explicit uninstall/
+retention action. Rollback does not reverse migrations.
 
 Project migration is an explicit adopter-controlled source/config change for a
 project-contract evolution. RRP may produce a plan or staged copy but cannot

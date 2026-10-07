@@ -264,9 +264,11 @@ and cleanup behavior.
   source-order, or eager repository-wide sourcing dependencies.
 - Repository-relative paths are acceptable for repository-owned development
   tooling only. Installed behavior will resolve resources through its owning
-  interface, and project-dependent behavior will require explicit supported
-  project context rather than current-directory, parent-search, source-tree,
-  or Git inference.
+  interface, and project-dependent package behavior will receive explicit
+  supported project context. A human CLI may normalize an explicitly supplied
+  path or the exact current directory into that context when its accepted
+  contract permits, but it must not search parents, discover projects, or
+  infer context from the source tree or Git.
 - Organize future tests by the component, contract, lifecycle, or operation
   whose invariant they protect—not by historical Phase number.
 - Keep target state, current capability, conformance, clinical validity,
