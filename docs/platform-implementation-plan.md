@@ -5,9 +5,10 @@
 **Status:** authoritative roadmap; Stages 1–10 are accepted and complete. Stage
 10 was accepted on 2026-10-05 at implementation baseline
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
-11 plan is prepared below after human resolution of its initial seven planning
-questions; Stage 11 implementation has not begun and Increment 11.A requires
-separate authorization.
+11 plan is formally accepted for implementation as of 2026-10-07 after human
+resolution of its initial seven planning questions. Stage 11 implementation
+has not begun; Increment 11.A is the next implementation task and must be
+performed as a separate action.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -73,9 +74,9 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 11 is now detailed below but remains
-unimplemented; no increment is authorized by planning alone. After a stage is
-implemented:
+implementation lineage. Stage 11 is detailed and formally accepted below but
+remains unimplemented; Increment 11.A proceeds only as a separate
+implementation action. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -7023,10 +7024,11 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 ## Stage 11 — CLI, closed RRP-owned-payload distribution, installation, and upgrade
 
-**Planning status:** second-edition detailed plan prepared after human review;
-implementation has not begun. Stages 1–10 remain the accepted baseline. This
-plan does not authorize an increment, select release bytes, or claim an
-installed distribution exists.
+**Planning status:** second-edition detailed plan formally accepted for
+implementation on 2026-10-07; implementation has not begun. Stages 1–10 remain
+the accepted baseline. Increment 11.A is the next implementation task. This
+acceptance does not select release bytes or claim an installed distribution
+exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7124,7 +7126,7 @@ Stage 11 treats its steps as follows:
 | Install third-party dependencies, build two internal packages, and install them in order | Distribution build and installation | Remove from normal adopter work. The distribution carries the reproducible dependency specification and exact RRP packages; installation restores from configured repositories into one version-private library, then verifies it. |
 | Project 54 resources and remove source-only catalog fields | Distribution build | Perform deterministically at build time and validate inside the distribution. No adopter sees or reproduces `Source-Path`. |
 | Set library/environment variables, start vanilla R, load packages, and open the software catalog | Launcher/runtime selection | Hide behind the version launcher. It fixes the private library, package paths, resource root, and R process environment before package dispatch. |
-| Initialize the ordinary or fictional project | Project lifecycle | Expose a CLI intention over the existing package initializer with the absent destination as a natural positional path. |
+| Initialize the ordinary or fictional project | Project lifecycle | Require a positional `PATH` naming the new destination and retain the initializer's existing create/absence safeguards. The exact-current-directory default does not apply to creation. |
 | Edit project manifest, source mapping, provider/model, and configuration | Project/hospital | Retain as explicit human-owned work. The CLI may orient and validate it but must not synthesize hospital semantics. |
 | Source and invoke the fictional generator | Fictional/reference-only behavior | Add a narrowly named installed reference operation and CLI path. Do not invent a generic hospital source-acquisition protocol. |
 | Validate the project and initialize state | Project lifecycle | Expose separate validation and explicit state initialization; neither runs implicitly during install or activation. |
@@ -7196,20 +7198,27 @@ accepted project/package operation
 independent project source/state
 ```
 
-The launcher never discovers or registers projects. A project-oriented command
-uses exactly `--project PATH` when supplied; otherwise it normalizes the exact
-current working directory once and passes that explicit root to the package
-API. It never searches parents, remembers a last project, interprets Git, or
-scans sibling directories. Project/reference creation takes its destination as
-a positional path where natural. Every operation on an existing project checks
-the manifest/API and other owning compatibility boundaries against the
-selected software before mutation.
+The launcher never discovers or registers projects. A command operating on an
+existing project uses exactly `--project PATH` when supplied; otherwise it
+normalizes the exact current working directory once and passes that explicit
+root to the package API. It never searches parents, remembers a last project,
+interprets Git, or scans sibling directories. Project/reference creation
+instead requires a positional destination `PATH`; omission never means the
+current directory, and the destination must satisfy the existing initializer's
+create/absence safeguards. Every operation on an existing project checks the
+manifest/API and other owning compatibility boundaries against the selected
+software before mutation.
 
 Installation, activation, rollback, and uninstall accept no project arguments,
 inspect no projects, and persist no project/software association. Changing the
-activation record changes only future default software selection. An explicit
-software selector may address another installed version without changing the
-default. The two lifecycles meet only when the selected software is asked to
+activation record changes only future default software selection. The launcher
+owns one coherent per-invocation selection capability for every command: absent
+an explicit selector it uses the active verified installation; with one it uses
+that specified verified installation for this invocation only and leaves the
+active record unchanged. For project commands, software selection and project
+resolution remain independent inputs, and neither creates a persistent
+association. Exact secondary selector spelling remains an implementation
+choice. The two lifecycles meet only when the selected software is asked to
 operate on a resolved project root. An incompatible operation fails clearly
 without modifying the project; the operator may change the project separately
 or reactivate an older compatible software version.
@@ -7287,9 +7296,10 @@ Three claims remain separate:
    manifest/digests. Stage 11 accepts a local path; network discovery/download
    and signing policy remain deferred.
 3. **Restore/install:** a user-scoped bootstrap validates the acquired RRP
-   artifact, obtains exact third-party dependencies from explicitly configured
-   R repositories, and realizes/validates one private installation without the
-   development repository or ambient R library.
+   artifact, restores the reproducibly specified third-party dependency
+   environment from explicitly configured R repositories, and realizes/
+   validates one private installation without the development repository or
+   ambient R library.
 
 The source inclusion authority is a positive role-classified allowlist, not
 Git tracking minus ignores. The generated distribution manifest records at
@@ -7349,6 +7359,12 @@ external and are never retained. Network/repository failure leaves staging
 unpromoted. A package absent from the private library, at the wrong version, or
 resolved only from an ambient library is installation failure.
 
+Terms such as required, exact, and closure in this dependency context describe
+the precision of the specified and verified installed environment. They do not
+mean that the distribution contains or redistributes every transitive third-
+party artifact byte. Only the RRP-owned payload is physically closed and
+inventoried by the distribution.
+
 `renv` is a strong candidate restoration engine and must be evaluated during
 implementation. If selected, its lock and machinery are internal distribution,
 installer, and release details—not the permanent public architecture. No RRP
@@ -7384,11 +7400,11 @@ The accepted taxonomy is shallow and intent-oriented; 1.0 adds no flat aliases:
 | `rrp software list/current` | Inspect installed versions and active selection; installation registry | User software home; verified/tampered/active status | Read-only | Required |
 | `rrp software verify` | Strictly prove one installed inventory, digests, packages, resources, launcher, and recorded R; installation verifier plus `rrp_validate_software_resources()` | Exact selector; structured pass/failure evidence | Read-only with removed temporary probes | Required |
 | `rrp software doctor` | Explain whether the selected installation can operate and how to recover; installed doctor | Optional selector; checks/warnings/failures/recovery | Read-only with removed probes | Required |
-| distribution-local `Rscript --vanilla install.R` and later `rrp software install PATH` | Validate the RRP payload, restore its exact dependencies, and realize it user-scoped through shared installation mechanics | Unpacked distribution path, compatible R, configured repositories, optional test-only installation root; installed identity/evidence | Creates one immutable installation; does not activate or inspect projects | Required |
+| distribution-local `Rscript --vanilla install.R` and later `rrp software install PATH` | Validate the RRP payload, restore its reproducibly specified dependency environment, and realize it user-scoped through shared installation mechanics | Unpacked distribution path, compatible R, configured repositories, optional test-only installation root; installed identity/evidence | Creates one immutable installation; does not activate or inspect projects | Required |
 | `rrp software activate SELECTOR` | Change the atomic default after software-only verification | Exact installed selector; prior/new selection | Replaces activation record only; accepts no project input | Required |
 | `rrp software uninstall SELECTOR` | Remove one verified inactive owned installation | Exact selector and confirmation; deleted installation identity | Deletes only exact inactive version root | Required |
-| `rrp project init PATH` | Create the standard independent scaffold; `rrp_initialize_project()` | Positional absent destination and project tokens; created inventory | Creates project source only | Required |
-| `rrp reference init PATH` / `rrp reference prepare-source [--project PATH]` | Create and prepare the supplied fictional teaching project; bounded reference operation | Positional absent destination for creation; otherwise supplied path or exact current directory; fictional source identity/inventory | Creates fictional project or its absent deterministic source area | Required for reference acceptance; never generic ingestion |
+| `rrp project init PATH` | Create the standard independent scaffold; `rrp_initialize_project()` | Required positional destination `PATH`, which must satisfy existing create/absence safeguards, plus project tokens; created inventory | Creates project source only | Required; creation never defaults to the current directory |
+| `rrp reference init PATH` / `rrp reference prepare-source [--project PATH]` | Create and prepare the supplied fictional teaching project; bounded reference operation | Required positional destination `PATH` satisfying create/absence safeguards for creation; for preparation, supplied project path or exact current directory; fictional source identity/inventory | Creates fictional project or its absent deterministic source area | Required for reference acceptance; creation never defaults to the current directory and this is never generic ingestion |
 | `rrp project validate [--project PATH]` | Validate manifest, trusted registration, selections, extensions, and selected-software compatibility without invoking producer/provider; `rrp_validate_project()` | Supplied path or exact current directory; structured conformance | Read-only | Required; also the explicit compatibility preflight when desired |
 | `rrp project doctor/status [--project PATH]` | Diagnose operational readiness or summarize nonmutating lifecycle state; new package-owned composition of existing validators/readers | Supplied path or exact current directory plus optional freshness comparison; bounded state/history/product/app facts and recovery | Read-only with removed probes | Required |
 | `rrp state init/inspect/backup/restore [--project PATH]` | Manage the already accepted explicit project-state lifecycle; existing state/recovery APIs | Resolved project and backup path; state/backup identity and status | Read-only, create-only state/backup, or explicit absent-state restore as named | Required; restore retains existing safeguards and confirmation |
@@ -7455,9 +7471,10 @@ repairs, migrates, runs, rebuilds, activates, or deletes.
 ### Upgrade, rollback, uninstall, and compatibility
 
 Installation stages a new version under a temporary sibling, restores the
-declared dependency graph from configured repositories into that version's
-private library, installs the exact RRP packages using the recorded R, validates
-package paths/versions/resources/inventory in fresh processes, writes the
+reproducibly specified dependency environment from configured repositories
+into that version's private library, installs the exact RRP packages using the
+recorded R, validates package paths/versions/resources/inventory in fresh
+processes, writes the
 installation record last, and atomically promotes only after success. Network,
 repository, compilation, dependency, or verification failure leaves the active
 record and all prior installations unchanged; incomplete staging is bounded
@@ -7654,15 +7671,16 @@ context; packages remain the behavior owner; project code/state remain outside
 the installation.
 
 **Concrete scope and expected surfaces:** implement standard/reference project
-initialization with positional destinations, fictional source preparation,
-project validate/doctor/status, state initialize/inspect/backup/restore,
-durable run, focused history reads and corrections, product materialization/
-status, and app launch from the command table. For operations on an existing
-project, use exactly `--project PATH` when supplied and otherwise the exact
-current directory; never search parents or retain project state. Continue to
-require explicit analytical/correction identities. Render returned IDs so
-subsequent commands are usable. Preserve separation among run, products, and
-app.
+initialization with required positional destination paths governed by existing
+create/absence safeguards and no current-directory default; fictional source
+preparation; project validate/doctor/status; state initialize/inspect/backup/
+restore; durable run, focused history reads and corrections, product
+materialization/status, and app launch from the command table. For operations
+on an existing project, use exactly `--project PATH` when supplied and
+otherwise the exact current directory; never search parents or retain project
+state. Continue to require explicit analytical/correction identities. Render
+returned IDs so subsequent commands are usable. Preserve separation among run,
+products, and app.
 
 **Non-goals:** no generic source acquisition, project editor/wizard, scheduled
 runs, daemon, automatic refresh, arbitrary SQL, clinical/model validation,
@@ -7699,9 +7717,9 @@ generated distribution manifest/inventory owns payload discovery; ordinary
 installed code never reads development source paths.
 
 **Concrete scope and expected surfaces:** add the positive RRP source inclusion
-authority; exact `rrpruntime`/`rrpplatform` artifacts; target-keyed tested
-dependency graph, repository/source/integrity provenance, and reproducible
-specification; resource projection; license/document/version-launcher
+authority; exact `rrpruntime`/`rrpplatform` artifacts; a target-keyed
+reproducible specification of the tested dependency graph plus repository/
+source/integrity provenance; resource projection; license/document/version-launcher
 inclusion; generated manifest/inventory/SHA-256 for the RRP-owned payload;
 normalized-content identity; staging/promotion; archive creation; and a
 distribution-contained standalone validator. Require one explicit output
@@ -7747,8 +7765,9 @@ second installer implementation.
 
 **Concrete scope and expected surfaces:** realize the accepted OS-standard per-
 user application-data layout and test override; record/validate host R; accept
-explicit configured R repositories; restore the exact dependency specification
-into a staged version-private library without ambient substitution; install
+explicit configured R repositories; restore the environment described by the
+reproducible dependency specification into a staged version-private library
+without ambient substitution; install
 the exact RRP packages; validate package/resource/dependency agreement in fresh
 processes; write installation evidence; and promote only after success. Add
 the small distribution-local `install.R` and installed `rrp software install
@@ -7977,16 +7996,18 @@ Stage 11 is acceptable only when:
    maintainer state; installation may access only configured dependency
    repositories and never an ambient user/site library;
 3. the one-command base-R bootstrap and later `rrp software install PATH` share
-   installation mechanics, restore the specified closure, and promote one
-   exact immutable version with its own private library/resources and recorded
-   host R;
+   installation mechanics, restore the specified dependency environment from
+   configured repositories, and promote one exact immutable version with its
+   own private library/resources and recorded host R;
 4. the shared launcher deterministically reaches the active or explicitly
-   selected version and cannot resolve RRP packages from ambient libraries;
+   selected version, leaves the active record unchanged for a per-invocation
+   selection, and cannot resolve RRP packages from ambient libraries;
 5. installed verify/doctor and project validate/doctor have distinct truthful
    scope, structured results, exit status, and recovery without repair;
 6. the canonical `rrp` noun taxonomy invokes package-owned operations for the
-   complete reference project run/history/product/app path, defaults existing-
-   project commands to the exact current directory, honors explicit
+   complete reference project run/history/product/app path, requires an
+   explicit positional destination for project/reference creation, defaults
+   existing-project commands to the exact current directory, honors explicit
    `--project`, never searches parents, and introduces no parallel domain
    implementation;
 7. default human output and explicit `--json` are equivalent renderings with

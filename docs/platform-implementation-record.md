@@ -5708,3 +5708,51 @@ revision `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. This revision establishes
 the Stage 11 baseline. Stage 11 — CLI, closed distribution, installation, and
 upgrade—is the next implementation stage and requires separate detailed
 planning/authorization. No Stage 11 implementation occurred during acceptance.
+
+## Stage 11 detailed-plan acceptance — 2026-10-07
+
+Human review formally accepted the second-edition Stage 11 detailed plan from
+the completed Stage 10 baseline. Reconciliation against Platform True North,
+Platform Architecture, implementation guidance, the immutable published-
+release authority, and the existing implementation record found no unresolved
+contradiction. The small authority clarifications already present make project
+validation an optional preflight rather than an activation prerequisite and
+allow the human CLI to normalize either a supplied project path or the exact
+current directory into explicit package-level project context without parent
+search, discovery, registry, or remembered-project state.
+
+The accepted plan resolves all seven reviewed decisions: one shallow `rrp`
+command taxonomy; exact-current-directory behavior only for commands operating
+on existing projects; a required positional destination for project/reference
+creation; optional versioned privacy-safe JSON over the same operation result;
+one small base-R bootstrap over shared installation mechanics; an inventoried
+closed RRP-owned payload plus reproducible configured-repository dependency
+restoration into a version-private library; internal-only status for any
+selected restoration engine such as `renv`; OS-standard per-user installation;
+project-independent install/verify/activate/rollback/uninstall; and immutable
+published product versions as sufficient durable release attribution without
+distribution/build fields in analytical history.
+
+Final wording distinguishes a reproducibly specified and verified dependency
+environment from bundled third-party artifact bytes. It also establishes one
+launcher-owned per-invocation software selector: an omitted selector uses the
+active verified installation, while an explicit selector uses another verified
+installation for that invocation only without changing activation or creating
+a project/software association. The accepted eight-increment sequence remains
+11.A lifecycle authorities, 11.B CLI foundation, 11.C project intentions, 11.D
+RRP-owned distribution payload, 11.E bootstrap/private restoration, 11.F
+activation/installed diagnosis, 11.G version transitions, and 11.H clean
+installed acceptance and closeout.
+
+No implementation-blocking Stage 11 planning question remains. Stage 12
+product-only artifacts, Stage 13 clean-system/adopter support-cell evidence,
+and Stage 14 release qualification/publication remain separately bounded. This
+acceptance introduced no CLI, package behavior, distribution, installer,
+dependency environment, state/history schema, migration, artifact, or release.
+
+**Current implementation state:** Stages 1–10 remain accepted and complete.
+The Stage 11 detailed plan is formally accepted and ready for implementation;
+Stage 11 itself remains unimplemented and incomplete.
+
+**Next task:** implement only Increment 11.A — Lifecycle authorities and stable
+operation completion. Do not begin 11.B or any later increment.
