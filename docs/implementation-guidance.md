@@ -46,10 +46,14 @@ build-plus-materialize composition, fictional-only installed source
 preparation, a sixth installed product document, and a 32-export
 `rrpplatform` surface are present. Increment 11.B adds a seventh installed
 document, a 33rd export, one version-specific package launcher, and the bounded
-help/version/read-only-project-status dispatcher with exact runtime preflight.
-No distribution builder, installer, shared active-version launcher,
-activation, dependency restoration, or version-transition behavior exists.
-Stage 11 remains incomplete and Increment 11.B awaits formal human acceptance.
+help/version/read-only-project-status dispatcher with exact runtime preflight;
+it is formally accepted after exact hosted validation. Increment 11.C adds the
+eighth installed document and extends that dispatcher over the accepted
+project/reference, state, durable-run, focused-history, product, and
+application intentions. No distribution builder, installer, shared active-
+version launcher, activation, dependency restoration, or version-transition
+behavior exists. Stage 11 remains incomplete and Increment 11.C awaits formal
+human acceptance.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -250,7 +254,7 @@ closed to the following present paths:
 | `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, `resources/documentation/lifecycle-operations-reference.md`, and `resources/documentation/command-line-guide.md` | The exact seven version-matched installed product documents: the three Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11.A lifecycle reference, and Stage 11.B command-line guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, `resources/documentation/lifecycle-operations-reference.md`, `resources/documentation/command-line-guide.md`, and `resources/documentation/operator-guide.md` | The exact eight version-matched installed product documents: the three Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11.A lifecycle reference, Stage 11.B command-line guide, and Stage 11.C Operator Guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 

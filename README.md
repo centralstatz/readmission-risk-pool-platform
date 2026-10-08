@@ -70,11 +70,11 @@ customization denial, and supervised loopback cleanup. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 architecture reconciliation; Stages 1–10 are accepted and complete. The
 repository has no root selector, persistent installed RRP distribution,
-scheduled/off-host backup, migration, shared active-version launcher, complete
-operator command surface, or deployment capability. Increment 11.B provides
-only the version-specific launcher/dispatcher foundation, `rrp version`, and
-read-only `rrp project status` against an explicitly supplied installed
-context.
+scheduled/off-host backup, migration, shared active-version launcher, software
+lifecycle command surface, or deployment capability. Increment 11.C provides
+the version-specific project lifecycle command surface against an explicitly
+supplied installed context; software distribution, installation, activation,
+upgrade, rollback, and uninstall remain absent.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -228,12 +228,14 @@ fictional proof. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 reconciliation, so Stages 1–10 are accepted and complete. Stage 11 planning is
 formally accepted. Increment 11.A is accepted and complete. Increment 11.B is
-locally implementation-complete: one version-specific launcher, the package-
-owned noun dispatcher, help/version, and read-only project status now exist
-with deterministic private-library/resource preflight and human/JSON output.
+formally accepted after exact hosted validation. Increment 11.C is locally
+implementation-complete: the same version-specific launcher and package-owned
+dispatcher now expose explicit project/reference, state, durable-run, focused-
+history, product, and application intentions with controlled correction/
+restore confirmation and a cataloged Operator Guide.
 There is still no distribution builder, installer, shared active-version
 launcher, activation, dependency restoration, or version transition. Stage 11
-remains incomplete; 11.B awaits formal human acceptance.
+remains incomplete; 11.C awaits formal human acceptance.
 
 ## License
 

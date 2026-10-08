@@ -52,17 +52,21 @@ boundaries without requiring repository source.
 
 Increment 11.A adds seven dependency-light installed lifecycle/result
 authorities and three stable package operations. Increment 11.B adds the thin
-version-specific launcher and package dispatcher for help, version, and
-read-only project status. Exact host-R, private-library, package, and installed-
-resource preflight happens before command delegation. No active-version
-selection, distribution builder, installer, dependency restoration, or project
-mutation is implemented.
+version-specific launcher and package dispatcher. Increment 11.C extends that
+same dispatcher over the accepted project/reference, state, durable-run,
+focused-history, product, and supplied-application operations. Exact host-R,
+private-library, package, and installed-resource preflight happens before
+command delegation. No active-version selection, distribution builder,
+installer, dependency restoration, migration, scheduling, or daemon is
+implemented.
 
 Its current callable interfaces are:
 
 - `rrp_cli_dispatch(...)` validates one explicitly supplied installed software
-  context, parses the bounded noun grammar, delegates the implemented read-only
-  commands, and renders the same common result as human text or versioned JSON;
+  context, parses the bounded noun grammar, delegates project lifecycle and
+  analytical intentions to the existing package operations, applies controlled
+  confirmation to restore/correction commands, and renders one curated common
+  result as human text or versioned JSON;
 - `rrp_register_authored_project(project_root)` validates one standard-authored
   project under the authoritative loader context and compiles its two narrow
   hospital callables into the unchanged raw registration contract;

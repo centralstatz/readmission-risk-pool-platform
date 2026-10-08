@@ -25,6 +25,9 @@ rrp_cli_dispatch(
 \description{
 Validates one explicitly supplied installed software context, parses the
 bounded command grammar, delegates to package-owned operations, and renders
-human or versioned JSON output. It does not select an active installation,
-discover projects, or implement software installation.
+human or versioned JSON output. Existing-project commands use an explicit
+project path or exactly the current directory; creation requires an explicit
+destination. Restore and history-correction commands use controlled
+confirmation. The dispatcher does not select an active installation, discover
+projects, reimplement package behavior, or implement software installation.
 }

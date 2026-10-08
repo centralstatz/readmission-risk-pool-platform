@@ -12,5 +12,6 @@
 # It also owns the dependency-light lifecycle authorities, bounded read-only
 # project status, product build-and-materialize composition, and installed
 # fictional-source preparation operation and the thin version-specific command
-# dispatcher.
+# dispatcher over accepted project, state, run, history, product, and
+# application operations.
 NULL

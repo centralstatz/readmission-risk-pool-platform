@@ -35,10 +35,10 @@ stopifnot(
 )
 expect_usage(internal("rrp_cli_parse")("init"), "unsupported_command")
 expect_usage(internal("rrp_cli_parse")("project"), "missing_subcommand")
-expect_usage(
-  internal("rrp_cli_parse")(c("project", "validate")),
-  "command_not_implemented"
-)
+stopifnot(identical(
+  internal("rrp_cli_parse")(c("project", "validate"))$command,
+  "project_validate"
+))
 expect_usage(
   internal("rrp_cli_parse")(c("version", "--json", "--json")),
   "duplicate_option"
@@ -101,6 +101,10 @@ stopifnot(
 # Confirmation is inert for reads and exact for future mutation classes.
 stopifnot(
   internal("rrp_cli_confirm")("read_only", interactive_session = FALSE),
+  internal("rrp_cli_confirm")("create_only", interactive_session = FALSE),
+  internal("rrp_cli_confirm")(
+    "append_or_idempotent", interactive_session = FALSE
+  ),
   internal("rrp_cli_confirm")(
     "destructive", assume_yes = TRUE, interactive_session = FALSE
   ),
@@ -108,11 +112,11 @@ stopifnot(
     "corrective", interactive_session = FALSE
   ),
   internal("rrp_cli_confirm")(
-    "create_only", interactive_session = TRUE,
+    "corrective", interactive_session = TRUE,
     read_response = function(prompt) "yes"
   ),
   !internal("rrp_cli_confirm")(
-    "create_only", interactive_session = TRUE,
+    "corrective", interactive_session = TRUE,
     read_response = function(prompt) "y"
   )
 )
@@ -307,7 +311,7 @@ if (length(arguments) >= 3L) {
   child_result <- run_cli(c("project", "status"), project_child)
   unrelated_result <- run_cli(c("project", "status"), unrelated)
   unrelated_json <- run_cli(c("project", "status", "--json"), unrelated)
-  unsupported <- run_cli(c("project", "validate"), unrelated)
+  unsupported <- run_cli(c("software", "list"), unrelated)
   stopifnot(
     identical(child_result$status, 1L), identical(unrelated_result$status, 1L),
     identical(unrelated_json$status, 1L),

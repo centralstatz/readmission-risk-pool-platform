@@ -5984,3 +5984,138 @@ unimplemented.
 
 **Next task:** formally accept Increment 11.B before beginning Increment 11.C —
 Project lifecycle CLI and operator intentions.
+
+## Stage 11 / Increment 11.B formal acceptance — 2026-10-08
+
+The completed 11.B baseline at exact revision
+`b1c386c6ce62968c8200d3f7e5212fc6b08319f4` was reconciled against Platform
+True North, Platform Architecture, the accepted Stage 11 plan, the current
+package/resource/launcher boundary, and its local and hosted evidence. The
+read-only GitHub Actions `package-foundation` push run `37771416535`, job
+`113291662224`, completed successfully for that exact revision on `main` under
+Ubuntu and R 4.4. Its repository and package validation steps both passed.
+
+The baseline contains the recorded version-specific executable, package-owned
+dispatcher, shallow noun taxonomy, exact installed context preflight,
+help/version/read-only project status, exact explicit-path/current-directory
+project resolution, common human/JSON result path, deterministic exit status,
+63-resource catalog, exact 33-export `rrpplatform` surface, and unchanged
+dependency posture. Reconciliation found no architecture contradiction,
+implementation discrepancy, or acceptance-blocking defect. Increment 11.B is
+therefore formally accepted and complete. Its launcher, dispatcher, and exact
+installed-context boundaries remain the foundation extended by 11.C; Stage 11
+itself remains incomplete.
+
+## Stage 11 / Increment 11.C — Project lifecycle CLI and operator intentions — 2026-10-08
+
+Increment 11.C is locally implementation-complete from the accepted 11.B
+baseline. It extends the existing dispatcher and version-specific launcher; it
+does not add a second operation owner, public package export, dependency, or
+software-version selection mechanism.
+
+### Command surface and package delegation
+
+The accepted command table is now realized for:
+
+- `rrp project init`, `validate`, `doctor`, and `status` through the accepted
+  initializer, validator, and lifecycle-status composition;
+- `rrp reference init` and `prepare-source` through the distinct fictional
+  initializer and guarded deterministic source operation;
+- `rrp state init`, `inspect`, `backup`, and `restore` through the existing
+  explicit project-state and bounded recovery operations;
+- `rrp run` through `rrp_execute_durable_bundle()` with explicit analytical
+  time and operator key;
+- focused `rrp history scope`, `episode`, `current`, `retry`, `invalidate`, and
+  `restate` through the public history operations;
+- `rrp products materialize` and `status` through the accepted build-plus-
+  materialize composition and validated product access; and
+- `rrp app launch` through the existing foreground loopback-only product-
+  application operation.
+
+Creation requires one explicit absent destination with an existing parent and
+never defaults to the current directory. Every existing-project command uses
+exactly `--project PATH` when supplied and otherwise exactly the current
+directory. Parent, Git, sibling, registry, remembered-project, and installation
+discovery remain absent. Run, products, and app remain separate intentions;
+identities and cutoffs are never inferred.
+
+Create-only and append/idempotent intentions execute from their explicit
+command authorization without a redundant prompt. Restore, retry,
+invalidation, and restatement require controlled confirmation; noninteractive
+or JSON use requires `--yes`, and denial leaves state/history unchanged.
+History reason parsing uses the exact governed reason-code vocabulary. Scope
+restatement resolves only an explicitly named existing replacement scope;
+analytical restatement likewise requires an explicit replacement analytical
+record. The CLI delegates the existing atomic correction operation and does
+not synthesize corrected clinical content or touch DuckDB directly.
+
+Every implemented command returns one package operation result, from which
+both human and versioned JSON output are rendered. Operation-specific
+allowlists retain reusable operation, analytical, action, state, backup,
+product-set, materialization, and application identities while excluding
+patient content, episode identifiers from rendered history, retained state/
+request/estimate objects, private mappings, callables, connections, and
+physical storage details. The accepted 0/1/2/3/130 process statuses remain
+unchanged. Foreground application completion and direct signal propagation are
+proved through the installed executable.
+
+### Installed documentation, ownership, and historical reuse
+
+The closed resource catalog increases from 63 to 64 entries with
+`rrp.documentation.operator-guide`. The installed Operator Guide explains
+explicit project context, ordinary and fictional initialization, lifecycle
+diagnosis, state/recovery, analytical IDs and cutoffs, bounded history
+inspection/correction, product freshness, app launch, mutation boundaries,
+human/JSON output, advanced R use, and the hospital-owned source boundary. The
+Command-Line Guide, CLI help, package references, ownership guidance, and both
+validators now describe and own only the realized surface. The package remains
+at exactly 33 exports with the same declared dependencies.
+
+Historical reconnaissance covered immutable `v0.1.0`
+`docs/operations/operator-manual.md`, `operations/operations.yml`, and
+`operations/run-platform.R`. The clean implementation adapts intent-oriented
+organization, read-versus-mutation and recovery teaching, stable identifier
+presentation, and thin wrapper discipline. It rejects repository-root
+inference and source chains, reference-default roots, the old operation
+registry/doctor, generated Hospital and Git-coupled workflow assumptions, and
+temporary runtime installation per command.
+
+### Evidence, reconciliation, and limits
+
+Package-native evidence covers the expanded closed parser, confirmation
+classification, curated privacy-safe results, and prior 11.B diagnostics. The
+isolated installed proof invokes the actual executable from controlled private
+libraries and exercises standard and fictional creation, source preparation,
+project validate/doctor/status, state initialize/inspect/backup/restore,
+durable run, all focused history reads/corrections, product materialization/
+freshness, copied non-Git operation, invalid/incompatible/corrupt-safe
+failures, exact path precedence and no upward discovery, read-only
+nonmutation, cancellation nonmutation, human/JSON identity equivalence, normal
+app completion, and interrupted app status 143.
+
+`Rscript --vanilla tools/validate-packages.R` passes. It proves the exact
+64-resource source/projected catalog, exact 33 exports and unchanged dependency
+posture, both source builds, isolated installs and fresh loads, both strict
+`R CMD check --no-manual` runs with exact `Status: OK`, the actual installed
+CLI boundary, and the complete accepted package/project/canonical/runtime/
+history/product/application regression matrix. Repository validation and final
+closeout also pass: all eight repository-foundation checks, parse checks for
+every changed R source/test/validator, and `git diff --check`. No build archive,
+check directory, temporary library, state, product, or other generated
+validation artifact remains in the working tree.
+
+No distribution builder, bootstrap installer, dependency restoration,
+installation registry, shared active-version launcher, activation, transition,
+upgrade/rollback/uninstall, migration, generic source acquisition, scheduler,
+daemon, background service, remote publication, deployment artifact, or
+product-only deployment behavior entered. No accepted Stage 4–10 operation or
+state/history/product/application contract was changed. No architecture or
+accepted-plan discrepancy remains.
+
+**Current implementation state:** Increments 11.A–11.B are formally accepted
+and complete. Increment 11.C is implementation-complete and ready for formal
+human acceptance. Stage 11 remains incomplete; 11.D and later increments are
+unimplemented.
+
+**Next task:** formally accept Increment 11.C before beginning Increment 11.D —
+Closed RRP payload and reproducible dependency specification.

@@ -29,7 +29,8 @@ analytically read-only application launch boundary.
 It also owns the dependency-light lifecycle authorities, bounded read-only
 project status, product build-and-materialize composition, and installed
 fictional-source preparation operation and the thin version-specific command
-dispatcher.
+dispatcher over accepted project, state, run, history, product, and application
+operations.
 }
 \details{
 The package imports the \pkg{rrpruntime} namespace and exports exactly 33
@@ -37,8 +38,10 @@ technical interfaces. These include project, execution, history, state,
 logical-product, materialization/access, resource-validation, and supplied-
 application operations plus \code{rrp_cli_dispatch()} as the version-specific
 command boundary. \code{rrp_launch_app()} is the sole application launch
-operation. It does not discover or select a
-software or project root. The loader evaluates trusted project registration in
+operation. The dispatcher receives one explicit installed-software context and
+resolves an existing project from exactly \code{--project} or the current
+directory; it does not discover parent, Git, registry, or remembered projects.
+The loader evaluates trusted project registration in
 a controlled environment that is not a security sandbox and never invokes a
 component. Initialization is create-only, uses the loader as its acceptance
 gate, and creates no state or dependency directories. Producer execution

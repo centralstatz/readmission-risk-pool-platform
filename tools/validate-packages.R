@@ -2012,6 +2012,10 @@ validate_installed_documentation_resources <- function(
     command_line = c(
       id = "rrp.documentation.command-line-guide",
       path = "resources/documentation/command-line-guide.md"
+    ),
+    operator = c(
+      id = "rrp.documentation.operator-guide",
+      path = "resources/documentation/operator-guide.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -2504,15 +2508,16 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.supplied-application-guide",
     "rrp.documentation.lifecycle-operations-reference",
     "rrp.documentation.command-line-guide",
+    "rrp.documentation.operator-guide",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 63L && identical(
+    length(actual_ids) == 64L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 63 known entries."
+    "The software resource inventory must contain exactly 64 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -3001,6 +3006,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "product-materialization.R"),
       file.path("tests", "canonical-contracts.R"),
       file.path("tests", "cli.R"),
+      file.path("tests", "cli-project-lifecycle.R"),
       file.path("tests", "project-contracts.R"),
       file.path("tests", "project-doctor.R"),
       file.path("tests", "fictional-end-to-end.R"),
@@ -4186,7 +4192,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     lifecycle_operations_reference =
       "resources/documentation/lifecycle-operations-reference.md",
     command_line_guide =
-      "resources/documentation/command-line-guide.md"
+      "resources/documentation/command-line-guide.md",
+    operator_guide = "resources/documentation/operator-guide.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -4318,6 +4325,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     ),
     ", command_line_guide = ",
     encodeString(expected_copies[["command_line_guide"]], quote = "\""),
+    ", operator_guide = ",
+    encodeString(expected_copies[["operator_guide"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -4411,6 +4420,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.documentation.lifecycle-operations-reference'); ",
     "ids <- c(ids, command_line_guide = ",
     "'rrp.documentation.command-line-guide'); ",
+    "ids <- c(ids, operator_guide = ",
+    "'rrp.documentation.operator-guide'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -4982,6 +4993,29 @@ validate_installed_cli <- function(library_root, work_root, environment) {
     "PASS installed CLI help/version/project-status, exact context, isolated ",
     "libraries/startup, JSON, exits, nonmutation, and project resolution\n"
   ))
+  lifecycle_script <- file.path(proof_root, "cli-project-lifecycle.R")
+  copied <- file.copy(
+    file.path(
+      repository_root, "packages", "rrpplatform", "tests",
+      "cli-project-lifecycle.R"
+    ),
+    lifecycle_script, overwrite = FALSE, copy.mode = FALSE, copy.date = FALSE
+  )
+  require_true(copied, "Could not copy installed project-lifecycle CLI proof.")
+  require_command_success(
+    "installed project lifecycle CLI and operator intentions",
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", shQuote(lifecycle_script), shQuote(software_root),
+      shQuote(library_root), shQuote(launcher)
+    ),
+    environment,
+    timeout_seconds = 900L
+  )
+  cat(paste0(
+    "PASS installed CLI project/reference/state/run/history/products/app ",
+    "intentions, confirmations, isolation, and bounded results\n"
+  ))
 }
 
 validate_packages <- function() {
@@ -5211,12 +5245,13 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "exact seven-document installed Markdown ",
+    "exact eight-document installed Markdown ",
     "product resolution, ",
     "read-only lifecycle status, explicit product build/materialize ",
     "composition, and guarded installed fictional-source preparation, ",
     "version-specific CLI help/version/project status, exact private runtime ",
     "preflight, project resolution, human/JSON rendering, and deterministic exits, ",
+    "complete project/reference/state/run/history/products/app CLI intentions, ",
     "complete installed fictional durable execution/history, same-key ",
     "provider non-reexecution, history privacy, and copied-state reopen, ",
     "installed fictional actual/empty logical products, fresh-process access, ",

@@ -36,8 +36,9 @@ Description: Establishes the main internal implementation package for the
     and validates the dependency-light software lifecycle authorities needed
     by later distribution work. It also supplies a thin version-specific
     command dispatcher with deterministic private-library and installed-resource
-    preflight, bounded help/version/project-status commands, and privacy-safe
-    human or JSON rendering.
+    preflight, explicit project lifecycle, durable run, focused history,
+    product, and application intentions, controlled correction/restore
+    confirmation, and privacy-safe human or JSON rendering.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

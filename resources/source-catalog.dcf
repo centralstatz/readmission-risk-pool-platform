@@ -509,3 +509,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/command-line-guide.md
 Installed-Path: resources/documentation/command-line-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.operator-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/operator-guide.md
+Installed-Path: resources/documentation/operator-guide.md
+Format: md
