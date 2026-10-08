@@ -223,8 +223,11 @@ useful bounded presentation, installed human guide, and complete non-Git
 fictional proof. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 reconciliation, so Stages 1–10 are accepted and complete. Stage 11 planning is
-formally accepted and Increment 11.A is the next implementation task; no CLI or
-distribution capability exists yet.
+formally accepted. Increment 11.A is locally implementation-complete and ready
+for formal human acceptance: the lifecycle authorities and stable package
+operations exist, but no CLI, distribution builder, installer, launcher,
+activation, dependency restoration, or version-transition capability exists
+yet. Stage 11 remains incomplete and 11.B+ have not begun.
 
 ## License
 

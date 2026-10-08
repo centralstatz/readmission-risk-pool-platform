@@ -9,4 +9,7 @@
 # The package also owns the installed supplied application authorities, bounded
 # standard-brand adaptation, detached presentation models, pure application
 # view models, and loopback-only read-only launch operation.
+# It also owns the dependency-light lifecycle authorities, bounded read-only
+# project status, product build-and-materialize composition, and installed
+# fictional-source preparation operation.
 NULL

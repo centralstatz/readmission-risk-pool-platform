@@ -40,6 +40,20 @@ publication time, file format, and file digests are not logical identity.
 
 ## Materialize and reopen
 
+For the normal package-owned composition, call
+`rrp_build_and_materialize_products()` with the explicit source operation
+identity and history cutoff. It performs the same accepted build and atomic
+materialization sequence shown below and returns bounded publication evidence.
+The separate calls remain available for lower-level inspection.
+
+```r
+published <- rrp_build_and_materialize_products(
+  catalog, project_root, operation_run_id,
+  history_cutoff = "2026-01-20T12:00:00Z"
+)
+stopifnot(rrp_operation_succeeded(published))
+```
+
 `rrp_materialize_product_set()` publishes a complete set beneath explicit
 project state using `rrp.product-materialization@0.1.0`. Publication validates
 all members before replacing the current-set pointer. Repeating an identical

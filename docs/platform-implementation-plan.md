@@ -6,9 +6,9 @@
 10 was accepted on 2026-10-05 at implementation baseline
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
-resolution of its initial seven planning questions. Stage 11 implementation
-has not begun; Increment 11.A is the next implementation task and must be
-performed as a separate action.
+resolution of its initial seven planning questions. Increment 11.A is locally
+implementation-complete and awaiting formal human acceptance; Stage 11 remains
+incomplete, and no 11.B or later behavior has begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -74,9 +74,9 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 11 is detailed and formally accepted below but
-remains unimplemented; Increment 11.A proceeds only as a separate
-implementation action. After a stage is implemented:
+implementation lineage. Stage 11 is detailed and formally accepted below;
+Increment 11.A is locally implementation-complete and awaiting formal human
+acceptance, while 11.B+ remain unimplemented. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -7025,10 +7025,10 @@ branding, custom-app, and operator syntax decisions with their later owners.
 ## Stage 11 — CLI, closed RRP-owned-payload distribution, installation, and upgrade
 
 **Planning status:** second-edition detailed plan formally accepted for
-implementation on 2026-10-07; implementation has not begun. Stages 1–10 remain
-the accepted baseline. Increment 11.A is the next implementation task. This
-acceptance does not select release bytes or claim an installed distribution
-exists.
+implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
+Increment 11.A is locally implementation-complete and awaiting formal human
+acceptance; 11.B+ remain unimplemented. This does not select release bytes or
+claim an installed distribution exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install

@@ -991,6 +991,7 @@ stopifnot(
 stopifnot(
   identical(sort(getNamespaceExports("rrpplatform")), c(
     "rrp_authoring_failure", "rrp_backup_project_state",
+    "rrp_build_and_materialize_products",
     "rrp_build_product_set",
     "rrp_execute_durable_bundle",
     "rrp_execute_producer", "rrp_execute_risk",
@@ -1002,7 +1003,8 @@ stopifnot(
     "rrp_list_products", "rrp_load_project", "rrp_materialize_product_set",
     "rrp_open_product_access",
     "rrp_open_resource_catalog",
-    "rrp_operation_succeeded", "rrp_read_product",
+    "rrp_operation_succeeded", "rrp_prepare_fictional_source",
+    "rrp_project_status", "rrp_read_product",
     "rrp_register_authored_project", "rrp_resource_path",
     "rrp_restate_history", "rrp_restore_project_state", "rrp_retry_episode",
     "rrp_validate_project",

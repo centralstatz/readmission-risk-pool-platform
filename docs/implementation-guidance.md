@@ -40,6 +40,14 @@ Increments 10.B–10.C add the useful product-only experience, bounded branding,
 installed guide, and complete installed fictional proof. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 architecture reconciliation; Stages 1–10 are accepted and complete.
+Increment 11.A is locally implementation-complete: seven dependency-light
+lifecycle/result authorities, bounded read-only project status, explicit
+build-plus-materialize composition, fictional-only installed source
+preparation, a sixth installed product document, and a 32-export
+`rrpplatform` surface are present. No CLI, distribution builder, installer,
+launcher, activation, dependency restoration, or version-transition behavior
+exists yet. Stage 11 remains incomplete pending formal acceptance and later
+increments.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -148,11 +156,13 @@ closed to the following present paths:
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4, with declared external package dependencies provisioned first. |
-| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct platform/runtime/application dependencies, and exact 29-export namespace. |
+| `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct platform/runtime/application dependencies, and exact 32-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
 | `packages/rrpplatform/man/rrp_open_resource_catalog.Rd` and `packages/rrpplatform/man/rrp_resource_path.Rd` | Focused public API contracts for explicit-root catalog opening and resource resolution. |
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
+| `packages/rrpplatform/R/lifecycle-contracts.R` | Internal exact loading of the seven dependency-light distribution, dependency, installation, activation, installed-diagnosis, project-lifecycle-result, and CLI-result authorities without implementing their later lifecycle behavior. |
+| `packages/rrpplatform/R/lifecycle-operations.R` | Bounded read-only project lifecycle status, package-owned logical build-plus-materialize composition, and exact fictional-only installed source preparation. |
 | `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities plus assembly of their exact runtime admission context. |
 | `packages/rrpplatform/R/runtime-contracts.R` | Internal exact loading and cross-validation of all five singular runtime authorities plus assembly of the closed state and provider contexts. |
 | `packages/rrpplatform/R/state-contracts.R` | Internal exact loading of the coherent 0.2.0 project-state, DuckDB-adapter, and state-backup authority line. |
@@ -181,6 +191,7 @@ closed to the following present paths:
 | `packages/rrpplatform/man/rrp_execute_durable_bundle.Rd` and `packages/rrpplatform/man/rrp_history_operations.Rd` | Focused technical contracts for durable bundle execution, retry, raw/current reads, and append-only invalidation/restatement. |
 | `packages/rrpplatform/man/rrp_project_state_backup.Rd` | Focused technical contract for explicit create-only project-state backup and absent-state restore. |
 | `packages/rrpplatform/man/rrp_build_product_set.Rd`, `packages/rrpplatform/man/rrp_materialize_product_set.Rd`, `packages/rrpplatform/man/rrp_open_product_access.Rd`, and `packages/rrpplatform/man/rrp_product_access.Rd` | Focused public contracts for explicit-scope logical construction, supplied publication, validated reopen/freshness, and detached product list/read access. |
+| `packages/rrpplatform/man/rrp_project_status.Rd`, `packages/rrpplatform/man/rrp_build_and_materialize_products.Rd`, and `packages/rrpplatform/man/rrp_prepare_fictional_source.Rd` | Focused public contracts for read-only lifecycle diagnosis, explicit build-plus-materialize composition, and guarded fictional-only source preparation. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/man/rrp_launch_app.Rd` | Public contract for the supplied read-only loopback application launch boundary. |
 | `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, and `packages/rrpplatform/tests/operation-results.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, and privacy-safe translation. |
@@ -200,6 +211,7 @@ closed to the following present paths:
 | `packages/rrpplatform/tests/state-recovery.R` | Package-native quiescent checkpoint, closed artifact, create-only backup/restore, corruption/incompatibility, complete and incomplete history roundtrip, transaction-boundary, fresh-process continuation, and installed non-Git recovery evidence. |
 | `packages/rrpplatform/tests/logical-products.R` | Package-native in-memory and supplied persistent-port evidence for exact logical schemas, identity/fingerprints, effective history semantics, bounded failures, optimistic coherence, privacy, detachment, conformance, and valid empty behavior. |
 | `packages/rrpplatform/tests/product-materialization.R` | Package-native and separately installed evidence for absent/create-only product state, staged publication, idempotency/replacement, interruption recovery, closed validation, contextual freshness, detached access, copy/reopen, and backup/delete/rebuild behavior. |
+| `packages/rrpplatform/tests/lifecycle-contracts.R` and `packages/rrpplatform/tests/lifecycle-operations.R` | Package-native exact/adversarial authority evidence plus read-only/private lifecycle status, successful/tamper-safe fictional preparation, product-composition equivalence, and failed-composition nonmutation evidence. |
 | `packages/rrpplatform/tests/application-foundation.R` | Package-native authority, branding/default/containment, deterministic view-model, closed-model, real-product freshness, supervised child-process launch, and analytical nonmutation evidence for Increment 10.A. |
 | `packages/rrpplatform/tests/application-experience.R` | Focused deterministic table/filter/page/selection, exact probability, actual-observation sparkline/trajectory, Plotly/Reactable structure, summary, branding, state, and Shiny-server evidence for Increment 10.B. |
 | `packages/rrpplatform/tests/fictional-application.R` | Package-native and separately installed coherent Stage 10 proof for the ordinary non-Git fictional project, installed guide/assets, actual product-derived application composition, product states, bounded branding/logo behavior, executable-customization denial, exact nonmutation, privacy, relocation, and supervised loopback cleanup. |
@@ -227,13 +239,14 @@ closed to the following present paths:
 | `resources/contracts/canonical/canonical-bundle.dcf`, `resources/contracts/canonical/profiles/readmission.dcf`, and `resources/contracts/canonical/domains/*.dcf` | Runtime-owned canonical bundle, initial readmission profile, and discharge-episode/terminal-event semantic authorities. |
 | `resources/contracts/runtime/*.dcf` | Runtime-owned singular target, immutable episode-state, standard risk-request, provider API, and accepted-estimate semantic authorities. |
 | `resources/contracts/history/*.dcf` | Runtime-owned operational-scope, episode-disposition, append-only action, and storage-neutral history-port authorities. |
+| `resources/contracts/lifecycle/*.dcf` | Platform-owned dependency-light software lifecycle and output-shape authorities for later distribution/installation/CLI delegation; they add no installer, launcher, activation behavior, or analytical-history fields. |
 | `resources/contracts/state/*.dcf` | Platform-owned closed project-state metadata, private DuckDB-adapter, and project-state-backup authorities. |
 | `resources/contracts/products/*.dcf` | Platform-owned exact contracts for current remaining risk, actual remaining-risk trajectory, effective operational-scope summary, their all-required initial product set, and supplied DCF/CSV materialization/access. |
 | `resources/contracts/application/*.dcf` | Platform-owned supplied-application identity and bounded standard project-brand interpretation authorities. |
 | `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, and `resources/documentation/supplied-application-guide.md` | The exact five version-matched installed product documents: the three Stage 8 authoring/reference documents, the Stage 9 logical-products lifecycle guide, and the Stage 10 supplied-application guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, and `resources/documentation/lifecycle-operations-reference.md` | The exact six version-matched installed product documents: the three Stage 8 authoring/reference documents, the Stage 9 logical-products lifecycle guide, the Stage 10 supplied-application guide, and the Stage 11.A stable lifecycle-operations reference, all resolved through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, and the installed fictional product/application lifecycle. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 

@@ -1240,6 +1240,238 @@ application_contract_resources <- function() {
   )
 }
 
+lifecycle_contract_header <- function(record_type, contract_id) c(
+  "Record-Type" = record_type,
+  "Contract-ID" = contract_id,
+  "Contract-Version" = "0.1.0",
+  "Format-Version" = "1.0.0",
+  "Product-ID" = "readmission-risk-pool-platform",
+  "Development-Version" = "1.0.0-dev",
+  "Status" = "development_unpublished",
+  "Owner-Package" = "rrpplatform"
+)
+
+lifecycle_contract_resources <- function() list(
+  distribution_manifest = list(
+    id = "rrp.contract.distribution-manifest",
+    source_path = "resources/contracts/lifecycle/distribution-manifest.dcf",
+    installed_path = "resources/contracts/lifecycle/distribution-manifest.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "distribution-manifest-contract", "rrp.distribution-manifest"
+      ),
+      "Manifest-Record-Type" = "rrp-distribution",
+      "Manifest-Fields" = paste(c(
+        "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+        "Product-Version", "Development-Version", "Distribution-ID",
+        "Build-ID", "Target-R-Version", "Target-Platform",
+        "Target-Architecture", "Dependency-Specification-ID",
+        "Resource-Catalog-ID", "Inventory-Digest", "Source-Revision",
+        "Source-State", "Built-At"
+      ), collapse = ","),
+      "Product-Version-Role" =
+        "immutable_published_or_declared_development_identity",
+      "Distribution-ID-Role" = "normalized_rrp_owned_content_identity",
+      "Build-ID-Role" = "build_occurrence_identity",
+      "Published-Version-Official-Content" = "exactly_one",
+      "Payload-Closure" = "rrp_owned_members_only",
+      "Third-Party-Artifact-Closure" = "not_required",
+      "Dependency-Authority" = "rrp.dependency-specification@0.1.0",
+      "Inventory-Authority" = "positive_role_classified_allowlist",
+      "Path-In-Distribution-ID" = "prohibited",
+      "Time-In-Distribution-ID" = "prohibited",
+      "Durable-History-Attribution" = "product_development_api_component_only",
+      "Distribution-Build-Installation-History-Fields" = "prohibited",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
+  dependency_specification = list(
+    id = "rrp.contract.dependency-specification",
+    source_path = "resources/contracts/lifecycle/dependency-specification.dcf",
+    installed_path = "resources/contracts/lifecycle/dependency-specification.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "dependency-specification-contract", "rrp.dependency-specification"
+      ),
+      "Specification-Record-Type" = "rrp-dependency-specification",
+      "Header-Fields" = paste(c(
+        "Record-Type", "Contract-ID", "Contract-Version", "Specification-ID",
+        "Product-ID", "Product-Version", "Target-R-Version", "Target-Platform",
+        "Target-Architecture", "Repository-Set-ID", "Package-Count"
+      ), collapse = ","),
+      "Package-Record-Type" = "rrp-dependency",
+      "Package-Fields" = "Package,Version,Source-Type,Repository,Integrity",
+      "Ordering" = "package_name_radix",
+      "Package-Uniqueness" = "exact_name_once",
+      "Repository-Mode" = "explicit_configured_repositories",
+      "Private-Library" = "required_per_installed_version",
+      "Ambient-User-Or-Site-Library" = "prohibited_as_satisfaction_source",
+      "Bundled-Transitive-Artifacts" = "not_required",
+      "Offline-Installation" = "not_required",
+      "Restoration-Engine" = "internal_implementation_detail",
+      "Project-Dependency-Machinery" = "prohibited",
+      "Credential-Retention" = "prohibited",
+      "Verification" = "package_version_source_integrity_and_private_path",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Record-Types" = "prohibited"
+    )
+  ),
+  installation_record = list(
+    id = "rrp.contract.installation-record",
+    source_path = "resources/contracts/lifecycle/installation-record.dcf",
+    installed_path = "resources/contracts/lifecycle/installation-record.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "installation-record-contract", "rrp.installation-record"
+      ),
+      "Installation-Record-Type" = "rrp-installation",
+      "Fields" = paste(c(
+        "Record-Type", "Contract-ID", "Contract-Version", "Installation-ID",
+        "Product-ID", "Product-Version", "Development-Version",
+        "Distribution-ID", "Build-ID", "Dependency-Specification-ID",
+        "Host-R-Executable", "Host-R-Version", "Platform", "Architecture",
+        "Private-Library", "Resource-Root", "Distribution-Manifest-Digest",
+        "Installed-At"
+      ), collapse = ","),
+      "Installation-ID-Role" = "local_immutable_realization_identity",
+      "Distribution-Compatibility" = "exact_distribution_identity",
+      "Dependency-Compatibility" =
+        "exact_specification_and_verified_realization",
+      "Library-Posture" = "version_private_then_base_r_only",
+      "Ambient-Library-Substitution" = "prohibited",
+      "Project-Fields" = "prohibited",
+      "Project-Discovery-Or-Association" = "prohibited",
+      "Mutable-After-Promotion" = "prohibited",
+      "Path-In-Installation-ID" = "prohibited",
+      "Durable-History-Attribution" = "prohibited",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
+  activation_record = list(
+    id = "rrp.contract.activation-record",
+    source_path = "resources/contracts/lifecycle/activation-record.dcf",
+    installed_path = "resources/contracts/lifecycle/activation-record.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "activation-record-contract", "rrp.activation-record"
+      ),
+      "Activation-Record-Type" = "rrp-activation",
+      "Fields" = paste(c(
+        "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+        "Product-Version", "Installation-ID", "Distribution-ID", "Activated-At"
+      ), collapse = ","),
+      "Selection-Cardinality" = "one_verified_installed_version",
+      "Mutation" = "atomic_record_replacement",
+      "Per-Invocation-Selector" = "verified_override_without_record_mutation",
+      "Project-Fields" = "prohibited",
+      "Project-Discovery-Or-Validation" = "prohibited",
+      "Project-Association" = "prohibited",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
+  installed_diagnosis = list(
+    id = "rrp.contract.installed-diagnosis",
+    source_path = "resources/contracts/lifecycle/installed-diagnosis.dcf",
+    installed_path = "resources/contracts/lifecycle/installed-diagnosis.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "installed-diagnosis-contract", "rrp.installed-diagnosis"
+      ),
+      "Operation-Result-Contract" = "rrp.contract.operation-result@0.1.0",
+      "Operation-IDs" = "rrp.verify-installed-software,rrp.software-doctor",
+      "Value-Fields" = paste(c(
+        "software_status", "product_id", "product_version", "installation_id",
+        "distribution_id", "host_r_status", "private_library_status",
+        "resource_status", "launcher_status", "activation_status", "checks"
+      ), collapse = ","),
+      "Software-Status-Values" = "ready,ready_with_warnings,blocked",
+      "Check-Fields" = "check_id,status,recovery_code",
+      "Check-Status-Values" = "pass,warning,failure",
+      "Recovery-Code-Pattern" = "^[a-z][a-z0-9_]*$",
+      "Read-Only" = "required",
+      "Temporary-Probes" = "removed_before_return",
+      "Project-Input" = "prohibited",
+      "Project-Discovery-Or-Association" = "prohibited",
+      "Repair-Or-Activation" = "prohibited",
+      "Privacy" = "bounded_software_identity_and_diagnostics_only",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
+  project_lifecycle_result = list(
+    id = "rrp.contract.project-lifecycle-result",
+    source_path = "resources/contracts/lifecycle/project-lifecycle-result.dcf",
+    installed_path = "resources/contracts/lifecycle/project-lifecycle-result.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "project-lifecycle-result-contract", "rrp.project-lifecycle-result"
+      ),
+      "Operation-Result-Contract" = "rrp.contract.operation-result@0.1.0",
+      "Operation-ID" = "rrp.project-status",
+      "Value-Fields" = paste(c(
+        "project_id", "project_version", "project_contract_id",
+        "project_contract_version", "supported_rrp_api_version",
+        "canonical_profile_id", "canonical_profile_version", "producer_id",
+        "producer_version", "provider_id", "provider_version", "readiness",
+        "extension_library_status", "state_status", "history_status",
+        "product_status", "product_freshness", "application_status",
+        "product_set_id", "materialization_id", "source_operation_run_id",
+        "source_history_cutoff", "checks"
+      ), collapse = ","),
+      "Readiness-Values" = "ready,ready_with_warnings,blocked",
+      "Extension-Library-Status-Values" = "available,not_initialized",
+      "State-Status-Values" = "compatible,not_initialized",
+      "History-Status-Values" = "compatible,not_initialized",
+      "Product-Status-Values" = "valid,absent",
+      "Product-Freshness-Values" = "not_evaluated,fresh,stale,not_available",
+      "Application-Status-Values" = "ready,blocked_expected",
+      "Check-Fields" = "check_id,status,recovery_code",
+      "Check-Status-Values" = "pass,warning,failure",
+      "Recovery-Code-Pattern" = "^[a-z][a-z0-9_]*$",
+      "Freshness-Context" =
+        "both_operation_run_id_and_history_cutoff_or_neither",
+      "Selected-Callable-Invocation" = "prohibited",
+      "Source-Connectivity" = "not_exercised",
+      "Mutation-Or-Repair" = "prohibited",
+      "Latest-Analytical-Inference" = "prohibited",
+      "Privacy" = "bounded_identity_and_lifecycle_metadata_only",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
+  cli_result_json = list(
+    id = "rrp.contract.cli-result-json",
+    source_path = "resources/contracts/lifecycle/cli-result-json.dcf",
+    installed_path = "resources/contracts/lifecycle/cli-result-json.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "cli-result-json-contract", "rrp.cli-result-json"
+      ),
+      "Schema-ID" = "rrp.cli-result",
+      "Schema-Version" = "1.0.0",
+      "Top-Level-Fields" = "schema_version,operation_id,status,value,diagnostics",
+      "Underlying-Result-Contract" = "rrp.contract.operation-result@0.1.0",
+      "Default-Rendering" = "human",
+      "Machine-Rendering" = "explicit_json_only",
+      "Behavior-Path" = "same_underlying_operation_result",
+      "Value-Fields" = "operation_specific_explicit_allowlist",
+      "Internal-Object-Serialization" = "prohibited",
+      "Privacy" = "deliberately_curated_safe_fields_only",
+      "Diagnostic-Fields" = "code,severity,message",
+      "Exit-Success" = "0",
+      "Exit-Operation-Failure" = "1",
+      "Exit-Usage" = "2",
+      "Interrupted-Status" = "conventional_signal_status",
+      "DCF-Or-Tabular-Public-Contract" = "prohibited",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  )
+)
+
 software_contract_resources <- function() {
   resources <- list(
     diagnostic = list(
@@ -1504,7 +1736,8 @@ software_contract_resources <- function() {
     )
   )
   c(
-    resources, canonical_contract_resources(), runtime_contract_resources(),
+    resources, lifecycle_contract_resources(), canonical_contract_resources(),
+    runtime_contract_resources(),
     history_contract_resources(), state_contract_resources(),
     product_contract_resources(), application_contract_resources()
   )
@@ -1771,6 +2004,10 @@ validate_installed_documentation_resources <- function(
     supplied_application = c(
       id = "rrp.documentation.supplied-application-guide",
       path = "resources/documentation/supplied-application-guide.md"
+    ),
+    lifecycle_operations = c(
+      id = "rrp.documentation.lifecycle-operations-reference",
+      path = "resources/documentation/lifecycle-operations-reference.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -2261,15 +2498,16 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.fictional-reference-walkthrough",
     "rrp.documentation.logical-products-guide",
     "rrp.documentation.supplied-application-guide",
+    "rrp.documentation.lifecycle-operations-reference",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 54L && identical(
+    length(actual_ids) == 62L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 54 known entries."
+    "The software resource inventory must contain exactly 62 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2707,6 +2945,8 @@ package_expected_files <- function(package_name) {
       file.path("R", "durable-history.R"),
       file.path("R", "operation-result.R"),
       file.path("R", "logical-products.R"),
+      file.path("R", "lifecycle-contracts.R"),
+      file.path("R", "lifecycle-operations.R"),
       file.path("R", "product-contracts.R"),
       file.path("R", "product-materialization.R"),
       file.path("R", "project-authoring.R"),
@@ -2722,12 +2962,15 @@ package_expected_files <- function(package_name) {
       file.path("R", "runtime-contracts.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
+      file.path("man", "rrp_build_and_materialize_products.Rd"),
       file.path("man", "rrp_launch_app.Rd"),
       file.path("man", "rrp_build_product_set.Rd"),
       file.path("man", "rrp_materialize_product_set.Rd"),
       file.path("man", "rrp_open_product_access.Rd"),
       file.path("man", "rrp_product_access.Rd"),
       file.path("man", "rrp_initialize_fictional_project.Rd"),
+      file.path("man", "rrp_prepare_fictional_source.Rd"),
+      file.path("man", "rrp_project_status.Rd"),
       file.path("man", "rrp_project_authoring.Rd"),
       file.path("man", "rrp_initialize_project_state.Rd"),
       file.path("man", "rrp_inspect_project_state.Rd"),
@@ -2746,6 +2989,8 @@ package_expected_files <- function(package_name) {
       file.path("tests", "application-foundation.R"),
       file.path("tests", "application-experience.R"),
       file.path("tests", "logical-products.R"),
+      file.path("tests", "lifecycle-contracts.R"),
+      file.path("tests", "lifecycle-operations.R"),
       file.path("tests", "product-materialization.R"),
       file.path("tests", "canonical-contracts.R"),
       file.path("tests", "project-contracts.R"),
@@ -2931,6 +3176,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     c(
       "rrp_authoring_failure", "rrp_backup_project_state",
+      "rrp_build_and_materialize_products",
       "rrp_build_product_set",
       "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
@@ -2945,6 +3191,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_open_product_access",
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
+      "rrp_prepare_fictional_source", "rrp_project_status",
       "rrp_read_product", "rrp_register_authored_project", "rrp_resource_path",
       "rrp_restate_history", "rrp_restore_project_state",
       "rrp_retry_episode",
@@ -2984,6 +3231,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_initialize_project_state)",
       "export(rrp_inspect_project_state)",
       "export(rrp_backup_project_state)",
+      "export(rrp_build_and_materialize_products)",
       "export(rrp_build_product_set)",
       "export(rrp_materialize_product_set)",
       "export(rrp_open_product_access)",
@@ -3003,6 +3251,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_load_project)",
       "export(rrp_open_resource_catalog)",
       "export(rrp_operation_succeeded)",
+      "export(rrp_prepare_fictional_source)",
+      "export(rrp_project_status)",
       "export(rrp_resource_path)",
       "export(rrp_validate_project)",
       "export(rrp_validate_software_resources)",
@@ -3185,12 +3435,15 @@ validate_source_boundaries <- function(package_roots) {
   }, logical(1L))
   require_true(
     identical(
-      unname(basename(names(fictional_source_hits)[fictional_source_hits])),
-      "project-initializer.R"
+      sort(unname(basename(names(
+        fictional_source_hits
+      )[fictional_source_hits])), method = "radix"),
+      c("lifecycle-operations.R", "project-initializer.R")
     ),
     paste0(
       "Fictional project identity or private vocabulary may appear in package ",
-      "source only in its intentionally scoped initializer."
+      "source only in its intentionally scoped initializer and installed ",
+      "reference-preparation operation."
     )
   )
 
@@ -3204,8 +3457,9 @@ validate_source_boundaries <- function(package_roots) {
   require_true(
     identical(
       sort(files_with_source, method = "radix"),
-      c("project-authoring.R", "project-loader.R")
+      c("lifecycle-operations.R", "project-authoring.R", "project-loader.R")
     ) &&
+      length(source_calls[["lifecycle-operations.R"]]) == 1L &&
       length(source_calls[["project-authoring.R"]]) == 1L &&
       length(source_calls[["project-loader.R"]]) == 1L &&
       grepl(
@@ -3214,7 +3468,8 @@ validate_source_boundaries <- function(package_roots) {
       ),
     paste0(
       "rrpplatform may evaluate source only through the fixed trusted ",
-      "registration boundary and its closed standard-authoring files."
+      "registration boundary, closed standard-authoring files, and cataloged ",
+      "fictional-only generator."
     )
   )
 }
@@ -3716,6 +3971,7 @@ load_package_fresh <- function(package_name, library_root) {
   expected_exports <- if (identical(package_name, "rrpplatform")) {
     paste0(
       "c(\"rrp_authoring_failure\", \"rrp_backup_project_state\", ",
+      "\"rrp_build_and_materialize_products\", ",
       "\"rrp_build_product_set\", ",
       "\"rrp_execute_durable_bundle\", ",
       "\"rrp_execute_producer\", ",
@@ -3735,6 +3991,8 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_open_product_access\", ",
       "\"rrp_open_resource_catalog\", ",
       "\"rrp_operation_succeeded\", ",
+      "\"rrp_prepare_fictional_source\", ",
+      "\"rrp_project_status\", ",
       "\"rrp_read_product\", ",
       "\"rrp_register_authored_project\", \"rrp_resource_path\", ",
       "\"rrp_restate_history\", ",
@@ -3845,6 +4103,18 @@ validate_installed_resource_access <- function(library_root, work_root) {
     resource_catalog = "resources/resource-catalog-schema.dcf",
     diagnostic = "resources/contracts/diagnostic.dcf",
     operation_result = "resources/contracts/operation-result.dcf",
+    distribution_manifest =
+      "resources/contracts/lifecycle/distribution-manifest.dcf",
+    dependency_specification =
+      "resources/contracts/lifecycle/dependency-specification.dcf",
+    installation_record =
+      "resources/contracts/lifecycle/installation-record.dcf",
+    activation_record = "resources/contracts/lifecycle/activation-record.dcf",
+    installed_diagnosis =
+      "resources/contracts/lifecycle/installed-diagnosis.dcf",
+    project_lifecycle_result =
+      "resources/contracts/lifecycle/project-lifecycle-result.dcf",
+    cli_result_json = "resources/contracts/lifecycle/cli-result-json.dcf",
     project_manifest = "resources/contracts/project-manifest.dcf",
     project_registration = "resources/contracts/project-registration.dcf",
     project_authoring = "resources/contracts/project-authoring.dcf",
@@ -3897,7 +4167,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     fictional_reference_walkthrough = "resources/documentation/fictional-reference-walkthrough.md",
     logical_products_guide = "resources/documentation/logical-products-guide.md",
     supplied_application_guide =
-      "resources/documentation/supplied-application-guide.md"
+      "resources/documentation/supplied-application-guide.md",
+    lifecycle_operations_reference =
+      "resources/documentation/lifecycle-operations-reference.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -3931,6 +4203,20 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["diagnostic"]], quote = "\""),
     ", operation_result = ",
     encodeString(expected_copies[["operation_result"]], quote = "\""),
+    ", distribution_manifest = ",
+    encodeString(expected_copies[["distribution_manifest"]], quote = "\""),
+    ", dependency_specification = ",
+    encodeString(expected_copies[["dependency_specification"]], quote = "\""),
+    ", installation_record = ",
+    encodeString(expected_copies[["installation_record"]], quote = "\""),
+    ", activation_record = ",
+    encodeString(expected_copies[["activation_record"]], quote = "\""),
+    ", installed_diagnosis = ",
+    encodeString(expected_copies[["installed_diagnosis"]], quote = "\""),
+    ", project_lifecycle_result = ",
+    encodeString(expected_copies[["project_lifecycle_result"]], quote = "\""),
+    ", cli_result_json = ",
+    encodeString(expected_copies[["cli_result_json"]], quote = "\""),
     ", project_manifest = ",
     encodeString(expected_copies[["project_manifest"]], quote = "\""),
     ", project_registration = ",
@@ -4009,12 +4295,17 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["logical_products_guide"]], quote = "\""),
     ", supplied_application_guide = ",
     encodeString(expected_copies[["supplied_application_guide"]], quote = "\""),
+    ", lifecycle_operations_reference = ",
+    encodeString(
+      expected_copies[["lifecycle_operations_reference"]], quote = "\""
+    ),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
     "paste0(library_root, .Platform$file.sep)), ",
     "identical(sort(getNamespaceExports('rrpplatform')), ",
     "c('rrp_authoring_failure', 'rrp_backup_project_state', ",
+    "'rrp_build_and_materialize_products', ",
     "'rrp_build_product_set', ",
     "'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
     "'rrp_execute_risk', ",
@@ -4027,6 +4318,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_materialize_product_set', 'rrp_open_product_access', ",
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
+    "'rrp_prepare_fictional_source', 'rrp_project_status', ",
     "'rrp_read_product', 'rrp_register_authored_project', 'rrp_resource_path', ",
     "'rrp_restate_history', 'rrp_restore_project_state', ",
     "'rrp_retry_episode', ",
@@ -4043,6 +4335,13 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "ids <- c(resource_catalog = 'rrp.contract.resource-catalog', ",
     "diagnostic = 'rrp.contract.diagnostic', ",
     "operation_result = 'rrp.contract.operation-result', ",
+    "distribution_manifest = 'rrp.contract.distribution-manifest', ",
+    "dependency_specification = 'rrp.contract.dependency-specification', ",
+    "installation_record = 'rrp.contract.installation-record', ",
+    "activation_record = 'rrp.contract.activation-record', ",
+    "installed_diagnosis = 'rrp.contract.installed-diagnosis', ",
+    "project_lifecycle_result = 'rrp.contract.project-lifecycle-result', ",
+    "cli_result_json = 'rrp.contract.cli-result-json', ",
     "project_manifest = 'rrp.contract.project-manifest', ",
     "project_registration = 'rrp.contract.project-registration', ",
     "project_authoring = 'rrp.contract.project-authoring', ",
@@ -4087,7 +4386,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.template.fictional-project-source-generator', fictional_reference_walkthrough = ",
     "'rrp.documentation.fictional-reference-walkthrough', logical_products_guide = ",
     "'rrp.documentation.logical-products-guide', supplied_application_guide = ",
-    "'rrp.documentation.supplied-application-guide'); ",
+    "'rrp.documentation.supplied-application-guide', ",
+    "lifecycle_operations_reference = ",
+    "'rrp.documentation.lifecycle-operations-reference'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -4829,7 +5130,7 @@ validate_packages <- function() {
     "projection, explicit-root installed-package access, common result/diagnostic ",
     "canonical, five-resource runtime, four-resource logical-history, ",
     "three-resource state/adapter/backup, four-resource logical-product, and ",
-    "one-resource product-materialization ",
+    "one-resource product-materialization and seven-resource lifecycle/result ",
     "contract relationships, dependency-light ",
     "logical history records/port, explicit project-state initialize/inspect, ",
     "private transactional DuckDB roundtrip/reopen/interruption evidence, ",
@@ -4856,7 +5157,10 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "and exact five-document installed Markdown product resolution, ",
+    "exact six-document installed Markdown ",
+    "product resolution, ",
+    "read-only lifecycle status, explicit product build/materialize ",
+    "composition, and guarded installed fictional-source preparation, ",
     "complete installed fictional durable execution/history, same-key ",
     "provider non-reexecution, history privacy, and copied-state reopen, ",
     "installed fictional actual/empty logical products, fresh-process access, ",

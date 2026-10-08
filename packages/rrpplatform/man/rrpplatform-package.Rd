@@ -26,9 +26,12 @@ create-only checkpointed state backup/absent-state restore.
 It additionally owns the installed supplied-application and bounded standard-
 branding authorities, detached presentation/view models, and loopback-only
 analytically read-only application launch boundary.
+It also owns the dependency-light lifecycle authorities, bounded read-only
+project status, product build-and-materialize composition, and installed
+fictional-source preparation operation.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 29
+The package imports the \pkg{rrpruntime} namespace and exports exactly 32
 technical interfaces. These include project, execution, history, state,
 logical-product, materialization/access, resource-validation, and supplied-
 application operations. \code{rrp_launch_app()} is the sole application launch

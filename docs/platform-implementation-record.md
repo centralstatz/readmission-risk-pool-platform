@@ -5756,3 +5756,109 @@ Stage 11 itself remains unimplemented and incomplete.
 
 **Next task:** implement only Increment 11.A — Lifecycle authorities and stable
 operation completion. Do not begin 11.B or any later increment.
+
+## Stage 11 / Increment 11.A — Lifecycle authorities and stable operation completion — 2026-10-07
+
+Increment 11.A is locally implementation-complete from the formally accepted
+Stage 11 plan. Stage 11 itself remains incomplete, and no 11.B or later
+behavior was implemented.
+
+### Realized authorities and ownership
+
+`rrpplatform` now exactly loads seven cataloged dependency-light DCF
+authorities: `rrp.distribution-manifest@0.1.0`,
+`rrp.dependency-specification@0.1.0`, `rrp.installation-record@0.1.0`,
+`rrp.activation-record@0.1.0`, `rrp.installed-diagnosis@0.1.0`,
+`rrp.project-lifecycle-result@0.1.0`, and
+`rrp.cli-result-json@0.1.0`. They distinguish published/development product
+identity, normalized RRP-owned distribution content, build occurrence, local
+installation realization, activation selection, package/API, project, and
+state identity. Dependency closure means a reproducibly specified and verified
+version-private installation from configured repositories; it does not require
+bundled third-party artifacts or offline installation. The authorities define
+later delegation boundaries but implement no distribution, installation,
+activation, dependency restoration, launcher, or CLI behavior.
+
+The closed installed resource catalog increases from 54 to 62 entries: the
+seven authorities plus
+`rrp.documentation.lifecycle-operations-reference`. Exact source and installed
+mappings, ownership, byte-preserving projection, field closure, drift denial,
+and repository inventory are enforced by the existing validators.
+
+### Stable package operations
+
+The `rrpplatform` namespace increases from 29 to 32 exports without adding a
+dependency:
+
+- `rrp_project_status()` composes the accepted explicit project loader, state
+  compatibility inspection, validated product access, and optional explicit
+  freshness comparison. It returns bounded identity/readiness/check evidence;
+  a valid fresh project reports uninitialized state or absent products as an
+  expected warning state. It never invokes selected producer/provider
+  callables, discovers a project, infers a latest analytical context,
+  initializes, repairs, refreshes, migrates, or exposes storage/private data.
+- `rrp_build_and_materialize_products()` delegates in sequence to the accepted
+  Stage 9 logical builder and supplied transactional materializer with the
+  caller's exact operation-run identity and history cutoff. Its result is
+  bounded publication evidence; it adds no analytics or application behavior.
+- `rrp_prepare_fictional_source()` loads the cataloged installed deterministic
+  generator and accepts only the exact supplied fictional reference-project
+  identity. It reuses identical source and fails safely on conflicting or
+  invalid conditions; it is not a hospital ingestion boundary.
+
+The Lifecycle Operations Reference documents only these realized package
+operations and authority boundaries. The Fictional Reference Walkthrough now
+uses the stable installed preparation operation while retaining transparency
+about the underlying project generator. The Logical Products Guide identifies
+the package-owned composed operation while preserving the lower-level calls.
+
+### Historical reuse and rejection
+
+Reconnaissance of immutable `v0.1.0` material included
+`operations/lib/operator-operation.R`,
+`operations/lib/validation-result.R`, and
+`tests/phase7/test-stable-operations.R`, together with relevant historical
+distribution identity/inventory and fictional-generation mechanics. The clean
+line adapts structured results, pass/warning/failure aggregation, stable
+recovery codes, inspection-only doctor behavior, removed-probe expectations,
+content identity separate from build occurrence, closed positive inventory,
+and deterministic create-only fictional generation. It does not restore the
+historical operation registry, repository doctor, generated Hospital
+distribution, repository-root execution, ambient dependency environment, or
+Git-coupled adopter model.
+
+### Evidence
+
+Package-native tests prove exact positive authority loading plus unsupported,
+extra-field, and missing-resource rejection; fresh/state/product project
+status; bounded result privacy; complete project-file and state/product/history
+nonmutation; explicit paired freshness; product-composition equivalence to the
+two accepted calls; failed prepublication composition with unchanged existing
+products, pointer, and DuckDB history; successful/idempotent/conflicting
+fictional preparation; nonreference refusal; and operation from an unrelated
+non-Git working directory using installed/project resources.
+
+The authoritative local package validator completed successfully after focused
+recovery of exact-export and synthetic-resource-fixture expectations. It proved
+the 62-resource source/projection closure and adversarial cases, exact 32-export
+and unchanged dependency posture, both package source builds, isolated
+installation/fresh loading, `rrpruntime` and `rrpplatform` `R CMD check
+--no-manual` with `Status: OK`, and the complete installed Stage 4–10 project,
+producer/provider, state/recovery, fictional durable, product, and supplied-
+application regressions. The repository validator and `git diff --check` also
+pass. No generated archive, check directory, temporary library, or validation
+process remains in the repository.
+
+No durable history/state authority or schema changed. Distribution, build, and
+installation identity remains software integrity evidence and was not added to
+operational scope, dispositions, actions, product lineage, or project state;
+no migration occurred.
+
+**Current implementation state:** Increment 11.A is implementation-complete
+and ready for formal human acceptance. Stage 11 remains incomplete. No CLI,
+distribution archive, installer, launcher, dependency restoration, activation,
+upgrade/rollback/uninstall, migration, deployment artifact, or remote
+acquisition/publication exists on the clean line.
+
+**Next task:** formally accept Increment 11.A before beginning Increment 11.B —
+Version-specific CLI foundation and deterministic runtime.

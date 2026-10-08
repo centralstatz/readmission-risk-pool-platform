@@ -65,13 +65,19 @@ producer/provider contracts described in the Project Authoring Guide.
 
 ## Generate and inspect project-owned source
 
-The generator is trusted project code and must be called explicitly:
+Use the installed fictional-only operation explicitly:
 
 ```r
-generator <- new.env(parent = baseenv())
-sys.source(file.path(project_root, "R", "generate-source.R"), generator)
-generator$rrp_generate_fictional_source(project_root)
+prepared <- rrp_prepare_fictional_source(catalog, project_root)
+stopifnot(rrp_operation_succeeded(prepared))
 ```
+
+The operation resolves the cataloged installed generator, accepts only the
+exact supplied fictional project identity, reuses identical source, and
+refuses conflicting source without overwrite. It is not a general ingestion
+operation. The project copy of `R/generate-source.R` remains inspectable
+teaching material and defines `rrp_generate_fictional_source()` as the
+underlying deterministic project-owned generator.
 
 It creates exactly:
 

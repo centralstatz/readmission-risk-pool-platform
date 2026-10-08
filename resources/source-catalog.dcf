@@ -437,3 +437,67 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/supplied-application-guide.md
 Installed-Path: resources/documentation/supplied-application-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.contract.distribution-manifest
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/distribution-manifest.dcf
+Installed-Path: resources/contracts/lifecycle/distribution-manifest.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.dependency-specification
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/dependency-specification.dcf
+Installed-Path: resources/contracts/lifecycle/dependency-specification.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.installation-record
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/installation-record.dcf
+Installed-Path: resources/contracts/lifecycle/installation-record.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.activation-record
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/activation-record.dcf
+Installed-Path: resources/contracts/lifecycle/activation-record.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.installed-diagnosis
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/installed-diagnosis.dcf
+Installed-Path: resources/contracts/lifecycle/installed-diagnosis.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.project-lifecycle-result
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/project-lifecycle-result.dcf
+Installed-Path: resources/contracts/lifecycle/project-lifecycle-result.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.contract.cli-result-json
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/lifecycle/cli-result-json.dcf
+Installed-Path: resources/contracts/lifecycle/cli-result-json.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.documentation.lifecycle-operations-reference
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/lifecycle-operations-reference.md
+Installed-Path: resources/documentation/lifecycle-operations-reference.md
+Format: md

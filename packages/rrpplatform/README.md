@@ -50,6 +50,12 @@ The cataloged Supplied Application Guide documents the installed package-level
 launch, product-state, branding, read-only, loopback, and later-deployment
 boundaries without requiring repository source.
 
+Increment 11.A adds seven dependency-light installed lifecycle/result
+authorities and three stable package operations. These keep software lifecycle
+identity separate from project, state, package/API, and durable analytical
+identity. They do not implement a CLI, distribution builder, installer,
+launcher, dependency restoration, or active-version selection.
+
 Its current callable interfaces are:
 
 - `rrp_register_authored_project(project_root)` validates one standard-authored
@@ -80,6 +86,9 @@ Its current callable interfaces are:
 - `rrp_initialize_fictional_project(software_catalog, project_root)` creates
   the supplied ordinary fictional teaching project at an absent destination;
   its project-owned source generator remains a separate explicit action;
+- `rrp_prepare_fictional_source(software_catalog, project_root)` resolves the
+  installed generator and realizes or reuses deterministic source only for the
+  exact supplied fictional project identity;
 - `rrp_initialize_project_state(software_catalog, project_root)` creates and
   validates exactly `state.dcf` and `history.duckdb` beneath the manifest-owned
   state path, or validates an existing compatible state without mutation;
@@ -89,6 +98,9 @@ Its current callable interfaces are:
 - `rrp_validate_project(software_catalog, project_root)` reuses the loader and
   returns one bounded structural success/failure result, including declared
   extension-library and state status and a fixed warning when state is absent;
+- `rrp_project_status(software_catalog, project_root, ...)` composes bounded
+  read-only project, state/history, product, freshness, and application
+  readiness without invoking selected components or mutating the project;
 - `rrp_resource_path(catalog, resource_id)` resolves one declared logical ID
   after reopening and revalidating the installed resource boundary;
 - `rrp_validate_software_resources(software_root)` returns one common
@@ -98,6 +110,9 @@ Its current callable interfaces are:
 - `rrp_build_product_set(software_catalog, project_root, operation_run_id,
   history_cutoff)` returns one coherent detached logical set or one bounded
   structured product-construction failure;
+- `rrp_build_and_materialize_products(software_catalog, project_root,
+  operation_run_id, history_cutoff)` performs the same accepted build and
+  atomic publication sequence behind one package-owned operator intention;
 - `rrp_materialize_product_set(software_catalog, project_root, product_set)`
   validates and publishes one complete logical set through the supplied
   materializer;
