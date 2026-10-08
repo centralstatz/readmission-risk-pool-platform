@@ -5862,3 +5862,125 @@ acquisition/publication exists on the clean line.
 
 **Next task:** formally accept Increment 11.A before beginning Increment 11.B —
 Version-specific CLI foundation and deterministic runtime.
+
+## Stage 11 / Increment 11.A formal acceptance — 2026-10-08
+
+The completed 11.A baseline at revision
+`c46e95c32be2447a6d8ea190e2c3d92a89d3888f` was reconciled against Platform
+True North, Platform Architecture, the accepted Stage 11 plan, implementation
+guidance, the installed-resource catalog, package surfaces, tests, and the
+implementation evidence above. The repository contains the reported seven
+cataloged lifecycle/result authorities, three stable public operations, 62
+closed installed resources, and exact 32-export `rrpplatform` surface without
+a new dependency. Focused inspection confirmed the recorded build, isolated
+install/load, strict package-check, resource-closure, and Stage 4–10 regression
+evidence and found no durable state/history schema change or 11.B behavior in
+that baseline.
+
+No architecture contradiction, implementation discrepancy, or acceptance-
+blocking defect was found. Increment 11.A is therefore formally accepted and
+complete at the revision above. Its authority and stable-operation boundary is
+preserved. Stage 11 remains incomplete, and Increment 11.B becomes the current
+implementation increment.
+
+## Stage 11 / Increment 11.B — Version-specific CLI foundation and deterministic runtime — 2026-10-08
+
+Increment 11.B is locally implementation-complete from the accepted 11.A
+baseline. It establishes one version-specific invocation boundary and the
+package-owned CLI dispatcher; it does not establish active-version selection,
+installation, or the broader project lifecycle command surface.
+
+### Launcher, dispatcher, and command boundary
+
+`packages/rrpplatform/exec/rrp` is the minimal launcher installed with one
+specific package version. It requires explicit R executable, private-library,
+and software-resource-root inputs; suppresses user and site startup/library
+selection; sets the exact private/base-library boundary; loads the installed
+package; and `exec`s the selected R process so process termination is not
+hidden behind a surviving shell. It contains no project, domain, result,
+installation, or activation behavior.
+
+The 33rd exact `rrpplatform` export, `rrp_cli_dispatch()`, owns the accepted
+shallow noun grammar: `software`, `project`, `reference`, `state`, `history`,
+`products`, `app`, and `run`. This increment implements help discovery,
+`rrp version [--json]`, and the one bounded read-only operation
+`rrp project status [--project PATH] [--json]`. Other noun commands fail with
+safe usage diagnostics. Existing-project selection uses exactly an explicit
+`--project` directory or, when omitted, exactly the current working directory;
+there is no parent/Git/registry/remembered-project discovery. A parser
+primitive also establishes the accepted explicit positional destination rule
+for future creation without implementing creation.
+
+The dispatcher provides bounded path, RFC 3339 UTC time, and identity syntax
+parsing while leaving authoritative domain validation with package owners.
+Preflight verifies the exact host R (R 4.4 or newer), exact private plus base R
+library search path, required private dependencies, exact RRP package versions,
+closed installed resources, and lifecycle contracts before dispatch. Missing,
+incompatible, ambient, or invalid context fails before an operation runs.
+
+Human and explicit `--json` output derive from the same structured operation
+result. JSON uses `rrp.cli-result@1.0.0`, admits only exact operation-specific
+fields and safe diagnostics, and rejects unknown operations, malformed values,
+and arbitrary R objects. Exit status is exact: 0 for success or success with
+warnings, 1 for an operation failure, 2 for usage failure, 3 for invalid
+installed context, and 130 for a caught interrupt. The internal confirmation
+policy leaves reads unprompted, requires exact `yes` or explicit noninteractive
+authorization for future mutations, and implements no mutating command.
+
+### Ownership, documentation, and historical reuse
+
+The closed catalog increases from 62 to 63 entries with
+`rrp.documentation.command-line-guide`. The installed guide documents only the
+realized grammar, help, exact project resolution, output modes, and version-
+specific boundary. Package metadata, package references, human implementation
+guidance, repository ownership, source inventory, and both validators now own
+and verify the dispatcher, executable launcher, package-native tests, manual,
+and installed guide. No package dependency was added.
+
+Reconnaissance of immutable `v0.1.0` material covered
+`operations/operations.yml`, `operations/doctor.R`,
+`operations/run-platform.R`, `operations/lib/validation-result.R`, and
+`tests/phase7/test-stable-operations.R`. The clean implementation adapts only
+purpose/mutation vocabulary, structured result and diagnostic rendering, and
+wrapper exit-status semantics. It rejects historical repository-root path
+inference, source chains, operation registry, repository doctor, and generated
+Hospital/Git-coupled execution architecture.
+
+### Evidence and limits
+
+Package-native tests prove the closed grammar and help; duplicate, missing,
+and unsupported argument failures; exact explicit/current-directory project
+selection with no upward discovery; common path/time/identity parsing; future
+confirmation policy; common human/JSON payloads; schema/field curation;
+malformed, unknown, and unsafe-result denial; deterministic exit mapping; and
+interrupt conversion. Isolated-installed proof invokes the actual executable
+from an unrelated non-Git directory and proves exact package/resource context,
+ambient library and user-profile exclusion, help/version/project status,
+explicit and current-directory selection, nonmutation, human/JSON operation
+failure, usage and invalid-context statuses, and direct signal-status
+propagation.
+
+The authoritative repository and package validators pass. The package matrix
+proves all 63 source/projected resources, exact 33 exports, unchanged dependency
+posture, both source builds, isolated installation and fresh loading, strict
+`R CMD check --no-manual` with exact `Status: OK`, the installed CLI boundary,
+and the complete accepted Stage 4–10 plus 11.A regression suite. The existing
+full `rrpplatform` check supervision budget was increased after the unchanged
+fictional regression suite exceeded its former wall-clock allowance without an
+assertion failure; no test or acceptance condition was removed or weakened.
+Repository validation and `git diff --check` also pass, and no generated build,
+check, library, state, or product artifact remains as source.
+
+Increment 11.B adds no project/reference lifecycle commands, distribution
+archive, bootstrap, dependency restoration, installation registry, shared
+launcher, activation, transition, migration, remote acquisition, deployment
+artifact, or publication behavior. It changes no Stage 1–10 or accepted 11.A
+contract, state/history schema, domain operation, or analytical result.
+
+**Current implementation state:** Increment 11.A is formally accepted and
+complete. Increment 11.B is implementation-complete and ready for formal human
+acceptance. Stage 11 remains incomplete; 11.C and later increments are
+unimplemented.
+
+**Next task:** formally accept Increment 11.B before beginning Increment 11.C —
+Project lifecycle CLI and operator intentions.

@@ -70,8 +70,11 @@ customization denial, and supervised loopback cleanup. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 architecture reconciliation; Stages 1–10 are accepted and complete. The
 repository has no root selector, persistent installed RRP distribution,
-scheduled/off-host backup, migration, command-line interface, or deployment
-capability.
+scheduled/off-host backup, migration, shared active-version launcher, complete
+operator command surface, or deployment capability. Increment 11.B provides
+only the version-specific launcher/dispatcher foundation, `rrp version`, and
+read-only `rrp project status` against an explicitly supplied installed
+context.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -194,7 +197,8 @@ accepted and complete. This narrow hosted evidence does not establish broader
 platform or support validity. The complete Stage 4 revision also passed the
 same hosted workflow and has been formally accepted, so Stages 1–4 are complete.
 The initializer, loader, doctor, and producer operation are internal technical
-interfaces; ordinary operator commands remain absent. The complete Stage 5
+interfaces; the later bounded Stage 11.B command foundation does not alter
+their ownership. The complete Stage 5
 revision passed the same hosted workflow and has been formally accepted, so
 Stages 1–5 are complete. The complete Stage 6 revision also passed the hosted
 workflow and has been formally accepted. The complete Stage 7 revision passed
@@ -223,11 +227,13 @@ useful bounded presentation, installed human guide, and complete non-Git
 fictional proof. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 reconciliation, so Stages 1–10 are accepted and complete. Stage 11 planning is
-formally accepted. Increment 11.A is locally implementation-complete and ready
-for formal human acceptance: the lifecycle authorities and stable package
-operations exist, but no CLI, distribution builder, installer, launcher,
-activation, dependency restoration, or version-transition capability exists
-yet. Stage 11 remains incomplete and 11.B+ have not begun.
+formally accepted. Increment 11.A is accepted and complete. Increment 11.B is
+locally implementation-complete: one version-specific launcher, the package-
+owned noun dispatcher, help/version, and read-only project status now exist
+with deterministic private-library/resource preflight and human/JSON output.
+There is still no distribution builder, installer, shared active-version
+launcher, activation, dependency restoration, or version transition. Stage 11
+remains incomplete; 11.B awaits formal human acceptance.
 
 ## License
 

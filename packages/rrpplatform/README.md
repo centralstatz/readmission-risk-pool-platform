@@ -51,13 +51,18 @@ launch, product-state, branding, read-only, loopback, and later-deployment
 boundaries without requiring repository source.
 
 Increment 11.A adds seven dependency-light installed lifecycle/result
-authorities and three stable package operations. These keep software lifecycle
-identity separate from project, state, package/API, and durable analytical
-identity. They do not implement a CLI, distribution builder, installer,
-launcher, dependency restoration, or active-version selection.
+authorities and three stable package operations. Increment 11.B adds the thin
+version-specific launcher and package dispatcher for help, version, and
+read-only project status. Exact host-R, private-library, package, and installed-
+resource preflight happens before command delegation. No active-version
+selection, distribution builder, installer, dependency restoration, or project
+mutation is implemented.
 
 Its current callable interfaces are:
 
+- `rrp_cli_dispatch(...)` validates one explicitly supplied installed software
+  context, parses the bounded noun grammar, delegates the implemented read-only
+  commands, and renders the same common result as human text or versioned JSON;
 - `rrp_register_authored_project(project_root)` validates one standard-authored
   project under the authoritative loader context and compiles its two narrow
   hospital callables into the unchanged raw registration contract;
@@ -238,9 +243,9 @@ otherwise valid set remains readable.
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
-runtime state/provider behavior. The package does not provide root selection,
-an ordinary operator command, dependency restoration, applications,
-installation, or deployment. It
+runtime state/provider behavior. The package does not provide active-version
+selection, dependency restoration, installation, or deployment. Its bounded
+version-specific command dispatcher does not broaden those lifecycle claims. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export
 only after one selected project producer returns a conforming result.
@@ -250,5 +255,5 @@ The result/diagnostic foundation is deliberately
 in-memory and contains no run identity, event lifecycle, arbitrary context,
 sink, logging, metrics, persistence, or audit behavior.
 
-The package is not the RRP product, installer, command-line interface, public
-project API, or a separately marketed package.
+The package is not a separately installed RRP product, installer, shared
+active-version selector, public project API, or separately marketed package.

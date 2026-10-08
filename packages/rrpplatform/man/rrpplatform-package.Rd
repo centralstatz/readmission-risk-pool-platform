@@ -28,13 +28,15 @@ branding authorities, detached presentation/view models, and loopback-only
 analytically read-only application launch boundary.
 It also owns the dependency-light lifecycle authorities, bounded read-only
 project status, product build-and-materialize composition, and installed
-fictional-source preparation operation.
+fictional-source preparation operation and the thin version-specific command
+dispatcher.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 32
+The package imports the \pkg{rrpruntime} namespace and exports exactly 33
 technical interfaces. These include project, execution, history, state,
 logical-product, materialization/access, resource-validation, and supplied-
-application operations. \code{rrp_launch_app()} is the sole application launch
+application operations plus \code{rrp_cli_dispatch()} as the version-specific
+command boundary. \code{rrp_launch_app()} is the sole application launch
 operation. It does not discover or select a
 software or project root. The loader evaluates trusted project registration in
 a controlled environment that is not a security sandbox and never invokes a

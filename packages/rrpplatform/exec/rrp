@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# Version-specific RRP launcher. The installation/selection lifecycle supplies
+# these exact paths; this entry never discovers a repository, project, or active
+# installation.
+
+if [ -z "${RRP_R_EXECUTABLE:-}" ] ||
+   [ -z "${RRP_PRIVATE_LIBRARY:-}" ] ||
+   [ -z "${RRP_SOFTWARE_ROOT:-}" ]; then
+  echo "ERROR [invalid_software_context] Explicit installed software context is required." >&2
+  exit 3
+fi
+
+case "$RRP_R_EXECUTABLE$RRP_PRIVATE_LIBRARY$RRP_SOFTWARE_ROOT" in
+  *'
+'*)
+    echo "ERROR [invalid_software_context] Explicit installed software context is invalid." >&2
+    exit 3
+    ;;
+esac
+
+if [ ! -x "$RRP_R_EXECUTABLE" ] ||
+   [ ! -d "$RRP_PRIVATE_LIBRARY" ] ||
+   [ ! -d "$RRP_SOFTWARE_ROOT" ]; then
+  echo "ERROR [invalid_software_context] Explicit installed software context is invalid." >&2
+  exit 3
+fi
+
+# Startup files and inherited package-library choices are intentionally inert.
+R_ENVIRON_USER=
+R_PROFILE_USER=
+R_LIBS_USER=$RRP_PRIVATE_LIBRARY
+R_LIBS_SITE=$RRP_PRIVATE_LIBRARY/.rrp-no-site-library
+export R_ENVIRON_USER R_PROFILE_USER R_LIBS_USER R_LIBS_SITE
+
+rrp_entry='private_library <- normalizePath(Sys.getenv("RRP_PRIVATE_LIBRARY"), winslash = "/", mustWork = TRUE)
+.libPaths(c(private_library, .Library))
+namespace <- tryCatch(loadNamespace("rrpplatform"), error = function(condition) NULL)
+if (is.null(namespace)) {
+  message("ERROR [invalid_software_context] The selected installed software context is invalid.")
+  quit(save = "no", status = 3L, runLast = FALSE)
+}
+status <- tryCatch(
+  getExportedValue("rrpplatform", "rrp_cli_dispatch")(
+    arguments = commandArgs(trailingOnly = TRUE),
+    software_root = Sys.getenv("RRP_SOFTWARE_ROOT"),
+    private_library = private_library,
+    host_r_executable = Sys.getenv("RRP_R_EXECUTABLE"),
+    working_directory = "."
+  ),
+  interrupt = function(condition) 130L,
+  error = function(condition) {
+    message("ERROR [cli_internal_failure] The command could not be completed safely.")
+    1L
+  }
+)
+quit(save = "no", status = as.integer(status), runLast = FALSE)'
+
+exec "$RRP_R_EXECUTABLE" --vanilla --slave -e "$rrp_entry" --args "$@"

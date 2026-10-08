@@ -799,6 +799,7 @@ rrp_loader_tests <- list(
         "rrp_authoring_failure", "rrp_backup_project_state",
         "rrp_build_and_materialize_products",
         "rrp_build_product_set",
+        "rrp_cli_dispatch",
         "rrp_execute_durable_bundle",
         "rrp_execute_producer", "rrp_execute_risk",
         "rrp_initialize_fictional_project",

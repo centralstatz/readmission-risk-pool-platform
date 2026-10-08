@@ -11,5 +11,6 @@
 # view models, and loopback-only read-only launch operation.
 # It also owns the dependency-light lifecycle authorities, bounded read-only
 # project status, product build-and-materialize composition, and installed
-# fictional-source preparation operation.
+# fictional-source preparation operation and the thin version-specific command
+# dispatcher.
 NULL

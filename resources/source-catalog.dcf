@@ -501,3 +501,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/lifecycle-operations-reference.md
 Installed-Path: resources/documentation/lifecycle-operations-reference.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.command-line-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/command-line-guide.md
+Installed-Path: resources/documentation/command-line-guide.md
+Format: md

@@ -78,7 +78,7 @@ exact standard-authoring adaptation to the raw producer/provider contracts,
 transactional seven-authoring-path fictional-project initialization with the
 same branding resources, explicit
 byte-deterministic source generation, private identity-crosswalk mapping,
-time-aware project-provider execution, and exact six-document installed
+time-aware project-provider execution, and exact seven-document installed
 guidance,
 complete installed non-Git fictional durable execution, scope/episode/current
 history, private-field exclusion, same-key provider non-reexecution, and
@@ -194,9 +194,12 @@ fictional application proof. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted run `37348810704`,
 job `111894155548`; formal reconciliation accepted Stage 10. Stages 1–10 are
 accepted and complete. The Stage 11 detailed plan is formally accepted.
-Increment 11.A is locally implementation-complete with seven cataloged
-lifecycle/result authorities, a 62-resource closed catalog, the 32-export
-`rrpplatform` surface, read-only project lifecycle status, Stage 9 build-plus-
-materialize composition, guarded installed fictional-source preparation, and
-complete local package validation. Stage 11 remains incomplete; 11.B+ have not
-begun.
+Increment 11.A is accepted and complete with seven cataloged lifecycle/result
+authorities, read-only project lifecycle status, Stage 9 build-plus-materialize
+composition, and guarded installed fictional-source preparation. Increment
+11.B adds the 63-resource catalog, 33-export `rrpplatform` surface, cataloged
+Command-Line Guide, version-specific package launcher, and package-owned
+help/version/read-only-project-status dispatcher with exact R/private-library/
+resource preflight, human/JSON rendering, deterministic exits, and explicit
+project resolution. Stage 11 remains incomplete; 11.B awaits formal human
+acceptance and 11.C+ have not begun.
