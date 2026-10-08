@@ -29,10 +29,14 @@ jobs:
           if (!nzchar(repository)) repository <- "https://cloud.r-project.org"
           install.packages(c(
             "DBI", "duckdb", "shiny", "bslib", "plotly", "reactable",
-            "brand.yml"
+            "brand.yml", "renv"
           ), lib = dependency_library,
                            repos = repository)
       - name: Validate repository foundation
         run: Rscript --vanilla tools/validate-repository.R
       - name: Validate package foundation
         run: Rscript --vanilla tools/validate-packages.R
+      - name: Validate distribution foundation
+        env:
+          RRP_CRAN_REPOSITORY: ${{ env.RSPM }}
+        run: Rscript --vanilla tools/validate-distribution.R

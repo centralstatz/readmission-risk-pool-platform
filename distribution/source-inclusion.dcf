@@ -1,0 +1,91 @@
+Record-Type: distribution-source-inclusion
+Authority-ID: rrp.distribution-source-inclusion
+Authority-Version: 0.1.0
+Product-ID: readmission-risk-pool-platform
+Development-Version: 1.0.0-dev
+Resource-Catalog: resources/source-catalog.dcf
+Package-Count: 2
+Direct-Payload-Count: 8
+
+Record-Type: package-source
+Package: rrpruntime
+Package-Root: packages/rrpruntime
+Excluded-Directories: tests
+Files: DESCRIPTION,NAMESPACE,README.md,R/canonical-admission.R,
+ R/episode-state.R,R/history.R,R/risk-provider.R,
+ R/rrpruntime-package.R,man/rrp_admit_canonical_bundle.Rd,
+ man/rrp_execute_risk_provider.Rd,man/rrp_history_port.Rd,
+ man/rrp_history_reads.Rd,man/rrp_history_records.Rd,
+ man/rrp_prepare_episode_state.Rd,man/rrpruntime-package.Rd
+
+Record-Type: package-source
+Package: rrpplatform
+Package-Root: packages/rrpplatform
+Excluded-Directories: tests
+Files: DESCRIPTION,NAMESPACE,README.md,R/application-contracts.R,
+ R/application.R,R/canonical-contracts.R,R/cli.R,R/duckdb-history.R,
+ R/durable-history.R,R/lifecycle-contracts.R,
+ R/lifecycle-operations.R,R/logical-products.R,R/operation-result.R,
+ R/producer-execution.R,R/product-contracts.R,
+ R/product-materialization.R,R/project-authoring.R,
+ R/project-contracts.R,R/project-doctor.R,R/project-initializer.R,
+ R/project-loader.R,R/project-state.R,R/resource-catalog.R,
+ R/risk-execution.R,R/rrpplatform-package.R,R/runtime-contracts.R,
+ R/state-contracts.R,R/state-recovery.R,exec/rrp,
+ man/rrp_build_and_materialize_products.Rd,
+ man/rrp_build_product_set.Rd,man/rrp_cli_dispatch.Rd,
+ man/rrp_execute_durable_bundle.Rd,man/rrp_execute_producer.Rd,
+ man/rrp_execute_risk.Rd,man/rrp_history_operations.Rd,
+ man/rrp_initialize_fictional_project.Rd,
+ man/rrp_initialize_project.Rd,
+ man/rrp_initialize_project_state.Rd,
+ man/rrp_inspect_project_state.Rd,man/rrp_launch_app.Rd,
+ man/rrp_load_project.Rd,man/rrp_materialize_product_set.Rd,
+ man/rrp_open_product_access.Rd,man/rrp_open_resource_catalog.Rd,
+ man/rrp_operation_succeeded.Rd,
+ man/rrp_prepare_fictional_source.Rd,man/rrp_product_access.Rd,
+ man/rrp_project_authoring.Rd,man/rrp_project_state_backup.Rd,
+ man/rrp_project_status.Rd,man/rrp_resource_path.Rd,
+ man/rrp_validate_project.Rd,
+ man/rrp_validate_software_resources.Rd,
+ man/rrpplatform-package.Rd
+
+Record-Type: direct-payload
+Source-Path: LICENSE
+Destination-Path: LICENSE
+Role: license
+
+Record-Type: direct-payload
+Source-Path: NOTICE
+Destination-Path: NOTICE
+Role: notice
+
+Record-Type: direct-payload
+Source-Path: resources/documentation/distribution-guide.md
+Destination-Path: README.md
+Role: documentation
+
+Record-Type: direct-payload
+Source-Path: SECURITY.md
+Destination-Path: documentation/SECURITY.md
+Role: documentation
+
+Record-Type: direct-payload
+Source-Path: SUPPORT.md
+Destination-Path: documentation/SUPPORT.md
+Role: documentation
+
+Record-Type: direct-payload
+Source-Path: RRP.yml
+Destination-Path: VERSION.yml
+Role: version-information
+
+Record-Type: direct-payload
+Source-Path: distribution/verify-distribution.R
+Destination-Path: verify-distribution.R
+Role: standalone-verifier
+
+Record-Type: direct-payload
+Source-Path: packages/rrpplatform/exec/rrp
+Destination-Path: bin/rrp
+Role: version-launcher

@@ -517,3 +517,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/operator-guide.md
 Installed-Path: resources/documentation/operator-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.distribution-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/distribution-guide.md
+Installed-Path: resources/documentation/distribution-guide.md
+Format: md

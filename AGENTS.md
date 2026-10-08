@@ -78,7 +78,7 @@ exact standard-authoring adaptation to the raw producer/provider contracts,
 transactional seven-authoring-path fictional-project initialization with the
 same branding resources, explicit
 byte-deterministic source generation, private identity-crosswalk mapping,
-time-aware project-provider execution, and exact eight-document installed
+time-aware project-provider execution, and exact nine-document installed
 guidance,
 complete installed non-Git fictional durable execution, scope/episode/current
 history, private-field exclusion, same-key provider non-reexecution, and
@@ -116,8 +116,20 @@ PNG/JPEG logo detachment, one-time exact product snapshots, pure component-
 ready view models, a generic Shiny/bslib + Reactable/Plotly shell, and the 29th
 `rrpplatform` export for loopback-only read-only launch. Final application
 experiences, initializer branding, and the installed guide remain deferred to
-10.B–10.C. The
-read-only package-foundation workflow invokes these same two commands on push and pull-
+10.B–10.C.
+
+Use the same distribution-foundation operation with a concrete configured
+repository:
+
+```sh
+RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
+  Rscript --vanilla tools/validate-distribution.R
+```
+
+It proves the positive source boundary, target-keyed dependency specification,
+closed archive, logical identity, standalone verification, and adversarial
+integrity/output safeguards. It does not restore or install software. The
+read-only package-foundation workflow invokes these same three commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
 `eb2c71aa8dd7feecb8b98848f798ec18cff0a9fa`, completing Increment 2.C and Stage
@@ -206,5 +218,11 @@ project resolution. Exact revision
 job `113291662224`; formal reconciliation accepted Increment 11.B. Increment
 11.C adds the 64-resource catalog, cataloged Operator Guide, and the same
 33-export dispatcher over accepted project/reference, state, durable-run,
-focused-history, product, and application intentions. Stage 11 remains
-incomplete; 11.C awaits formal human acceptance and 11.D+ have not begun.
+focused-history, product, and application intentions; it is formally accepted
+at revision `7c8eadac3b80e01e71332ab8e0c11e8dd29d2adf` after hosted run
+`37795375545`, job `113373335941`. Increment 11.D adds the 65-resource catalog,
+positive distribution source authority, exact package artifacts, target-keyed
+dependency specification, closed SHA-256 inventory/manifest, standalone
+verifier, create-only archive builder, and distribution-native adversarial
+proof. It is implementation-complete pending human acceptance. Stage 11
+remains incomplete; no 11.E+ behavior exists.

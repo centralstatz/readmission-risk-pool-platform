@@ -7,8 +7,9 @@
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
 resolution of its initial seven planning questions. Increments 11.A–11.C are
-accepted and complete. Stage 11 remains incomplete, and Increment 11.D is the
-next implementation task; 11.D+ has not begun.
+accepted and complete. Increment 11.D is implementation-complete pending
+formal human acceptance. Stage 11 remains incomplete; Increment 11.E and later
+work have not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -75,8 +76,9 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.C are accepted and complete. Increment 11.D is the next
-implementation task, and 11.D+ remains unimplemented. After a stage is
+Increments 11.A–11.C are accepted and complete. Increment 11.D is
+implementation-complete pending formal human acceptance, and 11.E+ remains
+unimplemented. After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -7027,9 +7029,10 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 **Planning status:** second-edition detailed plan formally accepted for
 implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
-Increments 11.A–11.C are formally accepted and complete. Increment 11.D is the
-next implementation task; 11.D+ remains unimplemented. This does not select
-release bytes or claim an installed distribution exists.
+Increments 11.A–11.C are formally accepted and complete. Increment 11.D is
+implementation-complete pending formal human acceptance; 11.E+ remains
+unimplemented. This does not select release bytes or claim an installed
+distribution exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7707,6 +7710,10 @@ APIs, and the reference-versus-hospital boundary; update help, ownership,
 validators, and implementation record.
 
 ### Increment 11.D — Closed RRP payload and reproducible dependency specification
+
+**Implementation status:** implementation-complete pending formal human
+acceptance. The realized foundation remains an unpublished, non-installing
+development distribution; Increment 11.E and later work have not begun.
 
 **Objective:** transform exact maintained source into one independently
 verifiable distribution foundation containing the completed RRP-owned CLI,

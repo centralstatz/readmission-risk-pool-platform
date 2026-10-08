@@ -6157,3 +6157,137 @@ Increment 11.C is therefore formally accepted and complete at the revision
 above. Stage 11 remains incomplete. Increment 11.D — Closed RRP payload and
 reproducible dependency specification — is the next implementation task and
 has not begun.
+
+## Stage 11 / Increment 11.D — Closed RRP payload and reproducible dependency specification — 2026-10-08
+
+Implementation began from clean documentation-closeout HEAD
+`8df801a0b8f2d46bc7999ec658ce540aed5b1bf9`; that revision differs from the
+formally accepted 11.C implementation revision
+`7c8eadac3b80e01e71332ab8e0c11e8dd29d2adf` only by the recorded 11.C formal
+acceptance. The governing True North, Architecture, accepted Stage 11 plan,
+11.C record, implementation guidance, package/resource boundaries, seven
+lifecycle authorities, version-specific launcher, and completed operator
+surface were reconciled before implementation.
+
+The increment adds `rrp.distribution-source-inclusion@0.1.0` as a positive,
+maintained DCF input authority. It closes the distributable non-test source of
+both internal packages, eight direct payload mappings, and a single expansion
+through the existing source-resource catalog. Package `tests/` remain explicit
+development-only exclusions. Missing or undeclared distributable package
+source, missing direct source, links, nonregular/unsafe paths, duplicate or
+case-conflicting destinations, and drift between the resource tree and its
+sole catalog fail before assembly. The repository validator now owns the
+concrete `distribution/` and maintainer-tooling paths rather than exempting
+them from its closed inventory.
+
+`tools/build-distribution.R`, over the focused maintainer-only mechanics in
+`tools/distribution-lib.R`, requires one absolute nonexistent `.tar` output and
+one concrete HTTPS CRAN repository. It creates positive temporary package
+source projections, projects the cataloged resources into `rrpplatform`, runs
+ordinary `R CMD build` for `rrpruntime` and `rrpplatform` without installing
+either, assembles an `rrp-1.0.0-dev/` payload, verifies it, creates the archive,
+extracts and independently verifies it, and only then promotes by rename.
+Existing output is rejected without replacement, and staged state is removed
+on success or failure. No source, project, project state, product, or installed
+library is mutated.
+
+The generated payload contains exactly the two package source archives; the
+separate version-specific `bin/rrp` launcher; the exact projected resource
+catalog and 65 resources; root Apache-2.0 `LICENSE`/`NOTICE`; a distribution README,
+security, support, and development-version information; the target dependency
+specification; closed manifest and SHA-256 inventory; and the payload's own
+normalized `identity.txt` evidence and standalone verifier. The ninth installed document,
+`rrp.documentation.distribution-guide`, describes contents, exclusions,
+verification, future configured-repository acquisition, the absence of an
+offline promise, and the strict verification-versus-installation boundary.
+The maintainer guide documents prerequisites, input ownership, identity,
+promotion, failure diagnosis, and the exact build/validation commands.
+
+The dependency specification is generated from the two package declarations
+and recursively resolved non-base/non-recommended `Depends`, `Imports`, and
+`LinkingTo` closure. The resolved packages are copied to a temporary controlled
+library, and a fresh vanilla process proves every closure member resolves there
+rather than from an ambient user or site library. On this evidence target it
+contains 75 radix-ordered unique CRAN package records with exact installed
+versions, an explicit HTTPS repository, repository source provenance, and
+normalized `renv` DESCRIPTION-record integrity hashes. Its identity is keyed
+by R version, platform, architecture, repository set, and exact records. The
+build rejects missing direct/closure packages and non-CRAN or unhashed records;
+the standalone verifier rejects structural, count, ordering, provenance,
+integrity, direct-package-declaration, and manifest-target disagreement.
+`renv` was selected as the smallest credible future restoration direction
+because its records support exact versions, configured repositories, private
+libraries, and deterministic failure. It is a maintainer build prerequisite
+and internal implementation candidate only—not a project format, package API,
+or CLI contract. No restoration, dependency library, CRAN mirror, third-party
+archive, or offline-installation claim was added.
+
+`Distribution-ID` is SHA-256 over the generated `identity.txt`, whose canonical
+radix-ordered lines record every positively declared package/direct source,
+the source-inclusion authority, every cataloged resource digest, and the
+complete dependency-specification digest. The standalone verifier recomputes
+the identity from that evidence. It excludes checkout/staging/output paths, timestamps,
+usernames, traversal order, random values, and Git state. `Build-ID` and
+`Built-At` describe the occurrence; the inventory independently records the
+exact path, role, byte size, and SHA-256 of every concrete payload member.
+Repeated package archives are not claimed byte-identical because ordinary R
+package building embeds tool-controlled occurrence details; two equivalent
+builds nevertheless proved the required identical logical distribution ID.
+
+The copied `verify-distribution.R` uses only base R plus an explicitly required
+host `sha256sum` or `shasum`. It validates the exact 0.1.0 manifest and
+dependency authorities, inventory closure/digest/roles, every file digest,
+package filename/DESCRIPTION/version/license/dependency agreement,
+`rrpplatform`'s embedded launcher and exact projected resources, resource
+catalog closure, legal and human documents, and safe nonlinked paths. It does
+not search for a checkout or sibling source, load an R package, fetch or repair
+content, install software, or trust an unlisted file.
+
+Historical review inspected immutable `v0.1.0` distribution, validation, and
+release-preparation mechanics, including
+`operations/lib/hospital-distribution-operation.R`,
+`operations/lib/hospital-distribution-validation.R`,
+`operations/lib/release-preparation-operation.R`,
+`operations/prepare-release.R`, and the relevant Phase 11 tests/contracts.
+The positive source map, regular-file copying, path safety, SHA-256 inventory,
+normalized identity, staged promotion, archive/extract verification,
+standalone validation, and adversarial-test shapes were adapted under the new
+owners. Embedded full Platform/Hospital repositories, editable Hospital
+scaffolding, Git-coupled installation, repository-root execution, and the old
+release/`renv`-root public model were rejected.
+
+Local evidence passed:
+
+- `Rscript --vanilla tools/validate-distribution.R` built two independent
+  payloads with one logical ID, validated a copied payload with empty ambient
+  library/profile variables, and rejected missing/undeclared/unsafe/duplicate
+  source, missing/extra/altered/linked/case-conflicting payloads, incorrect
+  digest/role/path records, dependency closure/provenance/integrity/target
+  drift, and output conflicts; failed staging cleanup and preservation of
+  existing output also passed;
+- `Rscript --vanilla tools/validate-repository.R` passed all eight checks with
+  zero issues;
+- `Rscript --vanilla tools/validate-packages.R` passed exact 65-resource and
+  nine-document closure, all accepted Stage 4–11.C installed regressions,
+  builds, isolated installs/loads, and both package checks with `Status: OK`;
+- parsing of the new R/DCF surfaces and `git diff --check` passed, with no
+  generated archive, check directory, temporary library, project, state, or
+  product left in the repository.
+
+The read-only Ubuntu/R 4.4 workflow now provisions `renv` as a maintainer build
+dependency and invokes the same third human distribution validator after the
+repository and package validators. Hosted evidence belongs to later formal
+acceptance and is not claimed here.
+
+No bootstrap `install.R`, shared installation engine, dependency restoration,
+per-user version root, installation registry, active pointer, stable shared
+launcher, activation, installed doctor, upgrade, rollback, uninstall,
+migration, acquisition, scheduling, publication, release, deployment, or other
+11.E+ behavior entered. Package exports and runtime dependencies are unchanged.
+
+Increment 11.D is implementation-complete and ready for formal human
+acceptance. Stage 11 remains incomplete. Increment 11.E and later work remain
+unimplemented.
+
+**Next task:** formally accept Increment 11.D before beginning Increment 11.E —
+Bootstrap installation and private dependency restoration.

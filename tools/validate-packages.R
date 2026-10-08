@@ -2016,6 +2016,10 @@ validate_installed_documentation_resources <- function(
     operator = c(
       id = "rrp.documentation.operator-guide",
       path = "resources/documentation/operator-guide.md"
+    ),
+    distribution = c(
+      id = "rrp.documentation.distribution-guide",
+      path = "resources/documentation/distribution-guide.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -2509,10 +2513,11 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.lifecycle-operations-reference",
     "rrp.documentation.command-line-guide",
     "rrp.documentation.operator-guide",
+    "rrp.documentation.distribution-guide",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 64L && identical(
+    length(actual_ids) == 65L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
@@ -4193,7 +4198,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
       "resources/documentation/lifecycle-operations-reference.md",
     command_line_guide =
       "resources/documentation/command-line-guide.md",
-    operator_guide = "resources/documentation/operator-guide.md"
+    operator_guide = "resources/documentation/operator-guide.md",
+    distribution_guide = "resources/documentation/distribution-guide.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -4421,7 +4427,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "ids <- c(ids, command_line_guide = ",
     "'rrp.documentation.command-line-guide'); ",
     "ids <- c(ids, operator_guide = ",
-    "'rrp.documentation.operator-guide'); ",
+    "'rrp.documentation.operator-guide', distribution_guide = ",
+    "'rrp.documentation.distribution-guide'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -5245,7 +5252,7 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "exact eight-document installed Markdown ",
+    "exact nine-document installed Markdown ",
     "product resolution, ",
     "read-only lifecycle status, explicit product build/materialize ",
     "composition, and guarded installed fictional-source preparation, ",

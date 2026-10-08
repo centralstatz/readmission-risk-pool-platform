@@ -24,9 +24,12 @@ expected_files <- c(
   "docs/assessments/pre-stage-11-manual-platform-assessment.md",
   "docs/assessments/stage-7-bundle-scope-assessment.md",
   "docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md",
+  "docs/distribution-building.md",
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
+  "distribution/source-inclusion.dcf",
+  "distribution/verify-distribution.R",
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
   "packages/rrpplatform/R/application-contracts.R",
   "packages/rrpplatform/R/application.R",
@@ -184,16 +187,20 @@ expected_files <- c(
   "resources/documentation/project-authoring-guide.md",
   "resources/documentation/command-line-guide.md",
   "resources/documentation/operator-guide.md",
+  "resources/documentation/distribution-guide.md",
   "resources/documentation/provider-request-reference.md",
   "resources/documentation/fictional-reference-walkthrough.md",
   "resources/documentation/logical-products-guide.md",
   "resources/documentation/lifecycle-operations-reference.md",
   "resources/documentation/supplied-application-guide.md",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
-  "tools/validate-packages.R", "tools/validate-repository.R"
+  "tools/build-distribution.R", "tools/distribution-lib.R",
+  "tools/validate-distribution.R", "tools/validate-packages.R",
+  "tools/validate-repository.R"
 )
 expected_directories <- c(
-  ".github", ".github/workflows", "docs", "docs/assessments", "packages",
+  ".github", ".github/workflows", "docs", "docs/assessments", "distribution",
+  "packages",
   "packages/rrpplatform", "packages/rrpplatform/R",
   "packages/rrpplatform/exec",
   "packages/rrpplatform/man", "packages/rrpplatform/tests",
@@ -414,6 +421,7 @@ for (relative_path in c(
   "resources/contracts/history/operational-scope.dcf",
   "resources/templates/project/rrp-project.dcf",
   "resources/templates/project/rrp-authoring.dcf",
+  "distribution/source-inclusion.dcf",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf"
 )) {
   path <- file.path(repository_root, relative_path)
@@ -591,13 +599,17 @@ expected_workflow <- c(
   "          if (!nzchar(repository)) repository <- \"https://cloud.r-project.org\"",
   "          install.packages(c(",
   "            \"DBI\", \"duckdb\", \"shiny\", \"bslib\", \"plotly\", \"reactable\",",
-  "            \"brand.yml\"",
+  "            \"brand.yml\", \"renv\"",
   "          ), lib = dependency_library,",
   "                           repos = repository)",
   "      - name: Validate repository foundation",
   "        run: Rscript --vanilla tools/validate-repository.R",
   "      - name: Validate package foundation",
-  "        run: Rscript --vanilla tools/validate-packages.R"
+  "        run: Rscript --vanilla tools/validate-packages.R",
+  "      - name: Validate distribution foundation",
+  "        env:",
+  "          RRP_CRAN_REPOSITORY: ${{ env.RSPM }}",
+  "        run: Rscript --vanilla tools/validate-distribution.R"
 )
 if (file.exists(workflow_path)) {
   workflow <- read_text(workflow_path)
@@ -607,7 +619,7 @@ if (file.exists(workflow_path)) {
       paste0(
         "package-foundation workflow must retain the accepted push/pull-",
         "request, read-only, pinned-action, Ubuntu/R 4.4, declared external-",
-        "dependency provisioning, and two-command shape"
+        "dependency provisioning, and three-command shape"
       )
     )
   }

@@ -43,7 +43,17 @@ package-native check evidence. It does not select a software root, execute a
 product workflow, retain operational history, or establish installed-
 distribution behavior.
 
-Committed pushes and pull requests run those same two commands through the
+For the closed distribution foundation, also run:
+
+```sh
+Rscript --vanilla tools/validate-distribution.R
+```
+
+The separate distribution validator proves only the closed payload, dependency
+specification, standalone verification, and build/promotion safeguards; it
+does not install software.
+
+Committed pushes and pull requests run those same three commands through the
 read-only Ubuntu/R 4.4 package-foundation workflow. A local workflow file is
 not hosted evidence; maintainers record the committed run identity and result
 before closing its implementation increment.

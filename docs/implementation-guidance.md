@@ -50,10 +50,13 @@ help/version/read-only-project-status dispatcher with exact runtime preflight;
 it is formally accepted after exact hosted validation. Increment 11.C adds the
 eighth installed document and extends that dispatcher over the accepted
 project/reference, state, durable-run, focused-history, product, and
-application intentions. No distribution builder, installer, shared active-
-version launcher, activation, dependency restoration, or version-transition
-behavior exists. Stage 11 remains incomplete and Increment 11.C awaits formal
-human acceptance.
+application intentions; it is formally accepted. Increment 11.D adds the
+positive source authority, closed RRP-owned archive builder, target-keyed exact
+dependency specification, standalone verifier, ninth installed document, and
+distribution-native adversarial proof. No installer, shared active-version
+launcher, activation, dependency restoration, or version-transition behavior
+exists. Stage 11 remains incomplete and Increment 11.D awaits formal human
+acceptance.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -151,6 +154,7 @@ closed to the following present paths:
 | `docs/platform-implementation-plan.md` | Authoritative construction order and current accepted increment. |
 | `docs/platform-implementation-record.md` | Append-forward account of clean-line work actually completed. |
 | `docs/implementation-guidance.md` | Human development method, conventions, and current ownership map. |
+| `docs/distribution-building.md` | Maintainer build prerequisites, positive-input, dependency-specification, identity, verification, promotion, and failure-recovery guidance for the 11.D distribution foundation. |
 | `docs/assessments/`, `docs/assessments/stage-7-bundle-scope-assessment.md`, `docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md`, and `docs/assessments/pre-stage-11-manual-platform-assessment.md` | Bounded non-authoritative reasoning and human-assessment records. Each retained assessment must be admitted explicitly by the closed repository inventory; accepted conclusions belong in the applicable authoritative document rather than gaining authority here. The current files preserve reasoning behind the reconciled Stage 7 bundle-scope decision and revised Stage 8 authoring/documentation plan, plus a disposable human-operated assessment of the accepted platform before Stage 11 planning. |
 | `RRP.yml` | Sole machine-readable product-development identity authority. |
 | `README.md` | Public orientation, current maturity, and navigation. |
@@ -161,7 +165,9 @@ closed to the following present paths:
 | `.editorconfig` | Basic text-format defaults. |
 | `.gitignore` | Ignore rules justified by current checkout behavior. |
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
-| `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the two existing human validators on Ubuntu/R 4.4, with declared external package dependencies provisioned first. |
+| `distribution/source-inclusion.dcf` | Closed positive authority for package sources and direct payload inputs; installed resources expand only through the existing source-resource catalog. |
+| `distribution/verify-distribution.R` | Payload-contained base-R verifier for manifest, inventory, SHA-256, package, dependency, resource, legal/documentation, path, link, and exact-closure claims without repository or package-library access. |
+| `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the three existing human validators on Ubuntu/R 4.4, with declared external package and maintainer-build dependencies provisioned first. |
 | `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct platform/runtime/application dependencies, and exact 33-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
@@ -254,7 +260,9 @@ closed to the following present paths:
 | `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, `resources/documentation/lifecycle-operations-reference.md`, `resources/documentation/command-line-guide.md`, and `resources/documentation/operator-guide.md` | The exact eight version-matched installed product documents: the three Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11.A lifecycle reference, Stage 11.B command-line guide, and Stage 11.C Operator Guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, `resources/documentation/lifecycle-operations-reference.md`, `resources/documentation/command-line-guide.md`, `resources/documentation/operator-guide.md`, and `resources/documentation/distribution-guide.md` | The exact nine version-matched installed product documents: the three Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11.A lifecycle reference, Stage 11.B command-line guide, Stage 11.C Operator Guide, and Stage 11.D distribution/acquisition-integrity guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
+| `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
@@ -319,17 +327,14 @@ provider primitives plus the 12 logical-history record, port, append, and read
 interfaces declared in its namespace. It supplies no physical history adapter
 or durable state.
 `rrpplatform` imports `DBI`, `duckdb`, and `rrpruntime`; only `rrpplatform`
-owns physical state dependencies. It exports exactly 23 interfaces: standard
-and fictional project
-initialization/loading/validation; project-state initialization, inspection,
-backup, and restore; installed-resource access and common result inspection;
-producer and nonpersistent risk execution; durable admitted-bundle execution;
-scope, raw episode, and current-history inspection; and explicit retry,
-invalidation, and restatement. The namespace and package validator are the
-exact technical inventory authority. No dependency environment exists yet. Do
-not introduce one by convenience, preselect its physical layout here, or treat
-a future development lock as the installed, project, provider, or deployment
-authority.
+owns physical state dependencies. It exports exactly 33 interfaces spanning
+the accepted package, project, state, history, product, application, lifecycle,
+and CLI responsibilities. The namespace and package validator are the exact
+technical inventory authority. Increment 11.D now emits an exact target-keyed
+third-party dependency specification as a distribution fact. It does not
+restore a library, define a project dependency model, or establish an installed
+environment; those later responsibilities must not be inferred from the
+maintainer's development library.
 
 ## Privacy and committed evidence
 
@@ -403,7 +408,21 @@ Focused proofs use shorter bounds than builds and strict package checks; a
 timeout is always a validation failure and reports the affected operation plus
 its final bounded diagnostics.
 
-The package-foundation GitHub Actions workflow invokes these same two human
+Run the closed distribution foundation and adversarial proof with a concrete
+configured repository:
+
+```sh
+RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
+  Rscript --vanilla tools/validate-distribution.R
+```
+
+This builds equivalent payloads outside the source tree, verifies normalized
+identity and exact SHA-256 closure, exercises source/output safeguards and
+tampering failures, and runs the copied standalone verifier with empty user and
+site library variables. It does not download, restore, install, or activate
+third-party or RRP software.
+
+The package-foundation GitHub Actions workflow invokes these same three human
 operations on pushes and pull requests using read-only repository permission,
 Ubuntu, and R 4.4. Its external action revisions are pinned to full immutable
 commit SHAs and checkout credentials are not persisted. It has no secret,
