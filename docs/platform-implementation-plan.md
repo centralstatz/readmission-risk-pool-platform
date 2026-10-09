@@ -7,9 +7,8 @@
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
 resolution of its initial seven planning questions. Increments 11.A–11.C are
-accepted and complete. Increment 11.D is formally accepted and complete. Stage
-11 remains incomplete. Increment 11.E is implementation-complete pending
-formal human acceptance; Increment 11.F and later work have not begun.
+accepted and complete. Increments 11.D–11.E are formally accepted and complete.
+Stage 11 remains incomplete; Increment 11.F and later work have not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -76,9 +75,8 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.D are accepted and complete, and 11.E+ remains
-unaccepted. Increment 11.E is implementation-complete pending formal human
-acceptance; 11.F+ remains unimplemented. After a stage is
+Increments 11.A–11.E are accepted and complete; 11.F+ remains unimplemented.
+After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -7029,9 +7027,9 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 **Planning status:** second-edition detailed plan formally accepted for
 implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
-Increments 11.A–11.D are formally accepted and complete; 11.E+ remains
-unimplemented. This does not select release bytes or claim an installed
-distribution exists.
+Increments 11.A–11.E are formally accepted and complete; 11.F+ remains
+unimplemented. This does not select release bytes or claim an active software
+version exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7714,8 +7712,8 @@ validators, and implementation record.
 revision `9757f3b7ede00b4e23a60ece0d0135e3ca90ede6`, after successful hosted
 `package-foundation` run `37931077511`, job `113821651468`. The realized
 11.D boundary remains an unpublished, non-installing development distribution.
-Increment 11.E is implementation-complete pending formal human acceptance;
-later work has not begun.
+Increment 11.E is formally accepted and complete; 11.F and later work have not
+begun.
 
 **Objective:** transform exact maintained source into one independently
 verifiable distribution foundation containing the completed RRP-owned CLI,
@@ -7810,9 +7808,10 @@ prerequisites, local acquisition, configured repositories, private restoration,
 roots, R selection, failure recovery, internal-only restoration machinery, and
 ownership; update help/ownership/validators/record.
 
-**Implementation status (2026-10-09):** implementation-complete pending formal
-human acceptance. Stage 11 remains incomplete, and Increment 11.F has not
-begun.
+**Implementation status:** formally accepted and complete on 2026-10-09 at
+revision `a45a90d0c7088238f90369ba79116ff5f69ebcd8`, after successful hosted
+`package-foundation` run `37955169146`, job `113903725213`. Stage 11 remains
+incomplete, and Increment 11.F has not begun.
 
 ### Increment 11.F — Active-version resolution, installed verification, and software doctor
 

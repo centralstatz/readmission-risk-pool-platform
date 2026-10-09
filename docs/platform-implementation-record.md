@@ -6525,3 +6525,36 @@ accepted by this implementation entry.
 **Next task:** formally accept Increment 11.E after its committed revision
 passes hosted validation; only then begin Increment 11.F — Active-version
 resolution, installed verification, and software doctor.
+
+## Stage 11 / Increment 11.E formal acceptance — 2026-10-09
+
+Increment 11.E is formally accepted and complete at exact committed revision
+`a45a90d0c7088238f90369ba79116ff5f69ebcd8`, which is the current `main` and
+`origin/main` revision. GitHub Actions `package-foundation` push run
+`37955169146`, job `113903725213`, completed successfully on Ubuntu with R 4.4
+for that same SHA. The hosted job passed repository-foundation, complete
+package-foundation, closed-distribution, and bootstrap-installation/private-
+restoration validation.
+
+Acceptance reconciled that revision and hosted evidence with True North,
+Platform Architecture, the accepted Stage 11 plan, and the complete 11.E
+implementation entry above. All 11.E acceptance criteria are satisfied: one
+explicit verified local distribution is realized under an immutable per-user
+version root; exact declared dependencies and distributed RRP packages are
+restored into a private library under explicit host-R and HTTPS-repository
+authority; fresh-process verification and installation evidence precede atomic
+promotion; failures clean staging and preserve prior versions; exact reinstall
+is idempotent while conflicts fail closed; and the small bootstrap and installed
+CLI path delegate to the same installation engine. Copied non-Git operation,
+ambient/startup isolation, distribution integrity, resource/document closure,
+project independence, and the absence of project-level restoration state are
+covered by revision-matched local and hosted evidence.
+
+No acceptance-blocking discrepancy or unresolved 11.E implementation issue
+remains. The accepted boundary does not activate software and adds no active-
+version pointer, stable shared launcher, installed verify/doctor, upgrade,
+rollback, uninstall, project association, remote acquisition, publication,
+release, or deployment behavior. Stage 11 remains incomplete.
+
+**Next task:** Increment 11.F — Active-version resolution, installed
+verification, and software doctor.
