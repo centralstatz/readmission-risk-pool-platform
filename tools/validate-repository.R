@@ -28,6 +28,7 @@ expected_files <- c(
   "docs/implementation-guidance.md", "docs/platform-architecture.md",
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
+  "distribution/install-engine.R", "distribution/install.R",
   "distribution/source-inclusion.dcf",
   "distribution/verify-distribution.R",
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
@@ -188,6 +189,8 @@ expected_files <- c(
   "resources/documentation/command-line-guide.md",
   "resources/documentation/operator-guide.md",
   "resources/documentation/distribution-guide.md",
+  "resources/documentation/installation-guide.md",
+  "resources/documentation/software-lifecycle-guide.md",
   "resources/documentation/provider-request-reference.md",
   "resources/documentation/fictional-reference-walkthrough.md",
   "resources/documentation/logical-products-guide.md",
@@ -195,7 +198,8 @@ expected_files <- c(
   "resources/documentation/supplied-application-guide.md",
   "resources/resource-catalog-schema.dcf", "resources/source-catalog.dcf",
   "tools/build-distribution.R", "tools/distribution-lib.R",
-  "tools/validate-distribution.R", "tools/validate-packages.R",
+  "tools/validate-distribution.R", "tools/validate-installation.R",
+  "tools/validate-packages.R",
   "tools/validate-repository.R"
 )
 expected_directories <- c(
@@ -631,7 +635,9 @@ expected_workflow <- c(
   "      - name: Validate package foundation",
   "        run: Rscript --vanilla tools/validate-packages.R",
   "      - name: Validate distribution foundation",
-  "        run: Rscript --vanilla tools/validate-distribution.R"
+  "        run: Rscript --vanilla tools/validate-distribution.R",
+  "      - name: Validate bootstrap installation and private restoration",
+  "        run: Rscript --vanilla tools/validate-installation.R"
 )
 if (file.exists(workflow_path)) {
   workflow <- read_text(workflow_path)
@@ -641,7 +647,7 @@ if (file.exists(workflow_path)) {
       paste0(
         "package-foundation workflow must retain the accepted push/pull-",
         "request, read-only, pinned-action, Ubuntu/R 4.4, declared external-",
-        "dependency provisioning, and three-command shape"
+        "dependency provisioning, and four-command shape"
       )
     )
   }

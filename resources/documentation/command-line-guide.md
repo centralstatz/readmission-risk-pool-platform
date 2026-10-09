@@ -35,6 +35,18 @@ rrp products materialize|status ...
 rrp app launch ...
 ```
 
+It also implements one software mutation without selecting or activating a
+version:
+
+```text
+rrp software install PATH --repository HTTPS_URL [--json]
+```
+
+`PATH` is one already extracted, locally acquired distribution. The command
+verifies it and delegates to the same private-library restoration and atomic
+promotion engine as the distribution-local `install.R`. The host R is the
+current version-specific launcher's recorded R. It accepts no project input.
+
 Use `rrp <noun> --help` for the exact options. Project and reference creation
 always require one positional destination whose parent already exists. Every
 operation on an existing project uses exactly `--project PATH` when present or
@@ -68,7 +80,10 @@ callables, connections, or storage internals.
 The launcher for one installed version establishes its recorded R executable,
 private package library, and matching software resources before dispatch. It
 does not choose an active version, install software, or discover a project.
-Those lifecycle capabilities are not provided by this command foundation.
+Installation is now provided, but active-version selection, shared launcher,
+installed verify/doctor, upgrade/rollback selection, and uninstall remain
+later lifecycle work.
 The installed Operator Guide gives the supported end-to-end project procedure
-and the advanced R API boundary. Software distribution, installation,
-activation, upgrade, rollback, and uninstall remain later lifecycle work.
+and the advanced R API boundary. Distribution and version-specific installation
+now exist; activation, upgrade, rollback, and uninstall remain later lifecycle
+work.

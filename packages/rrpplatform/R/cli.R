@@ -40,6 +40,13 @@ rrp_cli_noun_help <- function(noun) {
   }
   available <- switch(
     noun,
+    software = c(
+      "Available now:",
+      "  rrp software install PATH --repository HTTPS_URL [--installation-root ABSOLUTE_PATH] [--json]",
+      "",
+      "PATH is one extracted local distribution. Installation creates and",
+      "validates an immutable private version but does not activate it."
+    ),
     project = c(
       "Available now:",
       "  rrp project init PATH --project-id ID --project-version VERSION [--json]",
@@ -402,6 +409,33 @@ rrp_cli_parse <- function(arguments, working_directory = ".") {
   )
   action <- arguments[[2L]]
   remaining <- arguments[-c(1L, 2L)]
+
+  if (identical(noun, "software") && identical(action, "install")) {
+    options <- rrp_cli_parse_options(
+      remaining, c("repository", "installation-root")
+    )
+    rrp_cli_require_values(options, "repository", "Software installation")
+    if (length(options$positionals) != 1L || options$yes) rrp_cli_usage_abort(
+      "invalid_software_install_arguments",
+      "Software installation requires one distribution and one repository."
+    )
+    return(rrp_cli_operation(
+      "software_install", options,
+      distribution_root = rrp_cli_normalize_directory(
+        options$positionals[[1L]], working_directory, "Distribution path"
+      ),
+      repository = rrp_cli_scalar_argument(
+        options$values$repository, "Repository"
+      ),
+      installation_root = if (is.null(options$values[["installation-root"]])) {
+        NULL
+      } else {
+        rrp_cli_scalar_argument(
+          options$values[["installation-root"]], "Installation root"
+        )
+      }
+    ))
+  }
 
   if (identical(noun, "project") && identical(action, "init")) {
     options <- rrp_cli_parse_options(
@@ -820,6 +854,80 @@ rrp_cli_version_result <- function(context) {
   rrp_new_operation_result("rrp.version", "success", value, list())
 }
 
+rrp_cli_software_install_result <- function(parsed, context) {
+  operation_id <- "rrp.software-install"
+  tryCatch({
+    engine <- file.path(context$software_root, "install-engine.R")
+    rscript <- file.path(dirname(context$host_r_executable), "Rscript")
+    if (!file.exists(engine) || !isTRUE(utils::file_test("-f", engine)) ||
+        nzchar(Sys.readlink(engine)) || !file.exists(rscript) ||
+        dir.exists(rscript)) stop("Installer engine is unavailable.", call. = FALSE)
+    result_path <- tempfile("rrp-software-install-result-", fileext = ".dcf")
+    on.exit(unlink(result_path, force = TRUE), add = TRUE)
+    arguments <- c(
+      "--vanilla", engine, "--distribution", parsed$distribution_root,
+      "--repository", parsed$repository, "--result", result_path
+    )
+    if (!is.null(parsed$installation_root)) arguments <- c(
+      arguments, "--installation-root", parsed$installation_root
+    )
+    output <- suppressWarnings(system2(
+      rscript, vapply(arguments, shQuote, character(1L)),
+      stdout = TRUE, stderr = TRUE,
+      env = c(
+        "R_PROFILE_USER=", "R_ENVIRON_USER=", "R_LIBS=", "R_LIBS_USER=",
+        "R_LIBS_SITE="
+      )
+    ))
+    status <- attr(output, "status")
+    if (!is.null(status) && status != 0L) {
+      code <- sub("^.*\\[([a-z][a-z0-9_]*)\\].*$", "\\1",
+        paste(output, collapse = " "), perl = TRUE)
+      if (!rrp_diagnostic_code_is_valid(code)) code <- "software_install_failed"
+      return(rrp_new_operation_result(
+        operation_id, "failure", NULL,
+        list(rrp_new_diagnostic(code, "error", "Software installation failed."))
+      ))
+    }
+    dcf <- read.dcf(result_path, all = TRUE)
+    if (nrow(dcf) != 1L) stop("Installer result is invalid.", call. = FALSE)
+    record <- dcf[1L, , drop = TRUE]
+    fields <- c(
+      "Record-Type", "Installation-ID", "Product-Version", "Distribution-ID",
+      "Build-ID", "Dependency-Specification-ID", "Installation-Root",
+      "Private-Library", "Resource-Root", "Host-R-Version", "Platform",
+      "Architecture", "Reused"
+    )
+    if (!identical(names(record), fields) ||
+        !identical(unname(record[["Record-Type"]]), "rrp-install-result") ||
+        !unname(record[["Reused"]]) %in% c("true", "false")) {
+      stop("Installer result is invalid.", call. = FALSE)
+    }
+    value <- list(
+      installation_id = unname(record[["Installation-ID"]]),
+      product_version = unname(record[["Product-Version"]]),
+      distribution_id = unname(record[["Distribution-ID"]]),
+      build_id = unname(record[["Build-ID"]]),
+      dependency_specification_id = unname(record[["Dependency-Specification-ID"]]),
+      installation_root = unname(record[["Installation-Root"]]),
+      private_library = unname(record[["Private-Library"]]),
+      resource_root = unname(record[["Resource-Root"]]),
+      host_r_version = unname(record[["Host-R-Version"]]),
+      platform = unname(record[["Platform"]]),
+      architecture = unname(record[["Architecture"]]),
+      reused = identical(unname(record[["Reused"]]), "true")
+    )
+    rrp_new_operation_result(operation_id, "success", value, list())
+  }, error = function(condition) {
+    rrp_new_operation_result(
+      operation_id, "failure", NULL,
+      list(rrp_new_diagnostic(
+        "software_install_failed", "error", "Software installation failed."
+      ))
+    )
+  })
+}
+
 rrp_cli_value_fields <- function(operation_id) {
   switch(
     operation_id,
@@ -827,6 +935,11 @@ rrp_cli_value_fields <- function(operation_id) {
       "product_id", "development_version", "rrpplatform_version",
       "rrpruntime_version", "r_version", "platform", "architecture",
       "resource_catalog_id", "resource_catalog_version", "selection"
+    ),
+    "rrp.software-install" = c(
+      "installation_id", "product_version", "distribution_id", "build_id",
+      "dependency_specification_id", "installation_root", "private_library",
+      "resource_root", "host_r_version", "platform", "architecture", "reused"
     ),
     "rrp.project-status" = strsplit(
       rrp_project_lifecycle_result_contract_expected()[["Value-Fields"]],
@@ -1006,6 +1119,7 @@ rrp_cli_curate_result <- function(result) {
   value <- switch(
     result$operation_id,
     "rrp.version" = source,
+    "rrp.software-install" = source,
     "rrp.project-status" = source,
     "rrp.initialize-project" = list(
       project_id = source$project_id,
@@ -1104,7 +1218,7 @@ rrp_cli_result_payload <- function(result, cli_contract) {
     stop("CLI result schema authority is invalid.", call. = FALSE)
   }
   if (!result$operation_id %in% c(
-    "rrp.version", "rrp.project-status", "rrp.initialize-project",
+    "rrp.version", "rrp.software-install", "rrp.project-status", "rrp.initialize-project",
     "rrp.initialize-fictional-project", "rrp.validate-project",
     "rrp.prepare-fictional-source", "rrp.initialize-project-state",
     "rrp.inspect-project-state", "rrp.backup-project-state",
@@ -1301,6 +1415,9 @@ rrp_cli_execute <- function(parsed, context, operation_overrides = list()) {
   operation <- switch(
     parsed$command,
     version = function() rrp_cli_version_result(context),
+    software_install = function() rrp_cli_software_install_result(
+      parsed, context
+    ),
     project_init = function() rrp_initialize_project(
       context$catalog, parsed$destination, parsed$project_id,
       parsed$project_version

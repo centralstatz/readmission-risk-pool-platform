@@ -79,3 +79,17 @@ proof is available through:
 ```sh
 Rscript --vanilla tools/validate-distribution.R
 ```
+
+The separate complete installation proof performs one real configured-
+repository restoration from a copied distribution, then reuses that immutable
+realization for fresh-process, ambient-library, exact-reinstall, and installed
+CLI equivalence evidence:
+
+```sh
+RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
+  Rscript --vanilla tools/validate-installation.R
+```
+
+It requires network access and may compile packages when binaries are not
+available. All acquisition, restoration, installation, and failure fixtures
+are temporary and outside the repository.

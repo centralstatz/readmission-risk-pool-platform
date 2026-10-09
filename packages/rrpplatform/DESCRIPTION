@@ -38,7 +38,9 @@ Description: Establishes the main internal implementation package for the
     command dispatcher with deterministic private-library and installed-resource
     preflight, explicit project lifecycle, durable run, focused history,
     product, and application intentions, controlled correction/restore
-    confirmation, and privacy-safe human or JSON rendering.
+    confirmation, privacy-safe human or JSON rendering, and a local software-
+    installation command that delegates to the distribution-owned shared
+    bootstrap mechanics without activation or project access.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

@@ -222,7 +222,8 @@ rrp_verify_distribution <- function(root) {
     "resource-catalog" = 1L, "dependency-specification" = 1L,
     "distribution-identity" = 1L,
     "standalone-verifier" = 1L, "license" = 1L, "notice" = 1L,
-    "version-information" = 1L
+    "version-information" = 1L, "installation-engine" = 1L,
+    "bootstrap-installer" = 1L
   )
   for (role in names(required_role_counts)) {
     if (sum(roles == role) != required_role_counts[[role]]) {
@@ -335,7 +336,7 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("resource_catalog", "Projected resource catalog is invalid.")
   }
   resources <- catalog_records[-1L]
-  if (length(resources) != 65L) {
+  if (length(resources) != 67L) {
     rrp_distribution_fail("resource_catalog", "Projected resource count is unsupported.")
   }
   resource_fields <- c(
@@ -381,12 +382,17 @@ rrp_verify_distribution <- function(root) {
       "rrpplatform artifact lacks its exact installed resources or version launcher."
     )
   }
-  if (!"rrp.documentation.distribution-guide" %in% ids) {
-    rrp_distribution_fail("documentation", "Distribution guide is absent from the resource catalog.")
+  if (!all(c(
+    "rrp.documentation.distribution-guide",
+    "rrp.documentation.installation-guide",
+    "rrp.documentation.software-lifecycle-guide"
+  ) %in% ids)) {
+    rrp_distribution_fail("documentation", "Required software lifecycle guidance is absent from the resource catalog.")
   }
   if (!all(c("LICENSE", "NOTICE", "README.md",
              "documentation/SECURITY.md", "documentation/SUPPORT.md",
-             "VERSION.yml", "bin/rrp", "verify-distribution.R") %in% file_paths)) {
+             "VERSION.yml", "bin/rrp", "verify-distribution.R",
+             "install.R", "install-engine.R") %in% file_paths)) {
     rrp_distribution_fail("required_content", "Required legal, documentation, version, launcher, or verifier content is absent.")
   }
   license_text <- paste(readLines(file.path(root, "LICENSE"), warn = FALSE), collapse = "\n")

@@ -56,8 +56,10 @@ version-specific launcher and package dispatcher. Increment 11.C extends that
 same dispatcher over the accepted project/reference, state, durable-run,
 focused-history, product, and supplied-application operations. Exact host-R,
 private-library, package, and installed-resource preflight happens before
-command delegation. No active-version selection, distribution builder,
-installer, dependency restoration, migration, scheduling, or daemon is
+command delegation. Increment 11.D supplies the closed distribution, and 11.E
+adds `rrp software install PATH` over the same shared base-R engine as the
+distribution-local bootstrap. No active-version selection, shared launcher,
+installed verify/doctor, uninstall, migration, scheduling, or daemon is
 implemented.
 
 Its current callable interfaces are:
@@ -247,8 +249,9 @@ otherwise valid set remains readable.
 The returned project context is a validated in-process snapshot, not a mutable
 or serialized project session. It validates all five runtime authorities
 against canonical contracts and assembles exact closed contexts consumed by
-runtime state/provider behavior. The package does not provide active-version
-selection, dependency restoration, installation, or deployment. Its bounded
+runtime state/provider behavior. The package delegates local software
+installation to distribution-owned shared mechanics but does not provide
+active-version selection, installed repair, or deployment. Its bounded
 version-specific command dispatcher does not broaden those lifecycle claims. It
 normalizes installed canonical authority into
 the exact context accepted by `rrpruntime` and invokes its admission export

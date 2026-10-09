@@ -6429,3 +6429,99 @@ publication, or deployment capability is claimed. Stage 11 remains incomplete.
 
 **Next task:** Increment 11.E — Bootstrap installation and private dependency
 restoration.
+
+## Stage 11 / Increment 11.E — Bootstrap installation and private dependency restoration — 2026-10-09
+
+Implementation began from committed documentation-closeout revision
+`3d81108283422541099a6fc00712a0233d637ae9`. Inspection confirmed that this
+revision differs from formally accepted 11.D implementation revision
+`9757f3b7ede00b4e23a60ece0d0135e3ca90ede6` only by the intended 11.D plan and
+implementation-record acceptance closeout. The accepted distribution,
+lifecycle authorities, version-specific CLI, and project-operation boundaries
+therefore remained the governing implementation baseline.
+
+The distribution now carries one shared base-R installation engine and a small
+`install.R` bootstrap. The engine accepts exactly one explicit verified local
+distribution, one explicit credential-free HTTPS repository, and the host R
+selected by the invoking `Rscript` or version-specific launcher. It validates
+the distribution and exact target first, realizes the accepted dependency
+specification into a staged private library through temporary internal `renv`
+tooling with its cache disabled, installs the exact distributed `rrpruntime`
+and `rrpplatform` archives in dependency order, and verifies exact versions,
+dependency integrity, installed-resource closure, loadability, and the
+version-specific CLI in a fresh isolated R process. The restoration tool
+library is temporary and is not retained or exposed to a hospital project.
+
+The default destination is the operating system's conventional per-user
+application-data root, with an absolute `--installation-root` override limited
+to controlled testing and isolated proof. One installation is stored at
+`installations/<product-version>/<distribution-id>/`, with sibling staging and
+locking beneath the software root. The realized version contains its private
+library, exact distribution evidence/resources/launcher, and an
+`rrp.installation-record@0.1.0` `INSTALLATION.dcf` recording the software,
+distribution/build/dependency, host-R target, private-library/resource paths,
+manifest digest, verification identity, and occurrence time. The logical
+installation identity excludes destination and occurrence time. Complete
+staging is promoted only after fresh-process verification and is then made
+read-only. Exact verified reinstall is idempotent; differing, damaged, linked,
+locked, or otherwise conflicting destinations fail without replacement or
+repair, and failure cleanup preserves all prior installations.
+
+Both accepted entry points use that one engine. From a copied extracted
+distribution, `Rscript --vanilla install.R --repository HTTPS_URL` is the
+first-install path. An already installed version-specific launcher exposes
+`rrp software install PATH --repository HTTPS_URL` with optional JSON and the
+controlled test-root option; it invokes the same distribution-owned engine in
+a fresh process using the launcher's recorded R. Neither path discovers a
+distribution, selects an active version, reads or associates a project, or
+changes analytical state. The positive distribution authority, standalone
+verifier, builder, resource catalog, CLI help/result curation, ownership map,
+repository/package/distribution validators, and read-only hosted workflow now
+include this realized boundary. The catalog contains 67 resources and eleven
+installed product documents, including the new Installation Guide and Software
+Lifecycle Guide.
+
+Historical inspection of immutable `v0.1.0`, especially
+`operations/lib/hospital-distribution-operation.R` and its distribution
+authority/validation context, retained only safe positive copying,
+same-filesystem staging, validation-before-promotion, atomic rename,
+idempotency/conflict, and failure-cleanup mechanics. The current implementation
+rejected nested Platform extraction, Hospital implementation repository
+packaging, hospital top-level `renv`, embedded offline closure, Git-dependent
+installation, repository doctor as installed-software authority, and project
+registration during installation. The result is a software-only per-user
+installation rather than a restoration of the historical delivery model.
+
+Local evidence passed:
+
+- repository-foundation validation and `git diff --check`;
+- the closed distribution validator with 67-resource closure, two equivalent
+  builds, copied standalone verification, provenance/integrity adversaries,
+  conflict preservation, and cleanup;
+- the installation-native copied-distribution proof with repository mismatch,
+  controlled restoration/internal-package/verification/promotion failures,
+  lock and destination conflicts, wrong ambient `DBI`/`rrpplatform` packages,
+  poisonous startup files and inherited library/cache/failure settings, one
+  real exact configured-repository restoration, private package/resource proof,
+  immutable promotion, installation-record validation, exact reinstall, and
+  bootstrap/installed-CLI equivalence; and
+- the complete package validator, including source/resource closure, both
+  builds, isolated installation/loading, `rrpruntime` and `rrpplatform`
+  `R CMD check --no-manual` with exact `Status: OK`, and all accepted installed
+  project, canonical, provider, state/history, product, application, and CLI
+  regressions.
+
+No package export or dependency changed. No generated archive, check tree,
+installation root, temporary library, or staging content is repository source.
+No activation pointer, shared stable launcher, installed software doctor,
+upgrade, rollback, uninstall, project registry/discovery/association,
+project-level dependency environment, remote acquisition, publication,
+release, or deployment behavior entered. Stage 11 remains incomplete.
+
+Increment 11.E is implementation-complete pending formal human acceptance and
+revision-matched hosted `package-foundation` evidence. It is not formally
+accepted by this implementation entry.
+
+**Next task:** formally accept Increment 11.E after its committed revision
+passes hosted validation; only then begin Increment 11.F — Active-version
+resolution, installed verification, and software doctor.

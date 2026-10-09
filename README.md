@@ -71,12 +71,14 @@ customization denial, and supervised loopback cleanup. Exact revision
 architecture reconciliation; Stages 1–10 are accepted and complete. The
 repository has no root selector or persistent installed RRP distribution,
 scheduled/off-host backup, migration, shared active-version launcher, software
-lifecycle installation command surface, or deployment capability. Increment 11.C provides
+activation/verification surface, or deployment capability. Increment 11.C provides
 the version-specific project lifecycle command surface against an explicitly
 supplied installed context. Increment 11.D adds a maintainer-built closed,
 standalone-verifiable RRP-owned distribution archive and exact target-keyed
-third-party dependency specification. It does not install or activate software;
-installation, upgrade, rollback, and uninstall remain absent.
+third-party dependency specification. Increment 11.E adds explicit local-
+distribution installation into an immutable per-user version root through one
+shared bootstrap/CLI engine; it does not activate software. Activation,
+upgrade, rollback, and uninstall remain absent.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -200,8 +202,15 @@ Rscript --vanilla tools/validate-distribution.R
 Maintainers can build one payload at an explicit nonexistent destination as
 documented in the [distribution build guide](docs/distribution-building.md).
 
+Validate the complete copied-distribution bootstrap and exact private
+dependency restoration with:
+
+```sh
+Rscript --vanilla tools/validate-installation.R
+```
+
 The [package-foundation workflow](.github/workflows/package-foundation.yml) is
-configured to run these same three human operations on pushes and pull requests
+configured to run these same four human operations on pushes and pull requests
 under read-only Ubuntu/R 4.4. Its first committed push run completed
 successfully for the accepted 2.C revision. A later committed push run
 completed successfully for the complete Stage 3 revision, so Stages 1–3 are
@@ -244,11 +253,14 @@ formally accepted after exact hosted validation. Increment 11.C is formally
 accepted: the same version-specific launcher and package-owned
 dispatcher now expose explicit project/reference, state, durable-run, focused-
 history, product, and application intentions with controlled correction/
-restore confirmation and a cataloged Operator Guide. Increment 11.D adds a
-closed, independently verifiable distribution builder and target-keyed exact
-dependency specification and is implementation-complete pending acceptance.
-There is still no installer, shared active-version launcher, activation,
-dependency restoration, or version transition. Stage 11 remains incomplete.
+restore confirmation and a cataloged Operator Guide. Increment 11.D adds the
+accepted closed, independently verifiable distribution builder and target-
+keyed exact dependency specification. Increment 11.E adds one shared base-R
+installation engine, copied-distribution bootstrap and CLI install path, exact
+configured-repository private restoration, installation evidence, and
+immutable per-user promotion. There is still no shared active-version
+launcher, activation, installed verify/doctor, uninstall, or version
+transition. Stage 11 remains incomplete.
 
 ## License
 

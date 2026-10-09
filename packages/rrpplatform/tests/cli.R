@@ -76,6 +76,32 @@ expect_usage(
 resolution_root <- tempfile("rrp-cli-resolution-")
 dir.create(resolution_root)
 on.exit(unlink(resolution_root, recursive = TRUE, force = TRUE), add = TRUE)
+distribution <- file.path(resolution_root, "distribution")
+dir.create(distribution)
+software_install <- internal("rrp_cli_parse")(c(
+  "software", "install", distribution, "--repository",
+  "https://cloud.r-project.org", "--installation-root",
+  file.path(resolution_root, "software-root"), "--json"
+), resolution_root)
+stopifnot(
+  identical(software_install$command, "software_install"),
+  identical(software_install$distribution_root,
+    normalizePath(distribution, winslash = "/", mustWork = TRUE)),
+  identical(software_install$repository, "https://cloud.r-project.org"),
+  isTRUE(software_install$json)
+)
+expect_usage(
+  internal("rrp_cli_parse")(c("software", "install", distribution),
+    resolution_root),
+  "missing_required_option"
+)
+expect_usage(
+  internal("rrp_cli_parse")(c(
+    "software", "install", distribution, "--repository",
+    "https://cloud.r-project.org", "--project", resolution_root
+  ), resolution_root),
+  "unsupported_option"
+)
 project <- file.path(resolution_root, "project")
 child <- file.path(project, "child")
 other <- file.path(resolution_root, "other")

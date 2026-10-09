@@ -2020,6 +2020,14 @@ validate_installed_documentation_resources <- function(
     distribution = c(
       id = "rrp.documentation.distribution-guide",
       path = "resources/documentation/distribution-guide.md"
+    ),
+    installation = c(
+      id = "rrp.documentation.installation-guide",
+      path = "resources/documentation/installation-guide.md"
+    ),
+    software_lifecycle = c(
+      id = "rrp.documentation.software-lifecycle-guide",
+      path = "resources/documentation/software-lifecycle-guide.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -2514,15 +2522,17 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.command-line-guide",
     "rrp.documentation.operator-guide",
     "rrp.documentation.distribution-guide",
+    "rrp.documentation.installation-guide",
+    "rrp.documentation.software-lifecycle-guide",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 65L && identical(
+    length(actual_ids) == 67L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 64 known entries."
+    "The software resource inventory must contain exactly 67 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -4199,7 +4209,10 @@ validate_installed_resource_access <- function(library_root, work_root) {
     command_line_guide =
       "resources/documentation/command-line-guide.md",
     operator_guide = "resources/documentation/operator-guide.md",
-    distribution_guide = "resources/documentation/distribution-guide.md"
+    distribution_guide = "resources/documentation/distribution-guide.md",
+    installation_guide = "resources/documentation/installation-guide.md",
+    software_lifecycle_guide =
+      "resources/documentation/software-lifecycle-guide.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -4333,6 +4346,12 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["command_line_guide"]], quote = "\""),
     ", operator_guide = ",
     encodeString(expected_copies[["operator_guide"]], quote = "\""),
+    ", distribution_guide = ",
+    encodeString(expected_copies[["distribution_guide"]], quote = "\""),
+    ", installation_guide = ",
+    encodeString(expected_copies[["installation_guide"]], quote = "\""),
+    ", software_lifecycle_guide = ",
+    encodeString(expected_copies[["software_lifecycle_guide"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -4428,7 +4447,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.documentation.command-line-guide'); ",
     "ids <- c(ids, operator_guide = ",
     "'rrp.documentation.operator-guide', distribution_guide = ",
-    "'rrp.documentation.distribution-guide'); ",
+    "'rrp.documentation.distribution-guide', installation_guide = ",
+    "'rrp.documentation.installation-guide', software_lifecycle_guide = ",
+    "'rrp.documentation.software-lifecycle-guide'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -5252,7 +5273,7 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "exact nine-document installed Markdown ",
+    "exact eleven-document installed Markdown ",
     "product resolution, ",
     "read-only lifecycle status, explicit product build/materialize ",
     "composition, and guarded installed fictional-source preparation, ",

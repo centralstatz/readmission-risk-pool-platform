@@ -53,10 +53,13 @@ project/reference, state, durable-run, focused-history, product, and
 application intentions; it is formally accepted. Increment 11.D adds the
 positive source authority, closed RRP-owned archive builder, target-keyed exact
 dependency specification, standalone verifier, ninth installed document, and
-distribution-native adversarial proof. No installer, shared active-version
-launcher, activation, dependency restoration, or version-transition behavior
-exists. Stage 11 remains incomplete and Increment 11.D awaits formal human
-acceptance.
+distribution-native adversarial proof and is formally accepted. Increment 11.E
+adds the shared base-R installer, distribution-local bootstrap, installed CLI
+install route, two installed guides, OS-standard/test-root version layout,
+configured-repository restoration, exact private library, installation record,
+fresh-process proof, and atomic immutable promotion. No shared active-version
+launcher, activation, verify/doctor, uninstall, or version-transition behavior
+exists. Stage 11 remains incomplete.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -167,7 +170,8 @@ closed to the following present paths:
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `distribution/source-inclusion.dcf` | Closed positive authority for package sources and direct payload inputs; installed resources expand only through the existing source-resource catalog. |
 | `distribution/verify-distribution.R` | Payload-contained base-R verifier for manifest, inventory, SHA-256, package, dependency, resource, legal/documentation, path, link, and exact-closure claims without repository or package-library access. |
-| `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the three existing human validators on Ubuntu/R 4.4, with declared external package and maintainer-build dependencies provisioned into a fresh single-repository library plus a target/package/version/integrity provenance receipt first. |
+| `distribution/install-engine.R` and `distribution/install.R` | Shared base-R verified-distribution installation mechanics and the small distribution-local bootstrap. The engine owns explicit-target host R validation, configured-repository private restoration, staging/fresh-process proof, immutable promotion, and exact reinstall/conflict behavior; it never activates software or inspects a project. |
+| `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the four existing human validators on Ubuntu/R 4.4, with declared external package and maintainer-build dependencies provisioned into a fresh single-repository library plus a target/package/version/integrity provenance receipt first. |
 | `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct platform/runtime/application dependencies, and exact 33-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
 | `packages/rrpplatform/R/resource-catalog.R` | Installed DCF catalog/schema validation, explicit-root catalog opening, logical resource resolution, and typed resource failures. |
@@ -175,7 +179,7 @@ closed to the following present paths:
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
 | `packages/rrpplatform/R/lifecycle-contracts.R` | Internal exact loading of the seven dependency-light distribution, dependency, installation, activation, installed-diagnosis, project-lifecycle-result, and CLI-result authorities without implementing their later lifecycle behavior. |
 | `packages/rrpplatform/R/lifecycle-operations.R` | Bounded read-only project lifecycle status, package-owned logical build-plus-materialize composition, and exact fictional-only installed source preparation. |
-| `packages/rrpplatform/R/cli.R`, `packages/rrpplatform/exec/rrp`, and `packages/rrpplatform/man/rrp_cli_dispatch.Rd` | Package-owned shallow command parsing, exact project resolution, curated human/JSON rendering, deterministic exit/confirmation semantics, installed-context preflight, and the minimal version-specific process launcher. The launcher receives explicit R/library/resource context and performs no selection, installation, project discovery, or domain behavior. |
+| `packages/rrpplatform/R/cli.R`, `packages/rrpplatform/exec/rrp`, and `packages/rrpplatform/man/rrp_cli_dispatch.Rd` | Package-owned shallow command parsing, exact project resolution, curated human/JSON rendering, deterministic exit/confirmation semantics, installed-context preflight, and the minimal version-specific process launcher. The launcher receives explicit R/library/resource context and selects no active version or project; the software-install intention invokes the distribution-owned shared engine in a fresh process without activation or project access. |
 | `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities plus assembly of their exact runtime admission context. |
 | `packages/rrpplatform/R/runtime-contracts.R` | Internal exact loading and cross-validation of all five singular runtime authorities plus assembly of the closed state and provider contexts. |
 | `packages/rrpplatform/R/state-contracts.R` | Internal exact loading of the coherent 0.2.0 project-state, DuckDB-adapter, and state-backup authority line. |
@@ -260,9 +264,10 @@ closed to the following present paths:
 | `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
-| `resources/documentation/project-authoring-guide.md`, `resources/documentation/provider-request-reference.md`, `resources/documentation/fictional-reference-walkthrough.md`, `resources/documentation/logical-products-guide.md`, `resources/documentation/supplied-application-guide.md`, `resources/documentation/lifecycle-operations-reference.md`, `resources/documentation/command-line-guide.md`, `resources/documentation/operator-guide.md`, and `resources/documentation/distribution-guide.md` | The exact nine version-matched installed product documents: the three Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11.A lifecycle reference, Stage 11.B command-line guide, Stage 11.C Operator Guide, and Stage 11.D distribution/acquisition-integrity guide, all resolved through the ordinary resource catalog without a repository-relative dependency. |
+| `resources/documentation/*.md` | The exact eleven version-matched installed product documents: the Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, and Stage 11 lifecycle/CLI/operator/distribution/installation/software-lifecycle guides. All resolve through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, strict installed-metadata or controlled-provisioning-receipt validation, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
 | `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
+| `tools/validate-installation.R` | Human-callable copied-distribution proof for one real configured-repository private restoration, base-R bootstrap, fresh-process resolution, installation evidence, failure cleanup, exact reinstall, and installed CLI equivalence. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
@@ -422,7 +427,18 @@ tampering failures, and runs the copied standalone verifier with empty user and
 site library variables. It does not download, restore, install, or activate
 third-party or RRP software.
 
-The package-foundation GitHub Actions workflow invokes these same three human
+Run the complete copied-distribution installation proof separately:
+
+```sh
+RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
+  Rscript --vanilla tools/validate-installation.R
+```
+
+It performs one real configured-repository private restoration and proves the
+base-R bootstrap, fresh-process exact resolution, cleanup, project isolation,
+idempotent reinstall, and installed CLI equivalence.
+
+The package-foundation GitHub Actions workflow invokes these same four human
 operations on pushes and pull requests using read-only repository permission,
 Ubuntu, and R 4.4. Its external action revisions are pinned to full immutable
 commit SHAs and checkout credentials are not persisted. It has no secret,

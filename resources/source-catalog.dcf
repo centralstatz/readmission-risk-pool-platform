@@ -525,3 +525,19 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/distribution-guide.md
 Installed-Path: resources/documentation/distribution-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.installation-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/installation-guide.md
+Installed-Path: resources/documentation/installation-guide.md
+Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.software-lifecycle-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/software-lifecycle-guide.md
+Installed-Path: resources/documentation/software-lifecycle-guide.md
+Format: md

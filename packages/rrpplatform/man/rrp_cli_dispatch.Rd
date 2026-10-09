@@ -29,5 +29,7 @@ human or versioned JSON output. Existing-project commands use an explicit
 project path or exactly the current directory; creation requires an explicit
 destination. Restore and history-correction commands use controlled
 confirmation. The dispatcher does not select an active installation, discover
-projects, reimplement package behavior, or implement software installation.
+projects, reimplement package behavior, or activate software. Its bounded
+software-install intention delegates one explicit local distribution to the
+distribution-owned shared installation engine.
 }

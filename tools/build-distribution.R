@@ -77,7 +77,8 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
     distribution_copy(file.path(repository_root, record[["Source-Path"]]),
                       file.path(payload, destination),
                       identical(record[["Role"]], "version-launcher") ||
-                        identical(record[["Role"]], "standalone-verifier"))
+                        identical(record[["Role"]], "standalone-verifier") ||
+                        identical(record[["Role"]], "bootstrap-installer"))
     add_role(destination, record[["Role"]])
   }
   add_role("dependencies/dependencies.dcf", "dependency-specification")

@@ -15,6 +15,17 @@ commands, including success with warnings, exit 0; operation failures exit 1;
 usage failures exit 2; invalid installed context exits 3. Returned identities
 are intended to be copied into later commands.
 
+Software installation is independent of every project command. Follow the
+Installation Guide for the distribution-local bootstrap, or from an explicitly
+selected installed version use:
+
+```text
+rrp software install DISTRIBUTION_PATH --repository HTTPS_URL
+```
+
+This creates and validates one immutable version-private realization. It does
+not activate that version, discover a project, or change project source/state.
+
 ## Initialize and diagnose
 
 Create an ordinary hospital-owned scaffold only at an explicit absent
@@ -142,8 +153,8 @@ catalog and project root, including storage-neutral history objects needed for
 deliberate episode restatement. Direct use does not relax project, state,
 history, product, privacy, or compatibility contracts.
 
-This guide does not describe an installer or active-version selector. The
-current launcher operates one explicitly supplied installed context. No
-distribution builder, dependency restoration, activation, upgrade, rollback,
-uninstall, project migration, generic source acquisition, scheduler, daemon,
-remote publication, or deployment artifact is implemented here.
+The current launcher still operates one explicitly supplied installed context.
+The local distribution installer and exact dependency restoration now exist;
+activation, a shared selector, upgrade/rollback selection, uninstall, project
+migration, generic source acquisition, scheduler, daemon, remote publication,
+and deployment artifacts do not.

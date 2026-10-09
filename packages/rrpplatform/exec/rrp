@@ -29,9 +29,10 @@ fi
 # Startup files and inherited package-library choices are intentionally inert.
 R_ENVIRON_USER=
 R_PROFILE_USER=
+R_LIBS=
 R_LIBS_USER=$RRP_PRIVATE_LIBRARY
 R_LIBS_SITE=$RRP_PRIVATE_LIBRARY/.rrp-no-site-library
-export R_ENVIRON_USER R_PROFILE_USER R_LIBS_USER R_LIBS_SITE
+export R_ENVIRON_USER R_PROFILE_USER R_LIBS R_LIBS_USER R_LIBS_SITE
 
 rrp_entry='private_library <- normalizePath(Sys.getenv("RRP_PRIVATE_LIBRARY"), winslash = "/", mustWork = TRUE)
 .libPaths(c(private_library, .Library))

@@ -5,7 +5,7 @@ Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
 Resource-Catalog: resources/source-catalog.dcf
 Package-Count: 2
-Direct-Payload-Count: 8
+Direct-Payload-Count: 10
 
 Record-Type: package-source
 Package: rrpruntime
@@ -84,6 +84,16 @@ Record-Type: direct-payload
 Source-Path: distribution/verify-distribution.R
 Destination-Path: verify-distribution.R
 Role: standalone-verifier
+
+Record-Type: direct-payload
+Source-Path: distribution/install-engine.R
+Destination-Path: install-engine.R
+Role: installation-engine
+
+Record-Type: direct-payload
+Source-Path: distribution/install.R
+Destination-Path: install.R
+Role: bootstrap-installer
 
 Record-Type: direct-payload
 Source-Path: packages/rrpplatform/exec/rrp

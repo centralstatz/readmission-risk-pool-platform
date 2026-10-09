@@ -45,8 +45,9 @@ dependency specification, installation, activation, installed diagnosis,
 project lifecycle results, and versioned CLI JSON results. These authorities
 keep product version, development version, distribution content, build
 occurrence, installation, activation, package/API, project, and state identities
-distinct. Their presence does not mean a distribution builder, installer,
-launcher, active-version selector, dependency restorer, or CLI exists yet.
+distinct. The realized distribution builder, version launcher/CLI, and shared
+installer consume those authorities. Active-version selection, installed
+verify/doctor, and transition/uninstall behavior remain later lifecycle work.
 
 Distribution/build/installation evidence remains software lifecycle evidence.
 It is not added to durable analytical history, whose existing product,
