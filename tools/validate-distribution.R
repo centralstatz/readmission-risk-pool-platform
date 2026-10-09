@@ -180,10 +180,11 @@ validate_distribution <- function() {
     ),
     "Controlled provisioning receipt did not establish closure provenance."
   )
+  canonical_repository <- "https://cloud.r-project.org"
   expect_failure(
     "missing provenance for unannotated installed package",
     distribution_validate_dependency_provenance(
-      provenance_snapshot, repository, ""
+      provenance_snapshot, canonical_repository, ""
     ),
     "no accepted installed-package provenance"
   )
@@ -191,7 +192,9 @@ validate_distribution <- function() {
   rspm_snapshot$installed_repository[] <- "RSPM"
   expect_failure(
     "untrusted installed repository label",
-    distribution_validate_dependency_provenance(rspm_snapshot, repository, ""),
+    distribution_validate_dependency_provenance(
+      rspm_snapshot, canonical_repository, ""
+    ),
     "no accepted installed-package provenance"
   )
   cran_snapshot <- provenance_snapshot
@@ -202,6 +205,23 @@ validate_distribution <- function() {
       cran_snapshot, "https://packages.example.invalid", ""
     ),
     "requires a controlled provisioning receipt"
+  )
+  expect_failure(
+    "missing configured provenance receipt",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository,
+      file.path(work, "absent-provenance-receipt.dcf")
+    ),
+    "missing, linked, or nonregular"
+  )
+  malformed_receipt <- file.path(work, "malformed-provenance-receipt.dcf")
+  writeLines("this is not DCF", malformed_receipt, useBytes = TRUE)
+  expect_failure(
+    "malformed configured provenance receipt",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, malformed_receipt
+    ),
+    "Cannot parse"
   )
   mutate_receipt <- function(name, mutate) {
     path <- file.path(work, paste0(name, ".dcf"))

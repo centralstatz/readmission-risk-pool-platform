@@ -6354,3 +6354,44 @@ Stage 11 remains incomplete, and Increment 11.E has not begun.
 
 **Next task:** commit and run the corrected revision through hosted
 `package-foundation`, then formally accept Increment 11.D if it passes.
+
+### Increment 11.D hosted provenance-test reconciliation — 2026-10-08
+
+The second hosted acceptance attempt, GitHub Actions `package-foundation` run
+`37871300293`, job `113629781957`, reached the new distribution provenance
+adversaries on committed correction revision
+`4568f45d7308940129bd0f12647993957830174e` and failed because the test labeled
+“missing provenance for unannotated installed package” expected the package-
+annotation diagnostic while still using the built dependency specification's
+noncanonical Posit Package Manager repository URL. The fixture therefore
+contained two independent invalid conditions. The validator legitimately and
+deterministically enforced repository trust first, reporting that a
+noncanonical repository requires a controlled provisioning receipt. This was
+a fixture-isolation defect and overly specific expectation, not a provenance-
+implementation defect.
+
+The correction supplies canonical CRAN as the unrelated valid prerequisite
+for both missing and untrusted installed-package-annotation cases, so those
+tests now reach their intended package-provenance failure under both local and
+hosted repository configurations. The separate noncanonical-repository test
+continues to use explicit CRAN package annotations and no receipt, isolating
+and proving the repository prerequisite independently. Explicit absent and
+malformed receipt cases were added alongside the existing valid receipt and
+repository, target/staleness, version, closure, and integrity disagreement
+cases. Validator order and receipt verification were not changed or weakened.
+
+Local correction evidence passed the focused provenance matrix and the complete
+distribution validator, including two equivalent builds, copied standalone
+verification, all isolated provenance cases, all prior payload adversaries,
+and failure cleanup. Repository validation, R parsing, and
+`git diff --check` also passed. No package source, resource, export,
+dependency, or behavior changed; the second hosted run had already completed
+the unchanged repository/package stages before reaching this distribution-
+test-only failure, so the expensive local package aggregate was not repeated.
+
+Increment 11.D remains implementation-complete but pending formal acceptance
+until the corrected committed revision passes hosted Ubuntu/R 4.4 validation.
+Stage 11 remains incomplete, and Increment 11.E has not begun.
+
+**Next task:** commit and run this test correction through hosted
+`package-foundation`, then formally accept Increment 11.D only if it passes.
