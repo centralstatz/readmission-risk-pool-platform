@@ -6395,3 +6395,37 @@ Stage 11 remains incomplete, and Increment 11.E has not begun.
 
 **Next task:** commit and run this test correction through hosted
 `package-foundation`, then formally accept Increment 11.D only if it passes.
+
+## Stage 11 / Increment 11.D formal acceptance — 2026-10-09
+
+Increment 11.D is formally accepted and complete at exact committed revision
+`9757f3b7ede00b4e23a60ece0d0135e3ca90ede6`. GitHub Actions
+`package-foundation` push run `37931077511`, job `113821651468`, completed
+successfully on Ubuntu with R 4.4 for that same revision. The hosted job passed
+dependency provisioning plus repository, package, and distribution validation,
+closing the two preceding provenance reconciliations with exact revision-
+matched evidence.
+
+Acceptance reconciled the final implementation, the complete chronology above,
+the accepted Stage 11 plan, True North, and Platform Architecture. All 11.D
+criteria are satisfied: one positive closed source authority produces exact
+internal package artifacts, projected resources and documentation, legal and
+version-launcher content, a target-specific exact third-party dependency
+specification with explicit restoration-source and integrity evidence, a
+normalized distribution identity, exact manifest/inventory/digests, staged
+create-only archive promotion, and a payload-contained standalone verifier.
+Equivalent declared inputs retain one logical identity; copied verification
+requires no checkout; missing, unexpected, altered, linked, unsafe,
+case-conflicting, incorrectly attributed, or incompletely proven content fails
+closed. The final controlled-provisioning receipt resolves binary-repository
+metadata portability without fabricating provenance or weakening closure,
+target, version, repository, or integrity checks.
+
+No acceptance-blocking discrepancy or unresolved 11.D implementation issue
+remains. The accepted boundary is still an unpublished, non-installing
+development distribution: no bootstrap installation, dependency restoration,
+private installed library, activation, upgrade, rollback, uninstall, release,
+publication, or deployment capability is claimed. Stage 11 remains incomplete.
+
+**Next task:** Increment 11.E — Bootstrap installation and private dependency
+restoration.
