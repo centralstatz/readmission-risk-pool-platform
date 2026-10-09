@@ -71,13 +71,15 @@ run_builder <- function(
   output,
   repository = Sys.getenv(
     "RRP_CRAN_REPOSITORY", unset = "https://cloud.r-project.org"
-  )
+  ),
+  provenance = Sys.getenv("RRP_DEPENDENCY_PROVENANCE", unset = "")
 ) {
   result <- suppressWarnings(system2(
     file.path(R.home("bin"), "Rscript"),
     c("--vanilla", file.path(repository_root, "tools", "build-distribution.R"), output),
     stdout = TRUE, stderr = TRUE,
     env = c(paste0("RRP_CRAN_REPOSITORY=", repository),
+            paste0("RRP_DEPENDENCY_PROVENANCE=", provenance),
             "R_PROFILE_USER=", "R_ENVIRON_USER=")
   ))
   list(output = result, status = if (is.null(attr(result, "status"))) 0L else attr(result, "status"))
@@ -144,6 +146,127 @@ validate_distribution <- function() {
   root_second <- file.path(extract_second, "rrp-1.0.0-dev")
   verified <- rrp_verify_distribution(root)
   verified_second <- rrp_verify_distribution(root_second)
+
+  dependency <- distribution_read_dcf(file.path(root, "dependencies", "dependencies.dcf"))
+  dependency_header <- dependency[[1L]]
+  dependency_packages <- dependency[-1L]
+  provenance_snapshot <- list(
+    target = vapply(
+      dependency_header[c(
+        "Target-R-Version", "Target-Platform", "Target-Architecture"
+      )],
+      `[[`, character(1L), 1L
+    ),
+    package_records = lapply(dependency_packages, function(record) {
+      record[setdiff(names(record), "Repository")]
+    }),
+    installed_repository = setNames(
+      rep("", length(dependency_packages)),
+      vapply(dependency_packages, `[[`, character(1L), "Package")
+    )
+  )
+  repository <- dependency_packages[[1L]][["Repository"]]
+  receipt <- file.path(work, "controlled-provenance.dcf")
+  distribution_write_dcf(
+    distribution_dependency_provenance_records(provenance_snapshot, repository),
+    receipt
+  )
+  require_true(
+    identical(
+      distribution_validate_dependency_provenance(
+        provenance_snapshot, repository, receipt
+      ),
+      "controlled-provisioning-receipt"
+    ),
+    "Controlled provisioning receipt did not establish closure provenance."
+  )
+  expect_failure(
+    "missing provenance for unannotated installed package",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, ""
+    ),
+    "no accepted installed-package provenance"
+  )
+  rspm_snapshot <- provenance_snapshot
+  rspm_snapshot$installed_repository[] <- "RSPM"
+  expect_failure(
+    "untrusted installed repository label",
+    distribution_validate_dependency_provenance(rspm_snapshot, repository, ""),
+    "no accepted installed-package provenance"
+  )
+  cran_snapshot <- provenance_snapshot
+  cran_snapshot$installed_repository[] <- "CRAN"
+  expect_failure(
+    "unproven configured repository",
+    distribution_validate_dependency_provenance(
+      cran_snapshot, "https://packages.example.invalid", ""
+    ),
+    "requires a controlled provisioning receipt"
+  )
+  mutate_receipt <- function(name, mutate) {
+    path <- file.path(work, paste0(name, ".dcf"))
+    records <- distribution_dependency_provenance_records(
+      provenance_snapshot, repository
+    )
+    distribution_write_dcf(mutate(records), path)
+    path
+  }
+  wrong_repository <- mutate_receipt("wrong-provenance-repository", function(records) {
+    records[[1L]][["Repository"]] <- "https://untrusted.example.invalid"
+    records
+  })
+  expect_failure(
+    "provenance repository mismatch",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, wrong_repository
+    ),
+    "header, target, or repository disagrees"
+  )
+  wrong_target <- mutate_receipt("wrong-provenance-target", function(records) {
+    records[[1L]][["Target-Platform"]] <- "wrong-platform"
+    records
+  })
+  expect_failure(
+    "provenance target mismatch",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, wrong_target
+    ),
+    "header, target, or repository disagrees"
+  )
+  wrong_version <- mutate_receipt("wrong-provenance-version", function(records) {
+    records[[2L]][["Version"]] <- "0.0.0"
+    records
+  })
+  expect_failure(
+    "provenance version mismatch",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, wrong_version
+    ),
+    "Provisioning receipt disagrees"
+  )
+  wrong_integrity <- mutate_receipt("wrong-provenance-integrity", function(records) {
+    records[[2L]][["Integrity"]] <- paste0("renv:", paste(rep("0", 32L), collapse = ""))
+    records
+  })
+  expect_failure(
+    "provenance integrity mismatch",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, wrong_integrity
+    ),
+    "Provisioning receipt disagrees"
+  )
+  missing_package <- mutate_receipt("missing-provenance-package", function(records) {
+    records[-length(records)]
+  })
+  expect_failure(
+    "provenance closure mismatch",
+    distribution_validate_dependency_provenance(
+      provenance_snapshot, repository, missing_package
+    ),
+    "records or count disagree"
+  )
+  cat("PASS installed-metadata/controlled-receipt provenance and adversarial evidence\n")
+
   reversed_authority <- authority
   reversed_authority$source_paths <- rev(reversed_authority$source_paths)
   reversed_resources <- resources

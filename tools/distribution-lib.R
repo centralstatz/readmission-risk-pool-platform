@@ -207,20 +207,19 @@ distribution_description_dependencies <- function(path) {
   unique(sub("[[:space:]]*\\(.*$", "", trimws(values)))
 }
 
-distribution_dependency_specification <- function(repository_root) {
-  if (!requireNamespace("renv", quietly = TRUE)) {
-    distribution_stop("dependency_engine", "Maintainer build requires renv.")
-  }
-  repository <- Sys.getenv("RRP_CRAN_REPOSITORY", unset = "")
-  if (!nzchar(repository)) repository <- unname(getOption("repos")[["CRAN"]])
-  if (is.null(repository) || !grepl("^https://", repository) || identical(repository, "@CRAN@")) {
-    distribution_stop("dependency_repository", "Configure one concrete HTTPS CRAN repository.")
-  }
+distribution_direct_dependencies <- function(repository_root) {
   direct <- unique(c(
     distribution_description_dependencies(file.path(repository_root, "packages/rrpruntime/DESCRIPTION")),
     distribution_description_dependencies(file.path(repository_root, "packages/rrpplatform/DESCRIPTION"))
   ))
-  direct <- setdiff(direct, c("R", "rrpruntime"))
+  setdiff(direct, c("R", "rrpruntime"))
+}
+
+distribution_dependency_snapshot <- function(repository_root) {
+  if (!requireNamespace("renv", quietly = TRUE)) {
+    distribution_stop("dependency_engine", "Maintainer build requires renv.")
+  }
+  direct <- distribution_direct_dependencies(repository_root)
   database <- as.data.frame(installed.packages(), stringsAsFactors = FALSE)
   priority <- database[, "Priority"]
   external <- rownames(database)[is.na(priority) | !priority %in% c("base", "recommended")]
@@ -261,26 +260,155 @@ distribution_dependency_specification <- function(repository_root) {
   if (!is.null(attr(proof, "status")) && attr(proof, "status") != 0L) {
     distribution_stop("dependency_closure", "Controlled dependency projection validation failed.")
   }
+  source_paths <- setNames(vapply(closure, find.package, character(1L), quiet = TRUE), closure)
+  installed_repository <- setNames(character(length(closure)), closure)
   package_records <- lapply(closure, function(package) {
     path <- file.path(controlled_library, package)
     if (!nzchar(path)) distribution_stop("dependency_closure", paste("Cannot locate", package))
     description_path <- file.path(path, "DESCRIPTION")
     description <- read.dcf(description_path, all = TRUE)[1L, , drop = TRUE]
-    source_repository <- if ("Repository" %in% names(description)) unname(description[["Repository"]]) else ""
-    if (!identical(source_repository, "CRAN")) {
-      distribution_stop("dependency_provenance", paste(package, "is not an installed CRAN package."))
-    }
+    installed_repository[[package]] <<- if ("Repository" %in% names(description)) {
+      unname(description[["Repository"]])
+    } else ""
     hash <- renv:::renv_hash_description(description_path)
     if (!grepl("^[0-9a-f]{32}$", hash)) distribution_stop("dependency_integrity", paste("Cannot hash", package))
     c("Record-Type" = "rrp-dependency", "Package" = package,
       "Version" = unname(description[["Version"]]), "Source-Type" = "repository",
-      "Repository" = repository, "Integrity" = paste0("renv:", hash))
+      "Integrity" = paste0("renv:", hash))
   })
   target <- c(
     "Target-R-Version" = as.character(getRversion()),
     "Target-Platform" = R.version$platform,
     "Target-Architecture" = R.version$arch
   )
+  list(direct = direct, packages = closure, package_records = package_records,
+       installed_repository = installed_repository, source_paths = source_paths,
+       target = target)
+}
+
+distribution_dependency_provenance_records <- function(snapshot, repository) {
+  header <- c(
+    "Record-Type" = "rrp-dependency-provenance",
+    "Format-Version" = "1.0.0",
+    "Method" = "fresh-library-single-repository-install",
+    "Repository" = repository,
+    snapshot$target,
+    "Package-Count" = as.character(length(snapshot$package_records))
+  )
+  packages <- lapply(snapshot$package_records, function(record) c(
+    "Record-Type" = "provisioned-dependency",
+    "Package" = record[["Package"]],
+    "Version" = record[["Version"]],
+    "Integrity" = record[["Integrity"]]
+  ))
+  c(list(header), packages)
+}
+
+distribution_write_dependency_provenance <- function(repository_root, library_root,
+                                                     repository, path) {
+  if (!grepl("^https://", repository) || identical(repository, "@CRAN@")) {
+    distribution_stop("dependency_repository", "Configure one concrete HTTPS package repository.")
+  }
+  if (!dir.exists(library_root) || nzchar(Sys.readlink(library_root)) || file.exists(path)) {
+    distribution_stop("dependency_provenance", "Provenance output requires a nonlinked library and a new file.")
+  }
+  library_root <- normalizePath(library_root, winslash = "/", mustWork = TRUE)
+  snapshot <- distribution_dependency_snapshot(repository_root)
+  source_paths <- normalizePath(unname(snapshot$source_paths), winslash = "/", mustWork = TRUE)
+  if (any(!startsWith(source_paths, paste0(library_root, "/")))) {
+    distribution_stop("dependency_provenance", "The tested closure is not wholly supplied by the controlled library.")
+  }
+  actual <- sort(list.dirs(library_root, recursive = FALSE, full.names = FALSE), method = "radix")
+  expected <- sort(unique(c(snapshot$packages, "renv")), method = "radix")
+  if (!identical(actual, expected)) {
+    distribution_stop("dependency_provenance", "The controlled library contains an unexpected package set.")
+  }
+  distribution_write_dcf(
+    distribution_dependency_provenance_records(snapshot, repository), path
+  )
+  invisible(path)
+}
+
+distribution_validate_dependency_provenance <- function(snapshot, repository,
+                                                        provenance_path = "") {
+  if (!nzchar(provenance_path)) {
+    if (!identical(sub("/+$", "", repository), "https://cloud.r-project.org")) {
+      distribution_stop(
+        "dependency_provenance",
+        "A noncanonical configured repository requires a controlled provisioning receipt."
+      )
+    }
+    invalid <- names(snapshot$installed_repository)[snapshot$installed_repository != "CRAN"]
+    if (length(invalid)) {
+      distribution_stop(
+        "dependency_provenance",
+        paste(invalid[[1L]],
+              "has no accepted installed-package provenance and no controlled provisioning receipt.")
+      )
+    }
+    return(invisible("installed-description"))
+  }
+  if (!file.exists(provenance_path) || !isTRUE(file_test("-f", provenance_path)) ||
+      nzchar(Sys.readlink(provenance_path))) {
+    distribution_stop("dependency_provenance", "The configured provisioning receipt is missing, linked, or nonregular.")
+  }
+  records <- distribution_read_dcf(provenance_path)
+  if (length(records) < 2L) distribution_stop("dependency_provenance", "Provisioning receipt is incomplete.")
+  header <- records[[1L]]
+  expected_header <- c(
+    "Record-Type", "Format-Version", "Method", "Repository",
+    "Target-R-Version", "Target-Platform", "Target-Architecture", "Package-Count"
+  )
+  if (!identical(sort(names(header)), sort(expected_header)) ||
+      !identical(header[["Record-Type"]], "rrp-dependency-provenance") ||
+      !identical(header[["Format-Version"]], "1.0.0") ||
+      !identical(header[["Method"]], "fresh-library-single-repository-install") ||
+      !identical(header[["Repository"]], repository) ||
+      !identical(
+        unname(vapply(header[names(snapshot$target)], `[[`, character(1L), 1L)),
+        unname(snapshot$target)
+      )) {
+    distribution_stop("dependency_provenance", "Provisioning receipt header, target, or repository disagrees.")
+  }
+  packages <- records[-1L]
+  expected_fields <- c("Record-Type", "Package", "Version", "Integrity")
+  if (length(packages) != as.integer(header[["Package-Count"]]) ||
+      length(packages) != length(snapshot$package_records) ||
+      any(!vapply(packages, function(x) identical(sort(names(x)), sort(expected_fields)), logical(1L))) ||
+      any(!vapply(packages, function(x) identical(x[["Record-Type"]], "provisioned-dependency"), logical(1L)))) {
+    distribution_stop("dependency_provenance", "Provisioning receipt records or count disagree.")
+  }
+  names_found <- vapply(packages, `[[`, character(1L), "Package")
+  expected_names <- vapply(snapshot$package_records, `[[`, character(1L), "Package")
+  if (!identical(names_found, expected_names) || anyDuplicated(names_found)) {
+    distribution_stop("dependency_provenance", "Provisioning receipt package closure or order disagrees.")
+  }
+  for (i in seq_along(packages)) {
+    expected <- snapshot$package_records[[i]]
+    if (!identical(packages[[i]][["Version"]], expected[["Version"]]) ||
+        !identical(packages[[i]][["Integrity"]], expected[["Integrity"]])) {
+      distribution_stop("dependency_provenance", paste("Provisioning receipt disagrees for", expected[["Package"]]))
+    }
+  }
+  invisible("controlled-provisioning-receipt")
+}
+
+distribution_dependency_specification <- function(repository_root) {
+  repository <- Sys.getenv("RRP_CRAN_REPOSITORY", unset = "")
+  if (!nzchar(repository)) repository <- unname(getOption("repos")[["CRAN"]])
+  if (is.null(repository) || !grepl("^https://", repository) || identical(repository, "@CRAN@")) {
+    distribution_stop("dependency_repository", "Configure one concrete HTTPS package repository.")
+  }
+  snapshot <- distribution_dependency_snapshot(repository_root)
+  distribution_validate_dependency_provenance(
+    snapshot, repository, Sys.getenv("RRP_DEPENDENCY_PROVENANCE", unset = "")
+  )
+  package_records <- lapply(snapshot$package_records, function(record) c(
+    record[c("Record-Type", "Package", "Version", "Source-Type")],
+    "Repository" = repository,
+    record["Integrity"]
+  ))
+  target <- snapshot$target
   repository_id <- distribution_hash_lines(paste0("repository=", repository))
   normalized <- c(unname(paste(names(target), target, sep = "=")),
                   vapply(package_records, function(x) paste(x, collapse = "|"), character(1L)))
@@ -297,7 +425,7 @@ distribution_dependency_specification <- function(repository_root) {
     "Package-Count" = as.character(length(package_records))
   )
   list(records = c(list(header), package_records), id = specification_id,
-       target = target, direct = direct, packages = closure)
+       target = target, direct = snapshot$direct, packages = snapshot$packages)
 }
 
 distribution_run <- function(command, arguments, working_directory, code) {

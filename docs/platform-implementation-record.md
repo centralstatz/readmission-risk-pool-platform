@@ -6291,3 +6291,66 @@ unimplemented.
 
 **Next task:** formally accept Increment 11.D before beginning Increment 11.E —
 Bootstrap installation and private dependency restoration.
+
+### Increment 11.D hosted dependency-provenance reconciliation — 2026-10-08
+
+The first hosted acceptance attempt, GitHub Actions `package-foundation` run
+`37822526376`, job `113466932489`, failed at distribution dependency
+resolution on committed implementation revision
+`c1d32494fd6c5bf5ae48a44aeaecb38d0ca9c26b`. The reported first failure was
+`[dependency_provenance] DBI is not an installed CRAN package.` Local evidence
+had passed because the local source-installed closure carries
+`Repository: CRAN` in each installed `DESCRIPTION`; Ubuntu provisioning uses
+the setup action's Posit Package Manager repository and its installed binary
+metadata does not satisfy that exact CRAN-label assumption. DBI was merely the
+first radix-ordered closure member inspected, so the discrepancy was treated
+as closure-wide rather than special-cased.
+
+The correction distinguishes optional installed-artifact annotations from the
+reproducible restoration source declared by the distribution. The ordinary
+local path remains strict: without separate evidence, every installed closure
+member must explicitly carry accepted CRAN provenance and the configured URL
+must be canonical CRAN; other configured repositories require a receipt. The hosted workflow now
+creates a new dependency library under the runner temporary root, excludes the
+ambient site library, derives direct dependencies from the two package
+descriptions, installs the complete closure plus the maintainer-only `renv`
+engine from one explicit HTTPS repository, and writes a temporary controlled-
+provisioning receipt. The builder accepts that alternative evidence only when
+the receipt's fixed method, exact target, repository URL, radix-ordered closed
+package set, versions, and normalized integrity hashes all agree with the
+tested dependency snapshot. Missing, linked, malformed, stale, differently
+targeted, differently sourced, incomplete, reordered, version-mismatched, or
+integrity-mismatched receipts fail closed. The emitted distribution dependency
+specification remains unchanged: exact target, explicit restoration repository
+URL, exact versions, repository source type, and integrity for the verified
+closure. No package name, `RSPM` label, or absent field is converted into
+fabricated CRAN provenance.
+
+Focused regression evidence covers the hosted missing/differently labeled
+metadata case plus absent receipt and repository, target, closure, version,
+and integrity disagreement. The repository's closed workflow policy was
+updated atomically. This is controlled maintainer/CI provisioning evidence,
+not the 11.E installer or dependency-restoration implementation; no receipt,
+third-party artifact, or dependency library enters the RRP payload, and no
+package API, export, resource contract, or runtime dependency changed.
+
+Local correction evidence passed repository validation (eight checks, zero
+issues), the complete distribution validator (two equivalent builds,
+standalone copied verification, receipt and installed-metadata paths, all new
+provenance adversaries, all prior tamper cases, and cleanup), R parsing, and
+`git diff --check`. The unchanged package validator was also run: resource,
+package-boundary, dependency, build, isolated-install/load, `rrpruntime` check,
+and `rrpplatform` check evidence all passed with `Status: OK`; its later
+installed 11.C project-lifecycle CLI aggregate exceeded the existing 900-
+second local supervisor bound on this run and was terminated cleanly. That
+timeout did not touch the changed distribution/provenance surfaces and left no
+validation subprocess, but it is not represented as a fresh complete package-
+aggregate pass. The committed 11.D baseline's prior complete local package
+evidence remains unchanged; corrected hosted execution is still required.
+
+Increment 11.D remains implementation-complete but pending formal acceptance
+until the corrected committed revision passes hosted Ubuntu/R 4.4 validation.
+Stage 11 remains incomplete, and Increment 11.E has not begun.
+
+**Next task:** commit and run the corrected revision through hosted
+`package-foundation`, then formally accept Increment 11.D if it passes.

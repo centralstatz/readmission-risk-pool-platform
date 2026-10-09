@@ -15,6 +15,20 @@ packages, `renv` for normalized installed-package integrity records, and either
 `RRP_CRAN_REPOSITORY` (or configured in `options("repos")`); the command does
 not download dependencies or mutate an R library.
 
+Installed-package metadata and restoration-source provenance are related but
+not identical. A local canonical-CRAN source installation may carry an exact
+`Repository: CRAN` annotation in each installed `DESCRIPTION`. Controlled
+binary repositories can omit that annotation or use their own repository
+label. The hosted workflow therefore provisions the complete closure into a
+new, otherwise empty library from one explicit HTTPS repository and emits a
+temporary `RRP_DEPENDENCY_PROVENANCE` receipt. The build accepts that receipt
+only when its target, repository URL, closed package set, exact versions, and
+integrity hashes match the tested library. A missing or mismatched annotation
+without such a receipt still fails closed, and a noncanonical configured
+repository always requires the receipt; a package name alone never
+establishes provenance. The receipt is build-environment evidence and is not
+included as another distribution contract or dependency lock.
+
 ## Inputs and dependency specification
 
 [`distribution/source-inclusion.dcf`](../distribution/source-inclusion.dcf)
@@ -29,7 +43,7 @@ The build resolves the complete non-base `Depends`, `Imports`, and `LinkingTo`
 closure, copies that closure into a temporary controlled library, and proves in
 a fresh vanilla process that every resolved package comes from that library
 rather than an ambient user or site library. It records exact package
-versions, the configured CRAN repository, repository source type, and the
+versions, the configured repository URL, repository source type, and the
 normalized `renv` package-record hash in a target-keyed DCF specification.
 `renv` was selected because its records support exact versions, configured
 repositories, private libraries, and deterministic failure in later restore
