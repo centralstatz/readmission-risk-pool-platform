@@ -2986,6 +2986,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "project-state.R"),
       file.path("R", "resource-catalog.R"),
       file.path("R", "runtime-contracts.R"),
+      file.path("R", "software-lifecycle.R"),
       file.path("R", "state-contracts.R"),
       file.path("man", "rrp_initialize_project.Rd"),
       file.path("man", "rrp_build_and_materialize_products.Rd"),
@@ -3036,6 +3037,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "durable-history.R"),
       file.path("tests", "state-recovery.R"),
       file.path("tests", "resource-access.R"),
+      file.path("tests", "software-lifecycle.R"),
       file.path("tests", "runtime-contracts.R"),
       file.path("exec", "rrp")
     )

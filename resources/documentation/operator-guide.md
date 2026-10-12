@@ -26,6 +26,21 @@ rrp software install DISTRIBUTION_PATH --repository HTTPS_URL
 This creates and validates one immutable version-private realization. It does
 not activate that version, discover a project, or change project source/state.
 
+Use the software-only lifecycle before entering any project:
+
+```text
+rrp software list
+rrp software verify --software PRODUCT_VERSION/DISTRIBUTION_ID
+rrp software doctor --software PRODUCT_VERSION/DISTRIBUTION_ID
+rrp software activate PRODUCT_VERSION/DISTRIBUTION_ID
+rrp software current
+```
+
+The exact selector identifies one concrete distribution realization. A
+one-command override such as `rrp --software SELECTOR version` does not change
+the active default. These commands do not inspect or associate a project;
+project compatibility is evaluated only by a later project command.
+
 ## Initialize and diagnose
 
 Create an ordinary hospital-owned scaffold only at an explicit absent
@@ -153,8 +168,8 @@ catalog and project root, including storage-neutral history objects needed for
 deliberate episode restatement. Direct use does not relax project, state,
 history, product, privacy, or compatibility contracts.
 
-The current launcher still operates one explicitly supplied installed context.
-The local distribution installer and exact dependency restoration now exist;
-activation, a shared selector, upgrade/rollback selection, uninstall, project
-migration, generic source acquisition, scheduler, daemon, remote publication,
-and deployment artifacts do not.
+The stable launcher, exact selector override, strict installed verification,
+software doctor, and atomic activation now operate independently of projects.
+Upgrade/rollback acceptance, uninstall, project migration, generic source
+acquisition, scheduler, daemon, remote publication, and deployment artifacts
+do not yet exist.

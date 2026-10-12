@@ -40,7 +40,9 @@ Description: Establishes the main internal implementation package for the
     product, and application intentions, controlled correction/restore
     confirmation, privacy-safe human or JSON rendering, and a local software-
     installation command that delegates to the distribution-owned shared
-    bootstrap mechanics without activation or project access.
+    bootstrap mechanics without project access. It also owns strict installed-
+    software enumeration, verification, diagnosis, exact selection, and atomic
+    activation behind a stable project-independent per-user launcher.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

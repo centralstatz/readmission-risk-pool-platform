@@ -223,7 +223,7 @@ rrp_verify_distribution <- function(root) {
     "distribution-identity" = 1L,
     "standalone-verifier" = 1L, "license" = 1L, "notice" = 1L,
     "version-information" = 1L, "installation-engine" = 1L,
-    "bootstrap-installer" = 1L
+    "bootstrap-installer" = 1L, "stable-shim" = 1L
   )
   for (role in names(required_role_counts)) {
     if (sum(roles == role) != required_role_counts[[role]]) {

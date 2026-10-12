@@ -58,9 +58,10 @@ focused-history, product, and supplied-application operations. Exact host-R,
 private-library, package, and installed-resource preflight happens before
 command delegation. Increment 11.D supplies the closed distribution, and 11.E
 adds `rrp software install PATH` over the same shared base-R engine as the
-distribution-local bootstrap. No active-version selection, shared launcher,
-installed verify/doctor, uninstall, migration, scheduling, or daemon is
-implemented.
+distribution-local bootstrap. Increment 11.F adds the stable per-user launcher,
+exact installed selector override, strict verification, software doctor, and
+atomic activation without project access. Uninstall, migration, scheduling,
+and daemon behavior remain unimplemented.
 
 Its current callable interfaces are:
 

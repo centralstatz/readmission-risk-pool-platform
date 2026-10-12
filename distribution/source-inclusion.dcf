@@ -5,7 +5,7 @@ Product-ID: readmission-risk-pool-platform
 Development-Version: 1.0.0-dev
 Resource-Catalog: resources/source-catalog.dcf
 Package-Count: 2
-Direct-Payload-Count: 10
+Direct-Payload-Count: 11
 
 Record-Type: package-source
 Package: rrpruntime
@@ -31,6 +31,7 @@ Files: DESCRIPTION,NAMESPACE,README.md,R/application-contracts.R,
  R/project-contracts.R,R/project-doctor.R,R/project-initializer.R,
  R/project-loader.R,R/project-state.R,R/resource-catalog.R,
  R/risk-execution.R,R/rrpplatform-package.R,R/runtime-contracts.R,
+ R/software-lifecycle.R,
  R/state-contracts.R,R/state-recovery.R,exec/rrp,
  man/rrp_build_and_materialize_products.Rd,
  man/rrp_build_product_set.Rd,man/rrp_cli_dispatch.Rd,
@@ -99,3 +100,8 @@ Record-Type: direct-payload
 Source-Path: packages/rrpplatform/exec/rrp
 Destination-Path: bin/rrp
 Role: version-launcher
+
+Record-Type: direct-payload
+Source-Path: distribution/rrp-shim
+Destination-Path: rrp-shim
+Role: stable-shim

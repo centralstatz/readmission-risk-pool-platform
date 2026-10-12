@@ -45,6 +45,17 @@ rrp_install_default_root <- function() {
   file.path(base, "rrp")
 }
 
+rrp_install_default_executable_root <- function() {
+  if (identical(Sys.info()[["sysname"]], "Windows")) {
+    base <- Sys.getenv("LOCALAPPDATA", unset = "")
+    if (!nzchar(base)) rrp_install_fail(
+      "executable_root", "LOCALAPPDATA is unavailable."
+    )
+    return(file.path(base, "RRP", "bin"))
+  }
+  file.path(path.expand("~"), ".local", "bin")
+}
+
 rrp_install_normalize_root <- function(root = NULL) {
   root <- if (is.null(root)) rrp_install_default_root() else
     rrp_install_scalar(root, "Installation root")
@@ -64,6 +75,68 @@ rrp_install_normalize_root <- function(root = NULL) {
   parent <- normalizePath(parent, winslash = "/", mustWork = TRUE)
   candidate <- do.call(file.path, as.list(c(parent, missing, basename(root))))
   gsub("\\\\", "/", candidate)
+}
+
+rrp_install_normalize_executable_root <- function(root = NULL) {
+  root <- if (is.null(root)) rrp_install_default_executable_root() else
+    rrp_install_scalar(root, "Executable root")
+  root <- path.expand(root)
+  if (!grepl("^(?:/|[A-Za-z]:[/\\\\])", root, perl = TRUE)) {
+    rrp_install_fail("executable_root", "Executable root must be absolute.")
+  }
+  parent <- dirname(root)
+  missing <- character()
+  while (!dir.exists(parent)) {
+    if (identical(parent, dirname(parent))) {
+      rrp_install_fail("executable_root", "Executable-root parent is unavailable.")
+    }
+    missing <- c(basename(parent), missing)
+    parent <- dirname(parent)
+  }
+  parent <- normalizePath(parent, winslash = "/", mustWork = TRUE)
+  gsub("\\\\", "/", do.call(file.path, as.list(c(
+    parent, missing, basename(root)
+  ))))
+}
+
+rrp_install_provision_shim <- function(
+  distribution_root, installation_root, executable_root = NULL
+) {
+  executable_root <- rrp_install_normalize_executable_root(executable_root)
+  rrp_install_create_directory(executable_root, recursive = TRUE)
+  source <- file.path(distribution_root, "rrp-shim")
+  if (!file.exists(source) || !isTRUE(file_test("-f", source)) ||
+      nzchar(Sys.readlink(source))) {
+    rrp_install_fail("stable_shim", "Stable launcher template is unavailable.")
+  }
+  lines <- readLines(source, warn = FALSE, encoding = "UTF-8")
+  marker <- "@RRP_SOFTWARE_ROOT_SHELL@"
+  if (sum(grepl(marker, lines, fixed = TRUE)) != 1L) {
+    rrp_install_fail("stable_shim", "Stable launcher template is invalid.")
+  }
+  rendered <- sub(marker, shQuote(installation_root), lines, fixed = TRUE)
+  target <- file.path(executable_root, "rrp")
+  if (file.exists(target) || dir.exists(target)) {
+    if (!file.exists(target) || !isTRUE(file_test("-f", target)) ||
+        nzchar(Sys.readlink(target)) ||
+        !identical(readLines(target, warn = FALSE, encoding = "UTF-8"), rendered)) {
+      rrp_install_fail(
+        "stable_shim_conflict", "Stable launcher destination contains unrelated content."
+      )
+    }
+    if (!isTRUE(Sys.chmod(target, mode = "0555", use_umask = FALSE))) {
+      rrp_install_fail("stable_shim", "Stable launcher could not be made executable.")
+    }
+    return(target)
+  }
+  staged <- tempfile(".rrp-shim-", tmpdir = executable_root)
+  on.exit(if (file.exists(staged)) unlink(staged, force = TRUE), add = TRUE)
+  writeLines(rendered, staged, useBytes = TRUE)
+  if (!isTRUE(Sys.chmod(staged, mode = "0555", use_umask = FALSE)) ||
+      !isTRUE(file.rename(staged, target))) {
+    rrp_install_fail("stable_shim", "Stable launcher could not be provisioned.")
+  }
+  target
 }
 
 rrp_install_assert_plain_directory <- function(path, code) {
@@ -473,7 +546,7 @@ rrp_install_make_read_only <- function(root) {
   invisible(root)
 }
 
-rrp_install_result <- function(record, destination, reused) list(
+rrp_install_result <- function(record, destination, shim_path, reused) list(
   installation_id = unname(record[["Installation-ID"]]),
   product_version = unname(record[["Product-Version"]]),
   distribution_id = unname(record[["Distribution-ID"]]),
@@ -485,12 +558,14 @@ rrp_install_result <- function(record, destination, reused) list(
   host_r_version = unname(record[["Host-R-Version"]]),
   platform = unname(record[["Platform"]]),
   architecture = unname(record[["Architecture"]]),
+  shim_path = shim_path,
   reused = isTRUE(reused)
 )
 
 rrp_install_distribution <- function(
   distribution_root, repository, host_r_executable,
-  installation_root = NULL, progress = function(message) invisible(message),
+  installation_root = NULL, executable_root = NULL,
+  progress = function(message) invisible(message),
   failure_stage = ""
 ) {
   if (!is.function(progress)) rrp_install_fail(
@@ -547,7 +622,11 @@ rrp_install_distribution <- function(
     record <- rrp_install_existing(
       destination, prospective, host, dependencies, internal_descriptions
     )
-    return(rrp_install_result(record, destination, TRUE))
+    progress("Provision stable per-user launcher")
+    shim <- rrp_install_provision_shim(
+      destination, root, executable_root
+    )
+    return(rrp_install_result(record, destination, shim, TRUE))
   }
 
   stage <- tempfile(".stage-", tmpdir = staging)
@@ -621,13 +700,26 @@ rrp_install_distribution <- function(
       stop(condition)
     }
   )
-  rrp_install_result(record, destination, FALSE)
+  shim <- tryCatch({
+    progress("Provision stable per-user launcher")
+    rrp_install_provision_shim(destination, root, executable_root)
+  }, error = function(condition) {
+    entries <- list.files(
+      destination, all.files = TRUE, full.names = TRUE, recursive = TRUE,
+      include.dirs = TRUE, no.. = TRUE
+    )
+    if (length(entries)) Sys.chmod(entries, mode = "0755", use_umask = FALSE)
+    Sys.chmod(destination, mode = "0755", use_umask = FALSE)
+    unlink(destination, recursive = TRUE, force = TRUE)
+    stop(condition)
+  })
+  rrp_install_result(record, destination, shim, FALSE)
 }
 
 rrp_install_engine_arguments <- function(arguments) {
   values <- list(
     distribution = NULL, repository = NULL, installation_root = NULL,
-    result = NULL
+    executable_root = NULL, result = NULL
   )
   index <- 1L
   while (index <= length(arguments)) {
@@ -635,6 +727,7 @@ rrp_install_engine_arguments <- function(arguments) {
       "--distribution" = "distribution",
       "--repository" = "repository",
       "--installation-root" = "installation_root",
+      "--executable-root" = "executable_root",
       "--result" = "result",
       NULL
     )
@@ -663,7 +756,7 @@ rrp_install_engine_main <- function(arguments = commandArgs(trailingOnly = TRUE)
   result <- rrp_install_distribution(
     values$distribution, values$repository,
     normalizePath(file.path(R.home("bin"), "R"), winslash = "/", mustWork = TRUE),
-    values$installation_root
+    values$installation_root, values$executable_root
   )
   record <- c(
     "Record-Type" = "rrp-install-result",
@@ -678,6 +771,7 @@ rrp_install_engine_main <- function(arguments = commandArgs(trailingOnly = TRUE)
     "Host-R-Version" = result$host_r_version,
     "Platform" = result$platform,
     "Architecture" = result$architecture,
+    "Shim-Path" = result$shim_path,
     "Reused" = if (result$reused) "true" else "false"
   )
   rrp_install_write_dcf(record, result_path)

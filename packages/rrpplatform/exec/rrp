@@ -47,6 +47,18 @@ status <- tryCatch(
     software_root = Sys.getenv("RRP_SOFTWARE_ROOT"),
     private_library = private_library,
     host_r_executable = Sys.getenv("RRP_R_EXECUTABLE"),
+    installation_root = {
+      value <- Sys.getenv("RRP_INSTALLATION_ROOT", unset = "")
+      if (nzchar(value)) value else NULL
+    },
+    selected_selector = {
+      value <- Sys.getenv("RRP_SELECTED_SOFTWARE_SELECTOR", unset = "")
+      if (nzchar(value)) value else NULL
+    },
+    selection_mode = Sys.getenv(
+      "RRP_SELECTION_MODE", unset = "explicit_version_context"
+    ),
+    stable_shim = Sys.getenv("RRP_STABLE_SHIM", unset = ""),
     working_directory = "."
   ),
   interrupt = function(condition) 130L,

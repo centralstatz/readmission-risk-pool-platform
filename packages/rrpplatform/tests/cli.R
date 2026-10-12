@@ -81,7 +81,8 @@ dir.create(distribution)
 software_install <- internal("rrp_cli_parse")(c(
   "software", "install", distribution, "--repository",
   "https://cloud.r-project.org", "--installation-root",
-  file.path(resolution_root, "software-root"), "--json"
+  file.path(resolution_root, "software-root"), "--executable-root",
+  file.path(resolution_root, "bin"), "--json"
 ), resolution_root)
 stopifnot(
   identical(software_install$command, "software_install"),
@@ -89,6 +90,26 @@ stopifnot(
     normalizePath(distribution, winslash = "/", mustWork = TRUE)),
   identical(software_install$repository, "https://cloud.r-project.org"),
   isTRUE(software_install$json)
+)
+selector <- paste0("1.0.0-dev/", paste(rep("a", 64L), collapse = ""))
+stopifnot(
+  identical(internal("rrp_cli_parse")(c("software", "list"))$command,
+    "software_list"),
+  identical(internal("rrp_cli_parse")(c("software", "current"))$command,
+    "software_current"),
+  identical(internal("rrp_cli_parse")(c(
+    "software", "verify", "--software", selector
+  ))$selector, selector),
+  identical(internal("rrp_cli_parse")(c(
+    "software", "doctor", "--software", selector
+  ))$selector, selector),
+  identical(internal("rrp_cli_parse")(c(
+    "software", "activate", selector
+  ))$selector, selector)
+)
+expect_usage(
+  internal("rrp_cli_parse")(c("software", "activate", "1.0.0-dev")),
+  "invalid_software_selector"
 )
 expect_usage(
   internal("rrp_cli_parse")(c("software", "install", distribution),
@@ -337,7 +358,7 @@ if (length(arguments) >= 3L) {
   child_result <- run_cli(c("project", "status"), project_child)
   unrelated_result <- run_cli(c("project", "status"), unrelated)
   unrelated_json <- run_cli(c("project", "status", "--json"), unrelated)
-  unsupported <- run_cli(c("software", "list"), unrelated)
+  unsupported <- run_cli(c("software", "uninstall", "unknown"), unrelated)
   stopifnot(
     identical(child_result$status, 1L), identical(unrelated_result$status, 1L),
     identical(unrelated_json$status, 1L),

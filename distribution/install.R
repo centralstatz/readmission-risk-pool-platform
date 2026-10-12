@@ -11,19 +11,25 @@ source(file.path(distribution_root, "verify-distribution.R"), local = TRUE)
 source(file.path(distribution_root, "install-engine.R"), local = TRUE)
 
 rrp_install_bootstrap_arguments <- function(arguments) {
-  values <- list(repository = NULL, installation_root = NULL)
+  values <- list(
+    repository = NULL, installation_root = NULL, executable_root = NULL
+  )
   index <- 1L
   while (index <= length(arguments)) {
     argument <- arguments[[index]]
     name <- switch(argument,
       "--repository" = "repository",
       "--installation-root" = "installation_root",
+      "--executable-root" = "executable_root",
       NULL
     )
     if (is.null(name) || index == length(arguments) ||
         startsWith(arguments[[index + 1L]], "--") || !is.null(values[[name]])) {
       stop(
-        "Usage: Rscript --vanilla install.R --repository HTTPS_URL [--installation-root ABSOLUTE_PATH]",
+        paste(
+          "Usage: Rscript --vanilla install.R --repository HTTPS_URL",
+          "[--installation-root ABSOLUTE_PATH] [--executable-root ABSOLUTE_PATH]"
+        ),
         call. = FALSE
       )
     }
@@ -31,7 +37,10 @@ rrp_install_bootstrap_arguments <- function(arguments) {
     index <- index + 2L
   }
   if (is.null(values$repository)) stop(
-    "Usage: Rscript --vanilla install.R --repository HTTPS_URL [--installation-root ABSOLUTE_PATH]",
+    paste(
+      "Usage: Rscript --vanilla install.R --repository HTTPS_URL",
+      "[--installation-root ABSOLUTE_PATH] [--executable-root ABSOLUTE_PATH]"
+    ),
     call. = FALSE
   )
   values
@@ -46,14 +55,16 @@ rrp_install_bootstrap <- function(arguments = commandArgs(trailingOnly = TRUE)) 
     repository = values$repository,
     host_r_executable = host_r,
     installation_root = values$installation_root,
+    executable_root = values$executable_root,
     progress = function(message) {
       step <<- step + 1L
       cat(sprintf("[%d] %s\n", step, message))
     }
   )
   cat(sprintf(
-    "PASS installation %s\nLocation: %s\nReused: %s\n",
+    "PASS installation %s\nLocation: %s\nStable launcher: %s\nReused: %s\n",
     result$installation_id, result$installation_root,
+    result$shim_path,
     if (result$reused) "yes" else "no"
   ))
   invisible(result)

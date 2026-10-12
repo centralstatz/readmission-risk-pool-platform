@@ -241,5 +241,11 @@ distribution-owned installation engine, small base-R bootstrap, installed
 software-install CLI intention, immutable per-user version roots, exact private
 dependency and internal-package restoration, installation evidence, atomic
 promotion, and copied-distribution acceptance proof. It is implementation-
-complete pending formal human acceptance. Stage 11 remains incomplete; no
-11.F+ behavior exists.
+complete and formally accepted at revision
+`a45a90d0c7088238f90369ba79116ff5f69ebcd8` after hosted run `37955169146`,
+job `113903725213`. Increment 11.F adds the stable per-user shim, exact
+software selector override, installed enumeration/current selection, strict
+installed verification, bounded software doctor, and lock-protected atomic
+activation without project access. It is implementation-complete pending
+formal human acceptance. Stage 11 remains incomplete; no 11.G+ behavior
+exists.

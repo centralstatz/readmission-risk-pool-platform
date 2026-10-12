@@ -6558,3 +6558,125 @@ release, or deployment behavior. Stage 11 remains incomplete.
 
 **Next task:** Increment 11.F — Active-version resolution, installed
 verification, and software doctor.
+
+## Stage 11 / Increment 11.F — Active-version resolution, installed verification, and software doctor — 2026-10-12
+
+Implementation resumed from documentation-closeout revision
+`3eca2c4070dc11c18327fe49199bcbce4b98d2bb`, which preserves exact formally
+accepted 11.E implementation revision
+`a45a90d0c7088238f90369ba79116ff5f69ebcd8` plus only its acceptance
+documentation. The recovery audit retained the coherent interrupted 11.F
+work: stable-shim and installer integration, package-owned lifecycle
+operations, CLI parsing/rendering, closed distribution and repository
+inventory updates, installed guidance, and partial tests. It found no
+unrelated work, generated source artifact, surviving validation process, or
+reason to restart the increment.
+
+The distribution now includes one minimal stable `rrp` shim. Installation
+provisions it by default at the OS-appropriate per-user executable location,
+or at one explicit absolute isolated-proof root, without editing `PATH` or
+activating software. Existing identical shim content is reusable; a linked,
+nonregular, or unrelated destination fails closed. The shim resolves an exact
+`<product-version>/<distribution-id>` selector from the explicit global
+override, activation target, or validated `active.dcf`, establishes the
+recorded host R/private-library/resource context, and `exec`s the immutable
+version launcher. List, current, and doctor may use a structurally available
+installation only as a transport before activation or while diagnosing an
+invalid pointer; this never establishes a default, and package code remains
+the authority for lifecycle interpretation. Arguments, exit status, and
+signals retain ordinary process delegation semantics.
+
+Private `rrpplatform` lifecycle behavior owns exact candidate enumeration,
+current-selection interpretation, strict installed verification, bounded
+software diagnosis, and lock-protected activation. Verification recomputes
+the installation identity, validates exact installation/manifest/inventory/
+distribution-identity agreement and every payload digest, rejects links and
+unexpected content, proves the dependency specification and exact private
+package closure/integrity, runs an isolated resource/runtime check under the
+recorded R, and checks the version launcher. It is read-only and performs no
+repair. Doctor reports `ready`, `ready_with_warnings`, or `blocked` through
+the installed diagnosis authority, including absent/invalid activation and
+stable-shim recovery guidance, without changing state. Activation verifies
+the target first, takes a bounded software-root lock, stages and atomically
+promotes only `active.dcf`, validates the promoted record, restores the prior
+bytes on a controlled post-promotion failure, and is idempotent for the same
+installation. No operation accepts, discovers, records, or checks a project.
+
+The installed CLI now exposes `software list`, `current`, `verify`, `doctor`,
+and `activate`, plus the one-command `--software SELECTOR` override. Human and
+JSON rendering continue to derive from the same curated operation results and
+deterministic exit classes. The stable shim owns invocation environment;
+package domain code receives explicit installation root, selector, selection
+mode, and shim path and does not rediscover them from ambient environment.
+The version-specific launcher remains the sole boundary that reads those
+invocation environment values and establishes vanilla R/library context.
+Installation remains non-activating, an explicit override does not modify the
+active default, and project compatibility begins only when a separate project
+operation is requested.
+
+Recovery reproduced all four original pre-activation failures—list, current,
+explicit verify, and doctor—at strict selected-context preflight. The
+installation and independent dependency-integrity probe were valid. The
+actual defect was locale-sensitive emulation of the `renv` DESCRIPTION hash:
+the stable shim deliberately sets `LC_ALL=C`, so `read.dcf()` failed to decode
+non-ASCII DESCRIPTION fields the same way as the build-time normalized
+integrity authority and falsely reported `dependency_integrity`. The final
+implementation reads DESCRIPTION bytes, normalizes them to UTF-8, and applies
+the same closed DCF normalization/hash semantics independent of process
+locale. Reconciliation also corrected the isolated runtime probe to invoke
+its temporary R script through `--file` rather than passing an ignored bare
+argument, and normalized missing targets referenced by `active.dcf` to the
+activation-owned `invalid_active_selection` diagnostic. Neither correction
+weakens integrity, invents a fallback, or bypasses selected-context preflight.
+
+Installed acceptance evidence covers first installation with no selection;
+pre-activation list/current/explicit verify/doctor; first and idempotent
+activation; active and explicit resolution from an unrelated project fixture;
+human/JSON status agreement; a second valid controlled development distribution
+installed side by side and explicitly selected without changing the original
+active pointer; wrong ambient packages, libraries, and startup files; invalid-
+pointer list/current/doctor plus an explicit selector that bypasses but does
+not change that pointer; controlled post-promotion rollback;
+manifest damage denial and exact recovery; invalid-selector usage status;
+stable `exec` delegation; unrelated-shim conflict refusal; project regular-
+file nonmutation throughout; and exact bootstrap/installed-CLI reinstall
+equivalence. Package-native evidence covers selector closure, exact diagnosis
+shape, invalid-field rejection, and absent-installation list/current/doctor
+semantics. The hosted workflow still invokes the same four human validators,
+with the installation step truthfully named for installation and software
+lifecycle evidence.
+
+Historical inspection of immutable `v0.1.0` reused only thin wrapper
+delegation, doctor check aggregation, staged pointer promotion/rollback,
+idempotency/conflict, detached records, and failure-cleanup mechanics from
+the historical doctor and Hospital distribution operations/tests. Repository
+defaults, project preflight during activation, generated-Hospital delivery,
+last-project state, Git-dependent execution, and historical compatibility
+machinery were rejected.
+
+Final local evidence passed repository validation (eight checks, zero issues),
+the complete package validator, both isolated package builds/loads and
+`R CMD check --no-manual` checks with exact `Status: OK`, all accepted installed
+Stage 4–11.E regressions, the complete closed-distribution validator, the
+complete copied-distribution installation/software-lifecycle validator, R and
+shell parsing, and `git diff --check`. The installation validator's first two
+unprivileged restoration attempts could not reach CRAN in the execution
+sandbox; visible reproduction confirmed that external restriction, and the
+same unchanged validator then passed completely with controlled network
+access. No generated archive, installation root, private library, check tree,
+or diagnostic fixture remains in repository source.
+
+The catalog remains exactly 67 resources, the `rrpplatform` namespace remains
+exactly 33 exports, and package dependencies are unchanged. No 11.G side-by-
+side transition/rollback acceptance, uninstall, project association,
+compatibility preflight inside activation, automatic activation, dependency
+repair, remote acquisition, updater, migration, release, publication, or
+deployment behavior entered. Stage 11 remains incomplete.
+
+Increment 11.F is implementation-complete pending formal human acceptance and
+revision-matched hosted `package-foundation` evidence. It is not formally
+accepted by this implementation entry.
+
+**Next task:** commit and run the 11.F implementation through hosted
+`package-foundation`, then formally accept Increment 11.F if that exact
+revision passes. Do not begin Increment 11.G before that acceptance.

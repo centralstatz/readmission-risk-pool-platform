@@ -97,6 +97,64 @@ validate_installation <- function() {
   require_true(length(repository) == 1L, "Distribution repository set is unsupported.")
   cat("PASS copied local acquisition and standalone distribution verification\n")
 
+  alternate_source <- file.path(work, "alternate-development-source")
+  authority <- distribution_source_authority(repository_root)
+  resources <- distribution_resource_authority(repository_root)
+  alternate_paths <- sort(unique(c(
+    authority$source_paths, resources$source_paths,
+    "distribution/source-inclusion.dcf", "tools/distribution-lib.R",
+    "tools/build-distribution.R"
+  )), method = "radix")
+  for (relative in alternate_paths) distribution_copy(
+    file.path(repository_root, relative), file.path(alternate_source, relative),
+    identical(relative, "tools/build-distribution.R") ||
+      identical(relative, "packages/rrpplatform/exec/rrp") ||
+      identical(relative, "distribution/verify-distribution.R") ||
+      identical(relative, "distribution/install.R") ||
+      identical(relative, "distribution/rrp-shim")
+  )
+  alternate_readme <- file.path(
+    alternate_source, "packages", "rrpplatform", "README.md"
+  )
+  writeLines(c(
+    readLines(alternate_readme, warn = FALSE, encoding = "UTF-8"), "",
+    "Controlled alternate development identity for selector validation."
+  ), alternate_readme, useBytes = TRUE)
+  alternate_archive <- file.path(work, "alternate-distribution.tar")
+  alternate_build <- run(
+    file.path(R.home("bin"), "Rscript"),
+    c(
+      "--vanilla", file.path(alternate_source, "tools", "build-distribution.R"),
+      alternate_archive
+    ),
+    c(
+      paste0("RRP_CRAN_REPOSITORY=", repository),
+      paste0("RRP_DEPENDENCY_PROVENANCE=", provenance),
+      "R_PROFILE_USER=", "R_ENVIRON_USER="
+    )
+  )
+  require_true(
+    alternate_build$status == 0L,
+    paste("Alternate development build failed:", paste(
+      alternate_build$output, collapse = "\n"
+    ))
+  )
+  alternate_acquired <- file.path(work, "alternate-acquired")
+  dir.create(alternate_acquired)
+  utils::untar(alternate_archive, exdir = alternate_acquired)
+  alternate_distribution <- file.path(alternate_acquired, "rrp-1.0.0-dev")
+  alternate_verified <- rrp_verify_distribution(alternate_distribution)
+  require_true(
+    !identical(
+      alternate_verified$manifest[["Distribution-ID"]],
+      verified$manifest[["Distribution-ID"]]
+    ) && identical(
+      alternate_verified$manifest[["Dependency-Specification-ID"]],
+      verified$manifest[["Dependency-Specification-ID"]]
+    ),
+    "Controlled alternate development identity is not distinct and compatible."
+  )
+
   host_r <- normalizePath(file.path(R.home("bin"), "R"), winslash = "/", mustWork = TRUE)
   project <- file.path(work, "independent-project")
   dir.create(project)
@@ -177,6 +235,7 @@ validate_installation <- function() {
   cat("PASS repository, failure-cleanup, and conflict safeguards\n")
 
   installation_root <- file.path(work, "isolated-user-data")
+  executable_root <- file.path(work, "isolated-user-bin")
   ambient_user <- file.path(work, "ambient-user-library")
   ambient_site <- file.path(work, "ambient-site-library")
   dir.create(ambient_user)
@@ -193,7 +252,8 @@ validate_installation <- function() {
     c(
       "--vanilla", file.path(distribution_root, "install.R"),
       "--repository", repository,
-      "--installation-root", installation_root
+      "--installation-root", installation_root,
+      "--executable-root", executable_root
     ),
     c(
       paste0("R_LIBS=", ambient_user),
@@ -217,6 +277,8 @@ validate_installation <- function() {
       identical(record[["Private-Library"]], file.path(destination, "library")) &&
       identical(record[["Host-R-Executable"]], host_r) &&
       !file.exists(file.path(installation_root, "active.dcf")) &&
+      file.exists(file.path(executable_root, "rrp")) &&
+      file.access(file.path(executable_root, "rrp"), 1L) == 0L &&
       !dir.exists(file.path(project, "renv")) &&
       !file.exists(file.path(project, "renv.lock")) &&
       !dir.exists(file.path(destination, "library", "renv")) &&
@@ -238,6 +300,292 @@ validate_installation <- function() {
     "Installed private package closure disagrees.")
   cat("PASS base-R bootstrap, exact private restoration, isolation, and promotion\n")
 
+  integrity_script <- file.path(work, "installed-integrity-probe.R")
+  writeLines(c(
+    sprintf("private <- %s", deparse(file.path(destination, "library"))),
+    sprintf("root <- %s", deparse(destination)),
+    ".libPaths(c(private,.Library))",
+    "library(rrpplatform)",
+    "internal <- function(name) getFromNamespace(name,'rrpplatform')",
+    "records <- internal('rrp_software_read_dcf')(file.path(root,'dependencies','dependencies.dcf'))",
+    "packages <- records[-1L]",
+    "expected <- setNames(sub('^renv:','',vapply(packages,`[[`,character(1L),'Integrity')),vapply(packages,`[[`,character(1L),'Package'))",
+    "actual <- vapply(names(expected),function(package) internal('rrp_software_description_hash')(file.path(private,package,'DESCRIPTION')),character(1L))",
+    "mismatch <- names(expected)[actual != expected]",
+    "if (length(mismatch)) stop(paste('dependency integrity mismatch:',paste(mismatch,collapse=',')),call.=FALSE)",
+    "invisible(TRUE)"
+  ), integrity_script, useBytes = TRUE)
+  integrity_probe <- run(
+    host_r, c("--vanilla", shQuote(integrity_script)),
+    c(
+      "LC_ALL=C",
+      paste0("R_LIBS_USER=", file.path(destination, "library")),
+      "R_LIBS_SITE="
+    )
+  )
+  require_true(
+    integrity_probe$status == 0L,
+    paste("Installed dependency integrity probe failed:",
+      paste(integrity_probe$output, collapse = "\n"))
+  )
+
+  stable_launcher <- file.path(executable_root, "rrp")
+  selector <- paste(
+    verified$manifest[["Product-Version"]],
+    verified$manifest[["Distribution-ID"]], sep = "/"
+  )
+  stable_run <- function(arguments, directory = work) {
+    old <- setwd(directory)
+    on.exit(setwd(old), add = TRUE)
+    run(
+      "/bin/sh", c(shQuote(stable_launcher), vapply(
+        arguments, shQuote, character(1L)
+      )), c(
+        paste0("R_LIBS=", ambient_user),
+        paste0("R_LIBS_USER=", ambient_user),
+        paste0("R_LIBS_SITE=", ambient_site),
+        paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ)
+      )
+    )
+  }
+  before_activation <- stable_run(c("software", "current", "--json"), project)
+  listed <- stable_run(c("software", "list", "--json"), project)
+  diagnosed <- stable_run(c("software", "doctor", "--json"), project)
+  verified_cli <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  require_true(
+    all(vapply(list(before_activation, listed, diagnosed, verified_cli),
+      function(value) value$status == 0L, logical(1L))) &&
+      grepl('"active":false', paste(before_activation$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl('"status":"verified"', paste(listed$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl('"software_status":"ready_with_warnings"',
+        paste(diagnosed$output, collapse = "\n"), fixed = TRUE) &&
+      grepl('"software_status":"ready"',
+        paste(verified_cli$output, collapse = "\n"), fixed = TRUE) &&
+      identical(project_before, tree_digest(project)),
+    paste("Pre-activation lifecycle proof failed:", paste(c(
+      before_activation$output, listed$output, diagnosed$output,
+      verified_cli$output
+    ), collapse = "\n"))
+  )
+  activated <- stable_run(c("software", "activate", selector, "--json"), project)
+  reactivated <- stable_run(c("software", "activate", selector, "--json"), project)
+  current <- stable_run(c("software", "current", "--json"), project)
+  current_human <- stable_run(c("software", "current"), project)
+  healthy_doctor <- stable_run(c("software", "doctor", "--json"), project)
+  version <- stable_run(c("version", "--json"), project)
+  explicit <- stable_run(c("--software", selector, "version", "--json"), project)
+  active_before_failure <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  failure_script <- file.path(work, "activation-failure.R")
+  writeLines(c(
+    sprintf(".libPaths(c(%s,.Library))", deparse(file.path(destination, "library"))),
+    "library(rrpplatform)",
+    sprintf("root <- %s", deparse(installation_root)),
+    sprintf("selector <- %s", deparse(selector)),
+    "result <- getFromNamespace('rrp_software_activate','rrpplatform')(root,selector,'after_promotion')",
+    "stopifnot(!rrp_operation_succeeded(result))"
+  ), failure_script, useBytes = TRUE)
+  controlled_activation <- run(
+    host_r, c("--vanilla", shQuote(failure_script)),
+    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE=")
+  )
+  active_after_failure <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  require_true(
+    activated$status == 0L && reactivated$status == 0L &&
+      current$status == 0L && current_human$status == 0L &&
+      healthy_doctor$status == 0L &&
+      version$status == 0L && explicit$status == 0L &&
+      controlled_activation$status == 0L &&
+      grepl('"reused":true', paste(reactivated$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl(paste0('"selector":"', selector, '"'),
+        paste(current$output, collapse = "\n"), fixed = TRUE) &&
+      grepl(selector, paste(current_human$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl('"software_status":"ready"',
+        paste(healthy_doctor$output, collapse = "\n"), fixed = TRUE) &&
+      grepl('"selection":"active"', paste(version$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl('"selection":"explicit_override"',
+        paste(explicit$output, collapse = "\n"), fixed = TRUE) &&
+      identical(active_before_failure, active_after_failure) &&
+      identical(project_before, tree_digest(project)),
+    "Stable selection, activation, or failure-preservation proof failed."
+  )
+  signal_script <- file.path(work, "stable-signal-proof.sh")
+  writeLines(c(
+    "#!/bin/sh",
+    "\"$1\" software list --json >/dev/null 2>&1 &",
+    "child=$!",
+    "sleep 1",
+    "kill -TERM \"$child\" 2>/dev/null || exit 1",
+    "wait \"$child\"",
+    "status=$?",
+    "[ \"$status\" -eq 143 ] || [ \"$status\" -eq 130 ]"
+  ), signal_script, useBytes = TRUE)
+  signal_proof <- run(
+    "/bin/sh", c(shQuote(signal_script), shQuote(stable_launcher)),
+    c(
+      paste0("R_LIBS=", ambient_user),
+      paste0("R_LIBS_USER=", ambient_user),
+      paste0("R_LIBS_SITE=", ambient_site),
+      paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ)
+    )
+  )
+  require_true(
+    signal_proof$status == 0L,
+    paste("Stable launcher signal propagation failed:", paste(
+      signal_proof$output, collapse = "\n"
+    ))
+  )
+  cat("PASS stable shim, exact selection, verification, doctor, and atomic activation\n")
+
+  alternate_result <- rrp_install_distribution(
+    alternate_distribution, repository, host_r, installation_root,
+    executable_root
+  )
+  alternate_selector <- paste(
+    alternate_result$product_version, alternate_result$distribution_id,
+    sep = "/"
+  )
+  active_after_alternate <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  alternate_explicit <- stable_run(c(
+    "--software", alternate_selector, "version", "--json"
+  ), project)
+  two_listed <- stable_run(c("software", "list", "--json"), project)
+  current_after_alternate <- stable_run(c(
+    "software", "current", "--json"
+  ), project)
+  require_true(
+    alternate_explicit$status == 0L && two_listed$status == 0L &&
+      current_after_alternate$status == 0L &&
+      grepl('"selection":"explicit_override"',
+        paste(alternate_explicit$output, collapse = "\n"), fixed = TRUE) &&
+      grepl(selector, paste(two_listed$output, collapse = "\n"), fixed = TRUE) &&
+      grepl(alternate_selector, paste(two_listed$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl(paste0('"selector":"', selector, '"'),
+        paste(current_after_alternate$output, collapse = "\n"), fixed = TRUE) &&
+      identical(active_before_failure, active_after_alternate) &&
+      identical(project_before, tree_digest(project)),
+    "Distinct explicit installed selection changed the active default or project."
+  )
+  cat("PASS distinct installed-development selector without activation or project access\n")
+
+  active_path <- file.path(installation_root, "active.dcf")
+  valid_active <- readBin(active_path, "raw", n = file.info(active_path)$size)
+  alternate <- paste(rep("b", 64L), collapse = "")
+  invalid_active <- c(
+    "Record-Type" = "rrp-activation",
+    "Contract-ID" = "rrp.activation-record",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = verified$manifest[["Product-Version"]],
+    "Installation-ID" = alternate,
+    "Distribution-ID" = alternate,
+    "Activated-At" = "2026-01-01T00:00:00Z"
+  )
+  write.dcf(matrix(unname(invalid_active), nrow = 1L,
+    dimnames = list(NULL, names(invalid_active))), active_path, width = 500L)
+  invalid_list <- stable_run(c("software", "list", "--json"), project)
+  invalid_current <- stable_run(c("software", "current", "--json"), project)
+  invalid_doctor <- stable_run(c("software", "doctor", "--json"), project)
+  explicit_around_invalid <- stable_run(c(
+    "--software", selector, "version", "--json"
+  ), project)
+  require_true(
+    invalid_list$status == 0L && invalid_current$status == 1L &&
+      invalid_doctor$status == 0L && explicit_around_invalid$status == 0L &&
+      grepl("invalid_active_selection",
+        paste(invalid_list$output, collapse = "\n"), fixed = TRUE) &&
+      grepl("invalid_active_selection",
+        paste(invalid_current$output, collapse = "\n"), fixed = TRUE) &&
+      grepl('"activation_status":"invalid"',
+        paste(invalid_doctor$output, collapse = "\n"), fixed = TRUE) &&
+      grepl('"selection":"explicit_override"',
+        paste(explicit_around_invalid$output, collapse = "\n"), fixed = TRUE) &&
+      identical(project_before, tree_digest(project)),
+    paste("Invalid activation diagnosis or explicit-selection isolation failed:",
+      paste(c(
+        invalid_list$output, invalid_current$output, invalid_doctor$output,
+        explicit_around_invalid$output
+      ), collapse = "\n"))
+  )
+  connection <- file(active_path, open = "wb")
+  writeBin(valid_active, connection)
+  close(connection)
+
+  manifest_path <- file.path(destination, "manifest.dcf")
+  manifest_bytes <- readBin(
+    manifest_path, "raw", n = file.info(manifest_path)$size
+  )
+  Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
+  connection <- file(manifest_path, open = "ab")
+  writeBin(charToRaw("\n"), connection)
+  close(connection)
+  Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  damaged_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  require_true(
+    damaged_verify$status == 3L && grepl(
+      "installed_identity_mismatch", paste(damaged_verify$output, collapse = "\n"),
+      fixed = TRUE
+    ) && identical(project_before, tree_digest(project)),
+    "Damaged installed-software verification did not fail closed."
+  )
+  Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
+  connection <- file(manifest_path, open = "wb")
+  writeBin(manifest_bytes, connection)
+  close(connection)
+  Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  recovered_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  invalid_selector <- stable_run(c("--software", "latest", "version"), project)
+  shim_text <- paste(readLines(stable_launcher, warn = FALSE), collapse = "\n")
+  require_true(
+    recovered_verify$status == 0L && invalid_selector$status == 2L &&
+      grepl('exec "$installation/bin/rrp" "$@"', shim_text, fixed = TRUE) &&
+      identical(project_before, tree_digest(project)),
+    "Recovery, selector rejection, argument, or signal delegation failed."
+  )
+  cat("PASS invalid-pointer diagnosis, damaged-install denial, and launcher delegation\n")
+
+  shim_bytes <- readBin(
+    stable_launcher, "raw", n = file.info(stable_launcher)$size
+  )
+  Sys.chmod(stable_launcher, mode = "0644", use_umask = FALSE)
+  writeLines("unrelated executable", stable_launcher, useBytes = TRUE)
+  Sys.chmod(stable_launcher, mode = "0755", use_umask = FALSE)
+  expect_failure(
+    "stable shim conflict",
+    rrp_install_provision_shim(destination, installation_root, executable_root),
+    "stable_shim_conflict"
+  )
+  connection <- file(stable_launcher, open = "wb")
+  writeBin(shim_bytes, connection)
+  close(connection)
+  Sys.chmod(stable_launcher, mode = "0755", use_umask = FALSE)
+  require_true(
+    stable_run(c("version", "--json"), project)$status == 0L &&
+      identical(project_before, tree_digest(project)),
+    "Stable-shim conflict recovery altered software selection or project state."
+  )
+  cat("PASS stable-shim conflict refusal and recovery\n")
+
   launcher_environment <- c(
     paste0("RRP_R_EXECUTABLE=", host_r),
     paste0("RRP_PRIVATE_LIBRARY=", file.path(destination, "library")),
@@ -253,7 +601,8 @@ validate_installation <- function() {
     file.path(destination, "bin", "rrp"),
     c(
       "software", "install", distribution_root, "--repository", repository,
-      "--installation-root", installation_root, "--json"
+      "--installation-root", installation_root,
+      "--executable-root", executable_root, "--json"
     ),
     launcher_environment
   )

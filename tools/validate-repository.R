@@ -29,6 +29,7 @@ expected_files <- c(
   "docs/platform-implementation-plan.md",
   "docs/platform-implementation-record.md", "docs/platform-true-north.md",
   "distribution/install-engine.R", "distribution/install.R",
+  "distribution/rrp-shim",
   "distribution/source-inclusion.dcf",
   "distribution/verify-distribution.R",
   "packages/rrpplatform/DESCRIPTION", "packages/rrpplatform/NAMESPACE",
@@ -55,6 +56,7 @@ expected_files <- c(
   "packages/rrpplatform/R/project-state.R",
   "packages/rrpplatform/R/resource-catalog.R",
   "packages/rrpplatform/R/runtime-contracts.R",
+  "packages/rrpplatform/R/software-lifecycle.R",
   "packages/rrpplatform/R/state-contracts.R",
   "packages/rrpplatform/R/rrpplatform-package.R",
   "packages/rrpplatform/README.md",
@@ -110,6 +112,7 @@ expected_files <- c(
   "packages/rrpplatform/tests/durable-history.R",
   "packages/rrpplatform/tests/state-recovery.R",
   "packages/rrpplatform/tests/resource-access.R",
+  "packages/rrpplatform/tests/software-lifecycle.R",
   "packages/rrpplatform/tests/runtime-contracts.R",
   "packages/rrpruntime/DESCRIPTION", "packages/rrpruntime/NAMESPACE",
   "packages/rrpruntime/R/canonical-admission.R",
@@ -636,7 +639,7 @@ expected_workflow <- c(
   "        run: Rscript --vanilla tools/validate-packages.R",
   "      - name: Validate distribution foundation",
   "        run: Rscript --vanilla tools/validate-distribution.R",
-  "      - name: Validate bootstrap installation and private restoration",
+  "      - name: Validate installation and software lifecycle",
   "        run: Rscript --vanilla tools/validate-installation.R"
 )
 if (file.exists(workflow_path)) {

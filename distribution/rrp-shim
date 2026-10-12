@@ -1,0 +1,155 @@
+#!/bin/sh
+
+# Stable software selector. This file contains no project or RRP domain logic.
+LC_ALL=C
+export LC_ALL
+
+software_root=@RRP_SOFTWARE_ROOT_SHELL@
+
+fail() {
+  printf '%s\n' "ERROR [$1] $2" >&2
+  exit "${3:-3}"
+}
+
+dcf_field() {
+  awk -F ': ' -v wanted="$2" '
+    $1 == wanted { count += 1; value = substr($0, length($1) + 3) }
+    END { if (count != 1) exit 1; print value }
+  ' "$1"
+}
+
+selector=""
+selection_mode="active"
+
+# The canonical global override precedes the command. Software verify/doctor
+# additionally accept the documented noun-local spelling.
+if [ "${1:-}" = "--software" ]; then
+  [ "$#" -ge 3 ] || fail invalid_software_selector \
+    "Software selection requires one exact selector." 2
+  selector=$2
+  selection_mode="explicit_override"
+  shift 2
+elif [ "${1:-}" = "software" ] &&
+     { [ "${2:-}" = "verify" ] || [ "${2:-}" = "doctor" ]; } &&
+     [ "${3:-}" = "--software" ]; then
+  [ "$#" -ge 4 ] || fail invalid_software_selector \
+    "Software selection requires one exact selector." 2
+  noun=$1
+  action=$2
+  diagnostic_selector=$4
+  shift 4
+  set -- "$noun" "$action" --software "$diagnostic_selector" "$@"
+fi
+
+case "$selector" in
+  *[!a-z0-9./-]*|*..*|/*|*/|*/*/*) [ -z "$selector" ] ||
+    fail invalid_software_selector "The software selector is invalid." 2 ;;
+esac
+
+transport_allowed=false
+management_transport=false
+if [ "${1:-}" = "software" ]; then
+  case "${2:-}" in
+    list|current)
+      transport_allowed=true
+      management_transport=true
+      ;;
+    verify|doctor)
+      if [ -z "$selector" ]; then
+        transport_allowed=true
+        # Doctor must be able to report a malformed active pointer. A
+        # noun-local diagnostic selector is likewise package input, not the
+        # runtime used to carry the diagnostic operation.
+        if [ "${2:-}" = "doctor" ] || [ "${3:-}" = "--software" ]; then
+          management_transport=true
+        fi
+      fi
+      ;;
+    activate)
+      [ "$#" -ge 3 ] || fail invalid_software_selector \
+        "Activation requires one exact selector." 2
+      selector=$3
+      selection_mode="activation_target"
+      ;;
+  esac
+fi
+
+active_record="$software_root/active.dcf"
+if [ -z "$selector" ] && [ "$management_transport" = false ] &&
+   [ -f "$active_record" ] && [ ! -L "$active_record" ]; then
+  product_version=$(dcf_field "$active_record" Product-Version) ||
+    fail invalid_active_selection "The active software selection is invalid."
+  distribution_id=$(dcf_field "$active_record" Distribution-ID) ||
+    fail invalid_active_selection "The active software selection is invalid."
+  selector="$product_version/$distribution_id"
+fi
+
+if [ -z "$selector" ] && [ "$transport_allowed" = true ]; then
+  for candidate in "$software_root"/installations/*/*; do
+    if [ -d "$candidate" ] && [ ! -L "$candidate" ] &&
+       [ -f "$candidate/INSTALLATION.dcf" ] &&
+       [ -x "$candidate/bin/rrp" ]; then
+      selector=$(basename "$(dirname "$candidate")")/$(basename "$candidate")
+      selection_mode="transport_only"
+      break
+    fi
+  done
+fi
+
+[ -n "$selector" ] || fail active_software_not_selected \
+  "No active software version is selected."
+case "$selector" in
+  *[!a-z0-9./-]*|*..*|/*|*/|*/*/*) fail invalid_software_selector \
+    "The software selector is invalid." 2 ;;
+esac
+
+version=${selector%%/*}
+identity=${selector#*/}
+[ "$version" != "$identity" ] || fail invalid_software_selector \
+  "The software selector is invalid." 2
+case "$identity" in
+  *[!0-9a-f]*|'') fail invalid_software_selector \
+    "The software selector is invalid." 2 ;;
+esac
+[ "${#identity}" -eq 64 ] || fail invalid_software_selector \
+  "The software selector is invalid." 2
+
+installation="$software_root/installations/$version/$identity"
+record="$installation/INSTALLATION.dcf"
+[ -d "$installation" ] && [ ! -L "$installation" ] &&
+  [ -f "$record" ] && [ ! -L "$record" ] ||
+  fail installed_software_not_found "The selected installed software is unavailable."
+
+record_version=$(dcf_field "$record" Product-Version) ||
+  fail invalid_installation_record "The selected installation record is invalid."
+record_distribution=$(dcf_field "$record" Distribution-ID) ||
+  fail invalid_installation_record "The selected installation record is invalid."
+record_root=$(dcf_field "$record" Resource-Root) ||
+  fail invalid_installation_record "The selected installation record is invalid."
+private_library=$(dcf_field "$record" Private-Library) ||
+  fail invalid_installation_record "The selected installation record is invalid."
+host_r=$(dcf_field "$record" Host-R-Executable) ||
+  fail invalid_installation_record "The selected installation record is invalid."
+
+[ "$record_version" = "$version" ] &&
+  [ "$record_distribution" = "$identity" ] &&
+  [ "$record_root" = "$installation" ] &&
+  [ "$private_library" = "$installation/library" ] &&
+  [ -d "$private_library" ] && [ -x "$host_r" ] &&
+  [ -x "$installation/bin/rrp" ] ||
+  fail invalid_installation_record "The selected installation record is invalid."
+
+shim_directory=$(CDPATH= cd "$(dirname "$0")" && pwd -P) ||
+  fail invalid_software_context "The stable software launcher is invalid."
+RRP_R_EXECUTABLE=$host_r
+RRP_PRIVATE_LIBRARY=$private_library
+RRP_SOFTWARE_ROOT=$installation
+RRP_INSTALLATION_ROOT=$software_root
+RRP_SELECTED_SOFTWARE_SELECTOR=$selector
+RRP_SELECTION_MODE=$selection_mode
+RRP_STABLE_SHIM=$shim_directory/$(basename "$0")
+export RRP_R_EXECUTABLE RRP_PRIVATE_LIBRARY RRP_SOFTWARE_ROOT
+export RRP_INSTALLATION_ROOT RRP_SELECTED_SOFTWARE_SELECTOR
+export RRP_SELECTION_MODE RRP_STABLE_SHIM
+
+exec "$installation/bin/rrp" "$@"

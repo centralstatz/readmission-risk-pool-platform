@@ -34,7 +34,9 @@ The selected `Rscript` identifies the host R explicitly. The bootstrap verifies
 the distribution again, restores the exact declared third-party closure into a
 new private library, installs the exact `rrpruntime` and `rrpplatform`
 artifacts, validates packages and resources in fresh vanilla R processes, writes
-`INSTALLATION.dcf`, and only then promotes the completed version.
+`INSTALLATION.dcf`, and only then promotes the completed version. It also
+provisions the stable per-user `rrp` shim; installation never activates the
+new version.
 
 An already installed version may install another local extracted distribution
 through the same engine:
@@ -45,6 +47,14 @@ rrp software install PATH --repository HTTPS_URL
 
 `PATH` is the extracted distribution directory. Neither path activates the new
 version.
+
+On macOS, Linux, and other Unix-like systems the stable command is installed
+at `~/.local/bin/rrp`. On Windows it is installed beneath
+`%LOCALAPPDATA%/RRP/bin`. Add that directory to `PATH` through your normal
+shell or managed workstation configuration if it is not already present. RRP
+does not edit `PATH`, shell profiles, or startup files. The
+`--executable-root ABSOLUTE_PATH` option is reserved for controlled isolated
+proof alongside `--installation-root`.
 
 ## Locations and recovery
 
@@ -61,6 +71,11 @@ resource projection, launcher, manifest, inventory, dependency specification,
 and installation record. Staging is sibling state under the RRP root. The
 `--installation-root ABSOLUTE_PATH` option is a controlled test/isolated-proof
 override and does not change normal ownership.
+
+After installation, use `rrp software list`, `rrp software verify`, and
+`rrp software doctor`. Select the default only through the explicit
+`rrp software activate SELECTOR` operation described in the Software Lifecycle
+Guide.
 
 A network, repository, lock, package, compilation, verification, or promotion
 failure leaves no promoted partial version and does not change an existing

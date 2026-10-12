@@ -62,5 +62,5 @@ jobs:
         run: Rscript --vanilla tools/validate-packages.R
       - name: Validate distribution foundation
         run: Rscript --vanilla tools/validate-distribution.R
-      - name: Validate bootstrap installation and private restoration
+      - name: Validate installation and software lifecycle
         run: Rscript --vanilla tools/validate-installation.R

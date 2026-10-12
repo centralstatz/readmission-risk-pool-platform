@@ -35,11 +35,14 @@ rrp products materialize|status ...
 rrp app launch ...
 ```
 
-It also implements one software mutation without selecting or activating a
-version:
+It also implements the software installation and selection surface:
 
 ```text
 rrp software install PATH --repository HTTPS_URL [--json]
+rrp software list|current [--json]
+rrp software verify|doctor [--software SELECTOR] [--json]
+rrp software activate SELECTOR [--json]
+rrp --software SELECTOR COMMAND ...
 ```
 
 `PATH` is one already extracted, locally acquired distribution. The command
@@ -77,13 +80,14 @@ successful results; usage and operation failures return nonzero status. The
 command does not expose patient records, credentials, private mappings,
 callables, connections, or storage internals.
 
-The launcher for one installed version establishes its recorded R executable,
-private package library, and matching software resources before dispatch. It
-does not choose an active version, install software, or discover a project.
-Installation is now provided, but active-version selection, shared launcher,
-installed verify/doctor, upgrade/rollback selection, and uninstall remain
+The stable per-user launcher resolves the validated active realization or one
+exact `PRODUCT_VERSION/DISTRIBUTION_ID` override. The selected version launcher
+then establishes its recorded R executable, private package library, and
+matching software resources before dispatch. Neither layer discovers a
+project. Installation does not activate; activation changes only the atomic
+software selection record. Upgrade/rollback acceptance and uninstall remain
 later lifecycle work.
 The installed Operator Guide gives the supported end-to-end project procedure
 and the advanced R API boundary. Distribution and version-specific installation
-now exist; activation, upgrade, rollback, and uninstall remain later lifecycle
-work.
+now exist, including explicit installed verification, doctor, and activation;
+upgrade/rollback acceptance and uninstall remain later lifecycle work.

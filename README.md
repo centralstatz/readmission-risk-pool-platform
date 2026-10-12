@@ -77,8 +77,10 @@ supplied installed context. Increment 11.D adds a maintainer-built closed,
 standalone-verifiable RRP-owned distribution archive and exact target-keyed
 third-party dependency specification. Increment 11.E adds explicit local-
 distribution installation into an immutable per-user version root through one
-shared bootstrap/CLI engine; it does not activate software. Activation,
-upgrade, rollback, and uninstall remain absent.
+shared bootstrap/CLI engine. Increment 11.F adds the stable per-user `rrp`
+shim, exact installed selector override, strict installed verification,
+software doctor, and explicit atomic activation without project access.
+Upgrade/rollback acceptance and uninstall remain absent.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
