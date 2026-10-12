@@ -348,6 +348,31 @@ validate_installation <- function() {
       )
     )
   }
+  version_run <- function(transport, transport_selector, arguments,
+                          directory = work) {
+    transport_record <- rrp_install_dcf(
+      file.path(transport, "INSTALLATION.dcf"), "record"
+    )[[1L]]
+    old <- setwd(directory)
+    on.exit(setwd(old), add = TRUE)
+    run(
+      "/bin/sh", c(shQuote(file.path(transport, "bin", "rrp")), vapply(
+        arguments, shQuote, character(1L)
+      )), c(
+        paste0("RRP_R_EXECUTABLE=", transport_record[["Host-R-Executable"]]),
+        paste0("RRP_PRIVATE_LIBRARY=", transport_record[["Private-Library"]]),
+        paste0("RRP_SOFTWARE_ROOT=", transport),
+        paste0("RRP_INSTALLATION_ROOT=", installation_root),
+        paste0("RRP_SELECTED_SOFTWARE_SELECTOR=", transport_selector),
+        "RRP_SELECTION_MODE=transport_only",
+        paste0("RRP_STABLE_SHIM=", stable_launcher),
+        paste0("R_LIBS=", ambient_user),
+        paste0("R_LIBS_USER=", ambient_user),
+        paste0("R_LIBS_SITE=", ambient_site),
+        paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ)
+      )
+    )
+  }
   before_activation <- stable_run(c("software", "current", "--json"), project)
   listed <- stable_run(c("software", "list", "--json"), project)
   diagnosed <- stable_run(c("software", "doctor", "--json"), project)
@@ -531,26 +556,67 @@ validate_installation <- function() {
   manifest_bytes <- readBin(
     manifest_path, "raw", n = file.info(manifest_path)$size
   )
+  manifest_digest <- rrp_sha256(manifest_path)
+  damaged_manifest_bytes <- c(manifest_bytes, charToRaw("\n"))
   Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
-  connection <- file(manifest_path, open = "ab")
-  writeBin(charToRaw("\n"), connection)
+  connection <- file(manifest_path, open = "wb")
+  writeBin(damaged_manifest_bytes, connection)
   close(connection)
   Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  damaged_manifest_digest <- rrp_sha256(manifest_path)
+  require_true(
+    !identical(damaged_manifest_digest, manifest_digest) &&
+      !identical(
+        damaged_manifest_digest, record[["Distribution-Manifest-Digest"]]
+      ) && identical(
+        readBin(manifest_path, "raw", n = file.info(manifest_path)$size),
+        damaged_manifest_bytes
+      ),
+    "Damaged installed-software fixture did not alter the recorded manifest."
+  )
   damaged_verify <- stable_run(c(
     "software", "verify", "--software", selector, "--json"
   ), project)
+  damaged_context_verify <- version_run(
+    destination, selector,
+    c("software", "verify", "--software", selector, "--json"), project
+  )
+  damaged_operation_verify <- version_run(
+    alternate_result$installation_root, alternate_selector,
+    c("software", "verify", "--software", selector, "--json"), project
+  )
   require_true(
-    damaged_verify$status == 3L && grepl(
-      "installed_identity_mismatch", paste(damaged_verify$output, collapse = "\n"),
-      fixed = TRUE
-    ) && identical(project_before, tree_digest(project)),
-    "Damaged installed-software verification did not fail closed."
+    damaged_verify$status %in% c(1L, 3L) &&
+      damaged_context_verify$status == 3L &&
+      damaged_operation_verify$status == 1L &&
+      all(vapply(
+        list(damaged_verify, damaged_context_verify, damaged_operation_verify),
+        function(value) grepl(
+          "installed_identity_mismatch", paste(value$output, collapse = "\n"),
+          fixed = TRUE
+        ), logical(1L)
+      )) && identical(rrp_sha256(manifest_path), damaged_manifest_digest) &&
+      identical(
+        readBin(manifest_path, "raw", n = file.info(manifest_path)$size),
+        damaged_manifest_bytes
+      ) && identical(project_before, tree_digest(project)),
+    paste(
+      "Damaged installed-software verification did not fail closed:",
+      paste(c(
+        damaged_verify$output, damaged_context_verify$output,
+        damaged_operation_verify$output
+      ), collapse = "\n")
+    )
   )
   Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
   connection <- file(manifest_path, open = "wb")
   writeBin(manifest_bytes, connection)
   close(connection)
   Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  require_true(
+    identical(rrp_sha256(manifest_path), manifest_digest),
+    "Installed-software fixture recovery did not restore the original manifest."
+  )
   recovered_verify <- stable_run(c(
     "software", "verify", "--software", selector, "--json"
   ), project)

@@ -6680,3 +6680,47 @@ accepted by this implementation entry.
 **Next task:** commit and run the 11.F implementation through hosted
 `package-foundation`, then formally accept Increment 11.F if that exact
 revision passes. Do not begin Increment 11.G before that acceptance.
+
+### Hosted validation reconciliation — 2026-10-12
+
+Committed implementation revision
+`15f4e6d53fb3f6c55528b084edc3f9e3f29237e4` failed hosted
+`package-foundation` run `38271731630`, job `114887362741`, in
+`tools/validate-installation.R` after all earlier validators and the positive
+installation/lifecycle evidence had passed. The final damaged-installation
+negative proof reported that verification did not fail closed.
+
+Reconciliation confirmed that installed verification did reject the altered
+manifest. The test had required only exit `3`, which is the selected-context
+preflight result when the stable shim happens to use the damaged installation
+as its transport. With two development installations present, the shim's
+deterministic lexical candidate order is target-identity dependent. Hosted
+Linux selected the healthy alternate installation as transport, reached the
+requested verification operation, and correctly returned operation-failure
+exit `1` for the same `installed_identity_mismatch`. The assertion therefore
+mistook a valid fail-closed path for acceptance of damaged software; production
+verification behavior was not defective.
+
+The negative fixture now writes and rereads exact altered manifest bytes,
+proves their digest differs from both the healthy digest and recorded
+installation digest, and exercises both authoritative paths deterministically:
+damaged selected-context preflight must exit `3`, while verification of the
+damaged target through the healthy alternate transport must exit `1`. Stable-
+shim invocation may take either path but must be nonzero and carry the bounded
+`installed_identity_mismatch` diagnostic. The proof also confirms that
+verification performs no repair, does not change the independent project, and
+that explicit fixture recovery restores the original digest before healthy
+verification succeeds.
+
+The complete corrected installation/software-lifecycle validator passed on
+local macOS, including exact restoration, both rejection paths, stable-shim
+denial, recovery, and all surrounding 11.E/11.F evidence. Repository validation
+passed all eight checks; package validation passed both isolated builds/loads,
+both `R CMD check --no-manual` checks with exact `Status: OK`, and all accepted
+regressions; the closed-distribution validator passed; R parsing and
+`git diff --check` passed. The package validator required normal process access
+for its `/bin/ps`-based supervisor proof after the restricted execution sandbox
+denied that inspection; the unchanged validator then passed completely.
+Increment 11.F remains implementation-complete but is not formally accepted;
+the corrected committed revision must pass revision-matched hosted Ubuntu/R
+4.4 `package-foundation` validation before formal human acceptance.
