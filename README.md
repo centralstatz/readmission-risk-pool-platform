@@ -69,9 +69,8 @@ proof covers product states, portability, nonmutation, privacy, executable-
 customization denial, and supervised loopback cleanup. Exact revision
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68` passed hosted validation and formal
 architecture reconciliation; Stages 1–10 are accepted and complete. The
-repository has no root selector or persistent installed RRP distribution,
-scheduled/off-host backup, migration, shared active-version launcher, software
-activation/verification surface, or deployment capability. Increment 11.C provides
+repository has no root selector, scheduled/off-host backup, migration, or
+deployment capability. Increment 11.C provides
 the version-specific project lifecycle command surface against an explicitly
 supplied installed context. Increment 11.D adds a maintainer-built closed,
 standalone-verifiable RRP-owned distribution archive and exact target-keyed
@@ -80,7 +79,9 @@ distribution installation into an immutable per-user version root through one
 shared bootstrap/CLI engine. Increment 11.F adds the stable per-user `rrp`
 shim, exact installed selector override, strict installed verification,
 software doctor, and explicit atomic activation without project access.
-Upgrade/rollback acceptance and uninstall remain absent.
+Increment 11.G implements side-by-side upgrade composition, rollback by exact
+prior activation, published-version conflict refusal, and confirmed exact
+inactive uninstall without project access. It awaits formal acceptance.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -260,9 +261,10 @@ accepted closed, independently verifiable distribution builder and target-
 keyed exact dependency specification. Increment 11.E adds one shared base-R
 installation engine, copied-distribution bootstrap and CLI install path, exact
 configured-repository private restoration, installation evidence, and
-immutable per-user promotion. There is still no shared active-version
-launcher, activation, installed verify/doctor, uninstall, or version
-transition. Stage 11 remains incomplete.
+immutable per-user promotion. Increment 11.F adds the stable launcher, exact
+selection, installed verify/doctor, and atomic activation. Increment 11.G adds
+project-independent side-by-side transition, rollback by exact activation, and
+guarded exact inactive uninstall. Stage 11 remains incomplete.
 
 ## License
 

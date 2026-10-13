@@ -3,7 +3,7 @@
 RRP keeps software installation separate from hospital projects and from
 analytical state. A distribution is acquired and verified, one immutable
 version is installed, that version may later be verified and activated, and an
-inactive owned version may eventually be uninstalled. Project source, state,
+inactive verified owned version may be uninstalled. Project source, state,
 history, and products are never inputs to software installation.
 
 The supported acquisition and selection workflow is:
@@ -13,7 +13,8 @@ The supported acquisition and selection workflow is:
 3. install it with the selected compatible R and exact configured HTTPS
    repository; and
 4. inspect and strictly verify the resulting exact selector; and
-5. explicitly activate it when it should become the default.
+5. explicitly activate it when it should become the default; and
+6. remove only an exact inactive realization when it is no longer needed.
 
 The installation identity is derived from distribution, dependency, target R,
 platform, architecture, and manifest integrity—not from a filesystem path or
@@ -43,6 +44,7 @@ rrp software current
 rrp software verify [--software SELECTOR]
 rrp software doctor [--software SELECTOR]
 rrp software activate SELECTOR
+rrp software uninstall SELECTOR --yes
 rrp --software SELECTOR COMMAND ...
 ```
 
@@ -61,10 +63,35 @@ realization is idempotent. `--software SELECTOR` selects one invocation without
 changing `active.dcf`; an invalid explicit selector fails rather than falling
 back to the active selection.
 
+Upgrade is deliberate composition rather than a separate mutating command:
+install the newer distribution side by side, verify its exact selector, then
+activate it. Run project validation separately after selection. If a retained
+project is incompatible, that project command fails without changing project
+source, state, history, or products. Rollback is the same exact activation
+operation applied to the retained prior verified selector; it does not reverse
+or rewrite analytical history or products.
+
+Uninstall is destructive and requires the exact selector plus confirmation.
+It refuses the active realization and any unknown, linked, locked, incomplete,
+damaged, or otherwise unsafe target. A verified inactive target is first moved
+to owned quarantine and then removed; interruption before removal restores the
+original realization or reports bounded recovery-required evidence. Other
+versions, `active.dcf`, and the stable shim are preserved. Removing the final
+verified installation is refused even when inactive so the shared launcher
+never loses its final working version-specific transport. Install another
+verified realization before removing the old one. Repeating an already
+completed removal fails safely.
+
+Development content identities may coexist beneath their development product
+version. A published product version has one official content identity: an
+attempt to install materially different official content under that same
+version fails rather than creating a second official build.
+
 All software lifecycle operations are independent of project paths, current
 project contents, source/state/history/products, and compatibility. Project
 compatibility begins only when a project command is run under the chosen
 software. Installation, verification, doctor, and activation never migrate a
 project, repair dependencies, download an RRP distribution, or publish
-software. Side-by-side transition/rollback proof and exact inactive uninstall
-remain later Stage 11 work.
+software. Side-by-side transition/rollback and exact inactive uninstall are
+supported, but automatic update, retention, project/state migration, and
+release-channel behavior are not.

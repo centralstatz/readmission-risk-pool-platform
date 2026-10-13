@@ -75,10 +75,39 @@ rrp_software_selector_path <- function(root, selector, must_work = TRUE) {
   }
   parts <- strsplit(selector, "/", fixed = TRUE)[[1L]]
   path <- file.path(root, "installations", parts[[1L]], parts[[2L]])
-  if (must_work && (!dir.exists(path) || nzchar(Sys.readlink(path)))) {
+  link <- Sys.readlink(path)
+  if (must_work && !is.na(link) && nzchar(link)) {
+    rrp_software_abort("linked_installation_refused")
+  }
+  if (must_work && !dir.exists(path)) {
     rrp_software_abort("installed_software_not_found")
   }
   if (must_work) normalizePath(path, winslash = "/", mustWork = TRUE) else path
+}
+
+rrp_software_lifecycle_lock <- function(root, code) {
+  staging <- file.path(root, "staging")
+  if (!dir.exists(staging) || nzchar(Sys.readlink(staging))) {
+    rrp_software_abort(code)
+  }
+  lock <- file.path(staging, ".software-lifecycle-lock")
+  if (!dir.create(lock, showWarnings = FALSE)) rrp_software_abort(code)
+  lock
+}
+
+rrp_software_remove_tree <- function(path) {
+  entries <- list.files(
+    path, all.files = TRUE, full.names = TRUE, recursive = TRUE,
+    include.dirs = TRUE, no.. = TRUE
+  )
+  files <- entries[!dir.exists(entries)]
+  directories <- c(entries[dir.exists(entries)], path)
+  if (length(files)) Sys.chmod(files, mode = "0600", use_umask = FALSE)
+  if (length(directories)) {
+    Sys.chmod(directories, mode = "0700", use_umask = FALSE)
+  }
+  unlink(path, recursive = TRUE, force = TRUE)
+  !file.exists(path) && !dir.exists(path)
 }
 
 rrp_software_record <- function(path) {
@@ -645,6 +674,9 @@ rrp_current_installed_software <- function(root) {
 
 rrp_software_activate <- function(root, selector, failure_stage = NULL) {
   tryCatch({
+    lock <- rrp_software_lifecycle_lock(root, "activation_locked")
+    on.exit(if (dir.exists(lock)) unlink(lock, recursive = TRUE, force = TRUE),
+      add = TRUE)
     path <- rrp_software_selector_path(root, selector)
     verified <- rrp_software_verify_success(path, root)
     current <- tryCatch(
@@ -666,13 +698,6 @@ rrp_software_activate <- function(root, selector, failure_stage = NULL) {
       ), list()
     ))
     staging <- file.path(root, "staging")
-    lock <- file.path(staging, ".activation-lock")
-    if (!dir.exists(staging) || nzchar(Sys.readlink(staging)) ||
-        !dir.create(lock, showWarnings = FALSE)) {
-      rrp_software_abort("activation_locked")
-    }
-    on.exit(if (dir.exists(lock)) unlink(lock, recursive = TRUE, force = TRUE),
-      add = TRUE)
     if (identical(failure_stage, "before_promotion")) {
       rrp_software_abort("activation_promotion_failed")
     }
@@ -729,6 +754,98 @@ rrp_software_activate <- function(root, selector, failure_stage = NULL) {
   ), error = function(condition) rrp_lifecycle_failure(
     condition, "rrp.software-activate", "Software activation failed.",
     "software_activation_failed"
+  ))
+}
+
+rrp_software_uninstall <- function(
+  root, selector, stable_shim, failure_stage = NULL
+) {
+  tryCatch({
+    if (!rrp_resource_scalar_string(stable_shim) ||
+        !file.exists(stable_shim) ||
+        !isTRUE(utils::file_test("-f", stable_shim)) ||
+        nzchar(Sys.readlink(stable_shim)) || file.access(stable_shim, 1L) != 0L) {
+      rrp_software_abort("stable_shim_unavailable")
+    }
+    lock <- rrp_software_lifecycle_lock(root, "software_lifecycle_locked")
+    on.exit(if (dir.exists(lock)) unlink(lock, recursive = TRUE, force = TRUE),
+      add = TRUE)
+    path <- rrp_software_selector_path(root, selector, must_work = FALSE)
+    parts <- strsplit(selector, "/", fixed = TRUE)[[1L]]
+    quarantine <- file.path(
+      root, "staging", paste0(".uninstall-", parts[[1L]], "-", parts[[2L]])
+    )
+    if (file.exists(quarantine) || dir.exists(quarantine)) {
+      rrp_software_abort("uninstall_recovery_required")
+    }
+    path <- rrp_software_selector_path(root, selector)
+    installation_lock <- file.path(
+      root, "staging", paste0(".lock-", parts[[1L]], "-", parts[[2L]])
+    )
+    if (dir.exists(installation_lock) || file.exists(installation_lock)) {
+      rrp_software_abort("software_lifecycle_locked")
+    }
+    active <- rrp_software_activation_record(root)
+    if (!is.null(active) && identical(active[["Selector"]], selector)) {
+      rrp_software_abort("active_installation_uninstall_refused")
+    }
+    verified <- rrp_software_verify_success(path, root)
+    candidates <- rrp_software_candidate_selectors(root)
+    if (!selector %in% candidates) rrp_software_abort("installed_software_not_found")
+    other_verified <- vapply(setdiff(candidates, selector), function(candidate) {
+      tryCatch({
+        rrp_software_verify_success(
+          rrp_software_selector_path(root, candidate), root
+        )
+        TRUE
+      }, rrp_software_error = function(condition) FALSE,
+      error = function(condition) FALSE)
+    }, logical(1L))
+    if (!length(other_verified) || !any(other_verified)) {
+      rrp_software_abort("final_installation_uninstall_refused")
+    }
+    if (identical(failure_stage, "before_quarantine") ||
+        !isTRUE(file.rename(path, quarantine))) {
+      rrp_software_abort("uninstall_removal_failed")
+    }
+    if (identical(failure_stage, "after_quarantine")) {
+      if (!isTRUE(file.rename(quarantine, path))) {
+        rrp_software_abort("uninstall_recovery_required")
+      }
+      rrp_software_abort("uninstall_removal_failed")
+    }
+    if (!rrp_software_remove_tree(quarantine)) {
+      rrp_software_abort("uninstall_cleanup_failed")
+    }
+    version_root <- dirname(path)
+    if (dir.exists(version_root) && !length(list.files(
+      version_root, all.files = TRUE, no.. = TRUE
+    ))) {
+      Sys.chmod(version_root, mode = "0700", use_umask = FALSE)
+      unlink(version_root, recursive = FALSE, force = TRUE)
+    }
+    remaining <- rrp_software_candidate_selectors(root)
+    if (selector %in% remaining || file.exists(path) || dir.exists(path) ||
+        !file.exists(stable_shim)) {
+      rrp_software_abort("uninstall_cleanup_failed")
+    }
+    rrp_new_operation_result(
+      "rrp.software-uninstall", "success",
+      list(
+        selector = selector,
+        installation_id = unname(verified$record[["Installation-ID"]]),
+        product_version = unname(verified$record[["Product-Version"]]),
+        distribution_id = unname(verified$record[["Distribution-ID"]]),
+        remaining_installation_count = as.integer(length(remaining)),
+        final_installation = FALSE,
+        shim_preserved = TRUE
+      ), list()
+    )
+  }, rrp_software_error = function(condition) rrp_lifecycle_failure(
+    condition, "rrp.software-uninstall", "Software uninstall failed."
+  ), error = function(condition) rrp_lifecycle_failure(
+    condition, "rrp.software-uninstall", "Software uninstall failed.",
+    "software_uninstall_failed"
   ))
 }
 

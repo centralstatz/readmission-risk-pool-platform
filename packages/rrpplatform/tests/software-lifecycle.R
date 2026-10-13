@@ -59,3 +59,14 @@ stopifnot(
   identical(doctor$value$software_status, "blocked"),
   identical(doctor$diagnostics[[1L]]$code, "installed_software_absent")
 )
+
+shim <- file.path(empty, "rrp")
+writeLines("#!/bin/sh", shim, useBytes = TRUE)
+Sys.chmod(shim, mode = "0755", use_umask = FALSE)
+dir.create(file.path(empty, "staging"))
+missing <- internal("rrp_software_uninstall")(empty, valid_selector, shim)
+stopifnot(
+  !rrp_operation_succeeded(missing),
+  identical(missing$operation_id, "rrp.software-uninstall"),
+  identical(missing$diagnostics[[1L]]$code, "installed_software_not_found")
+)

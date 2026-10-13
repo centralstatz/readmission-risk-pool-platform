@@ -105,10 +105,23 @@ stopifnot(
   ))$selector, selector),
   identical(internal("rrp_cli_parse")(c(
     "software", "activate", selector
-  ))$selector, selector)
+  ))$selector, selector),
+  identical(internal("rrp_cli_parse")(c(
+    "software", "uninstall", selector, "--yes"
+  ))$selector, selector),
+  isTRUE(internal("rrp_cli_parse")(c(
+    "software", "uninstall", selector, "--yes"
+  ))$assume_yes),
+  identical(internal("rrp_cli_confirmation_class")(
+    "software_uninstall"
+  ), "destructive")
 )
 expect_usage(
   internal("rrp_cli_parse")(c("software", "activate", "1.0.0-dev")),
+  "invalid_software_selector"
+)
+expect_usage(
+  internal("rrp_cli_parse")(c("software", "uninstall", "1.0.0-dev")),
   "invalid_software_selector"
 )
 expect_usage(
@@ -364,7 +377,7 @@ if (length(arguments) >= 3L) {
     identical(unrelated_json$status, 1L),
     identical(unsupported$status, 2L),
     grepl('"status":"failure"', paste(unrelated_json$stderr, collapse = "\n"), fixed = TRUE),
-    grepl("command_not_implemented", paste(unsupported$stderr, collapse = "\n"), fixed = TRUE)
+    grepl("invalid_software_selector", paste(unsupported$stderr, collapse = "\n"), fixed = TRUE)
   )
 
   empty_library <- file.path(proof, "empty-library")

@@ -7,8 +7,9 @@
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
 resolution of its initial seven planning questions. Increments 11.A–11.F are
-formally accepted and complete. Stage 11 remains incomplete; Increment 11.G
-and later work have not begun.
+formally accepted and complete. Increment 11.G is implementation-complete
+pending formal human acceptance and revision-matched hosted validation. Stage
+11 remains incomplete; Increment 11.H has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -75,7 +76,8 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.F are accepted and complete; 11.G+ remains unimplemented.
+Increments 11.A–11.F are accepted and complete; 11.G is implementation-
+complete pending formal acceptance; 11.H remains unimplemented.
 After a stage is
 implemented:
 
@@ -7027,9 +7029,10 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 **Planning status:** second-edition detailed plan formally accepted for
 implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
-Increments 11.A–11.E are formally accepted and complete; 11.F+ remains
-unimplemented. This does not select release bytes or claim an active software
-version exists.
+Increments 11.A–11.F are formally accepted and complete; 11.G is
+implementation-complete pending formal acceptance and revision-matched hosted
+validation; 11.H remains unimplemented. This does not select release bytes or
+claim a released 1.0.0 version exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7899,6 +7902,16 @@ adaptable. v0.1.0 two-product release coupling and publication rollback are not.
 **Documentation:** complete upgrade/rollback/uninstall and compatibility
 recovery guidance; update help, validators, ownership, and implementation
 record.
+
+**Implementation status:** implementation-complete on 2026-10-13 pending
+formal human acceptance and revision-matched hosted `package-foundation`
+validation. The realized boundary composes upgrade from side-by-side install,
+strict verification, and exact activation; reuses exact prior activation for
+rollback; adds confirmed exact inactive uninstall with shared lifecycle
+locking, quarantine/recovery, final-inactive behavior, and stable-shim
+preservation; refuses conflicting official content beneath one published
+version; and proves retained-project compatibility gating plus project/history
+nonmutation. Stage 11 remains incomplete and Increment 11.H has not begun.
 
 ### Increment 11.H — Clean installed operation proof and Stage 11 closeout
 

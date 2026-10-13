@@ -246,6 +246,11 @@ complete and formally accepted at revision
 job `113903725213`. Increment 11.F adds the stable per-user shim, exact
 software selector override, installed enumeration/current selection, strict
 installed verification, bounded software doctor, and lock-protected atomic
-activation without project access. It is implementation-complete pending
-formal human acceptance. Stage 11 remains incomplete; no 11.G+ behavior
-exists.
+activation without project access. It is formally accepted at revision
+`2a37fdd24519c983c475bcbc7ad9f86e1c1cdb64` after hosted run
+`38306159930`, job `115000605311`. Increment 11.G adds controlled side-by-side
+development identities, upgrade composition, rollback by exact activation,
+published-version conflict refusal, and confirmed exact inactive uninstall
+with bounded quarantine recovery and project/history nonmutation proof. It is
+implementation-complete pending formal human acceptance and revision-matched
+hosted validation. Stage 11 remains incomplete; no 11.H behavior exists.

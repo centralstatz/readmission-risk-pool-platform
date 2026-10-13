@@ -47,7 +47,9 @@ keep product version, development version, distribution content, build
 occurrence, installation, activation, package/API, project, and state identities
 distinct. The realized distribution builder, version launcher/CLI, and shared
 installer consume those authorities. Active-version selection, installed
-verify/doctor, and transition/uninstall behavior remain later lifecycle work.
+verify/doctor, side-by-side transition, rollback by exact activation, and exact
+inactive uninstall are installed software lifecycle behavior and never alter
+analytical records.
 
 Distribution/build/installation evidence remains software lifecycle evidence.
 It is not added to durable analytical history, whose existing product,

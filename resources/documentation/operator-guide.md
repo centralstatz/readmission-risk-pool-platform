@@ -41,6 +41,26 @@ one-command override such as `rrp --software SELECTOR version` does not change
 the active default. These commands do not inspect or associate a project;
 project compatibility is evaluated only by a later project command.
 
+For a controlled upgrade, install the newer distribution, verify its exact
+selector, and activate it. Then validate the retained project separately. If
+the project is incompatible, the project operation fails without mutation;
+reactivate the retained prior verified selector to roll back software selection
+and validate the project again. Rollback does not alter history or products.
+
+When an exact realization is inactive and no longer required, remove only it:
+
+```text
+rrp software uninstall PRODUCT_VERSION/DISTRIBUTION_ID --yes
+```
+
+Uninstall refuses active, unknown, linked, locked, incomplete, damaged, or
+unsafe targets. It preserves other versions, the active record, and the shared
+launcher. Inactivity is necessary but not sufficient for the final verified
+realization: final removal is refused so the shared launcher keeps a working
+version-specific transport. Install another verified realization before
+removing the old one. There is no automatic update, retention, or project
+migration policy.
+
 ## Initialize and diagnose
 
 Create an ordinary hospital-owned scaffold only at an explicit absent
@@ -170,6 +190,7 @@ history, product, privacy, or compatibility contracts.
 
 The stable launcher, exact selector override, strict installed verification,
 software doctor, and atomic activation now operate independently of projects.
-Upgrade/rollback acceptance, uninstall, project migration, generic source
+Side-by-side upgrade, exact activation rollback, and exact inactive uninstall
+use that same project-independent boundary. Project migration, generic source
 acquisition, scheduler, daemon, remote publication, and deployment artifacts
-do not yet exist.
+do not exist.

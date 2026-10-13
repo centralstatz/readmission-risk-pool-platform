@@ -60,8 +60,11 @@ command delegation. Increment 11.D supplies the closed distribution, and 11.E
 adds `rrp software install PATH` over the same shared base-R engine as the
 distribution-local bootstrap. Increment 11.F adds the stable per-user launcher,
 exact installed selector override, strict verification, software doctor, and
-atomic activation without project access. Uninstall, migration, scheduling,
-and daemon behavior remain unimplemented.
+atomic activation without project access. Increment 11.G composes side-by-side
+upgrade and rollback through exact installation/verification/activation and
+adds confirmed exact inactive non-final uninstall with quarantine recovery,
+all without project access. Migration, scheduling, and daemon behavior remain
+unimplemented.
 
 Its current callable interfaces are:
 

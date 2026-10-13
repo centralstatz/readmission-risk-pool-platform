@@ -57,9 +57,13 @@ distribution-native adversarial proof and is formally accepted. Increment 11.E
 adds the shared base-R installer, distribution-local bootstrap, installed CLI
 install route, two installed guides, OS-standard/test-root version layout,
 configured-repository restoration, exact private library, installation record,
-fresh-process proof, and atomic immutable promotion. No shared active-version
-launcher, activation, verify/doctor, uninstall, or version-transition behavior
-exists. Stage 11 remains incomplete.
+fresh-process proof, and atomic immutable promotion. Increment 11.F adds the
+stable shared launcher, exact selection, verification/doctor, and atomic
+activation. Increment 11.G adds verified side-by-side transitions, rollback by
+exact activation, published-version conflict refusal, and confirmed exact
+inactive uninstall with bounded quarantine recovery and final-realization
+refusal. Stage 11 remains
+incomplete pending 11.G acceptance and 11.H.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -74,8 +78,10 @@ The platform risk operation prepares one eligible episode state and invokes
 exactly the explicitly selected compatible provider once, including either the
 installed nonclinical transparent provider or a project-owned substitute.
 The installed Stage 10 supplied application experience and its cataloged human
-guide have complete local and hosted fictional acceptance evidence. There is
-no complete distribution or complete project/software lifecycle CLI.
+guide have complete local and hosted fictional acceptance evidence. Stage 11
+now supplies the accepted project CLI and the implemented distribution,
+installation, selection, transition, and exact-uninstall lifecycle; its clean
+installed-operation closeout remains deferred to 11.H.
 
 ## Read authority before source
 
@@ -170,7 +176,7 @@ closed to the following present paths:
 | `AGENTS.md` | Concise coding-agent working agreement derived from this human guide. |
 | `distribution/source-inclusion.dcf` | Closed positive authority for package sources and direct payload inputs; installed resources expand only through the existing source-resource catalog. |
 | `distribution/verify-distribution.R` | Payload-contained base-R verifier for manifest, inventory, SHA-256, package, dependency, resource, legal/documentation, path, link, and exact-closure claims without repository or package-library access. |
-| `distribution/install-engine.R`, `distribution/install.R`, and `distribution/rrp-shim` | Shared base-R verified-distribution installation mechanics, the small distribution-local bootstrap, and the stable project-independent per-user launcher template. The engine owns explicit-target host R validation, configured-repository private restoration, staging/fresh-process proof, immutable promotion, exact reinstall/conflict behavior, and safe stable-shim provisioning; installation never activates software or inspects a project. The shim resolves only exact installed/active software before delegating to the immutable version launcher. |
+| `distribution/install-engine.R`, `distribution/install.R`, and `distribution/rrp-shim` | Shared base-R verified-distribution installation mechanics, the small distribution-local bootstrap, and the stable project-independent per-user launcher template. The engine owns explicit-target host R validation, configured-repository private restoration, staging/fresh-process proof, immutable promotion, exact reinstall/conflict behavior including one official content identity per published version, and safe stable-shim provisioning; installation never activates software or inspects a project. The shim resolves only exact installed/active software before delegating to the immutable version launcher and prefers the active realization as transport for exact uninstall. |
 | `.github/workflows/package-foundation.yml` | Read-only push/pull-request invocation of the four existing human validators on Ubuntu/R 4.4, with declared external package and maintainer-build dependencies provisioned into a fresh single-repository library plus a target/package/version/integrity provenance receipt first. |
 | `packages/rrpplatform/DESCRIPTION` and `packages/rrpplatform/NAMESPACE` | Main internal package identity, direct platform/runtime/application dependencies, and exact 33-export namespace. |
 | `packages/rrpplatform/R/rrpplatform-package.R`, `packages/rrpplatform/man/rrpplatform-package.Rd`, and `packages/rrpplatform/README.md` | Main-package identity and current resource-access orientation. |
@@ -179,8 +185,8 @@ closed to the following present paths:
 | `packages/rrpplatform/R/operation-result.R` | Exact common result/diagnostic constructors and validators, safe resource-error translation, structured resource validation, and the success predicate. |
 | `packages/rrpplatform/R/lifecycle-contracts.R` | Internal exact loading of the seven dependency-light distribution, dependency, installation, activation, installed-diagnosis, project-lifecycle-result, and CLI-result authorities without implementing their later lifecycle behavior. |
 | `packages/rrpplatform/R/lifecycle-operations.R` | Bounded read-only project lifecycle status, package-owned logical build-plus-materialize composition, and exact fictional-only installed source preparation. |
-| `packages/rrpplatform/R/cli.R`, `packages/rrpplatform/exec/rrp`, and `packages/rrpplatform/man/rrp_cli_dispatch.Rd` | Package-owned shallow command parsing, exact project resolution, curated human/JSON rendering, deterministic exit/confirmation semantics, strict selected-installed-context preflight, and the minimal version-specific process launcher. The launcher receives explicit R/library/resource and software-selection context and selects no project; software installation invokes the distribution-owned shared engine in a fresh process without activation or project access. |
-| `packages/rrpplatform/R/software-lifecycle.R` | Private strict installed-software inventory, manifest/dependency/private-library/resource/host-R/launcher verification, bounded installed diagnosis, activation-record validation, exact enumeration/current selection, and lock-protected atomic activation with rollback. It accepts no project input and performs no repair, installation, or compatibility evaluation. |
+| `packages/rrpplatform/R/cli.R`, `packages/rrpplatform/exec/rrp`, and `packages/rrpplatform/man/rrp_cli_dispatch.Rd` | Package-owned shallow command parsing, exact project resolution, curated human/JSON rendering, deterministic exit/confirmation semantics, strict selected-installed-context preflight, and the minimal version-specific process launcher. The launcher receives explicit R/library/resource and software-selection context and selects no project; software installation invokes the distribution-owned shared engine in a fresh process, and exact inactive uninstall is separately confirmed and project-independent. |
+| `packages/rrpplatform/R/software-lifecycle.R` | Private strict installed-software inventory, manifest/dependency/private-library/resource/host-R/launcher verification, bounded installed diagnosis, activation-record validation, exact enumeration/current selection, shared-lock atomic activation, and confirmed exact inactive uninstall through owned quarantine and bounded recovery. It accepts no project input, preserves other versions and the stable shim, refuses active/final/linked/locked/incomplete/damaged/unknown targets, and performs no repair, installation, migration, or compatibility evaluation. |
 | `packages/rrpplatform/R/canonical-contracts.R` | Internal exact loading and cross-reference validation for the six installed canonical specification authorities plus assembly of their exact runtime admission context. |
 | `packages/rrpplatform/R/runtime-contracts.R` | Internal exact loading and cross-validation of all five singular runtime authorities plus assembly of the closed state and provider contexts. |
 | `packages/rrpplatform/R/state-contracts.R` | Internal exact loading of the coherent 0.2.0 project-state, DuckDB-adapter, and state-backup authority line. |
@@ -212,7 +218,7 @@ closed to the following present paths:
 | `packages/rrpplatform/man/rrp_project_status.Rd`, `packages/rrpplatform/man/rrp_build_and_materialize_products.Rd`, and `packages/rrpplatform/man/rrp_prepare_fictional_source.Rd` | Focused public contracts for read-only lifecycle diagnosis, explicit build-plus-materialize composition, and guarded fictional-only source preparation. |
 | `packages/rrpplatform/man/rrp_operation_succeeded.Rd` and `packages/rrpplatform/man/rrp_validate_software_resources.Rd` | Focused public API contracts for machine-readable success inspection and structured explicit-root resource validation. |
 | `packages/rrpplatform/man/rrp_launch_app.Rd` | Public contract for the supplied read-only loopback application launch boundary. |
-| `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, `packages/rrpplatform/tests/operation-results.R`, and `packages/rrpplatform/tests/software-lifecycle.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, privacy-safe translation, selector closure, diagnosis shape, and absent-installation lifecycle semantics. |
+| `packages/rrpplatform/tests/package-foundation.R`, `packages/rrpplatform/tests/resource-access.R`, `packages/rrpplatform/tests/operation-results.R`, and `packages/rrpplatform/tests/software-lifecycle.R` | Base-R package-native evidence for package identity/dependency/export posture, installed resource access, exact result/diagnostic invariants, privacy-safe translation, selector closure, diagnosis shape, and absent-installation/exact-uninstall lifecycle semantics. |
 | `packages/rrpplatform/tests/canonical-contracts.R` | Base-R exact-field, installed-loading, relationship, adversarial, and direct runtime-admission integration evidence for the canonical specification family. |
 | `packages/rrpplatform/tests/runtime-contracts.R` | Base-R exact-field, installed-loading, cross-contract, adversarial, and direct episode-state integration evidence for all five runtime authorities. |
 | `packages/rrpplatform/tests/project-contracts.R` | Base-R positive, adversarial, privacy, path, semantic producer, capability, duplicate, and non-invocation evidence for the internal project contracts. |
@@ -268,7 +274,7 @@ closed to the following present paths:
 | `resources/documentation/*.md` | The exact eleven version-matched installed product documents: the Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, and Stage 11 lifecycle/CLI/operator/distribution/installation/software-lifecycle guides. All resolve through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, strict installed-metadata or controlled-provisioning-receipt validation, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
 | `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
-| `tools/validate-installation.R` | Human-callable copied-distribution proof for one real configured-repository private restoration, base-R bootstrap, fresh-process resolution, installation evidence, failure cleanup, exact reinstall, and installed CLI equivalence. |
+| `tools/validate-installation.R` | Human-callable copied-distribution proof for configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, failure cleanup, exact reinstall, installed CLI equivalence, upgrade/compatibility/rollback, official-version conflict refusal, project/history nonmutation, and guarded exact inactive/final uninstall. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 

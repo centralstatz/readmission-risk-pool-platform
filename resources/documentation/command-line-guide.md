@@ -42,6 +42,7 @@ rrp software install PATH --repository HTTPS_URL [--json]
 rrp software list|current [--json]
 rrp software verify|doctor [--software SELECTOR] [--json]
 rrp software activate SELECTOR [--json]
+rrp software uninstall SELECTOR [--yes] [--json]
 rrp --software SELECTOR COMMAND ...
 ```
 
@@ -85,9 +86,11 @@ exact `PRODUCT_VERSION/DISTRIBUTION_ID` override. The selected version launcher
 then establishes its recorded R executable, private package library, and
 matching software resources before dispatch. Neither layer discovers a
 project. Installation does not activate; activation changes only the atomic
-software selection record. Upgrade/rollback acceptance and uninstall remain
-later lifecycle work.
+software selection record. Upgrade composes install, exact verification, and
+activation; rollback is exact activation of a retained prior realization.
+Neither accepts a project path. `software uninstall` is a separately confirmed
+destructive operation that removes only one exact verified inactive realization
+and preserves the shared launcher and every other version. See the Software
+Lifecycle Guide for refusal, recovery, and final-inactive-version behavior.
 The installed Operator Guide gives the supported end-to-end project procedure
-and the advanced R API boundary. Distribution and version-specific installation
-now exist, including explicit installed verification, doctor, and activation;
-upgrade/rollback acceptance and uninstall remain later lifecycle work.
+and the advanced R API boundary.

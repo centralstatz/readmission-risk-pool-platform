@@ -81,7 +81,12 @@ A network, repository, lock, package, compilation, verification, or promotion
 failure leaves no promoted partial version and does not change an existing
 installation. Correct the reported condition and rerun the same command. An
 exact reinstall validates and reuses the existing immutable realization; a
-conflicting realization fails loudly. Do not edit an installation in place.
+conflicting realization fails loudly. Distinct development content identities
+may coexist under the development product version for controlled testing, but
+a published product version permits only one official distribution identity;
+different official content under that same version is rejected. Do not edit an
+installation in place. Use the Software Lifecycle Guide for side-by-side
+activation, rollback, and exact inactive uninstall.
 
 The restoration engine used internally is not an RRP project convention.
 Initialized projects receive no `renv.lock`, `renv/`, `.Rprofile`, repository

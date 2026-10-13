@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 
-# Full Increment 11.E proof. This deliberately performs one real configured-
-# repository restoration and reuses that realization for idempotency/CLI proof.
+# Full Increment 11.G proof. This deliberately performs one real configured-
+# repository restoration and reuses its side-by-side realizations for the
+# accepted installation, selection, rollback, and exact-uninstall proof.
 
 script_argument <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(script_argument) != 1L) stop("Cannot determine validation path.", call. = FALSE)
@@ -118,8 +119,31 @@ validate_installation <- function() {
   )
   writeLines(c(
     readLines(alternate_readme, warn = FALSE, encoding = "UTF-8"), "",
-    "Controlled alternate development identity for selector validation."
+    "Controlled newer development identity with project API 0.4.0."
   ), alternate_readme, useBytes = TRUE)
+  alternate_manifest <- file.path(
+    alternate_source, "resources", "contracts", "project-manifest.dcf"
+  )
+  manifest_lines <- readLines(alternate_manifest, warn = FALSE, encoding = "UTF-8")
+  require_true(
+    identical(sum(manifest_lines == "Project-API-Version: 0.3.0"), 1L),
+    "Controlled newer fixture did not find the exact project API authority."
+  )
+  manifest_lines[manifest_lines == "Project-API-Version: 0.3.0"] <-
+    "Project-API-Version: 0.4.0"
+  writeLines(manifest_lines, alternate_manifest, useBytes = TRUE)
+  alternate_contracts <- file.path(
+    alternate_source, "packages", "rrpplatform", "R", "project-contracts.R"
+  )
+  contract_lines <- readLines(alternate_contracts, warn = FALSE, encoding = "UTF-8")
+  old_api <- '    "Project-API-Version" = "0.3.0",'
+  require_true(
+    identical(sum(contract_lines == old_api), 1L),
+    "Controlled newer fixture did not find the package project API expectation."
+  )
+  contract_lines[contract_lines == old_api] <-
+    '    "Project-API-Version" = "0.4.0",'
+  writeLines(contract_lines, alternate_contracts, useBytes = TRUE)
   alternate_archive <- file.path(work, "alternate-distribution.tar")
   alternate_build <- run(
     file.path(R.home("bin"), "Rscript"),
@@ -156,6 +180,9 @@ validate_installation <- function() {
   )
 
   host_r <- normalizePath(file.path(R.home("bin"), "R"), winslash = "/", mustWork = TRUE)
+  host_rscript <- normalizePath(
+    file.path(dirname(host_r), "Rscript"), winslash = "/", mustWork = TRUE
+  )
   project <- file.path(work, "independent-project")
   dir.create(project)
   writeLines("project-owned", file.path(project, "sentinel.txt"), useBytes = TRUE)
@@ -232,7 +259,41 @@ validate_installation <- function() {
   require_true(identical(
     readLines(file.path(conflict_destination, "INSTALLATION.dcf")), "conflict"
   ), "Installation conflict altered existing content.")
-  cat("PASS repository, failure-cleanup, and conflict safeguards\n")
+  official_version_root <- file.path(work, "official-version", "1.0.0")
+  dir.create(file.path(official_version_root, paste(rep("a", 64L), collapse = "")),
+    recursive = TRUE)
+  official_manifest <- verified$manifest
+  official_manifest[["Product-Version"]] <- "1.0.0"
+  official_manifest[["Development-Version"]] <- "1.0.0-dev"
+  official_manifest[["Distribution-ID"]] <- paste(rep("b", 64L), collapse = "")
+  expect_failure(
+    "published version identity conflict",
+    rrp_install_assert_version_identity(official_manifest, official_version_root),
+    "published_version_conflict"
+  )
+  official_manifest[["Distribution-ID"]] <- paste(rep("a", 64L), collapse = "")
+  rrp_install_assert_version_identity(official_manifest, official_version_root)
+  official_staging <- file.path(work, "official-lock", "staging")
+  dir.create(official_staging, recursive = TRUE)
+  official_lock <- rrp_install_version_lock(official_manifest, official_staging)
+  require_true(dir.exists(official_lock),
+    "Published-version serialization lock was not created.")
+  expect_failure(
+    "published version serialization lock",
+    rrp_install_version_lock(official_manifest, official_staging),
+    "published_version_locked"
+  )
+  unlink(official_lock, recursive = TRUE, force = TRUE)
+  development_manifest <- official_manifest
+  development_manifest[["Product-Version"]] <- "1.0.0-dev"
+  development_manifest[["Development-Version"]] <- "1.0.0-dev"
+  development_manifest[["Distribution-ID"]] <- paste(rep("c", 64L), collapse = "")
+  rrp_install_assert_version_identity(development_manifest, official_version_root)
+  require_true(
+    is.null(rrp_install_version_lock(development_manifest, official_staging)),
+    "Development installation unexpectedly acquired a published-version lock."
+  )
+  cat("PASS repository, failure-cleanup, and version-identity safeguards\n")
 
   installation_root <- file.path(work, "isolated-user-data")
   executable_root <- file.path(work, "isolated-user-bin")
@@ -348,6 +409,13 @@ validate_installation <- function() {
       )
     )
   }
+  json_string <- function(result, field) {
+    output <- paste(result$output, collapse = "\n")
+    pattern <- paste0('"', field, '":"([^"]+)"')
+    matches <- regmatches(output, gregexpr(pattern, output, perl = TRUE))[[1L]]
+    require_true(length(matches) >= 1L, paste("Missing JSON field", field))
+    sub(pattern, "\\1", matches[[1L]], perl = TRUE)
+  }
   version_run <- function(transport, transport_selector, arguments,
                           directory = work) {
     transport_record <- rrp_install_dcf(
@@ -417,7 +485,7 @@ validate_installation <- function() {
     "stopifnot(!rrp_operation_succeeded(result))"
   ), failure_script, useBytes = TRUE)
   controlled_activation <- run(
-    host_r, c("--vanilla", shQuote(failure_script)),
+    host_rscript, c("--vanilla", shQuote(failure_script)),
     c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE=")
   )
   active_after_failure <- readBin(
@@ -474,6 +542,59 @@ validate_installation <- function() {
   )
   cat("PASS stable shim, exact selection, verification, doctor, and atomic activation\n")
 
+  retained_project <- file.path(work, "retained-fictional-project")
+  analytical_time <- "2026-01-20T12:00:00Z"
+  reference_initialized <- stable_run(c(
+    "reference", "init", retained_project, "--json"
+  ), project)
+  source_prepared <- stable_run(c(
+    "reference", "prepare-source", "--project", retained_project, "--json"
+  ), project)
+  state_initialized <- stable_run(c(
+    "state", "init", "--project", retained_project, "--json"
+  ), project)
+  retained_run <- stable_run(c(
+    "run", "--at", analytical_time, "--operation-key", "version-transition-proof",
+    "--project", retained_project, "--json"
+  ), project)
+  require_true(
+    all(vapply(
+      list(reference_initialized, source_prepared, state_initialized, retained_run),
+      function(value) value$status == 0L, logical(1L)
+    )),
+    paste("Retained-project setup failed:", paste(c(
+      reference_initialized$output, source_prepared$output,
+      state_initialized$output, retained_run$output
+    ), collapse = "\n"))
+  )
+  retained_scope <- json_string(retained_run, "operation_run_id")
+  retained_products <- stable_run(c(
+    "products", "materialize", "--scope", retained_scope, "--cutoff",
+    analytical_time, "--project", retained_project, "--json"
+  ), project)
+  retained_validate <- stable_run(c(
+    "project", "validate", "--project", retained_project, "--json"
+  ), project)
+  retained_history <- stable_run(c(
+    "history", "scope", "--scope", retained_scope, "--project",
+    retained_project, "--json"
+  ), project)
+  retained_history_text <- paste(retained_history$output, collapse = "\n")
+  require_true(
+    retained_products$status == 0L && retained_validate$status == 0L &&
+      retained_history$status == 0L &&
+      !grepl(
+        "distribution_id|build_id|installation_id|activation",
+        retained_history_text, ignore.case = TRUE, perl = TRUE
+      ),
+    paste("Retained project or history-attribution setup failed:", paste(c(
+      retained_products$output, retained_validate$output,
+      retained_history$output
+    ), collapse = "\n"))
+  )
+  retained_before <- tree_digest(retained_project)
+  cat("PASS retained project with durable history and products under prior software\n")
+
   alternate_result <- rrp_install_distribution(
     alternate_distribution, repository, host_r, installation_root,
     executable_root
@@ -489,13 +610,22 @@ validate_installation <- function() {
   alternate_explicit <- stable_run(c(
     "--software", alternate_selector, "version", "--json"
   ), project)
+  prior_verified <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  newer_verified <- stable_run(c(
+    "software", "verify", "--software", alternate_selector, "--json"
+  ), project)
   two_listed <- stable_run(c("software", "list", "--json"), project)
   current_after_alternate <- stable_run(c(
     "software", "current", "--json"
   ), project)
   require_true(
-    alternate_explicit$status == 0L && two_listed$status == 0L &&
+    alternate_explicit$status == 0L && prior_verified$status == 0L &&
+      newer_verified$status == 0L && two_listed$status == 0L &&
       current_after_alternate$status == 0L &&
+      !identical(destination, alternate_result$installation_root) &&
+      !identical(record[["Private-Library"]], alternate_result$private_library) &&
       grepl('"selection":"explicit_override"',
         paste(alternate_explicit$output, collapse = "\n"), fixed = TRUE) &&
       grepl(selector, paste(two_listed$output, collapse = "\n"), fixed = TRUE) &&
@@ -504,10 +634,48 @@ validate_installation <- function() {
       grepl(paste0('"selector":"', selector, '"'),
         paste(current_after_alternate$output, collapse = "\n"), fixed = TRUE) &&
       identical(active_before_failure, active_after_alternate) &&
-      identical(project_before, tree_digest(project)),
+      identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
     "Distinct explicit installed selection changed the active default or project."
   )
-  cat("PASS distinct installed-development selector without activation or project access\n")
+  cat("PASS verified side-by-side development identities without implicit activation\n")
+
+  newer_activated <- stable_run(c(
+    "software", "activate", alternate_selector, "--json"
+  ), project)
+  incompatible_under_newer <- stable_run(c(
+    "project", "validate", "--project", retained_project, "--json"
+  ), project)
+  retained_after_rejection <- tree_digest(retained_project)
+  rolled_back <- stable_run(c(
+    "software", "activate", selector, "--json"
+  ), project)
+  compatible_after_rollback <- stable_run(c(
+    "project", "validate", "--project", retained_project, "--json"
+  ), project)
+  current_after_rollback <- stable_run(c(
+    "software", "current", "--json"
+  ), project)
+  require_true(
+    newer_activated$status == 0L && incompatible_under_newer$status == 1L &&
+      grepl("incompatible_project_api", paste(
+        incompatible_under_newer$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      rolled_back$status == 0L && compatible_after_rollback$status == 0L &&
+      current_after_rollback$status == 0L &&
+      grepl(paste0('"selector":"', selector, '"'), paste(
+        current_after_rollback$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      identical(retained_before, retained_after_rejection) &&
+      identical(retained_before, tree_digest(retained_project)) &&
+      identical(project_before, tree_digest(project)),
+    paste("Upgrade compatibility gate or rollback proof failed:", paste(c(
+      newer_activated$output, incompatible_under_newer$output,
+      rolled_back$output, compatible_after_rollback$output,
+      current_after_rollback$output
+    ), collapse = "\n"))
+  )
+  cat("PASS activate-newer compatibility refusal and exact rollback to prior software\n")
 
   active_path <- file.path(installation_root, "active.dcf")
   valid_active <- readBin(active_path, "raw", n = file.info(active_path)$size)
@@ -551,6 +719,152 @@ validate_installation <- function() {
   connection <- file(active_path, open = "wb")
   writeBin(valid_active, connection)
   close(connection)
+
+  active_uninstall <- stable_run(c(
+    "software", "uninstall", selector, "--yes", "--json"
+  ), project)
+  confirmation_denied <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--json"
+  ), project)
+  malformed_uninstall <- stable_run(c(
+    "software", "uninstall", verified$manifest[["Product-Version"]],
+    "--yes", "--json"
+  ), project)
+  unknown_selector <- paste(
+    verified$manifest[["Product-Version"]], paste(rep("c", 64L), collapse = ""),
+    sep = "/"
+  )
+  unknown_uninstall <- stable_run(c(
+    "software", "uninstall", unknown_selector, "--yes", "--json"
+  ), project)
+  linked_selector <- paste(
+    verified$manifest[["Product-Version"]], paste(rep("d", 64L), collapse = ""),
+    sep = "/"
+  )
+  linked_path <- file.path(
+    installation_root, "installations", verified$manifest[["Product-Version"]],
+    paste(rep("d", 64L), collapse = "")
+  )
+  require_true(file.symlink(alternate_result$installation_root, linked_path),
+    "Could not create the linked-installation adversarial fixture.")
+  linked_uninstall <- stable_run(c(
+    "software", "uninstall", linked_selector, "--yes", "--json"
+  ), project)
+  unlink(linked_path, force = TRUE)
+  lifecycle_lock <- file.path(installation_root, "staging", ".software-lifecycle-lock")
+  require_true(dir.create(lifecycle_lock), "Could not create lifecycle lock fixture.")
+  locked_uninstall <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  unlink(lifecycle_lock, recursive = TRUE, force = TRUE)
+  installer_lock <- file.path(
+    installation_root, "staging", paste0(
+      ".lock-", alternate_result$product_version, "-",
+      alternate_result$distribution_id
+    )
+  )
+  require_true(dir.create(installer_lock), "Could not create installer lock fixture.")
+  installer_locked_uninstall <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  unlink(installer_lock, recursive = TRUE, force = TRUE)
+  stale_quarantine <- file.path(
+    installation_root, "staging", paste0(
+      ".uninstall-", alternate_result$product_version, "-",
+      alternate_result$distribution_id
+    )
+  )
+  require_true(dir.create(stale_quarantine),
+    "Could not create stale uninstall quarantine fixture.")
+  stale_quarantine_uninstall <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  unlink(stale_quarantine, recursive = TRUE, force = TRUE)
+  uninstall_failure_script <- file.path(work, "uninstall-failure.R")
+  writeLines(c(
+    sprintf(".libPaths(c(%s,.Library))", deparse(file.path(destination, "library"))),
+    "library(rrpplatform)",
+    sprintf("root <- %s", deparse(installation_root)),
+    sprintf("selector <- %s", deparse(alternate_selector)),
+    sprintf("shim <- %s", deparse(stable_launcher)),
+    "internal <- function(name) getFromNamespace(name,'rrpplatform')",
+    "result <- internal('rrp_software_uninstall')(root,selector,shim,'after_quarantine')",
+    "stopifnot(!rrp_operation_succeeded(result))",
+    "codes <- vapply(result$diagnostics,`[[`,character(1L),'code')",
+    "stopifnot('uninstall_removal_failed' %in% codes)"
+  ), uninstall_failure_script, useBytes = TRUE)
+  controlled_uninstall <- run(
+    host_rscript, c("--vanilla", shQuote(uninstall_failure_script)),
+    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE=")
+  )
+  alternate_manifest_path <- file.path(
+    alternate_result$installation_root, "manifest.dcf"
+  )
+  alternate_manifest_bytes <- readBin(
+    alternate_manifest_path, "raw", n = file.info(alternate_manifest_path)$size
+  )
+  Sys.chmod(alternate_manifest_path, mode = "0644", use_umask = FALSE)
+  connection <- file(alternate_manifest_path, open = "ab")
+  writeBin(charToRaw("\n"), connection)
+  close(connection)
+  Sys.chmod(alternate_manifest_path, mode = "0444", use_umask = FALSE)
+  damaged_uninstall <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  Sys.chmod(alternate_manifest_path, mode = "0644", use_umask = FALSE)
+  connection <- file(alternate_manifest_path, open = "wb")
+  writeBin(alternate_manifest_bytes, connection)
+  close(connection)
+  Sys.chmod(alternate_manifest_path, mode = "0444", use_umask = FALSE)
+  require_true(
+    active_uninstall$status == 1L &&
+      grepl("active_installation_uninstall_refused", paste(
+        active_uninstall$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      confirmation_denied$status == 1L && grepl(
+        "confirmation_required", paste(confirmation_denied$output, collapse = "\n"),
+        fixed = TRUE
+      ) &&
+      malformed_uninstall$status == 2L &&
+      unknown_uninstall$status == 1L && grepl(
+        "installed_software_not_found", paste(unknown_uninstall$output, collapse = "\n"),
+        fixed = TRUE
+      ) &&
+      linked_uninstall$status == 1L && grepl(
+        "linked_installation_refused", paste(linked_uninstall$output, collapse = "\n"),
+        fixed = TRUE
+      ) &&
+      locked_uninstall$status == 1L && grepl(
+        "software_lifecycle_locked", paste(locked_uninstall$output, collapse = "\n"),
+        fixed = TRUE
+      ) &&
+      installer_locked_uninstall$status == 1L && grepl(
+        "software_lifecycle_locked",
+        paste(installer_locked_uninstall$output, collapse = "\n"), fixed = TRUE
+      ) &&
+      stale_quarantine_uninstall$status == 1L && grepl(
+        "uninstall_recovery_required",
+        paste(stale_quarantine_uninstall$output, collapse = "\n"), fixed = TRUE
+      ) &&
+      controlled_uninstall$status == 0L && damaged_uninstall$status == 1L &&
+      grepl("installed_identity_mismatch", paste(
+        damaged_uninstall$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      dir.exists(alternate_result$installation_root) &&
+      identical(valid_active, readBin(
+        active_path, "raw", n = file.info(active_path)$size
+      )) &&
+      identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
+    paste("Exact-uninstall refusal or recovery proof failed:", paste(c(
+      active_uninstall$output, confirmation_denied$output,
+      malformed_uninstall$output, unknown_uninstall$output,
+      linked_uninstall$output, locked_uninstall$output,
+      installer_locked_uninstall$output, stale_quarantine_uninstall$output,
+      controlled_uninstall$output, damaged_uninstall$output
+    ), collapse = "\n"))
+  )
+  cat("PASS uninstall confirmation, exact-target denials, and recovery preservation\n")
 
   manifest_path <- file.path(destination, "manifest.dcf")
   manifest_bytes <- readBin(
@@ -599,7 +913,8 @@ validate_installation <- function() {
       identical(
         readBin(manifest_path, "raw", n = file.info(manifest_path)$size),
         damaged_manifest_bytes
-      ) && identical(project_before, tree_digest(project)),
+      ) && identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
     paste(
       "Damaged installed-software verification did not fail closed:",
       paste(c(
@@ -629,6 +944,48 @@ validate_installation <- function() {
     "Recovery, selector rejection, argument, or signal delegation failed."
   )
   cat("PASS invalid-pointer diagnosis, damaged-install denial, and launcher delegation\n")
+
+  active_before_uninstall <- readBin(
+    active_path, "raw", n = file.info(active_path)$size
+  )
+  uninstalled_newer <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  repeated_uninstall <- stable_run(c(
+    "software", "uninstall", alternate_selector, "--yes", "--json"
+  ), project)
+  remaining_list <- stable_run(c("software", "list", "--json"), project)
+  remaining_version <- stable_run(c("version", "--json"), project)
+  require_true(
+    uninstalled_newer$status == 0L &&
+      grepl('"operation_id":"rrp.software-uninstall"', paste(
+        uninstalled_newer$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"final_installation":false', paste(
+        uninstalled_newer$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      repeated_uninstall$status == 1L && grepl(
+        "installed_software_not_found", paste(repeated_uninstall$output, collapse = "\n"),
+        fixed = TRUE
+      ) &&
+      remaining_list$status == 0L && remaining_version$status == 0L &&
+      grepl(selector, paste(remaining_list$output, collapse = "\n"), fixed = TRUE) &&
+      !grepl(alternate_selector, paste(remaining_list$output, collapse = "\n"),
+        fixed = TRUE) &&
+      !file.exists(alternate_result$installation_root) &&
+      !dir.exists(alternate_result$installation_root) &&
+      identical(active_before_uninstall, readBin(
+        active_path, "raw", n = file.info(active_path)$size
+      )) &&
+      file.exists(stable_launcher) && file.access(stable_launcher, 1L) == 0L &&
+      identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
+    paste("Exact inactive uninstall or repeated-removal proof failed:", paste(c(
+      uninstalled_newer$output, repeated_uninstall$output,
+      remaining_list$output, remaining_version$output
+    ), collapse = "\n"))
+  )
+  cat("PASS exact inactive uninstall with active selection, shim, and project preservation\n")
 
   shim_bytes <- readBin(
     stable_launcher, "raw", n = file.info(stable_launcher)$size
@@ -681,12 +1038,37 @@ validate_installation <- function() {
   )
   record_after <- rrp_install_dcf(file.path(destination, "INSTALLATION.dcf"), "record")[[1L]]
   require_true(
-    identical(record, record_after) && identical(project_before, tree_digest(project)),
+    identical(record, record_after) && identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
     "CLI reinstall changed immutable installation or project content."
   )
   cat("PASS bootstrap/CLI shared-engine equivalence and idempotent exact reinstall\n")
 
-  cat("Result: PASS (bootstrap installation and private restoration)\n")
+  unlink(active_path, force = TRUE)
+  final_uninstall <- stable_run(c(
+    "software", "uninstall", selector, "--yes", "--json"
+  ), project)
+  no_active_software <- stable_run(c("software", "current", "--json"), project)
+  require_true(
+    final_uninstall$status == 1L &&
+      grepl("final_installation_uninstall_refused", paste(
+        final_uninstall$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      file.exists(destination) && dir.exists(destination) &&
+      file.exists(stable_launcher) && file.access(stable_launcher, 1L) == 0L &&
+      !file.exists(active_path) && no_active_software$status == 0L &&
+      grepl('"active":false', paste(
+        no_active_software$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      identical(project_before, tree_digest(project)) &&
+      identical(retained_before, tree_digest(retained_project)),
+    paste("Final inactive installation behavior failed:", paste(c(
+      final_uninstall$output, no_active_software$output
+    ), collapse = "\n"))
+  )
+  cat("PASS final-inactive refusal with stable shim and no project mutation\n")
+
+  cat("Result: PASS (side-by-side lifecycle, rollback, and exact uninstall)\n")
   invisible(TRUE)
 }
 

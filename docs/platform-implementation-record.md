@@ -6750,3 +6750,120 @@ Stage 11 remains incomplete.
 
 **Next task:** Increment 11.G — Side-by-side upgrade, rollback, and exact
 uninstall.
+
+## Stage 11 / Increment 11.G — Side-by-side upgrade, rollback, and exact uninstall — 2026-10-13
+
+Increment 11.G was implemented from the formally accepted 11.F baseline. The
+current branch began at documentation-only 11.F closeout revision
+`a16828d1aff0a4243e7f32ad4bab6f4419649e93`, which preserves the accepted 11.F
+implementation revision `2a37fdd24519c983c475bcbc7ad9f86e1c1cdb64` and hosted
+evidence. No 11.F implementation was reopened.
+
+The software lifecycle now realizes upgrade as the accepted composition of
+side-by-side installation, strict exact verification, and atomic activation;
+there is no separate upgrade primitive. Rollback is exact activation of a
+retained prior verified selector, not a second state machine and not reversal
+of analytical history or products. Activation and uninstall share one owned
+software-lifecycle lock. Both remain independent of projects, and neither
+accepts a project path.
+
+The installed CLI adds the destructive, separately confirmed
+`rrp software uninstall PRODUCT_VERSION/DISTRIBUTION_ID` intention. Its private
+operation strictly verifies one exact inactive candidate, refuses active,
+final, linked, locked, incomplete, damaged, unknown, or unsafe targets, moves
+the owned realization to sibling quarantine, and removes only that quarantine.
+A controlled post-quarantine failure restores the original exact path; stale
+quarantine reports bounded recovery-required evidence. Successful removal
+preserves the activation record, every other installation, and the stable
+shim, while repeated removal fails safely. The final verified installed
+realization is deliberately retained even when inactive: without another
+verified version-specific transport, self-removal is not a safe cross-platform
+operation and would leave the shared shim unusable. An operator must first
+install and verify another realization.
+
+The stable shim prefers the active healthy realization as uninstall transport
+and, when no active selection exists, prefers a non-target realization before
+falling back to the target only to return a safe refusal. This avoids deleting
+the version-specific transport executing a successful removal.
+
+The distribution-owned installer now enforces one official content identity
+per published product version. Materially different content under the same
+published version fails closed with `published_version_conflict`; controlled
+development identities may coexist beneath the development version and remain
+distinguished by their distribution IDs. A version-scoped installation lock
+serializes the published identity check and promotion so concurrent different
+official builds cannot both pass an empty-version check. Installation still
+does not activate software or inspect a project.
+
+The copied-distribution acceptance proof constructs two independent
+development distributions. The controlled newer realization changes the
+installed project-manifest authority and matching package expectation from API
+0.3.0 to 0.4.0, producing a distinct distribution identity without inventing
+release bytes. A retained fictional project is initialized under the prior
+realization with durable history and materialized products. The proof verifies
+both private realization roots, activates the newer realization without
+project access, observes a separate project-validation failure with
+`incompatible_project_api` and byte-identical project content, reactivates the
+prior realization, and observes compatibility again. Focused history output
+continues to omit distribution, build, installation, and activation fields;
+software lifecycle operations preserve regular project files, state, history,
+and products byte-for-byte.
+
+The same proof covers confirmation refusal; malformed, unknown, linked,
+active, lifecycle-locked, installer-locked, and damaged targets; controlled
+post-quarantine restoration; successful exact inactive removal; bounded
+repeated removal; preservation of the active prior realization and shim;
+exact-reinstall equivalence; stable-shim conflict recovery; and explicit
+final-inactive refusal. Package-native parser/result evidence covers the new
+command shape and destructive confirmation classification, while the native
+software-lifecycle test covers bounded missing-target behavior. The CLI result
+remains within the existing versioned result contract; the 67-resource catalog,
+33-export package surface, and package dependencies are unchanged.
+
+Historical reconnaissance inspected immutable `v0.1.0` release-preparation,
+Hospital-distribution, and release-preparation test mechanics. Staged sibling
+promotion, atomic rename, immutable conflict/idempotency, cleanup, and pointer
+preservation patterns were adapted where they fit the 1.0 owners. Historical
+Hospital/Platform coupling, repository discovery, publication rollback,
+migration behavior, and two-product release choreography were rejected.
+
+Installed Command-Line, Operator, Installation, Software Lifecycle, and
+Lifecycle Operations guidance now describes exact transition, compatibility,
+rollback, uninstall/refusal/recovery, published-version identity, final-
+realization, history-attribution, and project-nonmutation behavior. Repository
+orientation, human ownership guidance, package orientation/API documentation,
+and the agent working agreement were reconciled to the same current boundary.
+
+Final local evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks;
+- `Rscript --vanilla tools/validate-packages.R`: both source builds, isolated
+  installs/loads, both `R CMD check --no-manual` runs with `Status: OK`, and all
+  installed project/history/product/application regressions;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R`: closed 67-resource distribution and all
+  adversarial safeguards;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R`: complete bootstrap, two-version transition,
+  compatibility, rollback, exact uninstall, recovery, nonmutation, and final-
+  realization proof; and
+- R parsing, POSIX shell syntax, repository hygiene, and `git diff --check`.
+
+One package-validation attempt experienced an anomalous supervisor wall-clock
+timeout during `rrpruntime` installation; its process group was terminated and
+process-table inspection found no survivor. The unchanged complete validator
+then passed, including `rrpruntime` check in 5.33 seconds. This was not a package
+or lifecycle failure.
+
+No automatic project/state migration, downgrade transformation, retention
+policy, remote updater, release channel, analytical rollback, publication,
+deployment, or 11.H behavior entered. No package export or dependency changed.
+No commit, push, tag, publication, release, or deployment occurred.
+
+Increment 11.G is implementation-complete pending formal human acceptance and
+revision-matched hosted Ubuntu/R 4.4 `package-foundation` evidence. Stage 11
+remains incomplete.
+
+**Next task:** commit and run this 11.G implementation through hosted
+`package-foundation`, then formally accept Increment 11.G if that exact
+revision passes. Do not begin Increment 11.H before acceptance.

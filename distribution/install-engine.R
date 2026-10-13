@@ -562,6 +562,37 @@ rrp_install_result <- function(record, destination, shim_path, reused) list(
   reused = isTRUE(reused)
 )
 
+rrp_install_assert_version_identity <- function(manifest, version_root) {
+  published <- !identical(
+    manifest[["Product-Version"]], manifest[["Development-Version"]]
+  )
+  if (!published) return(invisible(TRUE))
+  entries <- list.files(
+    version_root, all.files = TRUE, full.names = FALSE, no.. = TRUE
+  )
+  conflicts <- setdiff(entries, manifest[["Distribution-ID"]])
+  if (length(conflicts)) rrp_install_fail(
+    "published_version_conflict",
+    "The published product version already has different official content."
+  )
+  invisible(TRUE)
+}
+
+rrp_install_version_lock <- function(manifest, staging) {
+  published <- !identical(
+    manifest[["Product-Version"]], manifest[["Development-Version"]]
+  )
+  if (!published) return(NULL)
+  lock <- file.path(
+    staging, paste0(".lock-version-", manifest[["Product-Version"]])
+  )
+  if (!dir.create(lock, showWarnings = FALSE)) rrp_install_fail(
+    "published_version_locked",
+    "Installation for this published product version is already in progress."
+  )
+  lock
+}
+
 rrp_install_distribution <- function(
   distribution_root, repository, host_r_executable,
   installation_root = NULL, executable_root = NULL,
@@ -591,6 +622,12 @@ rrp_install_distribution <- function(
   rrp_install_create_directory(staging)
   version_root <- file.path(installations, manifest[["Product-Version"]])
   rrp_install_create_directory(version_root)
+  version_lock <- rrp_install_version_lock(manifest, staging)
+  if (!is.null(version_lock)) on.exit(
+    if (dir.exists(version_lock)) unlink(version_lock, recursive = TRUE, force = TRUE),
+    add = TRUE
+  )
+  rrp_install_assert_version_identity(manifest, version_root)
   destination <- file.path(version_root, manifest[["Distribution-ID"]])
   lock <- file.path(staging, paste0(
     ".lock-", manifest[["Product-Version"]], "-", manifest[["Distribution-ID"]]

@@ -47,6 +47,7 @@ rrp_cli_noun_help <- function(noun) {
       "  rrp software verify [--software SELECTOR] [--json]",
       "  rrp software doctor [--software SELECTOR] [--json]",
       "  rrp software activate SELECTOR [--json]",
+      "  rrp software uninstall SELECTOR [--yes] [--json]",
       "  rrp software install PATH --repository HTTPS_URL [--installation-root ABSOLUTE_PATH] [--executable-root ABSOLUTE_PATH] [--json]",
       "",
       "SELECTOR is exactly PRODUCT_VERSION/DISTRIBUTION_ID. Installation",
@@ -458,14 +459,14 @@ rrp_cli_parse <- function(arguments, working_directory = ".") {
   }
 
   if (identical(noun, "software") && action %in% c(
-    "list", "current", "verify", "doctor", "activate"
+    "list", "current", "verify", "doctor", "activate", "uninstall"
   )) {
     options <- rrp_cli_parse_options(
       remaining, if (action %in% c("verify", "doctor")) "software" else character()
     )
-    needs_selector <- identical(action, "activate")
+    needs_selector <- action %in% c("activate", "uninstall")
     if (length(options$positionals) != if (needs_selector) 1L else 0L ||
-        options$yes) rrp_cli_usage_abort(
+        (options$yes && !identical(action, "uninstall"))) rrp_cli_usage_abort(
       "invalid_software_arguments", "Software command arguments are invalid."
     )
     requested <- if (needs_selector) {
@@ -781,7 +782,7 @@ rrp_cli_confirmation_result <- function() {
     "rrp.cli", "failure", NULL,
     list(rrp_new_diagnostic(
       "confirmation_required", "error",
-      "This corrective operation requires explicit confirmation."
+      "This corrective or destructive operation requires explicit confirmation."
     ))
   )
 }
@@ -1048,6 +1049,10 @@ rrp_cli_value_fields <- function(operation_id) {
       "selector", "installation_id", "product_version", "distribution_id",
       "previous_selector", "reused"
     ),
+    "rrp.software-uninstall" = c(
+      "selector", "installation_id", "product_version", "distribution_id",
+      "remaining_installation_count", "final_installation", "shim_preserved"
+    ),
     "rrp.project-status" = strsplit(
       rrp_project_lifecycle_result_contract_expected()[["Value-Fields"]],
       ",", fixed = TRUE
@@ -1236,6 +1241,7 @@ rrp_cli_curate_result <- function(result) {
     "rrp.verify-installed-software" = source,
     "rrp.software-doctor" = source,
     "rrp.software-activate" = source,
+    "rrp.software-uninstall" = source,
     "rrp.project-status" = source,
     "rrp.initialize-project" = list(
       project_id = source$project_id,
@@ -1337,6 +1343,7 @@ rrp_cli_result_payload <- function(result, cli_contract) {
     "rrp.version", "rrp.software-install", "rrp.software-list",
     "rrp.software-current", "rrp.verify-installed-software",
     "rrp.software-doctor", "rrp.software-activate",
+    "rrp.software-uninstall",
     "rrp.project-status", "rrp.initialize-project",
     "rrp.initialize-fictional-project", "rrp.validate-project",
     "rrp.prepare-fictional-source", "rrp.initialize-project-state",
@@ -1522,6 +1529,7 @@ rrp_cli_restatement_result <- function(parsed, context) {
 }
 
 rrp_cli_confirmation_class <- function(command) {
+  if (identical(command, "software_uninstall")) return("destructive")
   if (command %in% c(
     "state_restore", "history_retry", "history_invalidate", "history_restate"
   )) "corrective" else "read_only"
@@ -1556,6 +1564,9 @@ rrp_cli_execute <- function(parsed, context, operation_overrides = list()) {
     ),
     software_activate = function() rrp_software_activate(
       context$installation_root, parsed$selector
+    ),
+    software_uninstall = function() rrp_software_uninstall(
+      context$installation_root, parsed$selector, context$stable_shim
     ),
     project_init = function() rrp_initialize_project(
       context$catalog, parsed$destination, parsed$project_id,

@@ -48,6 +48,8 @@ esac
 
 transport_allowed=false
 management_transport=false
+prefer_active_transport=false
+uninstall_target=""
 if [ "${1:-}" = "software" ]; then
   case "${2:-}" in
     list|current)
@@ -71,10 +73,31 @@ if [ "${1:-}" = "software" ]; then
       selector=$3
       selection_mode="activation_target"
       ;;
+    uninstall)
+      transport_allowed=true
+      management_transport=true
+      prefer_active_transport=true
+      uninstall_target=${3:-}
+      ;;
   esac
 fi
 
 active_record="$software_root/active.dcf"
+if [ -z "$selector" ] && [ "$prefer_active_transport" = true ] &&
+   [ -f "$active_record" ] && [ ! -L "$active_record" ]; then
+  product_version=$(dcf_field "$active_record" Product-Version) ||
+    fail invalid_active_selection "The active software selection is invalid."
+  distribution_id=$(dcf_field "$active_record" Distribution-ID) ||
+    fail invalid_active_selection "The active software selection is invalid."
+  active_selector="$product_version/$distribution_id"
+  if [ "$active_selector" != "$uninstall_target" ]; then
+    selector="$active_selector"
+    selection_mode="transport_only"
+  else
+    fallback_selector="$active_selector"
+  fi
+fi
+
 if [ -z "$selector" ] && [ "$management_transport" = false ] &&
    [ -f "$active_record" ] && [ ! -L "$active_record" ]; then
   product_version=$(dcf_field "$active_record" Product-Version) ||
@@ -89,11 +112,22 @@ if [ -z "$selector" ] && [ "$transport_allowed" = true ]; then
     if [ -d "$candidate" ] && [ ! -L "$candidate" ] &&
        [ -f "$candidate/INSTALLATION.dcf" ] &&
        [ -x "$candidate/bin/rrp" ]; then
-      selector=$(basename "$(dirname "$candidate")")/$(basename "$candidate")
+      candidate_selector=$(basename "$(dirname "$candidate")")/$(basename "$candidate")
+      if [ -n "$uninstall_target" ] &&
+         [ "$candidate_selector" = "$uninstall_target" ]; then
+        fallback_selector="$candidate_selector"
+        continue
+      fi
+      selector="$candidate_selector"
       selection_mode="transport_only"
       break
     fi
   done
+fi
+
+if [ -z "$selector" ] && [ -n "${fallback_selector:-}" ]; then
+  selector="$fallback_selector"
+  selection_mode="transport_only"
 fi
 
 [ -n "$selector" ] || fail active_software_not_selected \

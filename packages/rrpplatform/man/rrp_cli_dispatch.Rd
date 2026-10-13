@@ -39,6 +39,7 @@ destination. Restore and history-correction commands use controlled
 confirmation. The dispatcher receives explicit active or override selection
 context from the stable launcher and never discovers projects. Its bounded
 software operations enumerate, verify, diagnose, or atomically activate only
-installed software. Software installation delegates one explicit local
-distribution to the distribution-owned shared installation engine.
+installed software, or remove one exact verified inactive non-final
+realization after confirmation. Software installation delegates one explicit
+local distribution to the distribution-owned shared installation engine.
 }
