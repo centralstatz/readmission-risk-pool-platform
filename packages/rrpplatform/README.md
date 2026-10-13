@@ -63,8 +63,12 @@ exact installed selector override, strict verification, software doctor, and
 atomic activation without project access. Increment 11.G composes side-by-side
 upgrade and rollback through exact installation/verification/activation and
 adds confirmed exact inactive non-final uninstall with quarantine recovery,
-all without project access. Migration, scheduling, and daemon behavior remain
-unimplemented.
+all without project access. Increment 11.H proves those package-owned surfaces
+as one installed clean temporary-user workflow through an independently
+initialized fictional project, two analytical times, fresh products,
+supervised application, both doctors, controlled incompatibility, compatible
+selection, rollback, and uninstall; it adds no package interface. Migration,
+scheduling, and daemon behavior remain unimplemented.
 
 Its current callable interfaces are:
 

@@ -138,7 +138,11 @@ RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
 
 It proves the base-R bootstrap, exact private dependency restoration, fresh-
 process isolation, installation evidence, failure cleanup, exact reinstall,
-conflict refusal, project independence, and installed-CLI equivalence. The
+conflict refusal, project independence, installed-CLI equivalence, complete
+two-time fictional project/history/product operation, supervised installed
+application startup/termination, both diagnostic surfaces, compatible explicit
+selection, rollback, and exact uninstall from one clean temporary-user
+context. The
 read-only package-foundation workflow invokes these same four commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -252,5 +256,10 @@ activation without project access. It is formally accepted at revision
 development identities, upgrade composition, rollback by exact activation,
 published-version conflict refusal, and confirmed exact inactive uninstall
 with bounded quarantine recovery and project/history nonmutation proof. It is
-implementation-complete pending formal human acceptance and revision-matched
-hosted validation. Stage 11 remains incomplete; no 11.H behavior exists.
+formally accepted at revision
+`e2c8a448b7c5c95124e6b9a4ac8c1db659b4eafc` after hosted run `38413323460`,
+job `115351071999`. Increment 11.H composes the complete clean temporary-user
+copied-distribution, configured-repository restoration, two-time fictional
+operation, product/application, diagnosis, compatibility, rollback, and
+uninstall proof. It is implementation-complete pending revision-matched hosted
+validation and formal human acceptance. Stage 11 remains incomplete.

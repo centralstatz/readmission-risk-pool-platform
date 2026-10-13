@@ -26,6 +26,31 @@ rrp software install DISTRIBUTION_PATH --repository HTTPS_URL
 This creates and validates one immutable version-private realization. It does
 not activate that version, discover a project, or change project source/state.
 
+The supported fictional end-to-end orientation is deliberately composed from
+the same separate intentions used by an ordinary project:
+
+```text
+rrp reference init PROJECT_PATH
+rrp reference prepare-source --project PROJECT_PATH
+rrp project validate --project PROJECT_PATH
+rrp state init --project PROJECT_PATH
+rrp state inspect --project PROJECT_PATH
+rrp run --at TIME_1 --operation-key accepted-first --project PROJECT_PATH
+rrp history scope --scope RETURNED_SCOPE_1 --project PROJECT_PATH
+rrp run --at TIME_2 --operation-key accepted-second --project PROJECT_PATH
+rrp history scope --scope RETURNED_SCOPE_2 --project PROJECT_PATH
+rrp products materialize --scope RETURNED_SCOPE_2 --cutoff TIME_2 --project PROJECT_PATH
+rrp products status --scope RETURNED_SCOPE_2 --cutoff TIME_2 --project PROJECT_PATH
+rrp project doctor --scope RETURNED_SCOPE_2 --cutoff TIME_2 --project PROJECT_PATH
+rrp app launch --scope RETURNED_SCOPE_2 --cutoff TIME_2 --project PROJECT_PATH
+```
+
+Use two distinct RFC 3339 UTC analytical times. Each run returns its exact
+scope identity; do not substitute a newest scope. Product status and project
+doctor should report the materialized set fresh for the explicitly paired
+second scope and cutoff. Application launch consumes that validated product
+set only. It does not repeat either analytical run.
+
 Use the software-only lifecycle before entering any project:
 
 ```text
@@ -39,7 +64,12 @@ rrp software current
 The exact selector identifies one concrete distribution realization. A
 one-command override such as `rrp --software SELECTOR version` does not change
 the active default. These commands do not inspect or associate a project;
-project compatibility is evaluated only by a later project command.
+project compatibility is evaluated only by a later project command. Software
+doctor diagnoses the selected installed realization, private library,
+resources, launcher, host R, and activation; it does not discover or diagnose
+a project. Project doctor instead requires the explicitly resolved project and
+summarizes its contract, state/history, product freshness, and application
+readiness under the selected software.
 
 For a controlled upgrade, install the newer distribution, verify its exact
 selector, and activate it. Then validate the retained project separately. If
@@ -193,4 +223,5 @@ software doctor, and atomic activation now operate independently of projects.
 Side-by-side upgrade, exact activation rollback, and exact inactive uninstall
 use that same project-independent boundary. Project migration, generic source
 acquisition, scheduler, daemon, remote publication, and deployment artifacts
-do not exist.
+do not exist. The locally built development distribution is not a published
+release or a production-support claim.

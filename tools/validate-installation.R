@@ -1,8 +1,9 @@
 #!/usr/bin/env Rscript
 
-# Full Increment 11.G proof. This deliberately performs one real configured-
-# repository restoration and reuses its side-by-side realizations for the
-# accepted installation, selection, rollback, and exact-uninstall proof.
+# Full Increment 11.H clean installed-operation proof. This deliberately
+# performs one real configured-repository restoration and reuses its
+# side-by-side realizations for installation, project operation, application,
+# diagnosis, compatibility, rollback, and exact-uninstall evidence.
 
 script_argument <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(script_argument) != 1L) stop("Cannot determine validation path.", call. = FALSE)
@@ -34,6 +35,12 @@ run <- function(command, arguments, environment = character()) {
     output = output,
     status = if (is.null(attr(output, "status"))) 0L else attr(output, "status")
   )
+}
+
+run_in <- function(command, arguments, environment, directory) {
+  previous <- setwd(directory)
+  on.exit(setwd(previous), add = TRUE)
+  run(command, arguments, environment)
 }
 
 write_ambient_package <- function(library, package, version) {
@@ -97,6 +104,17 @@ validate_installation <- function() {
   ))
   require_true(length(repository) == 1L, "Distribution repository set is unsupported.")
   cat("PASS copied local acquisition and standalone distribution verification\n")
+
+  damaged_distribution <- file.path(work, "damaged-copied-distribution")
+  rrp_install_copy_tree(distribution_root, damaged_distribution)
+  damaged_notice <- file.path(damaged_distribution, "NOTICE")
+  write("damaged copied payload", damaged_notice, append = TRUE)
+  expect_failure(
+    "damaged copied distribution",
+    rrp_verify_distribution(damaged_distribution),
+    "Integrity failed"
+  )
+  cat("PASS damaged copied distribution fails standalone verification\n")
 
   alternate_source <- file.path(work, "alternate-development-source")
   authority <- distribution_source_authority(repository_root)
@@ -182,6 +200,20 @@ validate_installation <- function() {
   host_r <- normalizePath(file.path(R.home("bin"), "R"), winslash = "/", mustWork = TRUE)
   host_rscript <- normalizePath(
     file.path(dirname(host_r), "Rscript"), winslash = "/", mustWork = TRUE
+  )
+  incompatible_host <- file.path(work, "incompatible-host-r")
+  writeLines(c(
+    "#!/bin/sh",
+    "printf '0.0.0\\nwrong-platform\\nwrong-architecture\\n%s\\n' \"$0\""
+  ), incompatible_host, useBytes = TRUE)
+  Sys.chmod(incompatible_host, mode = "0755", use_umask = FALSE)
+  expect_failure(
+    "incompatible host R",
+    rrp_install_distribution(
+      distribution_root, repository, incompatible_host,
+      file.path(work, "incompatible-host-root")
+    ),
+    "Host R does not match the distribution target"
   )
   project <- file.path(work, "independent-project")
   dir.create(project)
@@ -299,6 +331,16 @@ validate_installation <- function() {
   executable_root <- file.path(work, "isolated-user-bin")
   ambient_user <- file.path(work, "ambient-user-library")
   ambient_site <- file.path(work, "ambient-site-library")
+  user_home <- file.path(work, "isolated-user-home")
+  user_config <- file.path(work, "isolated-user-config")
+  user_cache <- file.path(work, "isolated-user-cache")
+  process_temporary <- file.path(work, "isolated-process-temporary")
+  local_app_data <- file.path(work, "isolated-local-app-data")
+  dir.create(user_home)
+  dir.create(user_config)
+  dir.create(user_cache)
+  dir.create(process_temporary)
+  dir.create(local_app_data)
   dir.create(ambient_user)
   dir.create(ambient_site)
   write_ambient_package(ambient_user, "DBI", "0.0.0")
@@ -308,7 +350,18 @@ validate_installation <- function() {
   writeLines("stop('user profile was evaluated')", profile, useBytes = TRUE)
   writeLines("RRP_INSTALL_TEST_FAILURE=before_restoration", environ,
     useBytes = TRUE)
-  bootstrap <- run(
+  writeLines("stop('home profile was evaluated')",
+    file.path(user_home, ".Rprofile"), useBytes = TRUE)
+  writeLines("RRP_INSTALL_TEST_FAILURE=before_restoration",
+    file.path(user_home, ".Renviron"), useBytes = TRUE)
+  isolated_environment <- c(
+    paste0("HOME=", user_home), paste0("XDG_DATA_HOME=", installation_root),
+    paste0("XDG_CONFIG_HOME=", user_config),
+    paste0("XDG_CACHE_HOME=", user_cache),
+    paste0("LOCALAPPDATA=", local_app_data),
+    paste0("TMPDIR=", process_temporary)
+  )
+  bootstrap <- run_in(
     file.path(R.home("bin"), "Rscript"),
     c(
       "--vanilla", file.path(distribution_root, "install.R"),
@@ -316,14 +369,14 @@ validate_installation <- function() {
       "--installation-root", installation_root,
       "--executable-root", executable_root
     ),
-    c(
+    c(isolated_environment,
       paste0("R_LIBS=", ambient_user),
       paste0("R_LIBS_USER=", ambient_user),
       paste0("R_LIBS_SITE=", ambient_site),
       paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ),
       "RENV_CONFIG_CACHE_ENABLED=TRUE",
       "RRP_INSTALL_TEST_FAILURE=before_restoration"
-    )
+    ), project
   )
   require_true(bootstrap$status == 0L, paste(bootstrap$output, collapse = "\n"))
   installation_root <- rrp_install_normalize_root(installation_root)
@@ -376,13 +429,13 @@ validate_installation <- function() {
     "if (length(mismatch)) stop(paste('dependency integrity mismatch:',paste(mismatch,collapse=',')),call.=FALSE)",
     "invisible(TRUE)"
   ), integrity_script, useBytes = TRUE)
-  integrity_probe <- run(
+  integrity_probe <- run_in(
     host_r, c("--vanilla", shQuote(integrity_script)),
     c(
       "LC_ALL=C",
       paste0("R_LIBS_USER=", file.path(destination, "library")),
       "R_LIBS_SITE="
-    )
+    ), project
   )
   require_true(
     integrity_probe$status == 0L,
@@ -401,7 +454,7 @@ validate_installation <- function() {
     run(
       "/bin/sh", c(shQuote(stable_launcher), vapply(
         arguments, shQuote, character(1L)
-      )), c(
+      )), c(isolated_environment,
         paste0("R_LIBS=", ambient_user),
         paste0("R_LIBS_USER=", ambient_user),
         paste0("R_LIBS_SITE=", ambient_site),
@@ -426,7 +479,7 @@ validate_installation <- function() {
     run(
       "/bin/sh", c(shQuote(file.path(transport, "bin", "rrp")), vapply(
         arguments, shQuote, character(1L)
-      )), c(
+      )), c(isolated_environment,
         paste0("RRP_R_EXECUTABLE=", transport_record[["Host-R-Executable"]]),
         paste0("RRP_PRIVATE_LIBRARY=", transport_record[["Private-Library"]]),
         paste0("RRP_SOFTWARE_ROOT=", transport),
@@ -469,6 +522,7 @@ validate_installation <- function() {
   current <- stable_run(c("software", "current", "--json"), project)
   current_human <- stable_run(c("software", "current"), project)
   healthy_doctor <- stable_run(c("software", "doctor", "--json"), project)
+  healthy_doctor_human <- stable_run(c("software", "doctor"), project)
   version <- stable_run(c("version", "--json"), project)
   explicit <- stable_run(c("--software", selector, "version", "--json"), project)
   active_before_failure <- readBin(
@@ -484,9 +538,10 @@ validate_installation <- function() {
     "result <- getFromNamespace('rrp_software_activate','rrpplatform')(root,selector,'after_promotion')",
     "stopifnot(!rrp_operation_succeeded(result))"
   ), failure_script, useBytes = TRUE)
-  controlled_activation <- run(
+  controlled_activation <- run_in(
     host_rscript, c("--vanilla", shQuote(failure_script)),
-    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE=")
+    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE="),
+    project
   )
   active_after_failure <- readBin(
     file.path(installation_root, "active.dcf"), "raw",
@@ -495,7 +550,7 @@ validate_installation <- function() {
   require_true(
     activated$status == 0L && reactivated$status == 0L &&
       current$status == 0L && current_human$status == 0L &&
-      healthy_doctor$status == 0L &&
+      healthy_doctor$status == 0L && healthy_doctor_human$status == 0L &&
       version$status == 0L && explicit$status == 0L &&
       controlled_activation$status == 0L &&
       grepl('"reused":true', paste(reactivated$output, collapse = "\n"),
@@ -506,6 +561,9 @@ validate_installation <- function() {
         fixed = TRUE) &&
       grepl('"software_status":"ready"',
         paste(healthy_doctor$output, collapse = "\n"), fixed = TRUE) &&
+      !grepl(normalizePath(project, winslash = "/", mustWork = TRUE), paste(
+        c(healthy_doctor$output, healthy_doctor_human$output), collapse = "\n"
+      ), fixed = TRUE) &&
       grepl('"selection":"active"', paste(version$output, collapse = "\n"),
         fixed = TRUE) &&
       grepl('"selection":"explicit_override"',
@@ -525,14 +583,14 @@ validate_installation <- function() {
     "status=$?",
     "[ \"$status\" -eq 143 ] || [ \"$status\" -eq 130 ]"
   ), signal_script, useBytes = TRUE)
-  signal_proof <- run(
+  signal_proof <- run_in(
     "/bin/sh", c(shQuote(signal_script), shQuote(stable_launcher)),
-    c(
+    c(isolated_environment,
       paste0("R_LIBS=", ambient_user),
       paste0("R_LIBS_USER=", ambient_user),
       paste0("R_LIBS_SITE=", ambient_site),
       paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ)
-    )
+    ), project
   )
   require_true(
     signal_proof$status == 0L,
@@ -543,7 +601,8 @@ validate_installation <- function() {
   cat("PASS stable shim, exact selection, verification, doctor, and atomic activation\n")
 
   retained_project <- file.path(work, "retained-fictional-project")
-  analytical_time <- "2026-01-20T12:00:00Z"
+  first_analytical_time <- "2026-01-20T12:00:00Z"
+  second_analytical_time <- "2026-01-21T12:00:00Z"
   reference_initialized <- stable_run(c(
     "reference", "init", retained_project, "--json"
   ), project)
@@ -554,7 +613,7 @@ validate_installation <- function() {
     "state", "init", "--project", retained_project, "--json"
   ), project)
   retained_run <- stable_run(c(
-    "run", "--at", analytical_time, "--operation-key", "version-transition-proof",
+    "run", "--at", first_analytical_time, "--operation-key", "accepted-first",
     "--project", retained_project, "--json"
   ), project)
   require_true(
@@ -567,38 +626,223 @@ validate_installation <- function() {
       state_initialized$output, retained_run$output
     ), collapse = "\n"))
   )
-  retained_scope <- json_string(retained_run, "operation_run_id")
+  first_scope <- json_string(retained_run, "operation_run_id")
+  second_run <- stable_run(c(
+    "run", "--at", second_analytical_time, "--operation-key", "accepted-second",
+    "--project", retained_project, "--json"
+  ), project)
+  require_true(
+    second_run$status == 0L,
+    paste("Second governed run failed:", paste(second_run$output, collapse = "\n"))
+  )
+  second_scope <- json_string(second_run, "operation_run_id")
+  require_true(!identical(first_scope, second_scope),
+    "Two analytical times produced the same operation-run identity.")
   retained_products <- stable_run(c(
-    "products", "materialize", "--scope", retained_scope, "--cutoff",
-    analytical_time, "--project", retained_project, "--json"
+    "products", "materialize", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project, "--json"
+  ), project)
+  retained_product_status <- stable_run(c(
+    "products", "status", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project, "--json"
+  ), project)
+  first_history <- stable_run(c(
+    "history", "scope", "--scope", first_scope, "--project",
+    retained_project, "--json"
+  ), project)
+  second_history <- stable_run(c(
+    "history", "scope", "--scope", second_scope, "--project",
+    retained_project, "--json"
+  ), project)
+  state_inspected <- stable_run(c(
+    "state", "inspect", "--project", retained_project, "--json"
   ), project)
   retained_validate <- stable_run(c(
     "project", "validate", "--project", retained_project, "--json"
   ), project)
-  retained_history <- stable_run(c(
-    "history", "scope", "--scope", retained_scope, "--project",
-    retained_project, "--json"
+  project_doctor <- stable_run(c(
+    "project", "doctor", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project, "--json"
   ), project)
-  retained_history_text <- paste(retained_history$output, collapse = "\n")
+  project_doctor_human <- stable_run(c(
+    "project", "doctor", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project
+  ), project)
+  project_status <- stable_run(c(
+    "project", "status", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project, "--json"
+  ), project)
+  retained_history_text <- paste(c(
+    first_history$output, second_history$output
+  ), collapse = "\n")
   require_true(
-    retained_products$status == 0L && retained_validate$status == 0L &&
-      retained_history$status == 0L &&
+    all(vapply(list(
+      retained_products, retained_product_status, first_history,
+      second_history, state_inspected, retained_validate, project_doctor,
+      project_doctor_human, project_status
+    ), function(value) value$status == 0L, logical(1L))) &&
+      grepl(first_analytical_time, paste(first_history$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl(second_analytical_time, paste(second_history$output, collapse = "\n"),
+        fixed = TRUE) &&
+      grepl(paste0('"source_operation_run_id":"', second_scope, '"'), paste(
+        retained_product_status$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"freshness_status":"fresh"', paste(
+        retained_product_status$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"product_status":"valid"', paste(
+        project_doctor$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"product_freshness":"fresh"', paste(
+        project_doctor$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"application_status":"ready"', paste(
+        project_status$output, collapse = "\n"
+      ), fixed = TRUE) &&
       !grepl(
         "distribution_id|build_id|installation_id|activation",
         retained_history_text, ignore.case = TRUE, perl = TRUE
       ),
-    paste("Retained project or history-attribution setup failed:", paste(c(
-      retained_products$output, retained_validate$output,
-      retained_history$output
+    paste("Clean project/history/product/doctor proof failed:", paste(c(
+      retained_products$output, retained_product_status$output,
+      first_history$output, second_history$output, state_inspected$output,
+      retained_validate$output, project_doctor$output,
+      project_doctor_human$output, project_status$output
     ), collapse = "\n"))
   )
-  retained_before <- tree_digest(retained_project)
-  cat("PASS retained project with durable history and products under prior software\n")
 
-  alternate_result <- rrp_install_distribution(
-    alternate_distribution, repository, host_r, installation_root,
-    executable_root
+  port_script <- file.path(work, "installed-random-port.R")
+  writeLines(c(
+    ".libPaths(c(Sys.getenv('RRP_PRIVATE_LIBRARY'), .Library))",
+    "namespace <- loadNamespace('httpuv', lib.loc = Sys.getenv('RRP_PRIVATE_LIBRARY'))",
+    "cat(get('randomPort', envir = namespace, inherits = FALSE)())"
+  ), port_script, useBytes = TRUE)
+  port_result <- run_in(
+    host_rscript, c("--vanilla", shQuote(port_script)),
+    c(isolated_environment,
+      paste0("RRP_PRIVATE_LIBRARY=", file.path(destination, "library")),
+      paste0("R_LIBS_USER=", file.path(destination, "library")),
+      "R_LIBS_SITE="), project
   )
+  app_port <- suppressWarnings(as.integer(if (length(port_result$output)) {
+    port_result$output[[1L]]
+  } else {
+    NA_character_
+  }))
+  require_true(port_result$status == 0L && length(app_port) == 1L &&
+    !is.na(app_port) && app_port >= 1024L && app_port <= 65535L,
+    "Could not obtain a bounded loopback application port.")
+  app_log <- file.path(work, "installed-app.log")
+  app_probe <- file.path(work, "installed-app-probe.R")
+  writeLines(c(
+    "port <- as.integer(commandArgs(trailingOnly = TRUE)[[1L]])",
+    "for (attempt in seq_len(60L)) {",
+    "  connection <- try(suppressWarnings(socketConnection(",
+    "    host = '127.0.0.1', port = port, open = 'r+b', timeout = 1",
+    "  )), silent = TRUE)",
+    "  if (!inherits(connection, 'try-error')) { close(connection); quit(status = 0L) }",
+    "  Sys.sleep(1)",
+    "}",
+    "quit(status = 1L)"
+  ), app_probe, useBytes = TRUE)
+  app_supervisor <- file.path(work, "installed-app-supervisor.sh")
+  writeLines(c(
+    "#!/bin/sh",
+    "launcher=$1", "project=$2", "scope=$3", "cutoff=$4", "port=$5", "log=$6",
+    "host_rscript=$7", "probe=$8",
+    "\"$launcher\" app launch --project \"$project\" --scope \"$scope\" --cutoff \"$cutoff\" --port \"$port\" --json >\"$log\" 2>&1 &",
+    "pid=$!",
+    "\"$host_rscript\" --vanilla \"$probe\" \"$port\" || { kill -TERM \"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
+    "kill -0 \"$pid\" 2>/dev/null || { wait \"$pid\"; exit 1; }",
+    "kill -TERM \"$pid\" 2>/dev/null || exit 1", "wait \"$pid\"", "status=$?",
+    "kill -0 \"$pid\" 2>/dev/null && exit 1",
+    "[ \"$status\" -eq 143 ] || [ \"$status\" -eq 130 ]"
+  ), app_supervisor, useBytes = TRUE)
+  app_before <- tree_digest(retained_project)
+  app_launch <- run_in(
+    "/bin/sh", c(
+      shQuote(app_supervisor), shQuote(stable_launcher),
+      shQuote(retained_project), shQuote(second_scope),
+      shQuote(second_analytical_time), shQuote(as.character(app_port)),
+      shQuote(app_log), shQuote(host_rscript), shQuote(app_probe)
+    ), c(isolated_environment,
+      paste0("R_LIBS=", ambient_user),
+      paste0("R_LIBS_USER=", ambient_user),
+      paste0("R_LIBS_SITE=", ambient_site),
+      paste0("R_PROFILE_USER=", profile), paste0("R_ENVIRON_USER=", environ)),
+    project
+  )
+  app_output <- if (file.exists(app_log)) paste(
+    readLines(app_log, warn = FALSE, encoding = "UTF-8"), collapse = "\n"
+  ) else ""
+  require_true(
+    app_launch$status == 0L && file.exists(app_log) &&
+      identical(app_before, tree_digest(retained_project)),
+    paste("Installed application supervision failed:", paste(
+      c(app_launch$output, app_output), collapse = "\n"
+    ))
+  )
+  runtime_roots <- normalizePath(c(
+    distribution_root, destination, installation_root, executable_root,
+    retained_project, work
+  ), winslash = "/", mustWork = TRUE)
+  repository_prefix <- paste0(repository_root, "/")
+  require_true(
+    all(!startsWith(runtime_roots, repository_prefix)) &&
+      !dir.exists(file.path(distribution_root, ".git")) &&
+      !dir.exists(file.path(retained_project, ".git")) &&
+      !grepl(repository_root, paste(c(
+        readLines(file.path(destination, "INSTALLATION.dcf"), warn = FALSE),
+        retained_history_text, retained_product_status$output,
+        project_doctor$output, app_output
+      ), collapse = "\n"), fixed = TRUE),
+    "Installed operation retained a source-repository runtime dependency."
+  )
+  privacy_text <- paste(c(
+    retained_history_text, retained_product_status$output,
+    project_doctor$output, project_status$output
+  ), collapse = "\n")
+  require_true(
+    !grepl(
+      "private-patient|private-episode|source_patient|native_patient|credential|connection_string|crosswalk",
+      privacy_text, ignore.case = TRUE, perl = TRUE
+    ),
+    "Acceptance evidence exposed project-private or source-native content."
+  )
+  retained_before <- tree_digest(retained_project)
+  cat(paste(
+    "PASS clean installed two-time project, history, fresh products,",
+    "both doctors, and supervised application\n"
+  ))
+
+  alternate_install <- stable_run(c(
+    "software", "install", alternate_distribution, "--repository", repository,
+    "--installation-root", installation_root,
+    "--executable-root", executable_root, "--json"
+  ), project)
+  require_true(
+    alternate_install$status == 0L && grepl(
+      '"operation_id":"rrp.software-install"', paste(
+        alternate_install$output, collapse = "\n"
+      ), fixed = TRUE
+    ),
+    paste("Second installed realization failed:", paste(
+      alternate_install$output, collapse = "\n"
+    ))
+  )
+  alternate_result <- list(
+    product_version = alternate_verified$manifest[["Product-Version"]],
+    distribution_id = alternate_verified$manifest[["Distribution-ID"]]
+  )
+  alternate_result$installation_root <- file.path(
+    installation_root, "installations", alternate_result$product_version,
+    alternate_result$distribution_id
+  )
+  alternate_record <- rrp_install_dcf(
+    file.path(alternate_result$installation_root, "INSTALLATION.dcf"), "record"
+  )[[1L]]
+  alternate_result$private_library <- alternate_record[["Private-Library"]]
   alternate_selector <- paste(
     alternate_result$product_version, alternate_result$distribution_id,
     sep = "/"
@@ -643,10 +887,22 @@ validate_installation <- function() {
   newer_activated <- stable_run(c(
     "software", "activate", alternate_selector, "--json"
   ), project)
+  newer_doctor <- stable_run(c("software", "doctor", "--json"), project)
   incompatible_under_newer <- stable_run(c(
     "project", "validate", "--project", retained_project, "--json"
   ), project)
+  incompatible_doctor <- stable_run(c(
+    "project", "doctor", "--scope", second_scope, "--cutoff",
+    second_analytical_time, "--project", retained_project, "--json"
+  ), project)
   retained_after_rejection <- tree_digest(retained_project)
+  compatible_explicit <- stable_run(c(
+    "--software", selector, "project", "doctor", "--scope", second_scope,
+    "--cutoff", second_analytical_time, "--project", retained_project, "--json"
+  ), project)
+  current_while_explicit <- stable_run(c(
+    "software", "current", "--json"
+  ), project)
   rolled_back <- stable_run(c(
     "software", "activate", selector, "--json"
   ), project)
@@ -657,9 +913,27 @@ validate_installation <- function() {
     "software", "current", "--json"
   ), project)
   require_true(
-    newer_activated$status == 0L && incompatible_under_newer$status == 1L &&
+    newer_activated$status == 0L && newer_doctor$status == 0L &&
+      grepl(paste0('"distribution_id":"',
+        alternate_result$distribution_id, '"'), paste(
+          newer_doctor$output, collapse = "\n"
+        ), fixed = TRUE) &&
+      grepl('"activation_status":"active"', paste(
+        newer_doctor$output, collapse = "\n"
+      ), fixed = TRUE) && incompatible_under_newer$status == 1L &&
+      incompatible_doctor$status == 1L &&
       grepl("incompatible_project_api", paste(
         incompatible_under_newer$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl("incompatible_project_api", paste(
+        incompatible_doctor$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      compatible_explicit$status == 0L && current_while_explicit$status == 0L &&
+      grepl(paste0('"selector":"', alternate_selector, '"'), paste(
+        current_while_explicit$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      grepl('"product_freshness":"fresh"', paste(
+        compatible_explicit$output, collapse = "\n"
       ), fixed = TRUE) &&
       rolled_back$status == 0L && compatible_after_rollback$status == 0L &&
       current_after_rollback$status == 0L &&
@@ -670,12 +944,18 @@ validate_installation <- function() {
       identical(retained_before, tree_digest(retained_project)) &&
       identical(project_before, tree_digest(project)),
     paste("Upgrade compatibility gate or rollback proof failed:", paste(c(
-      newer_activated$output, incompatible_under_newer$output,
+      newer_activated$output, newer_doctor$output,
+      incompatible_under_newer$output,
+      incompatible_doctor$output, compatible_explicit$output,
+      current_while_explicit$output,
       rolled_back$output, compatible_after_rollback$output,
       current_after_rollback$output
     ), collapse = "\n"))
   )
-  cat("PASS activate-newer compatibility refusal and exact rollback to prior software\n")
+  cat(paste(
+    "PASS incompatible active version refusal, explicit compatible operation,",
+    "and exact rollback\n"
+  ))
 
   active_path <- file.path(installation_root, "active.dcf")
   valid_active <- readBin(active_path, "raw", n = file.info(active_path)$size)
@@ -793,9 +1073,10 @@ validate_installation <- function() {
     "codes <- vapply(result$diagnostics,`[[`,character(1L),'code')",
     "stopifnot('uninstall_removal_failed' %in% codes)"
   ), uninstall_failure_script, useBytes = TRUE)
-  controlled_uninstall <- run(
+  controlled_uninstall <- run_in(
     host_rscript, c("--vanilla", shQuote(uninstall_failure_script)),
-    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE=")
+    c(paste0("R_LIBS_USER=", file.path(destination, "library")), "R_LIBS_SITE="),
+    project
   )
   alternate_manifest_path <- file.path(
     alternate_result$installation_root, "manifest.dcf"
@@ -956,6 +1237,10 @@ validate_installation <- function() {
   ), project)
   remaining_list <- stable_run(c("software", "list", "--json"), project)
   remaining_version <- stable_run(c("version", "--json"), project)
+  remaining_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  remaining_doctor <- stable_run(c("software", "doctor", "--json"), project)
   require_true(
     uninstalled_newer$status == 0L &&
       grepl('"operation_id":"rrp.software-uninstall"', paste(
@@ -969,9 +1254,13 @@ validate_installation <- function() {
         fixed = TRUE
       ) &&
       remaining_list$status == 0L && remaining_version$status == 0L &&
+      remaining_verify$status == 0L && remaining_doctor$status == 0L &&
       grepl(selector, paste(remaining_list$output, collapse = "\n"), fixed = TRUE) &&
       !grepl(alternate_selector, paste(remaining_list$output, collapse = "\n"),
         fixed = TRUE) &&
+      grepl('"software_status":"ready"', paste(
+        remaining_doctor$output, collapse = "\n"
+      ), fixed = TRUE) &&
       !file.exists(alternate_result$installation_root) &&
       !dir.exists(alternate_result$installation_root) &&
       identical(active_before_uninstall, readBin(
@@ -982,7 +1271,8 @@ validate_installation <- function() {
       identical(retained_before, tree_digest(retained_project)),
     paste("Exact inactive uninstall or repeated-removal proof failed:", paste(c(
       uninstalled_newer$output, repeated_uninstall$output,
-      remaining_list$output, remaining_version$output
+      remaining_list$output, remaining_version$output,
+      remaining_verify$output, remaining_doctor$output
     ), collapse = "\n"))
   )
   cat("PASS exact inactive uninstall with active selection, shim, and project preservation\n")
@@ -1020,14 +1310,14 @@ validate_installation <- function() {
     "RENV_CONFIG_CACHE_ENABLED=TRUE",
     "RRP_INSTALL_TEST_FAILURE=before_restoration"
   )
-  cli <- run(
+  cli <- run_in(
     file.path(destination, "bin", "rrp"),
     c(
       "software", "install", distribution_root, "--repository", repository,
       "--installation-root", installation_root,
       "--executable-root", executable_root, "--json"
     ),
-    launcher_environment
+    c(isolated_environment, launcher_environment), project
   )
   require_true(
     cli$status == 0L &&
@@ -1068,7 +1358,10 @@ validate_installation <- function() {
   )
   cat("PASS final-inactive refusal with stable shim and no project mutation\n")
 
-  cat("Result: PASS (side-by-side lifecycle, rollback, and exact uninstall)\n")
+  cat(paste(
+    "Result: PASS (clean installed operation, two-time project/app proof,",
+    "side-by-side compatibility, rollback, and exact uninstall)\n"
+  ))
   invisible(TRUE)
 }
 

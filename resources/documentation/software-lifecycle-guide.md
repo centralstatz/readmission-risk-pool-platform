@@ -69,7 +69,11 @@ activate it. Run project validation separately after selection. If a retained
 project is incompatible, that project command fails without changing project
 source, state, history, or products. Rollback is the same exact activation
 operation applied to the retained prior verified selector; it does not reverse
-or rewrite analytical history or products.
+or rewrite analytical history or products. Before rollback, an operator may
+prove the unchanged project with one explicit compatible selection such as
+`rrp --software PRIOR_SELECTOR project doctor --project PATH`; that invocation
+does not change the active default. After rollback, run project validation or
+doctor again under the restored active realization.
 
 Uninstall is destructive and requires the exact selector plus confirmation.
 It refuses the active realization and any unknown, linked, locked, incomplete,
@@ -80,7 +84,9 @@ versions, `active.dcf`, and the stable shim are preserved. Removing the final
 verified installation is refused even when inactive so the shared launcher
 never loses its final working version-specific transport. Install another
 verified realization before removing the old one. Repeating an already
-completed removal fails safely.
+completed removal fails safely. Run installed verification and software doctor
+after removal to confirm the retained active realization and shared launcher
+remain ready.
 
 Development content identities may coexist beneath their development product
 version. A published product version has one official content identity: an

@@ -23,6 +23,13 @@ payload:
 Rscript --vanilla verify-distribution.R .
 ```
 
+The current repository can build a local `1.0.0-dev` distribution for accepted
+development validation. That local artifact is not a published download,
+release, signature, production-support statement, or permission to bypass the
+approved acquisition process. Verification establishes the manifest,
+inventory, dependency specification, and exact RRP-owned payload bytes; it
+does not establish publication.
+
 Then use that same selected R to perform the one-command bootstrap, supplying
 the exact repository URL recorded in `dependencies/dependencies.dcf`:
 
@@ -37,6 +44,15 @@ artifacts, validates packages and resources in fresh vanilla R processes, writes
 `INSTALLATION.dcf`, and only then promotes the completed version. It also
 provisions the stable per-user `rrp` shim; installation never activates the
 new version.
+
+The configured URL must exactly match the credential-free HTTPS repository in
+the distribution's dependency specification. Restoration obtains the exact
+declared versions and integrity into the new private library; ambient user or
+site libraries cannot satisfy the closure. The installation record retains
+the host-R, distribution, dependency-specification, private-library, resource,
+manifest-integrity, and occurrence evidence needed by strict installed
+verification. Repository authentication, when required by local policy, stays
+outside retained RRP evidence.
 
 An already installed version may install another local extracted distribution
 through the same engine:
@@ -87,6 +103,11 @@ a published product version permits only one official distribution identity;
 different official content under that same version is rejected. Do not edit an
 installation in place. Use the Software Lifecycle Guide for side-by-side
 activation, rollback, and exact inactive uninstall.
+
+For diagnosis, run `rrp software verify --software SELECTOR` for strict exact
+integrity and `rrp software doctor --software SELECTOR` for bounded readiness
+and recovery guidance. Neither command discovers, opens, or associates a
+project. Project compatibility begins only with an explicit project operation.
 
 The restoration engine used internally is not an RRP project convention.
 Initialized projects receive no `renv.lock`, `renv/`, `.Rprofile`, repository

@@ -2,10 +2,11 @@
 
 This runbook covers the deterministic fictional, nonclinical Stage 8 project
 through complete durable history. It uses supported package operations and
-explicit roots. It does not require the development repository, Git, a
-working-directory convention, network access, credentials, an extension
-library, or an installed reference provider. The package-level workflow is
-technical; it is not a future CLI design.
+explicit roots. Once RRP is installed, project operation does not require the
+development repository, Git, network access, credentials, an extension
+library, or an installed reference provider. The package-level detail below
+explains the same owners reached by the installed Stage 11 CLI; it is not a
+second workflow.
 
 ## Locate installed documentation
 
@@ -27,6 +28,27 @@ The Project Authoring Guide explains the standard and raw project boundaries.
 The Provider Request Reference defines the exact current 19-field request.
 This walkthrough composes the public package operations into one reference
 path.
+
+For the normal installed operator path, the equivalent high-level sequence is:
+
+```text
+rrp reference init PROJECT_PATH
+rrp reference prepare-source --project PROJECT_PATH
+rrp project validate --project PROJECT_PATH
+rrp state init --project PROJECT_PATH
+rrp run --at 2026-01-20T12:00:00Z --operation-key accepted-first --project PROJECT_PATH
+rrp run --at 2026-01-21T12:00:00Z --operation-key accepted-second --project PROJECT_PATH
+rrp history scope --scope RETURNED_SCOPE_1 --project PROJECT_PATH
+rrp history scope --scope RETURNED_SCOPE_2 --project PROJECT_PATH
+rrp products materialize --scope RETURNED_SCOPE_2 --cutoff 2026-01-21T12:00:00Z --project PROJECT_PATH
+rrp products status --scope RETURNED_SCOPE_2 --cutoff 2026-01-21T12:00:00Z --project PROJECT_PATH
+rrp project doctor --scope RETURNED_SCOPE_2 --cutoff 2026-01-21T12:00:00Z --project PROJECT_PATH
+rrp app launch --scope RETURNED_SCOPE_2 --cutoff 2026-01-21T12:00:00Z --project PROJECT_PATH
+```
+
+Copy each returned scope identity rather than inferring a latest run. The
+application reads the validated materialized product set and does not execute
+the producer, provider, or history writer.
 
 ## Initialize and inspect the project
 

@@ -8,7 +8,8 @@
 11 plan is formally accepted for implementation as of 2026-10-07 after human
 resolution of its initial seven planning questions. Increments 11.A–11.G are
 formally accepted and complete. Stage 11 remains incomplete; Increment 11.H
-has not begun.
+is implementation-complete pending revision-matched hosted validation and
+formal human acceptance.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -75,7 +76,8 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.G are accepted and complete; 11.H remains unimplemented.
+Increments 11.A–11.G are accepted and complete; 11.H is locally
+implementation-complete pending hosted validation and formal acceptance.
 After a stage is
 implemented:
 
@@ -7028,8 +7030,8 @@ branding, custom-app, and operator syntax decisions with their later owners.
 **Planning status:** second-edition detailed plan formally accepted for
 implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
 Increments 11.A–11.G are formally accepted and complete; 11.H remains
-unimplemented. This does not select release bytes or claim a released 1.0.0
-version exists.
+pending revision-matched hosted validation and formal human acceptance. This
+does not select release bytes or claim a released 1.0.0 version exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7912,7 +7914,8 @@ rollback; adds confirmed exact inactive uninstall with shared lifecycle
 locking, quarantine/recovery, final-verified refusal, and stable-shim
 preservation; refuses conflicting official content beneath one published
 version; and proves retained-project compatibility gating plus project/history
-nonmutation. Stage 11 remains incomplete and Increment 11.H has not begun.
+nonmutation. At formal 11.G acceptance, Stage 11 remained incomplete and
+Increment 11.H had not begun.
 
 ### Increment 11.H — Clean installed operation proof and Stage 11 closeout
 
@@ -7942,6 +7945,18 @@ deployment artifact/target (Stage 12), public download/publication (Stage 14),
 clinical validation, migration, or production support claim.
 
 **Dependencies:** 11.A–11.G complete and locally accepted.
+
+**Implementation status:** implementation-complete on 2026-10-13 from the
+formally accepted 11.G closeout baseline `cf2ac3384d314785262aa53f5beb6189afc9a1e3`.
+The existing installation validator now supplies one clean temporary-user,
+copied-distribution proof covering genuine configured-repository restoration,
+installed operation at two analytical times, fresh products, supervised
+application startup/shutdown, distinct software/project diagnosis, and the
+accepted two-version compatibility/rollback/uninstall lifecycle. Local
+evidence has passed. Increment 11.H and Stage 11 remain unaccepted and
+incomplete pending an exact committed revision, successful revision-matched
+hosted Ubuntu/R 4.4 `package-foundation` run, formal 11.H acceptance, and
+separate formal Stage 11 acceptance/architecture reconciliation.
 
 **Acceptance and evidence:** repository/package/CLI/distribution/install tests;
 both package build/check/install; standalone RRP payload validation; no

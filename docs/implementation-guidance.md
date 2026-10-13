@@ -62,8 +62,11 @@ stable shared launcher, exact selection, verification/doctor, and atomic
 activation. Increment 11.G adds verified side-by-side transitions, rollback by
 exact activation, published-version conflict refusal, and confirmed exact
 inactive uninstall with bounded quarantine recovery and final-realization
-refusal. Stage 11 remains
-incomplete pending 11.G acceptance and 11.H.
+refusal. Increment 11.H adds the complete clean temporary-user installed proof
+through two governed times, products, supervised application, both doctors,
+controlled incompatibility, compatible selection, rollback, and uninstall.
+It remains pending revision-matched hosted validation and formal acceptance;
+Stage 11 remains incomplete.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -81,7 +84,8 @@ The installed Stage 10 supplied application experience and its cataloged human
 guide have complete local and hosted fictional acceptance evidence. Stage 11
 now supplies the accepted project CLI and the implemented distribution,
 installation, selection, transition, and exact-uninstall lifecycle; its clean
-installed-operation closeout remains deferred to 11.H.
+installed-operation proof is locally complete in 11.H and awaits hosted and
+formal acceptance.
 
 ## Read authority before source
 
@@ -274,7 +278,7 @@ closed to the following present paths:
 | `resources/documentation/*.md` | The exact eleven version-matched installed product documents: the Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, and Stage 11 lifecycle/CLI/operator/distribution/installation/software-lifecycle guides. All resolve through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, strict installed-metadata or controlled-provisioning-receipt validation, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
 | `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
-| `tools/validate-installation.R` | Human-callable copied-distribution proof for configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, failure cleanup, exact reinstall, installed CLI equivalence, upgrade/compatibility/rollback, official-version conflict refusal, project/history nonmutation, and guarded exact inactive/final uninstall. |
+| `tools/validate-installation.R` | Human-callable clean temporary-user proof for copied-distribution verification, genuine configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, explicit activation, independent fictional project operation at two analytical times, history/fresh-product validation, both doctor surfaces, supervised application startup/termination, failure cleanup, exact reinstall, installed CLI equivalence, upgrade/compatibility/explicit compatible selection/rollback, official-version conflict refusal, project/history/product nonmutation, and guarded exact inactive/final uninstall. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
@@ -443,7 +447,10 @@ RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
 
 It performs one real configured-repository private restoration and proves the
 base-R bootstrap, fresh-process exact resolution, cleanup, project isolation,
-idempotent reinstall, and installed CLI equivalence.
+idempotent reinstall, installed CLI equivalence, two governed fictional
+analytical times, scope history, fresh products, both doctors, supervised
+loopback application startup/termination, controlled second-version
+incompatibility, explicit compatible selection, rollback, and exact uninstall.
 
 The package-foundation GitHub Actions workflow invokes these same four human
 operations on pushes and pull requests using read-only repository permission,

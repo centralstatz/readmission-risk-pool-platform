@@ -28,6 +28,18 @@ product lifecycle.
 
 ## Launch the local application
 
+The normal installed operator path is:
+
+```text
+rrp app launch --project PATH
+rrp app launch --scope OPERATION_RUN_ID --cutoff TIME --project PATH --port PORT
+```
+
+The optional scope and cutoff must be supplied together and evaluate the
+materialized set's freshness. The command remains in the foreground; stop it
+with the conventional terminal interrupt. It delegates to the same public
+package operation shown below under the selected verified software context.
+
 Open the explicit installed catalog, then launch against one explicit project:
 
 ```r
@@ -47,9 +59,9 @@ result <- rrp_launch_app(
 The application binds only to the loopback interface. The call returns after
 the local Shiny session stops. Close the browser tab and stop the R operation
 with the usual interrupt for the R environment (typically Ctrl+C in a
-terminal). Stage 10 supplies this package-level local application boundary;
-installation, operator commands, authentication, remote hosting, deployment,
-and product-only artifacts belong to later work.
+terminal). Stage 10 supplies the package-level local application boundary and
+Stage 11 supplies its installed CLI route. Authentication, remote hosting,
+deployment, and closed product-only artifacts remain later work.
 
 To ask whether the current realization represents an expected governed source
 operation and history cutoff, provide both values:

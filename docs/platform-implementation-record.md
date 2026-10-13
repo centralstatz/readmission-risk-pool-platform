@@ -6915,3 +6915,203 @@ dependencies remain unchanged. No acceptance-blocking discrepancy remains.
 Stage 11 remains incomplete.
 
 **Next task:** Increment 11.H — Clean-system and adopter acceptance.
+
+## Stage 11 / Increment 11.H — Clean installed operation proof and Stage 11 closeout — 2026-10-13
+
+Implementation began from clean synchronized `main` at the formal 11.G
+documentation-closeout revision
+`cf2ac3384d314785262aa53f5beb6189afc9a1e3`. That revision records formal 11.G
+acceptance of implementation revision
+`e2c8a448b7c5c95124e6b9a4ac8c1db659b4eafc` after hosted Ubuntu/R 4.4
+`package-foundation` run `38413323460`, job `115351071999`. Platform True
+North, Platform Architecture, the accepted Stage 11 plan, this record, the
+11.A–11.G lifecycle owners, Stage 9–10 product/application evidence, installed
+guides, and the hosted workflow were reconciled before implementation. The
+working tree was clean and local `main` matched `origin/main`.
+
+The existing `tools/validate-installation.R` remains the sole complete
+installation/lifecycle proof. It was extended rather than wrapped in a second
+acceptance framework, so one real restoration supplies the initial installed
+realization and the existing controlled second-realization lifecycle remains
+the same proof. The hosted `package-foundation` workflow already invokes this
+validator after repository, package, and distribution validation; that
+unchanged installation/software-lifecycle step therefore executes the expanded
+clean proof. No duplicate hosted restoration or separate proof command was
+introduced.
+
+The validator constructs two closed local development distributions before
+the installed proof, copies and independently verifies their exact bytes
+outside Git, and rejects a deliberately damaged copied payload. The first
+distribution is installed through its base-R bootstrap into fresh temporary
+application-data, executable, home, configuration, cache, temporary, user-
+library, and site-library roots. The proof supplies the exact recorded HTTPS
+repository, records the selected host R, genuinely restores the exact declared
+dependency closure into the version-private library, validates package and
+resource resolution in fresh processes, inspects the installation record and
+closed inventory, and establishes that installation does not activate. An
+incompatible host-R fixture, configured-repository mismatch, controlled
+restoration/internal-package/verification/promotion failures, locks,
+conflicting destinations, and published-version identity conflict continue to
+fail before partial promotion or change to existing software.
+
+Both explicit poison startup files and poison home startup files are present;
+the ambient user library advertises a false `DBI` version and the ambient site
+library advertises a false `rrpplatform` version. Installed bootstrap and every
+stable/version-specific operator process receive the isolated user locations,
+poisoned ambient libraries, and installed selector context. The version
+launcher nevertheless resolves only the recorded host R, exact private
+library, and installed resource root. Runtime inputs, installation metadata,
+history/product/doctor output, and app startup evidence are checked against the
+source-repository path; the copied distribution and project contain no Git
+metadata and all runtime roots are outside the checkout. The proof runs from
+unrelated directories and leaves the developer's real installation, active
+selection, libraries, and projects untouched.
+
+Through only the stable installed CLI, the proof explicitly activates the
+verified realization; runs version, strict verification, software doctor, and
+human/JSON selection views; initializes a new fictional project at an absent
+independent path; prepares its deterministic source; validates it; initializes
+and inspects project state; and executes two governed operations at
+`2026-01-20T12:00:00Z` and `2026-01-21T12:00:00Z` with distinct caller-owned
+keys. It requires distinct operation-run identities, inspects both scopes,
+matches each scope's analytical time, and retains the existing prohibition on
+distribution, build, installation, or activation identity in analytical
+history.
+
+The later complete scope is built and materialized through the installed
+product command. Validated product access must identify that exact source
+scope and report `fresh` at the paired cutoff. Project doctor and project
+status must report valid/fresh products and ready application state in both
+human and JSON use. The installed application is then launched against that
+exact product context on a private random loopback port. A base-R socket probe
+observes successful server startup without depending on Shiny's intentionally
+quiet log, then the supervisor sends TERM, accepts only conventional
+termination status, confirms the process is gone, and proves the project tree
+is unchanged. Application launch remains a read-only consumer of validated
+materialized products; no app, artifact, deployment target, or analytical
+refresh behavior was added.
+
+The software and project doctors remain separate existing operations. Software
+doctor is exercised in human and JSON form from an unrelated directory and
+its output is checked not to contain or depend on the project path. Its
+invalid-activation case supplies bounded negative software diagnosis. Project
+doctor receives the explicit project/scope/cutoff, reports state/history/
+product/application readiness, and its controlled project-API incompatibility
+case supplies bounded negative project diagnosis. No repair occurs on either
+surface.
+
+The second distribution uses the accepted 11.G development fixture: it changes
+only the controlled project API authority and matching package expectation
+from 0.3.0 to 0.4.0, yielding a distinct valid development distribution with
+the same dependency specification. It is installed through the already
+installed `rrp software install` operator command into the same isolated user
+root, independently verified, and left inactive until explicit activation.
+Software doctor identifies the selected second distribution and active state.
+An explicit project validate and doctor then reject the retained 0.3.0 project
+with `incompatible_project_api` before mutation. While the incompatible
+realization remains active, `--software` explicitly selects the prior
+compatible realization for a successful fresh project doctor without changing
+the active default. Exact reactivation then rolls selection back to the prior
+realization and the unchanged project validates again.
+
+The retained project is digested after its two runs, history, products, doctor,
+and application proof. Every later software install, verify, doctor, activate,
+failed project operation, explicit selection, rollback, damaged-install
+adversary, exact reinstall, and uninstall assertion compares that complete
+tree byte-for-byte. Exact confirmed uninstall removes only the inactive second
+realization, preserves the prior active record and shared shim, and is followed
+by strict installed verification and software doctor of the retained active
+realization. Existing active/final/unknown/linked/locked/incomplete/damaged/
+repeated-removal and quarantine-recovery evidence remains intact without
+duplicating it elsewhere.
+
+Acceptance output remains a bounded series of capability-level `PASS` lines
+and one final result. Curated history, product, and doctor evidence is checked
+for private/native patient or episode markers, credentials, connections, and
+crosswalk terminology. No patient-level or synthetic individual record,
+private mapping, environment dump, full library listing, temporary path, or
+durable acceptance schema is emitted. Attempt-owned cleanup removes both
+distributions, installations, private libraries, home/config/cache/temp roots,
+projects, logs, probes, and supervisors. Signal assertions cover the stable
+launcher and application; final process and repository-artifact inspection is
+part of closeout.
+
+Historical reconnaissance inspected immutable `v0.1.0`
+`distribution/hospital/operations/run-reference-acceptance.R` and
+`tests/phase11/test-hospital-distribution.R`. Closed copy, standalone
+verification, explicit external root, sequenced acceptance, bounded output,
+and attempt-owned cleanup patterns were adapted. Generated Hospital/Git
+realizations, Platform/Hospital coupling, repository-root delegation, Git
+runtime rules, publication/acquisition assumptions, and release rollback were
+rejected. Configured dependency-repository access is intentional in the 1.0
+installation architecture.
+
+Installed Operator, Installation, Software Lifecycle, Fictional Reference,
+and Supplied Application guides now compose acquisition/verification,
+configured-repository restoration, activation, two-time project operation,
+history/products/app, distinct doctors, compatible explicit selection,
+rollback, uninstall, and recovery without source-repository internals. README,
+package orientation, implementation guidance, the agent working agreement,
+and the authoritative plan describe the same current boundary. The
+67-resource catalog, 33-export surface, package dependencies, analytical
+contracts, package implementation, and CLI grammar are unchanged.
+
+Architecture reconciliation found no discrepancy with True North, Platform
+Architecture, or the accepted Stage 11 plan. The distribution remains a closed
+RRP-owned payload plus reproducible dependency specification; restoration is
+private and repository-controlled; the stable and version launchers are
+deterministic; the project remains an independent explicit directory;
+compatibility is evaluated only when a selected realization is explicitly
+asked to operate on it; software lifecycle changes never receive or discover a
+project; analytical history/product provenance remains governed; and the
+application reads supplied products only. No generated Hospital architecture,
+project registry/association, migration, release coupling, remote updater,
+deployment artifact, publication, or Stage 12 behavior entered.
+
+Focused implementation evidence passed after bounded harness reconciliation.
+A first restoration attempt failed only because sandbox network access was
+denied; the identical proof with explicitly permitted access restored the
+exact closure. The first application supervisor expected a readiness line that
+`shiny::runApp(quiet = TRUE)` deliberately suppresses; replacing that heuristic
+with a bounded loopback socket probe established real readiness while
+preserving TERM/no-survivor checks. The damaged-copy negative initially
+expected incidental `digest` wording; it was corrected to require the existing
+`file_integrity` failure's stable `Integrity failed` message. Production
+verification behavior did not change.
+
+Final local evidence passed:
+
+- `Rscript --vanilla tools/validate-repository.R`: all eight repository checks;
+- `Rscript --vanilla tools/validate-packages.R`: subprocess supervision and
+  cleanup, both source builds, isolated installs/loads, both
+  `R CMD check --no-manual` runs with exact `Status: OK`, and all accepted
+  package/project/history/product/application/CLI regressions;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R`: positive 67-resource closure, deterministic
+  identity, copied standalone proof, provenance cases, tamper/adversarial
+  safeguards, conflict preservation, and failure cleanup;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R`: damaged copied distribution and incompatible
+  host denial, genuine clean private restoration, installed two-time project/
+  history/product/app proof, both doctors, side-by-side compatibility,
+  explicit compatible selection, rollback, exact uninstall, and final-
+  realization refusal;
+- parsing of all tracked R source and current YAML, POSIX shell syntax checks,
+  repository/generated-artifact hygiene, process-table cleanup inspection, and
+  `git diff --check`.
+
+The first package-validation invocation was likewise denied only at its
+accepted `/bin/ps` descendant-state inspection by the sandbox. The identical
+validator with process-inspection permission passed completely. No validator,
+timeout, cleanup assertion, package check, or regression was weakened or
+skipped.
+
+Increment 11.H is implementation-complete but is not formally accepted. Stage
+11 remains incomplete. Required remaining steps are an exact committed 11.H
+revision, successful revision-matched hosted Ubuntu/R 4.4
+`package-foundation` evidence, separate formal 11.H acceptance, and separate
+formal Stage 11 acceptance/architecture reconciliation.
+
+**Next task:** commit this implementation and run hosted `package-foundation`
+for that exact revision; if it succeeds, formally accept Increment 11.H. Do not
+begin Stage 12.
