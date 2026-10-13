@@ -6867,3 +6867,51 @@ remains incomplete.
 **Next task:** commit and run this 11.G implementation through hosted
 `package-foundation`, then formally accept Increment 11.G if that exact
 revision passes. Do not begin Increment 11.H before acceptance.
+
+### Formal acceptance — 2026-10-13
+
+Increment 11.G is formally accepted and complete at exact committed revision
+`e2c8a448b7c5c95124e6b9a4ac8c1db659b4eafc`. Hosted Ubuntu/R 4.4
+`package-foundation` run `38413323460`, job `115351071999`, completed
+successfully for that exact `main` revision. The revision-matched job passed
+repository foundation, package foundation including both R package checks,
+closed distribution validation, and installation/software-lifecycle validation
+including the complete 11.G acceptance proof.
+
+Acceptance reconciled the successful hosted evidence with Platform True North,
+Platform Architecture, the accepted Stage 11 plan, and the complete 11.G
+implementation record above. Two distinct controlled development realizations
+coexist without overwrite or implicit activation and verify independently;
+upgrade composes install, verification, and explicit activation; one immutable
+official content identity is enforced per published version. Rollback reuses
+atomic exact activation of the retained prior verified realization, and failed
+transitions preserve the prior selection without adding project, analytical,
+or product rollback behavior.
+
+Exact confirmed uninstall removes only one verified inactive non-final
+realization. Active, final-verified, linked, locked, incomplete, damaged,
+unknown, and unsafe targets fail closed; quarantine and bounded recovery
+preserve other installations, the active selection, and the shared stable
+shim. Final-verified refusal and shared-launcher behavior are explicit and
+validated.
+
+The controlled compatibility proof establishes that the retained project is
+compatible under the prior realization; the newer verified realization
+activates without project access; an explicit project operation rejects its
+incompatible project API before mutation; the project remains byte-identical;
+and exact reactivation of the prior realization restores compatible operation.
+Install, verify, activate, rollback, and uninstall neither inspect nor
+associate, migrate, or mutate hospital projects. Durable analytical history
+retains its existing product/development/API/component attribution without
+distribution, build, installation, or activation identity fields.
+
+No in-place overwrite, automatic project/state migration, downgrade
+transformation, retention/deletion policy, remote updater or release channel,
+project registry or installation association, activation-time project check,
+analytical history/product rollback, publication, deployment, or 11.H behavior
+entered. The 67-resource catalog, 33-export package surface, and package
+dependencies remain unchanged. No acceptance-blocking discrepancy remains.
+
+Stage 11 remains incomplete.
+
+**Next task:** Increment 11.H — Clean-system and adopter acceptance.
