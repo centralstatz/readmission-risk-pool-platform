@@ -6724,3 +6724,29 @@ denied that inspection; the unchanged validator then passed completely.
 Increment 11.F remains implementation-complete but is not formally accepted;
 the corrected committed revision must pass revision-matched hosted Ubuntu/R
 4.4 `package-foundation` validation before formal human acceptance.
+
+### Formal acceptance — 2026-10-12
+
+Increment 11.F is formally accepted and complete at exact committed revision
+`2a37fdd24519c983c475bcbc7ad9f86e1c1cdb64`. Hosted Ubuntu/R 4.4
+`package-foundation` run `38306159930`, job `115000605311`, succeeded for that
+revision. The hosted job passed repository foundation, package foundation,
+distribution foundation, and installation/software-lifecycle validation,
+including the corrected deterministic proof that damaged installed software
+fails closed through both selected-context preflight exit `3` and operation-
+failure exit `1` with `installed_identity_mismatch`.
+
+Acceptance reconciled the successful hosted evidence with the accepted Stage
+11 plan, the complete 11.F implementation entry, and the preserved failed-run
+reconciliation above. The stable per-user shim, exact active/override
+selection, installed enumeration and current selection, strict installed
+verification, bounded software doctor, and lock-protected atomic activation
+meet the accepted 11.F criteria while remaining project-independent and
+non-repairing. No acceptance-blocking discrepancy remains, and no 11.G+
+upgrade, rollback, uninstall, project association, migration, publication, or
+deployment behavior entered.
+
+Stage 11 remains incomplete.
+
+**Next task:** Increment 11.G — Side-by-side upgrade, rollback, and exact
+uninstall.

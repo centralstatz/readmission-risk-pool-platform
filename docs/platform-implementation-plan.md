@@ -6,10 +6,9 @@
 10 was accepted on 2026-10-05 at implementation baseline
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
-resolution of its initial seven planning questions. Increments 11.A–11.C are
-accepted and complete. Increments 11.D–11.E are formally accepted and complete.
-Increment 11.F is implementation-complete pending formal acceptance. Stage 11
-remains incomplete; Increment 11.G and later work have not begun.
+resolution of its initial seven planning questions. Increments 11.A–11.F are
+formally accepted and complete. Stage 11 remains incomplete; Increment 11.G
+and later work have not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -76,8 +75,7 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.E are accepted and complete; 11.F is implementation-
-complete pending formal acceptance; 11.G+ remains unimplemented.
+Increments 11.A–11.F are accepted and complete; 11.G+ remains unimplemented.
 After a stage is
 implemented:
 
@@ -7856,9 +7854,10 @@ preflight inside activation, and any last-project state.
 and software-doctor guidance; document that project compatibility begins only
 at a project command; update ownership/validators/record.
 
-**Implementation status:** implementation-complete on 2026-10-12 pending
-formal human acceptance and revision-matched hosted `package-foundation`
-evidence. Stage 11 remains incomplete; Increment 11.G has not begun.
+**Implementation status:** formally accepted and complete on 2026-10-12 at
+revision `2a37fdd24519c983c475bcbc7ad9f86e1c1cdb64`, after successful hosted
+`package-foundation` run `38306159930`, job `115000605311`. Stage 11 remains
+incomplete; Increment 11.G has not begun.
 
 ### Increment 11.G — Side-by-side upgrade, rollback, and exact uninstall
 
