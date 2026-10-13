@@ -7115,3 +7115,50 @@ formal Stage 11 acceptance/architecture reconciliation.
 **Next task:** commit this implementation and run hosted `package-foundation`
 for that exact revision; if it succeeds, formally accept Increment 11.H. Do not
 begin Stage 12.
+
+## Stage 11 / Increment 11.H hosted acceptance reconciliation — 2026-10-13
+
+Committed implementation revision
+`d94f08ae8e352c292cad1ed2d0f2f2313a1f5a49` failed the Ubuntu/R 4.4
+`package-foundation` workflow in run `38436980383`, job `115433420325`, during
+`tools/validate-installation.R`. Repository, package, and distribution
+validation had passed, as had the installation proof through clean installed
+two-time project/history/product operation, both doctors, and supervised
+application startup. The next assertion reported only `Distinct explicit
+installed selection changed the active default or project.`
+
+Review found an acceptance-harness defect rather than evidence of a production
+software-lifecycle defect. The assertion combined fourteen independent facts:
+five command statuses, distinct installation/library paths, four structured
+identity/output facts, active-record bytes, the unrelated working-directory
+tree, and the retained project tree. It emitted none of those constituent
+results. Its working-directory baseline also predated the intervening 11.H
+project/application exercise, so a platform-dependent artifact from that
+earlier exercise could be misattributed to the later software-selection
+sequence. Conversely, its active-record snapshot was taken after the second
+installation but before the explicit override, so it did not actually bracket
+the explicit operation named by the assertion. The failed log therefore
+cannot identify which old conjunct was false. The exact failed revision passes
+the complete validator on macOS/R 4.4.1, and an Ubuntu container was not
+available locally because the installed Docker client had no running daemon;
+no reproducible production defect was established.
+
+The harness now snapshots the unrelated working directory and active-selection
+record immediately before the distinct installation/selection sequence,
+checks installation and explicit override against separate active-record byte
+snapshots, and retains the existing byte-for-byte digest of the actual
+independent fictional project. Command status, realization separation,
+explicit-selection mode, installed-list membership, resolved active selector,
+active bytes, working-directory bytes, and project bytes each fail with an
+independent bounded diagnostic. Tree diagnostics report only added, removed,
+and changed counts; they expose no project content or patient-level value.
+Later software-lifecycle assertions use the same immediate pre-sequence
+working-directory baseline while continuing to compare the real retained
+project against its post-application digest. No production package, launcher,
+selector, activation, compatibility, installation, or project behavior
+changed, and no accepted 11.F–11.G contract was weakened.
+
+Increment 11.H remains implementation-complete but not formally accepted.
+Stage 11 remains incomplete. A new exact committed revision must pass the
+revision-matched hosted Ubuntu/R 4.4 `package-foundation` workflow before
+formal 11.H acceptance; Stage 12 has not begun.

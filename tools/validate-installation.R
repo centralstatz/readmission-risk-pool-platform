@@ -69,6 +69,41 @@ tree_digest <- function(root) {
   }, character(1L)), relative)
 }
 
+tree_change_summary <- function(before, after) {
+  before_names <- names(before)
+  after_names <- names(after)
+  common <- intersect(before_names, after_names)
+  changed <- common[before[common] != after[common]]
+  paste0(
+    "added=", length(setdiff(after_names, before_names)),
+    ", removed=", length(setdiff(before_names, after_names)),
+    ", changed=", length(changed)
+  )
+}
+
+require_tree_unchanged <- function(label, before, after) {
+  require_true(
+    identical(before, after),
+    paste0(label, " changed (", tree_change_summary(before, after), ").")
+  )
+}
+
+require_run_success <- function(label, result) {
+  require_true(
+    identical(result$status, 0L),
+    paste0(label, " failed with exit status ", result$status, ":\n",
+      paste(result$output, collapse = "\n"))
+  )
+}
+
+require_run_text <- function(label, result, expected) {
+  require_true(
+    grepl(expected, paste(result$output, collapse = "\n"), fixed = TRUE),
+    paste0(label, " did not report the expected bounded identity:\n",
+      paste(result$output, collapse = "\n"))
+  )
+}
+
 validate_installation <- function() {
   work <- tempfile("rrp-installation-validation-")
   dir.create(work)
@@ -816,6 +851,11 @@ validate_installation <- function() {
     "both doctors, and supervised application\n"
   ))
 
+  working_directory_before_alternate <- tree_digest(project)
+  active_before_alternate <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
   alternate_install <- stable_run(c(
     "software", "install", alternate_distribution, "--repository", repository,
     "--installation-root", installation_root,
@@ -864,23 +904,51 @@ validate_installation <- function() {
   current_after_alternate <- stable_run(c(
     "software", "current", "--json"
   ), project)
+  active_after_explicit <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  require_run_success("Explicit alternate software selection", alternate_explicit)
+  require_run_success("Prior installed-software verification", prior_verified)
+  require_run_success("Alternate installed-software verification", newer_verified)
+  require_run_success("Two-realization installed-software listing", two_listed)
+  require_run_success("Active selection after explicit override", current_after_alternate)
   require_true(
-    alternate_explicit$status == 0L && prior_verified$status == 0L &&
-      newer_verified$status == 0L && two_listed$status == 0L &&
-      current_after_alternate$status == 0L &&
-      !identical(destination, alternate_result$installation_root) &&
-      !identical(record[["Private-Library"]], alternate_result$private_library) &&
-      grepl('"selection":"explicit_override"',
-        paste(alternate_explicit$output, collapse = "\n"), fixed = TRUE) &&
-      grepl(selector, paste(two_listed$output, collapse = "\n"), fixed = TRUE) &&
-      grepl(alternate_selector, paste(two_listed$output, collapse = "\n"),
-        fixed = TRUE) &&
-      grepl(paste0('"selector":"', selector, '"'),
-        paste(current_after_alternate$output, collapse = "\n"), fixed = TRUE) &&
-      identical(active_before_failure, active_after_alternate) &&
-      identical(project_before, tree_digest(project)) &&
-      identical(retained_before, tree_digest(retained_project)),
-    "Distinct explicit installed selection changed the active default or project."
+    !identical(destination, alternate_result$installation_root),
+    "Distinct software realizations resolved to the same installation root."
+  )
+  require_true(
+    !identical(record[["Private-Library"]], alternate_result$private_library),
+    "Distinct software realizations resolved to the same private library."
+  )
+  require_run_text(
+    "Explicit alternate software selection", alternate_explicit,
+    '"selection":"explicit_override"'
+  )
+  require_run_text("Two-realization listing (prior selector)", two_listed, selector)
+  require_run_text(
+    "Two-realization listing (alternate selector)", two_listed,
+    alternate_selector
+  )
+  require_run_text(
+    "Active selection after explicit override", current_after_alternate,
+    paste0('"selector":"', selector, '"')
+  )
+  require_true(
+    identical(active_before_alternate, active_after_alternate),
+    "Installing a distinct realization changed the active-selection record bytes."
+  )
+  require_true(
+    identical(active_after_alternate, active_after_explicit),
+    "Explicit per-invocation software selection changed the active-selection record bytes."
+  )
+  require_tree_unchanged(
+    "Distinct installation/selection working directory",
+    working_directory_before_alternate, tree_digest(project)
+  )
+  require_tree_unchanged(
+    "Retained independent project during distinct installation/selection",
+    retained_before, tree_digest(retained_project)
   )
   cat("PASS verified side-by-side development identities without implicit activation\n")
 
@@ -942,7 +1010,7 @@ validate_installation <- function() {
       ), fixed = TRUE) &&
       identical(retained_before, retained_after_rejection) &&
       identical(retained_before, tree_digest(retained_project)) &&
-      identical(project_before, tree_digest(project)),
+      identical(working_directory_before_alternate, tree_digest(project)),
     paste("Upgrade compatibility gate or rollback proof failed:", paste(c(
       newer_activated$output, newer_doctor$output,
       incompatible_under_newer$output,
@@ -989,7 +1057,7 @@ validate_installation <- function() {
         paste(invalid_doctor$output, collapse = "\n"), fixed = TRUE) &&
       grepl('"selection":"explicit_override"',
         paste(explicit_around_invalid$output, collapse = "\n"), fixed = TRUE) &&
-      identical(project_before, tree_digest(project)),
+      identical(working_directory_before_alternate, tree_digest(project)),
     paste("Invalid activation diagnosis or explicit-selection isolation failed:",
       paste(c(
         invalid_list$output, invalid_current$output, invalid_doctor$output,
@@ -1135,7 +1203,7 @@ validate_installation <- function() {
       identical(valid_active, readBin(
         active_path, "raw", n = file.info(active_path)$size
       )) &&
-      identical(project_before, tree_digest(project)) &&
+      identical(working_directory_before_alternate, tree_digest(project)) &&
       identical(retained_before, tree_digest(retained_project)),
     paste("Exact-uninstall refusal or recovery proof failed:", paste(c(
       active_uninstall$output, confirmation_denied$output,
@@ -1194,7 +1262,9 @@ validate_installation <- function() {
       identical(
         readBin(manifest_path, "raw", n = file.info(manifest_path)$size),
         damaged_manifest_bytes
-      ) && identical(project_before, tree_digest(project)) &&
+      ) && identical(
+        working_directory_before_alternate, tree_digest(project)
+      ) &&
       identical(retained_before, tree_digest(retained_project)),
     paste(
       "Damaged installed-software verification did not fail closed:",
@@ -1221,7 +1291,7 @@ validate_installation <- function() {
   require_true(
     recovered_verify$status == 0L && invalid_selector$status == 2L &&
       grepl('exec "$installation/bin/rrp" "$@"', shim_text, fixed = TRUE) &&
-      identical(project_before, tree_digest(project)),
+      identical(working_directory_before_alternate, tree_digest(project)),
     "Recovery, selector rejection, argument, or signal delegation failed."
   )
   cat("PASS invalid-pointer diagnosis, damaged-install denial, and launcher delegation\n")
@@ -1267,7 +1337,7 @@ validate_installation <- function() {
         active_path, "raw", n = file.info(active_path)$size
       )) &&
       file.exists(stable_launcher) && file.access(stable_launcher, 1L) == 0L &&
-      identical(project_before, tree_digest(project)) &&
+      identical(working_directory_before_alternate, tree_digest(project)) &&
       identical(retained_before, tree_digest(retained_project)),
     paste("Exact inactive uninstall or repeated-removal proof failed:", paste(c(
       uninstalled_newer$output, repeated_uninstall$output,
@@ -1294,7 +1364,7 @@ validate_installation <- function() {
   Sys.chmod(stable_launcher, mode = "0755", use_umask = FALSE)
   require_true(
     stable_run(c("version", "--json"), project)$status == 0L &&
-      identical(project_before, tree_digest(project)),
+      identical(working_directory_before_alternate, tree_digest(project)),
     "Stable-shim conflict recovery altered software selection or project state."
   )
   cat("PASS stable-shim conflict refusal and recovery\n")
@@ -1328,7 +1398,9 @@ validate_installation <- function() {
   )
   record_after <- rrp_install_dcf(file.path(destination, "INSTALLATION.dcf"), "record")[[1L]]
   require_true(
-    identical(record, record_after) && identical(project_before, tree_digest(project)) &&
+    identical(record, record_after) && identical(
+      working_directory_before_alternate, tree_digest(project)
+    ) &&
       identical(retained_before, tree_digest(retained_project)),
     "CLI reinstall changed immutable installation or project content."
   )
@@ -1350,7 +1422,7 @@ validate_installation <- function() {
       grepl('"active":false', paste(
         no_active_software$output, collapse = "\n"
       ), fixed = TRUE) &&
-      identical(project_before, tree_digest(project)) &&
+      identical(working_directory_before_alternate, tree_digest(project)) &&
       identical(retained_before, tree_digest(retained_project)),
     paste("Final inactive installation behavior failed:", paste(c(
       final_uninstall$output, no_active_software$output
