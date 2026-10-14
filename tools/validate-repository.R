@@ -21,6 +21,7 @@ expected_files <- c(
   ".editorconfig", ".github/workflows/package-foundation.yml", ".gitignore",
   "AGENTS.md", "CONTRIBUTING.md", "LICENSE", "NOTICE", "README.md",
   "RRP.yml", "SECURITY.md", "SUPPORT.md",
+  "docs/assessments/post-stage-11-manual-platform-assessment.md",
   "docs/assessments/pre-stage-11-manual-platform-assessment.md",
   "docs/assessments/stage-11-assessment.md",
   "docs/assessments/stage-7-bundle-scope-assessment.md",
