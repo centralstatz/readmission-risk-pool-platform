@@ -117,13 +117,16 @@ test ! -e "$RRP_PROJECT_ROOT"
 - Nothing uses or alters the normal user R library or normal RRP installation.
 - The source repository will be a build input only.
 
-## C. Build and copy the development distribution
+## C. Maintainer-only development distribution preparation
 
-The distribution builder needs the tested external dependency closure and
-`renv` available as maintainer build inputs. The following exact preparation
+Public acquisition is not available until Stage 14, so a maintainer must first
+build the development distribution used by this assessment. This is the only
+repository-facing preparation; it is not the normal installed operator
+experience. The distribution builder needs the tested external dependency
+closure and `renv` as maintainer build inputs. The following exact preparation
 uses a new isolated library and writes the controlled provenance receipt
-expected by the builder. This is build-environment work, not manual
-installation of either RRP package and not part of a hospital project.
+expected by the builder. It does not manually install either RRP package and
+is not part of a hospital project.
 
 ```sh
 Rscript --vanilla - \
@@ -186,7 +189,7 @@ find "$RRP_DISTRIBUTION_ROOT" -maxdepth 2 -type f -print | LC_ALL=C sort
 Record whether the distinction between maintainer build prerequisites and the
 later user installation experience was understandable.
 
-## D. Verify and install RRP
+## D. Normal installed operator experience: verify and install RRP
 
 Move into the copied distribution and verify its exact closed payload before
 installation:
@@ -217,10 +220,27 @@ archives, validates the staged realization in fresh vanilla R processes, and
 promotes only after those checks succeed. It neither creates nor activates a
 project.
 
+Make this assessment's stable launcher the `rrp` resolved by the current
+terminal, then verify that it takes precedence over any other installation:
+
+```sh
+export PATH="$RRP_EXECUTABLE_ROOT:$PATH"
+command -v rrp
+test -x "$RRP_EXECUTABLE_ROOT/rrp"
+test "$(command -v rrp)" = "$RRP_EXECUTABLE_ROOT/rrp"
+```
+
+This changes `PATH` only in the current terminal session. It does not edit a
+shell startup file, global path, system symlink, or another RRP installation.
+From this point onward, the walkthrough uses the normal installed `rrp`
+interface; the explicit check above proves that every such command reaches the
+disposable assessment installation even if another `rrp` exists elsewhere.
+
 ### What you should observe
 
 - `installed-software/installations/` contains one immutable realization.
 - `bin/rrp` is the stable assessment-specific launcher.
+- `command -v rrp` resolves exactly to that launcher.
 - No RRP package was manually installed into the normal user library.
 - The project path still does not exist.
 - A restoration or verification failure would leave no promoted partial
@@ -238,19 +258,16 @@ avoids guessing an identity or requiring an additional JSON tool.
 export RRP_PRODUCT_VERSION="$(awk -F ': ' '$1 == "Product-Version" { print $2 }' "$RRP_DISTRIBUTION_ROOT/manifest.dcf")"
 export RRP_DISTRIBUTION_ID="$(awk -F ': ' '$1 == "Distribution-ID" { print $2 }' "$RRP_DISTRIBUTION_ROOT/manifest.dcf")"
 export RRP_SELECTOR="$RRP_PRODUCT_VERSION/$RRP_DISTRIBUTION_ID"
-export RRP_CLI="$RRP_EXECUTABLE_ROOT/rrp"
-export PATH="$RRP_EXECUTABLE_ROOT:$PATH"
 
-test -x "$RRP_CLI"
 printf 'Selector: %s\n' "$RRP_SELECTOR"
-"$RRP_CLI" software list
-"$RRP_CLI" software verify --software "$RRP_SELECTOR"
-"$RRP_CLI" software doctor --software "$RRP_SELECTOR"
-"$RRP_CLI" software activate "$RRP_SELECTOR"
-"$RRP_CLI" software current
-"$RRP_CLI" software verify
-"$RRP_CLI" software doctor
-"$RRP_CLI" version
+rrp software list
+rrp software verify --software "$RRP_SELECTOR"
+rrp software doctor --software "$RRP_SELECTOR"
+rrp software activate "$RRP_SELECTOR"
+rrp software current
+rrp software verify
+rrp software doctor
+rrp version
 ```
 
 `verify` is strict integrity verification of one installed realization.
@@ -279,7 +296,7 @@ Initialize the supplied project at its explicit absent destination:
 
 ```sh
 cd "$RRP_ASSESSMENT_ROOT"
-"$RRP_CLI" reference init "$RRP_PROJECT_ROOT"
+rrp reference init "$RRP_PROJECT_ROOT"
 find "$RRP_PROJECT_ROOT" -type f -print | LC_ALL=C sort
 ```
 
@@ -314,7 +331,7 @@ discoverable without reading the platform source tree.
 Use the installed fictional-only operation from the project directory:
 
 ```sh
-"$RRP_CLI" reference prepare-source
+rrp reference prepare-source
 find source/generated -type f -print | LC_ALL=C sort
 sed -n '1,120p' source/generated/source.dcf
 sed -n '1,8p' source/generated/stays.csv
@@ -339,10 +356,10 @@ Record whether the command and its fictional-only boundary are clear.
 ## H. Validate the project and initialize state
 
 ```sh
-"$RRP_CLI" project validate
-"$RRP_CLI" state init
-"$RRP_CLI" state inspect
-"$RRP_CLI" project validate
+rrp project validate
+rrp state init
+rrp state inspect
+rrp project validate
 ```
 
 ### What you should observe
@@ -364,7 +381,7 @@ the separate automated 11.H fixture. Use JSON for this mutation so the exact
 generated scope identity can be captured for later commands.
 
 ```sh
-export RRP_FIRST_RUN_JSON="$("$RRP_CLI" run \
+export RRP_FIRST_RUN_JSON="$(rrp run \
   --at "$RRP_FIRST_TIME" \
   --operation-key post-stage-11-first \
   --json)"
@@ -378,8 +395,8 @@ Inspect the complete scope and the accepted episode's retained analytical
 history through bounded CLI views:
 
 ```sh
-"$RRP_CLI" history scope --scope "$RRP_FIRST_SCOPE"
-"$RRP_CLI" history episode \
+rrp history scope --scope "$RRP_FIRST_SCOPE"
+rrp history episode \
   --episode fictional.episode.001 \
   --target "$RRP_TARGET_ID" \
   --cutoff "$RRP_FIRST_TIME" \
@@ -409,11 +426,11 @@ The CLI composes logical construction and atomic publication, but still
 requires the deliberate scope and cutoff:
 
 ```sh
-"$RRP_CLI" products materialize \
+rrp products materialize \
   --scope "$RRP_FIRST_SCOPE" \
   --cutoff "$RRP_FIRST_TIME" \
   --json
-"$RRP_CLI" products status \
+rrp products status \
   --scope "$RRP_FIRST_SCOPE" \
   --cutoff "$RRP_FIRST_TIME" \
   --json
@@ -440,7 +457,7 @@ Launch the installed product-only application in the foreground on the fixed
 loopback port:
 
 ```sh
-"$RRP_CLI" app launch \
+rrp app launch \
   --scope "$RRP_FIRST_SCOPE" \
   --cutoff "$RRP_FIRST_TIME" \
   --port "$RRP_APP_PORT" \
@@ -478,7 +495,7 @@ Leave the fictional source bytes unchanged and advance analytical time by one
 day with a distinct operation key:
 
 ```sh
-export RRP_SECOND_RUN_JSON="$("$RRP_CLI" run \
+export RRP_SECOND_RUN_JSON="$(rrp run \
   --at "$RRP_SECOND_TIME" \
   --operation-key post-stage-11-second \
   --json)"
@@ -488,9 +505,9 @@ test -n "$RRP_SECOND_SCOPE"
 test "$RRP_SECOND_SCOPE" != "$RRP_FIRST_SCOPE"
 printf 'Second scope: %s\n' "$RRP_SECOND_SCOPE"
 
-"$RRP_CLI" history scope --scope "$RRP_FIRST_SCOPE"
-"$RRP_CLI" history scope --scope "$RRP_SECOND_SCOPE"
-"$RRP_CLI" history episode \
+rrp history scope --scope "$RRP_FIRST_SCOPE"
+rrp history scope --scope "$RRP_SECOND_SCOPE"
+rrp history episode \
   --episode fictional.episode.001 \
   --target "$RRP_TARGET_ID" \
   --cutoff "$RRP_SECOND_TIME" \
@@ -512,11 +529,11 @@ are clear from CLI output.
 ## M. Build and materialize updated products
 
 ```sh
-"$RRP_CLI" products materialize \
+rrp products materialize \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME" \
   --json
-"$RRP_CLI" products status \
+rrp products status \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME" \
   --json
@@ -545,7 +562,7 @@ human explicitly selected and materialized the newer context.
 ## N. Relaunch and inspect the application
 
 ```sh
-"$RRP_CLI" app launch \
+rrp app launch \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME" \
   --port "$RRP_APP_PORT" \
@@ -577,15 +594,15 @@ After the second application stops, run the final supported diagnoses from the
 project directory:
 
 ```sh
-"$RRP_CLI" state inspect
-"$RRP_CLI" products status \
+rrp state inspect
+rrp products status \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME"
-"$RRP_CLI" project status \
+rrp project status \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME" \
   --json
-"$RRP_CLI" project doctor \
+rrp project doctor \
   --scope "$RRP_SECOND_SCOPE" \
   --cutoff "$RRP_SECOND_TIME"
 ```
