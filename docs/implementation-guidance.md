@@ -65,8 +65,10 @@ inactive uninstall with bounded quarantine recovery and final-realization
 refusal. Increment 11.H adds the complete clean temporary-user installed proof
 through two governed times, products, supervised application, both doctors,
 controlled incompatibility, compatible selection, rollback, and uninstall.
-It remains pending revision-matched hosted validation and formal acceptance;
-Stage 11 remains incomplete.
+All eight Stage 11 increments are formally accepted. The integrated
+[Stage 11 assurance assessment](assessments/stage-11-assessment.md) found no
+blocking implementation or evidence discrepancy; formal Stage 11 architecture
+reconciliation and acceptance remain pending, and Stage 12 has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -84,8 +86,11 @@ The installed Stage 10 supplied application experience and its cataloged human
 guide have complete local and hosted fictional acceptance evidence. Stage 11
 now supplies the accepted project CLI and the implemented distribution,
 installation, selection, transition, and exact-uninstall lifecycle; its clean
-installed-operation proof is locally complete in 11.H and awaits hosted and
-formal acceptance.
+installed-operation proof and all eight increments are formally accepted. The
+integrated [Stage 11 assurance assessment](assessments/stage-11-assessment.md)
+found no blocking implementation or evidence discrepancy. Stage 11 itself
+remains pending formal architecture reconciliation and acceptance; Stage 12
+has not begun.
 
 ## Read authority before source
 

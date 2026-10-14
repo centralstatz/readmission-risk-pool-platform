@@ -81,7 +81,14 @@ shim, exact installed selector override, strict installed verification,
 software doctor, and explicit atomic activation without project access.
 Increment 11.G implements side-by-side upgrade composition, rollback by exact
 prior activation, published-version conflict refusal, and confirmed exact
-inactive uninstall without project access. It awaits formal acceptance.
+inactive uninstall without project access. Increment 11.H composes the complete
+clean installed proof through two-time fictional operation, products,
+application, diagnosis, compatibility, rollback, and exact uninstall. All eight
+Stage 11 increments are formally accepted. The integrated
+[Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
+no blocking implementation or evidence discrepancy; formal Stage 11
+architecture reconciliation and acceptance remain pending, and Stage 12 has
+not begun.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -268,9 +275,11 @@ guarded exact inactive uninstall. Increment 11.H composes the complete clean
 temporary-user proof from copied development distribution through configured-
 repository restoration, installed two-time fictional operation, fresh
 products, supervised application, both doctors, controlled compatibility,
-rollback, and exact uninstall. It is implementation-complete pending
-revision-matched hosted validation and formal acceptance. Stage 11 remains
-incomplete.
+rollback, and exact uninstall. All eight Stage 11 increments are formally
+accepted. The integrated
+[Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
+no blocking implementation or evidence discrepancy. Stage 11 remains pending
+formal architecture reconciliation and acceptance; Stage 12 has not begun.
 
 ## License
 

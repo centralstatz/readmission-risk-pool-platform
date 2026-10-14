@@ -261,5 +261,9 @@ formally accepted at revision
 job `115351071999`. Increment 11.H composes the complete clean temporary-user
 copied-distribution, configured-repository restoration, two-time fictional
 operation, product/application, diagnosis, compatibility, rollback, and
-uninstall proof. It is implementation-complete pending revision-matched hosted
-validation and formal human acceptance. Stage 11 remains incomplete.
+uninstall proof. It is formally accepted at revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3` after hosted run `38557934052`,
+job `115831602654`; all eight Stage 11 increments are accepted. The integrated
+[Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
+no blocking implementation or evidence discrepancy. Stage 11 remains pending
+formal architecture reconciliation and acceptance; Stage 12 has not begun.
