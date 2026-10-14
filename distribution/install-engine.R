@@ -242,6 +242,41 @@ rrp_install_write_dcf <- function(record, path) {
   write.dcf(matrix, file = path, width = 500L)
 }
 
+rrp_install_description_hash <- function(path) {
+  bytes <- readBin(path, "raw", n = file.info(path)$size)
+  contents <- NULL
+  for (encoding in c("UTF-8", "latin1", "")) {
+    candidate <- iconv(list(bytes), from = encoding, to = "UTF-8")
+    if (!is.na(candidate[[1L]])) {
+      contents <- candidate[[1L]]
+      break
+    }
+  }
+  if (is.null(contents)) stop("DESCRIPTION encoding is invalid.", call. = FALSE)
+  parts <- strsplit(contents, "\\r?\\n(?=\\S)", perl = TRUE)[[1L]]
+  parts <- gsub("\\r?\\n\\s*", " ", parts, perl = TRUE)
+  index <- regexpr(":", parts, fixed = TRUE)
+  if (any(index < 1L)) stop("DESCRIPTION fields are invalid.", call. = FALSE)
+  keys <- substring(parts, 1L, index - 1L)
+  values <- trimws(substring(parts, index + 1L))
+  if (any(!nzchar(keys))) stop("DESCRIPTION fields are invalid.", call. = FALSE)
+  storage.mode(values) <- "list"
+  names(values) <- keys
+  fields <- c(
+    "Package", "Version", "Title", "Author", "Maintainer", "Description",
+    "Depends", "Imports", "Suggests", "LinkingTo"
+  )
+  selected <- values[intersect(fields, names(values))]
+  selected <- selected[sort(names(selected), method = "radix")]
+  text <- gsub(
+    "[[:space:]]", "", paste(names(selected), selected, sep = ": ", collapse = "\n")
+  )
+  temporary <- tempfile("rrp-description-hash-")
+  on.exit(unlink(temporary, force = TRUE), add = TRUE)
+  writeLines(enc2utf8(text), temporary, useBytes = TRUE)
+  unname(tools::md5sum(temporary))
+}
+
 rrp_install_validate_record <- function(record) {
   fields <- c(
     "Record-Type", "Contract-ID", "Contract-Version", "Installation-ID",
@@ -301,13 +336,32 @@ rrp_install_target <- function(manifest, dependencies, host, repository) {
   invisible(TRUE)
 }
 
-rrp_install_environment <- function(private_library) c(
-  "R_PROFILE_USER=", "R_ENVIRON_USER=",
-  "R_LIBS=",
-  paste0("R_LIBS_USER=", private_library),
-  paste0("R_LIBS_SITE=", file.path(private_library, ".rrp-no-site-library")),
-  "RENV_CONFIG_CACHE_ENABLED=FALSE", "RENV_CONFIG_AUTOLOADER_ENABLED=FALSE"
-)
+rrp_install_utf8_locale <- function() {
+  original <- Sys.getlocale("LC_CTYPE")
+  on.exit(suppressWarnings(Sys.setlocale("LC_CTYPE", original)), add = TRUE)
+  candidates <- if (identical(.Platform$OS.type, "windows")) {
+    c(".UTF-8", "English_United States.utf8")
+  } else c("C.UTF-8", "C.utf8", "en_US.UTF-8")
+  for (candidate in candidates) {
+    selected <- suppressWarnings(Sys.setlocale("LC_CTYPE", candidate))
+    if (nzchar(selected) && isTRUE(l10n_info()[["UTF-8"]])) return(candidate)
+  }
+  rrp_install_fail(
+    "incompatible_host_r", "Host R has no supported UTF-8 installation locale."
+  )
+}
+
+rrp_install_environment <- function(private_library) {
+  locale <- rrp_install_utf8_locale()
+  c(
+    paste0("LC_ALL=", locale), paste0("LANG=", locale),
+    "R_PROFILE_USER=", "R_ENVIRON_USER=",
+    "R_LIBS=",
+    paste0("R_LIBS_USER=", private_library),
+    paste0("R_LIBS_SITE=", file.path(private_library, ".rrp-no-site-library")),
+    "RENV_CONFIG_CACHE_ENABLED=FALSE", "RENV_CONFIG_AUTOLOADER_ENABLED=FALSE"
+  )
+}
 
 rrp_install_restore_dependencies <- function(
   host, dependencies, private_library, repository, tool_library
@@ -405,6 +459,7 @@ rrp_install_verify_realization <- function(
       "%s=%s", vapply(names(expected_integrity), encodeString, character(1L), quote = "\""),
       vapply(unname(expected_integrity), encodeString, character(1L), quote = "\"")
     ), collapse = ","), ")"),
+    "stopifnot(isTRUE(l10n_info()[['UTF-8']]))",
     ".libPaths(c(private_library,.Library))",
     "database <- installed.packages(lib.loc=private_library,noCache=TRUE)",
     "stopifnot(setequal(rownames(database),expected_names))",
@@ -412,29 +467,29 @@ rrp_install_verify_realization <- function(
     "prefix <- paste0(normalizePath(private_library,winslash='/'),'/')",
     "stopifnot(all(startsWith(normalizePath(paths,winslash='/'),prefix)))",
     "stopifnot(identical(unname(database[names(expected_versions),'Version']),unname(expected_versions)))",
-    "description_hash <- function(path) {",
-    "  dcf <- read.dcf(path,all=TRUE)[1L,,drop=TRUE]",
-    "  fields <- c('Package','Version','Title','Author','Maintainer','Description','Depends','Imports','Suggests','LinkingTo')",
-    "  selected <- dcf[intersect(fields,names(dcf))]",
-    "  selected <- selected[sort(names(selected),method='radix')]",
-    "  text <- gsub('[[:space:]]','',paste(names(selected),selected,sep=': ',collapse='\\n'))",
-    "  temporary <- tempfile(); on.exit(unlink(temporary,force=TRUE),add=TRUE)",
-    "  writeLines(enc2utf8(text),temporary,useBytes=TRUE)",
-    "  unname(tools::md5sum(temporary))",
-    "}",
-    "actual_integrity <- vapply(names(expected_integrity),function(package) description_hash(file.path(paths[[package]],'DESCRIPTION')),character(1L))",
+    "rrp_install_description_hash <-",
+    deparse(rrp_install_description_hash, width.cutoff = 500L),
+    "actual_integrity <- vapply(names(expected_integrity),function(package) rrp_install_description_hash(file.path(paths[[package]],'DESCRIPTION')),character(1L))",
     "stopifnot(identical(unname(actual_integrity),unname(expected_integrity)))",
     "library(rrpplatform)",
     "result <- rrp_validate_software_resources(software_root)",
     "stopifnot(rrp_operation_succeeded(result))",
-    "status <- rrp_cli_dispatch(c('version','--json'),software_root,private_library,",
+    "rendered <- capture.output(status <- rrp_cli_dispatch(c('version','--json'),software_root,private_library,",
     "  normalizePath(file.path(R.home('bin'),'R'),winslash='/',mustWork=TRUE))",
-    "stopifnot(identical(status,0L))"
+    ")",
+    "stopifnot(identical(status,0L),length(rendered)>0L)",
+    "cat('rrp-install-verification-ok\\n')"
   )
   writeLines(lines, script, useBytes = TRUE)
-  rrp_install_run(
-    host[["executable"]], c("--vanilla", "--slave", shQuote(script)),
+  output <- rrp_install_run(
+    host[["executable"]], c(
+      "--vanilla", "--slave", paste0("--file=", shQuote(script))
+    ),
     rrp_install_environment(private_library), "installation_verification",
+    "Fresh-process package, resource, or dependency verification failed."
+  )
+  if (!identical(output, "rrp-install-verification-ok")) rrp_install_fail(
+    "installation_verification",
     "Fresh-process package, resource, or dependency verification failed."
   )
   invisible(TRUE)

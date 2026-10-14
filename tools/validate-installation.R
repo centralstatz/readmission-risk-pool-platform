@@ -453,19 +453,34 @@ validate_installation <- function() {
   writeLines(c(
     sprintf("private <- %s", deparse(file.path(destination, "library"))),
     sprintf("root <- %s", deparse(destination)),
+    "source(file.path(root,'install-engine.R'),local=TRUE)",
     ".libPaths(c(private,.Library))",
     "library(rrpplatform)",
     "internal <- function(name) getFromNamespace(name,'rrpplatform')",
     "records <- internal('rrp_software_read_dcf')(file.path(root,'dependencies','dependencies.dcf'))",
     "packages <- records[-1L]",
     "expected <- setNames(sub('^renv:','',vapply(packages,`[[`,character(1L),'Integrity')),vapply(packages,`[[`,character(1L),'Package'))",
-    "actual <- vapply(names(expected),function(package) internal('rrp_software_description_hash')(file.path(private,package,'DESCRIPTION')),character(1L))",
-    "mismatch <- names(expected)[actual != expected]",
+    "runtime_actual <- vapply(names(expected),function(package) internal('rrp_software_description_hash')(file.path(private,package,'DESCRIPTION')),character(1L))",
+    "installer_actual <- vapply(names(expected),function(package) rrp_install_description_hash(file.path(private,package,'DESCRIPTION')),character(1L))",
+    "stopifnot(identical(runtime_actual,installer_actual))",
+    "mismatch <- names(expected)[runtime_actual != expected]",
     "if (length(mismatch)) stop(paste('dependency integrity mismatch:',paste(mismatch,collapse=',')),call.=FALSE)",
-    "invisible(TRUE)"
+    "fixture <- tempfile('damaged-description-')",
+    "on.exit(unlink(fixture,force=TRUE),add=TRUE)",
+    "fixture_lines <- readLines(file.path(private,names(expected)[[1L]],'DESCRIPTION'),warn=FALSE,encoding='UTF-8')",
+    "title <- grep('^Title:',fixture_lines)",
+    "stopifnot(length(title)==1L)",
+    "fixture_lines[[title]] <- paste(fixture_lines[[title]],'damaged')",
+    "writeLines(fixture_lines,fixture,useBytes=TRUE)",
+    "damaged_installer <- rrp_install_description_hash(fixture)",
+    "damaged_runtime <- internal('rrp_software_description_hash')(fixture)",
+    "stopifnot(identical(damaged_installer,damaged_runtime),!identical(damaged_installer,unname(expected[[1L]])))",
+    "cat('integrity-probe-ok\\n')"
   ), integrity_script, useBytes = TRUE)
   integrity_probe <- run_in(
-    host_r, c("--vanilla", shQuote(integrity_script)),
+    host_r, c(
+      "--vanilla", "--slave", paste0("--file=", shQuote(integrity_script))
+    ),
     c(
       "LC_ALL=C",
       paste0("R_LIBS_USER=", file.path(destination, "library")),
@@ -473,7 +488,8 @@ validate_installation <- function() {
     ), project
   )
   require_true(
-    integrity_probe$status == 0L,
+    integrity_probe$status == 0L &&
+      identical(integrity_probe$output, "integrity-probe-ok"),
     paste("Installed dependency integrity probe failed:",
       paste(integrity_probe$output, collapse = "\n"))
   )
@@ -891,14 +907,14 @@ validate_installation <- function() {
     file.path(installation_root, "active.dcf"), "raw",
     n = file.info(file.path(installation_root, "active.dcf"))$size
   )
-  alternate_explicit <- stable_run(c(
-    "--software", alternate_selector, "version", "--json"
-  ), project)
   prior_verified <- stable_run(c(
     "software", "verify", "--software", selector, "--json"
   ), project)
   newer_verified <- stable_run(c(
     "software", "verify", "--software", alternate_selector, "--json"
+  ), project)
+  alternate_explicit <- stable_run(c(
+    "--software", alternate_selector, "version", "--json"
   ), project)
   two_listed <- stable_run(c("software", "list", "--json"), project)
   current_after_alternate <- stable_run(c(
@@ -908,9 +924,9 @@ validate_installation <- function() {
     file.path(installation_root, "active.dcf"), "raw",
     n = file.info(file.path(installation_root, "active.dcf"))$size
   )
-  require_run_success("Explicit alternate software selection", alternate_explicit)
   require_run_success("Prior installed-software verification", prior_verified)
   require_run_success("Alternate installed-software verification", newer_verified)
+  require_run_success("Explicit alternate software selection", alternate_explicit)
   require_run_success("Two-realization installed-software listing", two_listed)
   require_run_success("Active selection after explicit override", current_after_alternate)
   require_true(
@@ -955,6 +971,36 @@ validate_installation <- function() {
   newer_activated <- stable_run(c(
     "software", "activate", alternate_selector, "--json"
   ), project)
+  prior_verified_after_activation <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  active_before_prior_explicit <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  prior_explicit_version <- stable_run(c(
+    "--software", selector, "version", "--json"
+  ), project)
+  active_after_prior_explicit <- readBin(
+    file.path(installation_root, "active.dcf"), "raw",
+    n = file.info(file.path(installation_root, "active.dcf"))$size
+  )
+  require_run_success(
+    "Prior installed-software verification after alternate activation",
+    prior_verified_after_activation
+  )
+  require_run_success(
+    "Explicit prior software selection after alternate activation",
+    prior_explicit_version
+  )
+  require_run_text(
+    "Explicit prior software selection after alternate activation",
+    prior_explicit_version, '"selection":"explicit_override"'
+  )
+  require_true(
+    identical(active_before_prior_explicit, active_after_prior_explicit),
+    "Explicit prior software selection changed the alternate active-selection record bytes."
+  )
   newer_doctor <- stable_run(c("software", "doctor", "--json"), project)
   incompatible_under_newer <- stable_run(c(
     "project", "validate", "--project", retained_project, "--json"
@@ -981,7 +1027,9 @@ validate_installation <- function() {
     "software", "current", "--json"
   ), project)
   require_true(
-    newer_activated$status == 0L && newer_doctor$status == 0L &&
+    newer_activated$status == 0L &&
+      prior_verified_after_activation$status == 0L &&
+      prior_explicit_version$status == 0L && newer_doctor$status == 0L &&
       grepl(paste0('"distribution_id":"',
         alternate_result$distribution_id, '"'), paste(
           newer_doctor$output, collapse = "\n"
@@ -1013,6 +1061,7 @@ validate_installation <- function() {
       identical(working_directory_before_alternate, tree_digest(project)),
     paste("Upgrade compatibility gate or rollback proof failed:", paste(c(
       newer_activated$output, newer_doctor$output,
+      prior_verified_after_activation$output, prior_explicit_version$output,
       incompatible_under_newer$output,
       incompatible_doctor$output, compatible_explicit$output,
       current_while_explicit$output,

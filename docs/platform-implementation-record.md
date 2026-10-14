@@ -7162,3 +7162,90 @@ Increment 11.H remains implementation-complete but not formally accepted.
 Stage 11 remains incomplete. A new exact committed revision must pass the
 revision-matched hosted Ubuntu/R 4.4 `package-foundation` workflow before
 formal 11.H acceptance; Stage 12 has not begun.
+
+### Second hosted validation reconciliation — 2026-10-13
+
+Reconciliation revision `7d075dc40810d04c99a9b0920934ade7609fe816`, the
+current synchronized `main` and `origin/main` baseline, failed hosted Ubuntu/R
+4.4 `package-foundation` run `38465249542`, job `115530229120`, during
+`tools/validate-installation.R`. Repository, package, distribution, clean
+installed analytical operation, both doctors, and supervised application
+evidence had passed. The isolated failure occurred immediately after the
+controlled second development realization was installed and before it was
+activated. The exact operation was the stable-shim invocation equivalent to
+`rrp --software <alternate-selector> version --json`, where the selector was
+the verified alternate manifest's exact
+`1.0.0-dev/<64-character-distribution-id>` identity. The public bounded log
+intentionally did not emit that temporary distribution digest. Selected-
+context CLI preflight returned exit 3 with `dependency_integrity` before the
+version operation ran.
+
+The selector, installation record, private-library closure, and package
+versions had already passed their preceding checks. The precise failing
+runtime condition was disagreement between at least one expected external-
+dependency DESCRIPTION digest in `dependencies.dcf` and the digest recomputed
+from the selected realization's private library. Review found a production
+installation-verification defect, not an unsupported selector or active-
+version contamination. The installer generated a fresh-process script that
+was intended to validate exact closure, versions, DESCRIPTION integrity,
+resources, and CLI startup, but passed its path to `R` as an ignored positional
+argument rather than with `--file=`. R returned success without executing any
+of those statements, allowing realization B to be promoted before the later
+CLI preflight performed the first effective strict integrity check. The
+dormant installer script also retained the locale-sensitive `read.dcf()`
+emulation superseded at the runtime boundary during 11.F. The stable shim's
+deliberate `LC_ALL=C` therefore reached restoration and could alter or
+misinterpret non-ASCII DESCRIPTION metadata on the hosted platform.
+
+The distribution-owned installation engine now discovers and requires a
+supported UTF-8 installation locale for dependency restoration, internal-
+package installation, and fresh verification while leaving the stable shim's
+deterministic shell locale unchanged. Its DESCRIPTION integrity helper reads
+raw bytes, normalizes recognized encoding to UTF-8, and applies the same
+closed field/folding/whitespace/hash rules as the `renv` build authority and
+the installed runtime verifier. The fresh-process script is invoked through
+`--file=`, proves its UTF-8 process context, captures a real installed CLI
+operation, and must return one exact sentinel before staging can be promoted.
+Missing execution, metadata disagreement, genuine damage, or any other
+verification failure remains fail-closed and cleans the attempted staging
+tree; no installation is repaired or accepted by inference.
+
+The installed acceptance harness now invokes its independent integrity probe
+through `--file= --slave` and requires an exact sentinel, so another ignored
+script cannot masquerade as evidence. Under an explicit `LC_ALL=C` probe it
+compares every dependency's installer and runtime digests with the recorded
+authority and proves a controlled DESCRIPTION change produces a matching but
+different rejected digest. The two-version sequence now strictly verifies A
+and B before explicit B use, activates B, strictly verifies A again, invokes a
+harmless version operation through explicit A selection, and compares the B
+active-record bytes before and after. The existing later project compatibility,
+byte-level nonmutation, rollback, and uninstall evidence remains intact.
+
+Focused local evidence demonstrated that the installer, runtime, and `renv`
+authorities compute the same non-ASCII DESCRIPTION digest under `LC_ALL=C`,
+that a bare script argument is ignored while `--file=` executes it, and that
+the controlled UTF-8 child environment is effective. The complete
+installation/software-lifecycle validator then passed genuine restoration,
+fresh verification, the clean two-time project/product/application proof,
+both strict side-by-side verifications, pre- and post-activation explicit
+selection, incompatibility refusal, exact rollback, adversarial denials, and
+uninstall. No package export, dependency, selector grammar, activation rule,
+project contract, or Stage 12 behavior changed.
+
+Final proportional evidence also passed all eight repository checks; the
+complete closed-distribution validator; the complete package validator,
+including both builds, isolated installs/loads, and both
+`R CMD check --no-manual` results with exact `Status: OK`; parsing of all 79
+tracked R files and the tracked YAML authority; shell syntax; generated-
+artifact and child-process cleanup inspection; and `git diff --check`. The
+package validator's first unprivileged invocation was denied only at its
+accepted `/bin/ps` supervision boundary. A first permitted run later timed out
+in the unchanged installed-CLI regression and left no surviving child or
+repository artifact; the identical complete rerun passed that regression in
+18.72 seconds and completed successfully. No timeout or assertion was
+weakened.
+
+Increment 11.H remains implementation-complete but not formally accepted.
+Stage 11 remains incomplete. The corrected exact revision still requires a
+successful revision-matched hosted Ubuntu/R 4.4 `package-foundation` run
+before formal 11.H acceptance; Stage 12 has not begun.
