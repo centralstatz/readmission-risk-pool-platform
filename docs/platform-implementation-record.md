@@ -7249,3 +7249,56 @@ Increment 11.H remains implementation-complete but not formally accepted.
 Stage 11 remains incomplete. The corrected exact revision still requires a
 successful revision-matched hosted Ubuntu/R 4.4 `package-foundation` run
 before formal 11.H acceptance; Stage 12 has not begun.
+
+### Formal acceptance — 2026-10-14
+
+Increment 11.H is formally accepted and complete at exact committed revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3`. GitHub Actions
+`package-foundation` push run `38557934052`, job `115831602654`, completed
+successfully on Ubuntu with R 4.4 for that exact `main` revision. The
+revision-matched job passed repository foundation, package foundation including
+both R package checks, closed distribution validation, and the complete
+installation/software-lifecycle validator.
+
+Acceptance reconciled that hosted evidence with Platform True North, Platform
+Architecture, the accepted Stage 11 plan, the installed Operator,
+Installation, and Software Lifecycle guides, and the implementation and two
+hosted-failure reconciliation entries above. The accepted clean proof covers
+copied standalone distribution acquisition, exact configured-repository
+dependency restoration and fail-before-promotion installation verification,
+stable installed operation from unrelated working directories, one independent
+non-Git fictional project at analytical times `2026-01-20T12:00:00Z` and
+`2026-01-21T12:00:00Z`, durable history, fresh logical products, supervised
+product-only application operation, and distinct software and project doctors.
+The software doctor remains project-unaware, the project doctor inspects only
+the explicitly resolved project under selected software, and neither performs
+repair.
+
+The same proof establishes two verified side-by-side development realizations,
+explicit activation, controlled project incompatibility before mutation,
+compatible per-invocation selection without changing the active default,
+rollback, and exact inactive uninstall. Byte-level digests prove that the
+software lifecycle and explicit selector do not mutate the independent
+project. Privacy-safe diagnostics, adversarial integrity and provenance
+failures, process cleanup, and failed-installation cleanup also pass. The
+installer's final `--file=` execution, exact sentinel, controlled UTF-8 locale,
+and locale-independent DESCRIPTION hashing correction ensures that fresh
+verification actually executes and that any restoration or integrity mismatch
+fails before promotion.
+
+The earlier failures at revision
+`d94f08ae8e352c292cad1ed2d0f2f2313a1f5a49` (run `38436980383`, job
+`115433420325`) and revision
+`7d075dc40810d04c99a9b0920934ade7609fe816` (run `38465249542`, job
+`115530229120`) remain preserved in sequence above and are fully reconciled by
+the accepted candidate and revision-matched hosted success. No acceptance-
+blocking discrepancy remains. The catalog remains at 67 resources, the
+`rrpplatform` export surface remains at 33, package dependencies are unchanged,
+and no Stage 12 deployment artifact, public acquisition/publication, release,
+migration, clinical-validation, or production-support behavior entered.
+
+All eight Stage 11 increments are now formally accepted and complete. Stage 11
+itself remains pending its separate formal architecture reconciliation and
+acceptance; Stage 12 has not begun.
+
+**Next task:** formal Stage 11 acceptance and architecture reconciliation.

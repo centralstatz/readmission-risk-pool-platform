@@ -6,10 +6,9 @@
 10 was accepted on 2026-10-05 at implementation baseline
 `433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
 11 plan is formally accepted for implementation as of 2026-10-07 after human
-resolution of its initial seven planning questions. Increments 11.A–11.G are
-formally accepted and complete. Stage 11 remains incomplete; Increment 11.H
-is implementation-complete pending revision-matched hosted validation and
-formal human acceptance.
+resolution of its initial seven planning questions. Increments 11.A–11.H are
+formally accepted and complete. Stage 11 remains pending separate formal
+architecture reconciliation and acceptance.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -76,10 +75,9 @@ operability before the needed layers exist.
 Only the current implementation stage is decomposed before source work.
 Stages 1–10 are accepted and complete; their detailed plans remain as
 implementation lineage. Stage 11 is detailed and formally accepted below;
-Increments 11.A–11.G are accepted and complete; 11.H is locally
-implementation-complete pending hosted validation and formal acceptance.
-After a stage is
-implemented:
+all eight increments, 11.A–11.H, are accepted and complete. Stage 11 remains
+pending separate formal architecture reconciliation and acceptance. After a
+stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -7029,9 +7027,9 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 **Planning status:** second-edition detailed plan formally accepted for
 implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
-Increments 11.A–11.G are formally accepted and complete; 11.H remains
-pending revision-matched hosted validation and formal human acceptance. This
-does not select release bytes or claim a released 1.0.0 version exists.
+All eight increments, 11.A–11.H, are formally accepted and complete. Stage 11
+remains pending separate formal architecture reconciliation and acceptance.
+This does not select release bytes or claim a released 1.0.0 version exists.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7946,17 +7944,15 @@ clinical validation, migration, or production support claim.
 
 **Dependencies:** 11.A–11.G complete and locally accepted.
 
-**Implementation status:** implementation-complete on 2026-10-13 from the
-formally accepted 11.G closeout baseline `cf2ac3384d314785262aa53f5beb6189afc9a1e3`.
-The existing installation validator now supplies one clean temporary-user,
-copied-distribution proof covering genuine configured-repository restoration,
-installed operation at two analytical times, fresh products, supervised
-application startup/shutdown, distinct software/project diagnosis, and the
-accepted two-version compatibility/rollback/uninstall lifecycle. Local
-evidence has passed. Increment 11.H and Stage 11 remain unaccepted and
-incomplete pending an exact committed revision, successful revision-matched
-hosted Ubuntu/R 4.4 `package-foundation` run, formal 11.H acceptance, and
-separate formal Stage 11 acceptance/architecture reconciliation.
+**Implementation status:** formally accepted and complete on 2026-10-14 at
+exact revision `8bb1a3798b92f5407b0772d60f067fc182f45fb3`, after successful
+hosted Ubuntu/R 4.4 `package-foundation` run `38557934052`, job
+`115831602654`. The revision-matched job passed repository foundation, package
+foundation including both R package checks, closed distribution validation,
+and installation/software-lifecycle validation including the complete clean
+installed 11.H proof. All eight Stage 11 increments are accepted and complete.
+Stage 11 remains pending separate formal architecture reconciliation and
+acceptance; the next task is formal Stage 11 closeout.
 
 **Acceptance and evidence:** repository/package/CLI/distribution/install tests;
 both package build/check/install; standalone RRP payload validation; no
