@@ -265,5 +265,6 @@ uninstall proof. It is formally accepted at revision
 `8bb1a3798b92f5407b0772d60f067fc182f45fb3` after hosted run `38557934052`,
 job `115831602654`; all eight Stage 11 increments are accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
-no blocking implementation or evidence discrepancy. Stage 11 remains pending
-formal architecture reconciliation and acceptance; Stage 12 has not begun.
+no blocking implementation or evidence discrepancy. Stage 11 is formally
+accepted and complete. Its nonblocking Stage 13 qualification consideration
+and Stage 12–14 deferrals remain explicit; Stage 12 is next and has not begun.

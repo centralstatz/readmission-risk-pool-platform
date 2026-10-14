@@ -7302,3 +7302,68 @@ itself remains pending its separate formal architecture reconciliation and
 acceptance; Stage 12 has not begun.
 
 **Next task:** formal Stage 11 acceptance and architecture reconciliation.
+
+## Stage 11 formal acceptance and architecture reconciliation — 2026-10-14
+
+Stage 11 — CLI, closed RRP-owned-payload distribution, installation, and
+upgrade — is formally accepted and complete. Its accepted implementation
+baseline is exact revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3`. Revision-matched GitHub Actions
+`package-foundation` run `38557934052`, job `115831602654`, passed on Ubuntu
+with R 4.4 for that exact revision, including repository foundation, package
+foundation and both package checks, closed distribution validation, and the
+complete installation/software-lifecycle validation. The two earlier failed
+11.H candidates and their corrections remain preserved in the preceding
+record. All eight Stage 11 increments, 11.A–11.H, have individual formal
+acceptance records.
+
+Final reconciliation reviewed Platform True North, Platform Architecture, the
+accepted detailed Stage 11 plan, the complete implementation record, installed
+operator/distribution/installation/software-lifecycle guidance, and the
+non-authoritative
+[Stage 11 assurance assessment](assessments/stage-11-assessment.md). The
+assessment established eleven acceptance criteria directly and criterion 11
+with the bounded S11-NB-01 documentation limitation; it found no contradicted
+criterion, blocking finding, material architecture deviation, or critical
+verification path that could succeed without executing its intended checks.
+Committed documentation-only reconciliation
+`1fcc3df4e169e99be74ef1e9bfce81d236b3a599` subsequently corrected all three
+stale current-state summaries, resolving S11-NB-01 without changing the
+historical assessment.
+
+The integrated result conforms to the accepted architecture. One closed
+positive distribution authority and standalone verifier bind RRP-owned bytes,
+identity, provenance, and the exact configured-repository dependency
+specification. The shared installer restores one private version-specific
+library, genuinely verifies staged bytes in fresh processes, and promotes only
+a verified immutable realization. The stable shim, version launcher, package-
+owned CLI operations, human/JSON results, exact project resolution, and
+software verification/doctor form one coherent installed interface without
+parallel analytical semantics. Software installation, selection, activation,
+rollback, diagnosis, and exact uninstall remain project-independent;
+compatibility begins only when selected software operates on an explicit
+project, and incompatible operation fails before project mutation.
+
+The clean installed proof establishes the complete fictional operator path at
+`2026-01-20T12:00:00Z` and `2026-01-21T12:00:00Z`, durable history, logical
+products, supervised product-only application operation, separate doctors,
+side-by-side installation, exact selection and activation, compatibility
+rejection, rollback, inactive uninstall, privacy-safe diagnostics, failure
+cleanup, and byte-level project nonmutation. All twelve Stage 11 acceptance
+criteria are therefore satisfied within the demonstrated macOS/R 4.4.1 and
+hosted Ubuntu/R 4.4 evidence boundary, and no acceptance-blocking discrepancy
+remains.
+
+Assessment finding S11-NB-02 remains a nonblocking Stage 13 support-cell
+qualification consideration for deliberately space-bearing/default
+installation paths. Product-only artifacts and deployment targets remain with
+Stage 12; independent-adopter and broader support-cell qualification remains
+with Stage 13; and release qualification, publication, and public acquisition
+remain with Stage 14. Stage 11 acceptance does not claim Windows or universal
+platform support, production readiness, clinical validation, deployment, or a
+public RRP 1.0 release. This closeout added no implementation, installed
+resource, release, publication, or deployment behavior.
+
+**Acceptance decision:** Stage 11 is formally accepted and complete. Stage 12
+— Product-only Artifacts and Deployment Realizations — is the next
+implementation stage, but has not begun.

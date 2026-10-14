@@ -86,9 +86,9 @@ clean installed proof through two-time fictional operation, products,
 application, diagnosis, compatibility, rollback, and exact uninstall. All eight
 Stage 11 increments are formally accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
-no blocking implementation or evidence discrepancy; formal Stage 11
-architecture reconciliation and acceptance remain pending, and Stage 12 has
-not begun.
+no blocking implementation or evidence discrepancy. Stage 11 is formally
+accepted and complete. Its nonblocking Stage 13 qualification consideration
+and Stage 12–14 deferrals remain explicit; Stage 12 is next and has not begun.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -278,8 +278,9 @@ products, supervised application, both doctors, controlled compatibility,
 rollback, and exact uninstall. All eight Stage 11 increments are formally
 accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
-no blocking implementation or evidence discrepancy. Stage 11 remains pending
-formal architecture reconciliation and acceptance; Stage 12 has not begun.
+no blocking implementation or evidence discrepancy. Stage 11 is formally
+accepted and complete. Its retained nonblocking qualification consideration
+and later-stage deferrals remain explicit; Stage 12 is next and has not begun.
 
 ## License
 

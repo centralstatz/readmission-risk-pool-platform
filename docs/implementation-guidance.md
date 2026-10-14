@@ -67,8 +67,9 @@ through two governed times, products, supervised application, both doctors,
 controlled incompatibility, compatible selection, rollback, and uninstall.
 All eight Stage 11 increments are formally accepted. The integrated
 [Stage 11 assurance assessment](assessments/stage-11-assessment.md) found no
-blocking implementation or evidence discrepancy; formal Stage 11 architecture
-reconciliation and acceptance remain pending, and Stage 12 has not begun.
+blocking implementation or evidence discrepancy. Stage 11 is formally accepted
+and complete. Its nonblocking Stage 13 qualification consideration and Stage
+12–14 deferrals remain explicit; Stage 12 is next and has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -88,9 +89,9 @@ now supplies the accepted project CLI and the implemented distribution,
 installation, selection, transition, and exact-uninstall lifecycle; its clean
 installed-operation proof and all eight increments are formally accepted. The
 integrated [Stage 11 assurance assessment](assessments/stage-11-assessment.md)
-found no blocking implementation or evidence discrepancy. Stage 11 itself
-remains pending formal architecture reconciliation and acceptance; Stage 12
-has not begun.
+found no blocking implementation or evidence discrepancy. Stage 11 is formally
+accepted and complete. Its retained nonblocking qualification consideration
+and later-stage deferrals remain explicit; Stage 12 is next and has not begun.
 
 ## Read authority before source
 

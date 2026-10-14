@@ -2,13 +2,11 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–10 are accepted and complete. Stage
-10 was accepted on 2026-10-05 at implementation baseline
-`433d7eb2d90a4e237a6e5ffa00044de99534fe68`. The second-edition detailed Stage
-11 plan is formally accepted for implementation as of 2026-10-07 after human
-resolution of its initial seven planning questions. Increments 11.A–11.H are
-formally accepted and complete. Stage 11 remains pending separate formal
-architecture reconciliation and acceptance.
+**Status:** authoritative roadmap; Stages 1–11 are accepted and complete. Stage
+11 was accepted on 2026-10-14 at implementation baseline
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3` after its eight increments,
+revision-matched hosted evidence, independent assurance assessment, and final
+architecture reconciliation were accepted. Stage 12 is next and has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -73,11 +71,9 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current implementation stage is decomposed before source work.
-Stages 1–10 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 11 is detailed and formally accepted below;
-all eight increments, 11.A–11.H, are accepted and complete. Stage 11 remains
-pending separate formal architecture reconciliation and acceptance. After a
-stage is implemented:
+Stages 1–11 are accepted and complete; their detailed plans remain as
+implementation lineage. Stage 12 is the next stage and has not been detailed
+or begun. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -7025,11 +7021,21 @@ branding, custom-app, and operator syntax decisions with their later owners.
 
 ## Stage 11 — CLI, closed RRP-owned-payload distribution, installation, and upgrade
 
-**Planning status:** second-edition detailed plan formally accepted for
-implementation on 2026-10-07. Stages 1–10 remain the accepted baseline.
-All eight increments, 11.A–11.H, are formally accepted and complete. Stage 11
-remains pending separate formal architecture reconciliation and acceptance.
-This does not select release bytes or claim a released 1.0.0 version exists.
+**Stage status:** formally accepted and complete on 2026-10-14. All eight
+increments, 11.A–11.H, are individually accepted. The accepted implementation
+baseline is `8bb1a3798b92f5407b0772d60f067fc182f45fb3`; revision-matched hosted
+Ubuntu/R 4.4 `package-foundation` run `38557934052`, job `115831602654`, passed
+repository, package including both package checks, distribution, and complete
+installation/software-lifecycle validation. The independent
+[Stage 11 assurance assessment](assessments/stage-11-assessment.md) found no
+blocking implementation or evidence discrepancy and recommended acceptance
+after documentation reconciliation. Its S11-NB-01 finding was resolved by
+committed reconciliation `1fcc3df4e169e99be74ef1e9bfce81d236b3a599` before
+this stage-level acceptance. S11-NB-02 remains a nonblocking Stage 13 support-
+cell qualification consideration; deployment, independent-adopter, and public
+release responsibilities remain with Stages 12–14. This acceptance does not
+select release bytes or claim a released 1.0.0 version exists. Stage 12 is next
+and has not begun.
 
 The reviewed decisions settle the `rrp` command taxonomy, exact-current-
 directory project default, versioned JSON output, base-R first-install
@@ -7951,8 +7957,9 @@ hosted Ubuntu/R 4.4 `package-foundation` run `38557934052`, job
 foundation including both R package checks, closed distribution validation,
 and installation/software-lifecycle validation including the complete clean
 installed 11.H proof. All eight Stage 11 increments are accepted and complete.
-Stage 11 remains pending separate formal architecture reconciliation and
-acceptance; the next task is formal Stage 11 closeout.
+At 11.H acceptance, Stage 11 still awaited separate formal architecture
+reconciliation and acceptance; the stage-level decision above now records that
+closeout.
 
 **Acceptance and evidence:** repository/package/CLI/distribution/install tests;
 both package build/check/install; standalone RRP payload validation; no
