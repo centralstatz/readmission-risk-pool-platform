@@ -124,9 +124,12 @@ build the development distribution used by this assessment. This is the only
 repository-facing preparation; it is not the normal installed operator
 experience. The distribution builder needs the tested external dependency
 closure and `renv` as maintainer build inputs. The following exact preparation
-uses a new isolated library and writes the controlled provenance receipt
-expected by the builder. It does not manually install either RRP package and
-is not part of a hospital project.
+requires the new isolated library to be empty, resolves the complete strong
+dependency closure from the configured repository, installs every exact member
+there, and writes the controlled provenance receipt expected by the builder.
+Packages installed elsewhere on the machine are not accepted as members of
+that closure. This does not manually install either RRP package and is not part
+of a hospital project.
 
 ```sh
 Rscript --vanilla - \
@@ -139,12 +142,53 @@ source_root <- normalizePath(args[[1L]], winslash = "/", mustWork = TRUE)
 library_root <- normalizePath(args[[2L]], winslash = "/", mustWork = TRUE)
 repository <- args[[3L]]
 receipt <- args[[4L]]
-.libPaths(c(library_root, .Library))
+if (length(list.files(library_root, all.files = TRUE, no.. = TRUE))) {
+  stop("The controlled build library must be empty.")
+}
+.libPaths(c(library_root, .Library), include.site = FALSE)
+Sys.setenv(
+  RENV_CONFIG_CACHE_ENABLED = "FALSE",
+  RENV_CONFIG_AUTOLOADER_ENABLED = "FALSE",
+  RENV_PATHS_LIBRARY_STAGING = file.path(dirname(library_root), "renv-staging")
+)
 source(file.path(source_root, "tools", "distribution-lib.R"), local = TRUE)
+
+# Bootstrap only the restoration engine, then give it an explicit complete
+# repository-derived package/version set. This prevents ambient libraries from
+# satisfying transitive dependencies implicitly.
 install.packages(
-  c(distribution_direct_dependencies(source_root), "renv"),
-  lib = library_root,
-  repos = repository
+  "renv", lib = library_root, repos = repository, dependencies = FALSE
+)
+package_type <- getOption("pkgType")
+if (identical(package_type, "both")) package_type <- "binary"
+available <- available.packages(repos = repository, type = package_type)
+direct <- distribution_direct_dependencies(source_root)
+missing_direct <- setdiff(direct, rownames(available))
+if (length(missing_direct)) {
+  stop("Configured repository lacks: ", paste(missing_direct, collapse = ", "))
+}
+graph <- tools::package_dependencies(
+  direct,
+  db = available,
+  which = c("Depends", "Imports", "LinkingTo"),
+  recursive = TRUE
+)
+closure <- sort(
+  intersect(
+    unique(c(direct, unlist(graph, use.names = FALSE))),
+    rownames(available)
+  ),
+  method = "radix"
+)
+specifications <- paste0(closure, "@", available[closure, "Version"])
+renv::install(
+  specifications,
+  library = library_root,
+  repos = c(CRAN = repository),
+  prompt = FALSE,
+  rebuild = TRUE,
+  dependencies = FALSE,
+  lock = FALSE
 )
 distribution_write_dependency_provenance(
   source_root, library_root, repository, receipt
@@ -152,6 +196,13 @@ distribution_write_dependency_provenance(
 cat("Build dependency provenance:", receipt, "\n")
 RRP_BUILD_DEPS
 ```
+
+The explicit closure is the important boundary. A plain direct-dependency
+installation can treat packages already visible in another user, site, or
+system library as satisfied and therefore leave the controlled library
+incomplete. `renv` staging and caching are kept outside that library so its
+final top-level package set remains exactly the tested runtime closure plus
+`renv`, as required by the provenance writer.
 
 Build one closed archive at an absent destination:
 
