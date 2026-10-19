@@ -7367,3 +7367,57 @@ resource, release, publication, or deployment behavior.
 **Acceptance decision:** Stage 11 is formally accepted and complete. Stage 12
 — Product-only Artifacts and Deployment Realizations — is the next
 implementation stage, but has not begun.
+
+## Stage 11 post-acceptance amendment proposed — 2026-10-19
+
+The original Stage 11 implementation and acceptance remain intact. Stage 11
+was formally accepted on 2026-10-14 at exact implementation revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3`; the implementation, hosted
+evidence, assurance assessment, and acceptance chronology above are not
+retroactively changed by this entry.
+
+After that acceptance, a maintainer executed the independent
+[Post-Stage-11 Manual Platform Assessment](assessments/post-stage-11-manual-platform-assessment.md)
+from clean source revision `ac0f64825956c7efb68b87a383616fb7d242425d`.
+Sections B–J passed. Section K initially opened the installed Shiny
+application, but a later visit to the running application failed while
+`bslib`/Shiny attempted to copy JavaScript and related assets into runtime
+temporary directories. Cleanup then encountered read-only copied directories
+and files. The expected Ctrl+C `operation_interrupted` result is not part of
+the defect.
+
+The subsequent read-only investigation established that installation
+promotion intentionally applies `0444` to installed files and `0555` to
+installed directories, including third-party packages; Shiny, `bslib`, and
+Sass preserve those source modes for some runtime asset copies; an initial
+copy can create read-only runtime content whose later overwrite and cleanup
+fail; and the original installed-application acceptance harness only opened a
+TCP socket. It did not issue an HTTP page request or exercise dependency and
+asset materialization. An isolated exact-asset experiment reproduced the
+permission-preserving first copy and permission-denied second overwrite.
+
+That mechanism is confirmed. The observed browser-revisit explanation is
+strongly supported but was not repeated through another full application
+launch. Observation and direct reproduction are currently macOS evidence;
+equivalent Ubuntu HTTP-path evidence remains required even though the same
+POSIX copy semantics make exposure credible.
+
+The authoritative implementation plan now appends **Increment 11.I —
+Post-acceptance amendment: installed application runtime permissions**. Its
+leading candidate is an isolated writable application runtime projection
+derived from the exact selected verified installation while the authoritative
+installation and private library remain immutable. Its first authorized phase
+would decide, from isolated evidence, among a complete exact private-library
+projection, a validated closed application-dependency subset, and narrower
+asset-only staging through stable upstream interfaces. It expressly excludes
+a writable authoritative installation, project-local runtime content,
+distribution redesign, analytical/product changes, unrelated UI work, and
+Stage 12 implementation.
+
+**Planning status:** **Proposed — Awaiting Plan Approval — Not Implemented**.
+This entry records planning history only. No remediation source, test,
+installer, application-runtime, project, distribution, release, deployment,
+or Stage 12 change occurred. Explicit human plan approval is required before
+11.I implementation begins; future implementation and formal acceptance will
+be recorded separately rather than rewriting this proposal or the original
+Stage 11 record.

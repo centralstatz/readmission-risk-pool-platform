@@ -2,11 +2,17 @@
 
 ## Status and authority
 
-**Status:** authoritative roadmap; Stages 1–11 are accepted and complete. Stage
-11 was accepted on 2026-10-14 at implementation baseline
+**Status:** authoritative roadmap; the original Stages 1–11 are accepted and
+complete. Stage 11 was accepted on 2026-10-14 at implementation baseline
 `8bb1a3798b92f5407b0772d60f067fc182f45fb3` after its eight increments,
 revision-matched hosted evidence, independent assurance assessment, and final
-architecture reconciliation were accepted. Stage 12 is next and has not begun.
+architecture reconciliation were accepted. A later independent manual
+assessment at source revision
+`ac0f64825956c7efb68b87a383616fb7d242425d` exposed an installed-application
+runtime-permissions defect outside the original acceptance probe. Proposed
+post-acceptance Increment 11.I below awaits plan approval and is not
+implemented; it does not alter the original acceptance decision. Stage 12 is
+the next new stage and has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -71,9 +77,11 @@ operability before the needed layers exist.
 ## Progressive planning rule
 
 Only the current implementation stage is decomposed before source work.
-Stages 1–11 are accepted and complete; their detailed plans remain as
-implementation lineage. Stage 12 is the next stage and has not been detailed
-or begun. After a stage is implemented:
+The original Stages 1–11 are accepted and complete; their detailed plans
+remain as implementation lineage. Proposed post-acceptance Increment 11.I is
+a bounded corrective amendment awaiting approval, not retroactive original
+scope and not Stage 12 work. Stage 12 is the next new stage and has not been
+detailed or begun. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -8105,6 +8113,179 @@ configured package repositories on each claimed OS/R cell but not an artificial
 offline/bundled-closure test; Stage 14 release qualification,
 tagging, publication, public acquisition, and public immutability evidence; and
 clinical validation remain outside Stage 11.
+
+### Increment 11.I — Post-acceptance amendment: installed application runtime permissions
+
+**Status:** **Proposed — Awaiting Plan Approval — Not Implemented**
+
+**Discovery and chronology:** Stage 11's original scope was implemented and
+accepted on 2026-10-14 at exact revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3`. That acceptance and the preceding
+11.A–11.H implementation record remain historically intact. On 2026-10-19, an
+independent human execution of the
+[Post-Stage-11 Manual Platform Assessment](assessments/post-stage-11-manual-platform-assessment.md)
+used clean source revision `ac0f64825956c7efb68b87a383616fb7d242425d`.
+Sections B–J passed. In Section K the installed Shiny application initially
+loaded, but revisiting it produced `bslib`/Shiny asset-copy permission failures
+and left runtime temporary content that could not be cleaned normally. This
+later source revision must not be confused with the accepted Stage 11
+implementation baseline.
+
+This amendment was created after acceptance. It was not anticipated original
+Stage 11 scope, does not reverse or rewrite that acceptance, has not been
+approved for implementation, and is not Stage 12 work.
+
+**Defect and evidence boundary:** investigation confirmed the underlying
+permission mechanism:
+
+1. installation promotion deliberately hardens all installed files to `0444`
+   and directories to `0555`, including the version-private third-party R
+   package library;
+2. the installed Shiny, `bslib`, and Sass path copies some package assets into
+   runtime temporary directories while preserving their source permission
+   modes;
+3. an initial copy can therefore succeed while creating read-only runtime
+   files or nested directories, after which repeated dependency materialization
+   can fail to overwrite them and normal cleanup can fail to remove them; and
+4. the original installation acceptance probe established process startup and
+   a listening socket, but made no HTTP page request and did not exercise
+   dependency or browser-asset materialization.
+
+The permission-copy and overwrite failure was reproduced independently using
+the exact assessed installed asset. The browser-revisit sequence is strongly
+supported by the observed failure, preserved temporary-tree modes, and the
+inspected dependency code, but was not independently repeated through a
+second full application launch. The defect was observed on macOS. The same
+POSIX permission-copy semantics make Linux exposure credible, but equivalent
+full HTTP reproduction on Ubuntu remains to be established.
+
+**Affected architectural boundary:** the defect is at the boundary between
+the selected verified immutable software realization and writable disposable
+application-runtime assets. It is not evidence of a project-contract,
+analytical-history, product-materialization, or distribution-content defect.
+The correction must preserve all of these invariants:
+
+- the installed realization and authoritative private R library remain
+  immutable and verifiable;
+- application execution does not alter installed software or its identity;
+- runtime-generated assets are writable, private to the operation, and
+  disposable;
+- the selected installation identity and dependency provenance remain the
+  authority for every runtime byte;
+- no runtime projection or cache is stored in a hospital project; and
+- project source, state, history, and materialized products remain unchanged
+  by runtime preparation and cleanup.
+
+**Leading remediation candidate:** establish an isolated writable application
+runtime projection derived only from the exact selected verified installation.
+The application-launch owner would verify the selected realization, prepare a
+private writable runtime environment whose assets do not inherit unusable
+permissions, run the supplied Shiny application against that environment,
+retain the immutable installed resource and identity authorities, clean owned
+runtime material on normal exit and failure, and prevent unsafe reuse across
+software identities. The hospital project supplies only the same explicit
+validated products and presentation inputs it supplies today.
+
+The precise projection mechanism is deliberately unsettled. An approved
+implementation must begin with a bounded decision gate and choose among:
+
+| Candidate | Correctness and maintenance | Portability and cost |
+| --- | --- | --- |
+| Complete writable projection of the exact private library | Clearest closed realization and least risk of omitting a dynamically used dependency; simplest initial correctness model, but copies more than the application needs. | Avoids upstream-internal hooks and can be portable, but has the highest startup I/O, temporary-space, and cleanup cost. |
+| Validated closed application-dependency subset | Retains an explicit dependency boundary with less runtime copying; requires a version-specific closure authority and proof that no dynamic package or asset is omitted. | Lower expected startup and space cost, but greater closure, upgrade, and maintenance complexity. |
+| Narrow asset-only staging through stable upstream interfaces | Smallest runtime footprint and closest fit to the immediate failure. It is acceptable only if supported public Shiny/`bslib`/Sass interfaces can fully control asset sources and lifecycle without namespace patching or duplicated upstream logic. | Potentially lowest cost, but currently the least established and most vulnerable to dependency-version behavior. |
+
+The gate must prefer the narrowest mechanism that demonstrates complete
+correctness through supported interfaces. It must reject namespace monkey-
+patching, a writable authoritative installation, an unverified shared mutable
+cache, or any option that makes project content part of software runtime
+state. If the narrow mechanisms cannot meet those conditions, the complete
+exact projection is the conservative fallback.
+
+**Proposed implementation phases:**
+
+1. **Decision gate and isolated proof.** Reproduce initial and repeated real
+   HTTP dependency materialization on the claimed macOS and hosted Ubuntu/R
+   4.4 cells; prototype the candidate boundaries outside projects; select and
+   document the smallest supported mechanism that preserves every invariant.
+2. **Runtime preparation and isolation.** Add one application-owned operation
+   for verified projection preparation, permission normalization, identity
+   binding, and fail-closed cleanup without changing the installation or
+   project.
+3. **Launch and lifecycle integration.** Route only installed application
+   launch through that runtime boundary; adjust CLI/process supervision only
+   as necessary for deterministic startup, intentional interruption, failure
+   cleanup, and selected-version isolation.
+4. **Regression evidence and closeout.** Strengthen package and complete
+   installation validation, update version-matched operator guidance, append
+   the actual corrective implementation record, obtain exact committed hosted
+   evidence, and perform separate amendment acceptance.
+
+**Bounded implementation scope:** likely owners are application launch/runtime
+setup, application-runtime isolation and lifecycle management, CLI supervision
+only where required, runtime permission normalization, temporary-resource
+cleanup, package/installation regression evidence, relevant installed operator
+guidance, and the later amendment implementation/acceptance records.
+
+This amendment does not redesign the distribution format; weaken immutable
+installation or verification; change package provenance; redesign project
+contracts; alter producer, provider, analytical execution, state, history, or
+product semantics; add deployment artifacts; begin Stage 12; or add unrelated
+UI behavior.
+
+**Proposed automated acceptance criteria:**
+
+1. a copied distribution restores and promotes one installation with the
+   accepted immutable file/directory posture before the application test;
+2. an initial real HTTP page request succeeds through the installed CLI;
+3. repeated independent HTTP page requests to the same supervised application
+   succeed;
+4. referenced JavaScript, CSS, font, Selectize, and other local application
+   assets are retrieved successfully rather than inferred from an open socket;
+5. an automated independent reconnection equivalent succeeds after the first
+   client disconnects;
+6. application output contains no permission-denied asset copy, failed
+   dependency copy, or Sass/`bslib` dependency-construction failure;
+7. the application process remains healthy and responsive across requests;
+8. intentional foreground interruption retains the documented structured
+   `operation_interrupted` and exit-130 behavior;
+9. normal exit and controlled startup/runtime failure remove all attempt-owned
+   writable runtime material without masking the primary result;
+10. exact installed-software verification passes after application execution,
+    and byte/mode evidence establishes that the authoritative installation was
+    not changed;
+11. byte-level project evidence establishes that runtime preparation,
+    operation, and cleanup did not modify the independent hospital project;
+12. damaged/unverifiable selected software, incomplete projection, cleanup
+    conflict, and cross-version reuse attempts fail closed without changing
+    installed software, selection state, or project content;
+13. runtime content is private, confined to its attempt-owned root, rejects
+    unsafe links or path escape, remains traceably derived from the selected
+    design's closed inputs, and cannot be reused under a different installation
+    identity;
+14. the complete repository, package, distribution, and installation
+    validation appropriate to the actual correction passes locally on the
+    exact candidate; and
+15. the direct HTTP/reconnection/application-cleanup proof passes in the hosted
+    Ubuntu/R 4.4 workflow for the exact committed candidate, with targeted
+    macOS evidence on the supported local R 4.4 cell.
+
+**Human-operated verification:** after the automated criteria pass, a
+maintainer repeats the bounded Section K experience on macOS: launch through
+the installed CLI, inspect the expected product-only UI and assets, close and
+reopen the browser tab, confirm the application remains usable, stop it with
+Ctrl+C, and confirm understandable interruption and cleanup behavior. This is
+targeted UX confirmation, not a substitute for the automated HTTP,
+nonmutation, integrity, or failure-path evidence.
+
+**Approval and completion boundary:** no implementation or test change has
+been authorized or made by this proposal. Human acceptance of this plan is
+required before Phase 1 begins. Later implementation completion will require a
+separate record entry; exact committed hosted evidence and a separate formal
+11.I acceptance decision are required before the amendment can be called
+complete. Until then, its status remains **Proposed — Awaiting Plan Approval —
+Not Implemented**. The original Stage 11 acceptance remains historical fact,
+and Stage 12 remains unstarted.
 
 ## Stage 12 — Product-only artifacts and deployment realizations
 
