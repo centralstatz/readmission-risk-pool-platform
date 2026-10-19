@@ -8116,7 +8116,8 @@ clinical validation remain outside Stage 11.
 
 ### Increment 11.I — Post-acceptance amendment: installed application runtime permissions
 
-**Status:** **Proposed — Awaiting Plan Approval — Not Implemented**
+**Status:** **Approved for implementation — 11.I.1 design resolved — corrective
+implementation not started**
 
 **Discovery and chronology:** Stage 11's original scope was implemented and
 accepted on 2026-10-14 at exact revision
@@ -8132,8 +8133,9 @@ later source revision must not be confused with the accepted Stage 11
 implementation baseline.
 
 This amendment was created after acceptance. It was not anticipated original
-Stage 11 scope, does not reverse or rewrite that acceptance, has not been
-approved for implementation, and is not Stage 12 work.
+Stage 11 scope, does not reverse or rewrite that acceptance, was approved for
+implementation on 2026-10-19, and is not Stage 12 work. Increment 11.I.1 has
+resolved the corrective design; it made no production or test change.
 
 **Defect and evidence boundary:** investigation confirmed the underlying
 permission mechanism:
@@ -8241,6 +8243,84 @@ already calls its library immutable.
 | A — conventional private R library | Uses ordinary R/Shiny behavior and preserves the simpler selected-library execution model. | Changes prevention into detection for in-place modification; requires sufficient realized-library integrity coverage and explicit reconciliation of the word “immutable.” | **Preferred starting point**, subject to evidence that all accepted guarantees remain established. |
 | B — physically read-only library plus runtime projection | Retains preventative read-only modes on the authoritative realization. | Introduces a custom application runtime subsystem, copying/cleanup, extra identity concerns, portability/performance burden, and a second package context. | Fallback only after a demonstrated requirement rules out Candidate A. |
 
+**11.I.1 investigation and design resolution:** Candidate A is viable and is
+the approved corrective architecture. Recursive hardening entered in Increment
+11.E through `rrp_install_make_read_only()` after atomic promotion. The
+architecture and accepted Stage 11 plan require an identity-stable,
+version-isolated realization that supported operations do not mutate and whose
+disagreement is detected fail-closed; neither authority prescribes `0444` or
+`0555`, and no accepted test independently requires those numeric modes.
+Permission bits are excluded from normalized content identity. The owning user
+can also change the restrictive modes, so they were accidental-write
+prevention rather than a security boundary.
+
+On macOS/R 4.4.1 with umask `0022`, an isolated ordinary `R CMD INSTALL` of
+`rrpruntime` produced `0755` package directories and `0644` ordinary files.
+The locally installed Shiny dependency stack likewise uses owner-writable
+conventional package files/directories, with executable package content left
+executable where applicable. A disposable asset experiment proved repeated
+overwrite of a conventionally installed `bslib` JavaScript asset succeeds,
+while changing the source to `0444` reproduces the successful first copy and
+failed second overwrite. Repeated Sass output and HTML dependency copying also
+succeeded in writable disposable cache/output directories. This establishes
+the permission mechanism and design, not full application acceptance; exact
+Ubuntu and installed-RRP HTTP evidence remains mandatory during implementation.
+
+The minimum correction is:
+
+1. remove recursive post-promotion mode rewriting from
+   `distribution/install-engine.R`; retain the modes produced by ordinary
+   package installation and the builder's existing `0644` ordinary-file/
+   `0755` executable normalization, and use conventional executable permission
+   for the per-user stable shim;
+2. leave the private library in place and launch RRP/Shiny directly from it;
+   add no projection, copied runtime library, or asset staging;
+3. generate before promotion one deterministic, path-sorted realized-library
+   inventory covering every regular file beneath `library/` by relative path,
+   size, and SHA-256; reject links, nonregular entries, unsafe/case-conflicting
+   paths, missing/extra files, or digest disagreement; bind the inventory
+   digest into a versioned installation record without changing the existing
+   installation-identity derivation;
+4. extend strict installed verification to validate that inventory in addition
+   to the existing distribution payload, dependency closure/version/path/
+   `DESCRIPTION`, resource, host-R, and launcher checks. Full library hashing
+   is required for staged install, exact reinstall, explicit software
+   verification/doctor, activation or rollback, verified-list status, and
+   exact uninstall. The acceptance harness runs it immediately before and
+   after the application proof. Routine analytical CLI preflight retains the
+   current structural identity, package-path/version, resource, and launcher
+   checks and must not be described as a full-byte verification; it does not
+   rehash the entire library on every invocation;
+5. keep lifecycle meaning unchanged: supported operations never modify the
+   promoted realization; detected disagreement blocks strict trust or
+   lifecycle mutation and recovery remains reinstall/select another verified
+   realization, not in-place repair; and
+6. simplify new-install cleanup that existed only to reverse recursive
+   hardening, while retaining defensive permission normalization in exact
+   uninstall/removal so prior restrictive or damaged owned trees remain
+   removable.
+
+The realized-library inventory is installation evidence, not a new package-
+acquisition or generalized integrity architecture. It should reuse the
+existing safe-relative-path, closed-inventory, size, SHA-256, DCF, and bounded
+diagnostic conventions. The installation-record authority must version the
+new bound digest/companion evidence. Physical modes remain outside
+installation and distribution identity. This detects uncoordinated installed-
+content changes; it does not claim authenticity against a malicious owning
+user who can rewrite both content and local evidence.
+
+Expected implementation owners are
+`distribution/install-engine.R`,
+`resources/contracts/lifecycle/installation-record.dcf`,
+`packages/rrpplatform/R/software-lifecycle.R`, and, only where the strict/
+structural call boundary requires it, `packages/rrpplatform/R/cli.R`.
+`tools/validate-installation.R` owns conventional-mode, arbitrary library-file
+tamper, lifecycle, real HTTP/reconnection/asset, cleanup, and pre/post-
+integrity evidence. Existing lifecycle-contract/package tests and installed
+Installation and Software Lifecycle Guides change only as required by that
+realized boundary. No application production change is expected unless real
+HTTP evidence establishes a separate defect.
+
 **Revised proposed implementation structure:**
 
 1. **Confirm the hardening requirement.** Trace the original purpose, tests,
@@ -8289,20 +8369,25 @@ redesign project contracts; alter producer, provider, analytical execution,
 state, history, or product semantics; add deployment artifacts; begin Stage
 12; or add unrelated UI behavior.
 
-**Outstanding decisions before implementation approval:**
+**Resolved decisions and remaining implementation evidence:** recursive
+hardening was an implementation choice, not an accepted same-user security
+requirement. Conventional R installation output is the package-library
+permission authority; RRP does not impose a second blanket numeric mode scheme.
+The protected byte boundary is the complete regular-file content of the
+version-private library plus the already closed distribution-owned payload.
+Strict full-library verification occurs at the explicit lifecycle boundaries
+listed above, not every ordinary CLI invocation. “Immutable” therefore means
+atomic, identity-stable, non-mutating through supported operations, and fail-
+closed when strict verification detects disagreement; it does not promise an
+OS security boundary against the owner.
 
-- whether recursive hardening implemented a documented security requirement
-  beyond preventing accidental same-user writes;
-- the exact conventional modes required for the private package library and
-  which RRP-owned non-library files should remain physically read-only;
-- the complete installed-content boundary whose modification must be detected,
-  including whether and how to inventory normalized installed package bytes;
-- the cost and timing of verification at install, activation, operation,
-  doctor, rollback, and uninstall boundaries; and
-- whether evidence supports interpreting the architecture's “immutable”
-  realization as atomic, identity-stable, non-mutating through supported
-  operations, and fail-closed on detected disagreement without requiring
-  recursive filesystem write denial.
+Implementation must still measure inventory cost on the realized closure,
+confirm the exact conventional modes produced on macOS and hosted Ubuntu,
+prove real HTTP/reconnection/asset and cleanup behavior, and determine whether
+any non-library mode needs a narrowly justified exception. Those are evidence
+and bounded implementation details, not unresolved architectural choices. A
+contradictory result stops Candidate A for human review rather than silently
+introducing Candidate B.
 
 **Proposed automated acceptance criteria:**
 
@@ -8311,7 +8396,9 @@ state, history, or product semantics; add deployment artifacts; begin Stage
    permissions;
 2. closure, versions, dependency provenance, installation identity, resource
    authority, launcher context, and the strengthened installed-content
-   integrity evidence agree before activation or operation;
+   integrity evidence agree at every strict lifecycle boundary; ordinary CLI
+   preflight retains its existing structural checks and makes no full-byte
+   verification claim;
 3. a controlled modification anywhere inside the protected installed-content
    boundary is detected by the owning verifier and blocks trust or lifecycle
    mutation with bounded recovery;
@@ -8352,14 +8439,16 @@ Ctrl+C, and confirm understandable interruption and cleanup behavior. This is
 targeted UX confirmation, not a substitute for the automated HTTP,
 nonmutation, integrity, or failure-path evidence.
 
-**Approval and completion boundary:** no implementation or test change has
-been authorized or made by this proposal. Human acceptance of this plan is
-required before Phase 1 begins. Later implementation completion will require a
-separate record entry; exact committed hosted evidence and a separate formal
-11.I acceptance decision are required before the amendment can be called
-complete. Until then, its status remains **Proposed — Awaiting Plan Approval —
-Not Implemented**. The original Stage 11 acceptance remains historical fact,
-and Stage 12 remains unstarted.
+**Approval and completion boundary:** the revised Candidate A plan is approved,
+and 11.I.1 completed only its investigation and design resolution. No
+production implementation or test change has been made. A separately
+authorized implementation iteration must realize and validate the correction.
+Later implementation completion requires a separate record entry; exact
+committed hosted evidence and a separate formal 11.I acceptance decision are
+required before the amendment can be called complete. Until then, its status
+remains **Approved for implementation — 11.I.1 design resolved — corrective
+implementation not started**. The original Stage 11 acceptance remains
+historical fact, and Stage 12 remains unstarted.
 
 ## Stage 12 — Product-only artifacts and deployment realizations
 

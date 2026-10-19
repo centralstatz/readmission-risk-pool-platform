@@ -7431,3 +7431,107 @@ or Stage 12 change occurred. Explicit human plan approval is required before
 11.I implementation begins; future implementation and formal acceptance will
 be recorded separately rather than rewriting this proposal or the original
 Stage 11 record.
+
+## Stage 11 / Increment 11.I.1 — Installation hardening assessment and conventional R library design — 2026-10-19
+
+Human review approved the revised Increment 11.I Candidate A direction and
+authorized this bounded investigation/design iteration. Work began from clean,
+synchronized revision `119ba905cc7fded514b0a5350800c9928202ad38`, which
+contains the revised plan but no corrective implementation. The original
+Stage 11 implementation and acceptance, the post-acceptance manual defect, and
+the initial unapproved runtime-projection proposal remain preserved above.
+
+Git and source tracing found that recursive filesystem hardening entered with
+Increment 11.E in commit `a45a90d0c7088238f90369ba79116ff5f69ebcd8` through
+`rrp_install_make_read_only()`: after verified atomic promotion it changed all
+installed files to `0444`, selected scripts to `0555`, and every directory to
+`0555`. The accepted architecture and Stage 11 plan required immutable or
+equivalently atomic side-by-side realizations, private-library isolation,
+provenance, verification, and project-independent lifecycle behavior, but did
+not prescribe those numeric modes or same-user write prevention. No package,
+installation, lifecycle, doctor, or acceptance test independently asserts
+that package files or directories are read-only. Verification checks only
+launcher executability. Installation failure cleanup and uninstall normalize
+permissions because the implementation created a read-only tree; installation
+identity, distribution identity, inventory digests, activation, and rollback
+do not incorporate mode bits.
+
+The current integrity boundary was inspected precisely. Every distribution-
+owned payload file is closed by exact path, size, and SHA-256 and unexpected
+non-library files or links are rejected. The private library is checked for
+the exact package-name/version closure, exact private paths, canonical external
+dependency `DESCRIPTION` integrity, internal-package archive identity,
+resource validity, loadability, host R, and launcher context. Files beyond
+external-package `DESCRIPTION`, and installed internal-package files after
+installation, are not byte-inventoried. Thus current verification is strong
+provenance/closure evidence but is not complete realized-library byte-change
+detection. Recursive permissions supplied accidental-write prevention for
+that gap; they did not supply authenticity against the owning user, who can
+change the modes and local evidence.
+
+Disposable macOS arm64/R 4.4.1 evidence used no preserved assessment artifact
+or project. With umask `0022`, ordinary `R CMD INSTALL` of `rrpruntime` into a
+temporary library produced `0755` package directories and `0644` ordinary
+files. Locally installed Shiny-stack packages use the same owner-writable
+directory/ordinary-file posture while retaining executable package files where
+applicable. Repeated copying and overwrite of a conventional `bslib` JavaScript
+asset succeeded and produced a writable `0644` destination. The same isolated
+primitive with a `0444` source succeeded once, preserved `0444` on the copied
+file, and failed on overwrite. Repeated Sass output and HTML dependency copying
+also succeeded with writable disposable output/cache paths. This evidence
+establishes that conventional package permissions remove the reproduced
+failure primitive; it does not substitute for exact installed-RRP HTTP proof
+or hosted Ubuntu evidence.
+
+The design resolution is to proceed with Candidate A. The implementation will
+remove recursive post-promotion hardening, preserve ordinary `R CMD INSTALL`
+package modes and the builder's conventional ordinary/executable modes, use
+conventional executable permission for the stable shim, and continue launching
+Shiny directly from the selected version-private library. No runtime library
+projection, dependency copy, custom asset staging, or new application child-
+process subsystem is justified.
+
+To preserve detection while relinquishing automatic same-user write denial,
+the installer will generate before promotion one deterministic closed inventory
+of every regular file under `library/`, recording safe relative path, size, and
+SHA-256 and rejecting links, nonregular content, unsafe/case-conflicting paths,
+or missing/extra/digest disagreement. A digest of that companion evidence will
+be bound into a versioned installation record without changing the established
+installation-identity derivation. Strict verification will compose that
+inventory with the existing distribution payload, dependency, resource,
+host-R, and launcher checks. It is required during staged install, exact
+reinstall, explicit verify/doctor, activation/rollback, verified-list status,
+exact uninstall, and immediately before and after the amendment's application
+acceptance proof. Ordinary analytical CLI preflight retains its current
+structural identity/path/version/resource/launcher checks and will not be
+misrepresented as full-byte verification or made to rehash the complete
+library on every invocation.
+
+The expected implementation owners are `distribution/install-engine.R`, the
+installation-record authority, installed lifecycle verification and its
+strict/structural call boundary, installation/lifecycle contract tests,
+`tools/validate-installation.R`, and the installed Installation and Software
+Lifecycle Guides. New-install cleanup can drop mode reversal that exists only
+for recursive hardening; exact removal retains defensive normalization so
+older restrictive or damaged owned trees remain removable. Production
+application code should remain unchanged unless real HTTP evidence establishes
+a separate defect.
+
+Implementation evidence must cover arbitrary private-library-file tampering,
+the unchanged distribution payload boundary, lifecycle nonmutation and
+recovery, inventory cost, conventional macOS and hosted Ubuntu modes, initial
+and repeated real HTTP requests, independent reconnection, referenced assets,
+writable disposable runtime state, cleanup, interruption, and installed and
+project byte integrity before/after operation. The complete accepted Stage 11
+lifecycle regressions remain required. If evidence reveals a concrete accepted
+requirement that Candidate A cannot satisfy, implementation must stop for human
+review rather than pivot to Candidate B.
+
+**11.I.1 result:** design resolved; Candidate A is approved and recommended
+for the separate corrective implementation iteration. Increment 11.I remains
+incomplete and unaccepted. No production source, test, installer, permission,
+manual-assessment installation, hospital project, release, deployment, or
+Stage 12 change occurred.
+
+**Next task:** separately authorize the Candidate A corrective implementation;
+do not begin it automatically from this design-only iteration.
