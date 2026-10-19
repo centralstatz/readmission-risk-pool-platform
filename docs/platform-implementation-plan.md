@@ -8159,116 +8159,190 @@ second full application launch. The defect was observed on macOS. The same
 POSIX permission-copy semantics make Linux exposure credible, but equivalent
 full HTTP reproduction on Ubuntu remains to be established.
 
-**Affected architectural boundary:** the defect is at the boundary between
-the selected verified immutable software realization and writable disposable
-application-runtime assets. It is not evidence of a project-contract,
-analytical-history, product-materialization, or distribution-content defect.
-The correction must preserve all of these invariants:
+**Governing correction principle:** RRP should behave like ordinary R and R
+packages by default. A platform-specific runtime mechanism must answer a
+demonstrated requirement that established R package conventions cannot meet;
+the existence of a platform-specific mechanism in the current implementation
+is not itself such a requirement.
 
-- the installed realization and authoritative private R library remain
-  immutable and verifiable;
-- application execution does not alter installed software or its identity;
-- runtime-generated assets are writable, private to the operation, and
-  disposable;
-- the selected installation identity and dependency provenance remain the
-  authority for every runtime byte;
-- no runtime projection or cache is stored in a hospital project; and
-- project source, state, history, and materialized products remain unchanged
-  by runtime preparation and cleanup.
+The accepted architecture requires a user-scoped, version-isolated private R
+library; exact dependency provenance; verified atomic promotion; explicit
+selection, activation, rollback, and uninstall; project independence; and
+installed integrity evidence. It describes immutable locations **or an
+equivalent atomic layout**, and it explicitly controls or excludes permissions
+from content identity. It does not state that every installed package file and
+directory must be protected specifically by `0444`/`0555` modes. The original
+Stage 11 plan used stronger physical write prevention as one implementation of
+immutability. This amendment must preserve the accepted guarantees while
+testing whether that stronger mechanism is necessary.
 
-**Leading remediation candidate:** establish an isolated writable application
-runtime projection derived only from the exact selected verified installation.
-The application-launch owner would verify the selected realization, prepare a
-private writable runtime environment whose assets do not inherit unusable
-permissions, run the supplied Shiny application against that environment,
-retain the immutable installed resource and identity authorities, clean owned
-runtime material on normal exit and failure, and prevent unsafe reuse across
-software identities. The hospital project supplies only the same explicit
-validated products and presentation inputs it supplies today.
+**Distinct guarantees and current enforcement:**
 
-The precise projection mechanism is deliberately unsettled. An approved
-implementation must begin with a bounded decision gate and choose among:
-
-| Candidate | Correctness and maintenance | Portability and cost |
+| Concept | Meaning in RRP | Relationship to recursive `0444`/`0555` |
 | --- | --- | --- |
-| Complete writable projection of the exact private library | Clearest closed realization and least risk of omitting a dynamically used dependency; simplest initial correctness model, but copies more than the application needs. | Avoids upstream-internal hooks and can be portable, but has the highest startup I/O, temporary-space, and cleanup cost. |
-| Validated closed application-dependency subset | Retains an explicit dependency boundary with less runtime copying; requires a version-specific closure authority and proof that no dynamic package or asset is omitted. | Lower expected startup and space cost, but greater closure, upgrade, and maintenance complexity. |
-| Narrow asset-only staging through stable upstream interfaces | Smallest runtime footprint and closest fit to the immediate failure. It is acceptable only if supported public Shiny/`bslib`/Sass interfaces can fully control asset sources and lifecycle without namespace patching or duplicated upstream logic. | Potentially lowest cost, but currently the least established and most vulnerable to dependency-version behavior. |
+| Reproducibility | Declared source, target R/platform, package versions, dependency sources/integrity, and build inputs can realize the same normalized content. | Does not require read-only modes. Architecture treats permissions separately from normalized content identity. |
+| Version isolation | Each software identity has its own private library and resource root; the launcher places that library before base R and rejects ambient substitution. | Comes from paths, closure, and `.libPaths()` control, not file modes. |
+| Installation identity | Manifest, distribution/build/dependency identities, recorded host R, installation path, and installation record identify one realization and selector. | Current installation identity does not derive from `0444`/`0555`. |
+| Integrity verification | Verification detects disagreement between selected installed content and its recorded authority and fails closed before trust or lifecycle mutation. | Does not inherently require write protection, but current coverage is not a full byte inventory of every restored package file: distribution-owned payload bytes are closed, while restored dependencies are checked chiefly by closure, version, path, and canonical `DESCRIPTION` integrity. Candidate A therefore requires explicit review and strengthening of realized-library detection before physical prevention is relaxed. |
+| Filesystem write protection | Recursive modes prevent ordinary same-user processes from writing package files without first changing permissions. | This guarantee specifically depends on `0444` files and `0555` directories. It is preventative, is not the same as integrity verification, is not a security boundary against the owning user, and is the mechanism implicated in the Shiny failure. |
 
-The gate must prefer the narrowest mechanism that demonstrates complete
-correctness through supported interfaces. It must reject namespace monkey-
-patching, a writable authoritative installation, an unverified shared mutable
-cache, or any option that makes project content part of software runtime
-state. If the narrow mechanisms cannot meet those conditions, the complete
-exact projection is the conservative fallback.
+Atomic staging/promotion, side-by-side ownership, exact selection, private-
+library resolution, configured-repository provenance, activation and rollback,
+project independence, and distribution inventory/digests do not depend on the
+recursive modes. The current install failure path and exact uninstall do
+contain permission-normalization mechanics because the installed tree is
+read-only; those mechanics must be reconciled rather than assumed necessary.
+What would be intentionally relinquished under conventional modes is automatic
+filesystem prevention of ordinary in-place writes. It may be replaced only by
+adequate detection and fail-closed handling, not by an unsupported claim that
+today's narrower dependency checks already detect every modification.
 
-**Proposed implementation phases:**
+**Candidate A — conventional private R library (preferred starting point):**
+retain the exact version-specific private library, software root, installation
+record and identity, dependency specification/provenance, atomic promotion,
+explicit activation, rollback, uninstall, and project separation. Stop
+recursively imposing restrictive modes where they conflict with the normal
+permissions produced by R package installation. Launch RRP and Shiny directly
+from the selected private library through ordinary R package mechanisms.
 
-1. **Decision gate and isolated proof.** Reproduce initial and repeated real
-   HTTP dependency materialization on the claimed macOS and hosted Ubuntu/R
-   4.4 cells; prototype the candidate boundaries outside projects; select and
-   document the smallest supported mechanism that preserves every invariant.
-2. **Runtime preparation and isolation.** Add one application-owned operation
-   for verified projection preparation, permission normalization, identity
-   binding, and fail-closed cleanup without changing the installation or
-   project.
-3. **Launch and lifecycle integration.** Route only installed application
-   launch through that runtime boundary; adjust CLI/process supervision only
-   as necessary for deterministic startup, intentional interruption, failure
-   cleanup, and selected-version isolation.
-4. **Regression evidence and closeout.** Strengthen package and complete
-   installation validation, update version-matched operator guidance, append
-   the actual corrective implementation record, obtain exact committed hosted
-   evidence, and perform separate amendment acceptance.
+Implementation must first determine the minimum change: package-library files
+and directories should use conventional usable R installation modes, while
+RRP-owned launchers, records, or non-package payload may retain appropriate
+bounded modes if those modes do not interfere with supported operation. The
+installed verifier must then provide detection commensurate with the accepted
+integrity claim over the realized library. The exact inventory/digest or
+equivalent representation, canonicalization, verification frequency, and
+performance budget remain implementation decisions; package name/version and
+`DESCRIPTION` integrity alone must not be described as complete byte-level
+tamper detection.
 
-**Bounded implementation scope:** likely owners are application launch/runtime
-setup, application-runtime isolation and lifecycle management, CLI supervision
-only where required, runtime permission normalization, temporary-resource
-cleanup, package/installation regression evidence, relevant installed operator
-guidance, and the later amendment implementation/acceptance records.
+Candidate A trades some prevention for compatibility and simplicity. An
+ordinary same-user process could modify a conventionally writable installed
+file, but supported RRP operations never do so, and strengthened verification
+must detect material disagreement before the realization is trusted. This is
+consistent with an owner-controlled R installation unless review establishes
+that same-user write prevention—not merely detection—is an actual accepted
+security or support requirement.
 
-This amendment does not redesign the distribution format; weaken immutable
-installation or verification; change package provenance; redesign project
-contracts; alter producer, provider, analytical execution, state, history, or
-product semantics; add deployment artifacts; begin Stage 12; or add unrelated
-UI behavior.
+**Candidate B — physically read-only library with runtime projection:** retain
+recursive restrictive modes and introduce a writable application runtime
+projection derived from the selected verified realization. This preserves
+automatic write prevention but adds copying, identity binding, cleanup,
+startup overhead, disk usage, lifecycle states, cross-version reuse hazards,
+and another runtime boundary that ordinary R applications do not require.
+Candidate B is a fallback only if the initial investigation demonstrates a
+concrete requirement for physical same-user write prevention that Candidate A
+cannot preserve, or if conventional permissions fail a separately accepted
+requirement. It must not be selected merely because the current implementation
+already calls its library immutable.
+
+| Candidate | Main advantage | Main cost and risk | Planning posture |
+| --- | --- | --- | --- |
+| A — conventional private R library | Uses ordinary R/Shiny behavior and preserves the simpler selected-library execution model. | Changes prevention into detection for in-place modification; requires sufficient realized-library integrity coverage and explicit reconciliation of the word “immutable.” | **Preferred starting point**, subject to evidence that all accepted guarantees remain established. |
+| B — physically read-only library plus runtime projection | Retains preventative read-only modes on the authoritative realization. | Introduces a custom application runtime subsystem, copying/cleanup, extra identity concerns, portability/performance burden, and a second package context. | Fallback only after a demonstrated requirement rules out Candidate A. |
+
+**Revised proposed implementation structure:**
+
+1. **Confirm the hardening requirement.** Trace the original purpose, tests,
+   doctor claims, install failure behavior, uninstall cleanup, and every
+   accepted guarantee that actually depends on recursive permission hardening.
+   Decide explicitly whether filesystem prevention is required or was an
+   implementation choice for lifecycle immutability.
+2. **Establish minimum conventional permissions.** Determine the smallest
+   package-library permission change needed for ordinary R/Shiny behavior,
+   preserve appropriate executable and private-root permissions, and avoid a
+   blanket writable-software policy where only package conventions are needed.
+3. **Preserve identity and strengthen verification.** Retain installation
+   identity, provenance, version isolation, atomic promotion, explicit
+   selection/activation, rollback, exact uninstall, and project independence;
+   close any realized-library integrity-detection gap exposed by relaxing
+   physical write prevention.
+4. **Exercise the real application boundary.** Replace the socket-only proof
+   with initial and repeated HTTP requests, dependency and asset retrieval,
+   independent reconnection, process-health checks, and privacy-safe failure
+   attribution on macOS and hosted Ubuntu/R 4.4.
+5. **Prove cleanup and post-execution integrity.** Confirm ordinary Shiny
+   temporary assets are writable and disposable, normal and failure shutdown
+   clean their owned runtime state, installed verification still passes, and
+   installation/project byte evidence remains unchanged by application
+   operation.
+6. **Record and accept separately.** Update version-matched operator guidance,
+   append the actual corrective implementation record, obtain exact committed
+   hosted evidence, and perform a separate formal 11.I acceptance decision.
+
+Do not add a library projection, dependency copy, asset staging layer, or new
+application runtime subsystem while Candidate A meets the accepted
+requirements. If Phase 1 finds a concrete blocker, stop and amend/approve the
+plan for Candidate B before implementing that larger architecture.
+
+**Bounded implementation scope:** Candidate A likely affects installation
+permission finalization, installed verification and doctor evidence, exact
+uninstall/failure cleanup where it assumed a read-only tree, complete
+installation regression validation, installed operator guidance, and the
+later implementation/acceptance records. Application or CLI production code
+should change only if real HTTP evidence reveals a defect after conventional
+package permissions are restored.
+
+This amendment does not redesign the distribution format; weaken installation
+identity, provenance, version isolation, selection, or project independence;
+redesign project contracts; alter producer, provider, analytical execution,
+state, history, or product semantics; add deployment artifacts; begin Stage
+12; or add unrelated UI behavior.
+
+**Outstanding decisions before implementation approval:**
+
+- whether recursive hardening implemented a documented security requirement
+  beyond preventing accidental same-user writes;
+- the exact conventional modes required for the private package library and
+  which RRP-owned non-library files should remain physically read-only;
+- the complete installed-content boundary whose modification must be detected,
+  including whether and how to inventory normalized installed package bytes;
+- the cost and timing of verification at install, activation, operation,
+  doctor, rollback, and uninstall boundaries; and
+- whether evidence supports interpreting the architecture's “immutable”
+  realization as atomic, identity-stable, non-mutating through supported
+  operations, and fail-closed on detected disagreement without requiring
+  recursive filesystem write denial.
 
 **Proposed automated acceptance criteria:**
 
-1. a copied distribution restores and promotes one installation with the
-   accepted immutable file/directory posture before the application test;
-2. an initial real HTTP page request succeeds through the installed CLI;
-3. repeated independent HTTP page requests to the same supervised application
-   succeed;
-4. referenced JavaScript, CSS, font, Selectize, and other local application
+1. a copied distribution restores, verifies, and atomically promotes the exact
+   version-specific private library using documented conventional package
+   permissions;
+2. closure, versions, dependency provenance, installation identity, resource
+   authority, launcher context, and the strengthened installed-content
+   integrity evidence agree before activation or operation;
+3. a controlled modification anywhere inside the protected installed-content
+   boundary is detected by the owning verifier and blocks trust or lifecycle
+   mutation with bounded recovery;
+4. active and explicit software selection still resolve only the intended
+   private library, and activation, rollback, reinstall, and exact uninstall
+   retain their accepted atomicity and project independence;
+5. an initial real HTTP page request succeeds through the installed CLI;
+6. repeated independent HTTP page requests and an independent reconnection to
+   the same supervised application succeed;
+7. referenced JavaScript, CSS, font, Selectize, and other local application
    assets are retrieved successfully rather than inferred from an open socket;
-5. an automated independent reconnection equivalent succeeds after the first
-   client disconnects;
-6. application output contains no permission-denied asset copy, failed
-   dependency copy, or Sass/`bslib` dependency-construction failure;
-7. the application process remains healthy and responsive across requests;
-8. intentional foreground interruption retains the documented structured
-   `operation_interrupted` and exit-130 behavior;
-9. normal exit and controlled startup/runtime failure remove all attempt-owned
-   writable runtime material without masking the primary result;
-10. exact installed-software verification passes after application execution,
-    and byte/mode evidence establishes that the authoritative installation was
-    not changed;
-11. byte-level project evidence establishes that runtime preparation,
-    operation, and cleanup did not modify the independent hospital project;
-12. damaged/unverifiable selected software, incomplete projection, cleanup
-    conflict, and cross-version reuse attempts fail closed without changing
-    installed software, selection state, or project content;
-13. runtime content is private, confined to its attempt-owned root, rejects
-    unsafe links or path escape, remains traceably derived from the selected
-    design's closed inputs, and cannot be reused under a different installation
-    identity;
-14. the complete repository, package, distribution, and installation
-    validation appropriate to the actual correction passes locally on the
-    exact candidate; and
-15. the direct HTTP/reconnection/application-cleanup proof passes in the hosted
-    Ubuntu/R 4.4 workflow for the exact committed candidate, with targeted
-    macOS evidence on the supported local R 4.4 cell.
+8. application output contains no permission-denied asset copy, failed
+   dependency copy, or Sass/`bslib` dependency-construction failure, and the
+   process remains healthy across requests;
+9. ordinary runtime assets use writable disposable temporary locations and
+   normal exit plus controlled startup/runtime failure leave no attempt-owned
+   residue or masked primary result;
+10. intentional foreground interruption retains the documented structured
+    `operation_interrupted` and exit-130 behavior;
+11. installed verification passes before and after successful application
+    execution, with evidence that supported operation did not change the
+    installed-content boundary;
+12. byte-level project evidence establishes that launch, operation, shutdown,
+    and verification did not modify the independent hospital project;
+13. repository, package, distribution, installation, tamper, cleanup, and
+    lifecycle regressions appropriate to the actual correction pass locally on
+    the exact candidate;
+14. the direct HTTP/reconnection/asset/cleanup proof passes in the hosted
+    Ubuntu/R 4.4 workflow for the exact committed candidate; and
+15. targeted macOS/R 4.4 evidence reproduces the formerly failing human path
+    successfully under the same integrity and nonmutation assertions.
 
 **Human-operated verification:** after the automated criteria pass, a
 maintainer repeats the bounded Section K experience on macOS: launch through

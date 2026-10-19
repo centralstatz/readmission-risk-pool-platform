@@ -7402,17 +7402,27 @@ launch. Observation and direct reproduction are currently macOS evidence;
 equivalent Ubuntu HTTP-path evidence remains required even though the same
 POSIX copy semantics make exposure credible.
 
-The authoritative implementation plan now appends **Increment 11.I —
+The authoritative implementation plan appends **Increment 11.I —
 Post-acceptance amendment: installed application runtime permissions**. Its
-leading candidate is an isolated writable application runtime projection
-derived from the exact selected verified installation while the authoritative
-installation and private library remain immutable. Its first authorized phase
-would decide, from isolated evidence, among a complete exact private-library
-projection, a validated closed application-dependency subset, and narrower
-asset-only staging through stable upstream interfaces. It expressly excludes
-a writable authoritative installation, project-local runtime content,
-distribution redesign, analytical/product changes, unrelated UI work, and
-Stage 12 implementation.
+initial unapproved draft at revision
+`e8efc11a88271019011c7dc1975982c96b9eccfc` treated a writable runtime
+projection as the leading candidate because it assumed recursive filesystem
+write denial was an accepted invariant. Before plan approval or implementation,
+maintainer review clarified that RRP should follow ordinary R package
+conventions unless a concrete requirement justifies custom runtime machinery.
+
+The revised proposal therefore distinguishes reproducibility, version
+isolation, installation identity, integrity verification, and physical write
+protection. **Candidate A**, the preferred starting point, retains the exact
+version-private library and all existing lifecycle identities/provenance while
+restoring conventional R package permissions and strengthening realized-
+library integrity detection as required. **Candidate B**, restrictive modes
+plus a runtime projection, is now a fallback only if investigation establishes
+that actual same-user filesystem write prevention is an accepted requirement
+that Candidate A cannot satisfy. No projection, dependency copy, or new
+application runtime subsystem is authorized by this planning entry. The
+amendment still excludes project-local runtime content, distribution redesign,
+analytical/product changes, unrelated UI work, and Stage 12 implementation.
 
 **Planning status:** **Proposed — Awaiting Plan Approval — Not Implemented**.
 This entry records planning history only. No remediation source, test,
