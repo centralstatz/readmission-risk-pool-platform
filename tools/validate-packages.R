@@ -1251,6 +1251,14 @@ lifecycle_contract_header <- function(record_type, contract_id) c(
   "Owner-Package" = "rrpplatform"
 )
 
+lifecycle_installation_contract_header <- function() {
+  header <- lifecycle_contract_header(
+    "installation-record-contract", "rrp.installation-record"
+  )
+  header[["Contract-Version"]] <- "0.2.0"
+  header
+}
+
 lifecycle_contract_resources <- function() list(
   distribution_manifest = list(
     id = "rrp.contract.distribution-manifest",
@@ -1322,9 +1330,7 @@ lifecycle_contract_resources <- function() list(
     source_path = "resources/contracts/lifecycle/installation-record.dcf",
     installed_path = "resources/contracts/lifecycle/installation-record.dcf",
     document = c(
-      lifecycle_contract_header(
-        "installation-record-contract", "rrp.installation-record"
-      ),
+      lifecycle_installation_contract_header(),
       "Installation-Record-Type" = "rrp-installation",
       "Fields" = paste(c(
         "Record-Type", "Contract-ID", "Contract-Version", "Installation-ID",
@@ -1332,6 +1338,7 @@ lifecycle_contract_resources <- function() list(
         "Distribution-ID", "Build-ID", "Dependency-Specification-ID",
         "Host-R-Executable", "Host-R-Version", "Platform", "Architecture",
         "Private-Library", "Resource-Root", "Distribution-Manifest-Digest",
+        "Private-Library-Inventory-Path", "Private-Library-Inventory-Digest",
         "Installed-At"
       ), collapse = ","),
       "Installation-ID-Role" = "local_immutable_realization_identity",
@@ -1339,10 +1346,24 @@ lifecycle_contract_resources <- function() list(
       "Dependency-Compatibility" =
         "exact_specification_and_verified_realization",
       "Library-Posture" = "version_private_then_base_r_only",
+      "Library-Permissions" = "conventional_r_package_installation_permissions",
+      "Library-Inventory-Record-Type" = "installed-library-inventory",
+      "Library-Inventory-Fields" = "Record-Type,Path,Size,SHA256",
+      "Library-Inventory-Ordering" = "relative_path_radix",
+      "Library-Inventory-Membership" = "closed_regular_files_no_links",
+      "Strict-Verification-Boundaries" = paste0(
+        "install_reinstall_verify_doctor_activation_rollback_verified_",
+        "listing_uninstall_application_acceptance"
+      ),
+      "Routine-CLI-Preflight" = "structural_without_full_library_hashing",
+      "Filesystem-Write-Protection" = "not_required",
       "Ambient-Library-Substitution" = "prohibited",
       "Project-Fields" = "prohibited",
       "Project-Discovery-Or-Association" = "prohibited",
-      "Mutable-After-Promotion" = "prohibited",
+      "Unintended-Modification" =
+        "detected_and_rejected_at_strict_verification",
+      "Historical-Record-Compatibility" =
+        "older_records_not_complete_under_this_contract",
       "Path-In-Installation-ID" = "prohibited",
       "Durable-History-Attribution" = "prohibited",
       "Unknown-Fields" = "prohibited",

@@ -124,7 +124,7 @@ rrp_install_provision_shim <- function(
         "stable_shim_conflict", "Stable launcher destination contains unrelated content."
       )
     }
-    if (!isTRUE(Sys.chmod(target, mode = "0555", use_umask = FALSE))) {
+    if (!isTRUE(Sys.chmod(target, mode = "0755", use_umask = FALSE))) {
       rrp_install_fail("stable_shim", "Stable launcher could not be made executable.")
     }
     return(target)
@@ -132,7 +132,7 @@ rrp_install_provision_shim <- function(
   staged <- tempfile(".rrp-shim-", tmpdir = executable_root)
   on.exit(if (file.exists(staged)) unlink(staged, force = TRUE), add = TRUE)
   writeLines(rendered, staged, useBytes = TRUE)
-  if (!isTRUE(Sys.chmod(staged, mode = "0555", use_umask = FALSE)) ||
+  if (!isTRUE(Sys.chmod(staged, mode = "0755", use_umask = FALSE)) ||
       !isTRUE(file.rename(staged, target))) {
     rrp_install_fail("stable_shim", "Stable launcher could not be provisioned.")
   }
@@ -242,6 +242,180 @@ rrp_install_write_dcf <- function(record, path) {
   write.dcf(matrix, file = path, width = 500L)
 }
 
+rrp_install_write_records <- function(records, path) {
+  connection <- file(path, open = "wb")
+  on.exit(close(connection), add = TRUE)
+  for (index in seq_along(records)) {
+    record <- records[[index]]
+    writeLines(
+      paste0(names(record), ": ", unname(record)), connection,
+      sep = "\n", useBytes = TRUE
+    )
+    if (index < length(records)) {
+      writeLines("", connection, sep = "\n", useBytes = TRUE)
+    }
+  }
+}
+
+rrp_install_sha256_many <- function(paths) {
+  if (!length(paths)) return(character())
+  utility <- Sys.which("sha256sum")
+  prefix <- character()
+  if (!nzchar(utility)) {
+    utility <- Sys.which("shasum")
+    prefix <- c("-a", "256")
+  }
+  if (!nzchar(utility)) rrp_install_fail(
+    "integrity_tool_unavailable", "A SHA-256 utility is unavailable."
+  )
+  result <- character(length(paths))
+  for (start in seq.int(1L, length(paths), by = 128L)) {
+    indices <- seq.int(start, min(start + 127L, length(paths)))
+    output <- suppressWarnings(system2(
+      utility, c(prefix, vapply(paths[indices], shQuote, character(1L))),
+      stdout = TRUE, stderr = TRUE
+    ))
+    status <- attr(output, "status")
+    digests <- sub("[[:space:]].*$", "", output)
+    if ((!is.null(status) && status != 0L) ||
+        length(digests) != length(indices) ||
+        any(!grepl("^[0-9a-f]{64}$", digests))) {
+      rrp_install_fail("library_integrity", "Private-library hashing failed.")
+    }
+    result[indices] <- digests
+  }
+  result
+}
+
+rrp_install_library_safe_path <- function(path) {
+  is.character(path) && length(path) == 1L && !is.na(path) && nzchar(path) &&
+    !grepl("[[:cntrl:]\\\\]", path) && !startsWith(path, "/") &&
+    !grepl("^[A-Za-z]:", path) && !startsWith(path, "~") &&
+    !startsWith(path, "//") && !endsWith(path, "/") &&
+    !grepl("(^|/)[.]?[.]($|/)|//", path, perl = TRUE) &&
+    identical(path, gsub("\\\\", "/", path))
+}
+
+rrp_install_library_files <- function(library) {
+  rrp_install_assert_plain_directory(library, "library_integrity")
+  paths <- character()
+  visit <- function(directory, relative = "") {
+    entries <- list.files(
+      directory, all.files = TRUE, full.names = TRUE, no.. = TRUE
+    )
+    for (entry in entries) {
+      path <- if (nzchar(relative)) {
+        paste(relative, basename(entry), sep = "/")
+      } else basename(entry)
+      if (!rrp_install_library_safe_path(path) || nzchar(Sys.readlink(entry))) {
+        rrp_install_fail(
+          "library_integrity", "Private library contains an unsafe or linked path."
+        )
+      }
+      if (dir.exists(entry)) {
+        visit(entry, path)
+      } else {
+        if (!isTRUE(file_test("-f", entry))) rrp_install_fail(
+          "library_integrity", "Private library contains a nonregular entry."
+        )
+        paths <<- c(paths, path)
+      }
+    }
+  }
+  visit(library)
+  paths <- sort(paths, method = "radix")
+  if (!length(paths) || anyDuplicated(paths) || anyDuplicated(tolower(paths))) {
+    rrp_install_fail(
+      "library_integrity", "Private-library membership is empty or ambiguous."
+    )
+  }
+  paths
+}
+
+rrp_install_write_library_inventory <- function(root, installation_id) {
+  library <- file.path(root, "library")
+  paths <- rrp_install_library_files(library)
+  absolute <- file.path(library, paths)
+  digests <- rrp_install_sha256_many(absolute)
+  sizes <- sprintf("%.0f", file.info(absolute)$size)
+  records <- c(list(c(
+    "Record-Type" = "installed-library-inventory",
+    "Inventory-Version" = "0.1.0",
+    "Installation-ID" = installation_id,
+    "File-Count" = as.character(length(paths))
+  )), lapply(seq_along(paths), function(index) c(
+    "Record-Type" = "file", "Path" = paths[[index]],
+    "Size" = sizes[[index]], "SHA256" = digests[[index]]
+  )))
+  path <- file.path(root, "library-inventory.dcf")
+  rrp_install_write_records(records, path)
+  list(
+    path = "library-inventory.dcf", digest = rrp_install_sha256_many(path)[[1L]],
+    count = length(paths)
+  )
+}
+
+rrp_install_verify_library_inventory <- function(root, record, verify_files = TRUE) {
+  relative <- record[["Private-Library-Inventory-Path"]]
+  if (!identical(relative, "library-inventory.dcf") ||
+      !rrp_install_library_safe_path(relative)) {
+    rrp_install_fail("library_integrity", "Private-library inventory path is invalid.")
+  }
+  path <- file.path(root, relative)
+  records <- rrp_install_dcf(path, "library_integrity")
+  if (!identical(
+        rrp_install_sha256_many(path)[[1L]],
+        record[["Private-Library-Inventory-Digest"]]
+      ) ||
+      length(records) < 2L) {
+    rrp_install_fail("library_integrity", "Private-library inventory evidence conflicts.")
+  }
+  header <- records[[1L]]
+  files <- records[-1L]
+  if (!identical(names(header), c(
+        "Record-Type", "Inventory-Version", "Installation-ID", "File-Count"
+      )) || !all(vapply(files, function(entry) {
+        identical(names(entry), c("Record-Type", "Path", "Size", "SHA256"))
+      }, logical(1L)))) {
+    rrp_install_fail("library_integrity", "Private-library inventory is invalid.")
+  }
+  paths <- vapply(files, `[[`, character(1L), "Path")
+  valid <- identical(unname(header[c(
+    "Record-Type", "Inventory-Version", "Installation-ID"
+  )]), c(
+    "installed-library-inventory", "0.1.0", record[["Installation-ID"]]
+  )) && identical(suppressWarnings(as.integer(header[["File-Count"]])), length(files)) &&
+    all(vapply(files, function(entry) {
+      identical(entry[["Record-Type"]], "file") &&
+        rrp_install_library_safe_path(entry[["Path"]]) &&
+        grepl("^[0-9]+$", entry[["Size"]]) &&
+        grepl("^[0-9a-f]{64}$", entry[["SHA256"]])
+    }, logical(1L))) && !anyDuplicated(paths) && !anyDuplicated(tolower(paths)) &&
+    identical(paths, sort(paths, method = "radix"))
+  if (!valid) rrp_install_fail(
+    "library_integrity", "Private-library inventory is invalid."
+  )
+  if (isTRUE(verify_files)) {
+    actual <- rrp_install_library_files(file.path(root, "library"))
+    if (!identical(actual, paths)) rrp_install_fail(
+      "library_integrity", "Private-library membership differs from installation evidence."
+    )
+    absolute <- file.path(root, "library", paths)
+    sizes <- sprintf("%.0f", file.info(absolute)$size)
+    digests <- rrp_install_sha256_many(absolute)
+    expected_sizes <- vapply(files, `[[`, character(1L), "Size")
+    expected_digests <- vapply(files, `[[`, character(1L), "SHA256")
+    if (!identical(sizes, expected_sizes) || !identical(digests, expected_digests)) {
+      rrp_install_fail(
+        "library_integrity", "Private-library content differs from installation evidence."
+      )
+    }
+  }
+  invisible(list(
+    file_count = length(files), digest = rrp_install_sha256_many(path)[[1L]]
+  ))
+}
+
 rrp_install_description_hash <- function(path) {
   bytes <- readBin(path, "raw", n = file.info(path)$size)
   contents <- NULL
@@ -283,21 +457,26 @@ rrp_install_validate_record <- function(record) {
     "Product-ID", "Product-Version", "Development-Version", "Distribution-ID",
     "Build-ID", "Dependency-Specification-ID", "Host-R-Executable",
     "Host-R-Version", "Platform", "Architecture", "Private-Library",
-    "Resource-Root", "Distribution-Manifest-Digest", "Installed-At"
+    "Resource-Root", "Distribution-Manifest-Digest",
+    "Private-Library-Inventory-Path", "Private-Library-Inventory-Digest",
+    "Installed-At"
   )
   if (!is.character(record) || !identical(names(record), fields) ||
       !identical(unname(record[c(
         "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
         "Product-Version", "Development-Version"
       )]), c(
-        "rrp-installation", "rrp.installation-record", "0.1.0",
+        "rrp-installation", "rrp.installation-record", "0.2.0",
         "readmission-risk-pool-platform", "1.0.0-dev", "1.0.0-dev"
       )) || any(!grepl("^[0-9a-f]{64}$", record[c(
         "Installation-ID", "Distribution-ID", "Build-ID",
-        "Dependency-Specification-ID", "Distribution-Manifest-Digest"
+        "Dependency-Specification-ID", "Distribution-Manifest-Digest",
+        "Private-Library-Inventory-Digest"
       )])) || !grepl(
         "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
         record[["Installed-At"]]
+      ) || !identical(
+        record[["Private-Library-Inventory-Path"]], "library-inventory.dcf"
       ) || any(!nzchar(record))) {
     rrp_install_fail("installation_record", "Installation evidence is invalid.")
   }
@@ -495,12 +674,9 @@ rrp_install_verify_realization <- function(
   invisible(TRUE)
 }
 
-rrp_install_record <- function(
-  manifest, dependencies, host, destination, installed_at,
-  manifest_root = destination
-) {
+rrp_install_identity <- function(manifest, host, manifest_root) {
   manifest_digest <- rrp_sha256(file.path(manifest_root, "manifest.dcf"))
-  identity <- rrp_install_hash_lines(c(
+  rrp_install_hash_lines(c(
     "rrp-installation-identity-v1",
     paste0("distribution=", manifest[["Distribution-ID"]]),
     paste0("build=", manifest[["Build-ID"]]),
@@ -510,10 +686,18 @@ rrp_install_record <- function(
     paste0("architecture=", host[["architecture"]]),
     paste0("manifest=", manifest_digest)
   ))
+}
+
+rrp_install_record <- function(
+  manifest, dependencies, host, destination, installed_at,
+  library_inventory_digest, manifest_root = destination
+) {
+  manifest_digest <- rrp_sha256(file.path(manifest_root, "manifest.dcf"))
+  identity <- rrp_install_identity(manifest, host, manifest_root)
   record <- c(
     "Record-Type" = "rrp-installation",
     "Contract-ID" = "rrp.installation-record",
-    "Contract-Version" = "0.1.0",
+    "Contract-Version" = "0.2.0",
     "Installation-ID" = identity,
     "Product-ID" = manifest[["Product-ID"]],
     "Product-Version" = manifest[["Product-Version"]],
@@ -528,6 +712,8 @@ rrp_install_record <- function(
     "Private-Library" = file.path(destination, "library"),
     "Resource-Root" = destination,
     "Distribution-Manifest-Digest" = manifest_digest,
+    "Private-Library-Inventory-Path" = "library-inventory.dcf",
+    "Private-Library-Inventory-Digest" = library_inventory_digest,
     "Installed-At" = installed_at
   )
   rrp_install_validate_record(record)
@@ -558,47 +744,30 @@ rrp_install_verify_payload_projection <- function(root) {
 }
 
 rrp_install_existing <- function(
-  destination, expected, host, dependencies, internal_descriptions
+  destination, manifest, host, dependencies, internal_descriptions
 ) {
   records <- rrp_install_dcf(file.path(destination, "INSTALLATION.dcf"), "installation_conflict")
-  if (length(records) != 1L ||
-      !identical(records[[1L]][names(expected)[names(expected) != "Installed-At"]],
-        expected[names(expected) != "Installed-At"])) {
+  if (length(records) != 1L) {
     rrp_install_fail(
       "installation_conflict", "Existing installation identity or evidence conflicts."
     )
   }
-  rrp_install_validate_record(records[[1L]])
+  record <- records[[1L]]
+  rrp_install_validate_record(record)
+  expected <- rrp_install_record(
+    manifest, dependencies, host, destination, record[["Installed-At"]],
+    record[["Private-Library-Inventory-Digest"]], manifest_root = destination
+  )
+  if (!identical(record, expected)) rrp_install_fail(
+    "installation_conflict", "Existing installation identity or evidence conflicts."
+  )
   rrp_install_verify_payload_projection(destination)
   rrp_install_verify_realization(
     host, destination, file.path(destination, "library"), dependencies,
     internal_descriptions
   )
-  records[[1L]]
-}
-
-rrp_install_make_read_only <- function(root) {
-  entries <- list.files(root, all.files = TRUE, full.names = TRUE,
-    recursive = TRUE, include.dirs = TRUE, no.. = TRUE)
-  files <- entries[!dir.exists(entries)]
-  directories <- c(entries[dir.exists(entries)], root)
-  file_status <- if (length(files)) {
-    Sys.chmod(files, mode = "0444", use_umask = FALSE)
-  } else logical()
-  executables <- c(file.path(root, "bin", "rrp"), file.path(root, "install.R"))
-  executables <- executables[file.exists(executables)]
-  executable_status <- if (length(executables)) {
-    Sys.chmod(executables, mode = "0555", use_umask = FALSE)
-  } else logical()
-  directory_status <- if (length(directories)) {
-    Sys.chmod(directories, mode = "0555", use_umask = FALSE)
-  } else logical()
-  if (any(!c(file_status, executable_status, directory_status))) {
-    rrp_install_fail(
-      "installation_promotion", "Promoted installation could not be made immutable."
-    )
-  }
-  invisible(root)
+  rrp_install_verify_library_inventory(destination, record)
+  record
 }
 
 rrp_install_result <- function(record, destination, shim_path, reused) list(
@@ -701,18 +870,13 @@ rrp_install_distribution <- function(
     rrp_package_description(archives[[1L]], package)
   })
   names(internal_descriptions) <- c("rrpruntime", "rrpplatform")
-  prospective <- rrp_install_record(
-    manifest, dependencies, host, destination,
-    format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
-    manifest_root = distribution_root
-  )
   if (dir.exists(destination) || file.exists(destination)) {
     if (!dir.exists(destination) || nzchar(Sys.readlink(destination))) {
       rrp_install_fail("installation_conflict", "Existing installation target is unsafe.")
     }
     progress("Validate identical existing installation")
     record <- rrp_install_existing(
-      destination, prospective, host, dependencies, internal_descriptions
+      destination, manifest, host, dependencies, internal_descriptions
     )
     progress("Provision stable per-user launcher")
     shim <- rrp_install_provision_shim(
@@ -766,32 +930,32 @@ rrp_install_distribution <- function(
     host, installation_stage, private_library, dependencies,
     internal_descriptions
   )
+  installation_identity <- rrp_install_identity(
+    manifest, host, installation_stage
+  )
+  progress("Record exact private-library inventory")
+  library_inventory <- rrp_install_write_library_inventory(
+    installation_stage, installation_identity
+  )
   record <- rrp_install_record(
     manifest, dependencies, host, destination,
     format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
+    library_inventory$digest,
     manifest_root = installation_stage
   )
+  if (!identical(record[["Installation-ID"]], installation_identity)) {
+    rrp_install_fail("installation_record", "Installation identity is inconsistent.")
+  }
   rrp_install_write_dcf(record, file.path(installation_stage, "INSTALLATION.dcf"))
-  progress("Promote immutable installation")
+  rrp_install_verify_library_inventory(installation_stage, record)
+  progress("Promote verified installation")
   if (file.exists(destination) || dir.exists(destination) ||
       !isTRUE(file.rename(installation_stage, destination))) {
     rrp_install_fail(
       "installation_promotion", "Completed installation could not be atomically promoted."
     )
   }
-  tryCatch(
-    rrp_install_make_read_only(destination),
-    error = function(condition) {
-      entries <- list.files(
-        destination, all.files = TRUE, full.names = TRUE, recursive = TRUE,
-        include.dirs = TRUE, no.. = TRUE
-      )
-      if (length(entries)) Sys.chmod(entries, mode = "0755", use_umask = FALSE)
-      Sys.chmod(destination, mode = "0755", use_umask = FALSE)
-      unlink(destination, recursive = TRUE, force = TRUE)
-      stop(condition)
-    }
-  )
+  rrp_install_verify_library_inventory(destination, record)
   shim <- tryCatch({
     progress("Provision stable per-user launcher")
     rrp_install_provision_shim(destination, root, executable_root)

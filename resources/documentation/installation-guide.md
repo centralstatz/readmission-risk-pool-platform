@@ -1,6 +1,6 @@
 # RRP Installation Guide
 
-RRP installs one verified local software distribution into an immutable,
+RRP installs one verified local software distribution into an identity-stable,
 version-private per-user location. Installation does not activate the software,
 edit `PATH` or a shell profile, discover a project, or write project files.
 
@@ -40,8 +40,10 @@ Rscript --vanilla install.R --repository https://cloud.r-project.org
 The selected `Rscript` identifies the host R explicitly. The bootstrap verifies
 the distribution again, restores the exact declared third-party closure into a
 new private library, installs the exact `rrpruntime` and `rrpplatform`
-artifacts, validates packages and resources in fresh vanilla R processes, writes
-`INSTALLATION.dcf`, and only then promotes the completed version. It also
+artifacts, validates packages and resources in fresh vanilla R processes,
+records a closed path/size/SHA-256 inventory of every regular file in the
+realized private library, writes `INSTALLATION.dcf`, and only then promotes the
+completed version. It also
 provisions the stable per-user `rrp` shim; installation never activates the
 new version.
 
@@ -51,8 +53,17 @@ declared versions and integrity into the new private library; ambient user or
 site libraries cannot satisfy the closure. The installation record retains
 the host-R, distribution, dependency-specification, private-library, resource,
 manifest-integrity, and occurrence evidence needed by strict installed
-verification. Repository authentication, when required by local policy, stays
-outside retained RRP evidence.
+verification. The installation record binds the private-library inventory
+digest without changing the established installation identity. Repository
+authentication, when required by local policy, stays outside retained RRP
+evidence.
+
+RRP preserves the conventional file and directory permissions produced by R
+package installation. It does not recursively rewrite the private library as
+read-only. Supported operations do not edit a promoted realization; strict
+verification detects and rejects missing, additional, linked, nonregular, or
+byte-changed library files. This is integrity detection, not a security claim
+against the owning user, who can modify both local content and local evidence.
 
 An already installed version may install another local extracted distribution
 through the same engine:
@@ -84,7 +95,8 @@ The default per-user application-data root is:
 Each realization is stored beneath
 `installations/<product-version>/<distribution-id>/` with its own `library/`,
 resource projection, launcher, manifest, inventory, dependency specification,
-and installation record. Staging is sibling state under the RRP root. The
+private-library inventory, and installation record. Staging is sibling state
+under the RRP root. The
 `--installation-root ABSOLUTE_PATH` option is a controlled test/isolated-proof
 override and does not change normal ownership.
 
@@ -96,7 +108,7 @@ Guide.
 A network, repository, lock, package, compilation, verification, or promotion
 failure leaves no promoted partial version and does not change an existing
 installation. Correct the reported condition and rerun the same command. An
-exact reinstall validates and reuses the existing immutable realization; a
+exact reinstall validates and reuses the existing verified realization; a
 conflicting realization fails loudly. Distinct development content identities
 may coexist under the development product version for controlled testing, but
 a published product version permits only one official distribution identity;
@@ -106,8 +118,19 @@ activation, rollback, and exact inactive uninstall.
 
 For diagnosis, run `rrp software verify --software SELECTOR` for strict exact
 integrity and `rrp software doctor --software SELECTOR` for bounded readiness
-and recovery guidance. Neither command discovers, opens, or associates a
-project. Project compatibility begins only with an explicit project operation.
+and recovery guidance. Strict install, reinstall, verify, doctor, listing,
+activation/rollback, and uninstall boundaries hash the complete private-library
+inventory. Ordinary analytical command preflight instead checks structural
+identity, package paths/versions, resources, and launch context; it is not a
+full-byte verification on every command. Neither diagnostic command discovers,
+opens, or associates a project. Project compatibility begins only with an
+explicit project operation.
+
+An installation record from the earlier `0.1.0` contract has no complete
+private-library inventory and is therefore not silently treated as complete by
+the `0.2.0` verifier. Install the current distribution as a distinct verified
+realization and select it explicitly; do not fabricate evidence or modify an
+older record in place.
 
 The restoration engine used internally is not an RRP project convention.
 Initialized projects receive no `renv.lock`, `renv/`, `.Rprofile`, repository

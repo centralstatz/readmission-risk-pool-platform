@@ -7535,3 +7535,112 @@ Stage 12 change occurred.
 
 **Next task:** separately authorize the Candidate A corrective implementation;
 do not begin it automatically from this design-only iteration.
+
+## Stage 11 / Increment 11.I.2 — Conventional R library permissions and installed runtime proof — 2026-10-20
+
+Human authorization on 2026-10-19 began Candidate A implementation from clean
+revision
+`881b67db534eb055de47326e5a98c351374689f9`, one local commit ahead of
+`origin/main`. An interrupted-session reconciliation later found six coherent
+partial source/contract files, no untracked generated artifact, and no live R
+or validation subprocess. That work was retained and completed rather than
+restarted. Increment 11.I remains a post-acceptance amendment; this entry does
+not rewrite the original Stage 11 implementation or acceptance.
+
+The installer no longer recursively changes promoted files to `0444` or
+directories to `0555`. Packages retain the ordinary modes created by R package
+installation; the stable shim uses conventional executable permission. RRP
+still runs directly from the selected version-private library. Atomic staging
+and promotion, exact dependency restoration/provenance, software identity,
+side-by-side selection, activation, rollback, uninstall, ambient-library
+exclusion, and project independence are unchanged. Defensive permission
+normalization remains only in owned-tree removal so a previously restrictive
+or damaged installation can still be removed safely. No runtime projection,
+library copy, application asset staging, or new runtime subsystem was added.
+
+Before promotion the installer now writes `library-inventory.dcf`, a
+deterministic radix-path-ordered inventory of every regular file below
+`library/` with relative path, size, and SHA-256. Generation rejects unsafe,
+linked, nonregular, duplicate, and case-conflicting membership. Installation-
+record authority `rrp.installation-record@0.2.0` binds the inventory path and
+digest. The established `rrp-installation-identity-v1` inputs and derivation
+are unchanged. The supplied lifecycle verifier composes the new evidence with
+the existing distribution, dependency, resource, host-R, and launcher checks;
+strict full-library verification applies to new install, exact reinstall,
+verified listing, explicit verify/doctor, activation/rollback, exact uninstall,
+and the application acceptance boundary. Routine CLI preflight deliberately
+uses structural verification without hashing every library byte. Older
+`0.1.0` installation records are diagnosed as
+`incomplete_library_integrity_evidence` rather than silently accepted or
+mutated. This detects uncoordinated changes; it does not claim authenticity
+against an owning user able to rewrite both content and evidence.
+
+Package-native tests cover deterministic installed-library evidence, strict
+tamper rejection, structural-versus-strict behavior, ordinary third-party
+package paths that would be inappropriate in hospital project metadata, and
+explicit legacy-record handling. The clean installation proof additionally
+changes, removes, adds, and links arbitrary library files; damages companion
+evidence; proves recovery; and exercises listing, doctor, activation, rollback,
+reinstall, and uninstall. One intermediate run revealed that the partial
+implementation had reused the project privacy/path validator for third-party
+package filenames; this was corrected to a software-owned lexical path check.
+A linked-file negative test was also corrected to recognize either established
+preflight exit 3 or operation exit 1 while requiring the exact fail-closed
+diagnostic. Neither correction weakened production verification.
+
+The former socket-only application probe was replaced by an installed real
+HTTP proof. It makes an initial page request, repeated independent requests,
+retrieves referenced JavaScript/CSS and CSS-local dependencies, confirms the
+process remains live, terminates it through the existing supervisor, rejects
+permission/Sass/`bslib` errors, and requires strict installed verification plus
+byte-identical installation, hospital-project, and isolated runtime-temporary
+trees before and after. The supervisor gives the application its own process
+group and requires the documented Ctrl+C-equivalent exit 130. An
+intermediate harness failure traced only to stripping one rather than both
+HTML attribute delimiters; the parser was corrected without changing product
+application code. The final clean proof passed, establishing direct macOS/R
+4.4 evidence that conventional package permissions remove the observed Shiny
+failure path while preserving installed integrity and project nonmutation. A
+stronger temporary-tree assertion also showed that the former test supervisor's
+`SIGTERM` stop did not model R's normal cleanup path; the corrected supervisor
+uses a dedicated job-control process group, delivers Ctrl+C-equivalent
+`SIGINT`, requires exit 130, and proves cleanup. One subsequent clean run was
+manually interrupted after an external CRAN `curl` remained stalled for more
+than an hour; its fresh retry completed and passed, so the stall is not counted
+as product evidence.
+
+Local evidence on the uncommitted candidate:
+
+- `Rscript --vanilla tools/validate-repository.R`: PASS, 8 checks;
+- `Rscript --vanilla tools/validate-packages.R`: PASS, including both package
+  builds, isolated install/load, both `R CMD check --no-manual` results with
+  `Status: OK`, lifecycle contracts, CLI, history, products, and application
+  regressions. An earlier aggregate reached all changed package/check surfaces
+  and then timed out once in the unchanged product-materialization proof; the
+  final aggregate rerun completed that proof and passed;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R`: PASS;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R`: PASS for clean copied acquisition,
+  restoration, conventional permissions, inventory adversaries, complete
+  installed project/history/product/application operation, HTTP assets,
+  side-by-side compatibility, rollback, exact uninstall, and reinstall; and
+- the realized library contained 5,102 regular files; a repeat full-file hash
+  took approximately 0.53 seconds and strict inventory verification
+  approximately 1.24 seconds on the final local macOS/R 4.4 run. These
+  bounded costs do not occur on every routine analytical command.
+
+The version-matched Installation and Software Lifecycle Guides now distinguish
+conventional package permissions, supported-operation nonmutation, strict
+inventory detection, structural routine preflight, and explicit legacy-record
+handling. No dependency, export, product/project contract, application
+implementation, release, deployment, or Stage 12 capability changed.
+
+**11.I.2 result:** Candidate A is implementation-complete and locally
+validated. Increment 11.I is not formally accepted. Because the working tree
+is uncommitted, there is not yet an exact candidate revision for the required
+hosted Ubuntu/R 4.4 `package-foundation` run. A maintainer must commit the
+candidate, obtain that exact-revision hosted result, perform the bounded human
+macOS browser confirmation, and then authorize a separate formal acceptance
+task. No commit, push, tag, release, publication, deployment, or Stage 12 work
+occurred.

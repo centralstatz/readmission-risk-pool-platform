@@ -119,8 +119,17 @@ rrp_software_record <- function(path) {
     "Product-ID", "Product-Version", "Development-Version", "Distribution-ID",
     "Build-ID", "Dependency-Specification-ID", "Host-R-Executable",
     "Host-R-Version", "Platform", "Architecture", "Private-Library",
-    "Resource-Root", "Distribution-Manifest-Digest", "Installed-At"
+    "Resource-Root", "Distribution-Manifest-Digest",
+    "Private-Library-Inventory-Path", "Private-Library-Inventory-Digest",
+    "Installed-At"
   )
+  legacy_fields <- setdiff(fields, c(
+    "Private-Library-Inventory-Path", "Private-Library-Inventory-Digest"
+  ))
+  if (length(records) == 1L && identical(names(records[[1L]]), legacy_fields) &&
+      identical(records[[1L]][["Contract-Version"]], "0.1.0")) {
+    rrp_software_abort("incomplete_library_integrity_evidence")
+  }
   if (length(records) != 1L || !identical(names(records[[1L]]), fields)) {
     rrp_software_abort("invalid_installation_record")
   }
@@ -128,17 +137,20 @@ rrp_software_record <- function(path) {
   expected <- c(
     "Record-Type" = "rrp-installation",
     "Contract-ID" = "rrp.installation-record",
-    "Contract-Version" = "0.1.0",
+    "Contract-Version" = "0.2.0",
     "Product-ID" = "readmission-risk-pool-platform",
     "Development-Version" = "1.0.0-dev"
   )
   if (!identical(unname(record[names(expected)]), unname(expected)) ||
       any(!grepl("^[0-9a-f]{64}$", record[c(
         "Installation-ID", "Distribution-ID", "Build-ID",
-        "Dependency-Specification-ID", "Distribution-Manifest-Digest"
+        "Dependency-Specification-ID", "Distribution-Manifest-Digest",
+        "Private-Library-Inventory-Digest"
       )])) || !grepl(
         "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
         record[["Installed-At"]]
+      ) || !identical(
+        record[["Private-Library-Inventory-Path"]], "library-inventory.dcf"
       )) {
     rrp_software_abort("invalid_installation_record")
   }
@@ -230,6 +242,127 @@ rrp_software_tree <- function(root) {
   result
 }
 
+rrp_software_sha256_many <- function(paths) {
+  if (!length(paths)) return(character())
+  utility <- Sys.which("sha256sum")
+  prefix <- character()
+  if (!nzchar(utility)) {
+    utility <- Sys.which("shasum")
+    prefix <- c("-a", "256")
+  }
+  if (!nzchar(utility)) rrp_software_abort("integrity_tool_unavailable")
+  result <- character(length(paths))
+  for (start in seq.int(1L, length(paths), by = 128L)) {
+    indices <- seq.int(start, min(start + 127L, length(paths)))
+    output <- suppressWarnings(system2(
+      utility, c(prefix, vapply(paths[indices], shQuote, character(1L))),
+      stdout = TRUE, stderr = TRUE
+    ))
+    status <- attr(output, "status")
+    digests <- sub("[[:space:]].*$", "", output)
+    if ((!is.null(status) && status != 0L) ||
+        length(digests) != length(indices) ||
+        any(!grepl("^[0-9a-f]{64}$", digests))) {
+      rrp_software_abort("installed_library_integrity")
+    }
+    result[indices] <- digests
+  }
+  result
+}
+
+rrp_software_safe_relative_path <- function(path) {
+  is.character(path) && length(path) == 1L && !is.na(path) && nzchar(path) &&
+    !grepl("[[:cntrl:]\\\\]", path) && !startsWith(path, "/") &&
+    !grepl("^[A-Za-z]:", path) && !startsWith(path, "~") &&
+    !startsWith(path, "//") && !endsWith(path, "/") &&
+    !grepl("(^|/)[.]?[.]($|/)|//", path, perl = TRUE) &&
+    identical(path, gsub("\\\\", "/", path))
+}
+
+rrp_software_library_files <- function(library) {
+  if (!dir.exists(library) || nzchar(Sys.readlink(library))) {
+    rrp_software_abort("installed_library_integrity")
+  }
+  paths <- character()
+  visit <- function(directory, relative = "") {
+    entries <- list.files(
+      directory, all.files = TRUE, full.names = TRUE, no.. = TRUE
+    )
+    for (entry in entries) {
+      path <- if (nzchar(relative)) {
+        paste(relative, basename(entry), sep = "/")
+      } else basename(entry)
+      if (!rrp_software_safe_relative_path(path) || nzchar(Sys.readlink(entry))) {
+        rrp_software_abort("installed_library_integrity")
+      }
+      if (dir.exists(entry)) {
+        visit(entry, path)
+      } else {
+        if (!isTRUE(utils::file_test("-f", entry))) {
+          rrp_software_abort("installed_library_integrity")
+        }
+        paths <<- c(paths, path)
+      }
+    }
+  }
+  visit(library)
+  paths <- sort(paths, method = "radix")
+  if (!length(paths) || anyDuplicated(paths) || anyDuplicated(tolower(paths))) {
+    rrp_software_abort("installed_library_integrity")
+  }
+  paths
+}
+
+rrp_software_verify_library_inventory <- function(path, record, verify_files) {
+  relative <- record[["Private-Library-Inventory-Path"]]
+  inventory_path <- file.path(path, relative)
+  inventory <- rrp_software_read_dcf(
+    inventory_path, "invalid_library_inventory"
+  )
+  if (!identical(relative, "library-inventory.dcf") ||
+      !rrp_software_safe_relative_path(relative) || length(inventory) < 2L ||
+      !identical(
+        rrp_software_sha256_many(inventory_path)[[1L]],
+        record[["Private-Library-Inventory-Digest"]]
+      )) rrp_software_abort("invalid_library_inventory")
+  header <- inventory[[1L]]
+  files <- inventory[-1L]
+  if (!identical(names(header), c(
+        "Record-Type", "Inventory-Version", "Installation-ID", "File-Count"
+      )) || !all(vapply(files, function(entry) {
+        identical(names(entry), c("Record-Type", "Path", "Size", "SHA256"))
+      }, logical(1L)))) rrp_software_abort("invalid_library_inventory")
+  paths <- vapply(files, `[[`, character(1L), "Path")
+  valid <- identical(unname(header[c(
+    "Record-Type", "Inventory-Version", "Installation-ID"
+  )]), c(
+    "installed-library-inventory", "0.1.0", record[["Installation-ID"]]
+  )) && identical(suppressWarnings(as.integer(header[["File-Count"]])), length(files)) &&
+    all(vapply(files, function(entry) {
+      identical(entry[["Record-Type"]], "file") &&
+        rrp_software_safe_relative_path(entry[["Path"]]) &&
+        grepl("^[0-9]+$", entry[["Size"]]) &&
+        grepl("^[0-9a-f]{64}$", entry[["SHA256"]])
+    }, logical(1L))) && !anyDuplicated(paths) && !anyDuplicated(tolower(paths)) &&
+    identical(paths, sort(paths, method = "radix"))
+  if (!valid) rrp_software_abort("invalid_library_inventory")
+  if (isTRUE(verify_files)) {
+    library <- file.path(path, "library")
+    actual <- rrp_software_library_files(library)
+    if (!identical(actual, paths)) {
+      rrp_software_abort("installed_library_integrity")
+    }
+    absolute <- file.path(library, paths)
+    sizes <- sprintf("%.0f", file.info(absolute)$size)
+    digests <- rrp_software_sha256_many(absolute)
+    if (!identical(sizes, vapply(files, `[[`, character(1L), "Size")) ||
+        !identical(digests, vapply(files, `[[`, character(1L), "SHA256"))) {
+      rrp_software_abort("installed_library_integrity")
+    }
+  }
+  invisible(length(files))
+}
+
 rrp_software_description_hash <- function(path) {
   bytes <- readBin(path, "raw", n = file.info(path)$size)
   contents <- NULL
@@ -281,7 +414,7 @@ rrp_software_archive_description <- function(archive, package) {
   description[1L, , drop = TRUE]
 }
 
-rrp_software_verify_success <- function(path, root) {
+rrp_software_verify_success <- function(path, root, verify_library = TRUE) {
   if (nzchar(Sys.readlink(path))) rrp_software_abort("linked_installed_software")
   record <- rrp_software_record(path)
   manifest_records <- rrp_software_read_dcf(
@@ -384,11 +517,12 @@ rrp_software_verify_success <- function(path, root) {
   }
   non_library_files <- vapply(Filter(function(entry) {
     !entry$directory && !startsWith(entry$path, "library/") &&
-      !identical(entry$path, "INSTALLATION.dcf")
+      !entry$path %in% c("INSTALLATION.dcf", "library-inventory.dcf")
   }, tree), `[[`, character(1L), "path")
   if (!setequal(non_library_files, c(
     "manifest.dcf", "inventory.dcf", inventory_paths
   ))) rrp_software_abort("unexpected_installed_content")
+  rrp_software_verify_library_inventory(path, record, verify_library)
 
   dependencies <- rrp_software_read_dcf(
     file.path(path, "dependencies", "dependencies.dcf"),

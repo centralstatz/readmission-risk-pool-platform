@@ -1,7 +1,7 @@
 # RRP Software Lifecycle Guide
 
 RRP keeps software installation separate from hospital projects and from
-analytical state. A distribution is acquired and verified, one immutable
+analytical state. A distribution is acquired and verified, one identity-stable
 version is installed, that version may later be verified and activated, and an
 inactive verified owned version may be uninstalled. Project source, state,
 history, and products are never inputs to software installation.
@@ -22,12 +22,23 @@ time. The build identity remains distinct from the normalized distribution
 identity and local installation realization. `INSTALLATION.dcf` records the
 host R, exact private library/resource paths, dependency specification,
 distribution manifest digest, and installation occurrence time.
+It also binds the digest of the exact path-sorted private-library regular-file
+inventory while preserving the established installation-identity derivation.
 
 Every version owns a private runtime package library. Ambient user and site
 libraries cannot satisfy the dependency specification, and the runtime library
 order is the version-private library followed only by base R. A dependency
 download/cache or temporary restoration tool library is non-authoritative and
 is not retained as a runtime library.
+
+Private packages retain conventional R installation permissions; RRP does not
+recursively harden their files and directories to read-only modes. Supported
+operations never edit a promoted realization. Instead, strict verification
+detects missing, additional, linked, nonregular, size-changed, or SHA-256-
+changed private-library files and fails closed before lifecycle trust or
+mutation. This trades ordinary same-user write prevention for compatibility
+plus detection and does not claim authenticity against an owning user able to
+rewrite local evidence.
 
 Installation provisions one stable per-user launcher but never selects an
 active version or modifies `PATH`. The launcher resolves only installed
@@ -52,9 +63,18 @@ rrp --software SELECTOR COMMAND ...
 ignoring staging. `current` reports the independently validated activation
 record or the expected no-selection warning. `verify` rechecks the closed
 manifest/inventory and digests, dependency specification, private package
-closure and integrity, installed resources, host R, and version launcher.
+closure and complete realized-library inventory, installed resources, host R,
+and version launcher.
 `doctor` returns the same bounded identity plus readiness checks, warnings,
 and recovery codes; it diagnoses but does not repair or activate.
+
+Installation/reinstallation, verified listing, explicit verification and
+doctor, activation/rollback, and exact uninstall perform complete library
+inventory verification. Routine analytical commands use bounded structural
+preflight and do not hash the full library on every invocation. A legacy
+installation record without the current inventory binding is reported as
+incomplete evidence rather than silently upgraded; install a current distinct
+realization instead of editing or fabricating the older record.
 
 Activation first strictly verifies the exact realization, then atomically
 replaces only `active.dcf`. Locking, preparation, verification, or promotion

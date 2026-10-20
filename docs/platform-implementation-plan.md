@@ -8439,16 +8439,35 @@ Ctrl+C, and confirm understandable interruption and cleanup behavior. This is
 targeted UX confirmation, not a substitute for the automated HTTP,
 nonmutation, integrity, or failure-path evidence.
 
-**Approval and completion boundary:** the revised Candidate A plan is approved,
-and 11.I.1 completed only its investigation and design resolution. No
-production implementation or test change has been made. A separately
-authorized implementation iteration must realize and validate the correction.
-Later implementation completion requires a separate record entry; exact
-committed hosted evidence and a separate formal 11.I acceptance decision are
-required before the amendment can be called complete. Until then, its status
-remains **Approved for implementation — 11.I.1 design resolved — corrective
-implementation not started**. The original Stage 11 acceptance remains
-historical fact, and Stage 12 remains unstarted.
+**11.I.2 implementation status:** Candidate A is implemented and locally
+validated from starting revision
+`881b67db534eb055de47326e5a98c351374689f9`. The implementation preserves
+ordinary R package permissions, binds a deterministic closed realized-library
+inventory to installation-record contract `0.2.0` without changing the
+installation-identity derivation, performs complete inventory verification at
+the approved lifecycle boundaries, and retains structural routine-command
+preflight. The clean macOS/R 4.4 proof covered 5,102 installed library files,
+real HTTP page requests, repeated requests, referenced local assets, normal
+application termination, pre/post strict installed verification, and byte-
+unchanged installed/project trees. Repository, package/check, distribution,
+and installation aggregates pass locally. The exact final local installation
+run measured about 0.53 seconds to hash the 5,102-file closure and 1.24 seconds
+for strict inventory verification. No application production change,
+runtime projection, copied library, package asset staging, or Stage 12 work was
+introduced.
+
+The implementation remains uncommitted, so it has no final candidate revision
+and cannot yet have exact-revision hosted Ubuntu/R 4.4 evidence. Criteria 14
+and 15 also retain their separate hosted and bounded human macOS confirmation
+roles. These remaining evidence steps do not reopen Candidate A's design or
+authorize further implementation.
+
+**Approval and completion boundary:** Increment 11.I.2 is **implementation-
+complete locally — awaiting exact committed hosted evidence, bounded human
+confirmation, and separate formal acceptance**. A later acceptance task must
+record the committed revision and decide formal closure. The original Stage 11
+acceptance remains historical fact, Increment 11.I is not yet formally
+accepted, and Stage 12 remains unstarted.
 
 ## Stage 12 — Product-only artifacts and deployment realizations
 

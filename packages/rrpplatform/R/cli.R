@@ -894,7 +894,9 @@ rrp_cli_preflight <- function(
       return(context_error(selected_path$code))
     }
     verified <- tryCatch(
-      rrp_software_verify_success(selected_path, installation_root),
+      rrp_software_verify_success(
+        selected_path, installation_root, verify_library = FALSE
+      ),
       rrp_software_error = identity
     )
     if (!nzchar(installation_root) || !identical(selected_path, software_root) ||

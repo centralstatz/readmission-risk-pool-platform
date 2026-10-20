@@ -421,8 +421,19 @@ validate_installation <- function() {
   )
   record <- rrp_install_dcf(file.path(destination, "INSTALLATION.dcf"), "record")[[1L]]
   rrp_install_validate_record(record)
+  library_inventory <- rrp_install_dcf(
+    file.path(destination, record[["Private-Library-Inventory-Path"]]),
+    "library_inventory"
+  )
   require_true(
-    identical(record[["Resource-Root"]], destination) &&
+    identical(record[["Contract-Version"]], "0.2.0") &&
+      identical(
+        record[["Private-Library-Inventory-Digest"]],
+        rrp_sha256(file.path(
+          destination, record[["Private-Library-Inventory-Path"]]
+        ))
+      ) && length(library_inventory) > 1L &&
+      identical(record[["Resource-Root"]], destination) &&
       identical(record[["Private-Library"]], file.path(destination, "library")) &&
       identical(record[["Host-R-Executable"]], host_r) &&
       !file.exists(file.path(installation_root, "active.dcf")) &&
@@ -447,6 +458,47 @@ validate_installation <- function() {
   )
   require_true(setequal(rownames(installed), expected),
     "Installed private package closure disagrees.")
+  private_entries <- list.files(
+    file.path(destination, "library"), all.files = TRUE, full.names = TRUE,
+    recursive = TRUE, include.dirs = TRUE, no.. = TRUE
+  )
+  representative_regular <- private_entries[
+    !dir.exists(private_entries) & vapply(private_entries, function(path) {
+      isTRUE(file_test("-f", path))
+    }, logical(1L))
+  ]
+  representative_directories <- c(
+    file.path(destination, "library"), private_entries[dir.exists(private_entries)]
+  )
+  require_true(
+    length(representative_regular) > 0L &&
+      all(file.access(representative_regular, 2L) == 0L) &&
+      all(file.access(representative_directories, 2L) == 0L) &&
+      file.access(file.path(destination, "bin", "rrp"), 1L) == 0L &&
+      file.access(file.path(destination, "install.R"), 1L) == 0L,
+    "Installed package permissions are not conventional owner-writable R permissions."
+  )
+  inventory_files <- library_inventory[-1L]
+  inventory_paths <- vapply(inventory_files, `[[`, character(1L), "Path")
+  inventory_hash_time <- system.time({
+    regenerated_hashes <- rrp_install_sha256_many(file.path(
+      destination, "library", inventory_paths
+    ))
+  })[["elapsed"]]
+  require_true(
+    identical(
+      regenerated_hashes,
+      vapply(inventory_files, `[[`, character(1L), "SHA256")
+    ),
+    "Regenerated private-library hashes disagree with installation evidence."
+  )
+  strict_verify_time <- system.time(
+    rrp_install_verify_library_inventory(destination, record)
+  )[["elapsed"]]
+  cat(sprintf(
+    "PASS conventional permissions and %d-file inventory (hash %.2fs; strict %.2fs)\n",
+    length(inventory_files), inventory_hash_time, strict_verify_time
+  ))
   cat("PASS base-R bootstrap, exact private restoration, isolation, and promotion\n")
 
   integrity_script <- file.path(work, "installed-integrity-probe.R")
@@ -568,6 +620,132 @@ validate_installation <- function() {
       verified_cli$output
     ), collapse = "\n"))
   )
+  tamper_candidates <- inventory_paths[grepl(
+    "(^|/)(AnIndex|LICENSE|LICENCE|NEWS(?:[.]md)?)$",
+    inventory_paths, perl = TRUE
+  )]
+  require_true(length(tamper_candidates) > 0L,
+    "No safe arbitrary library-file tamper fixture is available.")
+  tamper_path <- file.path(
+    destination, "library", tamper_candidates[[1L]]
+  )
+  tamper_bytes <- readBin(tamper_path, "raw", n = file.info(tamper_path)$size)
+  connection <- file(tamper_path, open = "ab")
+  writeBin(charToRaw("\n11-i-library-tamper\n"), connection)
+  close(connection)
+  structural_during_tamper <- stable_run(c(
+    "--software", selector, "version", "--json"
+  ), project)
+  tampered_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  connection <- file(tamper_path, open = "wb")
+  writeBin(tamper_bytes, connection)
+  close(connection)
+  recovered_after_tamper <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+
+  missing_fixture <- tempfile("rrp-library-missing-", tmpdir = work)
+  require_true(file.rename(tamper_path, missing_fixture),
+    "Could not create missing library-file fixture.")
+  missing_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  require_true(file.rename(missing_fixture, tamper_path),
+    "Could not restore missing library-file fixture.")
+
+  additional_path <- file.path(
+    destination, "library", "rrpplatform", "11-i-unrecorded.txt"
+  )
+  writeLines("unrecorded", additional_path, useBytes = TRUE)
+  additional_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  unlink(additional_path, force = TRUE)
+
+  library_link <- file.path(
+    destination, "library", "rrpplatform", "11-i-linked.txt"
+  )
+  link_created <- isTRUE(file.symlink(tamper_path, library_link))
+  linked_verify <- if (link_created) stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project) else NULL
+  if (link_created) unlink(library_link, force = TRUE)
+
+  inventory_path <- file.path(
+    destination, record[["Private-Library-Inventory-Path"]]
+  )
+  inventory_bytes <- readBin(
+    inventory_path, "raw", n = file.info(inventory_path)$size
+  )
+  connection <- file(inventory_path, open = "ab")
+  writeBin(charToRaw("\n"), connection)
+  close(connection)
+  damaged_inventory <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  connection <- file(inventory_path, open = "wb")
+  writeBin(inventory_bytes, connection)
+  close(connection)
+
+  installation_record_path <- file.path(destination, "INSTALLATION.dcf")
+  installation_record_bytes <- readBin(
+    installation_record_path, "raw", n = file.info(installation_record_path)$size
+  )
+  legacy_record <- record[!names(record) %in% c(
+    "Private-Library-Inventory-Path", "Private-Library-Inventory-Digest"
+  )]
+  legacy_record[["Contract-Version"]] <- "0.1.0"
+  rrp_install_write_dcf(legacy_record, installation_record_path)
+  legacy_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  connection <- file(installation_record_path, open = "wb")
+  writeBin(installation_record_bytes, connection)
+  close(connection)
+  final_inventory_recovery <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
+  adversarial_results <- list(
+    tampered_verify, missing_verify, additional_verify
+  )
+  require_true(
+    structural_during_tamper$status == 0L &&
+      all(vapply(adversarial_results, function(value) {
+        value$status == 1L && grepl(
+          "installed_library_integrity", paste(value$output, collapse = "\n"),
+          fixed = TRUE
+        )
+      }, logical(1L))) && (!link_created || (
+        linked_verify$status %in% c(1L, 3L) && grepl(
+          "linked_installed_software", paste(linked_verify$output, collapse = "\n"),
+          fixed = TRUE
+        )
+      )) &&
+      recovered_after_tamper$status == 0L &&
+      damaged_inventory$status %in% c(1L, 3L) && grepl(
+        "invalid_library_inventory", paste(
+          damaged_inventory$output, collapse = "\n"
+        ), fixed = TRUE
+      ) && legacy_verify$status %in% c(1L, 3L) && grepl(
+        "incomplete_library_integrity_evidence", paste(
+          legacy_verify$output, collapse = "\n"
+        ), fixed = TRUE
+      ) && final_inventory_recovery$status == 0L &&
+      identical(project_before, tree_digest(project)),
+    paste("Installed-library adversarial verification failed:", paste(c(
+      structural_during_tamper$output,
+      unlist(lapply(adversarial_results, `[[`, "output"), use.names = FALSE),
+      if (link_created) linked_verify$output else character(),
+      damaged_inventory$output, legacy_verify$output,
+      final_inventory_recovery$output
+    ), collapse = "\n"))
+  )
+  cat(paste(
+    "PASS closed library inventory rejects changed, missing, added, linked,",
+    "damaged-evidence, and legacy-record cases\n"
+  ))
   activated <- stable_run(c("software", "activate", selector, "--json"), project)
   reactivated <- stable_run(c("software", "activate", selector, "--json"), project)
   current <- stable_run(c("software", "current", "--json"), project)
@@ -788,29 +966,88 @@ validate_installation <- function() {
   app_probe <- file.path(work, "installed-app-probe.R")
   writeLines(c(
     "port <- as.integer(commandArgs(trailingOnly = TRUE)[[1L]])",
+    "base <- sprintf('http://127.0.0.1:%d', port)",
+    "fetch <- function(path) {",
+    "  connection <- url(paste0(base, path), open = 'rb', method = 'libcurl')",
+    "  on.exit(close(connection), add = TRUE)",
+    "  readBin(connection, what = 'raw', n = 50000000L)",
+    "}",
+    "started <- Sys.time()",
+    "initial <- NULL",
     "for (attempt in seq_len(60L)) {",
-    "  connection <- try(suppressWarnings(socketConnection(",
-    "    host = '127.0.0.1', port = port, open = 'r+b', timeout = 1",
-    "  )), silent = TRUE)",
-    "  if (!inherits(connection, 'try-error')) { close(connection); quit(status = 0L) }",
+    "  initial <- try(suppressWarnings(fetch('/')), silent = TRUE)",
+    "  if (!inherits(initial, 'try-error') && length(initial) > 100L) break",
+    "  initial <- NULL",
     "  Sys.sleep(1)",
     "}",
-    "quit(status = 1L)"
+    "if (is.null(initial)) quit(status = 1L)",
+    "html <- rawToChar(initial)",
+    "tags <- regmatches(html, gregexpr(",
+    "  '(?:src|href)=[\\\"\\\'][^\\\"\\\']+[\\\"\\\']', html, perl = TRUE",
+    "))[[1L]]",
+    "assets <- unique(gsub('^(?:src|href)=[\\\"\\\']|[\\\"\\\']$', '', tags, perl = TRUE))",
+    "assets <- assets[!grepl('^(?:https?:|//|data:|#)', assets, perl = TRUE)]",
+    "assets <- paste0('/', sub('^/', '', assets))",
+    "stopifnot(length(assets) > 0L)",
+    "asset_paths <- sub('[?#].*$', '', assets)",
+    "stopifnot(any(grepl('[.]js$', asset_paths, ignore.case = TRUE)))",
+    "stopifnot(any(grepl('[.]css$', asset_paths, ignore.case = TRUE)))",
+    "responses <- lapply(assets, function(path) suppressWarnings(fetch(path)))",
+    "stopifnot(all(lengths(responses) > 0L))",
+    "resolve <- function(base_path, relative) {",
+    "  if (startsWith(relative, '/')) return(relative)",
+    "  parts <- strsplit(paste(dirname(base_path), relative, sep = '/'), '/', fixed = TRUE)[[1L]]",
+    "  result <- character()",
+    "  for (part in parts) {",
+    "    if (!nzchar(part) || identical(part, '.')) next",
+    "    if (identical(part, '..')) { if (length(result)) result <- head(result, -1L) } else result <- c(result, part)",
+    "  }",
+    "  paste0('/', paste(result, collapse = '/'))",
+    "}",
+    "css_index <- which(grepl('[.]css$', asset_paths, ignore.case = TRUE))",
+    "dependencies <- character()",
+    "for (index in css_index) {",
+    "  css <- rawToChar(responses[[index]])",
+    "  references <- regmatches(css, gregexpr('url[(][^)]*[)]', css, perl = TRUE))[[1L]]",
+    "  references <- gsub('^url[(][\\\"\\\']?|[\\\"\\\']?[)]$', '', references, perl = TRUE)",
+    "  references <- references[!grepl('^(?:data:|https?:|//|#)', references, perl = TRUE)]",
+    "  if (length(references)) dependencies <- c(dependencies, vapply(",
+    "    references, resolve, character(1L), base_path = asset_paths[[index]]",
+    "  ))",
+    "}",
+    "dependencies <- unique(dependencies)",
+    "if (length(dependencies)) stopifnot(all(vapply(",
+    "  dependencies, function(path) length(suppressWarnings(fetch(path))) > 0L, logical(1L)",
+    ")))",
+    "repeated <- lapply(seq_len(2L), function(index) suppressWarnings(fetch('/')))",
+    "stopifnot(all(lengths(repeated) > 100L))",
+    "elapsed <- as.numeric(difftime(Sys.time(), started, units = 'secs'))",
+    "cat(sprintf('http-probe-ok requests=%d startup_seconds=%.2f\\n',",
+    "  3L + length(assets) + length(dependencies), elapsed))"
   ), app_probe, useBytes = TRUE)
   app_supervisor <- file.path(work, "installed-app-supervisor.sh")
   writeLines(c(
     "#!/bin/sh",
+    "set -m",
     "launcher=$1", "project=$2", "scope=$3", "cutoff=$4", "port=$5", "log=$6",
     "host_rscript=$7", "probe=$8",
     "\"$launcher\" app launch --project \"$project\" --scope \"$scope\" --cutoff \"$cutoff\" --port \"$port\" --json >\"$log\" 2>&1 &",
     "pid=$!",
-    "\"$host_rscript\" --vanilla \"$probe\" \"$port\" || { kill -TERM \"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
+    "\"$host_rscript\" --vanilla \"$probe\" \"$port\" || { kill -TERM -\"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
     "kill -0 \"$pid\" 2>/dev/null || { wait \"$pid\"; exit 1; }",
-    "kill -TERM \"$pid\" 2>/dev/null || exit 1", "wait \"$pid\"", "status=$?",
+    "kill -INT -\"$pid\" 2>/dev/null || exit 1", "attempt=0",
+    "while kill -0 \"$pid\" 2>/dev/null && [ \"$attempt\" -lt 10 ]; do sleep 1; attempt=$((attempt + 1)); done",
+    "kill -0 \"$pid\" 2>/dev/null && { kill -TERM -\"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
+    "wait \"$pid\"", "status=$?",
     "kill -0 \"$pid\" 2>/dev/null && exit 1",
-    "[ \"$status\" -eq 143 ] || [ \"$status\" -eq 130 ]"
+    "[ \"$status\" -eq 130 ]"
   ), app_supervisor, useBytes = TRUE)
   app_before <- tree_digest(retained_project)
+  installation_before_app <- tree_digest(destination)
+  runtime_temporary_before_app <- tree_digest(process_temporary)
+  pre_app_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
   app_launch <- run_in(
     "/bin/sh", c(
       shQuote(app_supervisor), shQuote(stable_launcher),
@@ -827,11 +1064,25 @@ validate_installation <- function() {
   app_output <- if (file.exists(app_log)) paste(
     readLines(app_log, warn = FALSE, encoding = "UTF-8"), collapse = "\n"
   ) else ""
+  post_app_verify <- stable_run(c(
+    "software", "verify", "--software", selector, "--json"
+  ), project)
   require_true(
-    app_launch$status == 0L && file.exists(app_log) &&
+    pre_app_verify$status == 0L && app_launch$status == 0L &&
+      grepl("http-probe-ok", paste(app_launch$output, collapse = "\n"),
+        fixed = TRUE) && file.exists(app_log) &&
+      !grepl(
+        "permission denied|operation not permitted|sass.*(?:error|failed)|bslib.*(?:error|failed)",
+        app_output, ignore.case = TRUE, perl = TRUE
+      ) && post_app_verify$status == 0L &&
+      identical(installation_before_app, tree_digest(destination)) &&
+      identical(
+        runtime_temporary_before_app, tree_digest(process_temporary)
+      ) &&
       identical(app_before, tree_digest(retained_project)),
     paste("Installed application supervision failed:", paste(
-      c(app_launch$output, app_output), collapse = "\n"
+      c(pre_app_verify$output, app_launch$output, app_output,
+        post_app_verify$output), collapse = "\n"
     ))
   )
   runtime_roots <- normalizePath(c(
@@ -1205,7 +1456,7 @@ validate_installation <- function() {
   connection <- file(alternate_manifest_path, open = "ab")
   writeBin(charToRaw("\n"), connection)
   close(connection)
-  Sys.chmod(alternate_manifest_path, mode = "0444", use_umask = FALSE)
+  Sys.chmod(alternate_manifest_path, mode = "0644", use_umask = FALSE)
   damaged_uninstall <- stable_run(c(
     "software", "uninstall", alternate_selector, "--yes", "--json"
   ), project)
@@ -1213,7 +1464,7 @@ validate_installation <- function() {
   connection <- file(alternate_manifest_path, open = "wb")
   writeBin(alternate_manifest_bytes, connection)
   close(connection)
-  Sys.chmod(alternate_manifest_path, mode = "0444", use_umask = FALSE)
+  Sys.chmod(alternate_manifest_path, mode = "0644", use_umask = FALSE)
   require_true(
     active_uninstall$status == 1L &&
       grepl("active_installation_uninstall_refused", paste(
@@ -1274,7 +1525,7 @@ validate_installation <- function() {
   connection <- file(manifest_path, open = "wb")
   writeBin(damaged_manifest_bytes, connection)
   close(connection)
-  Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
   damaged_manifest_digest <- rrp_sha256(manifest_path)
   require_true(
     !identical(damaged_manifest_digest, manifest_digest) &&
@@ -1327,7 +1578,7 @@ validate_installation <- function() {
   connection <- file(manifest_path, open = "wb")
   writeBin(manifest_bytes, connection)
   close(connection)
-  Sys.chmod(manifest_path, mode = "0444", use_umask = FALSE)
+  Sys.chmod(manifest_path, mode = "0644", use_umask = FALSE)
   require_true(
     identical(rrp_sha256(manifest_path), manifest_digest),
     "Installed-software fixture recovery did not restore the original manifest."
