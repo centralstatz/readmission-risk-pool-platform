@@ -4672,6 +4672,13 @@ only at release time; later HTML/PDF/manual outputs derive from maintained
 sources rather than unrelated duplicate prose. Stage 8 adds no documentation
 site, PDF/publication pipeline, CLI browser, or later-stage manual.
 
+**Forward-looking supersession:** the Stage 12 deployment wording above records
+the roadmap forecast when Stage 8 was accepted. The subsequently accepted
+architecture assigns Stage 12 the standalone hospital-owned application and
+its local guidance; provider-specific hosting and deployment remain hospital-
+owned choices rather than an RRP capability. Stage 8's documentation behavior
+and acceptance remain unchanged.
+
 ### Fictional reference project and source generation
 
 The supplied reference is realized as an ordinary independent project at a
@@ -8520,10 +8527,13 @@ Instantiate the exact Shiny application already supplied by installed RRP as
 ordinary standalone source under the hospital project's `app/` directory.
 Keep the accepted installed `rrp app launch` path unchanged, make initial
 application creation explicit, refresh only governed analytical products and
-their provenance, and make adoption of a newer default application a separate
-safeguarded operation. The resulting application is hospital-owned, locally
-runnable, customizable, and independent of RRP at runtime; subsequent hosting
-or deployment is outside Stage 12.
+their provenance inside one reserved directory, and leave every application-
+source decision after initialization to the hospital. The resulting
+application is readable, locally runnable, customizable, and independent of
+RRP at runtime. A hospital that wants a later RRP default initializes a new
+application at another absent path and compares or adopts it with ordinary
+filesystem or version-control tools. Subsequent hosting or deployment is
+outside Stage 12.
 
 ### Why here and dependencies
 
@@ -8538,8 +8548,9 @@ established before the application becomes editable hospital project content.
 > directory inside an independent hospital project. That application runs
 > without RRP or the analytical project, may be customized by the hospital,
 > and can receive later compatible product snapshots without changing any
-> application-source byte. Regeneration is separate and safeguarded; how the
-> hospital hosts or deploys the app is its choice.
+> application-source byte. RRP does not upgrade or reconcile the hospital's
+> application source; how the hospital maintains, hosts, or deploys it is its
+> choice.
 
 ### Expected historical reuse
 
@@ -8548,7 +8559,8 @@ inventory/integrity, copied standalone validation, dependency pruning, and
 safe staged replacement. Adapt only the mechanics that support one ordinary
 standalone Shiny application and narrow managed-product refresh. Historical
 Connect/Git realization, Hospital repository, and compute-capable payload
-machinery are excluded.
+machinery are excluded. Historical whole-application replacement and source-
+upgrade mechanics are also excluded.
 
 ### Major deferrals
 
@@ -8556,7 +8568,9 @@ Posit/Connect-specific packaging, `manifest.json`, Git-backed realization,
 Dockerfile/OCI construction, image/registry work, remote deployment,
 credentials, production networking, monitoring, and compute-capable artifacts
 remain hospital-owned choices or separate future capabilities justified by a
-concrete requirement; none is a Stage 12 or RRP 1.0 target.
+concrete requirement. Application-source upgrade, merge, replacement, backup,
+and migration are likewise hospital responsibilities; none is a Stage 12 or
+RRP 1.0 capability.
 
 ### Planning basis and reconnaissance
 
@@ -8579,11 +8593,13 @@ later fresh compatible product set
         ↓
 rrp app refresh
         ↓
-replace only managed product data + provenance
+replace only app/rrp-data/ product data + provenance
 
-new installed default application
+new installed default desired
         ↓
-rrp app regenerate (explicit, conflict-detecting, safeguarded)
+rrp app init --output <another-absent-path>
+        ↓
+hospital compares or adopts it with ordinary tools
 ```
 
 Current implementation establishes the required inputs but no Stage 12 output:
@@ -8637,16 +8653,30 @@ product-only application, standalone hospital-owned `app/`, independent local
 runtime, separate source/product lifecycles, managed-content integrity, and
 hospital-selected deployment boundary used by this proposal. They explicitly
 supersede the former mandatory target-neutral artifact, Connect Cloud, and
-OCI/Docker realization requirements. No further architectural decision is
-required before this detailed plan can be reviewed.
+OCI/Docker realization requirements.
+
+One authority discrepancy remains and prevents formal acceptance or
+implementation of this proposal. The current Platform Architecture still
+names explicit safeguarded regeneration in the standalone application's
+lifecycle table, application-lifecycle prose, CLI operation categories, and
+list of mechanisms delegated to this plan. The settled human direction for
+this revision removes that capability entirely: a later default is a new
+create-only initialization at another absent path, and RRP never upgrades
+hospital-owned application source. Those statements cannot both govern an
+implementation. This plan records the intended no-source-upgrade resolution
+but does not amend accepted architecture. A separate authority reconciliation
+must remove the regeneration requirement while preserving one-source behavior,
+reproducible initialization, hospital source ownership, and narrow managed-
+product refresh before this Stage 12 plan can be formally accepted.
 
 The implementation mechanisms remain proposed. In particular, the portable
-runtime-source seam, physical managed-content boundary, dependency authority,
-CLI syntax, regeneration safeguards, increment sequence, and acceptance
-evidence below require formal Stage 12 plan approval. The accepted architecture
-does not require a duplicate immutable application store, transport archive,
-target realization, or external hosting proof, and this plan does not introduce
-one under another name.
+runtime-source seam, exact managed-content representation, dependency
+authority, CLI syntax, increment sequence, and acceptance evidence below
+require formal Stage 12 plan approval. The settled lifecycle has no application-
+source upgrade operation. The accepted architecture does not require a
+duplicate immutable application store, transport archive, target realization,
+or external hosting proof, and this plan does not introduce one under another
+name.
 
 ### Standalone application and ownership model
 
@@ -8660,24 +8690,34 @@ hospital-rrp-project/
 ├── ... existing project-owned source and configuration
 └── app/
     ├── app.R
-    ├── R/          optional supporting application modules
-    ├── www/        application presentation assets
-    ├── data/       RRP-managed frozen analytical products
-    └── ...         dependency and provenance metadata
+    ├── R/                       readable application modules
+    ├── www/                     application presentation assets
+    ├── README.md
+    ├── renv.lock                exact standalone dependency declaration
+    ├── rrp-initialization.dcf   immutable initial provenance
+    └── rrp-data/                RRP-managed products and current provenance
 ```
 
 The layout is illustrative. Increment 12.A must choose the smallest conventional
 Shiny layout justified by the actual supplied app; it must not scaffold empty
 directories or expose package internals. After initialization the complete
-directory belongs to the hospital, subject to one narrow RRP-managed boundary:
+directory belongs to the hospital. `app/rrp-data/` is the one reserved boundary
+whose contents RRP may later maintain. It carries the accepted product-contract
+identity, active frozen product set, exact inventory and digests,
+materialization identity, analytical scope and cutoff, source lineage, and any
+internal promotion/recovery metadata required for an atomic refresh. Refresh
+may write only below that directory.
 
-- a machine-readable application declaration states the supplied application
-  identity/baseline and accepted product-set contract/version;
-- one reserved product-data/provenance area carries the active frozen product
-  set, exact inventory/digests, materialization identity, analytical scope and
-  cutoff, and source lineage; and
-- refresh may replace only that managed area and the active-product fields in
-  the declaration.
+A root initialization record preserves the installed software and
+authoritative application identity, dependency identity, initial product
+identity, and sorted baseline inventory/digests of files RRP supplied. RRP
+does not mutate that record after initialization. It is historical evidence of
+the initial default, not a declaration of the current hospital application and
+not part of the refresh protocol. The live recognition, product-contract, and
+compatibility information required by refresh lives inside `rrp-data/`.
+Modification or removal of the root record can make initial-provenance reporting
+unavailable, but it does not authorize RRP to rewrite it and does not by itself
+invalidate an otherwise coherent managed-data set.
 
 All application source, modules, CSS/assets, dependency files, README files,
 deployment configuration, Git metadata, and additional hospital files are
@@ -8691,9 +8731,10 @@ At initialization the application carries an exact baseline inventory and
 SHA-256 digests for the RRP-supplied source/resources plus the managed product
 inventory. That proves what installed software supplied. Customization may
 make the application source differ from the baseline; this is intentional and
-is reported rather than treated as product-data corruption. The whole mutable
-directory is no longer described as an immutable artifact after hospital
-editing.
+may be reported informationally rather than treated as product-data corruption.
+RRP neither inventories newly added hospital files nor requires baseline
+agreement for refresh. The whole mutable directory is never described as a
+continuously governed or immutable RRP artifact after promotion.
 
 ### Intended application workflow
 
@@ -8719,9 +8760,10 @@ supplied default and is not redirected through project application source.
 #### Routine analytical refresh
 
 1. The hospital explicitly runs and materializes a newer analytical context.
-2. `rrp app refresh` validates the existing application declaration and new
-   product compatibility, stages an exact frozen product snapshot, and
-   atomically replaces only managed analytical products and provenance.
+2. `rrp app refresh` validates the existing `rrp-data/` declaration and new
+   product compatibility, prepares and validates an exact frozen product
+   snapshot wholly below `app/rrp-data/`, and atomically switches that
+   directory's active set.
 3. The operation never writes application source, modules, styling, dependency
    metadata, deployment configuration, or unrelated hospital files; acceptance
    fixtures prove those bytes remain unchanged without making production RRP
@@ -8729,21 +8771,26 @@ supplied default and is not redirected through project application source.
 4. The operator runs or redeploys the same application by whatever process the
    hospital has selected.
 
-#### Explicit default regeneration
+The standalone loader always enters through one stable relative `rrp-data/`
+location and resolves its validated current-set record. Refresh prepares the
+new complete set and inventory under that directory; changing the small current
+record is the commit point. Before that point the old set remains current, and
+after it the new set is complete. Obsolete inactive or interrupted staging
+content is removed or reported only within `rrp-data/`. This is a bounded
+two-set/pointer mechanic, not a general artifact store, backup system, or
+transaction framework.
 
-`rrp app regenerate` prepares the current installed RRP default against an
-explicit compatible product context and compares it with the recorded source
-baseline. By default it is nonmutating when any generated source, asset, or
-dependency file differs. The operator may generate the new default at a
-separate path for review. In-place replacement requires explicit overwrite
-authorization and a separately named byte-preserving backup that is verified
-before promotion. Only the declared default-generated paths are eligible for
-replacement; unrelated hospital files remain untouched. Regeneration is never
-required for routine data refresh.
+#### A fresh later default
 
-Application-code rollback remains a hospital version-control or backup
-responsibility. RRP refresh never rewrites analytical history or source
-products.
+If a hospital wants the default supplied by a later installed RRP realization,
+it runs `rrp app init --output <another-absent-path>` against an explicit fresh
+product context. Initialization remains create-only and has no overwrite flag.
+The hospital may inspect, compare, copy, adopt, or discard that new directory
+with ordinary filesystem or version-control tools. RRP provides no source-
+upgrade, comparison, merge, replacement, backup, rollback, or migration
+operation. Application-code lifecycle and rollback are hospital
+responsibilities. RRP refresh never rewrites application source, analytical
+history, or source product materializations.
 
 ### Proposed standalone application model
 
@@ -8780,27 +8827,51 @@ The standalone app may not depend on or contain the complete `rrpplatform`
 package because that would carry prohibited compute and history-writing
 machinery. It also may not introduce a separately handwritten application.
 
-The proposed correction is a narrow source refactor under the existing
-`rrpplatform` owner:
+Current source reconnaissance shows a useful seam in
+`packages/rrpplatform/R/application.R`: project/product preparation and bounded
+branding interpretation surround product-snapshot/view-model and Shiny
+composition code that is already substantially pure. The proposed correction
+is a narrow source refactor under the existing `rrpplatform` owner:
 
 1. separate the already pure product-snapshot/view-model/Shiny construction
    code from project preparation and installed launch orchestration;
-2. represent the portable application core as the smallest conventional set of
-   ordinary R modules and static resources justified by the current app;
-3. install those exact members as positively cataloged `rrpplatform` resources;
-4. make the accepted `rrp app launch` path execute that same authoritative
-   implementation through its installed wrapper; and
-5. make `rrp app init` copy those resources and add only the conventional
-   standalone entry point, product loader, dependency declaration, and
-   provenance needed outside the package.
+2. maintain the portable application core as the smallest readable,
+   conventional set of ordinary R modules and static resources justified by
+   the current app;
+3. make source-controlled, positively cataloged members under
+   `resources/application/portable/` the authority and install them as
+   `rrpplatform` resources under the existing resource mechanism;
+4. make accepted `rrp app launch` prepare the detached product/presentation
+   model and execute those modules through its thin installed wrapper; and
+5. make `rrp app init` copy and arrange the same modules/resources and add only
+   a conventional standalone `app.R`, base-R managed-product loader, dependency
+   declaration, and provenance needed outside the package.
 
-This is one application implementation with installed and standalone hosts,
-not two maintained apps. The portable core accepts only its frozen product/
-presentation representation and has no project, state, history, producer,
-provider, materializer, CLI, or installed-RRP entry point. No third internal R
-package, package-source-archive extraction framework, or generated runtime
-abstraction is proposed. Additional modules enter the same explicit installed
-resource catalog only when the authoritative app actually gains them.
+This is one application implementation with installed and standalone host
+adapters, not two maintained apps. Legitimate generated differences are the
+entry point, relative managed-data loader, deterministic file arrangement,
+formatting, explanatory comments, and omitted installed-only indirection; the
+UI, server, view-model, and component behavior remains in the shared portable
+members. The initializer may copy, arrange, and perform small deterministic
+text substitutions at declared host seams. It must not maintain a second
+handwritten application, synthesize semantic code from an AST, introduce a
+templating language, or build a general source generator.
+
+The portable core accepts only its frozen product/presentation representation
+and has no project, state, history, producer, provider, materializer, CLI, or
+installed-RRP entry point. No third internal R package, package-source-archive
+extraction framework, or generated runtime abstraction is proposed.
+Additional modules enter the same explicit installed resource catalog only
+when the authoritative app actually gains them.
+
+Readability evidence is concrete: the initialized files must use a conventional
+Shiny layout, parse and source in a clean process, carry meaningful module
+roles and concise boundary comments, avoid package-private wrappers, and pass
+a bounded maintainer walkthrough against the installed guide. Behavioral
+equivalence is established from the same actual and empty normalized product/
+presentation fixtures through shared view-model/component/server checks and
+real HTTP/asset requests from both installed and standalone hosts. Source-byte
+identity between their entry points is neither required nor claimed.
 
 #### Closed contents
 
@@ -8809,13 +8880,13 @@ but the contract must close these logical roles:
 
 | Included role | Required content |
 |---|---|
-| Application authority | Versioned standalone-application declaration, accepted product contract, default-source baseline, exact RRP-managed inventory, SHA-256 digests, and integrity. |
+| Initial provenance | Immutable record of the selected installed software, authoritative application resources, dependency identity, initial product identity, and sorted path/role/size/SHA-256 baseline of files RRP initially supplied. |
 | Entry and validation | Root `app.R`, minimal standalone product loader/validator, and no installed-RRP bootstrap. |
-| Application runtime | The exact allowlisted product-only application runtime source and the RRP-owned CSS needed to construct the accepted app. |
-| Frozen products | Exactly one validated `rrp.product-set.initial-readmission-risk@0.1.0` physical set: its DCF manifest and the three governed CSV members, without a mutable `current.dcf` pointer or prior sets. |
+| Application runtime | The exact allowlisted readable product-only application modules and RRP-owned CSS/assets needed to construct the accepted app. |
+| Managed analytical data | `rrp-data/` containing a validated `rrp.product-set.initial-readmission-risk@0.1.0` physical set, accepted product contract, current-set pointer, exact inventory/digests, and analytical provenance. Bounded staging or a prior slot may exist only to make promotion and interrupted cleanup safe. |
 | Frozen presentation | Detached display name, primary color, optional contained PNG/JPEG logo, and other values already admitted by `rrp.project-brand@0.1.0`; not the project `_brand.yml` or arbitrary project assets. |
-| Semantic authority | Only the application/product declarations needed to validate the managed content independently. |
-| Runtime requirements | Exact R compatibility and complete ordinary package dependency/source requirements sufficient to restore an isolated runtime; `renv.lock` is the preferred initial candidate, not a hosting-provider contract. |
+| Semantic authority | Only the application/product declarations needed to load and validate the managed content independently. |
+| Runtime requirements | Human-readable direct requirements plus a minimal exact `renv.lock` for the standalone closure. No activation profile, imposed library location, RRP private lock, or hosting-provider contract. |
 | Provenance and legal | Selected software/distribution/package/resource identities, default application identity/baseline, product/materialization/scope/cutoff lineage, source revision evidence already carried by installed software, license, notice, and bounded standalone-operation guidance. |
 
 The generated default expressly excludes project manifests and registration,
@@ -8834,6 +8905,33 @@ pattern checks supplement it for generated text/configuration but do not scan
 governed product values as though heuristic matching could establish privacy.
 After initialization arbitrary hospital additions are outside that closed
 inventory and outside RRP's verification claim.
+
+#### Dependency declaration and ordinary runtime
+
+Source inspection identifies `shiny`, `bslib`, `plotly`, and `reactable` as the
+current portable application's direct runtime roots. `brand.yml` remains in
+the installed preparation path and is not needed after presentation has been
+detached. DBI, DuckDB, `rrpplatform`, `rrpruntime`, `readmit`, producer/provider
+packages, modeling packages, project code, and the RRP CLI are not standalone
+runtime requirements merely because upstream RRP uses them.
+
+Stage 12 should generate a minimal exact `renv.lock` resolved from the
+configured trusted repository and the portable app's actual direct roots. This
+is the machine-readable restoration authority for the standalone dependency
+closure, not a copy of RRP's distribution lock or private installation. The
+README separately names the small direct requirements and shows ordinary
+installation and `shiny::runApp()` use. No `.Rprofile` auto-activation is
+generated, `renv` is not an application runtime dependency, and RRP does not
+choose or manage the hospital's library. A hospital may use the packages in
+its ordinary library, opt into `renv` restoration, or use an external hosting
+system's conventional dependency mechanism.
+
+Acceptance proves both paths: ordinary `shiny::runApp()` with the declared
+packages already available, and restoration/supply of the exact lock into a
+fresh temporary library followed by copied-app execution. The generated lock
+is retained only if implementation confirms it represents the complete minimal
+closure reproducibly; unrelated RRP dependencies cause failure rather than
+being silently carried forward.
 
 #### Evidence, provenance, and reproducibility
 
@@ -8858,7 +8956,8 @@ No duplicate immutable artifact store, target-realization store, or transport
 archive is proposed. The create-only initialized directory itself is the
 portable application snapshot at promotion time. Its baseline manifest
 preserves the exact supplied-source evidence after customization, while the
-active managed-product record is updated on each successful refresh. The
+active managed-product record wholly inside `rrp-data/` is updated on each
+successful refresh. The
 immutable source materialization remains in project state under Stage 9
 authority; the app carries an independently verifiable detached copy plus its
 exact lineage and digests.
@@ -8888,9 +8987,13 @@ RRP, CLI, and user libraries, launches it with `shiny::runApp()`, performs real
 repeated HTTP and local-asset requests, and stops/cleans up without mutation.
 A dependency declaration alone cannot satisfy this claim.
 
-`rrp app validate` is read-only and does not source arbitrary customized code.
-It validates only the declaration and RRP-managed product/provenance boundary
-and reports default versus customized baseline status. Hospitals own tests and
+`rrp app validate` is read-only, accepts an explicit detached app path, and
+does not require the originating project/history or source arbitrary customized
+code. It recognizes the immutable initialization record, validates only the
+`rrp-data/` structure, active pointer/set, product contracts, identities,
+inventory/digests, provenance, and compatibility, and may report baseline
+status for the finite originally supplied paths as clearly informational.
+Unknown and newly added hospital files are ignored. Hospitals own tests and
 authorization for their own application code. The Stage 12 controlled runtime
 proof covers the generated default and a bounded customization fixture solely
 to prove that refresh preserves and does not need to interpret custom source.
@@ -8920,14 +9023,14 @@ is justified for this lifecycle:
 |---|---|
 | Existing `rrp app launch ...` | Unchanged Stage 11 behavior: launch the installed RRP-supplied default against validated project products without creating project application source. |
 | `rrp app init --scope ID --cutoff TIME [--project PATH] [--output PATH] [--json]` | Strictly verify selected software and fresh products, stage/validate the complete standalone default, and create the absent normal `<project>/app/` or explicit alternative directory. It never overwrites an existing path. |
-| `rrp app refresh --scope ID --cutoff TIME [--project PATH] [--app PATH] [--json]` | Verify product compatibility and atomically replace only the reserved managed product/provenance area. It does not enumerate or write unrelated application content. |
-| `rrp app regenerate --scope ID --cutoff TIME [--project PATH] [--app PATH] [--output PATH] [--backup PATH --replace-default] [--json]` | Prepare the current installed default for an explicit product context and report source/dependency differences. Separate output is preferred; in-place replacement of changed generated paths requires a verified backup and explicit authorization. |
-| `rrp app validate [--project PATH] [--app PATH] [--json]` | Read-only validation of the application declaration and managed products/provenance plus default/customized baseline status. It neither rejects nor attests to unrelated hospital files and does not execute customized code. |
+| `rrp app refresh --scope ID --cutoff TIME [--project PATH] [--app PATH] [--json]` | Verify product compatibility and atomically switch only the reserved `rrp-data/` product/provenance content. It does not enumerate or write unrelated application content. |
+| `rrp app validate [--project PATH] [--app PATH] [--json]` | Read-only validation of app recognition and managed products/provenance plus informational initial-baseline status when available. It neither rejects nor attests to unrelated hospital files and does not execute customized code. |
 
 The existing global `--software SELECTOR` and `--project PATH` resolution rules
-remain authoritative. Initialization, refresh, and regeneration require an
-explicit scope/cutoff pair; there is no implicit latest run, current-time
-cutoff, or automatic materialization. The normal app path is the exact
+remain authoritative. Initialization and refresh require an explicit
+scope/cutoff pair; there is no implicit latest run, current-time cutoff, or
+automatic materialization. Detached validation requires only an explicit app
+path. The normal app path is the exact
 `app/` child of the explicit project root, not a parent search or Git-derived
 location. Human output names application identity, path, source-baseline
 status, product/materialization/scope/cutoff lineage, changed managed paths,
@@ -8959,51 +9062,55 @@ rrp app validate --project "$PROJECT"
 ```
 
 The hospital then runs or redeploys the same `app/` directory by its chosen
-external process. Regeneration remains an exceptional explicit operation, not
-part of this refresh loop.
+external process. To inspect a later RRP default it initializes another absent
+output path; no command upgrades the existing hospital application source.
 
 ### Proposed implementation increments
 
-#### Increment 12.A — Standalone application foundation
+#### Increment 12.A — Authoritative application source and standalone runtime foundation
 
 **Objective and user-visible result:** establish one maintainable application
-implementation that continues to power accepted `rrp app launch` and can also
-be instantiated as conventional standalone Shiny files. No project `app/`
-directory or new public CLI behavior exists yet.
+implementation that continues to power accepted `rrp app launch` and is
+inherently suitable for readable conventional standalone Shiny source. Define
+the stable managed-product loading and dependency boundaries. No project
+`app/` directory or new public CLI behavior exists yet.
 
 **Principal work:**
 
-- add dependency-light authorities for the standalone application declaration,
-  accepted product-set compatibility, managed-content provenance/inventory,
-  and common structured operation result;
+- add only the dependency-light authorities needed for initial application
+  provenance, accepted product-set compatibility, `rrp-data/` managed-content
+  provenance/inventory, and common structured operation results;
 - separate pure product loading/view-model/Shiny composition from installed
   project preparation while preserving the existing installed launch entry
   point and behavior;
 - move the minimum portable R modules and static assets into one positively
   cataloged installed resource set consumed by both hosts;
 - define the exact frozen DCF/CSV product representation, detached bounded
-  presentation, default-source baseline, SHA-256 managed inventory, safe-path
-  and exclusion rules, and complete ordinary R dependency declaration; and
+  presentation, immutable initial baseline, SHA-256 managed inventory,
+  `rrp-data/` safe-path and exclusion rules, minimal direct dependency roots,
+  and exact standalone lock authority; and
 - reconcile package metadata, resource ownership, human guidance, and current
   validators only for files actually introduced.
 
 **Evidence and acceptance criteria:** exact/adversarial authority parsing; the
-same authoritative portable members drive installed launch and standalone
-construction; unchanged Stage 9 products and Stage 10/11 application launch;
-actual and empty products construct the same view/application semantics;
-complete app-only dependency closure excludes RRP, DBI/DuckDB, producers,
-providers, model, state/history, and writers; malformed products,
-presentation, declarations, paths, links, dependency or forbidden-role input
-fails closed; package builds/checks and relevant Stage 9–11 regressions pass.
+same authoritative readable portable members drive installed launch and the
+standalone host; legitimate adapter differences are explicit and bounded;
+unchanged Stage 9 products and Stage 10/11 launch; actual and empty products
+construct equivalent view/component/server semantics; clean-process parsing,
+sourcing, and maintainer readability review; complete app-only dependency
+closure excludes RRP, `brand.yml`, DBI/DuckDB, producers, providers, model,
+state/history, and writers; malformed products, presentation, declarations,
+paths, links, dependencies, or forbidden-role input fails closed; package
+builds/checks and relevant Stage 9–11 regressions pass.
 
 **Historical reuse:** adapt the `v0.1.0` positive product-only allowlist,
 application/product identity separation, inventory/digest mechanics, and
 reduced-runtime tests. Reject YAML, MD5, repository-root loading, broad engine
 copying, target wrappers, and a duplicate handwritten application.
 
-**Exclusions:** no `app/` output, initializer, refresh, regeneration, copied
-runtime proof, artifact store/archive, deployment target, Git, manifest,
-Dockerfile, image, remote, publication, or deployment.
+**Exclusions:** no `app/` output, initializer, refresh, copied runtime proof,
+artifact store/archive, source-upgrade lifecycle, deployment target, Git,
+manifest, Dockerfile, image, remote, publication, or deployment.
 
 #### Increment 12.B — Project application lifecycle
 
@@ -9011,42 +9118,42 @@ Dockerfile, image, remote, publication, or deployment.
 
 **Objective and user-visible result:** an installed operator can initialize the
 default standalone app at `<project>/app/`, validate it, refresh only compatible
-analytical products, and explicitly regenerate default application source with
-customization safeguards.
+analytical products, and maintain all application source independently of RRP.
 
 **Principal work:**
 
 - add nonexecuting project/state/product input resolution and exact freshness
   proof without loading project registration or invoking analytical behavior;
-- add stable package operations and proposed `app init`, `app refresh`,
-  `app regenerate`, and `app validate` CLI intentions with existing software,
+- add stable package operations and proposed `app init`, `app refresh`, and
+  `app validate` CLI intentions with existing software,
   project, structured-result, interruption, and JSON conventions;
 - implement sibling staging, complete validation, create-only initialization,
   deterministic default baseline/provenance, and failure cleanup;
-- implement compatible refresh as atomic replacement of only the reserved
-  managed product/provenance area, while controlled acceptance fixtures prove
-  every other application byte remains unchanged;
-- implement regeneration comparison, separate-output review, nonmutating
-  default conflict behavior, and verified backup plus explicit authorization
-  for in-place replacement of declared default-generated paths;
+- implement compatible refresh by staging, validating, and atomically switching
+  a complete managed product/provenance set wholly within `rrp-data/`, while
+  controlled acceptance fixtures prove every other application byte remains
+  unchanged and interrupted work leaves the prior set current;
+- include the fixed initial provenance record, readable source arrangement,
+  direct-requirement guidance, minimal exact `renv.lock`, and independent
+  managed-data validation without auto-activation or private-library coupling;
 - add the installed Standalone Application Guide, including ordinary local
-  `shiny::runApp("app")`, dependency restoration, ownership, customization,
-  refresh, recovery, and concise external deployment examples; and
+  `shiny::runApp("app")`, optional dependency restoration, ownership,
+  customization, refresh, recovery, fresh-default initialization at another
+  path, and concise external deployment examples; and
 - update project/ownership/validation surfaces only as needed to recognize the
   optional hospital-owned `app/` directory and RRP-managed sub-boundary.
 
 **Evidence and acceptance criteria:** create-only initialization from actual
-and empty fresh product sets; explicit alternative output; exact baseline and
-managed-data identity repeat; missing/stale/mismatched/corrupt product,
-software disagreement, unsafe/link/collision, interrupted staging, existing
-destination, and output-containment adversaries; compatible second-product
-refresh; incompatible product contract refusal without mutation; added README,
-module, asset, dependency/deployment file, and modified `app.R` all survive
-refresh byte-for-byte; inspection validates managed content and reports but
-does not reject customization; regeneration separate-output path, conflict,
-backup, authorized replacement, rollback/recovery, and unrelated-file
-preservation pass; analytical project/state/products and installed software
-remain unchanged.
+and empty fresh product sets; explicit alternative output; exact initial
+baseline and managed-data identity repeat; existing destinations are refused
+without an overwrite mode; missing/stale/mismatched/corrupt products, software
+disagreement, unsafe/link/collision, interrupted staging, and output-
+containment adversaries fail safely; compatible second-product refresh and
+incompatible product-contract refusal; added README, module, asset,
+dependency/deployment file, and modified `app.R` survive refresh byte-for-byte;
+detached inspection validates managed content and reports but does not reject
+known baseline customization; analytical project/state/products, installed
+software, and every path outside `rrp-data/` remain unchanged.
 
 **Exclusions:** no provider-specific packaging, `manifest.json`, Git behavior,
 Connect API/publishing, Dockerfile/image, artifact/realization store, remote,
@@ -9068,24 +9175,26 @@ separate formal Stage 12 acceptance.
 - use the fictional project to run/materialize time 1, launch the unchanged
   installed app, initialize/validate `app/`, and copy it outside the repository,
   project, state, installed RRP, and user libraries;
-- restore the declared ordinary dependency closure, launch the copied app with
-  `shiny::runApp()`, perform repeated HTTP and local-asset requests, terminate
-  conventionally, and prove cleanup/nonmutation;
+- launch the copied app first through ordinary `shiny::runApp()` with declared
+  packages available, then restore/supply the exact declared closure in a clean
+  temporary library and repeat real HTTP and local-asset requests without RRP,
+  terminating conventionally and proving cleanup/nonmutation;
 - add controlled source/style/module/README/deployment fixtures, then
   run/materialize time 2 and refresh the original app while proving only
   managed products/provenance changed and the copied standalone app remains an
   independent frozen time-1 snapshot;
-- prove incompatible refresh refusal, managed corruption diagnosis, and the
-  complete regeneration safeguard paths; and
+- prove incompatible refresh refusal, managed corruption diagnosis, stale
+  staging/recovery behavior, and existing-destination refusal; and
 - finish installed guidance, privacy review, implementation evidence, and the
   exact hosted Ubuntu/R 4.4 application-lifecycle proof genuinely owned by
   this stage.
 
-**Evidence and acceptance criteria:** isolated dependency restoration and load;
-no ambient library or installed RRP; real app startup, repeated HTTP/assets,
-expected stop and cleanup; exact time-1/time-2 product lineage; source-byte
-preservation; hospital-file preservation; application output reflects refreshed
-products; declaration/inventory/digest inspection works independently;
+**Evidence and acceptance criteria:** ordinary-library and isolated dependency
+restoration/load paths; no ambient library or installed RRP in the isolated
+proof; real app startup, repeated HTTP/assets, expected stop and cleanup; exact
+time-1/time-2 product lineage; source-byte and hospital-file preservation;
+application output reflects refreshed products;
+declaration/inventory/digest inspection works independently;
 forbidden project/source/model/state/credential inclusion is absent; failures
 are nonmutating; package/check, repository, distribution/installation, and
 relevant Stage 9–11 regressions pass; generated test output is removed; and the
@@ -9103,63 +9212,70 @@ Stage 12 acceptance must distinguish four evidence classes:
 
 | Evidence class | Required claim |
 |---|---|
-| Local/package | Authorities, one-source runtime seam, dependency closure, constructors, adversaries, CLI behavior, package build/check, and prior-stage regressions. |
-| Independent standalone app | A copied initialized directory validates, restores its declared dependencies, and serves the app without repository, project, state, installed RRP, CLI, or ambient user library access. |
-| Persistent application lifecycle | Project-local initialization, customization, compatible managed-product refresh, inspection, and regeneration safeguards preserve the narrow ownership boundary at one stable `app/` path. |
+| Shared source and package | Authorities, readable portable-source seam, normalized product/presentation model, minimal dependency closure, equivalence fixtures, package build/check, and prior-stage regressions. |
+| Independent standalone app | A copied initialized directory validates and serves through ordinary R and through a clean isolated library without repository, project, state, installed RRP, CLI, or ambient user-library access. |
+| Hospital-owned lifecycle | Create-only initialization, customization, compatible `rrp-data/` refresh, detached inspection, interruption handling, and exact preservation of every nonmanaged byte at one stable app path. |
 | External operator | Posit, Git, Docker, registry, publication, production deployment, authentication, and infrastructure remain unperformed unless separately authorized; their absence does not fail Stage 12. |
 
 The accepted exit criteria proposed for formal review are:
 
 1. accepted `rrp app launch` continues to run the installed default application
-   unchanged, while the same authoritative portable source/resources also
-   supply standalone initialization;
-2. one `rrp app init` command uses explicit selected software, project, fresh
-   scope and cutoff to create a conventional standalone application at the
-   absent normal `<project>/app/` path or explicit absent alternative;
-3. equal inputs reproduce every claimed RRP-supplied byte and baseline identity,
-   while changed application resources, presentation, dependencies, or product
-   materialization change the relevant identity/evidence;
-4. the initialized application records exact software/application/resource,
-   product/materialization/scope/cutoff/presentation/dependency provenance and
-   sorted SHA-256 inventories for RRP-supplied source and managed products;
-5. initialized applications launch through ordinary `shiny::runApp()` without
-   installed `rrpplatform`, `readmit`, RRP CLI, originating project, DuckDB
-   state/history, hospital producer/provider/model code, or the analytical
-   execution environment;
-6. isolated restoration or supply of the declared ordinary package closure and
-   real repeated HTTP/local-asset requests prove runtime independence; a lock
-   or dependency declaration alone is insufficient;
-7. no producer, provider, model, source/canonical input, history/state writer,
-   project extension, credential, or unintended file enters the initialized
-   default or managed refresh;
-8. one `rrp app refresh` command validates the existing declaration and new
-   product contract without sourcing arbitrary hospital application code;
-9. a second compatible materialization refreshes only reserved analytical-
-   product assets and their provenance while `app.R`, modules, styling,
-   presentation customizations, dependency metadata, deployment records, and
-   unrelated hospital files remain byte-identical;
-10. refresh atomically replaces the complete managed-data subtree, removes
-    obsolete files only inside that subtree, and refuses incompatible,
-    stale, corrupt, linked, unsafe, colliding, or undeclared managed content
-    before mutation;
-11. `rrp app validate` and the included dependency-light validator independently
-    validate RRP-managed products/provenance, report default/customized source
-    status, preserve unrelated user content, and make no verification claim
-    about that content;
-12. explicit `rrp app regenerate` is separate from refresh, refuses to replace
-    changed generated files by default, supports separate-destination review,
-    and requires validated backup plus explicit authorization for in-place
-    replacement while preserving unrelated hospital files;
-13. initialization, refresh, validation, and regeneration never mutate
-    installed software, analytical project source, state/history, or source
-    materialized product sets outside their explicit application destination;
-14. failed staging, validation, initialization, refresh, regeneration, runtime,
-    and interruption paths
-    clean up or report bounded recovery without destroying a prior valid
-    managed product set or persistent application;
-15. installed guidance makes installed launch, standalone initialization,
-    routine product refresh, explicit regeneration, local execution, and
-    external hosting/deployment visibly separate; and
+   unchanged, while the same authoritative readable portable modules and
+   resources supply standalone initialization through a different thin host
+   adapter;
+2. actual and empty fixtures demonstrate equivalent default UI, view-model,
+   server, interaction, and asset behavior across installed and standalone
+   hosts without requiring byte-identical entry points;
+3. generated source is conventional, readable, parses and sources in a clean
+   process, and contains no generated semantic logic, package-private wrapper,
+   general code-generation framework, or second maintained application;
+4. one `rrp app init` command uses explicit selected software, project, fresh
+   scope and cutoff to create a complete application at the absent normal
+   `<project>/app/` path or an explicit absent alternative, always refusing an
+   existing destination and offering no overwrite or source-upgrade mode;
+5. equal inputs reproduce every claimed RRP-supplied initial byte and baseline
+   identity, while changed authoritative resources, presentation, dependency
+   authority, or product materialization changes the relevant evidence;
+6. immutable initial provenance records exact software/application/resource,
+   initial product/materialization/scope/cutoff/presentation/dependency
+   identities and sorted SHA-256 inventories without governing subsequent
+   hospital source edits;
+7. `app/rrp-data/` is the sole path RRP may modify after initialization and
+   contains all current product contract, identity, lineage, inventory,
+   digest, and promotion/recovery information needed by refresh and runtime;
+8. one `rrp app refresh` validates an explicit fresh compatible product set
+   without sourcing hospital application code, prepares a complete managed set,
+   and atomically makes it current while removing obsolete generated content
+   only inside `rrp-data/`;
+9. incompatible, stale, corrupt, linked, unsafe, colliding, incomplete, or
+   undeclared managed content and interrupted preparation fail without changing
+   the prior valid current set; bounded stale work is diagnosed or cleaned
+   without a general artifact, transaction, or backup subsystem;
+10. a second compatible materialization changes only `rrp-data/`; modified
+    `app.R`, modules, styling/assets, README, dependency files, deployment
+    records, Git metadata, and unrelated hospital files remain byte-identical;
+11. `rrp app validate --app PATH` works on a detached copy without project or
+    history access, validates only initial recognition plus current managed
+    products/provenance, does not execute customized source, ignores new
+    hospital files, and labels any finite baseline comparison informational;
+12. initialized applications run through ordinary `shiny::runApp()` without
+    installed `rrpplatform`, `rrpruntime`, `readmit`, RRP CLI/private library,
+    originating project, DBI/DuckDB, state/history, producer/provider/model
+    code, or the analytical execution environment;
+13. the generated app documents its small direct requirements and includes a
+    minimal exact `renv.lock` for its independently derived closure, with no
+    auto-activation or imposed library, and both ordinary-library and isolated
+    restoration/supply paths successfully serve repeated HTTP and asset
+    requests;
+14. no producer, provider, model, source/canonical input, history/state writer,
+    project extension, credential, or unintended file enters initialization or
+    managed refresh, and failures do not mutate installed software, analytical
+    project/state/history, or source product materializations;
+15. installed guidance makes installed launch, create-only standalone
+    initialization, hospital source ownership, routine data refresh, detached
+    validation, local execution, and optional external hosting visibly
+    separate, and directs later-default comparison to a new absent output with
+    ordinary hospital tools; and
 16. focused, package/check, repository, distribution/installation regression,
     clean-copy runtime, privacy, hygiene, hosted Ubuntu/R 4.4, and exact-
     revision evidence pass with no retained test output or external deployment.
@@ -9167,32 +9283,34 @@ The accepted exit criteria proposed for formal review are:
 The plain-language accepted exit state remains:
 
 > An operator can keep using the installed default application or create it as
-> a normal standalone `app/` directory, run and customize that copy without
-> RRP, and refresh only compatible analytical products at the same path.
-> Default regeneration is explicit and safeguarded. What happens to the app
-> after generation is the hospital's choice.
+> a readable normal standalone `app/` directory, run and customize that copy
+> without RRP, and refresh only compatible analytical products inside its
+> reserved `rrp-data/` directory. RRP never upgrades the hospital's application
+> source. What happens to the app after initialization is the hospital's choice.
 
 ### Historical reuse decisions
 
 | Historical capability | Proposed Stage 12 disposition |
 |---|---|
 | Positive product-only runtime allowlist | **Adapt substantially.** Source the one portable application member set from installed package/resource authority and exact current DCF/CSV products. |
-| Staged validate/promote, idempotency, conflict refusal, pointer recovery | **Reuse mechanics selectively.** Use create-only application promotion, transactional managed-data refresh, verified regeneration backup, and failure cleanup; omit implicit latest selectors and whole-app replacement. |
+| Staged validate/promote, idempotency, conflict refusal, pointer recovery | **Reuse mechanics selectively.** Use create-only application promotion and a bounded current-set switch wholly inside `rrp-data/`; omit implicit latest selectors, generalized transactions, application backups, and whole-app replacement. |
 | Closed inventory and checksums | **Narrow and strengthen.** Use sorted role/size/SHA-256 evidence for the initial supplied baseline and current RRP-managed products; do not impose closure on later hospital files. |
 | Standalone copied validation and app construction | **Reuse substantially.** Add exact dependency restoration, real repeated HTTP/assets, privacy exclusions, and proof without installed RRP or project access. |
 | Artifact instance/build identity separation | **Simplify/adapt.** Record one deterministic initialization baseline plus independently changing managed-product provenance; no duplicate artifact store or archive. |
 | Direct runtime roots pruned from a broader lock | **Adapt.** Derive the ordinary standalone app closure from accepted distribution/installation dependency evidence, never the development lock. |
 | Connect root adapter and provider manifests | **Guidance only.** Preserve useful ordinary-publishing findings, but do not make Connect, Cloud, `manifest.json`, or `rsconnect` an RRP application contract. |
 | Fully generated Git repository, `git init`, staged-only/uncommitted requirement | **Reject.** Initialize ordinary project-local hospital-owned files without inspecting or mutating Git. |
-| Whole generated destination replacement | **Reject.** Refresh only compatible managed products/provenance; application-source adoption is explicit safeguarded regeneration. |
+| Whole generated destination replacement and source-upgrade machinery | **Reject.** Refresh only compatible `rrp-data/` products/provenance. A later default is a fresh create-only initialization at another absent destination and any comparison/adoption is hospital-owned. |
 | Fixed `rsconnect@1.3.1` manifest generation | **Reject.** Hosting-specific metadata belongs to the hospital's selected external workflow. |
 | Forbidden platform code/package and secret-pattern adversaries | **Adapt.** Positive inclusion remains primary; retain bounded defense-in-depth checks and privacy-safe diagnostics. |
 | Hospital generation, repository-root operations, YAML products, `build/`, Phase suites | **Reject.** Use installed CLI/package owners, explicit project/output paths, current DCF/CSV products, and lifecycle-focused evidence. |
 | OCI/Docker target | **Hospital/operator choice, not an RRP requirement.** Hospitals may containerize the ordinary app; RRP does not generate or qualify a Dockerfile/image in Stage 12. |
 
-### Decisions requiring human approval
+### Proposed implementation decisions for formal approval
 
-Formal acceptance of this plan should explicitly decide:
+The settled hospital-ownership and no-source-upgrade direction is not reopened
+by formal plan review. Acceptance should approve or revise only these concrete
+implementation mechanisms:
 
 1. **Runtime-source seam:** approve the proposed positively cataloged portable
    module/resource set inside `rrpplatform`, rather than shipping the full
@@ -9200,25 +9318,25 @@ Formal acceptance of this plan should explicitly decide:
    extracting package source archives, or maintaining duplicate app code.
 2. **Persistent ownership:** approve create-only `<project>/app/`
    initialization followed by hospital ownership of all nonreserved content,
-   with routine RRP mutation
-   limited to one declared product/provenance subtree and compatibility record.
+   with routine RRP mutation limited exactly to `app/rrp-data/` and a fixed
+   root initial-provenance record that RRP never updates.
 3. **Dependency authority:** approve one exact conventional app dependency
-   declaration—initially proposed as `renv.lock`—plus isolated restoration and
-   execution evidence, without making `renv` or any hosting platform part of
-   app runtime.
-4. **CLI:** approve extending the existing `rrp app` category with `init`,
-   `refresh`, `regenerate`, and `validate`, retaining explicit scope/cutoff,
+   declaration as a minimal independently derived `renv.lock`, plus a readable
+   direct-requirement explanation, ordinary execution, and isolated restoration
+   evidence, without auto-activation or making `renv`, RRP's private library,
+   or any hosting platform part of app runtime.
+4. **Managed promotion:** approve a self-contained complete set plus atomic
+   current pointer/slot under `rrp-data/`, with bounded stale-work cleanup and
+   no metadata update elsewhere in the application.
+5. **CLI:** approve extending the existing `rrp app` category only with `init`,
+   `refresh`, and `validate`, retaining explicit scope/cutoff,
    software/project selection, JSON, and deterministic failure conventions.
-5. **Regeneration safeguards:** approve nonmutating conflict detection by
-   default, separate-output review, and validated backup plus explicit
-   authorization before any changed default-generated application file is
-   replaced in place.
 6. **Acceptance choreography:** approve three increments followed by a separate
    exact-revision formal Stage 12 acceptance and architecture reconciliation.
 
-Until those decisions are accepted, this section is a proposal only. It
-authorizes no contract, package, CLI, application, workflow, remote, or
-Stage 12 implementation change.
+Until those decisions are accepted and the documented architecture discrepancy
+is reconciled, this section is a proposal only. It authorizes no contract,
+package, CLI, application, workflow, remote, or Stage 12 implementation change.
 
 ### Explicit deferrals and nonclaims
 
@@ -9227,7 +9345,9 @@ source/canonical ingestion, producer/provider/model execution, product
 materialization during application operations, a compute-capable deployment
 package, a governed custom-application or custom-product extension contract,
 interpretation or validation
-of arbitrary hospital application code, project migration, database/state
+of arbitrary hospital application code, application-source upgrade,
+comparison, merge, replacement, backup, rollback, or migration, project
+migration, database/state
 packaging, a separate immutable artifact/archive/realization store, target-
 specific contracts, `manifest.json` generation, Dockerfile/OCI image
 construction, remote object storage, Connect API use, remote Git creation/
@@ -9344,7 +9464,7 @@ Validation enters with its owner and grows only with real claims:
 | History | atomicity, retry, conflict, invalidation/restatement, reopen/recovery |
 | Products/app | logical conformance, freshness/lineage, product-only integration |
 | Distribution/installation | closure, inventory/digests, environment isolation, lifecycle safety |
-| Standalone application | reproducible initialization, managed-content integrity, declared dependency closure, isolated execution, customization-preserving refresh, regeneration safety |
+| Standalone application | reproducible create-only initialization, readable shared-source behavior, managed-content integrity, ordinary and isolated dependency execution, detached validation, customization-preserving `rrp-data/` refresh |
 | Acceptance/release | clean matrices, adopter proof, authorization, acquisition, immutability |
 
 Named lifecycle/component profiles may be introduced once there is more than
@@ -9394,8 +9514,8 @@ Deliberately open items include:
 - final distribution manifest, dependency resolution, reproducibility,
   archive, signature/authenticity, and acquisition mechanisms;
 - migration and any separately typed legacy-history archive contract;
-- standalone application declaration, dependency evidence, physical managed-
-  content layout, and regeneration mechanics beyond the proposed Stage 12
+- incidental standalone module names and formatting, exact managed-set slot
+  names, and helper-level implementation details beyond the proposed Stage 12
   decisions;
 - validation profile graph, CI matrix, and release support matrix; and
 - release host/provider and explicit remote publication procedure.
