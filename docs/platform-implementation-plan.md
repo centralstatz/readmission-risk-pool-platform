@@ -22,6 +22,12 @@ and the [Platform Architecture](platform-architecture.md). If this plan and
 either upstream document disagree, the upstream document governs and the plan
 must be corrected before source work continues.
 
+The current revised True North and Platform Architecture are formally accepted
+governing authority. They establish the conventional standalone, hospital-owned
+Shiny application as RRP's application-portability boundary and supersede the
+former mandatory Connect Cloud/OCI realization direction. This reconciliation
+does not itself accept or authorize the proposed Stage 12 implementation plan.
+
 The [Implementation Record](platform-implementation-record.md) reports what
 has actually happened on the clean 1.0 line. A planned stage is not a claim
 that its capability exists.
@@ -38,9 +44,11 @@ Platform Implementation Record   WHAT WE HAVE ACTUALLY BUILT
 Software and evidence
 ```
 
-The active line starts from the two accepted governing documents at commit
-`815fcc2`. The immutable `v0.1.0` tag and later pre-reset commits are historical
-evidence and a code reservoir, not active source or authority.
+The clean line began from the two governing documents at commit `815fcc2`.
+Those documents evolve in place as accepted authority and now include the
+standalone-application amendment described above. The immutable `v0.1.0` tag
+and later pre-reset commits are historical evidence and a code reservoir, not
+active source or authority.
 
 ## Construction method
 
@@ -111,7 +119,7 @@ Their bounded decisions are resolved just before they become material.
 | 8 | Fictional reference path | A normal independent fictional project exercises producer, admission, runtime, provider, and history end to end, but RRP has no application-facing products. |
 | 9 | Logical products and materialization | RRP can build and validate the initial remaining-risk product family from history and materialize it in project state, but it has no supplied user application. |
 | 10 | Supplied product-only application | The supplied application works only through validated products and proves the application boundary, but normal operators do not yet have the complete installed CLI and distribution. |
-| 11 | CLI, closed RRP-owned-payload distribution, installation, and upgrade | A human can build, install, verify, activate, operate, upgrade, roll back, and uninstall versioned RRP software without mutating a project, but deployment artifacts are not yet available. |
+| 11 | CLI, closed RRP-owned-payload distribution, installation, and upgrade | A human can build, install, verify, activate, operate, upgrade, roll back, and uninstall versioned RRP software without mutating a project, but the standalone project application is not yet available. |
 | 12 | Standalone project application | Installed RRP can instantiate its supplied product-only Shiny app as hospital-owned `app/` source, prove independent runtime closure, and refresh compatible products without overwriting application code. |
 | 13 | Clean-system and adopter acceptance | Supported clean environments prove installed RRP, the fictional project, and a separate adopter implementation through the full implemented lifecycle, but no 1.0.0 release is yet authorized. |
 | 14 | Release qualification and publication | Exact accepted bytes can be prepared, explicitly published, publicly reacquired, and verified as immutable RRP 1.0.0. |
@@ -144,7 +152,7 @@ product-only application
     ↓
 CLI + closed RRP-owned payload + private installation lifecycle
     ↓
-product-only deployment artifacts
+standalone project application
     ↓
 clean adopter acceptance
     ↓
@@ -154,8 +162,9 @@ release qualification and explicit publication
 Later consumers never force an earlier layer to know their implementation.
 The fictional path is integrated only after its real project/runtime/history
 boundaries exist. Products follow durable truth; the app follows products;
-artifacts follow installed software and the app. Release qualification is last
-because it asserts the complete acquisition and support boundary.
+standalone application initialization follows the installed app and immutable
+products. Release qualification is last because it asserts the complete
+acquisition and support boundary.
 
 ## Stage 1 — Repository and development foundation
 
@@ -7010,6 +7019,14 @@ realizations. It owns standalone artifact inventory, dependency closure,
 entrypoints, self-validation, and target behavior. Stage 10 does not copy its
 app into an artifact or introduce deployment configuration.
 
+**Forward-looking supersession:** the paragraph above records the future handoff
+anticipated when Stage 10 was accepted; it is not a Stage 10 implementation
+claim. The subsequently accepted True North and Platform Architecture replace
+that target-neutral/Posit/OCI obligation with one authoritative supplied app,
+project-local standalone initialization, independent local execution, and
+compatible managed-product refresh. Stage 10's installed application behavior,
+evidence, and acceptance remain unchanged.
+
 ### Major deferrals
 
 Authentication; authorization and roles; production identity management;
@@ -8116,6 +8133,12 @@ offline/bundled-closure test; Stage 14 release qualification,
 tagging, publication, public acquisition, and public immutability evidence; and
 clinical validation remain outside Stage 11.
 
+**Forward-looking supersession:** the artifact and named-target items above
+remain truthful descriptions of what Stage 11 did not implement. They no
+longer define required future RRP capabilities. Under the subsequently accepted
+architecture, Stage 12 instead owns the standalone project application while
+hospital-selected hosting and deployment remain outside the core contract.
+
 ### Increment 11.I — Post-acceptance amendment: installed application runtime permissions
 
 **Status:** **Formally accepted and complete — 2026-10-20**
@@ -8532,7 +8555,8 @@ machinery are excluded.
 Posit/Connect-specific packaging, `manifest.json`, Git-backed realization,
 Dockerfile/OCI construction, image/registry work, remote deployment,
 credentials, production networking, monitoring, and compute-capable artifacts
-remain hospital-owned or future work.
+remain hospital-owned choices or separate future capabilities justified by a
+concrete requirement; none is a Stage 12 or RRP 1.0 target.
 
 ### Planning basis and reconnaissance
 
@@ -8573,7 +8597,7 @@ Current implementation establishes the required inputs but no Stage 12 output:
   branding once before constructing the supplied Shiny application;
 - the application is analytically read-only, but its current package owner
   also contains producer, provider, history, state, and product-writing code
-  that must not enter the deployed payload; and
+  that must not enter the standalone application; and
 - the installed CLI already owns explicit project resolution, exact software
   selection, structured results, deterministic exits, and interruption.
 
@@ -8606,35 +8630,23 @@ their own method-specific manifest or lock-file requirements. Those findings
 belong in installed guidance; they do not justify an RRP target contract,
 manifest generator, Git workflow, or Connect-specific acceptance claim.
 
-### Authority reconciliation required before plan acceptance
+### Accepted authority and proposed implementation boundary
 
-The simplified direction fits True North's supplied product-only application,
-deployment portability, and hospital ownership. It also fits the architecture's
-rules that the app consumes products only, deployment remains operator-owned,
-and editable projects do not become immutable software artifacts.
+The accepted True North and Platform Architecture now establish the supplied
+product-only application, standalone hospital-owned `app/`, independent local
+runtime, separate source/product lifecycles, managed-content integrity, and
+hospital-selected deployment boundary used by this proposal. They explicitly
+supersede the former mandatory target-neutral artifact, Connect Cloud, and
+OCI/Docker realization requirements. No further architectural decision is
+required before this detailed plan can be reviewed.
 
-There is nevertheless a genuine conflict with currently accepted architecture
-text. `platform-architecture.md` explicitly requires a closed target-specific
-realization after the target-neutral artifact, names Connect Cloud as the first
-demonstrated reference target, names OCI/Docker as a first-class realization,
-and includes both in clean-install acceptance. The accepted Stage 10 boundary
-text likewise assigns target-neutral artifacts and Posit/OCI realizations to
-Stage 12, and the high-level Stage 13 roadmap still refers to both artifact
-families. This proposed Stage 12 plan does not silently reinterpret those
-requirements: it recommends replacing them with independent standalone-
-application evidence and hospital-owned deployment choice. Formal Stage 12
-plan acceptance therefore requires a separate explicit architecture
-reconciliation or amendment. Until that happens, this plan is not authorized
-for implementation.
-
-If maintainers retain the architecture's immutable distributable-snapshot
-requirement, the smallest additional mechanism would be a create-only
-normalized snapshot (and optional transport archive) of the just-initialized
-default `app/` baseline before hospital customization. That evidence could be
-derived from the same managed manifest without changing refresh semantics.
-It would not, however, satisfy the separately mandated Connect Cloud and OCI
-realizations; those requirements still need an explicit keep/defer/remove
-decision.
+The implementation mechanisms remain proposed. In particular, the portable
+runtime-source seam, physical managed-content boundary, dependency authority,
+CLI syntax, regeneration safeguards, increment sequence, and acceptance
+evidence below require formal Stage 12 plan approval. The accepted architecture
+does not require a duplicate immutable application store, transport archive,
+target realization, or external hosting proof, and this plan does not introduce
+one under another name.
 
 ### Standalone application and ownership model
 
@@ -9176,36 +9188,32 @@ The plain-language accepted exit state remains:
 | Fixed `rsconnect@1.3.1` manifest generation | **Reject.** Hosting-specific metadata belongs to the hospital's selected external workflow. |
 | Forbidden platform code/package and secret-pattern adversaries | **Adapt.** Positive inclusion remains primary; retain bounded defense-in-depth checks and privacy-safe diagnostics. |
 | Hospital generation, repository-root operations, YAML products, `build/`, Phase suites | **Reject.** Use installed CLI/package owners, explicit project/output paths, current DCF/CSV products, and lifecycle-focused evidence. |
-| OCI/Docker target | **Defer outside Stage 12.** Hospitals may containerize the ordinary app; RRP does not generate or qualify a Dockerfile/image here. |
+| OCI/Docker target | **Hospital/operator choice, not an RRP requirement.** Hospitals may containerize the ordinary app; RRP does not generate or qualify a Dockerfile/image in Stage 12. |
 
 ### Decisions requiring human approval
 
 Formal acceptance of this plan should explicitly decide:
 
-1. **Authority reconciliation:** decide whether to amend the accepted
-   architecture's mandatory target-specific Connect Cloud/OCI realization and
-   clean-install language so the standalone project app becomes the Stage 12
-   deployment-portability capability. Implementation cannot begin first.
-2. **Runtime-source seam:** approve the proposed positively cataloged portable
+1. **Runtime-source seam:** approve the proposed positively cataloged portable
    module/resource set inside `rrpplatform`, rather than shipping the full
    package, assuming one permanent monolithic file, creating a third package,
    extracting package source archives, or maintaining duplicate app code.
-3. **Persistent ownership:** approve create-only `<project>/app/`
+2. **Persistent ownership:** approve create-only `<project>/app/`
    initialization followed by hospital ownership of all nonreserved content,
    with routine RRP mutation
    limited to one declared product/provenance subtree and compatibility record.
-4. **Dependency authority:** approve one exact conventional app dependency
+3. **Dependency authority:** approve one exact conventional app dependency
    declaration—initially proposed as `renv.lock`—plus isolated restoration and
    execution evidence, without making `renv` or any hosting platform part of
    app runtime.
-5. **CLI:** approve extending the existing `rrp app` category with `init`,
+4. **CLI:** approve extending the existing `rrp app` category with `init`,
    `refresh`, `regenerate`, and `validate`, retaining explicit scope/cutoff,
    software/project selection, JSON, and deterministic failure conventions.
-6. **Regeneration safeguards:** approve nonmutating conflict detection by
+5. **Regeneration safeguards:** approve nonmutating conflict detection by
    default, separate-output review, and validated backup plus explicit
    authorization before any changed default-generated application file is
    replaced in place.
-7. **Acceptance choreography:** approve three increments followed by a separate
+6. **Acceptance choreography:** approve three increments followed by a separate
    exact-revision formal Stage 12 acceptance and architecture reconciliation.
 
 Until those decisions are accepted, this section is a proposal only. It
@@ -9216,8 +9224,8 @@ Stage 12 implementation change.
 
 Stage 12 does not add automatic analytical refresh, scheduling, a daemon,
 source/canonical ingestion, producer/provider/model execution, product
-materialization during application operations, a compute-capable artifact, a
-governed custom-application or custom-product extension contract,
+materialization during application operations, a compute-capable deployment
+package, a governed custom-application or custom-product extension contract,
 interpretation or validation
 of arbitrary hospital application code, project migration, database/state
 packaging, a separate immutable artifact/archive/realization store, target-
@@ -9239,18 +9247,22 @@ Prove the architecture's complete clean-install matrix on declared macOS arm64
 and Ubuntu x86_64 evidence cells: distribution install/doctor, fictional
 project, separate adopter project, custom producer and provider, dependency
 isolation, reproducible dependency restoration from configured repositories,
-durable history, products/app, both artifact families, version activation/
-rollback, and privacy/safety failures. This matrix does not require bundled
-third-party artifacts or offline installation unless later evidence creates
-that distinct product requirement. Close all temporary development bridges
-whose replacement conditions have passed.
+durable history, product materialization, standalone application initialization,
+copied-app dependency restoration and independent local execution, compatible
+managed-product refresh with hospital-file preservation, provenance/integrity,
+version activation/rollback, and privacy/safety failure and recovery behavior.
+This matrix does not require bundled third-party artifacts, offline
+installation, Posit/Connect publication, Docker/OCI images, or any other live
+external hosting demonstration. Close all temporary development bridges whose
+replacement conditions have passed.
 
 ### Why here and dependencies
 
 Only a complete candidate can prove that the development tree, installed
-software, project, state, and artifacts are genuinely independent. This stage
-turns accumulated component evidence into a supportable system claim before
-release metadata is frozen.
+software, project, state, immutable products, and standalone application are
+genuinely independent where the architecture requires it. This stage turns
+accumulated component evidence into a supportable system claim before release
+metadata is frozen.
 
 ### Plain-language exit state
 
@@ -9262,16 +9274,20 @@ release metadata is frozen.
 ### Expected historical reuse
 
 Inspect `v0.1.0` independent adopter, Hospital acquisition, clean-copy,
-artifact, publication preflight, and privacy/adversarial tests for invariant
-ideas. Rehouse still-valid proofs under current lifecycle owners. The Hospital
-product, embedded archive, two-release relationship, Phase aggregates, and
-Git cleanliness as project validity do not return.
+artifact-independence, publication preflight, and privacy/adversarial tests for
+invariant ideas. Rehouse still-valid standalone runtime, closure, provenance,
+integrity, and clean-copy proofs under current lifecycle owners. The Hospital
+product, embedded archive, target-specific realizations, two-release
+relationship, Phase aggregates, and Git cleanliness as project validity do not
+return.
 
 ### Major deferrals
 
 Clinical validation, production authorization, additional OS/R cells,
-performance/service objectives, signing mechanism, and actual remote
-publication remain outside this acceptance claim.
+performance/service objectives, signing mechanism, external application
+hosting/deployment certification, and actual remote release publication remain
+outside this acceptance claim. Absence of a deployed Posit application or
+Docker/OCI image does not fail Stage 13.
 
 ## Stage 14 — Release qualification and publication
 
@@ -9283,6 +9299,9 @@ artifacts, dependency/build evidence, checksums and any accepted authenticity
 evidence; require explicit publication authorization; verify immutable remote
 identity/assets; and prove public reacquisition, installation, doctor, example,
 and recovery behavior.
+
+Stage 14 publishes and verifies the RRP software release. It does not publish,
+host, or certify a hospital-owned standalone application or its deployment.
 
 ### Why here and dependencies
 
@@ -9325,7 +9344,7 @@ Validation enters with its owner and grows only with real claims:
 | History | atomicity, retry, conflict, invalidation/restatement, reopen/recovery |
 | Products/app | logical conformance, freshness/lineage, product-only integration |
 | Distribution/installation | closure, inventory/digests, environment isolation, lifecycle safety |
-| Artifacts/targets | independent closure, boundary, integrity, target behavior |
+| Standalone application | reproducible initialization, managed-content integrity, declared dependency closure, isolated execution, customization-preserving refresh, regeneration safety |
 | Acceptance/release | clean matrices, adopter proof, authorization, acquisition, immutability |
 
 Named lifecycle/component profiles may be introduced once there is more than
@@ -9360,7 +9379,7 @@ context. Exclusion from this design is not alteration of that release.
 
 The architecture settles responsibilities; later detailed plans will settle
 mechanisms when evidence is available. The proposed Stage 12 section above
-recommends resolutions for its artifact and target decisions; those
+recommends resolutions for its standalone application decisions; those
 recommendations remain open until the detailed plan is formally accepted.
 Deliberately open items include:
 
@@ -9369,14 +9388,15 @@ Deliberately open items include:
 - installed layout, launcher/installer technology, activation location, and
   exact host-R discovery mechanics;
 - later domain resource, project, canonical, target/request, provider, history,
-  product, artifact, and realization identifiers and schemas;
+  product, standalone-application, and managed-content identifiers and schemas;
 - project registration file syntax and extension dependency/conflict mechanics;
 - final distribution placement of packages and ordinary installed resources;
 - final distribution manifest, dependency resolution, reproducibility,
   archive, signature/authenticity, and acquisition mechanisms;
 - migration and any separately typed legacy-history archive contract;
-- artifact, Connect Cloud, and OCI implementation-incidental details beyond
-  the proposed Stage 12 decisions, including exact future base-image digest;
+- standalone application declaration, dependency evidence, physical managed-
+  content layout, and regeneration mechanics beyond the proposed Stage 12
+  decisions;
 - validation profile graph, CI matrix, and release support matrix; and
 - release host/provider and explicit remote publication procedure.
 
@@ -9398,6 +9418,6 @@ governing documents in order and then inspect source/evidence to show that:
 - a human can follow the implementation record from the minimal baseline to
   the installed, project-based product;
 - no mechanism exists solely to keep a superseded workflow alive; and
-- the complete clean-install, independent adopter, artifact, and publication
-  acceptance described by the architecture has passed for every claimed
-  support cell.
+- the complete clean-install, independent adopter, standalone-application, and
+  publication acceptance described by the architecture has passed for every
+  claimed support cell.
