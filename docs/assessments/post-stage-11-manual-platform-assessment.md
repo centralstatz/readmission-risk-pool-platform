@@ -1,7 +1,7 @@
 # Post-Stage-11 Manual Platform Assessment
 
-**Status:** Human-operated, non-authoritative assessment guide — not yet
-executed
+**Status:** Human-operated, non-authoritative assessment — completed
+successfully on 2026-10-20
 
 **Accepted Stage 11 implementation:**
 `8bb1a3798b92f5407b0772d60f067fc182f45fb3`
@@ -36,13 +36,14 @@ credentials, private hospital mappings, or a real model.
 Stage 11 is formally accepted and complete. Its later Increment 11.I
 post-acceptance correction is also formally accepted and supplies the current
 installed-software baseline for this guide without rewriting the original
-Stage 11 acceptance. A bounded 11.I browser exercise has been performed, but
-it did not execute this complete two-run assessment; this guide therefore
-remains not yet executed. Stage 12 has not begun. Public Stage 14 acquisition
-does not yet exist, so this exercise uses the source repository only to build
-one local development distribution. After that distribution is copied and
-unpacked, all operation goes through its verifier, installer, and installed
-`rrp` command.
+Stage 11 acceptance. A bounded 11.I browser exercise was performed first. A
+maintainer subsequently completed this entire two-run assessment successfully
+on 2026-10-20 and reported no observed failure or discrepancy. This is
+subsequent human assessment evidence, not a new formal acceptance or automated
+validation result. Stage 12 has not begun. Public Stage 14 acquisition does not
+yet exist, so this exercise uses the source repository only to build one local
+development distribution. After that distribution is copied and unpacked, all
+operation goes through its verifier, installer, and installed `rrp` command.
 
 ### Prerequisites
 
@@ -688,16 +689,16 @@ Complete this table only after personally performing the walkthrough:
 
 | Step | Result | Observations / issues |
 |---|---|---|
-| Distribution acquisition | Not run | |
-| Installation | Not run | |
-| Software verification | Not run | |
-| Reference project initialization | Not run | |
-| Source preparation and project/state validation | Not run | |
-| First run and products | Not run | |
-| First application inspection | Not run | |
-| Second run and products | Not run | |
-| Updated application inspection | Not run | |
-| Final project diagnosis | Not run | |
+| Distribution acquisition | Successful | No failure or discrepancy reported. |
+| Installation | Successful | No failure or discrepancy reported. |
+| Software verification | Successful | No failure or discrepancy reported. |
+| Reference project initialization | Successful | No failure or discrepancy reported. |
+| Source preparation and project/state validation | Successful | No failure or discrepancy reported. |
+| First run and products | Successful | No failure or discrepancy reported. |
+| First application inspection | Successful | No failure or discrepancy reported. |
+| Second run and products | Successful | No failure or discrepancy reported. |
+| Updated application inspection | Successful | No failure or discrepancy reported. |
+| Final project diagnosis | Successful | No failure or discrepancy reported. |
 
 Also record:
 
@@ -709,6 +710,16 @@ Also record:
 - unexpected interaction with the normal user environment; and
 - bounded improvement opportunities, without treating this assessment as
   authority to implement them.
+
+### Completion summary — 2026-10-20
+
+The maintainer reported successful completion of the entire documented
+assessment, including both analytical runs, both product materializations,
+both browser inspections, and the final project diagnostics. Every applicable
+step worked as documented, with no observed failure or discrepancy. This
+summary records human-operated assessment evidence only; it adds no automated
+validation result, architecture decision, stage acceptance, release claim, or
+deployment claim.
 
 ## P. Optional cleanup
 
@@ -748,5 +759,6 @@ This walkthrough deliberately stops after the two-run installed application
 experience and final diagnosis. It is not a Stage 11 regression suite,
 adversarial distribution test, side-by-side lifecycle exercise, production
 hospital onboarding, deployment assessment, clinical model evaluation, public
-release qualification, or Stage 12 work. Its status remains **not yet
-executed** until a maintainer runs the commands and records actual results.
+release qualification, or Stage 12 work. The assessment was completed
+successfully on 2026-10-20. Its result remains subsequent human assessment
+evidence rather than formal stage acceptance or automated validation.
