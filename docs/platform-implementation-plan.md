@@ -13,8 +13,9 @@ runtime-permissions defect outside the original acceptance probe. The bounded
 post-acceptance Increment 11.I correction below is formally accepted at exact
 revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements but does
 not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
-the next new stage. Its detailed plan below is **proposed for human review,
-not accepted, and not authorized for implementation**.
+the next new stage. Its detailed plan was **formally accepted on 2026-10-20;
+implementation has not started, and Increment 12.A is the next authorized
+implementation task**.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -25,8 +26,12 @@ must be corrected before source work continues.
 The current revised True North and Platform Architecture are formally accepted
 governing authority. They establish the conventional standalone, hospital-owned
 Shiny application as RRP's application-portability boundary and supersede the
-former mandatory Connect Cloud/OCI realization direction. This reconciliation
-does not itself accept or authorize the proposed Stage 12 implementation plan.
+former mandatory Connect Cloud/OCI realization and application-source
+regeneration directions. Final cross-authority reconciliation on 2026-10-20
+found the detailed Stage 12 plan consistent with those authorities and formally
+accepted its three-increment construction sequence. Planning acceptance
+authorizes a later Increment 12.A implementation task; it is not implementation,
+validation, completion, release, or publication evidence.
 
 The [Implementation Record](platform-implementation-record.md) reports what
 has actually happened on the clean 1.0 line. A planned stage is not a claim
@@ -90,8 +95,9 @@ Only the current implementation stage is decomposed before source work.
 The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
-Stage 12 work. Stage 12 is the next new stage; its detailed plan is proposed
-below but remains unaccepted and unimplemented. After a stage is implemented:
+Stage 12 work. Stage 12 is the next new stage; its detailed plan is accepted,
+implementation has not started, and Increment 12.A is next. After a stage is
+implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -8518,8 +8524,7 @@ unstarted.
 
 ## Stage 12 — Standalone project application
 
-**Planning status:** **Proposed — awaiting human review and formal acceptance —
-not implemented**
+**Planning status:** **Accepted — implementation not started — 2026-10-20**
 
 ### Objective and responsibilities
 
@@ -8574,7 +8579,7 @@ RRP 1.0 capability.
 
 ### Planning basis and reconnaissance
 
-This proposed detailed plan follows the accepted product/application boundary
+This accepted detailed plan follows the accepted product/application boundary
 and preserves the Stage 11 installed launch path:
 
 ```text
@@ -8646,37 +8651,34 @@ their own method-specific manifest or lock-file requirements. Those findings
 belong in installed guidance; they do not justify an RRP target contract,
 manifest generator, Git workflow, or Connect-specific acceptance claim.
 
-### Accepted authority and proposed implementation boundary
+### Accepted authority and implementation boundary
 
 The accepted True North and Platform Architecture now establish the supplied
 product-only application, standalone hospital-owned `app/`, independent local
 runtime, separate source/product lifecycles, managed-content integrity, and
-hospital-selected deployment boundary used by this proposal. They explicitly
+hospital-selected deployment boundary used by this plan. They explicitly
 supersede the former mandatory target-neutral artifact, Connect Cloud, and
 OCI/Docker realization requirements.
 
-One authority discrepancy remains and prevents formal acceptance or
-implementation of this proposal. The current Platform Architecture still
-names explicit safeguarded regeneration in the standalone application's
-lifecycle table, application-lifecycle prose, CLI operation categories, and
-list of mechanisms delegated to this plan. The settled human direction for
-this revision removes that capability entirely: a later default is a new
-create-only initialization at another absent path, and RRP never upgrades
-hospital-owned application source. Those statements cannot both govern an
-implementation. This plan records the intended no-source-upgrade resolution
-but does not amend accepted architecture. A separate authority reconciliation
-must remove the regeneration requirement while preserving one-source behavior,
-reproducible initialization, hospital source ownership, and narrow managed-
-product refresh before this Stage 12 plan can be formally accepted.
+The formally accepted 2026-10-20 architecture amendment removes the former
+application-source regeneration requirement and establishes create-only
+initialization, hospital source ownership, and `app/rrp-data/` as the sole
+subsequent RRP write boundary. Final reconciliation found the portable runtime-
+source seam, managed-content representation, dependency authority, CLI
+lifecycle, increment sequence, and acceptance evidence below consistent with
+True North and that architecture. No substantive authority conflict remains.
+True North's separate, explicit, safeguarded adoption of a newer supplied
+default is realized by create-only initialization at another absent path and
+hospital-directed comparison or adoption, not by RRP mutation of existing
+application source.
 
-The implementation mechanisms remain proposed. In particular, the portable
-runtime-source seam, exact managed-content representation, dependency
-authority, CLI syntax, increment sequence, and acceptance evidence below
-require formal Stage 12 plan approval. The settled lifecycle has no application-
-source upgrade operation. The accepted architecture does not require a
-duplicate immutable application store, transport archive, target realization,
-or external hosting proof, and this plan does not introduce one under another
-name.
+These implementation mechanisms are the accepted Stage 12 construction
+boundary. They authorize a subsequent Increment 12.A implementation task but
+do not claim that any Stage 12 contract, package, CLI, application, workflow,
+remote operation, or evidence exists. The accepted architecture does not
+require a duplicate immutable application store, transport archive, target
+realization, or external hosting proof, and this plan does not introduce one
+under another name.
 
 ### Standalone application and ownership model
 
@@ -8792,7 +8794,7 @@ operation. Application-code lifecycle and rollback are hospital
 responsibilities. RRP refresh never rewrites application source, analytical
 history, or source product materializations.
 
-### Proposed standalone application model
+### Standalone application model
 
 #### Input and execution boundary
 
@@ -8830,7 +8832,7 @@ machinery. It also may not introduce a separately handwritten application.
 Current source reconnaissance shows a useful seam in
 `packages/rrpplatform/R/application.R`: project/product preparation and bounded
 branding interpretation surround product-snapshot/view-model and Shiny
-composition code that is already substantially pure. The proposed correction
+composition code that is already substantially pure. The accepted correction
 is a narrow source refactor under the existing `rrpplatform` owner:
 
 1. separate the already pure product-snapshot/view-model/Shiny construction
@@ -8860,7 +8862,7 @@ templating language, or build a general source generator.
 The portable core accepts only its frozen product/presentation representation
 and has no project, state, history, producer, provider, materializer, CLI, or
 installed-RRP entry point. No third internal R package, package-source-archive
-extraction framework, or generated runtime abstraction is proposed.
+extraction framework, or generated runtime abstraction is planned.
 Additional modules enter the same explicit installed resource catalog only
 when the authoritative app actually gains them.
 
@@ -8953,7 +8955,7 @@ identity. A changed application resource, dependency authority, presentation,
 or product realization produces a different baseline.
 
 No duplicate immutable artifact store, target-realization store, or transport
-archive is proposed. The create-only initialized directory itself is the
+archive is planned. The create-only initialized directory itself is the
 portable application snapshot at promotion time. Its baseline manifest
 preserves the exact supplied-source evidence after customization, while the
 active managed-product record wholly inside `rrp-data/` is updated on each
@@ -9013,9 +9015,11 @@ generate or validate `manifest.json`, Dockerfiles, images, Git state, server
 configuration, or deployment credentials in Stage 12. No live hosting account
 or external deployment is part of acceptance.
 
-### Proposed installed CLI
+### Accepted planned CLI surface
 
-Extend the accepted `app` command category. Exact spelling remains proposed,
+The following extension of the accepted `app` command category is approved for
+construction. Its command names and mutation semantics are settled; flag
+parsing and helper-level implementation remain Increment 12.B details,
 but no separate artifact, realization, deployment, or target command hierarchy
 is justified for this lifecycle:
 
@@ -9065,7 +9069,7 @@ The hospital then runs or redeploys the same `app/` directory by its chosen
 external process. To inspect a later RRP default it initializes another absent
 output path; no command upgrades the existing hospital application source.
 
-### Proposed implementation increments
+### Accepted implementation increments
 
 #### Increment 12.A — Authoritative application source and standalone runtime foundation
 
@@ -9124,7 +9128,7 @@ analytical products, and maintain all application source independently of RRP.
 
 - add nonexecuting project/state/product input resolution and exact freshness
   proof without loading project registration or invoking analytical behavior;
-- add stable package operations and proposed `app init`, `app refresh`, and
+- add stable package operations and the accepted `app init`, `app refresh`, and
   `app validate` CLI intentions with existing software,
   project, structured-result, interruption, and JSON conventions;
 - implement sibling staging, complete validation, create-only initialization,
@@ -9201,14 +9205,16 @@ relevant Stage 9–11 regressions pass; generated test output is removed; and th
 exact committed candidate passes the hosted evidence required for this local
 standalone claim. No external hosting service is exercised.
 
-Completing 12.C implementation does not by itself declare Stage 12 accepted.
-A separate formal acceptance and architecture reconciliation must verify all
-Stage 12 criteria, exact hosted evidence, documentation, and deferrals before
-Stage 13 planning begins.
+Completing 12.C implementation does not by itself declare Stage 12
+implementation accepted and complete. A separate formal implementation
+acceptance and architecture reconciliation must verify all Stage 12 criteria,
+exact hosted evidence, documentation, and deferrals before Stage 13 planning
+begins.
 
-### Stage 12 verification and formal acceptance boundary
+### Stage 12 implementation verification and formal completion boundary
 
-Stage 12 acceptance must distinguish four evidence classes:
+Future Stage 12 implementation acceptance must distinguish four evidence
+classes:
 
 | Evidence class | Required claim |
 |---|---|
@@ -9217,7 +9223,7 @@ Stage 12 acceptance must distinguish four evidence classes:
 | Hospital-owned lifecycle | Create-only initialization, customization, compatible `rrp-data/` refresh, detached inspection, interruption handling, and exact preservation of every nonmanaged byte at one stable app path. |
 | External operator | Posit, Git, Docker, registry, publication, production deployment, authentication, and infrastructure remain unperformed unless separately authorized; their absence does not fail Stage 12. |
 
-The accepted exit criteria proposed for formal review are:
+The accepted Stage 12 implementation exit criteria are:
 
 1. accepted `rrp app launch` continues to run the installed default application
    unchanged, while the same authoritative readable portable modules and
@@ -9290,7 +9296,7 @@ The plain-language accepted exit state remains:
 
 ### Historical reuse decisions
 
-| Historical capability | Proposed Stage 12 disposition |
+| Historical capability | Accepted Stage 12 disposition |
 |---|---|
 | Positive product-only runtime allowlist | **Adapt substantially.** Source the one portable application member set from installed package/resource authority and exact current DCF/CSV products. |
 | Staged validate/promote, idempotency, conflict refusal, pointer recovery | **Reuse mechanics selectively.** Use create-only application promotion and a bounded current-set switch wholly inside `rrp-data/`; omit implicit latest selectors, generalized transactions, application backups, and whole-app replacement. |
@@ -9306,37 +9312,37 @@ The plain-language accepted exit state remains:
 | Hospital generation, repository-root operations, YAML products, `build/`, Phase suites | **Reject.** Use installed CLI/package owners, explicit project/output paths, current DCF/CSV products, and lifecycle-focused evidence. |
 | OCI/Docker target | **Hospital/operator choice, not an RRP requirement.** Hospitals may containerize the ordinary app; RRP does not generate or qualify a Dockerfile/image in Stage 12. |
 
-### Proposed implementation decisions for formal approval
+### Accepted implementation decisions
 
-The settled hospital-ownership and no-source-upgrade direction is not reopened
-by formal plan review. Acceptance should approve or revise only these concrete
-implementation mechanisms:
+Final reconciliation accepted the following concrete mechanisms. The settled
+hospital-ownership and no-source-upgrade direction is not reopened during
+implementation:
 
-1. **Runtime-source seam:** approve the proposed positively cataloged portable
+1. **Runtime-source seam:** use the positively cataloged portable
    module/resource set inside `rrpplatform`, rather than shipping the full
    package, assuming one permanent monolithic file, creating a third package,
    extracting package source archives, or maintaining duplicate app code.
-2. **Persistent ownership:** approve create-only `<project>/app/`
+2. **Persistent ownership:** use create-only `<project>/app/`
    initialization followed by hospital ownership of all nonreserved content,
    with routine RRP mutation limited exactly to `app/rrp-data/` and a fixed
    root initial-provenance record that RRP never updates.
-3. **Dependency authority:** approve one exact conventional app dependency
+3. **Dependency authority:** use one exact conventional app dependency
    declaration as a minimal independently derived `renv.lock`, plus a readable
    direct-requirement explanation, ordinary execution, and isolated restoration
    evidence, without auto-activation or making `renv`, RRP's private library,
    or any hosting platform part of app runtime.
-4. **Managed promotion:** approve a self-contained complete set plus atomic
+4. **Managed promotion:** use a self-contained complete set plus atomic
    current pointer/slot under `rrp-data/`, with bounded stale-work cleanup and
    no metadata update elsewhere in the application.
-5. **CLI:** approve extending the existing `rrp app` category only with `init`,
+5. **CLI:** extend the existing `rrp app` category only with `init`,
    `refresh`, and `validate`, retaining explicit scope/cutoff,
    software/project selection, JSON, and deterministic failure conventions.
-6. **Acceptance choreography:** approve three increments followed by a separate
+6. **Acceptance choreography:** use three increments followed by a separate
    exact-revision formal Stage 12 acceptance and architecture reconciliation.
 
-Until those decisions are accepted and the documented architecture discrepancy
-is reconciled, this section is a proposal only. It authorizes no contract,
-package, CLI, application, workflow, remote, or Stage 12 implementation change.
+These accepted planning decisions authorize Increment 12.A to begin only in a
+subsequent implementation task. They do not claim an implemented contract,
+package, CLI, application, workflow, remote operation, or Stage 12 evidence.
 
 ### Explicit deferrals and nonclaims
 
@@ -9497,11 +9503,10 @@ context. Exclusion from this design is not alteration of that release.
 
 ## Decisions deliberately left to progressive planning
 
-The architecture settles responsibilities; later detailed plans will settle
-mechanisms when evidence is available. The proposed Stage 12 section above
-recommends resolutions for its standalone application decisions; those
-recommendations remain open until the detailed plan is formally accepted.
-Deliberately open items include:
+The architecture settles responsibilities; later detailed plans settle
+mechanisms when evidence is available. The accepted Stage 12 section above
+settles its standalone application construction boundary. Deliberately open
+items include:
 
 - later exported APIs and package source files beyond the accepted Stage 3
   resource/result boundary;
@@ -9515,7 +9520,7 @@ Deliberately open items include:
   archive, signature/authenticity, and acquisition mechanisms;
 - migration and any separately typed legacy-history archive contract;
 - incidental standalone module names and formatting, exact managed-set slot
-  names, and helper-level implementation details beyond the proposed Stage 12
+  names, and helper-level implementation details beyond the accepted Stage 12
   decisions;
 - validation profile graph, CI matrix, and release support matrix; and
 - release host/provider and explicit remote publication procedure.
