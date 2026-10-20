@@ -7644,3 +7644,69 @@ candidate, obtain that exact-revision hosted result, perform the bounded human
 macOS browser confirmation, and then authorize a separate formal acceptance
 task. No commit, push, tag, release, publication, deployment, or Stage 12 work
 occurred.
+
+## Stage 11 / Increment 11.I.2 — Hosted Ubuntu supervisor failure reconciliation — 2026-10-20
+
+The implementation-complete Candidate A was committed as exact revision
+`815928f0ca921dac73a51405d4da7eb3583547e6`. Hosted Ubuntu/R 4.4
+`package-foundation` run `39417283700`, job `118609262015`, executed that exact
+revision. Repository, package, and distribution validation passed. Installation
+validation passed restoration, conventional permissions, full-library
+integrity adversaries, activation, verification, doctor, installed operation,
+and the real application HTTP probe, which reported
+`http-probe-ok requests=36 startup_seconds=7.58`. Step 8 nevertheless failed
+after the generated application supervisor reported
+`set: can't access tty; job control turned off` and the aggregate application
+assertion reported `Installed application supervision failed`.
+
+The defect was confined to the acceptance harness. The generated POSIX shell
+script used `set -m`, backgrounded the application, and sent `SIGINT` to the
+negative process-group ID. Ubuntu's noninteractive `/bin/sh` is `dash`; without
+a controlling terminal it warns and does not establish that job-control group.
+A focused local `dash` reproduction confirmed that the group-directed
+`kill -INT -"$pid"` returns 1 while the child remains live. Thus the supervisor
+returned 1 at interrupt delivery even though the HTTP probe had succeeded. The
+former combined assertion did not independently name that exit condition. No
+evidence implicated application behavior, conventional library permissions,
+installation integrity, or project mutation.
+
+The corrected supervisor uses ordinary foreground process behavior. A small
+probe helper performs the unchanged real HTTP/repeated-request/asset checks,
+while the supervisor records its own PID and `exec`s the stable launcher in the
+foreground. The stable shim, version launcher, and host-R handoff already use
+`exec`, so that exact PID becomes the application R process. After successful
+HTTP evidence the helper sends `SIGINT` directly to that PID. The validator now
+requires the externally observed application exit status to be exactly 130;
+it does not translate a termination signal into success or substitute
+`SIGTERM`. Probe failure still terminates the application and fails, and
+bounded helper diagnostics distinguish probe failure, early application exit,
+and interrupt-delivery failure. No general supervisor or production runtime
+subsystem was introduced.
+
+The former aggregate assertion was separated without weakening it. It now
+attributes pre-application verification, exact exit 130, the HTTP marker, log
+creation, permission/Sass/`bslib` errors, post-application verification,
+installed-software nonmutation, isolated temporary-tree cleanup, and hospital-
+project nonmutation independently. A focused noninteractive `dash` fixture
+proved direct `SIGINT`, exit 130, and temporary cleanup. Complete local evidence
+then passed:
+
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R`: PASS, including the corrected real HTTP,
+  interrupt, cleanup, integrity, and nonmutation boundary;
+- `Rscript --vanilla tools/validate-packages.R`: PASS, including both builds,
+  isolated install/load, both `R CMD check --no-manual` results with
+  `Status: OK`, and all installed regressions;
+- `Rscript --vanilla tools/validate-repository.R`: PASS, 8 checks;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R`: PASS; and
+- `git diff --check`: PASS.
+
+**Reconciliation result:** Increment 11.I.2 remains implementation-complete
+but not formally accepted. This correction must first be committed, and that
+exact revision then requires a successful hosted Ubuntu/R 4.4 run. The
+separately required bounded human macOS browser confirmation and formal 11.I
+amendment acceptance also remain outstanding. Candidate A, the library-
+inventory architecture, the original Stage 11 acceptance, and the Stage 12
+boundary are unchanged. No commit, push, tag, release, publication, deployment,
+or Stage 12 work occurred during this reconciliation.

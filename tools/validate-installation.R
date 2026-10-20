@@ -1028,19 +1028,25 @@ validate_installation <- function() {
   app_supervisor <- file.path(work, "installed-app-supervisor.sh")
   writeLines(c(
     "#!/bin/sh",
-    "set -m",
     "launcher=$1", "project=$2", "scope=$3", "cutoff=$4", "port=$5", "log=$6",
     "host_rscript=$7", "probe=$8",
-    "\"$launcher\" app launch --project \"$project\" --scope \"$scope\" --cutoff \"$cutoff\" --port \"$port\" --json >\"$log\" 2>&1 &",
-    "pid=$!",
-    "\"$host_rscript\" --vanilla \"$probe\" \"$port\" || { kill -TERM -\"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
-    "kill -0 \"$pid\" 2>/dev/null || { wait \"$pid\"; exit 1; }",
-    "kill -INT -\"$pid\" 2>/dev/null || exit 1", "attempt=0",
-    "while kill -0 \"$pid\" 2>/dev/null && [ \"$attempt\" -lt 10 ]; do sleep 1; attempt=$((attempt + 1)); done",
-    "kill -0 \"$pid\" 2>/dev/null && { kill -TERM -\"$pid\" 2>/dev/null; wait \"$pid\"; exit 1; }",
-    "wait \"$pid\"", "status=$?",
-    "kill -0 \"$pid\" 2>/dev/null && exit 1",
-    "[ \"$status\" -eq 130 ]"
+    "application_pid=$$",
+    "(",
+    "  if ! \"$host_rscript\" --vanilla \"$probe\" \"$port\"; then",
+    "    echo 'app-supervisor-error=http-probe-failed' >&2",
+    "    kill -TERM \"$application_pid\" 2>/dev/null",
+    "    exit 1",
+    "  fi",
+    "  if ! kill -0 \"$application_pid\" 2>/dev/null; then",
+    "    echo 'app-supervisor-error=application-exited-before-interrupt' >&2",
+    "    exit 1",
+    "  fi",
+    "  if ! kill -INT \"$application_pid\" 2>/dev/null; then",
+    "    echo 'app-supervisor-error=interrupt-delivery-failed' >&2",
+    "    exit 1",
+    "  fi",
+    ") &",
+    "exec \"$launcher\" app launch --project \"$project\" --scope \"$scope\" --cutoff \"$cutoff\" --port \"$port\" --json >\"$log\" 2>&1"
   ), app_supervisor, useBytes = TRUE)
   app_before <- tree_digest(retained_project)
   installation_before_app <- tree_digest(destination)
@@ -1067,23 +1073,40 @@ validate_installation <- function() {
   post_app_verify <- stable_run(c(
     "software", "verify", "--software", selector, "--json"
   ), project)
+  require_run_success("Pre-application installed verification", pre_app_verify)
   require_true(
-    pre_app_verify$status == 0L && app_launch$status == 0L &&
-      grepl("http-probe-ok", paste(app_launch$output, collapse = "\n"),
-        fixed = TRUE) && file.exists(app_log) &&
-      !grepl(
-        "permission denied|operation not permitted|sass.*(?:error|failed)|bslib.*(?:error|failed)",
-        app_output, ignore.case = TRUE, perl = TRUE
-      ) && post_app_verify$status == 0L &&
-      identical(installation_before_app, tree_digest(destination)) &&
-      identical(
-        runtime_temporary_before_app, tree_digest(process_temporary)
-      ) &&
-      identical(app_before, tree_digest(retained_project)),
-    paste("Installed application supervision failed:", paste(
-      c(pre_app_verify$output, app_launch$output, app_output,
-        post_app_verify$output), collapse = "\n"
-    ))
+    identical(app_launch$status, 130L),
+    paste0(
+      "Installed application interrupt did not produce exit 130; status=",
+      app_launch$status, ":\n", paste(app_launch$output, collapse = "\n")
+    )
+  )
+  require_run_text(
+    "Installed application HTTP probe", app_launch, "http-probe-ok"
+  )
+  require_true(
+    file.exists(app_log), "Installed application log was not created."
+  )
+  require_true(
+    !grepl(
+      "permission denied|operation not permitted|sass.*(?:error|failed)|bslib.*(?:error|failed)",
+      app_output, ignore.case = TRUE, perl = TRUE
+    ),
+    paste("Installed application reported a runtime permission or asset error:",
+      app_output)
+  )
+  require_run_success("Post-application installed verification", post_app_verify)
+  require_tree_unchanged(
+    "Installed software after application", installation_before_app,
+    tree_digest(destination)
+  )
+  require_tree_unchanged(
+    "Isolated runtime temporary tree after application",
+    runtime_temporary_before_app, tree_digest(process_temporary)
+  )
+  require_tree_unchanged(
+    "Hospital project after application", app_before,
+    tree_digest(retained_project)
   )
   runtime_roots <- normalizePath(c(
     distribution_root, destination, installation_root, executable_root,
