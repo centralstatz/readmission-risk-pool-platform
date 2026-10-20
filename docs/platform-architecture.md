@@ -3,7 +3,8 @@
 ## Status and authority
 
 **Status:** authoritative target architecture for the RRP 1.0.0 generation;
-implementation and release not yet complete
+the standalone-application ownership amendments in the current working tree
+await formal human acceptance; implementation and release not yet complete
 
 This document is the current normative architecture of the Readmission Risk
 Pool (RRP). It translates [Platform True North](platform-true-north.md) into
@@ -101,13 +102,18 @@ or CentralStatz engagement is required to operate it.
    provenance, metrics, and audit remain distinct concepts.
 10. The supplied app consumes products and never queries sources, executes a
     provider, or understands history storage internals.
-11. RRP maintains one authoritative supplied application implementation; its
-    installed and standalone forms may not become independent code lines.
-12. The standalone application has explicit ordinary runtime dependencies and
-    an RRP-managed product/provenance boundary, while its application source is
-    persistent hospital-owned content after initialization.
-13. Software upgrades do not mutate project source or state. Project and state
-    migrations are separate, explicit operations.
+11. RRP maintains one authoritative readable supplied application
+    implementation in cataloged members under `resources/application/portable/`.
+    Installed launch and standalone initialization derive from it and may
+    differ only through thin host adapters, file arrangement, comments, and
+    formatting; they may not become independent code lines.
+12. Standalone initialization is create-only at an absent destination. The
+    resulting application source and ordinary runtime dependencies are fully
+    hospital-owned; `app/rrp-data/` is RRP's sole authorized subsequent write
+    boundary for managed products and provenance.
+13. Software upgrades do not mutate project source or state or standalone
+    application source. Project and state migrations are separate, explicit
+    operations; application-source evolution is hospital-owned.
 14. Human operators use a thin CLI over the same stable operations used by
     tests, automation, agents, and supported programmatic clients.
 15. Validation rigor belongs to the lifecycle boundary whose claim it proves.
@@ -127,7 +133,7 @@ than one of them.
 | Installed RRP software | RRP publisher; local installer controls activation | Immutable per installed version | acquire, install, verify, activate, upgrade/rollback, uninstall | distribution and installation validation |
 | RRP project | Hospital/adopter | Editable trusted code and nonsecret configuration | initialize, customize, version, validate, migrate | project and extension conformance |
 | Project state | Hospital/adopter | Append-oriented or explicitly migrated | initialize, run, back up, recover, retain, migrate | state adapter and history validation |
-| Standalone application | Hospital/adopter after RRP initialization | Persistent editable source with a narrow RRP-managed product/provenance area | initialize, run, customize, refresh compatible products, explicitly regenerate, deploy or retire | standalone application and managed-content validation |
+| Standalone application | Hospital/adopter after RRP initialization | Persistent editable source with `app/rrp-data/` as the sole RRP-managed product/provenance area | create-only initialize, run, customize, refresh compatible products, deploy or retire | standalone application and managed-content validation |
 | Deployment target | Hospital/operator and hosting service | Externally managed | configure, deploy, authorize, monitor, retire | target and operational governance |
 | Published release | RRP publisher and release service | Immutable | prepare, authorize, publish, verify, support | release/publication verification |
 
@@ -544,36 +550,53 @@ persistence schemas. App reload, product materialization, and estimation are
 separate operations. Authentication, protected-data handling, networking, and
 production authorization belong to deployment.
 
-RRP maintains one authoritative supplied application implementation. Installed
-RRP may launch it directly against validated project products or instantiate
-that same implementation as ordinary source under the hospital project's
-first-class `app/` directory. The exact internal layout is an implementation
-decision, but the result is a conventional standalone Shiny application rather
-than a target-specific realization, disposable projection, separate deployment
-repository, or second independently maintained app.
+RRP maintains one authoritative readable supplied application implementation
+as cataloged members under `resources/application/portable/`. Installed RRP
+launches those resources against validated project products, while standalone
+initialization copies and arranges the same application logic as ordinary
+source under the hospital project's first-class `app/` directory. The two host
+entry points may differ through thin adapters, file arrangement, comments, and
+formatting, but not through separately maintained UI, server, view-model, or
+interaction logic. The result is a conventional standalone Shiny application,
+not a target-specific realization, disposable projection, separate deployment
+repository, or second independently maintained app. The generated copy has no
+ongoing connection to the installed package or development source repository.
 
-The initialized application runs from explicitly declared, independently
-restorable ordinary R/Shiny dependencies without the RRP CLI, installed RRP
-packages, originating project, DuckDB history/state, producer/provider/model
-code, or analytical execution environment. Isolated local execution, not the
-dependency declaration alone, proves that independence. Its conventional
+The initialized application runs through ordinary `shiny::runApp()` from
+explicitly declared, independently restorable ordinary R/Shiny dependencies
+without the RRP CLI, installed RRP packages or private library, originating
+project, DuckDB history/state, producer/provider/model code, development
+checkout, or analytical execution environment. Isolated local execution, not
+the dependency declaration alone, proves that independence. Its conventional
 structure is intended to permit normal hospital-selected hosting workflows,
 but does not promise unchanged deployment to every service.
 
 Application and analytical-product lifecycles remain separate. Initialization
 records a reproducible RRP-supplied source baseline and one explicit immutable
-materialized product set. Afterward the hospital owns and may customize all
-application source and unrelated files. RRP may atomically refresh only its
-reserved governed product/provenance content after compatibility and integrity
-validation. Refresh preserves application source and hospital-owned files.
-Adopting a newer supplied default is a distinct, explicit, safeguarded
-regeneration operation, never a consequence of product refresh.
+materialized product set, creates only a previously absent destination, and
+refuses to overwrite an existing application directory. Afterward the hospital
+owns and may customize all application source, supporting modules, assets,
+dependency declarations, deployment configuration, and unrelated files. RRP
+may atomically refresh only governed products, inventories, provenance, and
+bounded lifecycle metadata under `app/rrp-data/` after compatibility and
+integrity validation. Coherent staged replacement and recoverable current-set
+selection remain required, but their physical mechanic is an implementation-
+plan decision wholly contained by that boundary. Refresh and validation never
+execute or modify hospital application source.
+
+A hospital that wants to inspect a newer supplied default initializes it at a
+different absent destination. Comparison, adoption, merge, migration, backup,
+rollback, or replacement of hospital application source uses hospital-selected
+development tools and remains outside RRP. RRP provides no application-source
+upgrade operation under another name.
 
 RRP retains exact installed-software and supplied-application provenance, the
 initial source baseline, current product/materialization/scope/cutoff lineage,
 and inventories/digests for RRP-managed content. Immutable products and the
 managed boundary remain verifiable; hospital customization intentionally means
-the whole persistent `app/` directory is not an immutable RRP artifact.
+the whole persistent `app/` directory is not an immutable RRP artifact. Initial
+source provenance describes what RRP supplied at creation and does not make
+subsequent hospital source subject to continuing RRP integrity governance.
 
 Custom products/apps are not initial project extension contracts. They require
 later demonstrated need and explicit compatibility/trust boundaries.
@@ -598,9 +621,9 @@ styling, and implementation language are not finalized here.
 Operation categories are installation/version health; project initialization
 and health; project/producer/provider/dependency validation; one run and
 history inspection; product materialization; installed app launch; standalone
-app initialization, managed-product refresh, validation, and safeguarded
-regeneration; and explicit activation, migration, backup, and recovery as
-implemented. Each declares inputs, output, side effects, mutation class,
+app create-only initialization, managed-product refresh, and validation; and
+explicit software activation plus project/state migration, backup, and recovery
+as implemented. Each declares inputs, output, side effects, mutation class,
 diagnostics, recovery, and compatibility. Exact command syntax remains an
 implementation-plan decision.
 
@@ -628,9 +651,12 @@ when real projects demonstrate irreconcilable graphs or security/runtime need.
 
 Build-only dependencies belong to the maintainer/builder environment.
 Standalone application dependencies belong to its declared ordinary runtime
-closure. Hospital-selected deployment tooling and target dependencies belong
-to the hospital's chosen workflow. Neither enters installed RRP runtime solely
-because a later application or deployment process uses it.
+closure and run in the R library selected by the hospital's ordinary R process.
+A minimal standalone lock may provide exact restoration evidence, but does not
+mandate auto-activation, an RRP private library, or a particular hospital
+library location. Hospital-selected deployment tooling and target dependencies
+belong to the hospital's chosen workflow. Neither enters installed RRP runtime
+solely because a later application or deployment process uses it.
 
 ## Standalone application and deployment
 
@@ -652,13 +678,18 @@ inventories and SHA-256 digests for RRP-managed content. It excludes producer,
 provider, model, source clients, history writers, tests, mutable project state,
 and analytical execution. A copy must run locally in an isolated environment
 without the development repository, installed RRP, or originating project.
+Initialization is create-only and refuses an existing destination; a later
+supplied default can be initialized only at another absent path.
 
 The initialized directory is persistent hospital-owned application source, not
 an RRP-controlled immutable target realization. Reproducible initial generation
 and a recorded supplied baseline establish what RRP created. Subsequent hospital
-customization is legitimate. RRP closes and verifies only its managed product/
-provenance area after initialization; it neither imposes a closed inventory on
-arbitrary hospital files nor claims to validate their behavior.
+customization is legitimate. `app/rrp-data/` is the sole post-initialization
+path RRP may write. RRP closes and verifies only the governed products,
+inventory, provenance, and bounded refresh-lifecycle metadata there; it neither
+imposes a closed inventory on arbitrary hospital files nor claims to validate
+their behavior. Managed-product refresh preserves every path outside that
+directory and may not depend on executing customized application source.
 
 RRP does not require separate immutable application-artifact, transport-
 archive, deployment-repository, or target-realization stores for 1.0. It does
@@ -765,7 +796,7 @@ Validation is proportional to the claim and routed by ownership.
 | Project | manifest/paths/trust/selections, dependencies/model, secret exclusion, state safety, compatibility |
 | Producer/provider | canonical/temporal or target/request conformance and failures; clinical validation remains separate |
 | Runtime/history | target/temporal/output semantics, atomicity, retry, invalidation/restatement, provenance |
-| Standalone application | supplied-baseline and managed-content integrity, product compatibility, dependency closure, forbidden-role exclusion, independent local execution, customization preservation |
+| Standalone application | create-only initialization, supplied-baseline and `rrp-data/` managed-content integrity, product compatibility, dependency closure, forbidden-role exclusion, independent local execution, customization preservation |
 | Release candidate | clean build, support matrix, licenses/docs, clean install, adopter acceptance, standalone-application proof |
 | Publication | authorization, exact remote/tag/assets, checksums/signatures, recovery, public acquisition/install |
 
@@ -794,10 +825,11 @@ install user-scoped RRP and verify host R/software
 → replace its producer/mapping and register a custom provider/model
 → reproduce dependencies and validate compatibility
 → execute, append, close, and reopen history
-→ build/materialize/validate products and initialize the app
+→ build/materialize/validate products and create-only initialize the app
 → copy the standalone app away from RRP and the originating project
 → restore its declared dependencies and prove isolated local operation
-→ refresh compatible managed products without changing application source
+→ refresh compatible products only under app/rrp-data/ without changing
+  application source or other hospital-owned files
 ```
 
 The proof has no development/sibling repository access, Hospital distribution,
@@ -897,7 +929,8 @@ package names/APIs; project manifest and registration schema/paths; 1.0 target,
 canonical, request, provider, history, and product IDs/schemas; distribution
 manifest/build/signing details; project dependency/conflict mechanics;
 migration and legacy archive contracts; standalone application declaration,
-managed-content layout, regeneration safeguards, and dependency evidence;
+create-only initialization, managed-content layout and refresh recovery, and
+dependency evidence;
 validation profile graph; documentation move sequence; and the release support
 matrix.
 
@@ -971,6 +1004,7 @@ tests, or validation machinery.
 - Project dependencies may not silently override RRP-owned packages.
 - Configuration may not contain executable code, arbitrary load paths, remote
   code, PHI, or secrets.
-- Installation/upgrades may not mutate project source or state.
+- Installation/upgrades may not mutate project source, project state, or
+  standalone application source.
 - Agents/clients may not own unique logic or recovery procedures.
 - Nothing may depend on `../readmission-risk-pool`.
