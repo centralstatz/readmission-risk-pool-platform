@@ -63,7 +63,7 @@ pipeline, or consulting deliverable. It includes:
 - append-oriented operational history;
 - curated logical application products;
 - a working supplied application;
-- portable deployment builds;
+- portable standalone application source;
 - versioning, provenance, validation, observability, and operations;
 - complete human documentation; and
 - a synthetic reference implementation.
@@ -100,7 +100,7 @@ Build logical products
         ↓
 Launch supplied application
         ↓
-Build a reference deployment
+Instantiate the standalone application when needed
         ↓
 Replace project source mapping or provider deliberately
 ```
@@ -162,7 +162,7 @@ Generic runtime and default provider
         ↓
 Operational history and logical products
         ↓
-Working application and reference deployment
+Working supplied and standalone application
 ```
 
 It should be deterministic from declared inputs, visibly fictional and
@@ -319,6 +319,20 @@ query hospital sources, invoke model-specific implementations, or depend on
 storage-backend internals. Another interface may replace it without changing
 upstream semantics.
 
+RRP maintains one authoritative default application implementation. Installed
+RRP may run that application directly or instantiate it as a conventional
+standalone `app/` directory in the hospital's project. The standalone copy is
+independently runnable from declared ordinary R/Shiny dependencies and does
+not require installed RRP, the originating analytical project, project state,
+or producer/provider/model code.
+
+The initialized application is persistent hospital-owned source. RRP records
+the supplied baseline and may refresh only compatible governed analytical
+products and their provenance; it does not overwrite application source or
+unrelated hospital files during routine refresh. Adopting a newer supplied
+default is a separate, explicit, safeguarded action. Hospital customization is
+intentional and does not make the whole application an immutable RRP artifact.
+
 ## Human-first, agent-enhanced operations
 
 **Design principle:** Every meaningful supported operation must be executable
@@ -337,9 +351,10 @@ Agents, skills, scripts, schedulers, and future clients
 The CLI is the canonical human operational interface. A stable programmatic
 API performs the work and is shared by the CLI, tests, automation, agents, and
 supported clients. Operation categories include software/project health,
-project initialization and validation, run/history, products/app, artifacts,
-and explicit upgrade or migration as those capabilities are implemented. Final
-command syntax follows working interfaces rather than preceding them.
+project initialization and validation, run/history, products/app, standalone
+application lifecycle, and explicit upgrade or migration as those capabilities
+are implemented. Final command syntax follows working interfaces rather than
+preceding them.
 
 An agent must not own unique business logic or an undocumented recovery path.
 If all AI-specific files disappeared, the platform would remain operable. The
@@ -350,8 +365,8 @@ supported interfaces, not the RRP CLI, runtime, or target authority.
 
 **Target state:** A portable, privacy-conscious observability interface spans
 setup, implementation mapping, conformance, computation, providers,
-persistence, products, application startup, deployment building, publication,
-and scheduled operation.
+persistence, products, application startup, standalone application
+initialization and refresh, publication, and scheduled operation.
 
 Run identity should connect stages to structured, actionable diagnostics and,
 where appropriate, provenance, validation results, and operational metrics.
@@ -375,19 +390,21 @@ without a governed design establishing that property.
 ## Installation, deployment, and distribution
 
 **Target state:** RRP is one versioned installed software distribution operating
-on an independently owned project. Deployment is a separate transformation of
-validated installed/project outputs into a closed target realization.
+on an independently owned project. It supplies one default product-only Shiny
+application that can run from installed RRP or be instantiated as ordinary,
+hospital-owned standalone application source. Deployment remains a separate
+hospital-selected operational activity.
 
 ```text
 Development source → closed software build → installed RRP
                                            ↓ explicit project
                               validated project products
-                                           ↓ artifact build
-                              target-neutral closed artifact
-        ↓
-Target-specific realization
-        ↓
-Deployment or publication
+                     ├── launch installed supplied application
+                     └── initialize project-local app/
+                                      ↓
+                          ordinary standalone Shiny app
+                                      ↓
+                     hospital-selected run/deployment workflow
 ```
 
 The software distribution may contain internal R packages, but R is an
@@ -395,18 +412,27 @@ implementation dependency rather than the operator experience. RRP and each
 project own separate dependency environments. Installation is versioned and
 non-mutating with respect to project source and state.
 
-Deployment targets own runtime packaging and validation. They must not alter
-canonical, target, provider, product, or operational-history semantics.
-Generated deployment repositories are ordinarily realizations and should not
-be edited as authoritative source.
+The standalone application follows ordinary Shiny conventions, declares its
+ordinary runtime dependencies, and is demonstrably runnable in an isolated
+environment without the RRP CLI, installed RRP packages, the originating
+project, DuckDB state/history, analytical code, or model artifacts. Its
+initial supplied source baseline, active materialized-product identity and
+lineage, RRP-managed file inventory, and cryptographic digests remain
+independently verifiable. Immutable analytical materializations remain the
+authority for application data; later hospital edits intentionally make the
+whole application directory mutable rather than an immutable RRP artifact.
 
-Posit Connect Cloud remains the default reference target because it provides a
-practical public demonstration path. The product artifact remains broadly
-Posit-compatible so an organization's internal Posit Connect is a closely
-related path, though support requires its own evidence. Product-only OCI/Docker
-is a first-class portability realization of the same product/application
-semantics. None is a core dependency, and target-specific packaging must not
-leak upward into the application or analytical architecture.
+RRP does not mandate, generate, operate, or certify a hosting platform or
+target realization as part of the core application contract. A hospital may
+use self-managed Posit Connect, Connect Cloud, Git-backed publishing,
+Docker/OCI, another compatible R/Shiny environment, or local execution. These
+are illustrative downstream choices, not required RRP targets. Their omission
+from the core contract does not assert incompatibility, and their mention does
+not establish RRP certification. The hospital owns any manifests, Dockerfiles,
+images, repositories, credentials, publication, infrastructure, monitoring,
+and platform-specific validation its choice requires. The application is
+intended as a conventional starting point; RRP does not guarantee unchanged
+deployment to every service.
 
 The development repository is not the installed payload. A closed inclusion
 manifest, exact output inventory, dependency/build evidence, cryptographic
@@ -414,11 +440,11 @@ digests, and clean installation proof define a distribution. Hospitals do not
 normally clone or modify platform source. Generated Hospital Implementation
 repositories remain `v0.1.0` history rather than the forward product boundary.
 
-The initial deployed artifact is product-only and excludes producers,
-providers, models, and history writers. Both Posit-compatible and OCI/Docker
-realizations preserve that boundary. A compute-capable artifact is a later,
-distinct profile. No distribution or target wrapper may duplicate or redefine
-platform logic.
+The instantiated application is product-only and excludes producers,
+providers, models, history writers, mutable state, and analytical execution.
+There is one authoritative supplied application, not separate installed and
+standalone implementations. Any hospital packaging or target wrapper must not
+redefine platform semantics or become an RRP source authority.
 
 ## Upgrade and migration separation
 
@@ -464,16 +490,19 @@ product, deployment, and operational boundaries.
 ## Stewardship and ownership boundaries
 
 The core platform owns the installed distribution, public project/canonical/
-target/provider/history/product/artifact contracts, conformance, generic
+target/provider/history/product/application contracts, conformance, generic
 post-canonical behavior, fictional example project, valid nonclinical defaults,
-product interfaces, supplied app/deployment builders, operations, tests,
-documentation, versioning, provenance, and open-source stewardship.
+product interfaces, one supplied app, standalone initialization and compatible
+managed-product refresh, operations, tests, documentation, versioning,
+provenance, and open-source stewardship.
 
 The adopter owns an independent project: source access/interpretation, mapping
 and producer, selected provider/model and extension dependencies, model
-artifacts, nonsecret configuration, writable state and storage policy, identity
-and access, secrets, deployment approval, diagnostic routing/retention, local
-model/clinical governance, monitoring, incident response, and adoption.
+model artifacts, nonsecret configuration, writable state and storage policy,
+standalone application customizations, deployment-specific configuration,
+identity and access, secrets, hosting/publication/deployment approval,
+diagnostic routing/retention, local model/clinical governance, monitoring,
+incident response, and adoption.
 
 CentralStatz and third parties may own optional providers, integrations,
 extensions, and professional services. Their value is expertise and judgment,

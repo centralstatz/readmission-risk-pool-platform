@@ -20,6 +20,12 @@ implementation status is recorded by the implementation plan and record rather
 than frozen into this target-architecture document. Historical implementations
 remain available through Git for selective reuse.
 
+This revision supersedes the earlier forward requirement for a target-neutral
+application artifact followed by mandatory Connect Cloud and OCI/Docker
+realizations. Those remain possible hospital-selected deployment approaches,
+not RRP 1.0 target capabilities. Historical plans and acceptance records retain
+their meaning for the work they documented.
+
 Implementation planning must derive a progressive construction path from this
 architecture. When established, that plan governs construction order and its
 implementation record reports only what the clean 1.0 line actually builds.
@@ -33,7 +39,8 @@ hospital-owned readmission-risk project. It accepts a trusted local
 source-to-canonical producer, constructs temporally valid episode state,
 requests one RRP-defined readmission-risk quantity from a selected provider,
 retains attributable operational history, builds logical products, serves a
-supplied product-only application, and builds closed deployment artifacts.
+supplied product-only application, and can instantiate that same application
+as conventional hospital-owned standalone Shiny source.
 
 This architecture governs the development/software boundary, independent
 project contract, trusted composition, singular risk target, runtime, state,
@@ -63,11 +70,12 @@ append-oriented operational history
         ↓
 logical products
         ↓
-supplied app / closed deployment artifact
+supplied app or project-local standalone app/
 ```
 
 One RRP installation may operate multiple separately invoked projects, but one
-project and one deployment represent one health system. There is no runtime
+project and any deployment of its standalone application represent one health
+system. There is no runtime
 hospital selector or multi-hospital shared analytical state. The open product
 remains independently useful: no proprietary model, agent, package, service,
 or CentralStatz engagement is required to operate it.
@@ -93,10 +101,11 @@ or CentralStatz engagement is required to operate it.
    provenance, metrics, and audit remain distinct concepts.
 10. The supplied app consumes products and never queries sources, executes a
     provider, or understands history storage internals.
-11. Generated artifacts have closed target-specific closure; editable projects
-    do not become immutable software artifacts.
-12. Software, project, and deployment dependency environments have explicit
-    owners and cannot silently override one another.
+11. RRP maintains one authoritative supplied application implementation; its
+    installed and standalone forms may not become independent code lines.
+12. The standalone application has explicit ordinary runtime dependencies and
+    an RRP-managed product/provenance boundary, while its application source is
+    persistent hospital-owned content after initialization.
 13. Software upgrades do not mutate project source or state. Project and state
     migrations are separate, explicit operations.
 14. Human operators use a thin CLI over the same stable operations used by
@@ -118,7 +127,7 @@ than one of them.
 | Installed RRP software | RRP publisher; local installer controls activation | Immutable per installed version | acquire, install, verify, activate, upgrade/rollback, uninstall | distribution and installation validation |
 | RRP project | Hospital/adopter | Editable trusted code and nonsecret configuration | initialize, customize, version, validate, migrate | project and extension conformance |
 | Project state | Hospital/adopter | Append-oriented or explicitly migrated | initialize, run, back up, recover, retain, migrate | state adapter and history validation |
-| Deployment artifact | Project/operator generated output | Immutable generated unit | build, independently validate, publish or discard | artifact validation |
+| Standalone application | Hospital/adopter after RRP initialization | Persistent editable source with a narrow RRP-managed product/provenance area | initialize, run, customize, refresh compatible products, explicitly regenerate, deploy or retire | standalone application and managed-content validation |
 | Deployment target | Hospital/operator and hosting service | Externally managed | configure, deploy, authorize, monitor, retire | target and operational governance |
 | Published release | RRP publisher and release service | Immutable | prepare, authorize, publish, verify, support | release/publication verification |
 
@@ -127,7 +136,7 @@ development repository
     ≠ installed RRP software
     ≠ RRP project
     ≠ project state
-    ≠ deployment artifact
+    ≠ standalone application source
     ≠ deployment target
 ```
 
@@ -147,7 +156,8 @@ RRP maintains related but noninterchangeable identities for:
 - operation, analytical run, state, execution attempt, and estimate;
 - history schema, record, invalidation, and restatement;
 - product contract, product set, freshness, and materialization;
-- deployment artifact and target realization; and
+- supplied-application version, initialized baseline, managed product content,
+  and standalone dependency closure; and
 - source revision, release candidate, published release, and verification.
 
 Git commits, filesystem paths, R objects, and deployment URLs may be provenance
@@ -174,7 +184,7 @@ RRP installation
 ├── contracts, schemas, defaults, and validators
 ├── supplied adapters, products, and app resources
 ├── project initializer, template, and fictional example
-├── artifact and deployment-target build resources
+├── standalone application initialization, validation, and refresh resources
 ├── user and normative product documentation
 ├── license, notices, support, and security material
 └── software inventory, digests, compatibility, and build provenance
@@ -206,8 +216,9 @@ and execution, and storage-neutral history records/ports.
 
 One additional main implementation package owns stable operations, project
 loading, resource access, diagnostics, default adapter composition,
-products/app initialization, and artifact/target builders. Exact package names
-and exported function names are implementation-plan decisions. More packages
+products, installed app launch, and standalone app initialization/refresh.
+Exact package names and exported function names are implementation-plan
+decisions. More packages
 require a demonstrated independent dependency, substitution, or release
 boundary; files are not converted mechanically into micro-packages.
 
@@ -244,7 +255,9 @@ RRP does not initially bundle R. Bundling adds operating-system packaging,
 native library, security update, size, license, and patch-lifecycle obligations
 without demonstrated need. It may be reconsidered only if the validated host-R
 model proves operationally inadequate. Deployment targets own their R runtime
-independently and cannot use the operator installation's recorded R path.
+independently and cannot use the operator installation's recorded R path. A
+standalone application likewise owns its declared ordinary runtime dependency
+environment and cannot rely on the private RRP installation library.
 
 ## Independent RRP project architecture
 
@@ -269,8 +282,9 @@ The declarative manifest owns project-contract/project identity and version,
 one-health-system scope, supported RRP/API and canonical-profile versions,
 exact producer/provider selections, dependency/model evidence references,
 state/persistence profile and writable root, and nonsecret operation settings.
-Product/app/artifact overrides appear only after such extension contracts
-exist.
+Custom product or executable extension overrides appear only after such
+extension contracts exist. Hospital ownership of initialized standalone
+application source is not a generic project plugin contract.
 
 The manifest does not contain executable R, function names, arbitrary load
 paths, package-install instructions, remote code URLs, credentials, connection
@@ -530,6 +544,37 @@ persistence schemas. App reload, product materialization, and estimation are
 separate operations. Authentication, protected-data handling, networking, and
 production authorization belong to deployment.
 
+RRP maintains one authoritative supplied application implementation. Installed
+RRP may launch it directly against validated project products or instantiate
+that same implementation as ordinary source under the hospital project's
+first-class `app/` directory. The exact internal layout is an implementation
+decision, but the result is a conventional standalone Shiny application rather
+than a target-specific realization, disposable projection, separate deployment
+repository, or second independently maintained app.
+
+The initialized application runs from explicitly declared, independently
+restorable ordinary R/Shiny dependencies without the RRP CLI, installed RRP
+packages, originating project, DuckDB history/state, producer/provider/model
+code, or analytical execution environment. Isolated local execution, not the
+dependency declaration alone, proves that independence. Its conventional
+structure is intended to permit normal hospital-selected hosting workflows,
+but does not promise unchanged deployment to every service.
+
+Application and analytical-product lifecycles remain separate. Initialization
+records a reproducible RRP-supplied source baseline and one explicit immutable
+materialized product set. Afterward the hospital owns and may customize all
+application source and unrelated files. RRP may atomically refresh only its
+reserved governed product/provenance content after compatibility and integrity
+validation. Refresh preserves application source and hospital-owned files.
+Adopting a newer supplied default is a distinct, explicit, safeguarded
+regeneration operation, never a consequence of product refresh.
+
+RRP retains exact installed-software and supplied-application provenance, the
+initial source baseline, current product/materialization/scope/cutoff lineage,
+and inventories/digests for RRP-managed content. Immutable products and the
+managed boundary remain verifiable; hospital customization intentionally means
+the whole persistent `app/` directory is not an immutable RRP artifact.
+
 Custom products/apps are not initial project extension contracts. They require
 later demonstrated need and explicit compatibility/trust boundaries.
 
@@ -543,7 +588,7 @@ CLI / tests / automation / agents / readmit / supported clients
                          ↓
              stable operation API
                          ↓
-  project loader, runtime, history, products, app, artifact builders
+  project loader, runtime, history, products, installed/standalone app
 ```
 
 The CLI owns parsing, explicit project context, invocation, safe rendering,
@@ -552,10 +597,12 @@ styling, and implementation language are not finalized here.
 
 Operation categories are installation/version health; project initialization
 and health; project/producer/provider/dependency validation; one run and
-history inspection; product materialization and app launch; artifact and target
-build/validation; and explicit activation, migration, backup, and recovery as
+history inspection; product materialization; installed app launch; standalone
+app initialization, managed-product refresh, validation, and safeguarded
+regeneration; and explicit activation, migration, backup, and recovery as
 implemented. Each declares inputs, output, side effects, mutation class,
-diagnostics, recovery, and compatibility.
+diagnostics, recovery, and compatibility. Exact command syntax remains an
+implementation-plan decision.
 
 Human docs, tests, automation, and agents call the same behavior. Repository
 validation and release/publication remain maintainer operations, not hospital
@@ -580,50 +627,56 @@ libraries as declared closure. Stronger process/protocol isolation begins only
 when real projects demonstrate irreconcilable graphs or security/runtime need.
 
 Build-only dependencies belong to the maintainer/builder environment.
-Deployment runtime dependencies belong to the artifact's target closure.
-Neither enters ordinary runtime solely because a later build uses it.
+Standalone application dependencies belong to its declared ordinary runtime
+closure. Hospital-selected deployment tooling and target dependencies belong
+to the hospital's chosen workflow. Neither enters installed RRP runtime solely
+because a later application or deployment process uses it.
 
-## Artifacts and deployment
+## Standalone application and deployment
 
 ```text
-validated project/product inputs + exact installed RRP resources
-        ↓ target-neutral artifact builder
-closed independently valid artifact
-        ↓ target-specific builder
-closed target realization
-        ↓ explicit operator-controlled publication/deployment
+validated project products + exact installed supplied-app resources
+        ├── installed launch
+        └── standalone initialization
+                    ↓
+          project-local hospital-owned app/
+                    ↓
+       local execution or hospital-selected deployment workflow
 ```
 
-The initial deployed scope is a product-only application artifact. It contains
-only the app/runtime subset, product access, contracts/resources, one frozen
-coherent product set, target R/package requirements, provenance, closed
-inventory, SHA-256 digests, and a self-validator. It excludes producer,
-provider, model, source clients, history writer, tests, and mutable state. It
-runs without the development repository, local RRP installation, or mutable
-project source.
+The standalone application is RRP's application portability boundary. At
+initialization it contains the supplied product-only application source and
+resources, one validated frozen coherent product set, a complete ordinary
+runtime dependency declaration, provenance, and independently verifiable
+inventories and SHA-256 digests for RRP-managed content. It excludes producer,
+provider, model, source clients, history writers, tests, mutable project state,
+and analytical execution. A copy must run locally in an isolated environment
+without the development repository, installed RRP, or originating project.
 
-A future compute-capable artifact is distinct. If authorized, it freezes the
-needed RRP runtime/resources, effective project manifest, trusted producer/
-provider code, dependencies, models, nonsecret configuration, external/state
-binding declarations, provenance, and validator. Secrets remain target
-configuration. This boundary is defined but not promised for 1.0.0.
+The initialized directory is persistent hospital-owned application source, not
+an RRP-controlled immutable target realization. Reproducible initial generation
+and a recorded supplied baseline establish what RRP created. Subsequent hospital
+customization is legitimate. RRP closes and verifies only its managed product/
+provenance area after initialization; it neither imposes a closed inventory on
+arbitrary hospital files nor claims to validate their behavior.
 
-A target builder adds only target-required entry points and dependency metadata
-around an accepted artifact. A broadly Posit-compatible realization supports
-the Shiny application without changing product semantics. Posit Connect Cloud
-is the first demonstrated reference/example target; self-managed Posit Connect
-is a closely related hospital path but is not a support claim until its own
-acceptance evidence passes. Each target owns its R/package installation.
+RRP does not require separate immutable application-artifact, transport-
+archive, deployment-repository, or target-realization stores for 1.0. It does
+not mandate, generate, operate, or certify platform-specific manifests,
+Dockerfiles, images, Git workflows, credentials, publication, or remote
+deployment. Self-managed Posit Connect, Connect Cloud, Git-backed publishing,
+Docker/OCI, other compatible Shiny hosting, and local execution are examples of
+hospital choices, not RRP target contracts. Their omission from the core
+contract does not assert incompatibility, and their mention does not establish
+RRP certification. The hospital owns their configuration, packaging,
+infrastructure, authorization, validation, operation, and retirement. Such
+downstream mechanisms must not redefine RRP's canonical, target, history,
+product, or application semantics.
 
-A product-only OCI/Docker image is a separate first-class portability
-realization of the same artifact boundary. It contains the same frozen products
-and application semantics with the required RRP app subset, dependency closure,
-provenance, inventory, digests, and validator; it does not add producers,
-providers, history writers, or project state. Future closure derives from
-artifact/release metadata, not the development lock. Generated Git trees and
-images are disposable target outputs. Remote creation, registries, credentials,
-commit/push, service authorization, sharing, networking, monitoring, and
-deployment remain explicit operator actions.
+A future compute-capable deployment package, specialized hosting integration,
+or certified target may be proposed only from a concrete requirement and must
+establish its own trust, dependency, privacy, and validation boundary. None is
+promised by RRP 1.0.
 
 ## Distribution, build, and release
 
@@ -680,7 +733,7 @@ subset and exclude internal CentralStatz reasoning/process.
 
 A project declares supported RRP software/API and project-contract versions.
 RRP checks canonical, target, provider, dependency, state, product, and
-artifact compatibility at their owning boundaries.
+standalone-application compatibility at their owning boundaries.
 
 A software upgrade installs a new immutable version beside the active version
 and verifies it. Project validation under that version is an explicit optional
@@ -712,15 +765,15 @@ Validation is proportional to the claim and routed by ownership.
 | Project | manifest/paths/trust/selections, dependencies/model, secret exclusion, state safety, compatibility |
 | Producer/provider | canonical/temporal or target/request conformance and failures; clinical validation remains separate |
 | Runtime/history | target/temporal/output semantics, atomicity, retry, invalidation/restatement, provenance |
-| Artifact/target | closed runtime, integrity, secret exclusion, independence, self-validation, target behavior |
-| Release candidate | clean build, support matrix, licenses/docs, clean install, adopter acceptance, artifact proof |
+| Standalone application | supplied-baseline and managed-content integrity, product compatibility, dependency closure, forbidden-role exclusion, independent local execution, customization preservation |
+| Release candidate | clean build, support matrix, licenses/docs, clean install, adopter acceptance, standalone-application proof |
 | Publication | authorization, exact remote/tag/assets, checksums/signatures, recovery, public acquisition/install |
 
 The plan replaces phase-number routing with named profiles and a machine-
 readable dependency/ownership map. Broad active-product matrices run in CI and
 release preparation, while local checks follow affected boundaries. High-
-consequence scientific, privacy, state, artifact, and publication invariants
-remain strict.
+consequence scientific, privacy, state, application-integrity, and publication
+invariants remain strict.
 
 Historical Phase suites, prose gates, Hospital acquisition, and whole-repository
 checkpoints remain available through Git as `v0.1.0` evidence; they do not
@@ -742,16 +795,16 @@ install user-scoped RRP and verify host R/software
 → reproduce dependencies and validate compatibility
 → execute, append, close, and reopen history
 → build/materialize/validate products and initialize the app
-→ build and independently validate the product-only artifact
-→ realize and validate the Posit Connect Cloud reference target
-→ build and validate the product-only OCI/Docker realization
+→ copy the standalone app away from RRP and the originating project
+→ restore its declared dependencies and prove isolated local operation
+→ refresh compatible managed products without changing application source
 ```
 
 The proof has no development/sibling repository access, Hospital distribution,
 ambient undeclared library, maintainer Git-state requirement, real data,
 credential, or project mutation by installation. Evidence retains source,
 build, inventory, digest, R/platform, dependency, install/doctor, project,
-component, runtime/history/product/artifact, and publication/acquisition
+component, runtime/history/product/application, and publication/acquisition
 identities and privacy-safe results. Support claims name only cells that pass.
 
 ## Relationship to `readmit`
@@ -783,9 +836,9 @@ This architecture does not design or version `readmit`.
 | Repository-root scripts/source chains | **REPLACE** | Namespaced operations/explicit project |
 | Temporary runtime install per operation | **RETIRE FROM ACTIVE PRODUCT PATH** | Runtime ships installed |
 | Root `renv` | **SIMPLIFY / RETAIN FOR DEVELOPMENT** | Not installed/project authority |
-| Reduced artifact/target separation | **REUSE SUBSTANTIALLY** | Installed inputs and SHA-256 closure |
-| Connect Cloud realization | **REFACTOR** | Posit-compatible artifact/release dependency evidence; Cloud remains the reference target |
-| OCI/Docker realization | **ADD FROM SHARED ARTIFACT** | Product-only portable realization; no compute-capable semantics |
+| Reduced artifact/target separation | **ADAPT** | Reuse installed inputs, independent runtime proof, managed inventory, and SHA-256 evidence for standalone initialization |
+| Connect Cloud realization | **HISTORY / OPERATOR CHOICE** | No RRP target contract; hospitals may use ordinary publishing workflows |
+| OCI/Docker realization | **HISTORY / OPERATOR CHOICE** | No mandatory RRP image; hospitals may containerize the standalone app |
 | Full Platform tree as payload | **REPLACE** | Closed installed distribution |
 | Generated Hospital release/embedded archive | **RETIRE FROM ACTIVE PRODUCT PATH** | Preserve `v0.1.0` history |
 | Hospital Git/wrappers | **HISTORY ONLY** | Preserve through Git; no active 1.0 role |
@@ -807,8 +860,10 @@ The following are not competing current options:
 - repository scripts are not the future human surface;
 - Phase 0–11 is not the forward plan/validation hierarchy;
 - clean Git, zero commits/remotes, and whole-tree checks are not project
-  validity requirements; and
-- Connect Git realization is not software acquisition.
+  validity requirements;
+- Connect Git realization is not software acquisition; and
+- Connect, Cloud, Git, and OCI/Docker realizations are not mandatory RRP 1.0
+  application or acceptance targets.
 
 Historical assessments and detailed `v0.1.0` documents/contracts remain
 available through Git as evidence for their own context; they are not active
@@ -818,7 +873,8 @@ available through Git as evidence for their own context; they are not active
 
 The initial 1.0.0 implementation does not require bundled R; system-wide
 installation; remote/non-R providers; multiple targets or estimand plugins;
-custom products/apps; a compute-capable artifact; a production database;
+custom product or application extension contracts; a compute-capable
+deployment package; a production database;
 scheduling; decision/priority/work/intervention/measure features;
 hazard-to-risk conversion; retrospective fabricated predictions; a universal
 feature store; uncertainty/explanation, calibration, fairness, monitoring,
@@ -833,14 +889,15 @@ ownership and target semantics rather than speculative plugin surfaces.
 This architecture settles the product boundary, user-scoped side-by-side
 posture, host-R line/discovery principle, two-package topology, project
 registration/selection split, dependency isolation, inclusion manifest,
-documentation taxonomy, product-only artifact scope, validation ownership, and
-1.0.0 target generation.
+documentation taxonomy, standalone product-only application boundary,
+validation ownership, and 1.0.0 target generation.
 
 The implementation plan must finalize launcher/installer technology and paths;
 package names/APIs; project manifest and registration schema/paths; 1.0 target,
 canonical, request, provider, history, and product IDs/schemas; distribution
 manifest/build/signing details; project dependency/conflict mechanics;
-migration and legacy archive contracts; artifact/Connect Cloud/OCI versions;
+migration and legacy archive contracts; standalone application declaration,
+managed-content layout, regeneration safeguards, and dependency evidence;
 validation profile graph; documentation move sequence; and the release support
 matrix.
 
@@ -869,9 +926,10 @@ Implementation planning may begin when maintainers accept that RRP is one
 installed product; projects contain no RRP source; producer/provider are the
 only initial executable seams; the cumulative day-30 target is singular;
 terminal availability and fixed endpoint are enforced; hazard history is not
-relabeled; software/project/state/artifact lifecycles and dependencies are
-separate; upgrades are non-mutating; product-only deployment is first scope;
-validation is lifecycle-owned; and 1.0.0 is a target, not released state.
+relabeled; software/project/state/standalone-application lifecycles and
+dependencies are separate; upgrades are non-mutating; the product-only
+standalone app is the application-portability boundary; validation is
+lifecycle-owned; and 1.0.0 is a target, not released state.
 
 No implementation should begin while an active authority still asserts a
 contradictory target. Historical documents need not remain in the active tree;
@@ -882,7 +940,8 @@ Git history is their preservation mechanism.
 The implementation plan must sequence the clean construction of source and
 package ownership, installed resources and operations, independent projects,
 singular-target analytics, history, products/application, distribution and
-CLI, product-only deployment realizations, acceptance, and release. It must be
+CLI, standalone application initialization and lifecycle, acceptance, and
+release. It must be
 organized by architectural dependency and human comprehension rather than
 historical Phase chronology.
 
@@ -906,7 +965,8 @@ tests, or validation machinery.
   products, or write history.
 - Product builders may not query sources/provider internals; the app may not
   invoke runtime/providers or query physical history.
-- Product-only artifacts may not include source/provider/model/history writers.
+- The standalone app may not include source/provider/model/history writers,
+  mutable state, or analytical execution machinery.
 - Targets may not change canonical, target, history, or product semantics.
 - Project dependencies may not silently override RRP-owned packages.
 - Configuration may not contain executable code, arbitrary load paths, remote
