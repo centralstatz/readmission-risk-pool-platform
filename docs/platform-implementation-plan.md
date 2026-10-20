@@ -13,7 +13,8 @@ runtime-permissions defect outside the original acceptance probe. The bounded
 post-acceptance Increment 11.I correction below is formally accepted at exact
 revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements but does
 not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
-the next new stage and has not begun.
+the next new stage. Its detailed plan below is **proposed for human review,
+not accepted, and not authorized for implementation**.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -81,8 +82,8 @@ Only the current implementation stage is decomposed before source work.
 The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
-Stage 12 work. Stage 12 is the next new stage and has not been detailed or
-begun. After a stage is implemented:
+Stage 12 work. Stage 12 is the next new stage; its detailed plan is proposed
+below but remains unaccepted and unimplemented. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -8487,13 +8488,19 @@ unstarted.
 
 ## Stage 12 — Product-only artifacts and deployment realizations
 
+**Planning status:** **Proposed — awaiting human review and formal acceptance —
+not implemented**
+
 ### Objective and responsibilities
 
 Build a closed target-neutral product-only application artifact from exact
 installed resources and a frozen coherent product set. Add independent
-self-validation, inventory/digests/provenance, then realize the same artifact
-for a broadly Posit-compatible target with Connect Cloud evidence and for an
-OCI/Docker target. Keep build, validation, and external deployment distinct.
+self-validation, inventory/digests/provenance, realize the same artifact as an
+immutable target-specific deployment unit, and transactionally project that
+unit into a stable operator-selected deployment destination. Demonstrate the
+model for a broadly Posit-compatible target with Connect Cloud evidence and
+for an OCI/Docker target. Keep artifact construction, target realization,
+destination update, validation, and external deployment distinct.
 
 ### Why here and dependencies
 
@@ -8504,8 +8511,9 @@ redefine upstream behavior.
 ### Plain-language exit state
 
 > RRP can generate and independently validate portable product-only
-> application artifacts for Posit-compatible and OCI environments. Publishing
-> or deploying them is still an explicit external operator action.
+> application artifacts, immutable Posit-compatible and OCI realizations, and
+> repeatably updated stable deployment destinations. Publishing or deploying
+> them is still an explicit external operator action.
 
 ### Expected historical reuse
 
@@ -8520,6 +8528,823 @@ compute-capable payload are excluded.
 Remote deployment, credentials, registry ownership, production networking,
 monitoring, self-managed Posit support claims, and compute-capable artifacts
 remain operator-owned or future work.
+
+### Planning basis and reconnaissance
+
+This proposed detailed plan follows the accepted True North and Architecture
+artifact boundary:
+
+```text
+selected verified installed RRP
+        +
+explicit fresh materialized product set
+        +
+detached bounded presentation
+        ↓
+closed immutable target-neutral artifact
+        ↓
+independent artifact verification
+        ↓
+immutable target-specific deployment realization
+        ↓
+independent realization verification
+        ↓
+repeatable transactional projection
+        ↓
+stable deployment destination directory
+        ↓
+destination verification
+        ↓
+STOP: external operator publication/deployment
+```
+
+Current implementation establishes the required inputs but no Stage 12 output:
+
+- the selected installed realization has exact software, distribution,
+  package, resource, dependency, and private-library evidence;
+- `rrp products materialize` publishes one immutable DCF/CSV product set and
+  `rrp products status --scope ID --cutoff TIME` evaluates its contextual
+  freshness;
+- `rrp_launch_app()` already detaches validated products and bounded project
+  branding once before constructing the supplied Shiny application;
+- the application is analytically read-only, but its current package owner
+  also contains producer, provider, history, state, and product-writing code
+  that must not enter the deployed payload; and
+- the installed CLI already owns explicit project resolution, exact software
+  selection, structured results, deterministic exits, and interruption.
+
+Relevant immutable `v0.1.0` reconnaissance covered:
+
+- `contracts/deployment/application-artifact.yml` and
+  `contracts/deployment/connect-cloud-realization.yml`;
+- `deploy/application-artifact/` and `deploy/connect-cloud/`;
+- `operations/lib/application-artifact-operation.R`,
+  `application-artifact-validation.R`, `connect-cloud-operation.R`, and
+  `connect-cloud-validation.R`;
+- the paired public build/validate wrappers and human operations guides; and
+- `tests/phase8/test-application-artifact.R` and
+  `test-connect-cloud-realization.R`.
+
+That line proved useful mechanics: positive source allowlists, staged
+construction, exact inventories, integrity checks, target-neutral/target-
+specific identity separation, unchanged embedding of a source artifact,
+standalone copied validation, dependency pruning, destination refusal and
+rollback, and adversarial boundary tests. It used repository-root source,
+YAML products, MD5, a development `renv.lock`, root operations, generated Git
+state, and fixed `rsconnect@1.3.1`; those are historical implementation choices,
+not current authority.
+
+Current Posit Connect Cloud [Shiny content](https://docs.posit.co/connect-cloud/user/content/shiny.html)
+and [deployment](https://docs.posit.co/connect-cloud/how-to/r/shiny-r.html)
+documentation was rechecked during planning. A Git-backed Shiny for R
+repository requires a root primary file such as `app.R` and either `renv.lock`
+or `manifest.json` beside it. Committing and pushing a changed connected branch
+is the conventional repeat-publication mechanism. This plan therefore
+recommends one exact generated `renv.lock` rather than the historical dual
+`manifest.json` plus pruned generator lock. The implementation increment must
+repeat the dated official-documentation check before freezing the target
+contract.
+
+### Three distinct deployment units
+
+Stage 12 must keep three units explicit rather than treating a generated
+directory as all three:
+
+| Unit | Identity and lifecycle | Responsibility |
+|---|---|---|
+| Product-only artifact | Immutable, target-neutral, content-identified, retained, and independently verifiable. | Freezes one exact application/product/presentation state without any deployment-target wrapper. |
+| Deployment realization | Immutable, target-specific, content-identified, retained, and independently verifiable. | Binds one exact artifact to one exact target contract, entry point, dependency closure, and target metadata. Its identity excludes any eventual destination path or operator-owned content. |
+| Deployment destination directory | Stable, mutable, explicitly selected, and independently inspectable. | Holds the currently projected realization at a path such as `deployment/posit/` or `deployment/oci/`, so external provider configuration can continue referring to the same path across analytical updates and rollbacks. |
+
+The artifact and realization stores retain immutable identities. The
+destination is not another identity store and has no implicit newest selector;
+it is an explicit projection of one selected realization. A lightweight
+generated destination record should name the target contract, realization and
+artifact identities, product-set and materialization identities, analytical
+scope/cutoff, and the digest of the exact RRP-managed inventory. The record is
+provenance and update-control evidence, not a mutable replacement for either
+immutable manifest.
+
+Each target contract must define a closed set of RRP-managed destination paths
+and a small explicit set of operator-owned paths or zones. `.git/` is the
+required operator-owned example for the Posit Git destination; other target
+configuration is admitted only when its target contract has a concrete reason
+to preserve it. Before updating, RRP validates the existing destination record
+and managed inventory, refuses links, unclassified paths, collisions, or
+modified managed content, stages and validates the new managed projection in a
+sibling location, and only then replaces it transactionally. Files present in
+the prior managed inventory but absent from the new one are removed. Explicit
+operator-owned content is preserved byte-for-byte. RRP makes no integrity or
+security claim about that operator-owned content, and never silently adopts an
+unexpected file into either ownership class.
+
+### Intended user workflow
+
+Stage 12 begins only after a hospital has run its analytical workflow and
+materialized products. It neither hides nor repeats those operations.
+
+#### Initial deployment-ready output
+
+1. The operator identifies one exact operation scope and history cutoff and
+   confirms the materialized set is fresh for that pair.
+2. One installed `rrp` command strictly verifies the selected software,
+   validates the project/product inputs without executing producer or provider
+   code, and builds one immutable target-neutral artifact in an explicit
+   operator-owned output store.
+3. The operator independently validates the artifact by path or archive.
+4. A second command creates or reuses one immutable target realization for
+   either the Posit reference target or the OCI/Docker target in an explicit
+   realization store.
+5. The operator independently validates that target realization.
+6. A third command transactionally projects the selected realization into an
+   explicit stable deployment destination, removing obsolete RRP-managed files
+   while preserving the target contract's operator-owned paths.
+7. The operator validates the destination projection.
+8. RRP stops. The operator reviews the generated output and uses ordinary Git,
+   Posit, Docker, registry, or infrastructure procedures to publish or deploy
+   it.
+
+#### Subsequent analytical update
+
+1. The hospital explicitly runs and materializes a newer analytical context.
+2. The operator builds a new artifact using the new scope and cutoff. A changed
+   frozen product set produces a distinct artifact identity; the prior artifact
+   remains intact.
+3. The operator creates and validates a new immutable target realization, then
+   updates the same stable destination path from that realization. Replacement
+   is allowed only when the existing managed payload is a valid prior
+   projection; obsolete managed files are removed and admitted operator-owned
+   content is preserved.
+4. The operator reviews the resulting ordinary Git diff or Docker build
+   context and invokes the external provider's normal rebuild/redeploy path.
+
+Rollback selects a retained prior realization and projects it into the same
+destination. It need not rebuild the artifact or realization and does not
+rewrite analytical history, products, or either immutable identity. RRP does
+not move a remote branch, republish Connect content, retag an image, or roll
+back an external service.
+
+### Proposed target-neutral artifact model
+
+#### Input and execution boundary
+
+One build requires:
+
+- one exact selected and strictly verified installed RRP realization;
+- one explicit independent project path used only to locate and validate
+  project identity, state, products, and bounded branding;
+- one explicit operation-run identity and history cutoff;
+- the current materialized product set, which must match that pair and be
+  contextually `fresh`; and
+- one explicit artifact-store destination outside installed software and
+  project state.
+
+The builder must not use `rrp_load_project()` or otherwise source hospital
+registration/authoring code merely to package products. Stage 12 should factor
+the existing structural project/state/product location checks into a
+nonexecuting read boundary, open only the supplied DuckDB history necessary to
+prove freshness, interpret `_brand.yml` through the accepted bounded branding
+contract, and detach the resulting presentation. It must not invoke a producer,
+provider, model, analytical run, correction, retry, product builder, or product
+materializer.
+
+Stale, incompatible, corrupt, absent, incomplete, or context-mismatched
+products fail before output mutation. Once built, the artifact truthfully
+represents the selected frozen analytical context. A later hospital run does
+not corrupt an older artifact or silently make its embedded bytes invalid; it
+creates the opportunity to build a newer artifact.
+
+#### Application-runtime authority
+
+The artifact may not contain the complete `rrpplatform` package because that
+would carry prohibited compute and history-writing machinery. It also may not
+introduce a separately handwritten deployment application.
+
+The proposed correction is a narrow source refactor under the existing
+`rrpplatform` owner:
+
+1. separate the already pure product-snapshot/view-model/Shiny construction
+   functions from project preparation and local launch;
+2. keep that source in the normal package so the installed application and its
+   package-native tests continue to execute the same implementation;
+3. extract only that declared source member from the exact installed
+   `rrpplatform` source archive retained in the selected realization; and
+4. combine it with small artifact-owned loading/validation/entry-point code.
+
+This is one application implementation with two controlled hosts, not a third
+application or duplicate product definition. The artifact runtime must accept
+only its closed frozen product/presentation representation and have no project,
+state, history, producer, provider, or materializer entry point. A third
+internal R package is not proposed; creating one would require separate
+evidence that an independent installed dependency/release boundary is needed.
+
+#### Closed contents
+
+Exact filenames and incidental helper layout remain implementation details,
+but the contract must close these logical roles:
+
+| Included role | Required content |
+|---|---|
+| Artifact authority | Versioned artifact contract, artifact manifest, exact sorted inventory, SHA-256 member digests, and manifest integrity. |
+| Entry and validation | Root Shiny entry point, base-R standalone validator, and the minimal artifact loader. |
+| Application runtime | The exact allowlisted product-only application runtime source and the RRP-owned CSS needed to construct the accepted app. |
+| Frozen products | Exactly one validated `rrp.product-set.initial-readmission-risk@0.1.0` physical set: its DCF manifest and the three governed CSV members, without a mutable `current.dcf` pointer or prior sets. |
+| Frozen presentation | Detached display name, primary color, optional contained PNG/JPEG logo, and other values already admitted by `rrp.project-brand@0.1.0`; not the project `_brand.yml` or arbitrary project assets. |
+| Semantic authority | Only the application/product/artifact declarations needed to validate the frozen payload independently. |
+| Runtime requirements | Exact R compatibility, direct package roots, and source/provenance requirements from which a target realization derives its target-specific complete closure. |
+| Provenance and legal | Selected software/distribution/package/resource identities, application and product/materialization lineage, source revision evidence already carried by installed software, build-tool identity, license, notice, and bounded product-only deployment guidance. |
+
+The artifact expressly excludes project manifests and registration, all
+hospital R source, canonical/source data, producer/provider/model code or fitted
+artifacts, project extension libraries, DuckDB/history/state/backups, product
+writers, credentials, connection details, tests, maintainer tools, development
+Git data, another RRP installation, and any deployment-provider credential or
+remote identity. Product rows and detached branding are intentional deployment
+content and remain subject to hospital privacy/access authorization; the
+artifact contract must not misdescribe them as inherently non-PHI.
+
+Closed positive inclusion is the primary privacy control. Bounded forbidden-
+path and secret-pattern checks supplement it for generated text/configuration
+but do not scan governed product values as though heuristic matching could
+establish privacy.
+
+#### Identity, reproducibility, and outputs
+
+One deterministic artifact identity covers:
+
+- artifact contract/version;
+- supplied application identity/version;
+- exact installed software, distribution, package, and resource identities;
+- product-set and materialization identities plus source scope, analytical
+  time, history cutoff, and source-history fingerprint;
+- detached presentation bytes;
+- runtime-requirement identity; and
+- the sorted path/role/size/SHA-256 inventory of every payload member.
+
+Destination path, archive filename, construction time, Git state, target,
+remote, image tag, external URL, and deployment occurrence are excluded. The
+manifest should omit volatile builder timestamps from content identity; any
+human occurrence receipt belongs outside the immutable artifact. Rebuilding
+the same declared bytes is idempotent. The same identity with different bytes
+is a conflict. A changed product realization or runtime byte produces a new
+identity.
+
+The builder produces both:
+
+1. one canonical immutable directory, suitable for inspection and target
+   realization; and
+2. one safe normalized transport archive of that directory with a separate
+   SHA-256 checksum.
+
+The content identity is authoritative. Byte-identical archive reproducibility
+is claimed only if tests prove normalization across supported builders;
+otherwise the archive is an integrity-checked transport occurrence of the same
+content. The explicit artifact store retains prior identities and has no
+implicit "newest" selector. Build output returns the exact identity, directory,
+archive, checksum, source scope/cutoff, and reuse status.
+
+#### Independent validation
+
+The artifact carries a standalone validator that requires neither the source
+repository, independent project, project state, nor installed RRP. Validation
+has two explicit layers:
+
+- a dependency-light closure layer validates safe paths, regular files, no
+  links, exact inventory, SHA-256 integrity, identities, provenance,
+  application/product/presentation compatibility, archive containment, and
+  absence of prohibited payload roles; and
+- a runtime layer uses one explicitly supplied/restored library satisfying the
+  declared runtime requirements to load the frozen products, construct the
+  exact supplied Shiny app, perform real repeated HTTP and local-asset requests,
+  and stop/clean up without payload mutation.
+
+Target-neutral validation makes no claim that a particular hosting provider
+has restored the dependencies or authorized the content. Target realization
+validation must revalidate the unchanged embedded artifact before validating
+target additions.
+
+### Proposed target realizations
+
+#### Posit-compatible reference realization
+
+The first target contract should identify a **Posit-compatible Shiny Git
+realization with Connect Cloud as its demonstrated reference evidence**, not a
+blanket support claim for every self-managed Posit Connect version.
+
+The generated non-Git payload contains the unchanged artifact, a root `app.R`
+adapter, one exact target `renv.lock`, target manifest/inventory/digests,
+standalone validator, and generated README. The lock is derived from the
+artifact's runtime roots and the accepted dependency/provenance evidence; it
+contains the complete target runtime closure and excludes build-only,
+producer/provider, DuckDB/history, product-writer, and maintainer packages.
+The target adapter loads the embedded artifact and constructs the same app; it
+does not reinterpret products or branding.
+
+The immutable realization is first promoted under its own identity in the
+explicit realization store. It is then projected into an absent or existing
+stable dedicated Git worktree, for example `deployment/posit/`. The target
+contract owns its generated payload and destination provenance record while an
+existing `.git/` directory is opaque operator-owned metadata preserved byte-
+for-byte. A sibling-staged candidate is completely validated before the
+managed paths are transactionally replaced, including deletion of obsolete
+members from the prior managed inventory. RRP does not initialize Git, stage
+files, commit, configure a remote, inspect credentials, or push. Any
+unexpected non-Git file, changed generated member, invalid prior destination
+record, link, ownership collision, or containment conflict causes refusal
+without destination mutation. This deliberate dedicated-repository rule keeps
+target closure exact. Operator configuration—repository identity, branch
+policy, Connect content identity, variables/secrets, sharing, networking, and
+automatic publication settings—persists in Git/provider state, not in
+generated payload files.
+
+Meaningful Connect Cloud evidence consists of:
+
+- a dated reconciliation against maintained official requirements;
+- exact root primary-file and colocated lock structure;
+- independent closure/lock/forbidden-content validation;
+- restoration of the exact target library outside the RRP installation;
+- construction and real HTTP/asset exercise of the root app from a copied
+  realization; and
+- a repeat-update proof showing two retained immutable realizations can be
+  projected in turn into the same Git worktree, obsolete managed files are
+  removed, and the result is a reviewable diff while `.git` metadata is
+  unchanged.
+
+No Connect account, GitHub App authorization, remote repository, push, API
+call, URL, or successful external publication is required for Stage 12. Those
+are external operator actions and cannot be fabricated by local compatibility
+evidence.
+
+#### OCI/Docker realization
+
+The OCI target is an immutable generated closed Docker realization derived
+from the same unchanged artifact. It contains a target contract/manifest,
+exact inventory and SHA-256 digests, Dockerfile, entry point, exact target
+dependency evidence, standalone validator, and generated README. It contains
+no project or compute capability. That realization can be transactionally
+projected into a stable Docker build-context directory such as
+`deployment/oci/`; successive updates use the same path, remove obsolete
+managed files, and preserve only target-contract-approved operator-owned
+content. The Docker engine consumes the destination, while the retained
+realization remains the immutable independently verifiable source.
+
+The proposed initial evidence cell is Linux `amd64`, R 4.4.x, using a
+maintained R base image pinned by immutable digest. The exact image and digest
+must be selected and recorded during 12.D implementation after checking
+availability, license, architecture, security posture, and package-build
+requirements; a floating tag is not sufficient evidence. The final image:
+
+- runs the Shiny R process directly as a non-root user;
+- binds the target-supplied port on the container interface while preserving
+  the same application object and product semantics;
+- has no project, source, model, state, history writer, shell-time package
+  installation, credential, or writable application payload;
+- uses writable temporary runtime locations only;
+- carries standard OCI labels plus RRP artifact/realization identities; and
+- handles foreground signals and cleanup conventionally.
+
+The realization validator proves context closure and Dockerfile/base/dependency
+agreement without Docker. Destination validation proves an exact projection
+and destination provenance without treating operator-owned content as part of
+the realization. Acceptance evidence additionally uses an available Docker-
+compatible engine to build from the stable destination, inspect its labels/
+user/entry point, run it without project mounts or secrets, issue repeated HTTP
+and asset requests, stop it, and confirm no payload/project mutation or
+retained container. Image build ID, local tag, registry, image push, runtime
+service, TLS, ingress, persistent volume, orchestration, and monitoring remain
+external.
+
+### Proposed installed CLI
+
+Extend the existing dispatcher with distinct `artifact` and `deployment`
+categories. This naming makes the immutable target-neutral unit, immutable
+target-specific unit, and mutable stable destination visible to the operator;
+it does not create a second executable or call external deployment a
+successful RRP operation.
+
+| Command | Purpose and mutation boundary |
+|---|---|
+| `rrp artifact build --scope ID --cutoff TIME --output PATH [--project PATH] [--json]` | Strictly verify selected software, prove fresh exact products, and create/reuse one immutable target-neutral directory plus transport archive in the explicit artifact store. Mutates only that store. |
+| `rrp artifact validate --artifact PATH [--json]` | Independently validate an artifact directory or safe archive. Read-only apart from bounded temporary extraction/runtime state. |
+| `rrp deployment realize --target posit-connect-cloud\|oci --artifact PATH --output PATH [--json]` | Revalidate the source artifact and create/reuse one immutable target-specific realization under its content identity in the explicit realization store. Mutates only that store and does not update a deployment destination. |
+| `rrp deployment validate --realization PATH [--json]` | Independently validate realization closure, source-artifact binding, dependency evidence, entry point, and target-specific rules. Read-only apart from bounded temporary runtime state. |
+| `rrp deployment update --realization PATH --destination PATH [--json]` | Revalidate the realization and prior destination, stage the new managed projection, remove obsolete prior managed files, preserve only explicitly admitted operator-owned content, and transactionally update the same destination path. It does not publish or deploy externally. |
+| `rrp deployment validate --destination PATH [--json]` | Validate the destination record, exact managed projection and provenance chain while classifying—but not vouching for—the target's explicitly admitted operator-owned content. Read-only apart from bounded temporary runtime state. |
+
+The existing global `--software SELECTOR` and `--project PATH` resolution rules
+remain authoritative. Artifact/realization validation and destination update
+accept explicit paths and do not discover a project. Build requires the
+scope/cutoff pair; there is no implicit latest run, current-time cutoff,
+automatic materialization, or default realization store or deployment
+directory. Human output names the
+artifact, realization, destination, exact provenance chain, and next external
+action; JSON preserves the existing structured result and deterministic exit
+conventions.
+
+An initial journey is therefore:
+
+```sh
+rrp products status \
+  --scope "$SCOPE" --cutoff "$CUTOFF" --project "$PROJECT"
+
+rrp artifact build \
+  --scope "$SCOPE" --cutoff "$CUTOFF" \
+  --project "$PROJECT" --output "$ARTIFACT_STORE"
+
+rrp artifact validate \
+  --artifact "$ARTIFACT_STORE/artifacts/$ARTIFACT_ID"
+
+rrp deployment realize \
+  --target posit-connect-cloud \
+  --artifact "$ARTIFACT_STORE/artifacts/$ARTIFACT_ID" \
+  --output "$REALIZATION_STORE"
+
+rrp deployment validate \
+  --realization "$REALIZATION_STORE/posit-connect-cloud/$REALIZATION_ID"
+
+rrp deployment update \
+  --realization "$REALIZATION_STORE/posit-connect-cloud/$REALIZATION_ID" \
+  --destination "$DEPLOYMENT_ROOT/posit"
+
+rrp deployment validate \
+  --destination "$DEPLOYMENT_ROOT/posit"
+```
+
+The operator then reviews, commits, pushes, and configures Connect Cloud using
+ordinary external procedures. OCI realization uses the same artifact:
+
+```sh
+rrp deployment realize \
+  --target oci \
+  --artifact "$ARTIFACT_STORE/artifacts/$ARTIFACT_ID" \
+  --output "$REALIZATION_STORE"
+
+rrp deployment validate \
+  --realization "$REALIZATION_STORE/oci/$REALIZATION_ID"
+
+rrp deployment update \
+  --realization "$REALIZATION_STORE/oci/$REALIZATION_ID" \
+  --destination "$DEPLOYMENT_ROOT/oci"
+
+rrp deployment validate \
+  --destination "$DEPLOYMENT_ROOT/oci"
+
+docker build --tag hospital-rrp-app:"$ARTIFACT_ID" \
+  "$DEPLOYMENT_ROOT/oci"
+```
+
+After a later run and materialization, the operator repeats `artifact build`
+with the new scope/cutoff, creates a new immutable realization, and repeats
+`deployment update` against the same destination. The new realization binds
+the new artifact; previous artifacts and realizations remain independently
+valid. Selecting a retained realization and updating the destination from it
+produces a rollback candidate without changing RRP history or products.
+
+### Proposed implementation increments
+
+#### Increment 12.A — Artifact authorities and single product-only runtime seam
+
+**Objective and user-visible result:** establish the exact target-neutral
+artifact, validation-result, identity, content, dependency, and privacy
+contracts plus one maintainable application-runtime seam. The installed local
+application remains behaviorally unchanged; no persistent artifact or target
+output exists yet.
+
+**Principal work:**
+
+- add cataloged dependency-light DCF authorities for the artifact and artifact
+  operation result under `rrpplatform` ownership;
+- split project/product preparation from the pure application runtime within
+  the existing package source, proving the installed app still executes the
+  same runtime source that later enters artifacts;
+- define the frozen DCF/CSV product and detached-presentation representation,
+  runtime-root declaration, positive content roles, SHA-256 identity, safe
+  paths, and exclusion rules;
+- add internal construction/validation primitives operating only on detached
+  values and explicit roots; and
+- reconcile package metadata, source inclusion, resource catalog, ownership,
+  human guidance, and current validators only for files actually introduced.
+
+**Evidence and acceptance criteria:** exact/adversarial contract parsing;
+unchanged Stage 9 product and Stage 10 application behavior; exact runtime
+source allowlist; successful actual/empty application construction from the
+frozen representation; rejection of missing/extra fields, prohibited calls,
+unsafe paths, links, malformed products/presentation, and forbidden runtime
+roles; package builds/checks and relevant Stage 9–11 regressions.
+
+**Historical reuse:** adapt the `v0.1.0` artifact contract, explicit allowlist,
+artifact/application/product identity separation, and reduced-runtime tests.
+Reject YAML, MD5, repository-root loading, fictional-only branches, broad
+engine copying, and a duplicate deployment app.
+
+**Exclusions:** no public artifact CLI, promoted artifact store, archive,
+standalone copied validator, target contract, Git behavior, Dockerfile, remote,
+or deployment.
+
+#### Increment 12.B — Installed artifact construction and independent validation
+
+**Dependency:** accepted 12.A.
+
+**Objective and user-visible result:** an installed operator can build, inspect,
+archive, and independently validate one immutable target-neutral artifact from
+one explicit fresh materialized context.
+
+**Principal work:**
+
+- add stable package operations and the `artifact build`/`artifact validate`
+  CLI surface;
+- add the nonexecuting project/state/product input path and exact freshness
+  proof without loading project registration;
+- extract the allowlisted runtime source from the selected installed package
+  archive, detach branding, and copy only the exact product-set members;
+- implement staged validate-before-promotion construction, idempotency,
+  conflict refusal, retained immutable identities, safe normalized archive
+  creation, and failure cleanup;
+- embed the standalone validator and add the installed Artifact and Deployment
+  Guide; and
+- introduce one proportional human-callable artifact validator/profile only
+  now that the executable owner exists.
+
+**Evidence and acceptance criteria:** installed non-Git build from actual and
+empty fictional product sets; exact identity repeat and changed-input identity;
+directory/archive equivalence; clean-copy validation without project/source
+repository/RRP installation; real app construction and repeated HTTP/assets;
+corruption, extra/missing/link/path/archive traversal, stale/mismatched product,
+software disagreement, source/model/state/credential inclusion, interrupted
+stage, conflict, and output-containment adversaries; software/project/product
+byte nonmutation; package build/check and repository/package/distribution/
+installation regressions appropriate to changed boundaries.
+
+**Exclusions:** no target realization or realization store, destination
+projection, dependency restoration by the artifact, remote service, target
+repository, image, publication, or deployment.
+
+#### Increment 12.C — Posit-compatible realization and Connect Cloud evidence
+
+**Dependency:** accepted 12.B.
+
+**Objective and user-visible result:** an operator can realize and independently
+validate one artifact as an immutable dedicated Git-ready Posit Shiny payload,
+then transactionally project successive selected realizations into the same
+stable destination without losing `.git` history or provider configuration.
+
+**Principal work:**
+
+- reconcile current official Connect Cloud requirements and freeze a cataloged
+  target contract and dated evidence;
+- implement the root adapter, exact target `renv.lock`, target manifest/
+  identity/inventory/digests, standalone validator, and generated README;
+- add `deployment realize --target posit-connect-cloud`, immutable realization-
+  store promotion, and paired realization validation;
+- add the generic destination record plus `deployment update` and destination
+  validation, with exact artifact/realization/product provenance;
+- implement absent-destination creation and transactional replacement of the
+  managed projection, including obsolete-file removal, while preserving
+  `.git/` byte-for-byte; and
+- document the exact stop point and external Git/Connect responsibilities.
+
+**Evidence and acceptance criteria:** copied realization validation; unchanged
+embedded artifact digests; exact complete app-only lock closure; no prohibited
+packages/content; root app construction and real HTTP/assets in a separately
+restored library; identity-idempotent realization; newer-realization update;
+prior-realization rollback through the same destination path; exact destination
+provenance; obsolete managed-file removal; unchanged `.git` and unchanged
+explicit operator fixtures; refusal of unrelated, modified, corrupt, linked,
+overlapping, unclassified, ownership-colliding, or unexpected-file
+destinations; staged failure cleanup/rollback; generated output contains no
+remote/credential; and hosted Ubuntu/R 4.4 compatibility evidence. The current
+official documentation supports `renv.lock` or `manifest.json`; the proposed
+single-lock choice must be approved before implementation.
+
+**Exclusions:** RRP does not initialize/stage/commit Git, create a remote,
+authorize a GitHub App, call Connect, publish content, retain credentials,
+configure sharing/networking, or claim self-managed Posit support.
+
+#### Increment 12.D — OCI/Docker realization and runtime proof
+
+**Dependency:** accepted 12.B; reuse 12.C target-realization ownership and
+replacement mechanics where applicable without depending on Posit semantics.
+
+**Objective and user-visible result:** an operator can realize the same
+artifact as a closed Docker build context, validate it independently, and use a
+conventional Docker-compatible engine to build and run the product-only app.
+
+**Principal work:**
+
+- select and record the initial pinned Linux `amd64`/R 4.4 base image and
+  target dependency restoration evidence;
+- add the OCI target contract, generated Dockerfile/entry point, exact
+  dependency metadata, OCI/RRP labels, target manifest/inventory/digests,
+  standalone validator, and README;
+- add `deployment realize --target oci`, paired realization validation, and
+  transactional projection into a stable Docker build-context destination
+  using the generic destination operation established in 12.C; and
+- add controlled local/hosted Docker build, image inspection, runtime HTTP,
+  signal, cleanup, and nonmutation evidence.
+
+**Evidence and acceptance criteria:** safe build context; pinned base digest;
+exact app-only dependency closure; successful no-secret/no-project image build;
+non-root runtime; correct artifact/realization labels; direct foreground Shiny
+startup; repeated HTTP/assets; expected stop/cleanup; read-only application
+payload with writable temporary runtime state; no project/state volume or
+analytical package; tamper and disagreement failures; copied-context
+validation; stable-context repeat update and rollback; exact destination
+provenance; obsolete managed-file removal; preservation of any explicitly
+admitted operator fixture; prior artifact/realization retention; and exact
+hosted Docker-engine evidence for the declared cell.
+
+**Exclusions:** image push, registry, multi-architecture claim, Kubernetes/
+Compose/Helm, TLS/ingress, authentication, monitoring, production hardening or
+authorization, vulnerability/SBOM/signing policy, and compute-capable images.
+Stage 13/14 may qualify or add release evidence without changing artifact
+semantics.
+
+#### Increment 12.E — Installed two-time operator proof and Stage 12 closeout evidence
+
+**Dependencies:** accepted 12.A–12.D.
+
+**Objective and user-visible result:** prove the complete intended workflow from
+a clean copied distribution and installed RRP through two analytical contexts,
+two retained artifacts, retained target realizations, stable destination
+updates, and rollback, then assemble the evidence for separate formal Stage 12
+acceptance.
+
+**Principal work:**
+
+- extend the installed clean temporary-user acceptance path rather than create
+  a repository-root demonstration;
+- use the fictional project to run/materialize time 1, build/validate artifact
+  1, realize/validate each target, update/validate/serve each stable
+  destination, then repeat for time 2;
+- update the same Posit destination and OCI build context, prove changed
+  artifact and realization identities and content, then project the retained
+  realization for artifact 1 as a rollback candidate;
+- verify strict installed software, project/state/history/products, artifact
+  and realization stores, destination records and managed inventories,
+  operator-owned fixture preservation, obsolete managed-file removal, process
+  cleanup, and privacy/nonmutation boundaries before cleanup; and
+- complete the installed deployment guide and append implementation evidence.
+
+**Evidence and acceptance criteria:** exact two-time lineage; newer app shows
+the newer frozen product history; older artifact remains unchanged,
+independently valid, reproducible by identity, and realizable; older
+realizations remain unchanged and reusable for destination rollback; both
+targets use the same artifact bytes and app semantics; no target requires the source
+repository, local RRP installation, project, DuckDB, source mapping, provider,
+or model; no build runs analytical work; no unintended or confidential file
+enters outputs; both stable destinations can be updated without path changes;
+destination provenance resolves exactly through realization to artifact and
+products; all focused and regression checks pass; generated/test artifacts are
+removed; and the exact committed candidate passes the hosted artifact/target
+evidence required by the declared cells.
+
+Completing 12.E implementation does not by itself declare Stage 12 accepted.
+A separate formal acceptance and architecture reconciliation must verify all
+Stage 12 criteria, exact hosted evidence, documentation, and deferrals before
+Stage 13 planning begins.
+
+### Stage 12 verification and formal acceptance boundary
+
+Stage 12 acceptance must distinguish six evidence classes:
+
+| Evidence class | Required claim |
+|---|---|
+| Local/package | Contracts, identities, pure runtime seam, builders, adversaries, CLI behavior, package build/check, and prior-stage regressions. |
+| Independent artifact | A copied artifact directory/archive validates and constructs the app without repository, project, state, target wrapper, destination, or RRP installation access. |
+| Independent realization | A copied immutable realization validates its exact target wrapper and artifact binding without its source store or destination. |
+| Stable destination | Repeated transactional updates at the same explicit path preserve admitted operator content, remove obsolete managed content, and retain an exact destination-to-realization-to-artifact provenance chain. |
+| Hosted target | Ubuntu/R 4.4 restores and serves the Posit destination; an available Docker-compatible Linux runner builds/runs the OCI destination. Exact workflow revision and logs are recorded. |
+| External operator | Git commit/push, Connect authorization/publication, image registry push, and production deployment remain unperformed unless separately authorized; their absence does not fail Stage 12. |
+
+The accepted exit criteria proposed for formal review are:
+
+1. one explicit fresh materialized product set and exact selected installed
+   software produce one closed deterministic target-neutral artifact;
+2. repeated equal inputs reproduce the artifact identity and bytes claimed by
+   the contract, while a newer materialization produces a distinct identity;
+3. artifacts retain exact software/application/product/materialization/scope/
+   cutoff/presentation/dependency provenance and SHA-256 closure;
+4. standalone validation detects missing, extra, linked, unsafe, corrupt,
+   incompatible, stale-at-build, or identity-disagreeing content without the
+   originating repository/project/state;
+5. the artifact serves the accepted supplied app from only frozen products and
+   detached presentation through real repeated HTTP and local-asset requests;
+6. no producer, provider, model, source/canonical input, history/state writer,
+   project extension, credential, or unintended file enters the artifact;
+7. the Posit realization is an exact target wrapper around the unchanged
+   artifact, has one complete target dependency authority, independently
+   validates, and serves under the demonstrated Connect Cloud-compatible
+   structure;
+8. each target realization is immutable, content-identified, retained, and
+   independently verifiable, with identity independent of its realization-
+   store path, deployment destination path, and operator-owned content;
+9. each stable destination carries bounded generated provenance that resolves
+   exactly to its realization, artifact, product/materialization, and
+   analytical scope/cutoff, plus the exact managed-inventory digest;
+10. the same Posit destination can advance from realization 1 to realization 2
+    and return to realization 1 while preserving `.git`, removing obsolete
+    managed files, preserving admitted operator-owned files byte-for-byte, and
+    refusing unclassified, colliding, or modified content;
+11. the OCI realization is an exact target wrapper around the unchanged
+   artifact, builds from a pinned base, runs non-root, exposes the app through
+   conventional container runtime inputs, and independently validates;
+12. the same stable OCI build-context destination supports repeat update and
+    rollback, removes obsolete managed files, preserves any explicitly admitted
+    operator-owned content, and remains the path consumed by the Docker build;
+13. Posit and OCI show the same frozen application/product meaning and neither
+    runs or requires analytical computation or hospital project access;
+14. artifact, realization, and destination operations never mutate installed
+    software, project source, state/history, or materialized product sets;
+15. failed staging, validation, destination update, runtime, and interruption paths
+    clean up or report bounded recovery without destroying a prior valid
+    artifact, realization, or valid destination projection;
+16. prior artifacts and realizations remain explicit reproduction/rollback
+    inputs and no implicit newest/current selector is introduced for either
+    immutable store;
+17. installed CLI documentation makes artifact generation, target realization,
+    stable destination update, and external deployment visibly separate; and
+18. focused, package/check, repository, distribution/installation regression,
+    clean-copy, hosted Posit, hosted Docker, privacy, hygiene, and exact-
+    revision evidence pass with no retained test output.
+
+The plain-language accepted exit state remains:
+
+> An operator can freeze one exact RRP product/application state into a closed,
+> independently valid artifact and realize that same artifact for demonstrated
+> Posit-compatible and OCI/Docker runtimes. The operator can repeatedly update
+> or roll back each stable deployment destination at the same path while RRP
+> coherently replaces only its generated content. RRP still does not publish,
+> deploy, authorize, or operate the external service.
+
+### Historical reuse decisions
+
+| Historical capability | Proposed Stage 12 disposition |
+|---|---|
+| Positive target-neutral runtime allowlist | **Adapt substantially.** Source from the selected installed package/resource authority and exact current DCF/CSV products. |
+| Staged validate/promote, idempotency, conflict refusal, pointer recovery | **Reuse mechanics selectively.** Retain immutable artifact/realization identities and transactional output; omit implicit current selectors. A destination record identifies only the realization deliberately projected at that stable path. |
+| Closed artifact/realization inventory and checksums | **Reuse and strengthen.** Use sorted role/size/SHA-256 evidence and current safe-path/link rules rather than MD5/YAML. |
+| Standalone copied validation and app construction | **Reuse substantially.** Add real repeated HTTP/assets, archive safety, privacy exclusions, and installed-software independence. |
+| Artifact instance/build identity separation | **Simplify/adapt.** Use one deterministic content identity; keep volatile occurrence time/path outside the immutable unit. |
+| Direct runtime roots pruned from a broader lock | **Adapt.** Derive target closure from accepted distribution/installation dependency evidence, never the development lock. |
+| Connect root adapter and unchanged embedded artifact | **Reuse substantially.** Reconcile current official `renv.lock`/`manifest.json` rules and prefer one lock authority. |
+| Fully generated Git repository, `git init`, staged-only/uncommitted requirement | **Replace.** Retain an immutable generated realization, project its managed content into a stable destination, preserve opaque operator-owned `.git`, remove obsolete managed files, and support reviewable repeat updates without Git mutation. |
+| Fixed `rsconnect@1.3.1` manifest generation | **Reject as current authority.** Use the current chosen dependency representation and dated official evidence. |
+| Forbidden platform code/package and secret-pattern adversaries | **Adapt.** Positive inclusion remains primary; retain bounded defense-in-depth checks and privacy-safe diagnostics. |
+| Hospital generation, repository-root operations, YAML products, `build/`, Phase suites | **Reject.** Use installed CLI/package owners, explicit project/output paths, current DCF/CSV products, and lifecycle-focused evidence. |
+| OCI/Docker target | **Implement new from the shared artifact.** Do not derive it from the Posit realization or introduce compute semantics. |
+
+### Decisions requiring human approval
+
+Formal acceptance of this plan should explicitly decide:
+
+1. **Runtime-source seam:** approve the proposed single-source refactor inside
+   `rrpplatform`, rather than shipping the full package, creating a third
+   package, or maintaining duplicate deployment app code.
+2. **Artifact outputs:** approve an explicit immutable artifact store producing
+   both a canonical directory and transport archive, with no implicit latest
+   selector.
+3. **CLI and unit separation:** approve `rrp artifact build/validate` for the
+   immutable target-neutral unit and `rrp deployment realize/validate/update`
+   for immutable target units and stable destination projections.
+4. **Posit dependency authority:** approve `renv.lock` as the one generated
+   target authority, subject to the implementation-time official-documentation
+   check, rather than also generating `manifest.json`.
+5. **Destination ownership:** approve target-contract-defined managed paths,
+   a generated destination provenance/inventory record, transactional obsolete-
+   file removal, and a closed explicit operator-owned set. For the Posit
+   destination that set initially contains `.git/`; other operator
+   customization remains in external Git/Connect configuration unless a
+   concrete target requirement justifies another admitted path.
+6. **Connect evidence boundary:** approve current official-requirement review,
+   independent restore, and real hosted app behavior as Stage 12 evidence
+   without requiring RRP to create a remote or publish to Connect Cloud.
+7. **OCI initial cell:** approve one pinned Linux `amd64`/R 4.4 Docker evidence
+   cell, with the exact base image/digest selected during 12.D, and no
+   multi-architecture or registry claim.
+8. **Stable target paths:** approve the same explicit destination directory as
+   the repeated update/rollback boundary for a connected Posit worktree and a
+   Docker build context, without making either path part of immutable identity.
+9. **Acceptance choreography:** approve five increments followed by a separate
+   exact-revision formal Stage 12 acceptance and architecture reconciliation.
+
+Until those decisions are accepted, this section is a proposal only. It
+authorizes no contract, package, CLI, artifact, target, workflow, remote, or
+Stage 12 implementation change.
+
+### Explicit deferrals and nonclaims
+
+Stage 12 does not add automatic analytical refresh, scheduling, a daemon,
+source/canonical ingestion, producer/provider/model execution, product
+materialization during build, a compute-capable artifact, custom apps/products,
+arbitrary deployment overlays, project migration, database/state packaging,
+remote object storage, Connect API use, remote Git creation/commit/push,
+credentials or secret storage, registry push, image signing/SBOM policy,
+Kubernetes/Compose/Helm, production networking/TLS/authentication,
+authorization/access governance, retention, monitoring/alerting, service
+objectives, self-managed Posit support, multi-architecture images, clinical
+validation, release qualification, publication, or deployment. Stage 13 owns
+clean-system and independent-adopter qualification. Stage 14 owns release and
+public publication.
 
 ## Stage 13 — Clean-system and adopter acceptance
 
@@ -8649,7 +9474,10 @@ context. Exclusion from this design is not alteration of that release.
 ## Decisions deliberately left to progressive planning
 
 The architecture settles responsibilities; later detailed plans will settle
-mechanisms when evidence is available. Deliberately open items include:
+mechanisms when evidence is available. The proposed Stage 12 section above
+recommends resolutions for its artifact and target decisions; those
+recommendations remain open until the detailed plan is formally accepted.
+Deliberately open items include:
 
 - later exported APIs and package source files beyond the accepted Stage 3
   resource/result boundary;
@@ -8662,7 +9490,8 @@ mechanisms when evidence is available. Deliberately open items include:
 - final distribution manifest, dependency resolution, reproducibility,
   archive, signature/authenticity, and acquisition mechanisms;
 - migration and any separately typed legacy-history archive contract;
-- artifact, Connect Cloud, and OCI build details and support cells;
+- artifact, Connect Cloud, and OCI implementation-incidental details beyond
+  the proposed Stage 12 decisions, including exact future base-image digest;
 - validation profile graph, CI matrix, and release support matrix; and
 - release host/provider and explicit remote publication procedure.
 
