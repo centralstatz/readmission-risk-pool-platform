@@ -7710,3 +7710,45 @@ amendment acceptance also remain outstanding. Candidate A, the library-
 inventory architecture, the original Stage 11 acceptance, and the Stage 12
 boundary are unchanged. No commit, push, tag, release, publication, deployment,
 or Stage 12 work occurred during this reconciliation.
+
+## Stage 11 / Increment 11.I — Formal post-acceptance amendment closure — 2026-10-20
+
+The original Stage 11 acceptance remains fixed at exact revision
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3`. The later Increment 11.I
+permission and installed-integrity correction is independently accepted at
+exact revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements that
+historical acceptance rather than replacing or retroactively rewriting it.
+
+Exact-revision hosted evidence is complete. GitHub Actions
+`package-foundation` run `39440312984`, job `118688089134`, reported success
+for revision `594dc8c63d6156329cc477a24f811b71ff4e6609` under Ubuntu/R 4.4.
+The run's repository, package, distribution, and installation/software-
+lifecycle validation steps all succeeded. Together with the preceding local
+record, this establishes conventional private-library permissions, the closed
+realized-library inventory and fail-closed verification, real repeated HTTP
+and local-asset requests, portable foreground interruption with exit 130,
+runtime cleanup, and installed/project nonmutation on the accepted correction.
+
+The separate human macOS/R 4.4 browser check used a fresh disposable
+installation and independent fictional project created from the corrected
+revision. The observed application loaded at its loopback URL, remained
+functional through repeated page refreshes, browser-tab close, and reopen, and
+showed no recurrence of the `bslib`/Sass asset-permission failure. This was the
+bounded human experience required by Increment 11.I, not execution of the
+complete Post-Stage-11 Manual Platform Assessment. During planned cleanup,
+foreground `SIGINT` produced exit status 130; final strict software, state,
+history, product-freshness, and project-readiness checks passed before removal;
+the loopback port had no listener; no assessment-associated child or orphaned
+process remained; and the exact disposable root
+`/tmp/rrp-11i-browser.06tDFa` was removed. The repository remained clean.
+
+**Acceptance decision:** all accepted Increment 11.I automated and bounded
+human criteria are satisfied, and no acceptance-blocking discrepancy remains.
+Increment 11.I is formally accepted and complete as a post-acceptance Stage 11
+amendment. Candidate A remains the accepted architecture: conventional R
+package permissions within the version-isolated private library, strict
+content-integrity detection at lifecycle trust boundaries, and no runtime
+projection. The original Stage 11 acceptance and chronology remain intact.
+Stage 12 is the next new stage and has not begun. No code, test, release,
+publication, deployment, or Stage 12 change occurred during this documentation-
+only closure.

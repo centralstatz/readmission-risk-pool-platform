@@ -9,9 +9,10 @@ revision-matched hosted evidence, independent assurance assessment, and final
 architecture reconciliation were accepted. A later independent manual
 assessment at source revision
 `ac0f64825956c7efb68b87a383616fb7d242425d` exposed an installed-application
-runtime-permissions defect outside the original acceptance probe. Proposed
-post-acceptance Increment 11.I below awaits plan approval and is not
-implemented; it does not alter the original acceptance decision. Stage 12 is
+runtime-permissions defect outside the original acceptance probe. The bounded
+post-acceptance Increment 11.I correction below is formally accepted at exact
+revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements but does
+not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
 the next new stage and has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
@@ -78,10 +79,10 @@ operability before the needed layers exist.
 
 Only the current implementation stage is decomposed before source work.
 The original Stages 1–11 are accepted and complete; their detailed plans
-remain as implementation lineage. Proposed post-acceptance Increment 11.I is
-a bounded corrective amendment awaiting approval, not retroactive original
-scope and not Stage 12 work. Stage 12 is the next new stage and has not been
-detailed or begun. After a stage is implemented:
+remain as implementation lineage. Post-acceptance Increment 11.I is an
+accepted bounded corrective amendment, not retroactive original scope and not
+Stage 12 work. Stage 12 is the next new stage and has not been detailed or
+begun. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -8116,8 +8117,7 @@ clinical validation remain outside Stage 11.
 
 ### Increment 11.I — Post-acceptance amendment: installed application runtime permissions
 
-**Status:** **Approved for implementation — 11.I.1 design resolved — corrective
-implementation not started**
+**Status:** **Formally accepted and complete — 2026-10-20**
 
 **Discovery and chronology:** Stage 11's original scope was implemented and
 accepted on 2026-10-14 at exact revision
@@ -8456,18 +8456,34 @@ for strict inventory verification. No application production change,
 runtime projection, copied library, package asset staging, or Stage 12 work was
 introduced.
 
-The implementation remains uncommitted, so it has no final candidate revision
-and cannot yet have exact-revision hosted Ubuntu/R 4.4 evidence. Criteria 14
-and 15 also retain their separate hosted and bounded human macOS confirmation
-roles. These remaining evidence steps do not reopen Candidate A's design or
-authorize further implementation.
+At this local implementation closeout, the implementation remained uncommitted
+and therefore had no final candidate revision or exact-revision hosted Ubuntu/
+R 4.4 evidence. Criteria 14 and 15 retained their separate hosted and bounded
+human macOS confirmation roles. Those evidence requirements did not reopen
+Candidate A's design or authorize further implementation.
 
-**Approval and completion boundary:** Increment 11.I.2 is **implementation-
-complete locally — awaiting exact committed hosted evidence, bounded human
-confirmation, and separate formal acceptance**. A later acceptance task must
-record the committed revision and decide formal closure. The original Stage 11
-acceptance remains historical fact, Increment 11.I is not yet formally
-accepted, and Stage 12 remains unstarted.
+**Approval and completion boundary:** Increment 11.I.2 reached
+implementation-complete local status before exact committed hosted evidence,
+bounded human confirmation, and separate formal acceptance. That chronology
+remains part of the implementation lineage.
+
+**Formal acceptance:** Increment 11.I is formally accepted and complete at the
+corrected exact implementation revision
+`594dc8c63d6156329cc477a24f811b71ff4e6609`. GitHub Actions
+`package-foundation` run `39440312984`, job `118688089134`, succeeded for that
+revision under hosted Ubuntu/R 4.4 and passed the repository, package,
+distribution, and installation validation steps. A separate bounded macOS/R
+4.4 browser exercise used a fresh isolated installation from that revision;
+the installed application loaded, remained functional through repeated page
+refreshes and browser-tab close/reopen, and showed no recurrence of the asset-
+permission failure. Foreground `SIGINT` then produced the required exit 130,
+the final strict installation and project checks passed, the loopback listener
+and associated processes were absent, and the disposable assessment root was
+removed. All accepted 11.I criteria are therefore satisfied with no blocking
+discrepancy. The original Stage 11 acceptance at
+`8bb1a3798b92f5407b0772d60f067fc182f45fb3` remains an independent historical
+boundary; this amendment does not retroactively rewrite it. Stage 12 remains
+unstarted.
 
 ## Stage 12 — Product-only artifacts and deployment realizations
 

@@ -6,6 +6,9 @@ executed
 **Accepted Stage 11 implementation:**
 `8bb1a3798b92f5407b0772d60f067fc182f45fb3`
 
+**Accepted post-Stage-11 correction:** Increment 11.I at
+`594dc8c63d6156329cc477a24f811b71ff4e6609`
+
 **Post-Stage-11 documentation baseline when authored:**
 `383607c`
 
@@ -30,19 +33,21 @@ or production-readiness assessment. It does not repeat automated Stage 11
 acceptance or establish clinical validity. Do not use real patient data,
 credentials, private hospital mappings, or a real model.
 
-Stage 11 is formally accepted and complete. Stage 12 has not begun. The exact
-accepted software implementation is the revision above; later commits through
-the authoring baseline record documentation/assessment closeout and closed-
-inventory registration without changing that software. Public Stage 14
-acquisition does not yet exist, so this exercise uses the source repository
-only to build one local development distribution. After that distribution is
-copied and unpacked, all operation goes through its verifier, installer, and
-installed `rrp` command.
+Stage 11 is formally accepted and complete. Its later Increment 11.I
+post-acceptance correction is also formally accepted and supplies the current
+installed-software baseline for this guide without rewriting the original
+Stage 11 acceptance. A bounded 11.I browser exercise has been performed, but
+it did not execute this complete two-run assessment; this guide therefore
+remains not yet executed. Stage 12 has not begun. Public Stage 14 acquisition
+does not yet exist, so this exercise uses the source repository only to build
+one local development distribution. After that distribution is copied and
+unpacked, all operation goes through its verifier, installer, and installed
+`rrp` command.
 
 ### Prerequisites
 
 - macOS within the demonstrated R 4.4.x development evidence boundary;
-- one clean checkout containing the accepted Stage 11 implementation;
+- one clean checkout containing the accepted Increment 11.I correction;
 - Git, `tar`, normal R package compilation support, and either `shasum` or
   `sha256sum`;
 - network access to one credential-free HTTPS R package repository; and
@@ -66,17 +71,19 @@ Record usability observations as you go:
 ## B. Create the assessment workspace
 
 Start in the repository root and confirm a clean post-Stage-11 line. A later
-documentation-only commit may make `HEAD` newer than the authoring baseline;
-the ancestry check establishes that the accepted software is present.
+documentation-only commit may make `HEAD` newer than the accepted correction;
+the ancestry checks establish both the original Stage 11 boundary and the
+current corrected installed-software baseline.
 
 ```sh
 git rev-parse HEAD
 git status --short --branch
 git merge-base --is-ancestor 8bb1a3798b92f5407b0772d60f067fc182f45fb3 HEAD
+git merge-base --is-ancestor 594dc8c63d6156329cc477a24f811b71ff4e6609 HEAD
 R --version
 ```
 
-`git status --short` should be empty, the ancestry command should exit zero,
+`git status --short` should be empty, both ancestry commands should exit zero,
 and R should be 4.4.x. Record the actual clean source revision in your notes.
 
 Create one disposable root outside the checkout. These variables distinguish
@@ -264,12 +271,17 @@ Rscript --vanilla install.R \
 ```
 
 Installation may download or compile the exact specified dependency versions.
-It should finish with `PASS installation`, the immutable installation path,
-the stable launcher path, and `Reused: no`. It verifies the copied distribution
-again, restores a version-private library, installs both exact internal package
-archives, validates the staged realization in fresh vanilla R processes, and
-promotes only after those checks succeed. It neither creates nor activates a
-project.
+It should finish with `PASS installation`, the identity-stable installation
+path, the stable launcher path, and `Reused: no`. It verifies the copied
+distribution again, restores a version-private library with conventional R
+package permissions, installs both exact internal package archives, records a
+closed realized-library inventory, validates the staged realization in fresh
+vanilla R processes, and promotes only after those checks succeed. It neither
+creates nor activates a project.
+
+Use a fresh realization built from the accepted 11.I baseline. Increment 11.I
+does not repair older recursively hardened installations in place; reusing one
+would not assess the corrected permission and integrity behavior.
 
 Make this assessment's stable launcher the `rrp` resolved by the current
 terminal, then verify that it takes precedence over any other installation:
@@ -289,7 +301,8 @@ disposable assessment installation even if another `rrp` exists elsewhere.
 
 ### What you should observe
 
-- `installed-software/installations/` contains one immutable realization.
+- `installed-software/installations/` contains one identity-stable,
+  strictly inventoried realization with conventional package permissions.
 - `bin/rrp` is the stable assessment-specific launcher.
 - `command -v rrp` resolves exactly to that launcher.
 - No RRP package was manually installed into the normal user library.
@@ -521,6 +534,12 @@ URL manually. Inspect before stopping it with Ctrl+C in the terminal. An
 interrupt result/exit 130 is expected for this manual foreground shutdown;
 closing the browser tab alone may not stop Shiny.
 
+While the application remains running, navigate between both top-level views,
+open the episode detail, refresh the page repeatedly, close the browser tab,
+and reopen the same URL. Confirm the interface and its local assets continue
+to load without permission-denied, Sass, or `bslib` asset errors. Then stop the
+foreground process with Ctrl+C.
+
 ### What you should observe
 
 - **Current Risk Pool:** one current row at exactly `39.0%`, analytical time
@@ -620,8 +639,9 @@ rrp app launch \
   --browser
 ```
 
-Open `http://127.0.0.1:45811` if necessary. Stop the application with Ctrl+C
-after inspection.
+Open `http://127.0.0.1:45811` if necessary. Repeat the navigation, refresh,
+tab-close, and reopen checks from Section K, then stop the application with
+Ctrl+C after inspection.
 
 ### What you should observe
 
@@ -706,8 +726,11 @@ case "$(basename "$RRP_ASSESSMENT_ROOT")" in
 esac
 ```
 
-Because installed realizations are deliberately read-only, make only this
-validated disposable assessment tree writable and remove only that tree:
+Corrected 11.I installations use conventional R package permissions rather
+than recursive read-only hardening. The defensive permission normalization
+below remains appropriate for this validated disposable tree because it may
+also contain build outputs or partially created content. Apply it only to that
+exact tree, then remove only that tree:
 
 ```sh
 chmod -R u+w "$RRP_ASSESSMENT_ROOT"

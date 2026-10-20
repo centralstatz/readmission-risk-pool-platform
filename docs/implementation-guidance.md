@@ -68,8 +68,13 @@ controlled incompatibility, compatible selection, rollback, and uninstall.
 All eight Stage 11 increments are formally accepted. The integrated
 [Stage 11 assurance assessment](assessments/stage-11-assessment.md) found no
 blocking implementation or evidence discrepancy. Stage 11 is formally accepted
-and complete. Its nonblocking Stage 13 qualification consideration and Stage
-12–14 deferrals remain explicit; Stage 12 is next and has not begun.
+and complete. The separately accepted post-acceptance Increment 11.I correction
+at `594dc8c63d6156329cc477a24f811b71ff4e6609` restores conventional private-
+library package permissions, adds closed realized-library integrity evidence,
+and closes the installed-application asset-permission defect without rewriting
+the original Stage 11 acceptance. Its nonblocking Stage 13 qualification
+consideration and Stage 12–14 deferrals remain explicit; Stage 12 is next and
+has not begun.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -90,8 +95,10 @@ installation, selection, transition, and exact-uninstall lifecycle; its clean
 installed-operation proof and all eight increments are formally accepted. The
 integrated [Stage 11 assurance assessment](assessments/stage-11-assessment.md)
 found no blocking implementation or evidence discrepancy. Stage 11 is formally
-accepted and complete. Its retained nonblocking qualification consideration
-and later-stage deferrals remain explicit; Stage 12 is next and has not begun.
+accepted and complete. Post-acceptance Increment 11.I is also formally accepted
+with conventional private-library permissions and strict installed-content
+verification. Its retained nonblocking qualification consideration and later-
+stage deferrals remain explicit; Stage 12 is next and has not begun.
 
 ## Read authority before source
 
