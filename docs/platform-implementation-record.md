@@ -7856,3 +7856,50 @@ contracts are unchanged.
 12.A is ready for separate formal human acceptance but is not formally accepted
 by this entry. Stage 12 remains incomplete. The next task is formal Increment
 12.A acceptance; Increment 12.B must not begin until that acceptance occurs.
+
+### Hosted distribution-foundation reconciliation — 2026-10-21
+
+The committed Increment 12.A candidate at exact revision
+`73e979278ed62236eab6b6cd335e3d6411c951f8` failed the hosted Ubuntu/R 4.4
+`package-foundation` workflow at distribution validation: run `39588240113`,
+job `119182400016`. Repository and package validation passed before
+`tools/validate-distribution.R` reported that the positive source/resource
+authorities were incomplete; installation validation was consequently skipped.
+
+The defect was confined to distribution validation authority. Increment 12.A
+correctly grew the closed source catalog from 67 to 72 members by adding one
+portable-application contract and four portable R source members while
+relocating, rather than duplicating, the existing CSS resource. Catalog-driven
+resource projection, source-tree closure, and package validation already used
+that exact 72-member authority, but both the source-side distribution validator
+and copied standalone verifier retained the former independent count of 67.
+The original local 12.A evidence did not run the separate distribution
+validator, so it did not expose those stale expectations.
+
+The reconciliation updates both fail-closed counts to 72. The standalone
+verifier additionally requires the six portable application resource
+identities at their exact installed paths, including exactly one CSS identity
+at `resources/application/portable/www/rrp.css`; a same-count resource-ID
+substitution adversary proves that an unexpected member cannot replace a
+required source while satisfying only the count. Existing closed catalog,
+inventory, duplicate-path/identity, missing-file, and unexpected-file checks
+remain enforced. No source resource, package behavior, application contract,
+dependency, public interface, installation behavior, or Stage 12 scope changed.
+
+Focused post-correction evidence passed:
+
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R` completed the 72-resource positive build and
+  standalone-verification path plus all source, provenance, identity,
+  integrity, closure, substitution, and output-cleanup adversaries;
+- `Rscript --vanilla tools/validate-repository.R` passed all eight repository
+  foundation checks; and
+- `git diff --check` passed.
+
+The correction changes only the source-side distribution validator, copied
+standalone verifier, focused adversarial evidence, and this implementation
+record. Full package validation was not repeated because the hosted run already
+passed it at the failed revision and neither package source nor resource content
+changed. Increment 12.A remains implementation-complete but pending formal
+human acceptance and a successful exact-revision hosted rerun. Increment 12.B
+has not begun.

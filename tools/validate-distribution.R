@@ -94,9 +94,9 @@ validate_distribution <- function() {
 
   authority <- distribution_source_authority(repository_root)
   resources <- distribution_resource_authority(repository_root)
-  require_true(length(authority$packages) == 2L && length(resources$entries) == 67L,
+  require_true(length(authority$packages) == 2L && length(resources$entries) == 72L,
                "Positive source/resource authorities are incomplete.")
-  cat("PASS positive source inclusion and 67-resource closure\n")
+  cat("PASS positive source inclusion and 72-resource closure\n")
 
   source_fixture <- file.path(work, "source-fixture")
   dir.create(source_fixture)
@@ -146,6 +146,33 @@ validate_distribution <- function() {
   root_second <- file.path(extract_second, "rrp-1.0.0-dev")
   verified <- rrp_verify_distribution(root)
   verified_second <- rrp_verify_distribution(root_second)
+
+  substituted_resource <- copy_tree(root, work, "substituted-resource")
+  catalog_path <- file.path(substituted_resource, "resources", "resource-catalog.dcf")
+  catalog <- distribution_read_dcf(catalog_path)
+  resource_index <- which(vapply(
+    catalog,
+    function(record) identical(
+      record[["Resource-ID"]], "rrp.application.portable-core"
+    ),
+    logical(1L)
+  ))
+  require_true(length(resource_index) == 1L,
+               "Portable application resource fixture is incomplete.")
+  catalog[[resource_index]][["Resource-ID"]] <- "rrp.application.unexpected"
+  distribution_write_dcf(catalog, catalog_path)
+  rewrite_payload(substituted_resource, mutate_inventory = function(records) {
+    paths <- vapply(records[-1L], `[[`, character(1L), "Path")
+    index <- which(paths == "resources/resource-catalog.dcf") + 1L
+    records[[index]][["Size"]] <- as.character(file.info(catalog_path)$size)
+    records[[index]][["SHA256"]] <- distribution_sha256(catalog_path)
+    records
+  })
+  expect_failure(
+    "substituted portable application resource",
+    rrp_verify_distribution(substituted_resource),
+    "Required portable application resources are absent or relocated"
+  )
 
   dependency <- distribution_read_dcf(file.path(root, "dependencies", "dependencies.dcf"))
   dependency_header <- dependency[[1L]]

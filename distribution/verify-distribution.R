@@ -336,7 +336,7 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("resource_catalog", "Projected resource catalog is invalid.")
   }
   resources <- catalog_records[-1L]
-  if (length(resources) != 67L) {
+  if (length(resources) != 72L) {
     rrp_distribution_fail("resource_catalog", "Projected resource count is unsupported.")
   }
   resource_fields <- c(
@@ -363,6 +363,30 @@ rrp_verify_distribution <- function(root) {
   ids <- vapply(resources, `[[`, character(1L), "Resource-ID")
   if (anyDuplicated(ids)) {
     rrp_distribution_fail("resource_catalog", "Projected resource IDs are duplicated.")
+  }
+  required_application_resources <- c(
+    "rrp.contract.portable-application" =
+      "resources/contracts/application/portable-application.dcf",
+    "rrp.application.portable-core" =
+      "resources/application/portable/R/application-core.R",
+    "rrp.application.portable-products" =
+      "resources/application/portable/R/product-loader.R",
+    "rrp.application.portable-ui" =
+      "resources/application/portable/R/application-ui.R",
+    "rrp.application.portable-server" =
+      "resources/application/portable/R/application-server.R",
+    "rrp.asset.supplied-application-css" =
+      "resources/application/portable/www/rrp.css"
+  )
+  required_indexes <- match(names(required_application_resources), ids)
+  if (anyNA(required_indexes) || !identical(
+    unname(installed_paths[required_indexes]),
+    unname(required_application_resources)
+  )) {
+    rrp_distribution_fail(
+      "resource_catalog",
+      "Required portable application resources are absent or relocated."
+    )
   }
   platform_members <- attr(descriptions$rrpplatform, "archive_members")
   expected_package_resources <- paste0("rrpplatform/inst/", installed_paths)
