@@ -9177,6 +9177,192 @@ software, and every path outside `rrp-data/` remain unchanged.
 Connect API/publishing, Dockerfile/image, artifact/realization store, remote,
 or deployment.
 
+##### Proposed implementation-task breakdown — pending human review
+
+This assessment recommends two internal implementation tasks while preserving
+12.B as one formally governed increment. The proposal does not alter the
+accepted objective, evidence, criteria, or exclusions above, and it does not
+authorize implementation. Neither internal task is an independent increment or
+formal acceptance boundary. Human review must accept this breakdown before an
+implementation task begins.
+
+The repository supports this division because initialization and refresh have
+different mutation boundaries. Initialization owns an absent destination and
+can stage, validate, and rename one complete directory. Refresh acts inside an
+existing hospital-owned directory and must prove narrow write containment,
+preserve a prior current set across interruption, and ignore unrelated source.
+They nevertheless share one final managed-data representation, current-set
+reader, content validator, nonexecuting input resolver, freshness proof, and
+operation-result conventions. The first task must establish those shared
+interfaces in their final form so the second task extends rather than replaces
+them.
+
+###### Proposed Task 12.B.1 — Create-only standalone initialization and shared managed-content foundation
+
+**Objective:** produce a complete conventional standalone application at one
+absent destination and establish the stable read/validation substrate that its
+runtime and later managed refresh use.
+
+**Dependencies:** accepted Increment 12.A and human acceptance of this proposed
+task breakdown. It has no dependency on refresh or public detached-validation
+behavior.
+
+**Authorized implementation scope:**
+
+- factor a structural, nonexecuting project/state/product read boundary that
+  validates project identity, compatible state and materialized products, and
+  exact contextual freshness without sourcing project registration or invoking
+  analytical behavior;
+- finalize the shared managed-content representation, exact frozen product and
+  presentation writer, current-set record and reader, safe contained paths,
+  inventory/digest validation, and privacy-safe structured failures;
+- create and validate the initial managed set and its current-set record, but
+  do not replace that record inside an existing application or implement
+  refresh recovery;
+- add stable package operation interfaces and the accepted `rrp app init` CLI
+  intention using existing selected-software, explicit-project, scope/cutoff,
+  JSON, exit-status, and interruption conventions;
+- assemble the accepted portable modules/assets with the smallest conventional
+  standalone host, detached presentation, readable README/direct requirements,
+  exact minimal `renv.lock`, immutable initialization record, legal material,
+  and `rrp-data/` content;
+- stage and completely validate the application before create-only sibling
+  promotion, refuse every existing destination without overwrite behavior, and
+  clean only owned failed staging; and
+- reconcile package exports, resources, ownership, CLI help/rendering, and
+  focused tests only for the capability actually introduced.
+
+**Expected deliverable:** `rrp app init` can create the default `<project>/app/`
+or one explicit alternative absent path from an actual or governed-empty fresh
+product context. The result parses, sources, and runs as ordinary standalone
+Shiny source, contains deterministic initial provenance and dependency
+evidence, and uses the final managed-data read contract. No operation mutates
+an existing application.
+
+**Specific validation and checkpoint evidence:** prove actual and valid-empty
+initialization; equal-input byte/baseline identity; alternative output;
+existing-destination, stale/incompatible/corrupt input, unsafe/link/collision,
+dependency, and injected-failure refusal; staged-output cleanup; no project,
+state, product-source, installation, or outside-destination mutation; clean-
+process parse/source; package-independent managed-set loading; ordinary local
+application startup and representative HTTP/asset requests; exact direct and
+lock dependency closure; and the relevant package-native, build/check,
+repository, resource-catalog, and hygiene checks. Run the distribution
+validator at this checkpoint if resource or copied-payload closure changes;
+reserve the complete installation lifecycle aggregate for final 12.B
+qualification unless an installation boundary is changed.
+
+**Explicit exclusions:** no `rrp app refresh`; no public `rrp app validate`;
+no mutation, pointer replacement, inactive-set cleanup, or recovery inside an
+existing application; no interpretation of hospital customization; no
+installed Standalone Application Guide beyond the generated app's immediately
+necessary README; and all accepted 12.B and Stage 12 deployment exclusions
+remain in force.
+
+**Must remain stable for the next task:** the on-disk managed-content and
+current-set contracts, standalone loader, initialization provenance/baseline,
+nonexecuting input resolver, structured result shapes, completed `app init`
+behavior, and hospital/RRP ownership boundary. No temporary public API,
+provisional directory layout, or initializer-only data representation is
+permitted.
+
+**Completion meaning:** an internal 12.B implementation checkpoint only. It
+does not accept Task 12.B.1, Increment 12.B, or Stage 12 and does not authorize
+12.B.2 without separate human direction.
+
+###### Proposed Task 12.B.2 — Managed refresh, detached validation, guidance, and 12.B qualification
+
+**Objective:** complete the existing-application lifecycle by refreshing only
+compatible managed analytical products, validating a detached application
+without executing its source, documenting hospital operation, and assembling
+the complete Increment 12.B evidence.
+
+**Dependencies:** the completed and reconciled 12.B.1 internal checkpoint. It
+must reuse the stable resolver, managed-content representation, validator,
+current-set reader, result conventions, and initialization output rather than
+introduce parallel forms.
+
+**Authorized implementation scope:**
+
+- add stable package operations and the accepted `rrp app refresh` and
+  `rrp app validate` CLI intentions with the existing CLI conventions;
+- stage and validate one complete compatible managed set wholly below
+  `rrp-data/`, atomically switch the small current-set record, preserve the
+  prior valid set across interruption, and perform only bounded owned cleanup
+  or diagnosis of inactive/stale work;
+- enforce safe reserved-boundary containment and prove that refresh never
+  writes any application source, asset, dependency, deployment, Git, or other
+  hospital-owned path;
+- implement read-only detached recognition and managed-content validation
+  without project/history access or customized-source execution, treating
+  finite initial-baseline comparison as informational rather than a condition
+  of managed-product validity;
+- add the installed Standalone Application Guide and complete ownership,
+  customization, local execution, optional restoration, refresh, validation,
+  recovery, fresh-default, and bounded external-hosting guidance; and
+- reconcile CLI help/rendering, ownership, resource catalogs, validators, and
+  complete lifecycle integration evidence for the finished increment.
+
+**Expected deliverable:** an operator can refresh an initialized application's
+managed product set and validate that application at a detached path while all
+hospital-owned bytes remain untouched. Compatible refresh changes only
+`rrp-data/`; invalid or interrupted refresh leaves the former valid current set
+usable.
+
+**Specific validation and checkpoint evidence:** prove a compatible second
+product refresh; incompatible/stale/corrupt/link/path/collision refusal;
+interruption before and around current-record replacement; prior-set retention
+and bounded stale-work handling; exact byte preservation of modified `app.R`
+and added README/module/asset/dependency/deployment/Git fixtures; detached
+validation with absent/changed initial provenance and informational baseline
+drift; no arbitrary source execution; no analytical or installation mutation;
+and all remaining accepted 12.B adversaries. Run focused lifecycle tests first,
+then the complete package, repository, distribution, installation/software-
+lifecycle, documentation, privacy, and hygiene matrix once for final 12.B
+qualification, followed by exact-revision hosted Ubuntu/R 4.4 evidence when
+the maintainer commits the candidate.
+
+**Explicit exclusions:** no whole-application overwrite, source comparison or
+upgrade, application backup/rollback/migration, analytical execution or
+materialization, general artifact/transaction system, hosting integration,
+remote mutation, or any 12.C+ behavior.
+
+**Must remain stable:** all accepted 12.A behavior; completed `app init` and its
+on-disk format; installed `app launch`; project/state/product sources; hospital-
+owned nonmanaged application bytes; installed software and prior-stage
+contracts; and the accepted Stage 12 architecture.
+
+**Completion meaning:** implementation-complete and locally qualified Increment
+12.B, with hosted evidence ready to obtain. It does not itself constitute
+formal Increment 12.B acceptance; a separate human governance decision must
+accept the exact candidate before Increment 12.C may begin.
+
+##### Assessment of alternatives and coverage
+
+| Alternative | Assessment |
+|---|---|
+| One coordinated implementation task | Architecturally coherent, but it combines absent-destination publication with mutation of an existing hospital-owned directory, a substantial dependency-lock path, three CLI intentions, documentation, and the full validation matrix. The resulting context, failure attribution, and interrupted-session recovery risk outweigh the small reduction in handoff overhead. |
+| Two tasks as refined above | **Recommended.** Each task ends in a usable, independently verifiable operator result; shared contracts and validators are finalized once in 12.B.1; and 12.B.2 owns the distinct narrow-mutation/recovery risk without duplicating initialization. |
+| Three tasks with a separate internal foundation | Not recommended. A resolver/validator-only checkpoint has no independently useful operator outcome, would force an extra interface handoff before the on-disk representation is exercised by a real application, and adds documentation and repeated-validation overhead without isolating another materially different mutation boundary. |
+
+The two tasks cover the accepted 12.B scope without changing its formal
+boundary:
+
+| Accepted 12.B responsibility | Proposed owner |
+|---|---|
+| Nonexecuting project/state/product resolution and exact freshness | 12.B.1, reused unchanged by 12.B.2 |
+| Final managed representation, current-set reader, frozen products/presentation, provenance, inventory, and shared validation | 12.B.1, reused and adversarially exercised by 12.B.2 |
+| Create-only initialization, source arrangement, direct requirements, exact lock, baseline, staging, cleanup, alternative output, and refusal of existing destinations | 12.B.1 |
+| Compatible managed refresh, atomic current-set replacement, interruption recovery, stale-work handling, and strict write containment | 12.B.2 |
+| Detached validation and customization-tolerant baseline reporting | Shared validator in 12.B.1; public read-only operation, CLI, and complete evidence in 12.B.2 |
+| Installed Standalone Application Guide and complete lifecycle integration/qualification | 12.B.2 |
+
+No accepted requirement is deferred beyond 12.B.2. The final aggregate is not
+repeated after every small edit: each task uses focused failure evidence and
+the checks proportionate to paths it changes, while 12.B.2 runs the complete
+required matrix once after integration. This sequencing reduces execution and
+recovery risk without weakening any final acceptance criterion.
+
 #### Increment 12.C — Independent operational proof and closeout evidence
 
 **Dependencies:** accepted 12.A–12.B.
