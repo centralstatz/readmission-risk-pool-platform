@@ -267,4 +267,9 @@ job `115831602654`; all eight Stage 11 increments are accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
 no blocking implementation or evidence discrepancy. Stage 11 is formally
 accepted and complete. Its nonblocking Stage 13 qualification consideration
-and Stage 12–14 deferrals remain explicit; Stage 12 is next and has not begun.
+and Stage 12–14 deferrals remain explicit. Increment 12.A adds the 72-resource
+catalog, one portable-application authority, four readable cataloged R modules,
+the relocated cataloged CSS asset, a frozen DCF/CSV product loader, and a thin
+installed host adapter behind the unchanged launch operation. It is
+implementation-complete and pending formal acceptance; Stage 12 remains
+incomplete, and no standalone application output or new CLI behavior exists.

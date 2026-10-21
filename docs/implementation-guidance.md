@@ -73,8 +73,12 @@ at `594dc8c63d6156329cc477a24f811b71ff4e6609` restores conventional private-
 library package permissions, adds closed realized-library integrity evidence,
 and closes the installed-application asset-permission defect without rewriting
 the original Stage 11 acceptance. Its nonblocking Stage 13 qualification
-consideration and Stage 12–14 deferrals remain explicit; Stage 12 is next and
-has not begun.
+consideration and Stage 12–14 deferrals remain explicit. Increment 12.A now
+establishes the cataloged portable application source, frozen DCF/CSV product
+and detached-presentation boundary, and thin installed host adapter behind the
+unchanged launch operation. It is implementation-complete and pending formal
+acceptance; Stage 12 remains incomplete, and no standalone `app/` output or
+new CLI behavior exists.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -98,7 +102,8 @@ found no blocking implementation or evidence discrepancy. Stage 11 is formally
 accepted and complete. Post-acceptance Increment 11.I is also formally accepted
 with conventional private-library permissions and strict installed-content
 verification. Its retained nonblocking qualification consideration and later-
-stage deferrals remain explicit; Stage 12 is next and has not begun.
+stage deferrals remain explicit. Increment 12.A is implementation-complete and
+pending formal acceptance; Stage 12 remains incomplete.
 
 ## Read authority before source
 
@@ -214,8 +219,8 @@ closed to the following present paths:
 | `packages/rrpplatform/R/product-contracts.R` | Internal exact loading of the four installed logical-product and coherent-set authorities. |
 | `packages/rrpplatform/R/logical-products.R` | Storage-neutral bounded source snapshots, effective-history fingerprinting, deterministic logical construction, independent member/set conformance, optimistic coherence, and the common-result product-set operation. |
 | `packages/rrpplatform/R/product-materialization.R` | Exact installed materialization-authority loading; staged immutable DCF/CSV publication; pointer replacement and rollback; closed physical validation; contextual freshness; and detached list/read access. |
-| `packages/rrpplatform/R/application-contracts.R` | Exact loading of the installed supplied-application and bounded project-brand interpretation authorities. |
-| `packages/rrpplatform/R/application.R` | Dependency checks, safe standard-brand adaptation, contained logo detachment, one-time product snapshot, pure component-ready current/trajectory/overview/status view models, bounded Reactable/Plotly/bslib components and server interactions, closed models, and loopback-only launch operation. |
+| `packages/rrpplatform/R/application-contracts.R` | Exact loading of the installed supplied-application, portable-application, and bounded project-brand interpretation authorities. |
+| `packages/rrpplatform/R/application.R` | Thin installed application host: dependency checks, safe standard-brand adaptation, contained logo detachment, one-time validated product snapshot, cataloged portable-source loading, and the unchanged loopback-only launch operation. |
 | `packages/rrpplatform/R/project-contracts.R` | Internal software-authority loading plus strict 0.3.0 project-manifest and kind-specific in-memory registration-result validation. |
 | `packages/rrpplatform/R/project-authoring.R` | Installed authoring-authority loading, exact metadata/dependency/file validation, isolated callable loading, controlled failure tokens, deterministic bundle identity, and compilation of normal hospital callables into raw producer/provider declarations. |
 | `packages/rrpplatform/R/project-initializer.R` | Create-only input/destination validation, safe six-path standard-authoring or seven-path fictional-project rendering plus `_brand.yml` and a contained logo, owned sibling staging, load-before-promotion, final-location proof, rollback, and structured initialization results. |
@@ -284,15 +289,16 @@ closed to the following present paths:
 | `resources/contracts/lifecycle/*.dcf` | Platform-owned dependency-light software lifecycle and output-shape authorities for later distribution/installation/CLI delegation; they add no installer, launcher, activation behavior, or analytical-history fields. |
 | `resources/contracts/state/*.dcf` | Platform-owned closed project-state metadata, private DuckDB-adapter, and project-state-backup authorities. |
 | `resources/contracts/products/*.dcf` | Platform-owned exact contracts for current remaining risk, actual remaining-risk trajectory, effective operational-scope summary, their all-required initial product set, and supplied DCF/CSV materialization/access. |
-| `resources/contracts/application/*.dcf` | Platform-owned supplied-application identity and bounded standard project-brand interpretation authorities. |
-| `resources/application/supplied-application.css` | Bounded installed RRP-owned responsive application composition and component-integration CSS; not a hospital extension point. |
+| `resources/contracts/application/*.dcf` | Platform-owned supplied-application identity, bounded standard project-brand interpretation, and portable application/product/presentation/provenance/inventory/dependency authorities. |
+| `resources/application/portable/R/` | The one readable product-only application source authority: frozen product/presentation loading, view models, UI components, and read-only Shiny server composition. These cataloged modules contain no project, analytical, history, provider, or installed-RRP runtime dependency. |
+| `resources/application/portable/www/rrp.css` | Cataloged RRP-owned responsive application composition and component-integration CSS shared by the installed host and later standalone initialization; it is not yet generated into a project. |
 | `resources/templates/project/` | Cataloged software-owned templates for the exact six-path normal project-authoring scaffold plus bounded `_brand.yml` and contained logo resources: manifest, authoring metadata, thin raw-registration adapter, producer mapping, provider calculation, README orientation, and declarative application identity. |
 | `resources/templates/fictional-project/` | Cataloged software-owned templates for the ordinary fictional teaching project: the standard authoring and branding responsibilities plus its explicit create-only source generator. Generated source is project output and is not stored here. |
 | `resources/documentation/*.md` | The exact eleven version-matched installed product documents: the Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, and Stage 11 lifecycle/CLI/operator/distribution/installation/software-lifecycle guides. All resolve through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, strict installed-metadata or controlled-provisioning-receipt validation, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
 | `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
 | `tools/validate-installation.R` | Human-callable clean temporary-user proof for copied-distribution verification, genuine configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, explicit activation, independent fictional project operation at two analytical times, history/fresh-product validation, both doctor surfaces, supervised application startup/termination, failure cleanup, exact reinstall, installed CLI equivalence, upgrade/compatibility/explicit compatible selection/rollback, official-version conflict refusal, project/history/product nonmutation, and guarded exact inactive/final uninstall. |
-| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, source-resource catalog/projection including Markdown documents, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
+| `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, 72-member source-resource catalog/projection including Markdown and portable application resources, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
 This table does not reserve future paths. Add a directory only when an accepted

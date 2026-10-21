@@ -7768,3 +7768,91 @@ extend automated validation, reopen the original Stage 11 acceptance at
 acceptance at `594dc8c63d6156329cc477a24f811b71ff4e6609`. It introduces no
 architecture, implementation, release, deployment, or Stage 12 claim. Stage 12
 remains unstarted.
+
+## Stage 12 / Increment 12.A — Authoritative application source and standalone runtime foundation — 2026-10-21
+
+Increment 12.A establishes one application implementation without creating a
+standalone hospital application. The existing installed host still resolves an
+explicit project, opens its validated Stage 9 products, interprets bounded
+`_brand.yml` presentation, and exposes the unchanged `rrp app launch` and
+`rrp_launch_app()` behavior. Its view models, UI, server, and CSS now come from
+the positively cataloged ordinary source under
+`resources/application/portable/`. The installed wrapper is limited to project
+and product preparation, presentation detachment, cataloged-source loading, and
+loopback launch. No second UI or server implementation remains in package R
+source.
+
+The new `rrp.application.portable@0.1.0` DCF authority closes the shared source
+members and load order, installed and future standalone host seams, frozen
+DCF/CSV product declaration and exact member schemas, bounded detached
+presentation, immutable initial-provenance fields and baseline identity,
+`rrp-data` managed roles, safe relative paths, regular-file/no-link and exact
+inventory rules, SHA-256 evidence, minimal direct dependency roots, exact
+standalone lock shape, and prohibited analytical/runtime dependencies. The
+portable loader accepts one explicit frozen set root; it discovers no project,
+state, history, producer, provider, model, product writer, or RRP installation.
+It validates exact inventory membership and digests, declaration and product
+contract compatibility, CSV fields and types, governed populated or empty
+states, detached presentation, and bounded logo bytes before composing the
+application. The current managed-set loader is reusable foundation only: no
+active-set pointer, refresh, promotion, application-directory management, or
+standalone lifecycle operation exists in 12.A.
+
+The catalog grows from 67 to exactly 72 resources: one portable-application
+contract and four readable R source members are added, while the existing CSS
+resource moves into `resources/application/portable/www/rrp.css`. The
+`rrpplatform` DESCRIPTION dependency set and 33-export public surface remain
+unchanged. NAMESPACE now records the component-package imports needed by the
+dynamically cataloged source. Static and runtime evidence confirms the portable
+source directly requires only `shiny`, `bslib`, `plotly`, and `reactable`; it
+does not depend on `rrpplatform`, `rrpruntime`, `brand.yml`, DBI, DuckDB,
+project registration, analytical execution, or the RRP private library.
+
+The interrupted implementation left one package-native operation-result
+fixture at its former closed-resource shape. Its 33-resource fixture correctly
+gains the same one contract and four R members, while relocating rather than
+duplicating the CSS, for an exact 38-resource fixture. Unexpected fixture files
+remain rejected and production resource validation was not weakened. Recovery
+also added focused evidence that traversal and absolute managed paths,
+forbidden managed roles, malformed CSV schema, incompatible product
+declaration, invalid presentation, unsafe presentation paths, symbolic links,
+unexpected files, altered bytes, and a dependency authority containing
+`rrpplatform` all fail closed. Populated and valid-empty frozen products both
+construct view models and Shiny UI/server objects from the same portable
+members used by installed launch.
+
+Historical reconnaissance inspected immutable `v0.1.0` material at
+`contracts/deployment/application-artifact.yml`,
+`operations/lib/application-artifact-operation.R`, and
+`tests/phase8/test-application-artifact.R`. The implementation adapts the
+positive product-only allowlist, application/product identity separation,
+closed inventory/digest behavior, copied-source independence principle, and
+reduced-runtime testing. It rejects the historical YAML authority, MD5,
+repository-root loading, broad engine copying, target-specific wrappers, and
+duplicate handwritten application.
+
+Validation on the reconciled working tree completed successfully:
+
+- `Rscript --vanilla tools/validate-repository.R`: PASS, all 8 repository
+  foundation checks;
+- `Rscript --vanilla tools/validate-packages.R`: PASS, including the exact
+  72-resource source/installed closure and new dependency-authority adversary,
+  deterministic installed projection, both package builds, isolated
+  installation/load, `rrpruntime` and `rrpplatform` checks with `Status: OK`,
+  clean-process portable parsing/sourcing, populated/empty and malformed
+  product/presentation/inventory evidence, Stage 9 materialization/access and
+  recovery regressions, and Stage 10/11 installed supplied-application launch,
+  HTTP/loopback supervision, nonmutation, relocation, and cleanup; and
+- `git diff --check`: PASS.
+
+No generated package archive, check directory, temporary library, validation
+process, or application output remains in the repository. No `app/` directory,
+new CLI command, initializer, refresh, detached validator, lock file, source
+upgrade/synchronization, archive, deployment target, Docker/image, remote,
+publication, or deployment behavior entered. Stage 9 product producers and
+contracts are unchanged.
+
+**12.A result:** implementation and local validation are complete. Increment
+12.A is ready for separate formal human acceptance but is not formally accepted
+by this entry. Stage 12 remains incomplete. The next task is formal Increment
+12.A acceptance; Increment 12.B must not begin until that acceptance occurs.

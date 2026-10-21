@@ -9,7 +9,11 @@ editor, deployment artifact, or hospital-authored application.
 
 This guide accompanies `rrp.application.supplied@0.1.0` and its bounded
 `rrp.project-brand@0.1.0` interpretation in the same installed software
-resource catalog.
+resource catalog. The installed host and future standalone host share the
+cataloged readable source governed by `rrp.application.portable@0.1.0`; the
+current installed command still performs project/product preparation before
+passing detached products and presentation to that source. No standalone
+project application or standalone lifecycle command exists yet.
 
 ## Prerequisites
 

@@ -5,6 +5,7 @@ software_root <- if (length(arguments) >= 1L) arguments[[1L]] else
   Sys.getenv("RRP_TEST_SOFTWARE_ROOT", unset = "")
 stopifnot(nzchar(software_root), dir.exists(software_root))
 catalog <- rrp_open_resource_catalog(software_root)
+portable <- rrpplatform:::rrp_application_portable(catalog)
 
 suite <- tempfile("rrp-application-foundation-")
 dir.create(suite)
@@ -20,8 +21,15 @@ stopifnot(
   identical(contracts$application[["Contract-Version"]], "0.1.0"),
   identical(contracts$brand[["Contract-ID"]], "rrp.project-brand"),
   identical(contracts$brand[["Parser-Package"]], "brand.yml"),
+  identical(contracts$portable[["Contract-ID"]], "rrp.application.portable"),
+  identical(contracts$portable[["Source-Load-Order"]], paste(c(
+    "rrp.application.portable-core", "rrp.application.portable-products",
+    "rrp.application.portable-ui", "rrp.application.portable-server"
+  ), collapse = ",")),
+  identical(contracts$portable[["Standalone-Direct-Dependencies"]],
+    "shiny,bslib,plotly,reactable"),
   file.exists(application_css), !dir.exists(application_css),
-  identical(basename(application_css), "supplied-application.css")
+  identical(basename(application_css), "rrp.css")
 )
 
 brand_root <- file.path(suite, "brand-project")
@@ -161,8 +169,248 @@ access <- structure(list(
   )
 ), class = c("rrp_product_access", "list"))
 
+# The installed host and future standalone host load the same ordinary source
+# members. Exercise the standalone-facing frozen DCF/CSV boundary directly;
+# no standalone application directory or lifecycle operation is created here.
+portable_ids <- rrpplatform:::rrp_application_portable_resource_ids()
+portable_paths <- vapply(
+  portable_ids, function(id) rrp_resource_path(catalog, id), character(1L)
+)
+stopifnot(
+  identical(names(portable_paths), portable_ids),
+  all(file.exists(portable_paths)),
+  all(vapply(portable_paths, function(path) {
+    is.expression(parse(path, keep.source = TRUE))
+  }, logical(1L)))
+)
+
+write_dcf <- function(records, path) {
+  lines <- unlist(lapply(seq_along(records), function(index) {
+    record <- records[[index]]
+    value <- paste0(names(record), ": ", unlist(record, use.names = FALSE))
+    if (index < length(records)) c(value, "") else value
+  }), use.names = FALSE)
+  writeLines(lines, path, useBytes = TRUE)
+}
+write_product_csv <- function(data, path) utils::write.table(
+  data, path, sep = ",", row.names = FALSE, col.names = TRUE, quote = TRUE,
+  qmethod = "double", na = "", eol = "\n", fileEncoding = "UTF-8"
+)
+portable_set <- file.path(suite, "portable-product-set")
+dir.create(portable_set)
+portable_files <- c(
+  current_remaining_risk = "current-remaining-risk.csv",
+  remaining_risk_trajectory = "remaining-risk-trajectory.csv",
+  operational_scope_summary = "operational-scope-summary.csv"
+)
+write_product_csv(current, file.path(portable_set, portable_files[[1L]]))
+write_product_csv(trajectory, file.path(portable_set, portable_files[[2L]]))
+write_product_csv(summary, file.path(portable_set, portable_files[[3L]]))
+product_declaration <- c(
+  "Record-Type" = "rrp-application-product-set",
+  "Portable-Application-Contract-ID" = "rrp.application.portable",
+  "Portable-Application-Contract-Version" = "0.1.0",
+  "Product-Set-Contract-ID" = "rrp.product-set.initial-readmission-risk",
+  "Product-Set-Contract-Version" = "0.1.0",
+  "Product-Set-ID" = "set.1", "Materialization-ID" = "materialization.1",
+  "Source-Operation-Run-ID" = "operation.1",
+  "Source-Analytical-Time" = "2026-01-20T12:00:00Z",
+  "Source-History-Cutoff" = "2026-01-20T12:00:00Z",
+  "Source-History-Fingerprint" = "fingerprint.1",
+  "Current-Remaining-Risk-Product-Contract-ID" =
+    "rrp.product.current-remaining-risk",
+  "Current-Remaining-Risk-Product-Contract-Version" = "0.1.0",
+  "Current-Remaining-Risk-Product-Instance-ID" =
+    "rrp.product.current-remaining-risk.instance",
+  "Current-Remaining-Risk-Row-Count" = as.character(nrow(current)),
+  "Current-Remaining-Risk-File" = portable_files[[1L]],
+  "Remaining-Risk-Trajectory-Product-Contract-ID" =
+    "rrp.product.remaining-risk-trajectory",
+  "Remaining-Risk-Trajectory-Product-Contract-Version" = "0.1.0",
+  "Remaining-Risk-Trajectory-Product-Instance-ID" =
+    "rrp.product.remaining-risk-trajectory.instance",
+  "Remaining-Risk-Trajectory-Row-Count" = as.character(nrow(trajectory)),
+  "Remaining-Risk-Trajectory-File" = portable_files[[2L]],
+  "Operational-Scope-Summary-Product-Contract-ID" =
+    "rrp.product.operational-scope-summary",
+  "Operational-Scope-Summary-Product-Contract-Version" = "0.1.0",
+  "Operational-Scope-Summary-Product-Instance-ID" =
+    "rrp.product.operational-scope-summary.instance",
+  "Operational-Scope-Summary-Row-Count" = as.character(nrow(summary)),
+  "Operational-Scope-Summary-File" = portable_files[[3L]]
+)
+write_dcf(list(product_declaration), file.path(portable_set, "products.dcf"))
+inventory_paths <- c(
+  "current-remaining-risk.csv", "operational-scope-summary.csv",
+  "products.dcf", "remaining-risk-trajectory.csv"
+)
+portable_inventory <- function(root) lapply(inventory_paths, function(relative) c(
+  "Record-Type" = "managed-file", "Path" = relative,
+  "Role" = if (identical(relative, "products.dcf")) {
+    "product_declaration"
+  } else "product_member",
+  "Byte-Size" = as.character(file.info(
+    file.path(root, relative), extra_cols = FALSE
+  )$size[[1L]]),
+  "SHA256" = portable$rrp_application_sha256(file.path(root, relative))
+))
+inventory <- portable_inventory(portable_set)
+write_dcf(inventory, file.path(portable_set, "inventory.dcf"))
+portable_snapshot <- portable$rrp_application_load_product_set(portable_set)
+
+portable_presentation <- file.path(suite, "portable-presentation")
+dir.create(portable_presentation)
+file.copy(application_css, file.path(portable_presentation, "rrp.css"))
+presentation_record <- c(
+  "Record-Type" = "rrp-application-presentation",
+  "Presentation-Contract-ID" = "rrp.application-presentation",
+  "Presentation-Contract-Version" = "0.1.0",
+  "Brand-Contract-ID" = "rrp.project-brand",
+  "Brand-Contract-Version" = "0.1.0", "Source" = "rrp-defaults",
+  "Display-Name" = "Readmission Risk Pool", "Primary-Color" = "#1F4E79",
+  "Logo-File" = "none", "Logo-Media-Type" = "none", "Logo-Alt" = "none"
+)
+write_dcf(
+  list(presentation_record),
+  file.path(portable_presentation, "presentation.dcf")
+)
+portable_presentation_model <- portable$rrp_application_load_presentation(
+  portable_presentation, "rrp.css", "presentation.dcf"
+)
+portable_model <- portable$rrp_application_model(
+  portable_snapshot, portable_presentation_model
+)
+stopifnot(
+  identical(portable_snapshot$product_set_id, "set.1"),
+  identical(portable_snapshot$products$current_remaining_risk$data, current),
+  identical(portable_model$view_models$current$total_count, 3L),
+  inherits(portable$rrp_application_shiny(portable_model), "shiny.appobj")
+)
+
+expect_portable_failure <- function(root, code) {
+  condition <- tryCatch({
+    portable$rrp_application_load_product_set(root)
+    NULL
+  }, rrp_application_error = identity)
+  stopifnot(inherits(condition, "rrp_application_error"),
+    identical(condition$code, code))
+}
+copy_portable_set <- function(name) {
+  destination <- file.path(suite, name)
+  dir.create(destination)
+  stopifnot(all(file.copy(
+    file.path(portable_set, c("inventory.dcf", inventory_paths)),
+    destination, copy.mode = FALSE, copy.date = FALSE
+  )))
+  destination
+}
+
+unsafe_inventory <- copy_portable_set("portable-unsafe-inventory")
+unsafe_records <- inventory
+unsafe_records[[1L]][["Path"]] <- "../current-remaining-risk.csv"
+write_dcf(unsafe_records, file.path(unsafe_inventory, "inventory.dcf"))
+expect_portable_failure(
+  unsafe_inventory, "application_product_integrity_failed"
+)
+absolute_inventory <- copy_portable_set("portable-absolute-inventory")
+absolute_records <- inventory
+absolute_records[[1L]][["Path"]] <- "/tmp/current-remaining-risk.csv"
+write_dcf(absolute_records, file.path(absolute_inventory, "inventory.dcf"))
+expect_portable_failure(
+  absolute_inventory, "application_product_integrity_failed"
+)
+forbidden_role <- copy_portable_set("portable-forbidden-role")
+forbidden_records <- inventory
+forbidden_records[[1L]][["Role"]] <- "hospital_source"
+write_dcf(forbidden_records, file.path(forbidden_role, "inventory.dcf"))
+expect_portable_failure(forbidden_role, "application_product_integrity_failed")
+
+malformed_schema <- copy_portable_set("portable-malformed-schema")
+malformed_current <- current
+malformed_current$provider_version <- NULL
+write_product_csv(
+  malformed_current,
+  file.path(malformed_schema, "current-remaining-risk.csv")
+)
+write_dcf(
+  portable_inventory(malformed_schema),
+  file.path(malformed_schema, "inventory.dcf")
+)
+expect_portable_failure(
+  malformed_schema, "application_product_integrity_failed"
+)
+
+incompatible_declaration <- copy_portable_set(
+  "portable-incompatible-declaration"
+)
+incompatible_record <- product_declaration
+incompatible_record[["Product-Set-Contract-Version"]] <- "9.9.9"
+write_dcf(
+  list(incompatible_record),
+  file.path(incompatible_declaration, "products.dcf")
+)
+write_dcf(
+  portable_inventory(incompatible_declaration),
+  file.path(incompatible_declaration, "inventory.dcf")
+)
+expect_portable_failure(
+  incompatible_declaration, "application_product_incompatible"
+)
+
+tampered <- file.path(portable_set, "current-remaining-risk.csv")
+tampered_bytes <- readBin(tampered, "raw", n = file.info(tampered)$size)
+writeBin(c(tampered_bytes, charToRaw("x")), tampered)
+expect_portable_failure(portable_set, "application_product_integrity_failed")
+writeBin(tampered_bytes, tampered)
+writeLines("unexpected", file.path(portable_set, "unexpected.txt"))
+expect_portable_failure(portable_set, "application_product_integrity_failed")
+unlink(file.path(portable_set, "unexpected.txt"))
+linked_set <- file.path(suite, "portable-linked-set")
+dir.create(linked_set)
+for (relative in c("inventory.dcf", inventory_paths)) {
+  stopifnot(file.copy(file.path(portable_set, relative), linked_set))
+}
+unlink(file.path(linked_set, "current-remaining-risk.csv"))
+link_created <- file.symlink(
+  file.path(portable_set, "current-remaining-risk.csv"),
+  file.path(linked_set, "current-remaining-risk.csv")
+)
+if (isTRUE(link_created)) {
+  expect_portable_failure(linked_set, "application_product_integrity_failed")
+}
+
+expect_presentation_failure <- function(root, css_file, declaration_file) {
+  condition <- tryCatch({
+    portable$rrp_application_load_presentation(
+      root, css_file, declaration_file
+    )
+    NULL
+  }, rrp_application_error = identity)
+  stopifnot(
+    inherits(condition, "rrp_application_error"),
+    condition$code %in% c(
+      "application_input_invalid", "application_product_integrity_failed"
+    )
+  )
+}
+invalid_presentation <- file.path(suite, "portable-invalid-presentation")
+dir.create(invalid_presentation)
+file.copy(application_css, file.path(invalid_presentation, "rrp.css"))
+invalid_presentation_record <- presentation_record
+invalid_presentation_record[["Primary-Color"]] <- "not-a-color"
+write_dcf(
+  list(invalid_presentation_record),
+  file.path(invalid_presentation, "presentation.dcf")
+)
+expect_presentation_failure(
+  invalid_presentation, "rrp.css", "presentation.dcf"
+)
+expect_presentation_failure(
+  portable_presentation, "../rrp.css", "presentation.dcf"
+)
+
 snapshot <- rrpplatform:::rrp_application_product_snapshot(access)
-view <- rrpplatform:::rrp_application_view_models(snapshot)
+view <- portable$rrp_application_view_models(snapshot)
 incompatible_access <- access
 incompatible_access$members$current_remaining_risk$product_contract_version <-
   "9.9.9"
@@ -190,7 +438,7 @@ stopifnot(
   identical(view$overview$median, 0.8),
   identical(view$overview$scope$expected_episode_count, 5L)
 )
-searched <- rrpplatform:::rrp_application_current_view(
+searched <- portable$rrp_application_current_view(
   current, trajectory, search = "episode.a", provider_id = "provider.a",
   model_id = "model.a", page = 1L, page_size = 1L
 )
@@ -213,7 +461,29 @@ empty_access$members$operational_scope_summary <- member(
   "rrp.product.operational-scope-summary", empty_summary
 )
 empty_snapshot <- rrpplatform:::rrp_application_product_snapshot(empty_access)
-empty_model <- rrpplatform:::rrp_application_model(empty_snapshot, defaults)
+empty_model <- portable$rrp_application_model(empty_snapshot, defaults)
+
+write_product_csv(
+  current[FALSE, , drop = FALSE],
+  file.path(portable_set, "current-remaining-risk.csv")
+)
+write_product_csv(
+  trajectory[FALSE, , drop = FALSE],
+  file.path(portable_set, "remaining-risk-trajectory.csv")
+)
+write_product_csv(
+  empty_summary, file.path(portable_set, "operational-scope-summary.csv")
+)
+empty_declaration <- product_declaration
+empty_declaration[["Current-Remaining-Risk-Row-Count"]] <- "0"
+empty_declaration[["Remaining-Risk-Trajectory-Row-Count"]] <- "0"
+write_dcf(list(empty_declaration), file.path(portable_set, "products.dcf"))
+empty_inventory <- portable_inventory(portable_set)
+write_dcf(empty_inventory, file.path(portable_set, "inventory.dcf"))
+portable_empty_snapshot <- portable$rrp_application_load_product_set(portable_set)
+portable_empty_model <- portable$rrp_application_model(
+  portable_empty_snapshot, portable_presentation_model
+)
 stopifnot(
   identical(empty_model$view_models$current$displayed_count, 0L),
   identical(empty_model$view_models$current$total_count, 0L),
@@ -221,12 +491,15 @@ stopifnot(
   identical(empty_model$view_models$trajectory$state, "unavailable"),
   nrow(empty_model$view_models$trajectory$rows) == 0L,
   identical(empty_model$view_models$overview$accepted_current_count, 0L),
-  inherits(rrpplatform:::rrp_application_shiny(empty_model), "shiny.appobj")
+  inherits(portable$rrp_application_shiny(empty_model), "shiny.appobj"),
+  identical(portable_empty_model$view_models$current$total_count, 0L),
+  identical(portable_empty_model$view_models$trajectory$state, "unavailable"),
+  inherits(portable$rrp_application_shiny(portable_empty_model), "shiny.appobj")
 )
 
-model <- rrpplatform:::rrp_application_model(snapshot, defaults)
-branded_model <- rrpplatform:::rrp_application_model(snapshot, branded)
-app <- rrpplatform:::rrp_application_shiny(model)
+model <- portable$rrp_application_model(snapshot, defaults)
+branded_model <- portable$rrp_application_model(snapshot, branded)
+app <- portable$rrp_application_shiny(model)
 model_text <- paste(capture.output(str(model)), collapse = " ")
 stopifnot(
   inherits(app, "shiny.appobj"),
@@ -333,7 +606,7 @@ stopifnot(
   identical(stale$product_snapshot$freshness$status, "stale"),
   isTRUE(all.equal(fresh$view_models$current$rows$estimate_value,
     0.3833333333333333)),
-  inherits(rrpplatform:::rrp_application_shiny(fresh), "shiny.appobj")
+  inherits(portable$rrp_application_shiny(fresh), "shiny.appobj")
 )
 
 launch_script <- file.path(suite, "launch-child.R")

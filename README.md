@@ -88,7 +88,12 @@ Stage 11 increments are formally accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
 no blocking implementation or evidence discrepancy. Stage 11 is formally
 accepted and complete. Its nonblocking Stage 13 qualification consideration
-and Stage 12–14 deferrals remain explicit; Stage 12 is next and has not begun.
+and Stage 12–14 deferrals remain explicit. Stage 12 is in progress: Increment
+12.A now establishes the cataloged portable application source, frozen
+product/presentation loading boundary, and thin installed host adapter while
+preserving the existing launch command. It is implementation-complete and
+pending formal acceptance; no standalone `app/` output or new CLI behavior
+exists yet.
 Nothing here is a released 1.0.0 product or an approved clinical system.
 
 The published `v0.1.0` release remains immutable historical evidence in Git.
@@ -280,7 +285,8 @@ accepted. The integrated
 [Stage 11 assurance assessment](docs/assessments/stage-11-assessment.md) found
 no blocking implementation or evidence discrepancy. Stage 11 is formally
 accepted and complete. Its retained nonblocking qualification consideration
-and later-stage deferrals remain explicit; Stage 12 is next and has not begun.
+and later-stage deferrals remain explicit. Increment 12.A is implementation-
+complete and pending formal acceptance; Stage 12 remains incomplete.
 
 ## License
 

@@ -23,11 +23,51 @@ Installed-Path: resources/contracts/application/project-brand.dcf
 Format: dcf
 
 Record-Type: resource
+Resource-ID: rrp.contract.portable-application
+Resource-Class: contract
+Owner-Package: rrpplatform
+Source-Path: resources/contracts/application/portable-application.dcf
+Installed-Path: resources/contracts/application/portable-application.dcf
+Format: dcf
+
+Record-Type: resource
+Resource-ID: rrp.application.portable-core
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/portable/R/application-core.R
+Installed-Path: resources/application/portable/R/application-core.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.application.portable-products
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/portable/R/product-loader.R
+Installed-Path: resources/application/portable/R/product-loader.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.application.portable-ui
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/portable/R/application-ui.R
+Installed-Path: resources/application/portable/R/application-ui.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.application.portable-server
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/portable/R/application-server.R
+Installed-Path: resources/application/portable/R/application-server.R
+Format: r
+
+Record-Type: resource
 Resource-ID: rrp.asset.supplied-application-css
 Resource-Class: static_application_asset
 Owner-Package: rrpplatform
-Source-Path: resources/application/supplied-application.css
-Installed-Path: resources/application/supplied-application.css
+Source-Path: resources/application/portable/www/rrp.css
+Installed-Path: resources/application/portable/www/rrp.css
 Format: css
 
 Record-Type: resource

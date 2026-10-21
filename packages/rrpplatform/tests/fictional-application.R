@@ -6,7 +6,12 @@ software_root <- if (length(arguments) >= 1L) arguments[[1L]] else
 stopifnot(nzchar(software_root), dir.exists(software_root))
 software_root <- normalizePath(software_root, winslash = "/", mustWork = TRUE)
 catalog <- rrp_open_resource_catalog(software_root)
-internal <- function(name) get(name, envir = asNamespace("rrpplatform"))
+portable <- rrpplatform:::rrp_application_portable(catalog)
+internal <- function(name) {
+  if (exists(name, envir = portable, inherits = FALSE)) {
+    get(name, envir = portable, inherits = FALSE)
+  } else get(name, envir = asNamespace("rrpplatform"))
+}
 
 suite <- tempfile("rrp-fictional-application-")
 dir.create(suite)

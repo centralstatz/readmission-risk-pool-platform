@@ -13,9 +13,9 @@ runtime-permissions defect outside the original acceptance probe. The bounded
 post-acceptance Increment 11.I correction below is formally accepted at exact
 revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements but does
 not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
-the next new stage. Its detailed plan was **formally accepted on 2026-10-20;
-implementation has not started, and Increment 12.A is the next authorized
-implementation task**.
+the current stage. Its detailed plan was **formally accepted on 2026-10-20;
+Increment 12.A is implementation-complete and pending separate formal
+acceptance**. Stage 12 remains incomplete.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -95,8 +95,9 @@ Only the current implementation stage is decomposed before source work.
 The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
-Stage 12 work. Stage 12 is the next new stage; its detailed plan is accepted,
-implementation has not started, and Increment 12.A is next. After a stage is
+Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
+Increment 12.A is implementation-complete and pending formal acceptance, and
+Stage 12 remains incomplete. After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -8524,7 +8525,8 @@ unstarted.
 
 ## Stage 12 — Standalone project application
 
-**Planning status:** **Accepted — implementation not started — 2026-10-20**
+**Planning status:** **Accepted — Increment 12.A implementation-complete;
+formal acceptance pending — 2026-10-20**
 
 ### Objective and responsibilities
 

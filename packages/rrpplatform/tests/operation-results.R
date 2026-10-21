@@ -106,6 +106,31 @@ rrp_test_operation_fixture <- function() {
       resource_id = "rrp.contract.project-brand",
       path = "resources/contracts/application/project-brand.dcf",
       expected = rrp_test_internal("rrp_brand_contract_expected")()
+    ),
+    list(
+      resource_id = "rrp.contract.portable-application",
+      path = "resources/contracts/application/portable-application.dcf",
+      expected = rrp_test_internal(
+        "rrp_portable_application_contract_expected"
+      )()
+    )
+  )
+  portable_source_definitions <- list(
+    list(
+      resource_id = "rrp.application.portable-core",
+      path = "resources/application/portable/R/application-core.R"
+    ),
+    list(
+      resource_id = "rrp.application.portable-products",
+      path = "resources/application/portable/R/product-loader.R"
+    ),
+    list(
+      resource_id = "rrp.application.portable-ui",
+      path = "resources/application/portable/R/application-ui.R"
+    ),
+    list(
+      resource_id = "rrp.application.portable-server",
+      path = "resources/application/portable/R/application-server.R"
     )
   )
   lifecycle_definitions <- rrp_test_internal(
@@ -168,6 +193,11 @@ rrp_test_operation_fixture <- function() {
       path, useBytes = TRUE
     )
   }
+  for (definition in portable_source_definitions) {
+    path <- file.path(root, definition$path)
+    dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+    writeLines("invisible(NULL)", path, useBytes = TRUE)
+  }
   for (definition in lifecycle_definitions) {
     path <- file.path(root, definition$path)
     dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
@@ -177,7 +207,7 @@ rrp_test_operation_fixture <- function() {
     )
   }
   asset_path <- file.path(
-    root, "resources", "application", "supplied-application.css"
+    root, "resources", "application", "portable", "www", "rrp.css"
   )
   dir.create(dirname(asset_path), recursive = TRUE, showWarnings = FALSE)
   writeLines(".rrp-application-shell { min-height: 100%; }", asset_path,
@@ -247,6 +277,17 @@ rrp_test_operation_fixture <- function() {
     "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
     "Installed-Path" = definition$path, "Format" = "dcf"
   )))
+  entries <- c(entries, lapply(
+    portable_source_definitions,
+    function(definition) list(
+      "Record-Type" = "resource",
+      "Resource-ID" = definition$resource_id,
+      "Resource-Class" = "static_application_asset",
+      "Owner-Package" = "rrpplatform",
+      "Installed-Path" = definition$path,
+      "Format" = "r"
+    )
+  ))
   entries <- c(entries, lapply(lifecycle_definitions, function(definition) list(
     "Record-Type" = "resource", "Resource-ID" = definition$resource_id,
     "Resource-Class" = "contract", "Owner-Package" = "rrpplatform",
@@ -257,7 +298,7 @@ rrp_test_operation_fixture <- function() {
     "Resource-ID" = "rrp.asset.supplied-application-css",
     "Resource-Class" = "static_application_asset",
     "Owner-Package" = "rrpplatform",
-    "Installed-Path" = "resources/application/supplied-application.css",
+    "Installed-Path" = "resources/application/portable/www/rrp.css",
     "Format" = "css"
   )))
   header <- list(
@@ -465,7 +506,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 33L
+          resource_count = 38L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)

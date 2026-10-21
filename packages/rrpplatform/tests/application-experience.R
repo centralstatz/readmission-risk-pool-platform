@@ -1,6 +1,14 @@
 library(rrpplatform)
 
-internal <- function(name) get(name, envir = asNamespace("rrpplatform"))
+software_root <- Sys.getenv("RRP_TEST_SOFTWARE_ROOT", unset = "")
+stopifnot(nzchar(software_root), dir.exists(software_root))
+catalog <- rrp_open_resource_catalog(software_root)
+portable <- rrpplatform:::rrp_application_portable(catalog)
+internal <- function(name) {
+  if (exists(name, envir = portable, inherits = FALSE)) {
+    get(name, envir = portable, inherits = FALSE)
+  } else get(name, envir = asNamespace("rrpplatform"))
+}
 
 product_rows <- function(episodes, estimates, times, runs) data.frame(
   product_row_id = paste0("row.", seq_along(episodes)),

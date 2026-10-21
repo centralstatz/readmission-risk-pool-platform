@@ -30,7 +30,9 @@ Description: Establishes the main internal implementation package for the
     detached logical product access without exposing physical storage details.
     It also constructs and launches one installed, analytically read-only
     supplied Shiny application from a detached product snapshot and a bounded
-    interpretation of standard project branding. It also provides a bounded
+    interpretation of standard project branding through one cataloged readable
+    portable application source shared with the future standalone host. It
+    also provides a bounded
     read-only project lifecycle status, composes logical product construction
     with atomic materialization, prepares only the supplied fictional source,
     and validates the dependency-light software lifecycle authorities needed

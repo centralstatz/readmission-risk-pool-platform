@@ -34,12 +34,16 @@ freshness, and detached logical access. The cataloged Logical Products Guide
 documents the supported human sequence, semantics, valid-empty behavior,
 freshness, backup exclusion, and rebuild path without adding another API.
 
-It also owns the installed `rrp.application.supplied@0.1.0` and
-`rrp.project-brand@0.1.0` authorities. The application boundary reads the exact
-three validated products once, converts optional project-root `_brand.yml`
-through the upstream parser into a closed detached presentation model, creates
-pure component-ready view models, and launches one generic Shiny application
-on loopback without analytical execution or mutation.
+It also owns the installed `rrp.application.supplied@0.1.0`,
+`rrp.application.portable@0.1.0`, and `rrp.project-brand@0.1.0` authorities.
+The thin installed host reads the exact three validated products once and
+converts optional project-root `_brand.yml` through the upstream parser into a
+closed detached presentation model. It then loads the one cataloged readable
+portable source set for pure view models, UI, server, and generic loopback
+Shiny composition. The portable source also owns strict independent loading of
+the accepted frozen DCF/CSV product and detached-presentation representations;
+it has no RRP, project, analytical, state/history, or provider runtime
+dependency. No standalone project application is generated yet.
 The useful installed experience provides the Current Risk Pool and Overview,
 deterministic Reactable filtering/paging/selection, truthful actual-observation
 sparklines, one Plotly trajectory detail with an exact observation table,

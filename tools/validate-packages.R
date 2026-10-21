@@ -1177,6 +1177,108 @@ product_contract_resources <- function() {
   )))
 }
 
+rrp_validate_portable_application_contract_expected <- function() c(
+  "Record-Type" = "portable-application-contract",
+  "Contract-ID" = "rrp.application.portable",
+  "Contract-Version" = "0.1.0",
+  "Format-Version" = "1.0.0",
+  "Product-ID" = "readmission-risk-pool-platform",
+  "Development-Version" = "1.0.0-dev",
+  "Status" = "development_unpublished",
+  "Owner-Package" = "rrpplatform",
+  "Supplied-Application" = "rrp.application.supplied@0.1.0",
+  "Operation-Result-Contract" = "rrp.operation-result@0.1.0",
+  "Source-Members" = paste(c(
+    "rrp.application.portable-core", "rrp.application.portable-products",
+    "rrp.application.portable-ui", "rrp.application.portable-server",
+    "rrp.asset.supplied-application-css"
+  ), collapse = ","),
+  "Source-Load-Order" = paste(c(
+    "rrp.application.portable-core", "rrp.application.portable-products",
+    "rrp.application.portable-ui", "rrp.application.portable-server"
+  ), collapse = ","),
+  "Installed-Host-Adapter" = "project_product_access_and_bounded_branding_only",
+  "Standalone-Host-Adapter" = "relative_managed_set_and_frozen_presentation_only",
+  "Product-Set-Contract" = "rrp.product-set.initial-readmission-risk@0.1.0",
+  "Product-Representation" = "frozen_dcf_csv",
+  "Product-Declaration-File" = "products.dcf",
+  "Product-Inventory-File" = "inventory.dcf",
+  "Product-Member-Files" = paste(c(
+    "current-remaining-risk.csv", "remaining-risk-trajectory.csv",
+    "operational-scope-summary.csv"
+  ), collapse = ","),
+  "Product-Declaration-Fields" = paste(c(
+    "Record-Type", "Portable-Application-Contract-ID",
+    "Portable-Application-Contract-Version", "Product-Set-Contract-ID",
+    "Product-Set-Contract-Version", "Product-Set-ID", "Materialization-ID",
+    "Source-Operation-Run-ID", "Source-Analytical-Time",
+    "Source-History-Cutoff", "Source-History-Fingerprint",
+    "Current-Remaining-Risk-Product-Contract-ID",
+    "Current-Remaining-Risk-Product-Contract-Version",
+    "Current-Remaining-Risk-Product-Instance-ID",
+    "Current-Remaining-Risk-Row-Count", "Current-Remaining-Risk-File",
+    "Remaining-Risk-Trajectory-Product-Contract-ID",
+    "Remaining-Risk-Trajectory-Product-Contract-Version",
+    "Remaining-Risk-Trajectory-Product-Instance-ID",
+    "Remaining-Risk-Trajectory-Row-Count",
+    "Remaining-Risk-Trajectory-File",
+    "Operational-Scope-Summary-Product-Contract-ID",
+    "Operational-Scope-Summary-Product-Contract-Version",
+    "Operational-Scope-Summary-Product-Instance-ID",
+    "Operational-Scope-Summary-Row-Count",
+    "Operational-Scope-Summary-File"
+  ), collapse = ","),
+  "Presentation-Contract" = "rrp.application-presentation@0.1.0",
+  "Presentation-Fields" = paste(c(
+    "Record-Type", "Presentation-Contract-ID", "Presentation-Contract-Version",
+    "Brand-Contract-ID", "Brand-Contract-Version", "Source", "Display-Name",
+    "Primary-Color", "Logo-File", "Logo-Media-Type", "Logo-Alt"
+  ), collapse = ","),
+  "Presentation-Logo" = "optional_contained_png_or_jpeg",
+  "Initial-Provenance-Contract" = "rrp.application-initialization@0.1.0",
+  "Initial-Provenance-Fields" = paste(c(
+    "Record-Type", "Contract-ID", "Contract-Version", "Software-Product-ID",
+    "Software-Version", "Distribution-ID", "Package-Version",
+    "Resource-Catalog-ID", "Resource-Catalog-Version",
+    "Portable-Application-Contract-ID",
+    "Portable-Application-Contract-Version", "Application-Baseline-ID",
+    "Dependency-Identity", "Initial-Product-Set-ID",
+    "Initial-Materialization-ID", "Source-Operation-Run-ID",
+    "Source-Analytical-Time", "Source-History-Cutoff",
+    "Source-History-Fingerprint", "Presentation-SHA256",
+    "Source-Inventory-SHA256", "Managed-Inventory-SHA256"
+  ), collapse = ","),
+  "Initial-Provenance-Mutability" = "immutable_after_create",
+  "Application-Baseline-Algorithm" =
+    "sha256_over_length_delimited_authority_and_inventory_evidence",
+  "Managed-Root" = "rrp-data",
+  "Managed-Content-Contract" = "rrp.application-managed-content@0.1.0",
+  "Managed-Content-Roles" = "product_declaration,product_member",
+  "Managed-Inventory-Fields" = "Record-Type,Path,Role,Byte-Size,SHA256",
+  "Managed-Digest-Algorithm" = "sha256",
+  "Managed-Inventory-Closure" = "exact",
+  "Managed-Relative-Paths" = "safe_nonempty_forward_slash",
+  "Managed-Absolute-Or-Traversal-Paths" = "prohibited",
+  "Managed-Links-Or-Nonregular-Files" = "prohibited",
+  "Managed-Unexpected-Files" = "prohibited",
+  "Hospital-Source-Under-Managed-Root" = "prohibited",
+  "Standalone-Direct-Dependencies" = "shiny,bslib,plotly,reactable",
+  "Standalone-Forbidden-Dependencies" =
+    "rrpplatform,rrpruntime,readmit,brand.yml,DBI,duckdb",
+  "Standalone-Lock-Format" = "renv-lock-json",
+  "Standalone-Lock-Version" = "1",
+  "Standalone-Lock-Package-Fields" =
+    "Package,Version,Source,Repository,Requirements,Hash",
+  "Standalone-Lock-Exact-Versions" = "required",
+  "Standalone-Lock-Auto-Activation" = "prohibited",
+  "Standalone-Private-RRP-Library" = "prohibited",
+  "Analytical-Execution" = "prohibited",
+  "Project-State-Or-History-Access" = "prohibited",
+  "Product-Mutation" = "prohibited",
+  "Unknown-Fields" = "prohibited",
+  "Additional-Records" = "prohibited"
+)
+
 application_contract_resources <- function() {
   application <- c(
     "Record-Type" = "application-contract",
@@ -1195,6 +1297,7 @@ application_contract_resources <- function() {
       "rrp.product.operational-scope-summary@0.1.0"
     ), collapse = ","),
     "Component-Foundation" = "shiny,bslib,plotly,reactable",
+    "Portable-Application-Contract" = "rrp.application.portable@0.1.0",
     "Brand-Contract" = "rrp.project-brand@0.1.0",
     "Frontend-Asset-IDs" = "rrp.asset.supplied-application-css",
     "Product-Access" = "validated_detached_once_at_startup",
@@ -1224,6 +1327,7 @@ application_contract_resources <- function() {
     "Raw-Brand-Retention" = "prohibited", "Unknown-Fields" = "prohibited",
     "Additional-Records" = "prohibited"
   )
+  portable <- rrp_validate_portable_application_contract_expected()
   list(
     supplied_application = list(
       id = "rrp.contract.supplied-application", owner = "rrpplatform",
@@ -1236,6 +1340,12 @@ application_contract_resources <- function() {
       source_path = "resources/contracts/application/project-brand.dcf",
       installed_path = "resources/contracts/application/project-brand.dcf",
       document = brand
+    ),
+    portable_application = list(
+      id = "rrp.contract.portable-application", owner = "rrpplatform",
+      source_path = "resources/contracts/application/portable-application.dcf",
+      installed_path = "resources/contracts/application/portable-application.dcf",
+      document = portable
     )
   )
 }
@@ -2112,7 +2222,7 @@ validate_application_asset_resource <- function(authority, root, projection) {
     "The supplied application CSS must be cataloged exactly once."
   )
   entry <- authority$entries[[matched]]
-  path <- "resources/application/supplied-application.css"
+  path <- "resources/application/portable/www/rrp.css"
   expected <- c(
     "Resource-ID" = "rrp.asset.supplied-application-css",
     "Resource-Class" = "static_application_asset",
@@ -2139,6 +2249,59 @@ validate_application_asset_resource <- function(authority, root, projection) {
     )) &&
       !any(grepl("<script|javascript:|@import|url[(]", css, ignore.case = TRUE)),
     "application_asset_content", "The supplied application CSS is invalid."
+  )
+
+  portable <- c(
+    "rrp.application.portable-core" =
+      "resources/application/portable/R/application-core.R",
+    "rrp.application.portable-products" =
+      "resources/application/portable/R/product-loader.R",
+    "rrp.application.portable-ui" =
+      "resources/application/portable/R/application-ui.R",
+    "rrp.application.portable-server" =
+      "resources/application/portable/R/application-server.R"
+  )
+  for (resource_id in names(portable)) {
+    matched <- which(ids == resource_id)
+    resource_require(
+      length(matched) == 1L, "portable_application_catalog",
+      paste0(resource_id, " must be cataloged exactly once.")
+    )
+    entry <- authority$entries[[matched]]
+    expected <- c(
+      "Resource-ID" = resource_id,
+      "Resource-Class" = "static_application_asset",
+      "Owner-Package" = "rrpplatform",
+      "Installed-Path" = unname(portable[[resource_id]]),
+      "Format" = "r"
+    )
+    if (!projection) expected <- append(
+      expected, c("Source-Path" = unname(portable[[resource_id]])), after = 3L
+    )
+    for (field in names(expected)) resource_require(
+      identical(entry[[field]], unname(expected[[field]])),
+      "portable_application_catalog",
+      paste0(resource_id, " mapping is invalid.")
+    )
+    source_path <- file.path(root, unname(portable[[resource_id]]))
+    parsed <- tryCatch(parse(source_path, keep.source = TRUE), error = identity)
+    resource_require(
+      is.expression(parsed), "portable_application_parse",
+      paste0(resource_id, " must parse as ordinary R source.")
+    )
+  }
+  source_text <- paste(unlist(lapply(
+    file.path(root, unname(portable)), readLines, warn = FALSE,
+    encoding = "UTF-8"
+  )), collapse = "\n")
+  resource_require(
+    !any(vapply(c(
+      "rrpplatform::", "rrpruntime::", "readmit::", "brand.yml::",
+      "DBI::", "duckdb::", "rrp_load_project", "rrp_execute_",
+      "rrp_materialize_", "rrp_open_product_access"
+    ), grepl, logical(1L), x = source_text, fixed = TRUE)),
+    "portable_application_dependencies",
+    "Portable application source contains a prohibited RRP or analytical dependency."
   )
   invisible(authority)
 }
@@ -2545,15 +2708,19 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.distribution-guide",
     "rrp.documentation.installation-guide",
     "rrp.documentation.software-lifecycle-guide",
+    "rrp.application.portable-core",
+    "rrp.application.portable-products",
+    "rrp.application.portable-ui",
+    "rrp.application.portable-server",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 67L && identical(
+    length(actual_ids) == 72L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 67 known entries."
+    "The software resource inventory must contain exactly 72 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -2950,6 +3117,18 @@ run_resource_contract_validation <- function() {
     validate_resource_authority(root, projection = FALSE)
   }, "episode_state_contract_fields")
 
+  root <- fixture("unsupported-portable-application-dependencies")
+  portable_path <- file.path(
+    root, "resources", "contracts", "application", "portable-application.dcf"
+  )
+  records <- read_dcf_records(portable_path)
+  records[[1L]][["Standalone-Direct-Dependencies"]] <-
+    "shiny,bslib,plotly,reactable,rrpplatform"
+  write_dcf_records(records, portable_path)
+  expect_resource_failure("unsupported portable application dependencies", function() {
+    validate_resource_authority(root, projection = FALSE)
+  }, "portable_application_contract_identity")
+
   drift_projection <- file.path(work_root, "projection-byte-drift")
   project_resource_authority(repository_root, drift_projection)
   schema_path <- file.path(
@@ -3314,7 +3493,10 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_resource_path)",
       "export(rrp_validate_project)",
       "export(rrp_validate_software_resources)",
-      "import(rrpruntime)"
+      "import(rrpruntime)",
+      "importFrom(bslib,page_navbar)",
+      "importFrom(plotly,plot_ly)",
+      "importFrom(reactable,reactable)"
     )
   } else c(
     "export(rrp_admit_canonical_bundle)",
@@ -3515,8 +3697,12 @@ validate_source_boundaries <- function(package_roots) {
   require_true(
     identical(
       sort(files_with_source, method = "radix"),
-      c("lifecycle-operations.R", "project-authoring.R", "project-loader.R")
+      c(
+        "application.R", "lifecycle-operations.R", "project-authoring.R",
+        "project-loader.R"
+      )
     ) &&
+      length(source_calls[["application.R"]]) == 1L &&
       length(source_calls[["lifecycle-operations.R"]]) == 1L &&
       length(source_calls[["project-authoring.R"]]) == 1L &&
       length(source_calls[["project-loader.R"]]) == 1L &&
@@ -3526,8 +3712,8 @@ validate_source_boundaries <- function(package_roots) {
       ),
     paste0(
       "rrpplatform may evaluate source only through the fixed trusted ",
-      "registration boundary, closed standard-authoring files, and cataloged ",
-      "fictional-only generator."
+      "registration boundary, closed standard-authoring files, cataloged ",
+      "fictional-only generator, and cataloged portable application members."
     )
   )
 }
@@ -4199,9 +4385,11 @@ validate_installed_resource_access <- function(library_root, work_root) {
       "resources/contracts/products/product-materialization.dcf",
     supplied_application =
       "resources/contracts/application/supplied-application.dcf",
+    portable_application =
+      "resources/contracts/application/portable-application.dcf",
     project_brand = "resources/contracts/application/project-brand.dcf",
     supplied_application_css =
-      "resources/application/supplied-application.css",
+      "resources/application/portable/www/rrp.css",
     project_manifest_template = "resources/templates/project/rrp-project.dcf",
     project_registration_template = "resources/templates/project/R/register.R",
     project_authoring_template = "resources/templates/project/rrp-authoring.dcf",
