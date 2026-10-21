@@ -16,8 +16,9 @@ not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
 the current stage. Its detailed plan was **formally accepted on 2026-10-20;
 Increment 12.A was formally accepted on 2026-10-21 at exact revision
 `be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c` after revision-matched hosted
-evidence**. Increment 12.B is the next authorized implementation task. Stage 12
-remains incomplete.
+evidence**. Increment 12.B remains incomplete; its accepted two-task internal
+execution plan makes Task 12.B.1 the next authorized implementation task. Stage
+12 remains incomplete.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -98,7 +99,8 @@ The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
 Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
-Increment 12.A is accepted, Increment 12.B is the next authorized
+Increment 12.A is accepted, Increment 12.B remains incomplete under its
+accepted two-task internal execution plan, Task 12.B.1 is the next authorized
 implementation task, and Stage 12 remains incomplete. After a stage is
 implemented:
 
@@ -8528,7 +8530,8 @@ unstarted.
 ## Stage 12 — Standalone project application
 
 **Planning status:** **Accepted — Increment 12.A accepted on 2026-10-21;
-Increment 12.B is next; Stage 12 remains incomplete**
+12.B two-task execution plan accepted on 2026-10-21; Task 12.B.1 is next;
+Stage 12 remains incomplete**
 
 ### Objective and responsibilities
 
@@ -9132,7 +9135,9 @@ manifest, Dockerfile, image, remote, publication, or deployment.
 
 **Dependency:** accepted 12.A.
 
-**Status:** next authorized implementation task; not begun.
+**Status:** incomplete and not accepted; its two-task internal execution plan
+is accepted, and Task 12.B.1 is the next authorized implementation task but has
+not begun.
 
 **Objective and user-visible result:** an installed operator can initialize the
 default standalone app at `<project>/app/`, validate it, refresh only compatible
@@ -9177,14 +9182,16 @@ software, and every path outside `rrp-data/` remain unchanged.
 Connect API/publishing, Dockerfile/image, artifact/realization store, remote,
 or deployment.
 
-##### Proposed implementation-task breakdown — pending human review
+##### Accepted implementation-task breakdown — 2026-10-21
 
-This assessment recommends two internal implementation tasks while preserving
-12.B as one formally governed increment. The proposal does not alter the
-accepted objective, evidence, criteria, or exclusions above, and it does not
-authorize implementation. Neither internal task is an independent increment or
-formal acceptance boundary. Human review must accept this breakdown before an
-implementation task begins.
+The human maintainer accepted these two internal implementation tasks as the
+authorized execution plan for Increment 12.B while preserving 12.B as one
+formally governed increment. This planning acceptance does not alter the
+accepted objective, evidence, criteria, or exclusions above and is not
+acceptance of implementation evidence. Neither internal task is an independent
+increment or formal acceptance boundary. Task 12.B.1 is authorized as the next
+implementation task and has not begun; Task 12.B.2 remains dependent on
+completion and human review of 12.B.1.
 
 The repository supports this division because initialization and refresh have
 different mutation boundaries. Initialization owns an absent destination and
@@ -9197,14 +9204,14 @@ operation-result conventions. The first task must establish those shared
 interfaces in their final form so the second task extends rather than replaces
 them.
 
-###### Proposed Task 12.B.1 — Create-only standalone initialization and shared managed-content foundation
+###### Task 12.B.1 — Create-only standalone initialization and shared managed-content foundation
 
 **Objective:** produce a complete conventional standalone application at one
 absent destination and establish the stable read/validation substrate that its
 runtime and later managed refresh use.
 
-**Dependencies:** accepted Increment 12.A and human acceptance of this proposed
-task breakdown. It has no dependency on refresh or public detached-validation
+**Dependencies:** accepted Increment 12.A and this accepted two-task internal
+execution plan. It has no dependency on refresh or public detached-validation
 behavior.
 
 **Authorized implementation scope:**
@@ -9270,17 +9277,18 @@ permitted.
 does not accept Task 12.B.1, Increment 12.B, or Stage 12 and does not authorize
 12.B.2 without separate human direction.
 
-###### Proposed Task 12.B.2 — Managed refresh, detached validation, guidance, and 12.B qualification
+###### Task 12.B.2 — Managed refresh, detached validation, guidance, and 12.B qualification
 
 **Objective:** complete the existing-application lifecycle by refreshing only
 compatible managed analytical products, validating a detached application
 without executing its source, documenting hospital operation, and assembling
 the complete Increment 12.B evidence.
 
-**Dependencies:** the completed and reconciled 12.B.1 internal checkpoint. It
-must reuse the stable resolver, managed-content representation, validator,
-current-set reader, result conventions, and initialization output rather than
-introduce parallel forms.
+**Dependencies:** the completed, reconciled, and human-reviewed 12.B.1 internal
+checkpoint plus separate human direction to begin 12.B.2. It must reuse the
+stable resolver, managed-content representation, validator, current-set reader,
+result conventions, and initialization output rather than introduce parallel
+forms.
 
 **Authorized implementation scope:**
 
@@ -9342,13 +9350,13 @@ accept the exact candidate before Increment 12.C may begin.
 | Alternative | Assessment |
 |---|---|
 | One coordinated implementation task | Architecturally coherent, but it combines absent-destination publication with mutation of an existing hospital-owned directory, a substantial dependency-lock path, three CLI intentions, documentation, and the full validation matrix. The resulting context, failure attribution, and interrupted-session recovery risk outweigh the small reduction in handoff overhead. |
-| Two tasks as refined above | **Recommended.** Each task ends in a usable, independently verifiable operator result; shared contracts and validators are finalized once in 12.B.1; and 12.B.2 owns the distinct narrow-mutation/recovery risk without duplicating initialization. |
-| Three tasks with a separate internal foundation | Not recommended. A resolver/validator-only checkpoint has no independently useful operator outcome, would force an extra interface handoff before the on-disk representation is exercised by a real application, and adds documentation and repeated-validation overhead without isolating another materially different mutation boundary. |
+| Two tasks as refined above | **Accepted.** Each task ends in a usable, independently verifiable operator result; shared contracts and validators are finalized once in 12.B.1; and 12.B.2 owns the distinct narrow-mutation/recovery risk without duplicating initialization. |
+| Three tasks with a separate internal foundation | Rejected for this execution plan. A resolver/validator-only checkpoint has no independently useful operator outcome, would force an extra interface handoff before the on-disk representation is exercised by a real application, and adds documentation and repeated-validation overhead without isolating another materially different mutation boundary. |
 
 The two tasks cover the accepted 12.B scope without changing its formal
 boundary:
 
-| Accepted 12.B responsibility | Proposed owner |
+| Accepted 12.B responsibility | Authorized owner |
 |---|---|
 | Nonexecuting project/state/product resolution and exact freshness | 12.B.1, reused unchanged by 12.B.2 |
 | Final managed representation, current-set reader, frozen products/presentation, provenance, inventory, and shared validation | 12.B.1, reused and adversarially exercised by 12.B.2 |
