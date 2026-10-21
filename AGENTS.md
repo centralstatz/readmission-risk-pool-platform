@@ -271,5 +271,15 @@ and Stage 12–14 deferrals remain explicit. Increment 12.A adds the 72-resource
 catalog, one portable-application authority, four readable cataloged R modules,
 the relocated cataloged CSS asset, a frozen DCF/CSV product loader, and a thin
 installed host adapter behind the unchanged launch operation. It is
-implementation-complete and pending formal acceptance; Stage 12 remains
-incomplete, and no standalone application output or new CLI behavior exists.
+formally accepted. Task 12.B.1 grows the catalog to 74 resources with a
+cataloged small standalone host and relative managed loader, adds the 34th
+`rrpplatform` export and the
+`rrp app init` intention for create-only, sibling-staged standalone application
+initialization from an exact fresh scope/cutoff without executing project
+registration. The output combines the authoritative portable source with an
+exact dependency lock, frozen product/presentation content, immutable
+provenance, a content-sensitive managed set and current pointer, legal/readme
+material, and package-independent runtime loading. Its local implementation
+checkpoint is complete and awaits human review. Task 12.B.2, Increment 12.B,
+and Stage 12 remain incomplete; no refresh, public detached validation,
+deployment, image, publication, or remote behavior exists.

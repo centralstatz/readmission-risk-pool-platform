@@ -2259,7 +2259,11 @@ validate_application_asset_resource <- function(authority, root, projection) {
     "rrp.application.portable-ui" =
       "resources/application/portable/R/application-ui.R",
     "rrp.application.portable-server" =
-      "resources/application/portable/R/application-server.R"
+      "resources/application/portable/R/application-server.R",
+    "rrp.application.standalone-host" =
+      "resources/application/standalone/app.R",
+    "rrp.application.standalone-managed-loader" =
+      "resources/application/standalone/R/managed-loader.R"
   )
   for (resource_id in names(portable)) {
     matched <- which(ids == resource_id)
@@ -2712,15 +2716,17 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.application.portable-products",
     "rrp.application.portable-ui",
     "rrp.application.portable-server",
+    "rrp.application.standalone-host",
+    "rrp.application.standalone-managed-loader",
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 72L && identical(
+    length(actual_ids) == 74L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 72 known entries."
+    "The software resource inventory must contain exactly 74 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -3165,6 +3171,7 @@ package_expected_files <- function(package_name) {
       files,
       file.path("R", "application-contracts.R"),
       file.path("R", "application.R"),
+      file.path("R", "application-initializer.R"),
       file.path("R", "canonical-contracts.R"),
       file.path("R", "cli.R"),
       file.path("R", "duckdb-history.R"),
@@ -3192,6 +3199,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_build_and_materialize_products.Rd"),
       file.path("man", "rrp_cli_dispatch.Rd"),
       file.path("man", "rrp_launch_app.Rd"),
+      file.path("man", "rrp_initialize_app.Rd"),
       file.path("man", "rrp_build_product_set.Rd"),
       file.path("man", "rrp_materialize_product_set.Rd"),
       file.path("man", "rrp_open_product_access.Rd"),
@@ -3215,6 +3223,7 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_validate_software_resources.Rd"),
       file.path("tests", "operation-results.R"),
       file.path("tests", "application-foundation.R"),
+      file.path("tests", "application-initializer.R"),
       file.path("tests", "application-experience.R"),
       file.path("tests", "logical-products.R"),
       file.path("tests", "lifecycle-contracts.R"),
@@ -3416,6 +3425,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_cli_dispatch",
       "rrp_execute_durable_bundle",
       "rrp_execute_producer", "rrp_execute_risk",
+      "rrp_initialize_app",
       "rrp_initialize_fictional_project",
       "rrp_initialize_project",
       "rrp_initialize_project_state",
@@ -3462,6 +3472,7 @@ validate_package_metadata <- function(package_root, package_name, spec) {
     c(
       "export(rrp_initialize_project)",
       "export(rrp_initialize_fictional_project)",
+      "export(rrp_initialize_app)",
       "export(rrp_authoring_failure)",
       "export(rrp_register_authored_project)",
       "export(rrp_initialize_project_state)",
@@ -4221,6 +4232,7 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_execute_durable_bundle\", ",
       "\"rrp_execute_producer\", ",
       "\"rrp_execute_risk\", ",
+      "\"rrp_initialize_app\", ",
       "\"rrp_initialize_fictional_project\", ",
       "\"rrp_initialize_project\", ",
       "\"rrp_initialize_project_state\", ",
@@ -4574,6 +4586,7 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_cli_dispatch', ",
     "'rrp_execute_durable_bundle', 'rrp_execute_producer', ",
     "'rrp_execute_risk', ",
+    "'rrp_initialize_app', ",
     "'rrp_initialize_fictional_project', ",
     "'rrp_initialize_project', 'rrp_initialize_project_state', ",
     "'rrp_inspect_current_history', 'rrp_inspect_episode_history', ",

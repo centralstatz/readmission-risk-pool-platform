@@ -7944,3 +7944,91 @@ This is acceptance of implementation planning only. It introduces no contract,
 code, CLI, resource, test, application, or validation evidence and does not
 accept either internal task, Increment 12.B, or Stage 12. Increment 12.A remains
 formally accepted; Increment 12.B and Stage 12 remain incomplete.
+
+## Task 12.B.1 — Create-only standalone initialization and shared managed-content foundation — 2026-10-21
+
+Task 12.B.1 adds the package-owned `rrp_initialize_app()` operation and the
+matching `rrp app init --scope ID --cutoff TIME` command. The default absent
+destination is the independent project's `app/` directory; an explicit absent
+alternative may be supplied. Existing files, directories, and symbolic links
+are refused. Construction occurs in an owned sibling staging directory and the
+complete result is promoted by one rename only after the final destination is
+rechecked.
+
+Initialization resolves the project manifest, declared state, materialized
+products, exact operation scope, and history cutoff structurally. It does not
+call `rrp_load_project()`, source `register.R`, or invoke producer, provider,
+model, analytical, or materialization behavior. The result contains the same
+cataloged portable R/CSS application source as the installed app, a small
+relative managed-content loader, a frozen presentation, one SHA-256-inventoried
+DCF/CSV product set, one `rrp-data/current.dcf` pointer, immutable initialization
+and source-inventory evidence, legal notices, concise operator guidance, and a
+deterministic lock derived from the installed dependency authority for the four
+portable direct dependencies. The generated runtime contains no RRP package,
+DBI, DuckDB, project, history, or hospital-registration dependency.
+
+The closed software-resource catalog grows from 72 to 74 entries with exactly
+two standalone-specific source authorities: the small conventional `app.R`
+host and the relative managed-content loader. Initialization copies those plus
+the four existing portable modules and CSS byte-for-byte into a readable
+`app.R`, `R/`, and `www/` arrangement; no second application implementation is
+introduced.
+
+Repository ownership now includes the initializer source and public manual;
+the package surface is 34 exports. The CLI result remains bounded to application
+identity, destination, product-set identity, source operation, and cutoff. The
+shared relative loader validates the pointer, managed inventory digest, frozen
+products, and presentation without package or project access.
+
+Historical reconnaissance inspected immutable `v0.1.0` application-artifact
+construction and validation, particularly
+`operations/lib/application-artifact-operation.R` and
+`operations/lib/application-artifact-validation.R`. The implementation reused
+the useful closed inventory, staged construction, safe current-pointer, and
+detached runtime-validation ideas. It rejected the historical repository-root
+source map, YAML/MD5 authorities, mutable artifact store, wall-clock build
+identity, repository checkout dependency, and generated Hospital distribution
+architecture because they conflict with the accepted 1.0 installed-package,
+SHA-256, independent-project, and hospital-owned application boundaries.
+
+Focused and integrated evidence passed on the final working tree:
+
+- the package-native initializer foundation test proved the exact export and
+  CLI parse, default/alternative absent paths, existing-destination refusal,
+  preservation of existing files/directories/links, linked-parent refusal,
+  bounded failure results, and absence of project-registration or analytical
+  calls from the structural resolver;
+- the distribution-shaped fictional installed-product proof initialized both
+  populated and valid-empty outputs, proved byte-identical immutable
+  initialization evidence for equal inputs and an alternative destination,
+  refused and preserved an existing destination, rejected corrupt,
+  incompatible, stale, and nonexact-cutoff products without output, and proved
+  that an injected pre-promotion failure removed owned staging without creating
+  its destination; it parsed and sourced the generated `app.R` as a
+  `shiny.appobj`, found no RRP, DBI, DuckDB, history, or analytical runtime
+  symbol in the standalone source, launched from the generated directory, and
+  completed real loopback HTTP requests for both the page and CSS asset;
+- isolated source installation and fresh-process loading proved the exact
+  34-export package surface;
+- `Rscript --vanilla tools/validate-repository.R` passed all eight repository
+  foundation checks;
+- `Rscript --vanilla tools/validate-packages.R` completed the package-native,
+  build, isolated install/load, both `R CMD check --no-manual`, installed
+  resource, project, Stage 5–11 regression, and supervisor checks;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R` passed the closed source/payload build,
+  copied standalone verification, determinism, provenance, integrity, closure,
+  and adversarial cleanup checks; and
+- R/YAML parsing and `git diff --check` passed, with no generated archive,
+  check directory, application output, or temporary library left in the
+  repository.
+
+No refresh operation, pointer replacement in an existing application,
+detached public validator, cleanup/migration command, source upgrade, archive,
+deployment target, Docker/image, remote, publication, or deployment behavior
+entered. Task 12.B.2, Increment 12.B, and Stage 12 remain incomplete and are not
+accepted by this implementation entry.
+
+**12.B.1 result:** the internal implementation checkpoint is complete locally
+and awaits human review. This is implementation evidence, not formal increment
+acceptance. Task 12.B.2 remains unauthorized until separate human direction.

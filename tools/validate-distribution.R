@@ -94,9 +94,9 @@ validate_distribution <- function() {
 
   authority <- distribution_source_authority(repository_root)
   resources <- distribution_resource_authority(repository_root)
-  require_true(length(authority$packages) == 2L && length(resources$entries) == 72L,
+  require_true(length(authority$packages) == 2L && length(resources$entries) == 74L,
                "Positive source/resource authorities are incomplete.")
-  cat("PASS positive source inclusion and 72-resource closure\n")
+  cat("PASS positive source inclusion and 74-resource closure\n")
 
   source_fixture <- file.path(work, "source-fixture")
   dir.create(source_fixture)

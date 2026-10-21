@@ -363,6 +363,145 @@ stopifnot(
   rrp_operation_succeeded(rrp_open_product_access(catalog, restored))
 )
 
+# A distribution-shaped software root additionally proves the create-only
+# standalone initializer. The ordinary package projection intentionally has no
+# distribution manifest and therefore cannot make this installed-software
+# identity claim.
+if (file.exists(file.path(software_root, "manifest.dcf"))) {
+  application <- rrp_initialize_app(
+    catalog, project, second_run$value$operation_run_id, second_time
+  )
+  if (!rrp_operation_succeeded(application)) stop(
+    paste0("Standalone initialization failed: ",
+      application$diagnostics[[1L]]$code), call. = FALSE
+  )
+  app_root <- file.path(project, "app")
+  stopifnot(
+    rrp_operation_succeeded(application), dir.exists(app_root),
+    identical(application$value$destination,
+      normalizePath(app_root, winslash = "/", mustWork = TRUE)),
+    identical(sort(list.files(app_root), method = "radix"), sort(c(
+      "app.R", "LICENSE", "NOTICE", "R", "README.md", "renv.lock", "rrp-data",
+      "rrp-initialization.dcf", "rrp-source-inventory.dcf", "www"
+    ), method = "radix")),
+    is.expression(parse(file.path(app_root, "app.R"))),
+    !file.exists(file.path(app_root, ".Rprofile"))
+  )
+  app_expression <- parse(file.path(app_root, "app.R"))
+  app_symbols <- unique(all.names(app_expression, functions = TRUE))
+  stopifnot(!any(c(
+    "rrpplatform", "rrpruntime", "readmit", "DBI", "duckdb",
+    "rrp_load_project", "rrp_execute_durable_bundle"
+  ) %in% app_symbols))
+  prior_directory <- setwd(app_root)
+  standalone <- tryCatch(
+    eval(app_expression, envir = new.env(parent = baseenv())),
+    finally = setwd(prior_directory)
+  )
+  stopifnot(inherits(standalone, "shiny.appobj"))
+  curl <- Sys.which("curl")
+  if (nzchar(curl)) {
+    port <- as.integer(40000L + Sys.getpid() %% 10000L)
+    index_probe <- file.path(suite, "standalone-index.html")
+    asset_probe <- file.path(suite, "standalone-asset.css")
+    probe <- new.env(parent = emptyenv()); probe$ok <- FALSE
+    later_call <- get("later", envir = asNamespace("later"), inherits = FALSE)
+    later_call(function() {
+      system2(curl, c("--fail", "--silent", "--show-error",
+        paste0("http://127.0.0.1:", port, "/"), "--output", index_probe),
+        wait = FALSE)
+      system2(curl, c("--fail", "--silent", "--show-error",
+        paste0("http://127.0.0.1:", port, "/rrp.css"), "--output", asset_probe),
+        wait = FALSE)
+    }, delay = 0.5)
+    later_call(function() {
+      probe$ok <- file.exists(index_probe) && file.exists(asset_probe) &&
+        file.info(index_probe)$size[[1L]] > 0L &&
+        file.info(asset_probe)$size[[1L]] > 0L
+      shiny::stopApp()
+    }, delay = 2)
+    shiny::runApp(app_root, host = "127.0.0.1", port = port,
+      launch.browser = FALSE, quiet = TRUE)
+    stopifnot(isTRUE(probe$ok))
+  }
+  baseline <- read_bytes(file.path(app_root, "rrp-initialization.dcf"))
+  existing <- rrp_initialize_app(
+    catalog, project, second_run$value$operation_run_id, second_time
+  )
+  stopifnot(
+    !rrp_operation_succeeded(existing),
+    identical(existing$diagnostics[[1L]]$code, "application_destination_exists"),
+    identical(read_bytes(file.path(app_root, "rrp-initialization.dcf")), baseline)
+  )
+  alternative_root <- file.path(suite, "alternative-app")
+  alternative <- rrp_initialize_app(
+    catalog, project, second_run$value$operation_run_id, second_time,
+    alternative_root
+  )
+  stopifnot(
+    rrp_operation_succeeded(alternative),
+    identical(read_bytes(file.path(alternative_root, "rrp-initialization.dcf")),
+      baseline)
+  )
+  injected_root <- file.path(suite, "injected-app")
+  injected <- getFromNamespace("rrp_app_initialize", "rrpplatform")(
+    catalog, project, second_run$value$operation_run_id, second_time,
+    injected_root, failure_stage = "before_promotion"
+  )
+  stopifnot(
+    !rrp_operation_succeeded(injected),
+    identical(injected$diagnostics[[1L]]$code, "application_injected_failure"),
+    !file.exists(injected_root), !dir.exists(injected_root),
+    !length(list.files(suite, pattern = "^[.]rrp-app-staging-"))
+  )
+  empty_project <- copy_project(
+    restored, file.path(suite, "empty-app-project"), "project"
+  )
+  stopifnot(rrp_operation_succeeded(rrp_materialize_product_set(
+    catalog, empty_project, empty_set$value
+  )))
+  empty_application <- rrp_initialize_app(
+    catalog, empty_project, empty_run$value$operation_run_id, empty_time
+  )
+  stopifnot(
+    rrp_operation_succeeded(empty_application),
+    dir.exists(file.path(empty_project, "app"))
+  )
+  corrupt_application <- rrp_initialize_app(
+    catalog, corrupt, second_run$value$operation_run_id, second_time
+  )
+  incompatible_application <- rrp_initialize_app(
+    catalog, incompatible, second_run$value$operation_run_id, second_time
+  )
+  stopifnot(
+    !rrp_operation_succeeded(corrupt_application),
+    !rrp_operation_succeeded(incompatible_application),
+    !dir.exists(file.path(corrupt, "app")),
+    !dir.exists(file.path(incompatible, "app"))
+  )
+  stale_root <- file.path(suite, "stale-app")
+  stale_application <- rrp_initialize_app(
+    catalog, project, newer_run$value$operation_run_id, newer_time, stale_root
+  )
+  stopifnot(
+    !rrp_operation_succeeded(stale_application),
+    identical(stale_application$diagnostics[[1L]]$code,
+      "application_products_stale"),
+    !file.exists(stale_root), !dir.exists(stale_root)
+  )
+  later_cutoff_root <- file.path(suite, "later-cutoff-app")
+  later_cutoff_application <- rrp_initialize_app(
+    catalog, project, second_run$value$operation_run_id,
+    "2026-01-20T13:00:00Z", later_cutoff_root
+  )
+  stopifnot(
+    !rrp_operation_succeeded(later_cutoff_application),
+    identical(later_cutoff_application$diagnostics[[1L]]$code,
+      "application_products_stale"),
+    !file.exists(later_cutoff_root), !dir.exists(later_cutoff_root)
+  )
+}
+
 if (length(arguments) >= 2L && nzchar(arguments[[2L]])) {
   installed_library <- normalizePath(
     arguments[[2L]], winslash = "/", mustWork = TRUE

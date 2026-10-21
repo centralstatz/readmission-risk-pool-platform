@@ -33,7 +33,7 @@ dispatcher over accepted project, state, run, history, product, and application
 operations.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 33
+The package imports the \pkg{rrpruntime} namespace and exports exactly 34
 technical interfaces. These include project, execution, history, state,
 logical-product, materialization/access, resource-validation, and supplied-
 application operations plus \code{rrp_cli_dispatch()} as the version-specific

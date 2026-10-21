@@ -63,6 +63,22 @@ Installed-Path: resources/application/portable/R/application-server.R
 Format: r
 
 Record-Type: resource
+Resource-ID: rrp.application.standalone-host
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/standalone/app.R
+Installed-Path: resources/application/standalone/app.R
+Format: r
+
+Record-Type: resource
+Resource-ID: rrp.application.standalone-managed-loader
+Resource-Class: static_application_asset
+Owner-Package: rrpplatform
+Source-Path: resources/application/standalone/R/managed-loader.R
+Installed-Path: resources/application/standalone/R/managed-loader.R
+Format: r
+
+Record-Type: resource
 Resource-ID: rrp.asset.supplied-application-css
 Resource-Class: static_application_asset
 Owner-Package: rrpplatform

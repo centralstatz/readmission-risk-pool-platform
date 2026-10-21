@@ -16,9 +16,10 @@ not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
 the current stage. Its detailed plan was **formally accepted on 2026-10-20;
 Increment 12.A was formally accepted on 2026-10-21 at exact revision
 `be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c` after revision-matched hosted
-evidence**. Increment 12.B remains incomplete; its accepted two-task internal
-execution plan makes Task 12.B.1 the next authorized implementation task. Stage
-12 remains incomplete.
+evidence**. Increment 12.B remains incomplete. Task 12.B.1 reached its
+implemented local checkpoint on 2026-10-21 and awaits human review; Task 12.B.2
+is not authorized until that review and separate human direction. Stage 12
+remains incomplete.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -100,8 +101,9 @@ remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
 Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
 Increment 12.A is accepted, Increment 12.B remains incomplete under its
-accepted two-task internal execution plan, Task 12.B.1 is the next authorized
-implementation task, and Stage 12 remains incomplete. After a stage is
+accepted two-task internal execution plan, and Task 12.B.1 has reached its
+implemented local checkpoint pending human review. Task 12.B.2 is not yet
+authorized, and Stage 12 remains incomplete. After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -8530,7 +8532,8 @@ unstarted.
 ## Stage 12 — Standalone project application
 
 **Planning status:** **Accepted — Increment 12.A accepted on 2026-10-21;
-12.B two-task execution plan accepted on 2026-10-21; Task 12.B.1 is next;
+12.B two-task execution plan accepted on 2026-10-21; Task 12.B.1 implemented
+locally on 2026-10-21 pending human review; Task 12.B.2 not yet authorized;
 Stage 12 remains incomplete**
 
 ### Objective and responsibilities
@@ -9189,9 +9192,9 @@ authorized execution plan for Increment 12.B while preserving 12.B as one
 formally governed increment. This planning acceptance does not alter the
 accepted objective, evidence, criteria, or exclusions above and is not
 acceptance of implementation evidence. Neither internal task is an independent
-increment or formal acceptance boundary. Task 12.B.1 is authorized as the next
-implementation task and has not begun; Task 12.B.2 remains dependent on
-completion and human review of 12.B.1.
+increment or formal acceptance boundary. Task 12.B.1 reached its implemented
+local checkpoint on 2026-10-21 and awaits human review; Task 12.B.2 remains
+dependent on that review and separate human direction.
 
 The repository supports this division because initialization and refresh have
 different mutation boundaries. Initialization owns an absent destination and

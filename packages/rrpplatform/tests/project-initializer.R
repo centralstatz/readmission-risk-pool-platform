@@ -996,6 +996,7 @@ stopifnot(
     "rrp_cli_dispatch",
     "rrp_execute_durable_bundle",
     "rrp_execute_producer", "rrp_execute_risk",
+    "rrp_initialize_app",
     "rrp_initialize_fictional_project",
     "rrp_initialize_project", "rrp_initialize_project_state",
     "rrp_inspect_current_history", "rrp_inspect_episode_history",

@@ -336,7 +336,7 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("resource_catalog", "Projected resource catalog is invalid.")
   }
   resources <- catalog_records[-1L]
-  if (length(resources) != 72L) {
+  if (length(resources) != 74L) {
     rrp_distribution_fail("resource_catalog", "Projected resource count is unsupported.")
   }
   resource_fields <- c(
@@ -375,6 +375,10 @@ rrp_verify_distribution <- function(root) {
       "resources/application/portable/R/application-ui.R",
     "rrp.application.portable-server" =
       "resources/application/portable/R/application-server.R",
+    "rrp.application.standalone-host" =
+      "resources/application/standalone/app.R",
+    "rrp.application.standalone-managed-loader" =
+      "resources/application/standalone/R/managed-loader.R",
     "rrp.asset.supplied-application-css" =
       "resources/application/portable/www/rrp.css"
   )
