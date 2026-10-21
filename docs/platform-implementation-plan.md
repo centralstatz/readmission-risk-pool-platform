@@ -14,8 +14,10 @@ post-acceptance Increment 11.I correction below is formally accepted at exact
 revision `594dc8c63d6156329cc477a24f811b71ff4e6609`; it supplements but does
 not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
 the current stage. Its detailed plan was **formally accepted on 2026-10-20;
-Increment 12.A is implementation-complete and pending separate formal
-acceptance**. Stage 12 remains incomplete.
+Increment 12.A was formally accepted on 2026-10-21 at exact revision
+`be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c` after revision-matched hosted
+evidence**. Increment 12.B is the next authorized implementation task. Stage 12
+remains incomplete.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -96,8 +98,8 @@ The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
 Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
-Increment 12.A is implementation-complete and pending formal acceptance, and
-Stage 12 remains incomplete. After a stage is
+Increment 12.A is accepted, Increment 12.B is the next authorized
+implementation task, and Stage 12 remains incomplete. After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -8525,8 +8527,8 @@ unstarted.
 
 ## Stage 12 — Standalone project application
 
-**Planning status:** **Accepted — Increment 12.A implementation-complete;
-formal acceptance pending — 2026-10-20**
+**Planning status:** **Accepted — Increment 12.A accepted on 2026-10-21;
+Increment 12.B is next; Stage 12 remains incomplete**
 
 ### Objective and responsibilities
 
@@ -9075,6 +9077,14 @@ output path; no command upgrades the existing hospital application source.
 
 #### Increment 12.A — Authoritative application source and standalone runtime foundation
 
+**Status:** **Accepted — 2026-10-21.** The exact accepted implementation and
+distribution-reconciliation revision is
+`be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c`. Revision-matched hosted Ubuntu/R
+4.4 `package-foundation` run `39599600575`, job `119220434956`, passed the
+repository, package, distribution, and installation/software-lifecycle
+validators. This is a human governance acceptance of the completed evidence,
+not a new implementation claim.
+
 **Objective and user-visible result:** establish one maintainable application
 implementation that continues to power accepted `rrp app launch` and is
 inherently suitable for readable conventional standalone Shiny source. Define
@@ -9121,6 +9131,8 @@ manifest, Dockerfile, image, remote, publication, or deployment.
 #### Increment 12.B — Project application lifecycle
 
 **Dependency:** accepted 12.A.
+
+**Status:** next authorized implementation task; not begun.
 
 **Objective and user-visible result:** an installed operator can initialize the
 default standalone app at `<project>/app/`, validate it, refresh only compatible
@@ -9342,9 +9354,10 @@ implementation:
 6. **Acceptance choreography:** use three increments followed by a separate
    exact-revision formal Stage 12 acceptance and architecture reconciliation.
 
-These accepted planning decisions authorize Increment 12.A to begin only in a
-subsequent implementation task. They do not claim an implemented contract,
-package, CLI, application, workflow, remote operation, or Stage 12 evidence.
+These accepted planning decisions governed Increment 12.A, which is now
+formally accepted at the exact revision and hosted evidence recorded above.
+They authorize Increment 12.B as the next implementation task; they do not
+claim that 12.B, 12.C, or Stage 12 is implemented or accepted.
 
 ### Explicit deferrals and nonclaims
 

@@ -7903,3 +7903,29 @@ passed it at the failed revision and neither package source nor resource content
 changed. Increment 12.A remains implementation-complete but pending formal
 human acceptance and a successful exact-revision hosted rerun. Increment 12.B
 has not begun.
+
+### Formal acceptance — 2026-10-21
+
+The human maintainer formally accepted Increment 12.A after reviewing its
+implementation, local evidence, distribution-foundation reconciliation, and
+revision-matched hosted result. The exact accepted revision is
+`be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c`. GitHub Actions
+`package-foundation` run `39599600575`, job `119220434956`, completed
+successfully on that revision under Ubuntu/R 4.4; its repository, package,
+distribution, and installation/software-lifecycle validation steps all passed.
+
+The accepted boundary is the completed 12.A foundation already recorded
+above: one cataloged authoritative portable application source; unchanged
+installed application launch behavior; the portable application, frozen
+product/presentation, managed provenance and SHA-256 inventory, and dependency
+authorities; populated, valid-empty, and adversarial evidence; and the
+reconciled 72-resource distribution closure. The earlier failure at
+`73e979278ed62236eab6b6cd335e3d6411c951f8` and its validator-only correction
+remain part of the chronology and do not represent an application or package
+behavior change.
+
+**Acceptance decision:** **Increment 12.A — Accepted — 2026-10-21.** This is a
+human governance decision over the completed evidence, not a new implementation
+claim. No acceptance-blocking discrepancy remains. Stage 12 remains incomplete;
+Increment 12.B — Create-only initialization and managed analytical-product
+lifecycle — is the next authorized implementation task and has not begun.
