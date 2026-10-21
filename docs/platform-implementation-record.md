@@ -8032,3 +8032,20 @@ accepted by this implementation entry.
 **12.B.1 result:** the internal implementation checkpoint is complete locally
 and awaits human review. This is implementation evidence, not formal increment
 acceptance. Task 12.B.2 remains unauthorized until separate human direction.
+
+### Formal internal-checkpoint acceptance — 2026-10-21
+
+The human maintainer reviewed the completed Task 12.B.1 implementation evidence
+recorded above and formally accepted it as the Increment 12.B internal
+implementation checkpoint. The exact accepted candidate is revision
+`1f55dc21ab6a79547f677b44ea913e64f319012b`. GitHub Actions
+`package-foundation` run `39651326874`, job `119400104265`, completed
+successfully on `main` for that exact revision; repository, package,
+distribution, and installation/software-lifecycle validation all passed.
+
+This is a human governance decision over the existing 12.B.1 implementation
+and revision-matched evidence, not a new implementation claim and not formal
+acceptance of Increment 12.B or Stage 12. Increment 12.A remains accepted. Task
+12.B.2 is the next authorized implementation task and has not begun; it must be
+performed only through a subsequent, separately directed task. Increment 12.B
+and Stage 12 remain incomplete and not formally accepted.
