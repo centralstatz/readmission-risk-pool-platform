@@ -140,9 +140,12 @@ It proves the base-R bootstrap, exact private dependency restoration, fresh-
 process isolation, installation evidence, failure cleanup, exact reinstall,
 conflict refusal, project independence, installed-CLI equivalence, complete
 two-time fictional project/history/product operation, supervised installed
-application startup/termination, both diagnostic surfaces, compatible explicit
-selection, rollback, and exact uninstall from one clean temporary-user
-context. The
+application startup/termination, standalone initialization and canonical
+separation, ordinary and exact-declared-closure standalone Shiny/HTTP
+execution without RRP, byte-preserved customized time-2 managed refresh versus
+a detached time-1 snapshot, representative lifecycle adversaries, both
+diagnostic surfaces, compatible explicit selection, rollback, and exact
+uninstall from one clean temporary-user context. The
 read-only package-foundation workflow invokes these same four commands on push and pull-
 request under Ubuntu/R 4.4. Committed push run
 `35041493406` succeeded for revision
@@ -284,6 +287,12 @@ checkpoint is formally accepted. Task 12.B.2 grows the catalog to 75 resources
 and the `rrpplatform` surface to 36 exports, adding exact-product managed
 refresh, atomic current-record promotion, bounded prior-set retention and
 cleanup, detached nonexecuting managed-content validation, and the installed
-Standalone Application Guide. Increment 12.B is implementation-complete and
-locally qualified but not formally accepted; Stage 12 remains incomplete. No
-deployment, image, publication, or remote behavior exists.
+Standalone Application Guide. Increment 12.B is formally accepted. Increment
+12.C extends the existing clean temporary-user installation validator through
+detached ordinary and exact 72-package declared-closure execution, controlled
+hospital customization, a later managed refresh, frozen time-1/runtime time-2
+lineage comparison, and representative recovery adversaries. It is
+implementation-complete and locally qualified on an uncommitted candidate;
+exact-revision hosted Ubuntu/R 4.4 evidence and separate formal Stage 12
+acceptance remain pending. No deployment, image, publication, or remote
+behavior exists.

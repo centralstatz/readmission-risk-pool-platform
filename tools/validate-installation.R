@@ -1,9 +1,11 @@
 #!/usr/bin/env Rscript
 
-# Full Increment 11.H clean installed-operation proof. This deliberately
-# performs one real configured-repository restoration and reuses its
-# side-by-side realizations for installation, project operation, application,
-# diagnosis, compatibility, rollback, and exact-uninstall evidence.
+# Full clean installed-operation proof. This deliberately performs one real
+# configured-repository RRP restoration and reuses its side-by-side
+# realizations for installation, project operation, installed and standalone
+# applications, diagnosis, compatibility, rollback, and exact-uninstall
+# evidence. Increment 12.C also restores the standalone app's smaller declared
+# closure into a separate clean library.
 
 script_argument <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(script_argument) != 1L) stop("Cannot determine validation path.", call. = FALSE)
@@ -86,6 +88,21 @@ require_tree_unchanged <- function(label, before, after) {
     identical(before, after),
     paste0(label, " changed (", tree_change_summary(before, after), ").")
   )
+}
+
+tree_digest_outside_managed_data <- function(root) {
+  digest <- tree_digest(root)
+  digest[!startsWith(names(digest), "rrp-data/")]
+}
+
+path_is_within <- function(path, parent) {
+  path <- normalizePath(path, winslash = "/", mustWork = TRUE)
+  parent <- normalizePath(parent, winslash = "/", mustWork = TRUE)
+  identical(path, parent) || startsWith(path, paste0(parent, "/"))
+}
+
+read_file_bytes <- function(path) {
+  readBin(path, "raw", n = file.info(path, extra_cols = FALSE)$size[[1L]])
 }
 
 require_run_success <- function(label, result) {
@@ -1141,6 +1158,690 @@ validate_installation <- function() {
     "both doctors, and supervised application\n"
   ))
 
+  # Increment 12.C extends this same installed clean-user path. The existing
+  # second materialization is the standalone lifecycle's time-1 input; a later
+  # third governed run supplies its distinct time-2 refresh input.
+  standalone_first_scope <- second_scope
+  standalone_first_time <- second_analytical_time
+  original_app <- file.path(retained_project, "app")
+  state_before_init <- tree_digest(file.path(retained_project, "state"))
+  installation_before_init <- tree_digest(destination)
+  initialized_app <- stable_run(c(
+    "app", "init", "--scope", standalone_first_scope, "--cutoff",
+    standalone_first_time, "--project", retained_project, "--json"
+  ), project)
+  validated_app <- stable_run(c(
+    "app", "validate", "--project", retained_project, "--json"
+  ), project)
+  require_run_success("Installed standalone application initialization", initialized_app)
+  require_run_success("Installed standalone application validation", validated_app)
+  standalone_first_product_set <- json_string(validated_app, "product_set_id")
+  standalone_first_materialization <- json_string(
+    validated_app, "materialization_id"
+  )
+  require_true(
+    dir.exists(original_app) &&
+      grepl(paste0('"source_operation_run_id":"', standalone_first_scope, '"'),
+        paste(validated_app$output, collapse = "\n"), fixed = TRUE) &&
+      grepl(paste0('"source_history_cutoff":"', standalone_first_time, '"'),
+        paste(validated_app$output, collapse = "\n"), fixed = TRUE),
+    "Initialized standalone application does not carry the exact time-1 lineage."
+  )
+  require_tree_unchanged(
+    "Project state during standalone initialization", state_before_init,
+    tree_digest(file.path(retained_project, "state"))
+  )
+  require_tree_unchanged(
+    "Installed software during standalone initialization", installation_before_init,
+    tree_digest(destination)
+  )
+
+  original_before_existing_refusal <- tree_digest(original_app)
+  existing_refusal <- stable_run(c(
+    "app", "init", "--scope", standalone_first_scope, "--cutoff",
+    standalone_first_time, "--project", retained_project, "--json"
+  ), project)
+  require_true(
+    identical(existing_refusal$status, 1L) && grepl(
+      "application_destination_exists",
+      paste(existing_refusal$output, collapse = "\n"), fixed = TRUE
+    ),
+    paste("Existing standalone destination was not refused:", paste(
+      existing_refusal$output, collapse = "\n"
+    ))
+  )
+  require_tree_unchanged(
+    "Existing standalone destination after refusal",
+    original_before_existing_refusal, tree_digest(original_app)
+  )
+
+  detached_parent <- file.path(work, "detached-standalone-root")
+  dir.create(detached_parent)
+  detached_app <- file.path(detached_parent, "app")
+  rrp_install_copy_tree(original_app, detached_app)
+  separation_roots <- c(
+    repository_root, retained_project, file.path(retained_project, "state"),
+    file.path(retained_project, "state", "products"), distribution_root,
+    destination, installation_root, ambient_user, ambient_site
+  )
+  require_true(
+    all(!vapply(separation_roots, function(root) {
+      path_is_within(detached_app, root) || path_is_within(root, detached_app)
+    }, logical(1L))),
+    "Detached application is not canonically separated from an originating root."
+  )
+  detached_validation <- stable_run(c(
+    "app", "validate", "--app", detached_app, "--json"
+  ), project)
+  require_run_success("Detached standalone application validation", detached_validation)
+  require_true(
+    identical(json_string(detached_validation, "product_set_id"),
+      standalone_first_product_set) &&
+      identical(json_string(detached_validation, "materialization_id"),
+        standalone_first_materialization),
+    "Detached standalone application does not preserve exact time-1 products."
+  )
+  detached_entries <- list.files(
+    detached_app, recursive = TRUE, all.files = TRUE, no.. = TRUE,
+    include.dirs = TRUE, full.names = FALSE
+  )
+  forbidden_paths <- c(
+    "register.R", "history.duckdb", ".Renviron", ".Rprofile",
+    "project.dcf", "provider.R", "producer.R", "model.rds"
+  )
+  require_true(
+    !any(basename(detached_entries) %in% forbidden_paths) &&
+      !any(grepl("(^|/)(state|products|renv/library)(/|$)", detached_entries,
+        ignore.case = TRUE, perl = TRUE)),
+    "Detached application contains a forbidden analytical or secret-bearing path."
+  )
+  detached_text_paths <- list.files(
+    detached_app, recursive = TRUE, all.files = TRUE, no.. = TRUE,
+    full.names = TRUE
+  )
+  detached_text_paths <- detached_text_paths[!dir.exists(detached_text_paths)]
+  detached_text_paths <- detached_text_paths[grepl(
+    "(?:[.](?:R|dcf|csv|css|md|json|txt|ya?ml)|/(?:HEAD|NOTICE|LICENSE|DESCRIPTION))$",
+    detached_text_paths, ignore.case = TRUE, perl = TRUE
+  )]
+  detached_text <- paste(unlist(lapply(detached_text_paths, function(path) {
+    if (file.info(path, extra_cols = FALSE)$size[[1L]] > 2000000L) return("")
+    paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  }), use.names = FALSE), collapse = "\n")
+  require_true(
+    !grepl(repository_root, detached_text, fixed = TRUE) &&
+      !grepl(retained_project, detached_text, fixed = TRUE) &&
+      !grepl(destination, detached_text, fixed = TRUE),
+    "Detached application retained an originating absolute path."
+  )
+  detached_initial_digest <- tree_digest(detached_app)
+  project_before_detached_runtime <- tree_digest(retained_project)
+  installation_before_detached_runtime <- tree_digest(destination)
+
+  standalone_runner <- file.path(work, "standalone-app-runner.R")
+  writeLines(c(
+    "arguments <- commandArgs(trailingOnly = TRUE)",
+    "stopifnot(length(arguments) == 6L)",
+    "app <- normalizePath(arguments[[1L]], winslash = '/', mustWork = TRUE)",
+    "port <- as.integer(arguments[[2L]])",
+    "expected_scope <- arguments[[3L]]",
+    "expected_cutoff <- arguments[[4L]]",
+    "expected_product_set <- arguments[[5L]]",
+    "isolated <- identical(arguments[[6L]], 'isolated')",
+    "if (isolated) {",
+    "  expected_library <- normalizePath(Sys.getenv('RRP_STANDALONE_LIBRARY'), winslash = '/', mustWork = TRUE)",
+    "  effective <- normalizePath(.libPaths(), winslash = '/', mustWork = TRUE)",
+    "  allowed <- unique(c(expected_library, normalizePath(.Library, winslash = '/', mustWork = TRUE)))",
+    "  stopifnot(identical(effective, allowed))",
+    "  packages <- strsplit(Sys.getenv('RRP_STANDALONE_PACKAGES'), ',', fixed = TRUE)[[1L]]",
+    "  stopifnot(length(packages) > 0L, !requireNamespace('rrpplatform', quietly = TRUE),",
+    "    !requireNamespace('rrpruntime', quietly = TRUE))",
+    "  resolved <- vapply(packages, function(package) normalizePath(find.package(package), winslash = '/', mustWork = TRUE), character(1L))",
+    "  stopifnot(all(startsWith(resolved, paste0(expected_library, '/'))))",
+    "}",
+    "stopifnot(!'rrpplatform' %in% loadedNamespaces(), !'rrpruntime' %in% loadedNamespaces())",
+    "source_environment <- new.env(parent = baseenv())",
+    "for (file in c('application-core.R', 'product-loader.R', 'application-ui.R', 'application-server.R', 'managed-loader.R')) {",
+    "  sys.source(file.path(app, 'R', file), envir = source_environment, chdir = FALSE)",
+    "}",
+    "model <- source_environment$rrp_standalone_application_model(app)",
+    "snapshot <- model$product_snapshot",
+    "stopifnot(identical(snapshot$source_operation_run_id, expected_scope),",
+    "  identical(snapshot$source_history_cutoff, expected_cutoff),",
+    "  identical(snapshot$product_set_id, expected_product_set))",
+    "values <- model$view_models$overview$distribution",
+    "maximum <- if (length(values)) format(max(values), digits = 17L, scientific = FALSE) else 'empty'",
+    "cat(sprintf('standalone-model-ok product_set=%s scope=%s cutoff=%s rows=%d maximum=%s mode=%s\\n',",
+    "  snapshot$product_set_id, snapshot$source_operation_run_id,",
+    "  snapshot$source_history_cutoff, length(values), maximum, arguments[[6L]]))",
+    "flush.console()",
+    "shiny::runApp(app, host = '127.0.0.1', port = port, launch.browser = FALSE, quiet = TRUE)"
+  ), standalone_runner, useBytes = TRUE)
+  parse(standalone_runner)
+  standalone_supervisor <- file.path(work, "standalone-app-supervisor.sh")
+  writeLines(c(
+    "#!/bin/sh",
+    "host_rscript=$1", "runner=$2", "app=$3", "port=$4", "log=$5",
+    "probe=$6", "scope=$7", "cutoff=$8", "product_set=$9", "mode=${10}",
+    "application_pid=$$",
+    "(",
+    "  if ! \"$host_rscript\" --vanilla \"$probe\" \"$port\"; then",
+    "    echo 'standalone-supervisor-error=http-probe-failed' >&2",
+    "    kill -TERM \"$application_pid\" 2>/dev/null",
+    "    exit 1",
+    "  fi",
+    "  if ! kill -0 \"$application_pid\" 2>/dev/null; then",
+    "    echo 'standalone-supervisor-error=application-exited-before-interrupt' >&2",
+    "    exit 1",
+    "  fi",
+    "  kill -INT \"$application_pid\" 2>/dev/null || exit 1",
+    ") &",
+    "exec \"$host_rscript\" --vanilla \"$runner\" \"$app\" \"$port\" \"$scope\" \"$cutoff\" \"$product_set\" \"$mode\" >\"$log\" 2>&1"
+  ), standalone_supervisor, useBytes = TRUE)
+
+  standalone_port <- function(library, environment) {
+    result <- run_in(host_rscript, c("--vanilla", shQuote(port_script)), c(
+      environment, paste0("RRP_PRIVATE_LIBRARY=", library),
+      paste0("R_LIBS_USER=", library),
+      paste0("R_LIBS_SITE=", file.path(library, ".rrp-no-site-library"))
+    ), project)
+    value <- suppressWarnings(as.integer(if (length(result$output)) {
+      result$output[[1L]]
+    } else NA_character_))
+    require_true(result$status == 0L && !is.na(value) && value >= 1024L &&
+      value <= 65535L, "Could not obtain a standalone loopback port.")
+    value
+  }
+  run_standalone <- function(label, app, scope, cutoff, product_set, library,
+      environment, mode, packages = character()) {
+    port <- standalone_port(library, environment)
+    log <- file.path(work, paste0(label, ".log"))
+    before <- tree_digest(app)
+    result <- run_in("/bin/sh", c(
+      shQuote(standalone_supervisor), shQuote(host_rscript),
+      shQuote(standalone_runner), shQuote(app), shQuote(as.character(port)),
+      shQuote(log), shQuote(app_probe), shQuote(scope), shQuote(cutoff),
+      shQuote(product_set), shQuote(mode)
+    ), c(environment,
+      paste0("RRP_STANDALONE_LIBRARY=", if (identical(mode, "isolated")) library else ""),
+      paste0("RRP_STANDALONE_PACKAGES=", paste(packages, collapse = ","))
+    ), detached_parent)
+    output <- if (file.exists(log)) paste(
+      readLines(log, warn = FALSE, encoding = "UTF-8"), collapse = "\n"
+    ) else ""
+    conventional_interrupt <- identical(result$status, 130L) ||
+      identical(result$status, 1L) && grepl(
+        "Execution halted", output, fixed = TRUE
+      )
+    require_true(conventional_interrupt, paste0(
+      label, " did not report a conventional foreground interrupt; status=",
+      result$status,
+      ":\n", paste(result$output, collapse = "\n"), "\n", output
+    ))
+    require_run_text(label, result, "http-probe-ok")
+    require_true(
+      grepl(paste0("standalone-model-ok product_set=", product_set,
+        " scope=", scope, " cutoff=", cutoff), output, fixed = TRUE) &&
+        !grepl("permission denied|operation not permitted|sass.*(?:error|failed)|bslib.*(?:error|failed)",
+          output, ignore.case = TRUE, perl = TRUE),
+      paste(label, "did not report the expected product model or reported an asset error:", output)
+    )
+    require_tree_unchanged(paste(label, "application"), before, tree_digest(app))
+    output
+  }
+
+  ordinary_environment <- c(
+    isolated_environment, "R_PROFILE_USER=", "R_ENVIRON_USER=", "R_LIBS=",
+    paste0("R_LIBS_USER=", file.path(destination, "library")),
+    paste0("R_LIBS_SITE=", file.path(work, "no-ordinary-site-library")),
+    "RENV_CONFIG_AUTOLOADER_ENABLED=FALSE"
+  )
+  ordinary_first_output <- run_standalone(
+    "detached-ordinary-time-1", detached_app, standalone_first_scope,
+    standalone_first_time, standalone_first_product_set,
+    file.path(destination, "library"), ordinary_environment, "ordinary"
+  )
+  require_tree_unchanged(
+    "Originating project during detached ordinary runtime",
+    project_before_detached_runtime, tree_digest(retained_project)
+  )
+  require_tree_unchanged(
+    "Installed software during detached ordinary runtime",
+    installation_before_detached_runtime, tree_digest(destination)
+  )
+  cat(sprintf(
+    paste0(
+      "PASS detached time-1 standalone app through ordinary Shiny HTTP/assets ",
+      "scope=%s product_set=%s materialization=%s\n"
+    ),
+    standalone_first_scope, standalone_first_product_set,
+    standalone_first_materialization
+  ))
+
+  lock_path <- file.path(detached_app, "renv.lock")
+  lock_lines <- readLines(lock_path, warn = FALSE, encoding = "UTF-8")
+  package_starts <- grep('^    "[A-Za-z][A-Za-z0-9.]*": \\{$', lock_lines)
+  lock_packages <- sub('^    "([A-Za-z][A-Za-z0-9.]*)": \\{$', '\\1',
+    lock_lines[package_starts])
+  require_true(length(lock_packages) > 0L && !anyDuplicated(lock_packages),
+    "Standalone lock has no unique package closure.")
+  dependency_records <- verified$dependencies[-1L]
+  dependency_names <- vapply(dependency_records, `[[`, character(1L), "Package")
+  selected_dependencies <- lapply(lock_packages, function(package) {
+    matches <- which(dependency_names == package)
+    require_true(length(matches) == 1L,
+      paste("Standalone lock package is absent from distribution evidence:", package))
+    dependency_records[[matches]]
+  })
+  for (index in seq_along(package_starts)) {
+    first <- package_starts[[index]]
+    last <- if (index < length(package_starts)) package_starts[[index + 1L]] - 1L else
+      length(lock_lines)
+    block <- lock_lines[first:last]
+    version <- sub('^      "Version": "([^"]+)",$', '\\1',
+      block[grepl('^      "Version": "[^"]+",$', block)])
+    hash <- sub('^      "Hash": "([0-9a-f]{32})"[,]?$', '\\1',
+      block[grepl('^      "Hash": "[0-9a-f]{32}"[,]?$', block)])
+    dependency_record <- selected_dependencies[[index]]
+    require_true(length(version) == 1L && length(hash) == 1L &&
+      identical(version, dependency_record[["Version"]]) &&
+      identical(hash, sub("^renv:", "", dependency_record[["Integrity"]])),
+      paste("Standalone lock provenance disagrees for", lock_packages[[index]]))
+  }
+  isolated_app_library <- file.path(work, "isolated-standalone-library")
+  isolated_restoration_tool <- file.path(work, "isolated-restoration-tool")
+  dir.create(isolated_app_library)
+  restoration_environment_names <- c(
+    "HOME", "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME",
+    "LOCALAPPDATA", "TMPDIR"
+  )
+  restoration_environment_before <- Sys.getenv(
+    restoration_environment_names, unset = NA_character_
+  )
+  do.call(Sys.setenv, as.list(stats::setNames(c(
+    user_home, installation_root, user_config, user_cache, local_app_data,
+    process_temporary
+  ), restoration_environment_names)))
+  on.exit({
+    present <- !is.na(restoration_environment_before)
+    if (any(present)) do.call(Sys.setenv, as.list(
+      restoration_environment_before[present]
+    ))
+    if (any(!present)) Sys.unsetenv(restoration_environment_names[!present])
+  }, add = TRUE)
+  rrp_install_restore_dependencies(
+    list(executable = host_r),
+    c(list(verified$dependencies[[1L]]), selected_dependencies),
+    isolated_app_library, repository, isolated_restoration_tool
+  )
+  present <- !is.na(restoration_environment_before)
+  if (any(present)) do.call(Sys.setenv, as.list(
+    restoration_environment_before[present]
+  ))
+  if (any(!present)) Sys.unsetenv(restoration_environment_names[!present])
+  isolated_installed <- installed.packages(
+    lib.loc = isolated_app_library, noCache = TRUE
+  )
+  require_true(
+    setequal(rownames(isolated_installed), lock_packages) &&
+      all(vapply(seq_along(selected_dependencies), function(index) {
+        dependency_record <- selected_dependencies[[index]]
+        package <- dependency_record[["Package"]]
+        identical(isolated_installed[package, "Version"],
+          dependency_record[["Version"]]) &&
+          identical(
+            rrp_install_description_hash(file.path(
+              isolated_app_library, package, "DESCRIPTION"
+            )), sub("^renv:", "", dependency_record[["Integrity"]])
+          )
+      }, logical(1L))) &&
+      !dir.exists(file.path(isolated_app_library, "rrpplatform")) &&
+      !dir.exists(file.path(isolated_app_library, "rrpruntime")),
+    "Isolated standalone library disagrees with the exact declared closure."
+  )
+  isolated_app_environment <- c(
+    isolated_environment, rrp_install_environment(isolated_app_library),
+    "R_LIBS=", "RENV_CONFIG_AUTOLOADER_ENABLED=FALSE"
+  )
+  isolated_first_output <- run_standalone(
+    "detached-isolated-time-1", detached_app, standalone_first_scope,
+    standalone_first_time, standalone_first_product_set,
+    isolated_app_library, isolated_app_environment, "isolated", lock_packages
+  )
+  require_true(
+    grepl("mode=ordinary", ordinary_first_output, fixed = TRUE) &&
+      grepl("mode=isolated", isolated_first_output, fixed = TRUE),
+    "Standalone runtime modes did not produce distinct bounded evidence."
+  )
+  require_tree_unchanged(
+    "Detached app after exact-closure restoration and execution",
+    detached_initial_digest, tree_digest(detached_app)
+  )
+  require_tree_unchanged(
+    "Originating project after isolated detached runtime",
+    project_before_detached_runtime, tree_digest(retained_project)
+  )
+  require_tree_unchanged(
+    "Installed software after isolated detached runtime",
+    installation_before_detached_runtime, tree_digest(destination)
+  )
+  cat(sprintf(
+    "PASS isolated standalone closure packages=%d without RRP runtime packages\n",
+    length(lock_packages)
+  ))
+
+  # Controlled fixtures cover every hospital-owned class named by the plan.
+  writeLines(c(readLines(file.path(original_app, "app.R"), warn = FALSE),
+    "# hospital app customization"), file.path(original_app, "app.R"),
+    useBytes = TRUE)
+  module_path <- file.path(original_app, "R", "application-ui.R")
+  writeLines(c(readLines(module_path, warn = FALSE),
+    "# hospital module customization"), module_path, useBytes = TRUE)
+  writeLines("hospital_extra <- function() 'hospital-owned'",
+    file.path(original_app, "R", "hospital-extra.R"), useBytes = TRUE)
+  style_path <- file.path(original_app, "www", "rrp.css")
+  writeLines(c(readLines(style_path, warn = FALSE), "/* hospital style */"),
+    style_path, useBytes = TRUE)
+  writeBin(as.raw(c(0x52, 0x52, 0x50)),
+    file.path(original_app, "www", "hospital-asset.bin"))
+  writeLines(c(readLines(file.path(original_app, "README.md"), warn = FALSE),
+    "Hospital operating note."), file.path(original_app, "README.md"),
+    useBytes = TRUE)
+  writeLines("Package: hospital-app-dependencies",
+    file.path(original_app, "DESCRIPTION"), useBytes = TRUE)
+  dir.create(file.path(original_app, "deployment"))
+  writeLines("operator: hospital", file.path(
+    original_app, "deployment", "configuration.yml"
+  ), useBytes = TRUE)
+  dir.create(file.path(original_app, ".git"))
+  writeLines("ref: refs/heads/main", file.path(original_app, ".git", "HEAD"),
+    useBytes = TRUE)
+  writeLines("Hospital-owned unrelated note.",
+    file.path(original_app, "HOSPITAL-NOTES.md"), useBytes = TRUE)
+  customized_bytes <- tree_digest_outside_managed_data(original_app)
+  detached_before_refresh <- tree_digest(detached_app)
+
+  standalone_second_time <- "2026-01-22T12:00:00Z"
+  standalone_second_run <- stable_run(c(
+    "run", "--at", standalone_second_time, "--operation-key",
+    "standalone-second", "--project", retained_project, "--json"
+  ), project)
+  require_run_success("Standalone time-2 governed run", standalone_second_run)
+  standalone_second_scope <- json_string(
+    standalone_second_run, "operation_run_id"
+  )
+  require_true(!identical(standalone_second_scope, standalone_first_scope),
+    "Standalone time-1 and time-2 operation identities are equal.")
+  standalone_second_materialization <- stable_run(c(
+    "products", "materialize", "--scope", standalone_second_scope,
+    "--cutoff", standalone_second_time, "--project", retained_project,
+    "--json"
+  ), project)
+  require_run_success(
+    "Standalone time-2 product materialization",
+    standalone_second_materialization
+  )
+  product_source_before_refresh <- tree_digest(file.path(
+    retained_project, "state", "products"
+  ))
+  history_before_refresh <- tree_digest(file.path(retained_project, "state"))
+  installation_before_refresh <- tree_digest(destination)
+  pointer_before_refresh <- read_file_bytes(file.path(
+    original_app, "rrp-data", "current.dcf"
+  ))
+  refreshed_app <- stable_run(c(
+    "app", "refresh", "--scope", standalone_second_scope, "--cutoff",
+    standalone_second_time, "--project", retained_project, "--json"
+  ), project)
+  validated_refreshed_app <- stable_run(c(
+    "app", "validate", "--project", retained_project, "--json"
+  ), project)
+  require_run_success("Installed standalone application refresh", refreshed_app)
+  require_run_success("Refreshed standalone application validation",
+    validated_refreshed_app)
+  standalone_second_product_set <- json_string(
+    validated_refreshed_app, "product_set_id"
+  )
+  require_true(
+    !identical(standalone_second_product_set, standalone_first_product_set) &&
+      grepl(paste0('"source_operation_run_id":"', standalone_second_scope, '"'),
+        paste(validated_refreshed_app$output, collapse = "\n"), fixed = TRUE) &&
+      grepl('"inactive_set_count":1', paste(
+        validated_refreshed_app$output, collapse = "\n"
+      ), fixed = TRUE) &&
+      !identical(pointer_before_refresh, read_file_bytes(file.path(
+        original_app, "rrp-data", "current.dcf"
+      ))) &&
+      identical(customized_bytes,
+        tree_digest_outside_managed_data(original_app)) &&
+      identical(detached_before_refresh, tree_digest(detached_app)),
+    "Time-2 refresh did not preserve source bytes, prior set, or detached time 1."
+  )
+  require_tree_unchanged(
+    "Source materialization during standalone refresh",
+    product_source_before_refresh,
+    tree_digest(file.path(retained_project, "state", "products"))
+  )
+  require_tree_unchanged(
+    "Project state/history during standalone refresh", history_before_refresh,
+    tree_digest(file.path(retained_project, "state"))
+  )
+  require_tree_unchanged(
+    "Installed software during standalone refresh", installation_before_refresh,
+    tree_digest(destination)
+  )
+
+  refreshed_output <- run_standalone(
+    "original-ordinary-time-2", original_app, standalone_second_scope,
+    standalone_second_time, standalone_second_product_set,
+    file.path(destination, "library"), ordinary_environment, "ordinary"
+  )
+  detached_recheck_output <- run_standalone(
+    "detached-ordinary-time-1-recheck", detached_app, standalone_first_scope,
+    standalone_first_time, standalone_first_product_set,
+    file.path(destination, "library"), ordinary_environment, "ordinary"
+  )
+  require_true(
+    !identical(
+      sub("^.*standalone-model-ok ", "", refreshed_output),
+      sub("^.*standalone-model-ok ", "", detached_recheck_output)
+    ) && grepl(standalone_second_scope, refreshed_output, fixed = TRUE) &&
+      grepl(standalone_first_scope, detached_recheck_output, fixed = TRUE),
+    "Runtime model evidence does not distinguish refreshed time 2 from detached time 1."
+  )
+  require_tree_unchanged(
+    "Detached time-1 snapshot after refreshed runtime proof",
+    detached_before_refresh, tree_digest(detached_app)
+  )
+  require_true(identical(customized_bytes,
+    tree_digest_outside_managed_data(original_app)),
+    "Refreshed runtime changed hospital-owned application bytes.")
+  cat(sprintf(
+    paste0(
+      "PASS customized original serves time 2 while detached copy remains ",
+      "time 1 time_1_scope=%s time_1_product_set=%s time_2_scope=%s ",
+      "time_2_product_set=%s\n"
+    ),
+    standalone_first_scope, standalone_first_product_set,
+    standalone_second_scope, standalone_second_product_set
+  ))
+
+  # Installed adversaries complement, without duplicating, the exhaustive
+  # package-native 12.B matrix run by validate-packages.R.
+  app_before_incompatible <- tree_digest(original_app)
+  incompatible_project <- file.path(work, "incompatible-refresh-project")
+  rrp_install_copy_tree(retained_project, incompatible_project)
+  incompatible_pointer <- file.path(
+    incompatible_project, "state", "products", "current.dcf"
+  )
+  incompatible_lines <- readLines(incompatible_pointer, warn = FALSE,
+    encoding = "UTF-8")
+  incompatible_lines <- sub(
+    "^Materialization-Contract-Version: 0[.]1[.]0$",
+    "Materialization-Contract-Version: 9.9.9", incompatible_lines
+  )
+  writeLines(incompatible_lines, incompatible_pointer, useBytes = TRUE)
+  incompatible_refresh <- stable_run(c(
+    "app", "refresh", "--scope", standalone_second_scope, "--cutoff",
+    standalone_second_time, "--project", incompatible_project, "--app",
+    original_app, "--json"
+  ), project)
+  require_true(
+    identical(incompatible_refresh$status, 1L) && grepl(
+      "application_product", paste(incompatible_refresh$output, collapse = "\n"),
+      fixed = TRUE
+    ),
+    paste("Incompatible standalone refresh was not refused:", paste(
+      incompatible_refresh$output, collapse = "\n"
+    ))
+  )
+  require_tree_unchanged(
+    "Original application after incompatible refresh",
+    app_before_incompatible, tree_digest(original_app)
+  )
+
+  corrupt_app <- file.path(work, "corrupt-detached-app")
+  rrp_install_copy_tree(detached_app, corrupt_app)
+  corrupt_pointer <- read.dcf(file.path(corrupt_app, "rrp-data", "current.dcf"),
+    all = TRUE)[1L, "Set-Directory"]
+  corrupt_member <- file.path(
+    corrupt_app, "rrp-data", corrupt_pointer, "current-remaining-risk.csv"
+  )
+  writeBin(c(read_file_bytes(corrupt_member), charToRaw("corrupt")), corrupt_member)
+  corrupt_before_validation <- tree_digest(corrupt_app)
+  corrupt_validation <- stable_run(c(
+    "app", "validate", "--app", corrupt_app, "--json"
+  ), project)
+  require_true(
+    identical(corrupt_validation$status, 1L) && grepl(
+      "application_managed_content_invalid",
+      paste(corrupt_validation$output, collapse = "\n"), fixed = TRUE
+    ),
+    paste("Corrupt detached managed content was not diagnosed:", paste(
+      corrupt_validation$output, collapse = "\n"
+    ))
+  )
+  require_tree_unchanged(
+    "Corrupt detached app during read-only validation",
+    corrupt_before_validation, tree_digest(corrupt_app)
+  )
+
+  stale_app <- file.path(work, "stale-work-detached-app")
+  rrp_install_copy_tree(detached_app, stale_app)
+  stale_directory <- file.path(
+    stale_app, "rrp-data", "sets", ".rrp-set-staging-interrupted"
+  )
+  dir.create(stale_directory)
+  writeLines("partial", file.path(stale_directory, "products.dcf"), useBytes = TRUE)
+  stale_before_validation <- tree_digest(stale_app)
+  stale_validation <- stable_run(c(
+    "app", "validate", "--app", stale_app, "--json"
+  ), project)
+  require_true(
+    identical(stale_validation$status, 0L) && grepl(
+      '"stale_work_count":1', paste(stale_validation$output, collapse = "\n"),
+      fixed = TRUE
+    ),
+    paste("Stale managed work was not diagnosed:", paste(
+      stale_validation$output, collapse = "\n"
+    ))
+  )
+  require_tree_unchanged(
+    "Stale detached app during read-only validation",
+    stale_before_validation, tree_digest(stale_app)
+  )
+
+  failure_probe <- file.path(work, "installed-app-refresh-failure-probe.R")
+  precommit_app <- file.path(work, "precommit-detached-app")
+  postcommit_app <- file.path(work, "postcommit-detached-app")
+  rrp_install_copy_tree(detached_app, precommit_app)
+  rrp_install_copy_tree(detached_app, postcommit_app)
+  writeLines(c(
+    "arguments <- commandArgs(trailingOnly = TRUE)",
+    ".libPaths(c(arguments[[1L]], .Library))",
+    "library(rrpplatform)",
+    "catalog <- rrp_open_resource_catalog(arguments[[2L]])",
+    "project <- arguments[[3L]]; scope <- arguments[[4L]]; cutoff <- arguments[[5L]]",
+    "validate <- function(path, expected) {",
+    "  result <- rrp_validate_app(catalog, path)",
+    "  stopifnot(rrp_operation_succeeded(result), identical(result$value$product_set_id, expected))",
+    "}",
+    "pre <- arguments[[6L]]; post <- arguments[[7L]]",
+    "before <- readBin(file.path(pre, 'rrp-data', 'current.dcf'), 'raw', n = file.info(file.path(pre, 'rrp-data', 'current.dcf'))$size)",
+    "pre_result <- rrpplatform:::rrp_app_refresh(catalog, project, scope, cutoff, pre, failure_stage = 'before_pointer_replacement')",
+    "stopifnot(!rrp_operation_succeeded(pre_result), identical(pre_result$diagnostics[[1L]]$code, 'application_injected_failure'),",
+    "  identical(before, readBin(file.path(pre, 'rrp-data', 'current.dcf'), 'raw', n = file.info(file.path(pre, 'rrp-data', 'current.dcf'))$size)))",
+    "validate(pre, arguments[[8L]])",
+    "post_result <- rrpplatform:::rrp_app_refresh(catalog, project, scope, cutoff, post, failure_stage = 'after_pointer_replacement')",
+    "stopifnot(!rrp_operation_succeeded(post_result), identical(post_result$diagnostics[[1L]]$code, 'application_refresh_committed'))",
+    "validate(post, arguments[[9L]])",
+    "cat('installed-refresh-failure-probe-ok\\n')"
+  ), failure_probe, useBytes = TRUE)
+  parse(failure_probe)
+  failure_result <- run_in(host_rscript, c(
+    "--vanilla", shQuote(failure_probe),
+    shQuote(file.path(destination, "library")), shQuote(destination),
+    shQuote(retained_project), shQuote(standalone_second_scope),
+    shQuote(standalone_second_time), shQuote(precommit_app),
+    shQuote(postcommit_app), shQuote(standalone_first_product_set),
+    shQuote(standalone_second_product_set)
+  ), c(isolated_environment,
+    paste0("R_LIBS_USER=", file.path(destination, "library")),
+    paste0("R_LIBS_SITE=", file.path(work, "no-failure-probe-site")),
+    "R_PROFILE_USER=", "R_ENVIRON_USER="
+  ), project)
+  require_true(
+    identical(failure_result$status, 0L) && grepl(
+      "installed-refresh-failure-probe-ok",
+      paste(failure_result$output, collapse = "\n"), fixed = TRUE
+    ),
+    paste("Installed refresh interruption proof failed:", paste(
+      failure_result$output, collapse = "\n"
+    ))
+  )
+  require_true(
+    identical(customized_bytes, tree_digest_outside_managed_data(original_app)) &&
+      identical(detached_before_refresh, tree_digest(detached_app)),
+    "Installed adversarial proof changed an authoritative application."
+  )
+  cat(paste(
+    "PASS standalone destination/incompatibility/corruption/staging and",
+    "precommit/postcommit safeguards\n"
+  ))
+
+  privacy_paths <- c(original_app, detached_app)
+  privacy_files <- unlist(lapply(privacy_paths, function(root) list.files(
+    root, recursive = TRUE, all.files = TRUE, no.. = TRUE, full.names = TRUE
+  )), use.names = FALSE)
+  privacy_files <- privacy_files[!dir.exists(privacy_files)]
+  privacy_files <- privacy_files[grepl(
+    "(?:[.](?:R|dcf|csv|css|md|json|txt|ya?ml)|/(?:HEAD|NOTICE|LICENSE|DESCRIPTION))$",
+    privacy_files, ignore.case = TRUE, perl = TRUE
+  )]
+  privacy_content <- paste(unlist(lapply(privacy_files, function(path) {
+    if (file.info(path, extra_cols = FALSE)$size[[1L]] > 2000000L) return("")
+    paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  }), use.names = FALSE), collapse = "\n")
+  private_key_prefix <- "BEGIN "
+  private_key_suffix <- "(?:RSA |OPENSSH )?PRIVATE KEY"
+  require_true(
+    !grepl(
+      paste0(
+        "private-patient|private-episode|source_patient|native_patient|",
+        "connection_string|", private_key_prefix, private_key_suffix
+      ),
+      privacy_content, ignore.case = TRUE, perl = TRUE
+    ) && !grepl(repository_root, privacy_content, fixed = TRUE) &&
+      !grepl(destination, privacy_content, fixed = TRUE),
+    "Standalone payload privacy/content-boundary inspection failed."
+  )
+  require_tree_unchanged(
+    "Installed software after standalone operational proof",
+    installation_before_detached_runtime, tree_digest(destination)
+  )
+  retained_before <- tree_digest(retained_project)
+  cat("PASS standalone privacy, path separation, nonmutation, and cleanup ownership\n")
+
   working_directory_before_alternate <- tree_digest(project)
   active_before_alternate <- readBin(
     file.path(installation_root, "active.dcf"), "raw",
@@ -1280,13 +1981,14 @@ validate_installation <- function() {
     "project", "validate", "--project", retained_project, "--json"
   ), project)
   incompatible_doctor <- stable_run(c(
-    "project", "doctor", "--scope", second_scope, "--cutoff",
-    second_analytical_time, "--project", retained_project, "--json"
+    "project", "doctor", "--scope", standalone_second_scope, "--cutoff",
+    standalone_second_time, "--project", retained_project, "--json"
   ), project)
   retained_after_rejection <- tree_digest(retained_project)
   compatible_explicit <- stable_run(c(
-    "--software", selector, "project", "doctor", "--scope", second_scope,
-    "--cutoff", second_analytical_time, "--project", retained_project, "--json"
+    "--software", selector, "project", "doctor", "--scope",
+    standalone_second_scope, "--cutoff", standalone_second_time,
+    "--project", retained_project, "--json"
   ), project)
   current_while_explicit <- stable_run(c(
     "software", "current", "--json"
@@ -1754,8 +2456,8 @@ validate_installation <- function() {
   cat("PASS final-inactive refusal with stable shim and no project mutation\n")
 
   cat(paste(
-    "Result: PASS (clean installed operation, two-time project/app proof,",
-    "side-by-side compatibility, rollback, and exact uninstall)\n"
+    "Result: PASS (clean installed operation, standalone ordinary/isolated",
+    "time-1/time-2 proof, side-by-side compatibility, rollback, and exact uninstall)\n"
   ))
   invisible(TRUE)
 }

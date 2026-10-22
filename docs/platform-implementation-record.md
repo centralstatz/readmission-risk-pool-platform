@@ -8191,3 +8191,122 @@ implementation and exact-revision evidence, not a new implementation claim.
 Increment 12.A and the Task 12.B.1 internal checkpoint remain accepted. Stage
 12 remains incomplete and not formally accepted. Increment 12.C is the next
 authorized implementation increment and has not begun.
+
+## Increment 12.C — Independent operational proof and closeout evidence — 2026-10-22
+
+Increment 12.C extends the established `tools/validate-installation.R` clean
+temporary-user path; it does not add a repository-root demonstration or a
+second acceptance framework. The validator builds and copies the closed RRP
+distribution outside Git, installs it through the supported base-R bootstrap
+into isolated per-user roots, prepares the installed fictional project, runs
+the accepted analytical/product lifecycle, and first re-proves the unchanged
+installed `rrp app launch` path with real repeated HTTP and local-asset
+requests.
+
+The accepted second analytical context is the standalone proof's explicit
+time 1 (`2026-01-21T12:00:00Z`). On the final local candidate it produced
+operation scope `rrp.operation-run.1a6ed02e516bb623`, product set
+`rrp.product-set.429957b83b4cc595`, and materialization
+`rrp.materialization.5e19c99d720499ff`. Installed `rrp app init` created the
+ordinary hospital application and `rrp app validate` confirmed its current
+pointer, inventory, digests, presentation, and exact lineage. A repeated init
+against that existing destination failed without mutation.
+
+The proof copies the initialized app to a canonically separate temporary root
+outside the development repository, project, state/products, copied
+distribution, installed software, installation root, and ambient user/site
+libraries. Detached validation succeeds without source execution. A closed
+path/content inspection rejects analytical project/state/model/credential
+roles and originating absolute paths. The detached copy first runs through
+ordinary `shiny::runApp()` with the controlled installed third-party library;
+the model reports its exact time-1 scope/product/cutoff, the HTTP probe requests
+the page, JavaScript, stylesheets and referenced local assets repeatedly, and
+the foreground process terminates by direct `SIGINT` without changing the app,
+project, or installation.
+
+The generated exact `renv.lock` was reconciled package by package with the
+distribution's version and integrity evidence. Its current 72-package closure
+was restored independently into a clean temporary library using the accepted
+configured-repository restoration mechanism. The isolated subprocess asserts
+that its effective library paths contain only that library and base R, every
+declared package resolves beneath it, and neither `rrpplatform` nor
+`rrpruntime` is available or loaded. The same model, repeated HTTP, complete
+local-asset, foreground-interrupt, app nonmutation, and originating-environment
+nonmutation proof then passes. The closure size is current evidence derived
+from the lock, not a separately hardcoded product contract.
+
+Controlled hospital-owned fixtures modify `app.R`, one supplied module, CSS,
+and README; add a module, static asset, dependency fixture, deployment
+configuration, Git metadata, and unrelated note; and snapshot every byte
+outside `rrp-data/`. A later governed run at `2026-01-22T12:00:00Z` produces
+scope `rrp.operation-run.30c956d816acc0d9` and product set
+`rrp.product-set.6b138487687318b1`. Installed `rrp app refresh` promotes that
+complete compatible set, retains exactly the prior valid set, and preserves
+all snapshotted hospital bytes plus project state/history, source
+materialization, and installed software. Runtime model evidence and real HTTP
+requests then show the customized original on time 2 while a second run of the
+unchanged detached copy still shows the exact time-1 scope and product set.
+
+Installed adversarial evidence covers existing-destination refusal, an
+incompatible materialization-contract pointer, corrupt current managed
+content, bounded stale staging, one precommit failure retaining the old
+pointer, and one postcommit diagnostic retaining the newly committed valid
+set. The exhaustive unsafe-path, link, collision, every-stage transaction,
+cleanup, and customization cases remain owned by the accepted package-native
+12.B lifecycle and passed again in `validate-packages.R`; 12.C does not create
+parallel fault machinery. Read-only validation does not repair corrupt or
+stale fixtures. Bounded privacy inspection found no source-native/private test
+identifiers, connection-string marker, private-key marker, originating path,
+or unintended analytical role. All disposable roots, restoration libraries,
+logs, probes, supervisors, and application processes are removed; a final
+process and temporary-root inspection found no retained 12.C work.
+
+Recovery of the interrupted implementation retained the complete proof and
+made only test-harness corrections. Direct `Rscript` foreground interruption
+on macOS returns status 1 plus R's exact `Execution halted` marker, while the
+RRP launcher normalizes its own interrupt to 130; the standalone assertion
+therefore accepts only status 130 or that exact status-1 marker after successful
+HTTP/model evidence and a live-process check. Generated R probes are parsed
+before execution. An unbalanced test-probe expression was corrected, and a
+dependency-loop variable was renamed so it cannot overwrite the enclosing
+installation record used by the inherited exact-reinstall assertion. No
+production API, application source, package behavior, dependency, contract,
+or accepted 12.A/12.B architecture changed.
+
+Final local qualification on the completed candidate:
+
+- `Rscript --vanilla tools/validate-repository.R` passed all eight checks;
+- `Rscript --vanilla tools/validate-packages.R` passed the 75-resource closed
+  catalog, package-native and installed regressions, both builds, both isolated
+  install/load proofs, and both `R CMD check --no-manual` runs with
+  `Status: OK`;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R` passed source/payload closure, provenance,
+  deterministic build, copied verification, adversarial integrity, and cleanup;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R` passed the complete inherited installation,
+  compatibility, rollback, uninstall/recovery, and idempotent-reinstall matrix
+  plus the ordinary/isolated standalone time-1/time-2 proof described above;
+  and
+- R parsing, generated-probe parsing, documentation links, privacy/static
+  hygiene, final process/root cleanup, and `git diff --check` passed.
+
+The first sandboxed package-validation attempt could not use `/bin/ps` for its
+required supervisor inspection; the authorized run completed successfully.
+Likewise, an initial sandboxed installation attempt lacked dependency-network
+access; configured restoration and the complete final runs succeeded with
+that access. These were execution-environment limitations, not candidate
+failures. Intermediate harness failures were diagnosed and corrected before
+the conclusive full pass and are not represented as successful evidence.
+
+No additional historical tree was migrated: 12.C reuses the current accepted
+installed distribution, fictional lifecycle, HTTP supervisor, standalone
+operations, lock authority, and 12.B failure-injection seams. No hosting,
+publication, automatic analytical refresh, source upgrade, deployment target,
+Stage 13 behavior, commit, or remote mutation occurred.
+
+**12.C result:** implementation-complete and locally qualified. Stage 12 is an
+implementation-complete candidate but is not formally accepted. The candidate
+still requires maintainer review, commit/push, exact-revision hosted Ubuntu/R
+4.4 `package-foundation` evidence, and a separate human Stage 12 acceptance and
+architecture reconciliation. Stage 13 is not authorized.

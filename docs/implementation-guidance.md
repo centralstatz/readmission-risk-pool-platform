@@ -76,9 +76,14 @@ the original Stage 11 acceptance. Its nonblocking Stage 13 qualification
 consideration and Stage 12–14 deferrals remain explicit. Increment 12.A now
 establishes the cataloged portable application source, frozen DCF/CSV product
 and detached-presentation boundary, and thin installed host adapter behind the
-unchanged launch operation. It is implementation-complete and pending formal
-acceptance; Stage 12 remains incomplete, and no standalone `app/` output or
-new CLI behavior exists.
+unchanged launch operation. Increment 12.B adds the create-only initialized
+standalone application, exact managed refresh, detached validation, and the
+three installed CLI intentions; both increments are formally accepted.
+Increment 12.C now extends the existing clean temporary-user installation
+proof through detached ordinary and exact-closure isolated execution,
+customized time-2 refresh, frozen time-1 comparison, and representative
+recovery adversaries. It is locally qualified but awaits exact-revision hosted
+evidence and separate Stage 12 acceptance.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -304,7 +309,7 @@ closed to the following present paths:
 | `resources/documentation/*.md` | The exact twelve version-matched installed product documents: the Stage 8 authoring/reference documents, Stage 9 logical-products guide, Stage 10 application guide, Stage 11 lifecycle/CLI/operator/distribution/installation/software-lifecycle guides, and Stage 12 standalone-application guide. All resolve through the ordinary resource catalog without a repository-relative dependency. |
 | `tools/build-distribution.R` and `tools/distribution-lib.R` | Maintainer-only positive-input package/resource assembly, tested dependency capture, strict installed-metadata or controlled-provisioning-receipt validation, normalized identity, exact inventory, staging, archive validation, and create-only promotion. They do not install software. |
 | `tools/validate-distribution.R` | Human-callable distribution-native determinism, standalone, source/output-safety, and adversarial integrity proof. |
-| `tools/validate-installation.R` | Human-callable clean temporary-user proof for copied-distribution verification, genuine configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, explicit activation, independent fictional project operation at two analytical times, history/fresh-product validation, both doctor surfaces, supervised application startup/termination, failure cleanup, exact reinstall, installed CLI equivalence, upgrade/compatibility/explicit compatible selection/rollback, official-version conflict refusal, project/history/product nonmutation, and guarded exact inactive/final uninstall. |
+| `tools/validate-installation.R` | Human-callable clean temporary-user proof for copied-distribution verification, genuine configured-repository private restoration, two isolated development realizations, base-R bootstrap, fresh-process resolution, installation evidence, explicit activation, independent fictional project/history/products, supervised installed application startup, standalone initialization and canonical separation, ordinary and exact-declared-closure standalone Shiny/HTTP execution without RRP, byte-preserved customized time-2 managed refresh versus a detached time-1 snapshot, representative lifecycle adversaries, exact reinstall, installed CLI equivalence, upgrade/compatibility/explicit compatible selection/rollback, official-version conflict refusal, project/history/product nonmutation, and guarded exact inactive/final uninstall. |
 | `tools/validate-packages.R` | Human-callable, base-R proof of the local package foundation, 75-member source-resource catalog/projection including Markdown and portable application resources, authoring/canonical/runtime/history/state/backup/product/materialization/application authorities, standard and raw project behavior, installed explicit-root resource/document access, project/state lifecycle and recovery, selected-producer/provider handoff, bundle-scoped durable execution/history interpretation, storage-neutral logical product construction, supplied physical publication/access, installed fictional product/application lifecycle including managed refresh and detached validation, and version-specific CLI runtime. |
 | `tools/validate-repository.R` | Human-callable, base-R validation of current repository-foundation claims. |
 
@@ -369,7 +374,7 @@ provider primitives plus the 12 logical-history record, port, append, and read
 interfaces declared in its namespace. It supplies no physical history adapter
 or durable state.
 `rrpplatform` imports `DBI`, `duckdb`, and `rrpruntime`; only `rrpplatform`
-owns physical state dependencies. It exports exactly 34 interfaces spanning
+owns physical state dependencies. It exports exactly 36 interfaces spanning
 the accepted package, project, state, history, product, application, lifecycle,
 and CLI responsibilities. The namespace and package validator are the exact
 technical inventory authority. Increment 11.D now emits an exact target-keyed
@@ -471,11 +476,14 @@ RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
   Rscript --vanilla tools/validate-installation.R
 ```
 
-It performs one real configured-repository private restoration and proves the
-base-R bootstrap, fresh-process exact resolution, cleanup, project isolation,
-idempotent reinstall, installed CLI equivalence, two governed fictional
-analytical times, scope history, fresh products, both doctors, supervised
-loopback application startup/termination, controlled second-version
+It performs one real configured-repository private RRP restoration plus one
+exact standalone declared-closure restoration and proves the base-R bootstrap,
+fresh-process exact resolution, cleanup, project isolation, idempotent
+reinstall, installed CLI equivalence, governed fictional analytical history,
+fresh products, both doctors, supervised installed and standalone loopback
+application startup/termination, detached ordinary and isolated-library
+execution, customized managed refresh, frozen snapshot independence,
+representative application-lifecycle failures, controlled second-version
 incompatibility, explicit compatible selection, rollback, and exact uninstall.
 
 The package-foundation GitHub Actions workflow invokes these same four human
