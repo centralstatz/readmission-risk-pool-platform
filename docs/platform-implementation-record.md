@@ -8310,3 +8310,74 @@ implementation-complete candidate but is not formally accepted. The candidate
 still requires maintainer review, commit/push, exact-revision hosted Ubuntu/R
 4.4 `package-foundation` evidence, and a separate human Stage 12 acceptance and
 architecture reconciliation. Stage 13 is not authorized.
+
+## Formal Increment 12.C and Stage 12 acceptance and architecture reconciliation — 2026-10-22
+
+The human maintainer reviewed the completed Stage 12 implementation and local
+qualification evidence and authorized formal acceptance subject to independent
+exact-revision and architecture reconciliation. The accepted Increment 12.C
+implementation is exact revision
+`49e96471da63d07c5872a28e80f8216cd0bdef72`. GitHub Actions
+`package-foundation` push run `39825668962`, job `119988175889`, completed
+successfully on `main` for that exact revision under `ubuntu-latest` with R
+4.4. The repository, package, distribution, and installation/software-
+lifecycle steps all completed successfully. The exact committed workflow runs
+`tools/validate-installation.R` unconditionally, and the exact committed
+validator cannot return success until its installed default, detached ordinary
+standalone, isolated exact-closure standalone, customized time-2 refresh,
+frozen time-1 comparison, adversarial, cleanup, compatibility, rollback, and
+uninstall evidence has passed.
+
+Reconciliation found the accepted Increment 12.A portable-source authority at
+revision `be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c` intact: one cataloged
+readable application implementation still supplies both the installed host and
+standalone initialization, with frozen Stage 9 products, presentation,
+dependency authority, resource closure, provenance, and SHA-256 inventories.
+The accepted Increment 12.B lifecycle at revision
+`1dee47d3f38f2048f8f60dae00dc843ca4479a23` also remains intact: create-only
+initialization, exact standalone declaration, bounded frozen sets, atomic
+current selection, prior-set retention, managed-only refresh, detached
+nonexecuting validation, source preservation, failure/recovery semantics, and
+the installed Standalone Application Guide were neither redesigned nor
+weakened by 12.C.
+
+The 12.C installed proof establishes the stage-level exit state. An application
+created from installed RRP runs as ordinary Shiny source from a canonically
+detached location without the development repository, originating analytical
+project, state/history, installed RRP packages, or private RRP library. Its
+declared 72-package closure is derived from the accepted lock, restored in a
+clean temporary library, and resolved only from that library plus base R;
+`rrpplatform` and `rrpruntime` are unavailable and unloaded. Real repeated HTTP
+and local-asset requests pass. The customized original advances from its exact
+time-1 products to distinct time-2 products through a managed-only refresh,
+while every hospital-owned byte remains unchanged and the detached copy remains
+the frozen time-1 application. Existing-destination and incompatible-refresh
+refusal, corruption and stale-work diagnosis, precommit preservation,
+postcommit reporting, package-owned path/link/collision adversaries, privacy
+inspection, process termination, and disposable-root cleanup all remain
+fail-closed and passed their owning evidence.
+
+This result preserves the Stage 10 product-only supplied application and the
+Stage 11 installed launch, distribution, installation, verification, upgrade,
+rollback, and uninstall boundaries. The installed RRP toolchain prepares and
+refreshes a standalone application; it is not part of that application's
+runtime. Hospital source, dependencies, deployment configuration, hosting,
+authorization, and operational security remain hospital-owned. Structural
+content-boundary evidence does not claim that real analytical products are
+free of protected health information.
+
+All sixteen accepted Stage 12 exit criteria and the plain-language exit state
+are satisfied. No acceptance-blocking discrepancy or substantive architecture
+change was found. Automatic analytical execution during refresh, application-
+source upgrade or overwrite, general application backup/migration, external
+hosting integration, Posit/Docker/Git deployment, production onboarding,
+clinical validation, release qualification, publication, and deployment remain
+the documented deferrals rather than missing Stage 12 requirements.
+
+**Acceptance decision:** **Increment 12.C and Stage 12 — Formally accepted and
+complete — 2026-10-22.** This is the human governance decision over the
+completed implementation and exact-revision evidence; it is not a new
+implementation or release claim. Increments 12.A and 12.B retain their earlier
+independent acceptance revisions. Stage 13 is the next eligible stage for a
+separately authorized detailed-planning task and has not begun. Stage 14 has
+not begun.

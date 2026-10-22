@@ -23,10 +23,11 @@ revision-matched hosted evidence. Task 12.B.2 and the complete Increment 12.B
 were formally accepted on 2026-10-22 at exact revision
 `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after successful
 revision-matched `package-foundation` run `39767333474`, job `119785937864`.
-Increment 12.C is implementation-complete and locally qualified on the
-uncommitted 2026-10-22 candidate. Stage 12 is therefore an implementation-
-complete candidate but remains incomplete in governance and is not formally
-accepted; exact-revision hosted Ubuntu/R 4.4 evidence is pending.
+Increment 12.C and Stage 12 were formally accepted on 2026-10-22 at exact
+revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after successful
+revision-matched `package-foundation` run `39825668962`, job `119988175889`,
+under hosted Ubuntu/R 4.4. Stage 13 is the next eligible stage for separately
+authorized detailed planning and has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -106,16 +107,16 @@ Only the current implementation stage is decomposed before source work.
 The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
-Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
-Increment 12.A is accepted, and Task 12.B.1 is an accepted
+Stage 12 work. Stage 12 is formally accepted and complete: Increment 12.A is
+accepted, and Task 12.B.1 is an accepted
 internal implementation checkpoint at exact revision
 `1f55dc21ab6a79547f677b44ea913e64f319012b`. Task 12.B.2 and the complete
 Increment 12.B are formally accepted at exact revision
 `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after revision-matched hosted
-qualification. Stage 12 remains incomplete and not formally accepted;
-Increment 12.C is implementation-complete and locally qualified on the
-uncommitted 2026-10-22 candidate, with exact-revision hosted qualification
-pending. After a stage is implemented:
+qualification. Increment 12.C and Stage 12 are formally accepted at exact
+revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after revision-matched
+hosted qualification. Stage 13 is next eligible for separately authorized
+detailed planning and has not begun. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -8537,21 +8538,24 @@ and associated processes were absent, and the disposable assessment root was
 removed. All accepted 11.I criteria are therefore satisfied with no blocking
 discrepancy. The original Stage 11 acceptance at
 `8bb1a3798b92f5407b0772d60f067fc182f45fb3` remains an independent historical
-boundary; this amendment does not retroactively rewrite it. Stage 12 remains
-unstarted.
+boundary; this amendment does not retroactively rewrite it. At that amendment-
+acceptance boundary, Stage 12 remained unstarted.
 
 ## Stage 12 — Standalone project application
 
-**Planning status:** **Accepted — Increment 12.A accepted on 2026-10-21;
+**Status:** **Formally accepted and complete — 2026-10-22. Increment 12.A was
+accepted on 2026-10-21;
 12.B two-task execution plan accepted on 2026-10-21; Task 12.B.1 accepted as an
 internal implementation checkpoint on 2026-10-21 at revision
 `1f55dc21ab6a79547f677b44ea913e64f319012b`; Task 12.B.2 and Increment 12.B
 formally accepted on 2026-10-22 at revision
 `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after successful
-`package-foundation` run `39767333474`, job `119785937864`; Stage 12 remains
-not formally accepted; Increment 12.C is implementation-complete and locally
-qualified on the uncommitted 2026-10-22 candidate, with exact-revision hosted
-Ubuntu/R 4.4 qualification pending**
+`package-foundation` run `39767333474`, job `119785937864`; Increment 12.C and
+Stage 12 formally accepted on 2026-10-22 at exact revision
+`49e96471da63d07c5872a28e80f8216cd0bdef72` after successful
+`package-foundation` run `39825668962`, job `119988175889`, under hosted
+Ubuntu/R 4.4. Stage 13 is next eligible for separately authorized planning and
+has not begun.**
 
 ### Objective and responsibilities
 
@@ -8634,7 +8638,8 @@ rrp app init --output <another-absent-path>
 hospital compares or adopts it with ordinary tools
 ```
 
-Current implementation establishes the required inputs but no Stage 12 output:
+At detailed-plan acceptance, the implementation established the required
+inputs but no Stage 12 output:
 
 - the selected installed realization has exact software, distribution,
   package, resource, dependency, and private-library evidence;
@@ -8699,13 +8704,13 @@ default is realized by create-only initialization at another absent path and
 hospital-directed comparison or adoption, not by RRP mutation of existing
 application source.
 
-These implementation mechanisms are the accepted Stage 12 construction
-boundary. They authorize a subsequent Increment 12.A implementation task but
-do not claim that any Stage 12 contract, package, CLI, application, workflow,
-remote operation, or evidence exists. The accepted architecture does not
-require a duplicate immutable application store, transport archive, target
-realization, or external hosting proof, and this plan does not introduce one
-under another name.
+At detailed-plan acceptance, these mechanisms established the Stage 12
+construction boundary and authorized a subsequent Increment 12.A
+implementation task; planning acceptance itself did not claim that any Stage
+12 contract, package, CLI, application, workflow, remote operation, or evidence
+existed. The accepted architecture does not require a duplicate immutable
+application store, transport archive, target realization, or external hosting
+proof, and the completed implementation introduces none under another name.
 
 ### Standalone application and ownership model
 
@@ -9160,8 +9165,9 @@ plan is accepted, Task 12.B.1 is a formally accepted internal implementation
 checkpoint, and Task 12.B.2 and Increment 12.B as a whole are accepted at exact
 revision `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after successful
 revision-matched `package-foundation` run `39767333474`, job `119785937864`.
-Stage 12 remains not formally accepted. Increment 12.C subsequently reached
-the locally qualified candidate status recorded in its own section below.
+At that 12.B acceptance boundary, Stage 12 remained not formally accepted.
+Increment 12.C subsequently passed through locally qualified candidate status
+before the formal acceptance recorded in its own section below.
 
 **Objective and user-visible result:** an installed operator can initialize the
 default standalone app at `<project>/app/`, validate it, refresh only compatible
@@ -9327,8 +9333,9 @@ conventions, and initialization output rather than introduce parallel forms.
 accepted revision is `1dee47d3f38f2048f8f60dae00dc843ca4479a23`;
 revision-matched Ubuntu/R 4.4 evidence is `package-foundation` run
 `39767333474`, job `119785937864`. This accepts Task 12.B.2 and Increment 12.B,
-not Stage 12. Increment 12.C subsequently reached the locally qualified
-candidate status recorded in its own section below.
+not Stage 12. Increment 12.C subsequently passed through locally qualified
+candidate status before the formal acceptance recorded in its own section
+below.
 
 **Authorized implementation scope:**
 
@@ -9417,13 +9424,14 @@ recovery risk without weakening any final acceptance criterion.
 
 **Dependencies:** accepted 12.A–12.B.
 
-**Implementation status:** **Implementation-complete and locally qualified —
-2026-10-22.** The existing installed clean temporary-user validator now owns
-the independent ordinary-library and exact-closure standalone proof, managed
-time-2 refresh, frozen detached time-1 comparison, and representative recovery
-adversaries. This is an uncommitted candidate; exact-revision hosted Ubuntu/R
-4.4 qualification and a separate human Stage 12 acceptance/reconciliation
-remain pending.
+**Status:** **Formally accepted — 2026-10-22.** The accepted implementation is
+exact revision `49e96471da63d07c5872a28e80f8216cd0bdef72`. Revision-matched
+hosted Ubuntu/R 4.4 `package-foundation` run `39825668962`, job
+`119988175889`, passed repository, package, distribution, and installation
+validation, including the independent ordinary-library and exact-closure
+standalone proof, managed time-2 refresh, frozen detached time-1 comparison,
+and representative recovery adversaries. The separate human architecture
+reconciliation found no Stage 12 blocker.
 
 **Objective and user-visible result:** prove from installed RRP that the
 generated default is genuinely standalone and that a persistent customized app
@@ -9471,8 +9479,7 @@ begins.
 
 ### Stage 12 implementation verification and formal completion boundary
 
-Future Stage 12 implementation acceptance must distinguish four evidence
-classes:
+Formal Stage 12 implementation acceptance distinguished four evidence classes:
 
 | Evidence class | Required claim |
 |---|---|
@@ -9600,11 +9607,11 @@ implementation:
 
 These accepted planning decisions governed Increment 12.A, which is now
 formally accepted at the exact revision and hosted evidence recorded above,
-and subsequently governed the now-accepted Increment 12.B. Increment 12.C is
-implementation-complete and locally qualified on the uncommitted 2026-10-22
-candidate. Stage 12 is an implementation-complete candidate but remains
-incomplete in governance and not formally accepted until exact-revision hosted
-evidence and separate human reconciliation are accepted.
+and subsequently governed the accepted Increment 12.B. Increment 12.C and
+Stage 12 are formally accepted at exact revision
+`49e96471da63d07c5872a28e80f8216cd0bdef72` with the revision-matched hosted
+evidence recorded above. Stage 13 is next eligible for separately authorized
+detailed planning and has not begun.
 
 ### Explicit deferrals and nonclaims
 

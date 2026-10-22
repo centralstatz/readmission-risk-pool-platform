@@ -4,7 +4,8 @@
 
 **Status:** authoritative target architecture for the RRP 1.0.0 generation;
 the standalone-application ownership amendment was formally accepted on
-2026-10-20; Stage 12 implementation has not begun and release is not complete
+2026-10-20; Stage 12 was formally accepted as complete on 2026-10-22; release
+is not complete
 
 This document is the current normative architecture of the Readmission Risk
 Pool (RRP). It translates [Platform True North](platform-true-north.md) into
@@ -30,8 +31,10 @@ their meaning for the work they documented.
 The formally accepted 2026-10-20 standalone-application ownership amendment
 also removes RRP-managed application-source regeneration. It establishes
 create-only initialization, hospital-owned source, and `app/rrp-data/` as the
-sole subsequent RRP write boundary. This is target architecture, not evidence
-that Stage 12 has been implemented; RRP 1.0.0 release is not complete.
+sole subsequent RRP write boundary. At amendment acceptance this was target
+architecture rather than implementation evidence. Stage 12 implementation and
+acceptance are now recorded separately by the implementation plan and record;
+RRP 1.0.0 release is not complete.
 
 Implementation planning must derive a progressive construction path from this
 architecture. When established, that plan governs construction order and its
