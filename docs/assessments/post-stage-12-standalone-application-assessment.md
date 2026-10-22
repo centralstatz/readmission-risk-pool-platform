@@ -34,11 +34,12 @@ The practical question is:
 
 This assessment follows the human-first and evidence-recording conventions of
 the
-[Post-Stage-11 Manual Platform Assessment](post-stage-11-manual-platform-assessment.md),
-but does not repeat its distribution, installation, upgrade, or full operator
-walkthrough. It starts from already installed, accepted RRP software and keeps
-the session focused on inspecting, copying, running, customizing, refreshing,
-and comparing standalone applications.
+[Post-Stage-11 Manual Platform Assessment](post-stage-11-manual-platform-assessment.md).
+Its first phase condenses that assessment's accepted distribution build,
+verification, installation, activation, and fictional-project preparation so
+this document can start without an RRP installation. The detailed assessment
+remains focused on inspecting, copying, running, customizing, refreshing, and
+comparing standalone applications.
 
 This document is not an automated test, governing authority, formal acceptance
 record, production deployment procedure, comprehensive CLI tutorial, Stage 13
@@ -49,71 +50,223 @@ merits; it does not automatically reopen that acceptance.
 Use only the supplied fictional, nonclinical project. Do not use real patient
 data, credentials, private hospital mappings, or a real model.
 
-## B. Prerequisites and assessment workspace
+## B. Phase 1 — Prepare RRP and the fictional project
 
-The shortest repeatable path uses a new disposable fictional project. This
-keeps existing installations and projects untouched while exercising the real
-installed commands. An existing suitable fictional project may be used instead
-only when its exact materialized scope/cutoff are known and its normal `app/`
-destination is absent; adjust the paths and skip the preparation steps below.
+Start on macOS with ordinary R 4.4.x and no required RRP installation, RRP
+project, or generated application. The host also needs Git, `tar`, `awk`,
+either `sha256sum` or `shasum`, normal package-compilation tools when the
+repository supplies source packages, network access to
+`https://cloud.r-project.org`, and two available loopback ports. Keep one
+terminal open throughout so the exported variables persist.
 
-Prerequisites:
+There is no published Stage 14 RRP acquisition yet. The supported acquisition
+for this development assessment is therefore the same maintainer-only path as
+the Post-Stage-11 assessment: build one closed local `1.0.0-dev` distribution
+from this repository, copy it into an independent acquisition location, verify
+the copy, and install from that verified payload. The accepted Stage 12
+implementation revision is
+`49e96471da63d07c5872a28e80f8216cd0bdef72`; formal acceptance was recorded at
+`3158d78ecca3c6430ef2a55d769561efb83e55e8`. The commands below require both
+revisions in the ancestry of a clean checkout and print the exact later source
+revision actually used. Record that revision with the assessment. This local
+artifact is accepted development evidence, not a published download or
+release.
 
-- macOS with ordinary local R 4.4.x;
-- an installed and active RRP realization containing accepted Stage 12;
-- the stable `rrp` command on `PATH`;
-- network access to the repository recorded in `renv.lock` only if dependency
-  restoration is needed; and
-- two available loopback ports for convenient time-1/time-2 comparison.
+### Create three isolated locations
 
-Confirm the installed context without entering a project:
-
-```sh
-command -v rrp
-rrp version
-rrp software current
-rrp software doctor
-R --version
-```
-
-Create two independently named disposable roots. The first owns the fictional
-analytical project. The second owns only detached application copies and an
-optional standalone R library.
+Run this block from anywhere inside the RRP repository:
 
 ```sh
+export RRP_SOURCE_ROOT="$(git rev-parse --show-toplevel)"
+cd "$RRP_SOURCE_ROOT"
+test -z "$(git status --porcelain)"
+git merge-base --is-ancestor 49e96471da63d07c5872a28e80f8216cd0bdef72 HEAD
+git merge-base --is-ancestor 3158d78ecca3c6430ef2a55d769561efb83e55e8 HEAD
+export RRP_SOURCE_REVISION="$(git rev-parse HEAD)"
+
+export RRP_SOFTWARE_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/rrp-post-stage-12-software.XXXXXX")"
 export RRP_ASSESSMENT_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/rrp-post-stage-12-project.XXXXXX")"
 export RRP_DETACHED_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/rrp-post-stage-12-detached.XXXXXX")"
+export RRP_BUILD_ROOT="$RRP_SOFTWARE_ROOT/build"
+export RRP_BUILD_LIBRARY="$RRP_BUILD_ROOT/library"
+export RRP_DEPENDENCY_PROVENANCE="$RRP_BUILD_ROOT/dependency-provenance.dcf"
+export RRP_BUILD_ARCHIVE="$RRP_BUILD_ROOT/rrp-1.0.0-dev.tar"
+export RRP_ACQUISITION_ROOT="$RRP_SOFTWARE_ROOT/acquired"
+export RRP_ACQUIRED_ARCHIVE="$RRP_ACQUISITION_ROOT/rrp-1.0.0-dev.tar"
+export RRP_UNPACK_ROOT="$RRP_SOFTWARE_ROOT/unpacked"
+export RRP_DISTRIBUTION_ROOT="$RRP_UNPACK_ROOT/rrp-1.0.0-dev"
+export RRP_INSTALLATION_ROOT="$RRP_SOFTWARE_ROOT/installed-software"
+export RRP_EXECUTABLE_ROOT="$RRP_SOFTWARE_ROOT/bin"
+export RRP_CRAN_REPOSITORY="https://cloud.r-project.org"
+export RRP_SHELL_PATH_BEFORE_ASSESSMENT="$PATH"
 export RRP_PROJECT_ROOT="$RRP_ASSESSMENT_ROOT/fictional-hospital"
 export RRP_ORIGINAL_APP="$RRP_PROJECT_ROOT/app"
 export RRP_TIME_1_APP="$RRP_DETACHED_ROOT/app-time-1"
 export RRP_TIME_2_APP="$RRP_DETACHED_ROOT/app-time-2"
 export RRP_STANDALONE_LIBRARY="$RRP_DETACHED_ROOT/library"
+export RRP_RESTORE_TOOL_LIBRARY="$RRP_DETACHED_ROOT/restore-tool-library"
 export RRP_TIME_1="2026-01-19T12:00:00Z"
 export RRP_TIME_2="2026-01-20T12:00:00Z"
 export RRP_TIME_1_PORT="45821"
 export RRP_TIME_2_PORT="45822"
 
-printf 'Project root:  %s\n' "$RRP_ASSESSMENT_ROOT"
-printf 'Detached root: %s\n' "$RRP_DETACHED_ROOT"
+mkdir -p "$RRP_BUILD_LIBRARY" "$RRP_ACQUISITION_ROOT" "$RRP_UNPACK_ROOT"
+printf 'Source revision: %s\n' "$RRP_SOURCE_REVISION"
+printf 'Software root:  %s\n' "$RRP_SOFTWARE_ROOT"
+printf 'Project root:   %s\n' "$RRP_ASSESSMENT_ROOT"
+printf 'Detached root:  %s\n' "$RRP_DETACHED_ROOT"
+test ! -e "$RRP_INSTALLATION_ROOT"
+test ! -e "$RRP_EXECUTABLE_ROOT"
 test ! -e "$RRP_PROJECT_ROOT"
 test ! -e "$RRP_TIME_1_APP"
 test ! -e "$RRP_TIME_2_APP"
 ```
 
-The two printed roots should be siblings or otherwise canonically separate;
-neither should be the RRP source repository, an installed-software directory,
-or a normal user-library path. Keep this terminal open so later commands retain
-the variables.
+These roots establish three deliberately separate concerns:
+
+- **RRP software installation:** `$RRP_SOFTWARE_ROOT` contains the controlled
+  build library, copied distribution, installed realization, private runtime
+  library, and assessment-only launcher.
+- **RRP fictional project:** `$RRP_PROJECT_ROOT` contains project source,
+  durable analytical state and products, and the original managed `app/`.
+- **Detached application location:** `$RRP_DETACHED_ROOT` contains only copied
+  standalone applications and, when chosen later, their ordinary R dependency
+  library.
+
+None is a normal user library or default RRP location. If another RRP is
+already installed, these explicit roots and the later exact `command -v` check
+leave it untouched and prevent this session from silently using it.
+
+### Build and obtain the verified local distribution
+
+Provision the exact dependency closure into the empty build library and write
+the controlled provenance receipt required by the accepted distribution
+builder:
+
+```sh
+Rscript --vanilla - \
+  "$RRP_SOURCE_ROOT" \
+  "$RRP_BUILD_LIBRARY" \
+  "$RRP_CRAN_REPOSITORY" \
+  "$RRP_DEPENDENCY_PROVENANCE" <<'RRP_BUILD_DEPS'
+args <- commandArgs(trailingOnly = TRUE)
+source_root <- normalizePath(args[[1L]], winslash = "/", mustWork = TRUE)
+library_root <- normalizePath(args[[2L]], winslash = "/", mustWork = TRUE)
+repository <- args[[3L]]
+receipt <- args[[4L]]
+if (length(list.files(library_root, all.files = TRUE, no.. = TRUE))) {
+  stop("The controlled build library must be empty.")
+}
+.libPaths(c(library_root, .Library), include.site = FALSE)
+Sys.setenv(
+  RENV_CONFIG_CACHE_ENABLED = "FALSE",
+  RENV_CONFIG_AUTOLOADER_ENABLED = "FALSE",
+  RENV_PATHS_LIBRARY_STAGING = file.path(dirname(library_root), "renv-staging")
+)
+source(file.path(source_root, "tools", "distribution-lib.R"), local = TRUE)
+install.packages(
+  "renv", lib = library_root, repos = repository, dependencies = FALSE
+)
+package_type <- getOption("pkgType")
+if (identical(package_type, "both")) package_type <- "binary"
+available <- available.packages(repos = repository, type = package_type)
+direct <- distribution_direct_dependencies(source_root)
+missing_direct <- setdiff(direct, rownames(available))
+if (length(missing_direct)) {
+  stop("Configured repository lacks: ", paste(missing_direct, collapse = ", "))
+}
+graph <- tools::package_dependencies(
+  direct,
+  db = available,
+  which = c("Depends", "Imports", "LinkingTo"),
+  recursive = TRUE
+)
+closure <- sort(
+  intersect(
+    unique(c(direct, unlist(graph, use.names = FALSE))),
+    rownames(available)
+  ),
+  method = "radix"
+)
+specifications <- paste0(closure, "@", available[closure, "Version"])
+renv::install(
+  specifications,
+  library = library_root,
+  repos = c(CRAN = repository),
+  prompt = FALSE,
+  rebuild = TRUE,
+  dependencies = FALSE,
+  lock = FALSE
+)
+distribution_write_dependency_provenance(
+  source_root, library_root, repository, receipt
+)
+cat("Build dependency provenance:", receipt, "\n")
+RRP_BUILD_DEPS
+
+cd "$RRP_SOURCE_ROOT"
+R_LIBS_USER="$RRP_BUILD_LIBRARY" \
+R_LIBS_SITE= \
+RRP_CRAN_REPOSITORY="$RRP_CRAN_REPOSITORY" \
+RRP_DEPENDENCY_PROVENANCE="$RRP_DEPENDENCY_PROVENANCE" \
+  Rscript --vanilla tools/build-distribution.R "$RRP_BUILD_ARCHIVE"
+
+cp "$RRP_BUILD_ARCHIVE" "$RRP_ACQUIRED_ARCHIVE"
+tar -xf "$RRP_ACQUIRED_ARCHIVE" -C "$RRP_UNPACK_ROOT"
+test -d "$RRP_DISTRIBUTION_ROOT"
+cd "$RRP_DISTRIBUTION_ROOT"
+Rscript --vanilla verify-distribution.R .
+```
+
+The final build and verification messages must report `PASS distribution
+build` and `PASS distribution`. Do not continue from an unverified payload.
+This is the only repository-facing portion of the assessment.
+
+### Install and activate the isolated realization
+
+Install with the same R and exact configured repository, make only the
+assessment launcher first on this terminal's `PATH`, then activate the exact
+manifest selector:
+
+```sh
+cd "$RRP_DISTRIBUTION_ROOT"
+Rscript --vanilla install.R \
+  --repository "$RRP_CRAN_REPOSITORY" \
+  --installation-root "$RRP_INSTALLATION_ROOT" \
+  --executable-root "$RRP_EXECUTABLE_ROOT"
+
+export PATH="$RRP_EXECUTABLE_ROOT:$PATH"
+test -x "$RRP_EXECUTABLE_ROOT/rrp"
+test "$(command -v rrp)" = "$RRP_EXECUTABLE_ROOT/rrp"
+
+export RRP_PRODUCT_VERSION="$(awk -F ': ' '$1 == "Product-Version" { print $2 }' "$RRP_DISTRIBUTION_ROOT/manifest.dcf")"
+export RRP_DISTRIBUTION_ID="$(awk -F ': ' '$1 == "Distribution-ID" { print $2 }' "$RRP_DISTRIBUTION_ROOT/manifest.dcf")"
+export RRP_SELECTOR="$RRP_PRODUCT_VERSION/$RRP_DISTRIBUTION_ID"
+
+rrp software verify --software "$RRP_SELECTOR"
+rrp software doctor --software "$RRP_SELECTOR"
+rrp software activate "$RRP_SELECTOR"
+rrp software current
+rrp version
+```
+
+Installation must end with `PASS installation`; verification and doctor must
+succeed; `software current` must name `$RRP_SELECTOR`; and `command -v rrp`
+must remain exactly `$RRP_EXECUTABLE_ROOT/rrp`. The procedure does not use,
+replace, activate, or uninstall any pre-existing RRP realization.
 
 **Checkpoint**
 
-- **Action:** Confirm installed RRP and create the two disposable roots.
-- **Expected result:** RRP doctor succeeds; the project and detached-copy
-  destinations are absent and outside existing work.
+- **Action:** Build, verify, install, activate, and resolve the isolated RRP
+  realization.
+- **Expected result:** The exact copied distribution is verified, the isolated
+  selector is active, and this terminal resolves only its temporary launcher.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## C. Prepare one explicit time-1 product set
+Exact source revision used: __________________________________________
+
+### Create the project and its first product set
 
 Create and prepare the ordinary fictional project, validate it, and initialize
 its project-owned state:
@@ -127,7 +280,7 @@ rrp state inspect --project "$RRP_PROJECT_ROOT"
 ```
 
 Run the first governed analytical context and retain its generated scope
-identity. No fixed scope is assumed.
+identity. No fixed scope is assumed:
 
 ```sh
 export RRP_TIME_1_RUN_JSON="$(rrp run \
@@ -166,7 +319,7 @@ created these products; the explicit run and materialization are required.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## D. Initialize and inspect the project application
+## C. Phase 2 — Initialize and inspect the project application
 
 Create the normal standalone application at the absent default destination and
 validate it:
@@ -218,7 +371,7 @@ or digests.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## E. Prepare ordinary R dependencies
+## D. Prepare ordinary R dependencies
 
 Application-directory portability and R-package availability are separate.
 Copying `app/` copies its source, frozen products, and exact `renv.lock`; it
@@ -244,24 +397,31 @@ lock-based restoration. `renv` is only the restoration tool; the generated
 application has no automatic activation file and does not require `renv` after
 the selected library is populated.
 
-First make `renv` available to the ordinary R used for this assessment if it
-is not already installed:
-
-```r
-install.packages("renv", repos = "https://cloud.r-project.org")
-```
-
-Then restore the exact generated declaration into the separate assessment
-library:
+Keep the restoration tool and application runtime closure in separate
+assessment-owned libraries. This avoids modifying a normal user library and
+keeps `renv` out of the declared application closure:
 
 ```sh
-mkdir "$RRP_STANDALONE_LIBRARY"
+mkdir "$RRP_RESTORE_TOOL_LIBRARY" "$RRP_STANDALONE_LIBRARY"
+Rscript --vanilla - \
+  "$RRP_RESTORE_TOOL_LIBRARY" \
+  "$RRP_CRAN_REPOSITORY" <<'RRP_INSTALL_RENV'
+args <- commandArgs(trailingOnly = TRUE)
+tool_library <- normalizePath(args[[1L]], winslash = "/", mustWork = TRUE)
+install.packages(
+  "renv", lib = tool_library, repos = args[[2L]], dependencies = FALSE
+)
+RRP_INSTALL_RENV
+
 Rscript --vanilla - \
   "$RRP_ORIGINAL_APP" \
-  "$RRP_STANDALONE_LIBRARY" <<'RRP_RESTORE'
+  "$RRP_STANDALONE_LIBRARY" \
+  "$RRP_RESTORE_TOOL_LIBRARY" <<'RRP_RESTORE'
 args <- commandArgs(trailingOnly = TRUE)
 app <- normalizePath(args[[1L]], winslash = "/", mustWork = TRUE)
 library <- normalizePath(args[[2L]], winslash = "/", mustWork = TRUE)
+tool_library <- normalizePath(args[[3L]], winslash = "/", mustWork = TRUE)
+.libPaths(c(tool_library, .Library), include.site = FALSE)
 stopifnot(requireNamespace("renv", quietly = TRUE))
 renv::restore(
   project = app,
@@ -276,11 +436,12 @@ RRP_RESTORE
 The main workflow does not require manually auditing the current 72-package
 closure. Stage 12 automated qualification already established exact isolated
 resolution. This optional path lets the human observe dependency preparation
-without installing either RRP package into the standalone library.
+without installing either RRP package into the standalone library or reading
+the RRP installation's private runtime library.
 
 Record which option you used: __________________________________________
 
-## F. Run the original application with ordinary R
+## E. Run the original application with ordinary R
 
 For Option A, launch from a normal terminal with ordinary R:
 
@@ -326,7 +487,7 @@ starts.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## G. Copy and run the detached time-1 application
+## F. Copy and run the detached time-1 application
 
 Copy the entire directory—not selected source files and not project state—to
 the unrelated detached root:
@@ -368,7 +529,7 @@ Ctrl+C.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## H. Make one visible hospital-owned customization
+## G. Make one visible hospital-owned customization
 
 Customize the original project application, not `rrp-data/` and not the
 detached time-1 snapshot. Open:
@@ -390,7 +551,7 @@ Append this bounded CSS block:
 ```
 
 Save the file and rerun the original application using the command from
-Section F. The navigation brand should now end with “— standalone assessment.”
+Section E. The navigation brand should now end with “— standalone assessment.”
 The application should otherwise behave identically. Remove exactly that
 bounded block to restore the original style if desired.
 
@@ -412,7 +573,7 @@ rewrite it during refresh.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## I. Produce a distinct time-2 product set
+## H. Produce a distinct time-2 product set
 
 Return to the original project. Keep fictional source bytes unchanged, advance
 analytical time by one day, and use a distinct operation key:
@@ -454,7 +615,7 @@ materialization, not an application-side calculation.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## J. Refresh and inspect the original application
+## I. Refresh and inspect the original application
 
 Refresh only the original project application from the already-materialized
 time-2 set:
@@ -493,7 +654,7 @@ installations.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## K. Copy and run the refreshed time-2 application
+## J. Copy and run the refreshed time-2 application
 
 Keep the first copy intact and make a second complete snapshot:
 
@@ -532,7 +693,7 @@ with Ctrl+C.
 - **Observed result:** ________________________________________________
 - **Result:** [ ] Pass  [ ] Fail
 
-## L. Optional manual replacement workflow
+## K. Optional manual replacement workflow
 
 A likely hospital workflow is manual directory replacement after reviewing a
 fresh project application copy:
@@ -556,7 +717,7 @@ synchronizes arbitrary copies.
 
 Optional observation: _________________________________________________
 
-## M. Assessment results
+## L. Assessment results
 
 Complete this table only after personally performing the walkthrough.
 
@@ -605,7 +766,15 @@ Human usability observations are subsequent assessment evidence. They are not
 automated validation and do not themselves amend architecture, implementation,
 formal Stage 12 acceptance, release status, or deployment support.
 
-## N. Troubleshooting
+## M. Troubleshooting
+
+### Distribution preparation or installation fails
+
+Stop at the failing command. Confirm R 4.4.x, the named HTTPS repository,
+network access, package-compilation prerequisites, and `sha256sum` or `shasum`
+are available. Rerun only with a newly created software root and empty build
+library; do not substitute ambient packages, skip standalone verification, or
+install either RRP package directly from the checkout.
 
 ### `app/` does not exist
 
@@ -627,7 +796,7 @@ after inspecting it. There is no overwrite option.
 
 ### `shiny` or another declared package is missing
 
-Use Section E, Option B to restore the generated `renv.lock` into the isolated
+Use Section D, Option B to restore the generated `renv.lock` into the isolated
 assessment library. Do not install `rrpplatform` or `rrpruntime` into the
 standalone runtime.
 
@@ -671,16 +840,27 @@ Use separate foreground R sessions and distinct ports such as `45821` and
 Stop its foreground R process with Ctrl+C and confirm the local URL no longer
 responds before replacing files. Do not replace a directory being served.
 
-## O. Optional cleanup
+## N. Optional cleanup
 
 Stop every assessment Shiny process first and preserve any notes you want to
-keep. Print and validate both exact disposable targets:
+keep. Return to the retained source checkout, restore the shell's earlier
+`PATH`, and print and validate all three exact disposable targets:
 
 ```sh
+cd "$RRP_SOURCE_ROOT"
+export PATH="$RRP_SHELL_PATH_BEFORE_ASSESSMENT"
+hash -r
+
+printf 'Software cleanup target: %s\n' "$RRP_SOFTWARE_ROOT"
 printf 'Project cleanup target:  %s\n' "$RRP_ASSESSMENT_ROOT"
 printf 'Detached cleanup target: %s\n' "$RRP_DETACHED_ROOT"
+test -d "$RRP_SOFTWARE_ROOT"
 test -d "$RRP_ASSESSMENT_ROOT"
 test -d "$RRP_DETACHED_ROOT"
+case "$(basename "$RRP_SOFTWARE_ROOT")" in
+  rrp-post-stage-12-software.*) ;;
+  *) printf 'Refusing unexpected software target\n' >&2; exit 1 ;;
+esac
 case "$(basename "$RRP_ASSESSMENT_ROOT")" in
   rrp-post-stage-12-project.*) ;;
   *) printf 'Refusing unexpected project target\n' >&2; exit 1 ;;
@@ -691,10 +871,19 @@ case "$(basename "$RRP_DETACHED_ROOT")" in
 esac
 ```
 
-After those checks, remove only those two assessment-owned roots:
+The supported `rrp software uninstall SELECTOR --yes` operation removes an
+exact verified **inactive** realization, but deliberately refuses the final
+installed realization. It is neither required nor appropriate for this
+single-realization disposable proof. After the guards above, ordinary removal
+of the three assessment-owned temporary roots cleans up the isolated build,
+copied distribution, installation, project, detached applications, and both
+standalone dependency libraries together:
 
 ```sh
-rm -rf "$RRP_ASSESSMENT_ROOT" "$RRP_DETACHED_ROOT"
+rm -rf "$RRP_SOFTWARE_ROOT" "$RRP_ASSESSMENT_ROOT" "$RRP_DETACHED_ROOT"
+test ! -e "$RRP_SOFTWARE_ROOT"
+test ! -e "$RRP_ASSESSMENT_ROOT"
+test ! -e "$RRP_DETACHED_ROOT"
 ```
 
 Never apply that cleanup to an existing hospital project, installed RRP root,
