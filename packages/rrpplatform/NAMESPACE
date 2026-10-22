@@ -1,6 +1,8 @@
 export(rrp_initialize_project)
 export(rrp_initialize_fictional_project)
 export(rrp_initialize_app)
+export(rrp_refresh_app)
+export(rrp_validate_app)
 export(rrp_authoring_failure)
 export(rrp_register_authored_project)
 export(rrp_initialize_project_state)

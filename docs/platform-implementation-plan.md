@@ -16,12 +16,14 @@ not replace or rewrite the original Stage 11 acceptance decision. Stage 12 is
 the current stage. Its detailed plan was **formally accepted on 2026-10-20;
 Increment 12.A was formally accepted on 2026-10-21 at exact revision
 `be7a4b9f8603ad5fff8f9c789d9eb4af8a81a91c` after revision-matched hosted
-evidence**. Increment 12.B remains incomplete. Task 12.B.1 reached its
+evidence**. Task 12.B.1 reached its
 implemented checkpoint and was formally accepted internally on 2026-10-21 at
 exact revision `1f55dc21ab6a79547f677b44ea913e64f319012b` after
-revision-matched hosted evidence; Task 12.B.2 is the next authorized
-implementation task and has not begun. Increment 12.B and Stage 12 remain
-incomplete and are not formally accepted.
+revision-matched hosted evidence. Task 12.B.2 and the complete Increment 12.B
+are implementation-complete and locally qualified on 2026-10-22, pending
+maintainer review, a committed exact-revision hosted result, and separate
+formal human acceptance. Stage 12 remains incomplete and is not formally
+accepted; Increment 12.C is not authorized to begin.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -102,12 +104,13 @@ The original Stages 1–11 are accepted and complete; their detailed plans
 remain as implementation lineage. Post-acceptance Increment 11.I is an
 accepted bounded corrective amendment, not retroactive original scope and not
 Stage 12 work. Stage 12 is the current stage; its detailed plan is accepted,
-Increment 12.A is accepted, Increment 12.B remains incomplete under its
-accepted two-task internal execution plan, and Task 12.B.1 is an accepted
+Increment 12.A is accepted, and Task 12.B.1 is an accepted
 internal implementation checkpoint at exact revision
-`1f55dc21ab6a79547f677b44ea913e64f319012b`. Task 12.B.2 is the next
-authorized implementation task and has not begun; Increment 12.B and Stage 12
-remain incomplete and are not formally accepted. After a stage is
+`1f55dc21ab6a79547f677b44ea913e64f319012b`. Task 12.B.2 and the complete
+Increment 12.B are implementation-complete and locally qualified, but await
+committed exact-revision hosted qualification and formal human acceptance.
+Stage 12 remains incomplete and not formally accepted; Increment 12.C is not
+authorized. After a stage is
 implemented:
 
 1. validate its stated exit claim;
@@ -8538,9 +8541,10 @@ unstarted.
 **Planning status:** **Accepted — Increment 12.A accepted on 2026-10-21;
 12.B two-task execution plan accepted on 2026-10-21; Task 12.B.1 accepted as an
 internal implementation checkpoint on 2026-10-21 at revision
-`1f55dc21ab6a79547f677b44ea913e64f319012b`; Task 12.B.2 is next and has
-not begun; Increment 12.B and Stage 12 remain incomplete and not formally
-accepted**
+`1f55dc21ab6a79547f677b44ea913e64f319012b`; Task 12.B.2 and Increment 12.B
+implementation-complete and locally qualified on 2026-10-22, pending committed
+exact-revision hosted qualification and formal human acceptance; Stage 12
+remains incomplete and Increment 12.C is not authorized**
 
 ### Objective and responsibilities
 
@@ -9144,10 +9148,11 @@ manifest, Dockerfile, image, remote, publication, or deployment.
 
 **Dependency:** accepted 12.A.
 
-**Status:** incomplete and not accepted; its two-task internal execution plan
-is accepted, Task 12.B.1 is a formally accepted internal implementation
-checkpoint, and Task 12.B.2 is the next authorized implementation task but has
-not begun.
+**Status:** implementation-complete and locally qualified on 2026-10-22 but not
+formally accepted; its two-task internal execution plan is accepted, Task
+12.B.1 is a formally accepted internal implementation checkpoint, and Task
+12.B.2 is implementation-complete pending maintainer review, committed
+exact-revision hosted qualification, and formal human acceptance.
 
 **Objective and user-visible result:** an installed operator can initialize the
 default standalone app at `<project>/app/`, validate it, refresh only compatible
@@ -9203,8 +9208,9 @@ increment or formal acceptance boundary. Task 12.B.1 reached its implemented
 checkpoint and was formally accepted internally on 2026-10-21 at exact
 revision `1f55dc21ab6a79547f677b44ea913e64f319012b` after successful
 `package-foundation` run `39651326874`, job `119400104265`. This task-level
-governance decision does not accept Increment 12.B or Stage 12. Task 12.B.2 is
-the next authorized implementation task and has not begun.
+governance decision does not accept Increment 12.B or Stage 12. Task 12.B.2
+subsequently reached an implementation-complete, locally qualified state on
+2026-10-22; this factual progress is not formal increment acceptance.
 
 The repository supports this division because initialization and refresh have
 different mutation boundaries. Initialization owns an absent destination and
@@ -9290,8 +9296,9 @@ permitted.
 2026-10-21.** The accepted implementation revision is
 `1f55dc21ab6a79547f677b44ea913e64f319012b`; successful hosted evidence is
 `package-foundation` run `39651326874`, job `119400104265`. This task-level
-acceptance does not accept Increment 12.B or Stage 12. Task 12.B.2 is the next
-authorized implementation task and has not begun.
+acceptance does not accept Increment 12.B or Stage 12. Task 12.B.2 subsequently
+reached an implementation-complete, locally qualified state on 2026-10-22;
+formal Increment 12.B acceptance remains separate.
 
 ###### Task 12.B.2 — Managed refresh, detached validation, guidance, and 12.B qualification
 
@@ -9304,6 +9311,12 @@ the complete Increment 12.B evidence.
 separately directed 12.B.2 implementation task. It must reuse the stable
 resolver, managed-content representation, validator, current-set reader, result
 conventions, and initialization output rather than introduce parallel forms.
+
+**Implementation status:** **implementation-complete and locally qualified —
+2026-10-22.** The uncommitted candidate awaits maintainer review, a committed
+exact-revision Ubuntu/R 4.4 result, and a separate formal Increment 12.B
+acceptance decision. Stage 12 remains incomplete, and Increment 12.C is not
+authorized to begin.
 
 **Authorized implementation scope:**
 

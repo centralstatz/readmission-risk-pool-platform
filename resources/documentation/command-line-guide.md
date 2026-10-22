@@ -32,7 +32,7 @@ rrp state backup|restore PATH [--project PATH] [...] [--json]
 rrp run --at TIME --operation-key KEY [--project PATH] [--json]
 rrp history scope|episode|current|retry|invalidate|restate ...
 rrp products materialize|status ...
-rrp app launch ...
+rrp app init|refresh|validate|launch ...
 ```
 
 It also implements the software installation and selection surface:
@@ -71,9 +71,13 @@ backup, analytical runs, retries, corrections, and product materialization are
 distinct explicit mutations. Restore and history correction additionally
 require confirmation; use `--yes` for deliberate noninteractive operation.
 Project validation, diagnosis/status, state inspection, history reads, product
-status, and application launch are analytically read-only. `run`, `products`,
-and `app` remain separate intentions: a run never publishes products, product
-materialization never estimates risk, and app launch never refreshes either.
+status, application validation, and application launch are analytically
+read-only. Application initialization is create-only; refresh is a bounded
+managed-content mutation. `run`, `products`, and `app` remain separate
+intentions: a run never publishes products, product materialization never
+estimates risk, and application refresh consumes only an already-materialized
+exact product set. See the Standalone Application Guide for ownership,
+detached validation, and recovery boundaries.
 
 Human-readable output is the default. `--json` selects the one versioned,
 privacy-safe machine result derived from the same operation. Warnings remain

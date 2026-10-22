@@ -31,14 +31,18 @@ project status, product build-and-materialize composition, and installed
 fictional-source preparation operation and the thin version-specific command
 dispatcher over accepted project, state, run, history, product, and application
 operations.
+It creates hospital-owned standalone applications, refreshes only their
+reserved managed analytical products through atomic current-set promotion,
+and validates detached managed content without executing hospital source.
 }
 \details{
-The package imports the \pkg{rrpruntime} namespace and exports exactly 34
+The package imports the \pkg{rrpruntime} namespace and exports exactly 36
 technical interfaces. These include project, execution, history, state,
 logical-product, materialization/access, resource-validation, and supplied-
 application operations plus \code{rrp_cli_dispatch()} as the version-specific
-command boundary. \code{rrp_launch_app()} is the sole application launch
-operation. The dispatcher receives one explicit installed-software context and
+command boundary. \code{rrp_launch_app()} remains the installed application
+launch operation; standalone initialization, managed refresh, and detached
+validation are separate operations. The dispatcher receives one explicit installed-software context and
 resolves an existing project from exactly \code{--project} or the current
 directory; it does not discover parent, Git, registry, or remembered projects.
 The loader evaluates trusted project registration in

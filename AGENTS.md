@@ -280,6 +280,10 @@ registration. The output combines the authoritative portable source with an
 exact dependency lock, frozen product/presentation content, immutable
 provenance, a content-sensitive managed set and current pointer, legal/readme
 material, and package-independent runtime loading. Its local implementation
-checkpoint is complete and awaits human review. Task 12.B.2, Increment 12.B,
-and Stage 12 remain incomplete; no refresh, public detached validation,
+checkpoint is formally accepted. Task 12.B.2 grows the catalog to 75 resources
+and the `rrpplatform` surface to 36 exports, adding exact-product managed
+refresh, atomic current-record promotion, bounded prior-set retention and
+cleanup, detached nonexecuting managed-content validation, and the installed
+Standalone Application Guide. Increment 12.B is implementation-complete and
+locally qualified but not formally accepted; Stage 12 remains incomplete. No
 deployment, image, publication, or remote behavior exists.

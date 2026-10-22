@@ -23,7 +23,7 @@ Package: rrpplatform
 Package-Root: packages/rrpplatform
 Excluded-Directories: tests
 Files: DESCRIPTION,NAMESPACE,README.md,R/application-contracts.R,
- R/application-initializer.R,R/application.R,R/canonical-contracts.R,R/cli.R,R/duckdb-history.R,
+ R/application-initializer.R,R/application-lifecycle.R,R/application.R,R/canonical-contracts.R,R/cli.R,R/duckdb-history.R,
  R/durable-history.R,R/lifecycle-contracts.R,
  R/lifecycle-operations.R,R/logical-products.R,R/operation-result.R,
  R/producer-execution.R,R/product-contracts.R,
@@ -48,6 +48,7 @@ Files: DESCRIPTION,NAMESPACE,README.md,R/application-contracts.R,
  man/rrp_prepare_fictional_source.Rd,man/rrp_product_access.Rd,
  man/rrp_project_authoring.Rd,man/rrp_project_state_backup.Rd,
  man/rrp_project_status.Rd,man/rrp_resource_path.Rd,
+ man/rrp_refresh_app.Rd,man/rrp_validate_app.Rd,
  man/rrp_validate_project.Rd,
  man/rrp_validate_software_resources.Rd,
  man/rrpplatform-package.Rd

@@ -597,3 +597,11 @@ Owner-Package: rrpplatform
 Source-Path: resources/documentation/software-lifecycle-guide.md
 Installed-Path: resources/documentation/software-lifecycle-guide.md
 Format: md
+
+Record-Type: resource
+Resource-ID: rrp.documentation.standalone-application-guide
+Resource-Class: documentation
+Owner-Package: rrpplatform
+Source-Path: resources/documentation/standalone-application-guide.md
+Installed-Path: resources/documentation/standalone-application-guide.md
+Format: md

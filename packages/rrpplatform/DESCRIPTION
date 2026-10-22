@@ -45,6 +45,10 @@ Description: Establishes the main internal implementation package for the
     bootstrap mechanics without project access. It also owns strict installed-
     software enumeration, verification, diagnosis, exact selection, and atomic
     activation behind a stable project-independent per-user launcher.
+    It creates hospital-owned standalone applications, atomically refreshes
+    only their reserved managed analytical products from exact existing
+    materializations, and validates detached managed content without executing
+    hospital application source.
 License: Apache License (>= 2)
 URL: https://github.com/centralstatz/readmission-risk-pool-platform
 BugReports: https://github.com/centralstatz/readmission-risk-pool-platform/issues

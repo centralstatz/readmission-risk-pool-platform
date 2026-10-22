@@ -43,7 +43,10 @@ portable source set for pure view models, UI, server, and generic loopback
 Shiny composition. The portable source also owns strict independent loading of
 the accepted frozen DCF/CSV product and detached-presentation representations;
 it has no RRP, project, analytical, state/history, or provider runtime
-dependency. No standalone project application is generated yet.
+dependency. Create-only initialization produces a conventional hospital-owned
+standalone application. Subsequent refresh atomically changes only its reserved
+`rrp-data/` products, while detached validation checks those products without
+executing hospital application source.
 The useful installed experience provides the Current Risk Pool and Overview,
 deterministic Reactable filtering/paging/selection, truthful actual-observation
 sparklines, one Plotly trajectory detail with an exact observation table,

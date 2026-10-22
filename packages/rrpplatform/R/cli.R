@@ -93,6 +93,8 @@ rrp_cli_noun_help <- function(noun) {
     app = c(
       "Available now:",
       "  rrp app init --scope ID --cutoff TIME [--project PATH] [--output PATH] [--json]",
+      "  rrp app refresh --scope ID --cutoff TIME [--project PATH] [--app PATH] [--json]",
+      "  rrp app validate [--project PATH] [--app PATH] [--json]",
       "  rrp app launch [--scope ID --cutoff TIME] [--project PATH] [--port PORT] [--browser] [--json]"
     ),
     run = c(
@@ -757,6 +759,55 @@ rrp_cli_parse <- function(arguments, working_directory = ".") {
     ))
   }
 
+  if (identical(noun, "app") && identical(action, "refresh")) {
+    options <- rrp_cli_parse_options(
+      remaining, c("scope", "cutoff", "project", "app")
+    )
+    if (length(options$positionals) || options$yes) rrp_cli_usage_abort(
+      "invalid_app_refresh_arguments", "Application refresh arguments are invalid."
+    )
+    rrp_cli_require_values(options, c("scope", "cutoff"),
+      "Application refresh")
+    return(rrp_cli_operation(
+      "app_refresh", options,
+      project_root = rrp_cli_resolve_project(
+        options$values$project, working_directory
+      ),
+      operation_run_id = rrp_cli_parse_identity(
+        options$values$scope, "Operation-run identity"
+      ),
+      history_cutoff = rrp_cli_parse_time(
+        options$values$cutoff, "History cutoff"
+      ),
+      app_path = if (is.null(options$values$app)) NULL else {
+        rrp_cli_normalize_directory(
+          options$values$app, working_directory, "Application path"
+        )
+      }
+    ))
+  }
+
+  if (identical(noun, "app") && identical(action, "validate")) {
+    options <- rrp_cli_parse_options(remaining, c("project", "app"))
+    if (length(options$positionals) || options$yes) rrp_cli_usage_abort(
+      "invalid_app_validate_arguments", "Application validation arguments are invalid."
+    )
+    project <- if (is.null(options$values$app) ||
+        !is.null(options$values$project)) {
+      rrp_cli_resolve_project(options$values$project, working_directory)
+    } else NULL
+    return(rrp_cli_operation(
+      "app_validate", options, project_root = project,
+      app_path = if (is.null(options$values$app)) {
+        file.path(project, "app")
+      } else {
+        rrp_cli_normalize_directory(
+          options$values$app, working_directory, "Application path"
+        )
+      }
+    ))
+  }
+
   if (identical(noun, "app") && identical(action, "launch")) {
     options <- rrp_cli_parse_options(
       remaining, c("scope", "cutoff", "project", "port"), "browser"
@@ -1180,6 +1231,20 @@ rrp_cli_value_fields <- function(operation_id) {
       "application_id", "application_version", "destination",
       "product_set_id", "source_operation_run_id", "source_history_cutoff"
     ),
+    "rrp.refresh-app" = c(
+      "application_id", "application_version", "application_path",
+      "previous_product_set_id", "product_set_id", "materialization_id",
+      "source_operation_run_id", "source_history_cutoff", "changed",
+      "managed_content_status", "inactive_set_count", "stale_work_count"
+    ),
+    "rrp.validate-app" = c(
+      "application_id", "application_version", "application_path",
+      "managed_content_status", "product_set_id", "materialization_id",
+      "source_operation_run_id", "source_history_cutoff",
+      "managed_inventory_status", "initial_provenance_status",
+      "source_baseline_status", "inactive_set_count",
+      "invalid_inactive_set_count", "stale_work_count"
+    ),
     character()
   )
 }
@@ -1368,6 +1433,8 @@ rrp_cli_curate_result <- function(result) {
     ),
     "rrp.launch-app" = source,
     "rrp.initialize-app" = source,
+    "rrp.refresh-app" = source,
+    "rrp.validate-app" = source,
     stop("CLI result operation is unsupported.", call. = FALSE)
   )
   rrp_cli_result_with_value(result, value)
@@ -1394,7 +1461,8 @@ rrp_cli_result_payload <- function(result, cli_contract) {
     "rrp.inspect-current-history", "rrp.retry-episode",
     "rrp.invalidate-history", "rrp.restate-history",
     "rrp.build-and-materialize-products", "rrp.open-product-access",
-    "rrp.launch-app", "rrp.initialize-app", "rrp.cli", "rrp.cli-preflight"
+    "rrp.launch-app", "rrp.initialize-app", "rrp.refresh-app",
+    "rrp.validate-app", "rrp.cli", "rrp.cli-preflight"
   )) stop("CLI result operation is unsupported.", call. = FALSE)
   if (identical(result$status, "success")) {
     rrp_cli_validate_curated_value(result$value, result$operation_id)
@@ -1682,6 +1750,13 @@ rrp_cli_execute <- function(parsed, context, operation_overrides = list()) {
     app_init = function() rrp_initialize_app(
       context$catalog, parsed$project_root, parsed$operation_run_id,
       parsed$history_cutoff, parsed$output_path
+    ),
+    app_refresh = function() rrp_refresh_app(
+      context$catalog, parsed$project_root, parsed$operation_run_id,
+      parsed$history_cutoff, parsed$app_path
+    ),
+    app_validate = function() rrp_validate_app(
+      context$catalog, parsed$app_path
     ),
     stop("Invalid internal CLI command.", call. = FALSE)
   )

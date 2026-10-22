@@ -500,6 +500,291 @@ if (file.exists(file.path(software_root, "manifest.dcf"))) {
       "application_products_stale"),
     !file.exists(later_cutoff_root), !dir.exists(later_cutoff_root)
   )
+
+  # Complete 12.B lifecycle: hospital source changes remain outside RRP's
+  # reserved boundary while a later, already-materialized set is promoted.
+  writeLines(c(readLines(file.path(app_root, "app.R"), warn = FALSE),
+    "# hospital customization"), file.path(app_root, "app.R"), useBytes = TRUE)
+  writeLines(c(readLines(file.path(app_root, "R", "application-ui.R"),
+    warn = FALSE), "# hospital module customization"),
+    file.path(app_root, "R", "application-ui.R"), useBytes = TRUE)
+  writeLines(c(readLines(file.path(app_root, "www", "rrp.css"), warn = FALSE),
+    "/* hospital style */"), file.path(app_root, "www", "rrp.css"),
+    useBytes = TRUE)
+  writeLines(c(readLines(file.path(app_root, "README.md"), warn = FALSE),
+    "Hospital operating note."), file.path(app_root, "README.md"),
+    useBytes = TRUE)
+  writeLines("hospital dependency declaration", file.path(app_root, "DESCRIPTION"))
+  dir.create(file.path(app_root, "R", "hospital"))
+  writeLines("hospital_helper <- function() TRUE",
+    file.path(app_root, "R", "hospital", "helper.R"))
+  writeBin(as.raw(c(1L, 2L, 3L)), file.path(app_root, "www", "hospital.bin"))
+  dir.create(file.path(app_root, "deployment"))
+  writeLines("operator: owned", file.path(app_root, "deployment", "config.yml"))
+  dir.create(file.path(app_root, ".git"))
+  writeLines("ref: refs/heads/main", file.path(app_root, ".git", "HEAD"))
+  writeLines("unrelated", file.path(app_root, "HOSPITAL-NOTES.md"))
+  execution_marker <- file.path(suite, "detached-source-executed")
+  writeLines(paste0("writeLines('executed', ", dQuote(execution_marker), ")"),
+    file.path(app_root, "R", "execute-if-sourced.R"), useBytes = TRUE)
+  outside_files <- function(root) {
+    values <- list.files(root, recursive = TRUE, all.files = TRUE,
+      no.. = TRUE, full.names = FALSE, include.dirs = FALSE)
+    values[!startsWith(values, "rrp-data/")]
+  }
+  outside_snapshot <- function(root) {
+    paths <- sort(outside_files(root), method = "radix")
+    structure(lapply(paths, function(path) read_bytes(file.path(root, path))),
+      names = paths)
+  }
+  source_before_refresh <- outside_snapshot(app_root)
+  initialization_before_refresh <- read_bytes(file.path(
+    app_root, "rrp-initialization.dcf"
+  ))
+  history_before_refresh <- read_bytes(history_path)
+  stopifnot(rrp_operation_succeeded(rrp_materialize_product_set(
+    catalog, project, newer_set$value
+  )))
+  source_materialization_before <- list.files(product_root, recursive = TRUE,
+    all.files = TRUE, no.. = TRUE, full.names = FALSE)
+  source_materialization_bytes <- structure(lapply(
+    source_materialization_before,
+    function(path) read_bytes(file.path(product_root, path))
+  ), names = source_materialization_before)
+  before_refresh_validation <- rrp_validate_app(catalog, app_root)
+  if (!rrp_operation_succeeded(before_refresh_validation)) stop(
+    paste0("Pre-refresh standalone validation failed: ",
+      before_refresh_validation$diagnostics[[1L]]$code), call. = FALSE
+  )
+  pointer_before_refresh <- read_bytes(file.path(app_root, "rrp-data", "current.dcf"))
+  refreshed <- rrp_refresh_app(
+    catalog, project, newer_run$value$operation_run_id, newer_time
+  )
+  if (!rrp_operation_succeeded(refreshed)) stop(
+    paste0("Standalone refresh failed: ", refreshed$diagnostics[[1L]]$code),
+    call. = FALSE
+  )
+  validated <- rrp_validate_app(catalog, app_root)
+  stopifnot(
+    rrp_operation_succeeded(refreshed), isTRUE(refreshed$value$changed),
+    identical(refreshed$value$previous_product_set_id,
+      application$value$product_set_id),
+    identical(refreshed$value$product_set_id, newer_set$value$product_set_id),
+    !identical(read_bytes(file.path(app_root, "rrp-data", "current.dcf")),
+      pointer_before_refresh),
+    rrp_operation_succeeded(validated),
+    identical(validated$value$product_set_id, newer_set$value$product_set_id),
+    identical(validated$value$managed_content_status, "valid"),
+    identical(validated$value$initial_provenance_status, "available"),
+    identical(validated$value$source_baseline_status, "drifted"),
+    identical(outside_snapshot(app_root), source_before_refresh),
+    identical(read_bytes(file.path(app_root, "rrp-initialization.dcf")),
+      initialization_before_refresh),
+    identical(read_bytes(history_path), history_before_refresh),
+    identical(list.files(product_root, recursive = TRUE, all.files = TRUE,
+      no.. = TRUE, full.names = FALSE), source_materialization_before),
+    identical(structure(lapply(source_materialization_before,
+      function(path) read_bytes(file.path(product_root, path))),
+      names = source_materialization_before), source_materialization_bytes),
+    !file.exists(execution_marker)
+  )
+  repeated <- rrp_refresh_app(
+    catalog, project, newer_run$value$operation_run_id, newer_time
+  )
+  stopifnot(
+    rrp_operation_succeeded(repeated), !isTRUE(repeated$value$changed),
+    identical(repeated$value$product_set_id, newer_set$value$product_set_id),
+    identical(outside_snapshot(app_root), source_before_refresh)
+  )
+
+  # A detached copy requires neither the project nor application-source
+  # execution. Initial evidence may drift or disappear without weakening the
+  # independent managed-content result.
+  detached <- copy_project(app_root, file.path(suite, "detached"), "app")
+  detached_before <- outside_snapshot(detached)
+  detached_valid <- rrp_validate_app(catalog, detached)
+  stopifnot(
+    rrp_operation_succeeded(detached_valid),
+    identical(detached_valid$value$product_set_id, newer_set$value$product_set_id),
+    identical(detached_valid$value$source_baseline_status, "drifted"),
+    identical(outside_snapshot(detached), detached_before),
+    !file.exists(execution_marker)
+  )
+  unlink(file.path(detached, "rrp-initialization.dcf"))
+  missing_initial <- rrp_validate_app(catalog, detached)
+  stopifnot(
+    rrp_operation_succeeded(missing_initial),
+    identical(missing_initial$value$initial_provenance_status, "missing"),
+    identical(missing_initial$value$source_baseline_status, "unavailable")
+  )
+  writeLines("altered", file.path(detached, "rrp-initialization.dcf"))
+  invalid_initial <- rrp_validate_app(catalog, detached)
+  stopifnot(
+    rrp_operation_succeeded(invalid_initial),
+    identical(invalid_initial$value$initial_provenance_status, "invalid"),
+    identical(invalid_initial$value$source_baseline_status, "unavailable")
+  )
+
+  # Every precommit injection retains the old active set. Postcommit
+  # injections report committed uncertainty while retaining the new valid set.
+  refresh_internal <- getFromNamespace("rrp_app_refresh", "rrpplatform")
+  precommit <- c(
+    "before_staging", "during_staged_construction",
+    "during_staged_validation", "before_pointer_replacement"
+  )
+  for (stage in precommit) {
+    target <- copy_project(alternative_root, file.path(suite, paste0("fail-", stage)), "app")
+    old_pointer <- read_bytes(file.path(target, "rrp-data", "current.dcf"))
+    failed <- refresh_internal(
+      catalog, project, newer_run$value$operation_run_id, newer_time,
+      target, failure_stage = stage
+    )
+    stopifnot(
+      !rrp_operation_succeeded(failed),
+      identical(failed$diagnostics[[1L]]$code, "application_injected_failure"),
+      identical(read_bytes(file.path(target, "rrp-data", "current.dcf")),
+        old_pointer),
+      rrp_operation_succeeded(rrp_validate_app(catalog, target))
+    )
+  }
+  for (stage in c("after_pointer_replacement", "during_cleanup")) {
+    target <- copy_project(alternative_root, file.path(suite, paste0("fail-", stage)), "app")
+    failed <- refresh_internal(
+      catalog, project, newer_run$value$operation_run_id, newer_time,
+      target, failure_stage = stage
+    )
+    after_failure <- rrp_validate_app(catalog, target)
+    stopifnot(
+      !rrp_operation_succeeded(failed),
+      identical(failed$diagnostics[[1L]]$code, "application_refresh_committed"),
+      rrp_operation_succeeded(after_failure),
+      identical(after_failure$value$product_set_id, newer_set$value$product_set_id),
+      rrp_operation_succeeded(rrp_refresh_app(
+        catalog, project, newer_run$value$operation_run_id, newer_time, target
+      ))
+    )
+  }
+  cleanup_target <- copy_project(alternative_root,
+    file.path(suite, "bounded-cleanup"), "app")
+  cleanup_pointer <- read.dcf(file.path(cleanup_target, "rrp-data", "current.dcf"),
+    all = TRUE)[1L, , drop = TRUE]
+  cleanup_source <- file.path(cleanup_target, "rrp-data",
+    cleanup_pointer[["Set-Directory"]])
+  cleanup_copy_parent <- file.path(suite, "bounded-cleanup-copy")
+  dir.create(cleanup_copy_parent)
+  stopifnot(file.copy(cleanup_source, cleanup_copy_parent,
+    recursive = TRUE, copy.mode = FALSE))
+  obsolete <- file.path(cleanup_target, "rrp-data", "sets",
+    "set-111111111111111111111111")
+  stopifnot(file.rename(file.path(cleanup_copy_parent, basename(cleanup_source)),
+    obsolete))
+  cleanup_refresh <- rrp_refresh_app(
+    catalog, project, newer_run$value$operation_run_id, newer_time,
+    cleanup_target
+  )
+  cleanup_validation <- rrp_validate_app(catalog, cleanup_target)
+  stopifnot(
+    rrp_operation_succeeded(cleanup_refresh),
+    !dir.exists(obsolete),
+    rrp_operation_succeeded(cleanup_validation),
+    identical(cleanup_validation$value$inactive_set_count, 1L)
+  )
+  changed_pointer <- copy_project(alternative_root,
+    file.path(suite, "pointer-race"), "app")
+  race <- refresh_internal(
+    catalog, project, newer_run$value$operation_run_id, newer_time,
+    changed_pointer, promotion_hook = function(path) writeBin(
+      c(read_bytes(path), charToRaw("\n")), path
+    )
+  )
+  stopifnot(
+    !rrp_operation_succeeded(race),
+    identical(race$diagnostics[[1L]]$code, "application_current_changed"),
+    rrp_operation_succeeded(rrp_validate_app(catalog, changed_pointer))
+  )
+
+  # Managed corruption, traversal, links, and reserved-path collisions fail
+  # closed without touching any hospital-owned source byte.
+  corrupt_managed <- copy_project(app_root,
+    file.path(suite, "corrupt-managed"), "app")
+  active <- read.dcf(file.path(corrupt_managed, "rrp-data", "current.dcf"),
+    all = TRUE)[1L, "Set-Directory"]
+  member <- file.path(corrupt_managed, "rrp-data", active,
+    "current-remaining-risk.csv")
+  writeBin(c(read_bytes(member), charToRaw("corrupt")), member)
+  corrupt_before <- outside_snapshot(corrupt_managed)
+  corrupt_result <- rrp_validate_app(catalog, corrupt_managed)
+  corrupt_refresh <- rrp_refresh_app(
+    catalog, project, newer_run$value$operation_run_id, newer_time,
+    corrupt_managed
+  )
+  stopifnot(
+    !rrp_operation_succeeded(corrupt_result),
+    !rrp_operation_succeeded(corrupt_refresh),
+    identical(outside_snapshot(corrupt_managed), corrupt_before)
+  )
+  traversal <- copy_project(app_root, file.path(suite, "traversal"), "app")
+  traversal_pointer <- file.path(traversal, "rrp-data", "current.dcf")
+  traversal_lines <- readLines(traversal_pointer, warn = FALSE)
+  traversal_lines <- sub("^Set-Directory: .*$", "Set-Directory: ../outside",
+    traversal_lines)
+  writeLines(traversal_lines, traversal_pointer, useBytes = TRUE)
+  stopifnot(!rrp_operation_succeeded(rrp_validate_app(catalog, traversal)))
+  linked <- copy_project(app_root, file.path(suite, "linked-managed"), "app")
+  linked_presentation <- file.path(linked, "rrp-data", "presentation.dcf")
+  linked_target <- file.path(suite, "outside-presentation.dcf")
+  stopifnot(file.copy(linked_presentation, linked_target),
+    unlink(linked_presentation) == 0L)
+  if (isTRUE(file.symlink(linked_target, linked_presentation))) {
+    stopifnot(!rrp_operation_succeeded(rrp_validate_app(catalog, linked)))
+  }
+  collision <- copy_project(app_root, file.path(suite, "collision"), "app")
+  writeLines("unexpected", file.path(collision, "rrp-data", "unexpected"))
+  stopifnot(!rrp_operation_succeeded(rrp_validate_app(catalog, collision)))
+
+  inactive <- copy_project(app_root, file.path(suite, "inactive"), "app")
+  inactive_pointer <- read.dcf(file.path(inactive, "rrp-data", "current.dcf"),
+    all = TRUE)[1L, , drop = TRUE]
+  inactive_source <- file.path(inactive, "rrp-data",
+    inactive_pointer[["Set-Directory"]])
+  inactive_name <- "set-000000000000000000000000"
+  inactive_copy_parent <- file.path(suite, "inactive-set-copy")
+  dir.create(inactive_copy_parent)
+  stopifnot(file.copy(inactive_source, inactive_copy_parent,
+    recursive = TRUE, copy.mode = FALSE))
+  copied_inactive <- file.path(inactive_copy_parent, basename(inactive_source))
+  stopifnot(file.rename(copied_inactive,
+    file.path(inactive, "rrp-data", "sets", inactive_name)))
+  inactive_member <- file.path(inactive, "rrp-data", "sets", inactive_name,
+    "current-remaining-risk.csv")
+  writeBin(c(read_bytes(inactive_member), charToRaw("corrupt")), inactive_member)
+  incomplete <- file.path(inactive, "rrp-data", "sets",
+    ".rrp-set-staging-interrupted")
+  dir.create(incomplete)
+  writeLines("partial", file.path(incomplete, "products.dcf"))
+  inactive_result <- rrp_validate_app(catalog, inactive)
+  stopifnot(
+    rrp_operation_succeeded(inactive_result),
+    identical(inactive_result$value$invalid_inactive_set_count, 1L),
+    identical(inactive_result$value$stale_work_count, 1L)
+  )
+
+  old_pointer <- read_bytes(file.path(app_root, "rrp-data", "current.dcf"))
+  stale_refresh <- rrp_refresh_app(
+    catalog, project, second_run$value$operation_run_id, second_time, app_root
+  )
+  corrupt_source_refresh <- rrp_refresh_app(
+    catalog, corrupt, second_run$value$operation_run_id, second_time, app_root
+  )
+  stopifnot(
+    !rrp_operation_succeeded(stale_refresh),
+    identical(stale_refresh$diagnostics[[1L]]$code,
+      "application_products_stale"),
+    !rrp_operation_succeeded(corrupt_source_refresh),
+    identical(read_bytes(file.path(app_root, "rrp-data", "current.dcf")),
+      old_pointer),
+    identical(outside_snapshot(app_root), source_before_refresh)
+  )
 }
 
 if (length(arguments) >= 2L && nzchar(arguments[[2L]])) {

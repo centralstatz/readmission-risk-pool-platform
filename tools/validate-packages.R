@@ -2159,6 +2159,10 @@ validate_installed_documentation_resources <- function(
     software_lifecycle = c(
       id = "rrp.documentation.software-lifecycle-guide",
       path = "resources/documentation/software-lifecycle-guide.md"
+    ),
+    standalone_application = c(
+      id = "rrp.documentation.standalone-application-guide",
+      path = "resources/documentation/standalone-application-guide.md"
     )
   )
   ids <- vapply(authority$entries, `[[`, character(1L), "Resource-ID")
@@ -2712,6 +2716,7 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.documentation.distribution-guide",
     "rrp.documentation.installation-guide",
     "rrp.documentation.software-lifecycle-guide",
+    "rrp.documentation.standalone-application-guide",
     "rrp.application.portable-core",
     "rrp.application.portable-products",
     "rrp.application.portable-ui",
@@ -2721,12 +2726,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 74L && identical(
+    length(actual_ids) == 75L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 74 known entries."
+    "The software resource inventory must contain exactly 75 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -3172,6 +3177,7 @@ package_expected_files <- function(package_name) {
       file.path("R", "application-contracts.R"),
       file.path("R", "application.R"),
       file.path("R", "application-initializer.R"),
+      file.path("R", "application-lifecycle.R"),
       file.path("R", "canonical-contracts.R"),
       file.path("R", "cli.R"),
       file.path("R", "duckdb-history.R"),
@@ -3200,6 +3206,8 @@ package_expected_files <- function(package_name) {
       file.path("man", "rrp_cli_dispatch.Rd"),
       file.path("man", "rrp_launch_app.Rd"),
       file.path("man", "rrp_initialize_app.Rd"),
+      file.path("man", "rrp_refresh_app.Rd"),
+      file.path("man", "rrp_validate_app.Rd"),
       file.path("man", "rrp_build_product_set.Rd"),
       file.path("man", "rrp_materialize_product_set.Rd"),
       file.path("man", "rrp_open_product_access.Rd"),
@@ -3224,6 +3232,7 @@ package_expected_files <- function(package_name) {
       file.path("tests", "operation-results.R"),
       file.path("tests", "application-foundation.R"),
       file.path("tests", "application-initializer.R"),
+      file.path("tests", "application-lifecycle.R"),
       file.path("tests", "application-experience.R"),
       file.path("tests", "logical-products.R"),
       file.path("tests", "lifecycle-contracts.R"),
@@ -3438,9 +3447,11 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
       "rrp_prepare_fictional_source", "rrp_project_status",
-      "rrp_read_product", "rrp_register_authored_project", "rrp_resource_path",
+      "rrp_read_product", "rrp_refresh_app", "rrp_register_authored_project",
+      "rrp_resource_path",
       "rrp_restate_history", "rrp_restore_project_state",
       "rrp_retry_episode",
+      "rrp_validate_app",
       "rrp_validate_project",
       "rrp_validate_software_resources"
     )
@@ -3473,6 +3484,8 @@ validate_package_metadata <- function(package_root, package_name, spec) {
       "export(rrp_initialize_project)",
       "export(rrp_initialize_fictional_project)",
       "export(rrp_initialize_app)",
+      "export(rrp_refresh_app)",
+      "export(rrp_validate_app)",
       "export(rrp_authoring_failure)",
       "export(rrp_register_authored_project)",
       "export(rrp_initialize_project_state)",
@@ -3709,10 +3722,11 @@ validate_source_boundaries <- function(package_roots) {
     identical(
       sort(files_with_source, method = "radix"),
       c(
-        "application.R", "lifecycle-operations.R", "project-authoring.R",
-        "project-loader.R"
+        "application-lifecycle.R", "application.R", "lifecycle-operations.R",
+        "project-authoring.R", "project-loader.R"
       )
     ) &&
+      length(source_calls[["application-lifecycle.R"]]) == 1L &&
       length(source_calls[["application.R"]]) == 1L &&
       length(source_calls[["lifecycle-operations.R"]]) == 1L &&
       length(source_calls[["project-authoring.R"]]) == 1L &&
@@ -3724,7 +3738,8 @@ validate_source_boundaries <- function(package_roots) {
     paste0(
       "rrpplatform may evaluate source only through the fixed trusted ",
       "registration boundary, closed standard-authoring files, cataloged ",
-      "fictional-only generator, and cataloged portable application members."
+      "fictional-only generator, and cataloged portable/managed application ",
+      "members."
     )
   )
 }
@@ -4251,9 +4266,11 @@ load_package_fresh <- function(package_name, library_root) {
       "\"rrp_prepare_fictional_source\", ",
       "\"rrp_project_status\", ",
       "\"rrp_read_product\", ",
+      "\"rrp_refresh_app\", ",
       "\"rrp_register_authored_project\", \"rrp_resource_path\", ",
       "\"rrp_restate_history\", ",
       "\"rrp_restore_project_state\", \"rrp_retry_episode\", ",
+      "\"rrp_validate_app\", ",
       "\"rrp_validate_project\", ",
       "\"rrp_validate_software_resources\")"
     )
@@ -4435,7 +4452,9 @@ validate_installed_resource_access <- function(library_root, work_root) {
     distribution_guide = "resources/documentation/distribution-guide.md",
     installation_guide = "resources/documentation/installation-guide.md",
     software_lifecycle_guide =
-      "resources/documentation/software-lifecycle-guide.md"
+      "resources/documentation/software-lifecycle-guide.md",
+    standalone_application_guide =
+      "resources/documentation/standalone-application-guide.md"
   )
   expected_copies <- vapply(names(expected_resources), function(name) {
     destination <- file.path(work_root, paste0("expected-", name, ".dcf"))
@@ -4575,6 +4594,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     encodeString(expected_copies[["installation_guide"]], quote = "\""),
     ", software_lifecycle_guide = ",
     encodeString(expected_copies[["software_lifecycle_guide"]], quote = "\""),
+    ", standalone_application_guide = ",
+    encodeString(expected_copies[["standalone_application_guide"]], quote = "\""),
     "); expected_count <- ", expected_resource_count,
     "L; stopifnot(!dir.exists('.git'), !dir.exists(file.path(root, '.git')), ",
     "startsWith(normalizePath(find.package('rrpplatform')), ",
@@ -4597,9 +4618,11 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp_open_resource_catalog', ",
     "'rrp_operation_succeeded', ",
     "'rrp_prepare_fictional_source', 'rrp_project_status', ",
-    "'rrp_read_product', 'rrp_register_authored_project', 'rrp_resource_path', ",
+    "'rrp_read_product', 'rrp_refresh_app', 'rrp_register_authored_project', ",
+    "'rrp_resource_path', ",
     "'rrp_restate_history', 'rrp_restore_project_state', ",
     "'rrp_retry_episode', ",
+    "'rrp_validate_app', ",
     "'rrp_validate_project', ",
     "'rrp_validate_software_resources'))); ",
     "message('CHECKPOINT resource proof: package loaded'); ",
@@ -4673,7 +4696,8 @@ validate_installed_resource_access <- function(library_root, work_root) {
     "'rrp.documentation.operator-guide', distribution_guide = ",
     "'rrp.documentation.distribution-guide', installation_guide = ",
     "'rrp.documentation.installation-guide', software_lifecycle_guide = ",
-    "'rrp.documentation.software-lifecycle-guide'); ",
+    "'rrp.documentation.software-lifecycle-guide', standalone_application_guide = ",
+    "'rrp.documentation.standalone-application-guide'); ",
     "resolved <- vapply(ids, function(id) rrp_resource_path(catalog, id), ",
     "character(1L)); stopifnot(all(vapply(names(ids), function(name) ",
     "identical(read_raw(resolved[[name]]), read_raw(expected[[name]])), ",
@@ -5179,7 +5203,8 @@ validate_installed_fictional_products <- function(
   )
   cat(paste0(
     "PASS installed fictional actual/empty products, fresh-process access, ",
-    "idempotency, staleness, copy, denial, deletion, and recovery\n"
+    "idempotency, staleness, copy, denial, deletion, recovery, and conditional ",
+    "distribution-shaped standalone lifecycle\n"
   ))
 }
 
@@ -5497,7 +5522,7 @@ validate_packages <- function() {
     "and time-aware project-provider execution, ",
     "standard authoring authority and raw producer/provider adaptation, ",
     "content-sensitive bundle identity, closed extension-package preflight, ",
-    "exact eleven-document installed Markdown ",
+    "exact twelve-document installed Markdown ",
     "product resolution, ",
     "read-only lifecycle status, explicit product build/materialize ",
     "composition, and guarded installed fictional-source preparation, ",
@@ -5507,7 +5532,9 @@ validate_packages <- function() {
     "complete installed fictional durable execution/history, same-key ",
     "provider non-reexecution, history privacy, and copied-state reopen, ",
     "installed fictional actual/empty logical products, fresh-process access, ",
-    "idempotency, staleness, copy, corruption denial, and history-only recovery, ",
+    "idempotency, staleness, copy, corruption denial, history-only recovery, ",
+    "standalone managed refresh, exact hospital-source preservation, atomic ",
+    "promotion adversaries, and detached read-only validation, ",
     "installed fictional supplied-application composition, bounded branding, ",
     "product-state UX, analytical nonmutation, privacy, executable denial, ",
     "relocation, and supervised loopback cleanup, ",

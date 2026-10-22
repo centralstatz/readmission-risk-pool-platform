@@ -41,9 +41,11 @@ stopifnot(
       "rrp_open_resource_catalog",
       "rrp_operation_succeeded",
       "rrp_prepare_fictional_source", "rrp_project_status",
-      "rrp_read_product", "rrp_register_authored_project", "rrp_resource_path",
+      "rrp_read_product", "rrp_refresh_app", "rrp_register_authored_project",
+      "rrp_resource_path",
       "rrp_restate_history", "rrp_restore_project_state",
       "rrp_retry_episode",
+      "rrp_validate_app",
       "rrp_validate_project",
       "rrp_validate_software_resources"
     )
@@ -75,11 +77,13 @@ stopifnot(
   is.function(rrp_operation_succeeded),
   is.function(rrp_prepare_fictional_source),
   is.function(rrp_project_status),
+  is.function(rrp_refresh_app),
   is.function(rrp_resource_path),
   is.function(rrp_read_product),
   is.function(rrp_restate_history),
   is.function(rrp_restore_project_state),
   is.function(rrp_retry_episode),
+  is.function(rrp_validate_app),
   is.function(rrp_validate_project),
   is.function(rrp_validate_software_resources)
 )

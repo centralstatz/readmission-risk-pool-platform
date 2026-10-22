@@ -434,9 +434,11 @@ rrp_test_cases <- list(
         "rrp_materialize_product_set", "rrp_open_product_access",
         "rrp_open_resource_catalog", "rrp_operation_succeeded",
         "rrp_prepare_fictional_source", "rrp_project_status",
-        "rrp_read_product", "rrp_register_authored_project", "rrp_resource_path",
+        "rrp_read_product", "rrp_refresh_app", "rrp_register_authored_project",
+        "rrp_resource_path",
         "rrp_restate_history", "rrp_restore_project_state",
         "rrp_retry_episode",
+        "rrp_validate_app",
         "rrp_validate_project",
         "rrp_validate_software_resources"
       )),

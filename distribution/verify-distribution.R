@@ -336,7 +336,7 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("resource_catalog", "Projected resource catalog is invalid.")
   }
   resources <- catalog_records[-1L]
-  if (length(resources) != 74L) {
+  if (length(resources) != 75L) {
     rrp_distribution_fail("resource_catalog", "Projected resource count is unsupported.")
   }
   resource_fields <- c(

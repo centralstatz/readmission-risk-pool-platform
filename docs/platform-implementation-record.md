@@ -8049,3 +8049,118 @@ acceptance of Increment 12.B or Stage 12. Increment 12.A remains accepted. Task
 12.B.2 is the next authorized implementation task and has not begun; it must be
 performed only through a subsequent, separately directed task. Increment 12.B
 and Stage 12 remain incomplete and not formally accepted.
+
+## Task 12.B.2 — Managed refresh, detached validation, guidance, and Increment 12.B qualification — 2026-10-22
+
+Task 12.B.2 completes the standalone application's local managed-product
+lifecycle. The new package-owned `rrp_refresh_app()` operation and `rrp app
+refresh --scope ID --cutoff TIME` command resolve one explicit existing
+materialization through the accepted nonexecuting 12.B.1 project/state/product
+boundary. They do not source project registration, invoke a producer or
+provider, execute an analytical run, or materialize products. The new
+`rrp_validate_app()` operation and `rrp app validate` command inspect an
+explicit detached application without its originating project, state, history,
+materialization, repository, or original installation path and without
+executing hospital application source.
+
+Refresh reuses the accepted 12.B.1 frozen DCF/CSV set, managed inventory,
+presentation, current-record, loader, identity, and compatibility contracts.
+It validates the source and current application before mutation, stages and
+validates one complete content-addressed set below `rrp-data/sets/`, and uses
+same-filesystem replacement of only `rrp-data/current.dcf` as the commit point.
+A precommit failure leaves the prior current set selected. A postcommit failure
+is reported as committed uncertainty rather than as an uncommitted refusal.
+Successful changed refresh retains the new active set and the immediately
+previous valid set so a reader that already resolved the old pointer can
+finish. Bounded cleanup removes only older complete sets whose ownership,
+path, and integrity are successfully validated; corrupt inactive sets and
+recognized interrupted staging remain diagnostic evidence and are not deleted.
+Repeated refresh to the current set is successful and does not rotate the
+pointer or cleanup the retained prior set.
+
+The exact write boundary is the existing application's `rrp-data/` directory.
+The production operation never inventories arbitrary hospital source to prove
+containment. Controlled evidence instead modified `app.R`, an original module,
+CSS, README, and a dependency declaration and added a module, asset, deployment
+configuration, Git metadata, an execution trap, and an unrelated file. Every
+byte outside `rrp-data/` remained unchanged through successful and refused
+refresh and through detached validation. Unsafe declarations, traversal,
+symbolic links, reserved collisions, corrupt current content, stale/corrupt
+source products, current-pointer races, and precommit interruption fail closed.
+
+Detached validation reports managed-content validity independently from
+initial historical evidence. It validates the active set, current pointer,
+managed SHA-256 inventory, identities, lineage, compatibility, and managed
+presentation. Initial provenance is `missing`, `invalid`, or `available`; the
+finite originally supplied source inventory yields an informational baseline
+of `matches`, `drifted`, or `unavailable`. The final implementation validates
+the original baseline digest and exact finite inventory shape, but missing,
+altered, or drifted initial evidence does not invalidate otherwise coherent
+managed products and never authorizes source repair.
+
+The installed
+`resources/documentation/standalone-application-guide.md` now describes the
+four distinct application commands, fresh source-product requirements,
+hospital ownership and the reserved `rrp-data/` boundary, ordinary
+`shiny::runApp("app")`, optional `renv.lock` restoration, customization,
+refresh/restart, detached validation, interruption and recovery, informational
+baseline status, create-only later-default comparison, illustrative external
+hosting, and hospital privacy/security responsibility. It is the twelfth
+installed product document. The closed catalog contains 75 resources and the
+`rrpplatform` namespace contains 36 exports. Ownership, package metadata,
+manuals, CLI help/JSON curation, source inclusion, standalone verification,
+and repository/package/distribution validators were reconciled to the realized
+files and identities.
+
+The interrupted implementation was recovered from clean governance `HEAD`
+`7252e9d4ecf58da3d3353d43863a8852fcfd3afc` with an uncommitted working tree.
+The previously reported macOS failure was reproduced from its cause and
+corrected generally: absent `Sys.readlink()` results are links only when they
+are non-`NA` and nonempty. This prevents an absent content-addressed target
+from being misclassified as a collision while preserving rejection of valid
+and broken links. A fresh full distribution was built from the final source,
+both internal packages were installed from it, and the complete fictional
+product/application lifecycle passed, including real loopback page and asset
+requests, compatible second-product refresh, all transaction injections,
+bounded two-set cleanup, detached validation, and the absent-path regression.
+
+Final local qualification evidence:
+
+- `Rscript --vanilla tools/validate-repository.R` passed all eight repository
+  foundation checks;
+- `Rscript --vanilla tools/validate-packages.R` passed source/catalog and
+  package-native checks, both package builds, isolated install/load, both
+  `R CMD check --no-manual` runs with `Status: OK`, installed documentation and
+  CLI proofs, and all project, producer/provider, state/history, product, and
+  application regressions. An initial final run encountered a transient
+  600-second timeout in the unchanged fictional durable end-to-end subprocess;
+  that subprocess then passed independently in 16.5 seconds and passed the
+  complete clean aggregate rerun in 13.9 seconds, with no implementation change
+  required;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R` passed the 75-resource source/payload closure,
+  provenance, deterministic-build, copied-verification, adversarial, and
+  failure-cleanup evidence;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R` passed copied acquisition, exact private
+  restoration and integrity, activation/verification/doctor, clean two-time
+  project/history/product/application operation, compatibility, rollback, and
+  exact uninstall; and
+- direct R parsing, real-distribution lifecycle execution, documentation and
+  resource checks, privacy/forbidden-content checks, repository hygiene, and
+  `git diff --check` passed. Temporary archives, package libraries, and proof
+  roots were outside the repository and removed after qualification.
+
+No additional historical implementation was migrated. The task deliberately
+reused the formally accepted 12.B.1 contracts and evidence owners; the earlier
+12.B.1 historical-reuse decision remains authoritative. No source upgrade,
+whole-application inventory, application repair/backup/migration, analytical
+execution, deployment integration, artifact store, Stage 12.C proof, remote
+mutation, publication, or release behavior entered.
+
+**12.B.2 result:** implementation-complete and locally qualified. Consequently
+Increment 12.B is implementation-complete locally, but neither Task 12.B.2 nor
+Increment 12.B is formally accepted. The uncommitted candidate still requires
+maintainer review, a committed exact-revision hosted Ubuntu/R 4.4 result, and a
+separate human governance decision. Stage 12 remains incomplete, and Increment
+12.C is not authorized to begin.
