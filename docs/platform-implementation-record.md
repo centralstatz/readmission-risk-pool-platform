@@ -8164,3 +8164,30 @@ Increment 12.B is formally accepted. The uncommitted candidate still requires
 maintainer review, a committed exact-revision hosted Ubuntu/R 4.4 result, and a
 separate human governance decision. Stage 12 remains incomplete, and Increment
 12.C is not authorized to begin.
+
+### Formal Task 12.B.2 and Increment 12.B acceptance — 2026-10-22
+
+The human maintainer reviewed the accepted 12.B.1 initialization foundation
+and the completed 12.B.2 evidence recorded above and formally accepted Task
+12.B.2 and Increment 12.B as a whole. The acceptance basis includes the
+managed-refresh lifecycle, atomic current-set promotion, prior-set retention
+and bounded cleanup, exact preservation of hospital-owned source bytes,
+detached read-only validation, informational initial-provenance and baseline
+reporting, the installed Standalone Application Guide, and the complete local
+repository, package, distribution, and installation qualification.
+
+The exact accepted implementation revision is
+`1dee47d3f38f2048f8f60dae00dc843ca4479a23`. GitHub Actions
+`package-foundation` run `39767333474`, job `119785937864`, completed
+successfully on `main` for that exact revision under Ubuntu/R 4.4. Its
+repository, package, distribution, and installation/software-lifecycle
+validation steps all passed. The local `HEAD` matched the accepted candidate
+with no substantive or documentation changes present before this governance
+update.
+
+**Acceptance decision:** **Task 12.B.2 and Increment 12.B — Formally accepted
+— 2026-10-22.** This is a human governance decision over the completed
+implementation and exact-revision evidence, not a new implementation claim.
+Increment 12.A and the Task 12.B.1 internal checkpoint remain accepted. Stage
+12 remains incomplete and not formally accepted. Increment 12.C is the next
+authorized implementation increment and has not begun.
