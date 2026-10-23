@@ -28,9 +28,11 @@ revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after successful
 revision-matched `package-foundation` run `39825668962`, job `119988175889`,
 under hosted Ubuntu/R 4.4. The high-level Stage 13 and 14 roadmap has been
 reconciled with the six maintainer-approved recommendations in the 2026-10-23
-remaining-roadmap readiness assessment. The revised roadmap awaits separate
-human review and approval before detailed Stage 13 planning may begin. Stage
-13 has not begun.
+remaining-roadmap readiness assessment and returned for separate review. The
+human maintainer accepted that high-level roadmap on 2026-10-23 and authorized
+the first-pass detailed planning draft below. The draft awaits separate human
+review and approval; Stage 13 implementation has not begun and is not
+authorized.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -118,10 +120,10 @@ Increment 12.B are formally accepted at exact revision
 `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after revision-matched hosted
 qualification. Increment 12.C and Stage 12 are formally accepted at exact
 revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after revision-matched
-hosted qualification. The remaining two-stage roadmap has been reconciled at
-high level and awaits human approval. Stage 13 detailed planning remains a
-separate, unauthorized next step, and Stage 13 has not begun. After a stage is
-implemented:
+hosted qualification. The remaining two-stage roadmap was accepted at high
+level on 2026-10-23. The first-pass detailed Stage 13 plan below is now drafted
+for separate human review; it is not accepted implementation authority, and
+Stage 13 has not begun. After a stage is implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -9641,9 +9643,9 @@ release and public publication.
 
 ## Stage 13 — Clean-system and adopter acceptance
 
-**Planning status:** high-level roadmap reconciled on 2026-10-23 from the
-maintainer-approved remaining-roadmap readiness assessment; awaiting human
-review and approval before detailed Stage 13 planning. Stage 13 has not begun.
+**Planning status:** high-level roadmap formally accepted on 2026-10-23. The
+first-pass detailed plan below is a draft awaiting human review and approval.
+Stage 13 implementation has not begun and is not authorized.
 
 ### Objective and responsibilities
 
@@ -9813,10 +9815,528 @@ matrix, minimum technical prerequisites, eligible best-effort boundary,
 presentation, candidate naming, and public quickstart form. Those are planning
 responsibilities, not decisions made by this high-level reconciliation.
 
+### Detailed Stage 13 implementation plan — draft
+
+**Status:** **Draft — first-pass detailed planning; awaiting human review and
+approval.** This draft is not implementation authority. Approval of the
+high-level roadmap authorized this planning work only; it did not start Stage
+13, authorize an increment, construct a candidate, or authorize Stage 14 or any
+remote mutation.
+
+#### Repository-grounded starting state
+
+Stage 13 begins from a substantial installed product rather than an unfinished
+component stack. The following inventory separates implemented behavior from
+the remaining release-readiness work.
+
+| Boundary | Observed current implementation and evidence | Stage 13 disposition |
+|---|---|---|
+| Distribution construction | `tools/build-distribution.R`, `tools/distribution-lib.R`, and `distribution/source-inclusion.dcf` create one positive-input closed `.tar` payload, build both internal source packages, project the 75-resource installed catalog, bind exact dependency and source identities, and verify before promotion. The caller currently chooses any absent absolute `.tar` path; the archive root and product identity are fixed development values, and a dirty source state is recorded rather than refused. | Reuse the closed builder. Add a deliberate unpublished qualification-candidate mode, stable target mapping/naming, clean exact-source requirements, and candidate-set evidence without introducing publication. |
+| Standalone distribution verification | `distribution/verify-distribution.R` validates exact file closure, roles, SHA-256 digests, package/resource identity, target and dependency agreement, legal/product metadata, paths, and links using base R plus an available SHA-256 utility. `tools/validate-distribution.R` proves copied verification and broad tampering rejection. | Retain the verifier and adversaries. Qualify the actual candidate-facing invocation and make its result one explicit first quickstart step. |
+| Installation and dependency restoration | `distribution/install.R` and `install-engine.R` share one engine with safe user defaults for software and executable roots, exact configured-repository matching, exact-version restoration into an isolated private library, fresh-process verification, complete installed inventory, atomic promotion, cleanup, reinstall/conflict behavior, and stable-shim provisioning. Installation never activates or touches a project. The repository URL is mandatory even though the verified dependency specification already contains it. | Preserve the lifecycle. Reconcile environment eligibility, adopt the smallest justified repository/default and post-install usability changes, and qualify failure recovery from a prebuilt candidate. |
+| Environment policy | Distribution `Target-R-Version`, `Target-Platform`, and `Target-Architecture` are exact build/resolution facts and are also enforced as an exact installer allowlist. Both internal packages declare `R (>= 4.4.0)`. Exact dependency versions, repository provenance, integrity, private isolation, actual-host installation identity, and fresh-process verification are already independent safeguards. | Separate provenance from eligibility. Retain exact platform/architecture targeting for 1.0, treat R 4.4.0 as the proposed technical minimum, and permit bounded same-target newer-R attempts without expanding formal support. |
+| Installed software lifecycle | `distribution/rrp-shim`, the version launcher, and `rrpplatform` implement exact list/current/verify/doctor/activate/explicit-select/rollback/uninstall behavior. Strict verification uses the recorded R executable and actual-host record, complete payload/library integrity, and resources. Activation is explicit, atomic, and project-independent. | Reuse without redesign. Improve discoverability and report build target, actual host, eligibility, and qualification status distinctly where the current output is insufficient. |
+| CLI and project operations | The implemented shallow, noun-based CLI surface is deterministic, privacy-safe, and delegates to package-owned operations. Project/reference initialization, validation/doctor/status, state, run/history, products, installed app, and standalone app intentions already exist. | Preserve commands unless a concrete acceptance failure requires a bounded correction. The ordinary path should compose existing intentions rather than add convenience commands. |
+| Project authoring and reference path | The standard initializer exposes narrow hospital-owned producer and provider files; raw registration remains the advanced extension seam. The fictional project has deterministic source, mapping, private provider behavior, complete installed walkthroughs, and package/installation evidence. | Reuse the fictional path for quickstart. Add a genuinely separately authored adopter proof that starts from the standard scaffold and does not reuse fictional registration, generator, identities, mappings, or provider assumptions. |
+| Analytics, history, and products | Accepted operations cover canonical admission, the singular target, provider execution, project-owned DuckDB history, retry/correction, backup/restore, logical products, staged materialization, freshness, and recovery. | Do not redesign. Requalify the complete path from exact candidate bytes in each formal cell and through the separate adopter project. |
+| Supplied and standalone applications | Installed launch is product-only. Standalone initialization creates hospital-owned source with an exact dependency lock; detached validation, ordinary and isolated Shiny execution, real HTTP/assets, customization, managed-only refresh, frozen-copy behavior, and adversaries already pass the Stage 12 installation proof. Lock derivation currently requires exact equality with distribution target R/platform/architecture. | Preserve application ownership and runtime behavior. Reconcile lock derivation with the accepted eligibility policy and requalify ordinary, copied, customized, refreshed, and isolated execution. |
+| Aggregate evidence | `validate-repository.R`, `validate-packages.R`, `validate-distribution.R`, and `validate-installation.R` provide strong source, package, distribution, and full lifecycle evidence. The installation aggregate builds its candidate from the same checkout before copying it. The read-only `package-foundation` workflow repeats all four on `ubuntu-latest` with the `4.4` R channel. | Retain the existing development/regression evidence. Add a candidate-first acceptance boundary so deep and ordinary consumers start from a transferred prebuilt artifact. Pin and record exact qualification environments rather than treating the current rolling workflow as a support claim. |
+| Human documentation | Twelve installed guides explain the individual operations. The distribution and installation guides expose the mechanics, but no one concise acquisition-to-working-example quickstart exists. Root `README.md` and `SUPPORT.md` contain stale capability statements. Installer output stops after location/launcher/reuse facts rather than presenting the complete next action. | Create and execute one public-facing quickstart, reconcile public/support metadata, and make verified installer output lead coherently to selection, diagnosis, explicit activation, and the example. |
+| Candidate and release identity | Current payloads are `1.0.0-dev`, use the fixed extracted directory `rrp-1.0.0-dev`, and have content-sensitive distribution/build identities, but there is no cross-target qualification-candidate authority, final asset mapping, or accepted release state. | Introduce only the unpublished release-shaped candidate identity and evidence needed by Stage 13. Final official `1.0.0` identity, release state, asset names/checksums, publication, and public reacquisition remain Stage 14 responsibilities. |
+
+The inventory identifies four remaining classes of work: bounded compatibility
+and candidate-contract changes; ordinary adopter usability/documentation;
+independent adopter qualification; and candidate-first evidence on both formal
+cells. Existing package, analytical, history, product, and application
+semantics require qualification, not replacement.
+
+#### Proposed support and artifact matrix
+
+The formal 1.0 support claim remains two target families. Each family receives
+its own built candidate and independently produced deep, ordinary, and adopter-
+project evidence.
+
+| Proposed cell | Artifact family | Required recorded identity | Required independent evidence |
+|---|---|---|---|
+| macOS arm64 / R 4.4 qualification cell | `macos-arm64` | Exact R 4.4 patch, `R.version$platform` (expected `aarch64-apple-darwin20`), architecture (expected `aarch64`), macOS version/build, R executable, dependency repository/closure, source revision, distribution/build IDs, and archive SHA-256 | Candidate build/verification, deep technical matrix, public quickstart, separate adopter project, standalone ordinary/isolated execution, failure/recovery, and final nonmutation/cleanup evidence |
+| Ubuntu x86_64 / R 4.4 qualification cell | `ubuntu-x86_64` | Exact R 4.4 patch, `R.version$platform` (expected `x86_64-pc-linux-gnu`), architecture (expected `x86_64`), pinned Ubuntu image/version, R executable, dependency repository/closure, source revision, distribution/build IDs, and archive SHA-256 | The same independently executed evidence classes as the macOS cell |
+
+The exact R patch and OS image are deliberately not inferred from the current
+`R 4.4` and `ubuntu-latest` channel declarations. Before Increment 13.D begins,
+the maintainer must freeze one exact available R 4.4 patch for each cell,
+preferably the same patch on both, and freeze the exact Ubuntu and macOS
+environment identities. If availability requires different R patches, each
+cell must name its exact patch and no family-wide all-4.4.x claim follows.
+
+The proposed candidate mapping is one unpublished `.tar` per family, retaining
+the already proven single-root archive shape. Working candidate names should
+be stable and visibly unpublished, for example
+`rrp-1.0.0-candidate-macos-arm64.tar` and
+`rrp-1.0.0-candidate-ubuntu-x86_64.tar`. Their manifests remain the authority
+for exact build target and content identities; filenames are navigation, not
+identity. Stage 13 acceptance binds both artifacts to one clean source
+revision and records each distribution ID and archive digest as one candidate
+set. Stage 14 may assign final official names and release identity only through
+the later accepted release-state boundary; it may not alter accepted payload
+behavior or target mapping.
+
+No third target, Windows cell, Docker/OCI asset, universal archive, or broad
+macOS/Linux-version claim is proposed. The exact environment names, R patch,
+candidate filename rule, and whether a hosted or controlled clean macOS arm64
+environment supplies the final cell are explicit approval decisions below.
+
+#### Bounded environment-compatibility design
+
+The smallest coherent policy is to retain target-specific artifacts while
+allowing R-version variation only where the existing safeguards can establish
+a valid actual-host realization.
+
+| Existing check or fact | Current purpose | Proposed Stage 13 treatment |
+|---|---|---|
+| Exact `Target-R-Version` | Build/dependency-resolution provenance and current installer policy | Preserve it exactly as provenance. Stop using equality alone as a technical rejection when host R is at least 4.4.0 and the remaining target requirements agree. |
+| Exact `Target-Platform` and `Target-Architecture` | Provenance plus protection from unmodeled binary/toolchain/ABI differences | Preserve equality as the 1.0 artifact-eligibility boundary. Cross-OS and cross-architecture attempts remain ineligible rather than being declared inherently impossible. |
+| Package `Depends: R (>= 4.4.0)` | Actual package-language/runtime minimum | Retain R 4.4.0 as the proposed minimum technical requirement unless 13.A evidence discovers a stricter dependency requirement. Older R remains ineligible. |
+| Exact repository URL | Reproducible acquisition and provenance | Retain exact configured repository agreement. The verified specification may supply the default; any explicit value must still match exactly. |
+| Exact dependency names, versions, and integrity | Tested closure and reproducibility | Retain without relaxation. Restoration still rebuilds/installs under the actual selected host R and fails closed if exact packages are unavailable or incompatible. |
+| UTF-8 locale, SHA-256 utility, network and compilation support | Concrete verifier/restoration prerequisites | Retain and document as technical prerequisites, with bounded actionable diagnostics. |
+| Actual-host installation record and identity | Identifies the realized R executable/version/platform/architecture | Retain. A best-effort installation records its actual host and is never relabeled as the build target or a supported cell. |
+| Fresh-process load/resource and complete inventory verification | Establishes a usable isolated realization before promotion | Retain unchanged as the success gate for any formal or best-effort installation. |
+| Product-version/distribution destination and official-version conflict refusal | Immutable lifecycle identity and safe coexistence | Retain safe refusal. Stage 13 does not promise simultaneous installations of one distribution under multiple R versions in one software root; a controlled best-effort probe may use a separate disposable root. |
+| Standalone lock target equality | Ensures the lock came from the selected tested closure, but currently also repeats the exact-R policy | Preserve exact closure/repository/integrity and same target platform/architecture. Generate the lock for the actual eligible host R rather than rejecting solely because its R patch/version differs from build provenance. |
+| Installed verify/doctor | Confirms recorded actual R, private closure, resources, launcher, and integrity | Retain strict verification and add only the bounded distinctions needed to report build target, actual host, formal-cell status, best-effort eligibility, and genuine incompatibility without claiming automatic certification. |
+
+Under this proposal, an R version at or above 4.4.0 on the artifact's exact
+platform and architecture is eligible to attempt restoration. Only the two
+exact frozen R 4.4 cells become formally supported after the full matrix
+passes. A newer R success is best-effort installation evidence only; later
+analytical or application failure may remain an unsupported incompatibility.
+A failed attempt must leave no promoted realization, activation change,
+existing installation mutation, project mutation, or standalone application
+mutation. Cross-platform/architecture use, older R, repository disagreement,
+integrity disagreement, and an unavailable exact dependency closure remain
+fail-closed.
+
+This policy requires no ABI database, version-range solver, compatibility
+certification service, binary portability claim, or open-ended future-R test
+matrix. One representative same-target newer-R attempt should be made only if
+a suitable R is practically available. It may succeed or safely fail; either
+result is recorded without creating support status.
+
+#### Ordinary adopter workflow and quickstart contract
+
+The ordinary path should reuse the existing verifier, installer, stable shim,
+software lifecycle, fictional project, and installed application. The proposed
+quickstart sequence is:
+
+1. obtain one already-built target-appropriate candidate through a declared
+   Stage 13 local/CI handoff and verify its recorded qualification archive
+   digest;
+2. extract its single root and run the distribution-local standalone verifier;
+3. run the base-R installer, using the verified dependency repository as the
+   default or an explicit exactly matching HTTPS repository;
+4. use the exact stable-launcher path printed by the installer, whether or not
+   the user's shell already has that directory on `PATH`;
+5. list the new realization, copy its exact selector, run strict software
+   verification and software doctor, explicitly activate it, and confirm the
+   active version and version identity;
+6. initialize and prepare an absent fictional project, validate it, initialize
+   state, execute one declared analytical time, materialize and validate its
+   exact products, and run project doctor; and
+7. launch the installed product-only application for the exact scope/cutoff as
+   the first visible working result, with the standalone-application guide as
+   the next optional path rather than making standalone deployment part of the
+   shortest quickstart.
+
+The quickstart must use literal supported commands, explain where returned
+selector/scope identities are copied, distinguish distribution verification,
+software verification/doctor, and project doctor, and include bounded recovery
+for the likely network/repository, launcher discovery, activation, and occupied
+port failures. It may use shell variables for returned identities only when
+the same approach works consistently on both formal cells and remains clear to
+an unfamiliar R user.
+
+No automatic activation, shell-profile edit, PATH mutation, software download
+command, new convenience CLI, implicit project discovery, latest-run
+selection, or combined run/materialize/launch operation is proposed. The
+installer should instead print the exact selector, stable launcher, direct-
+path examples, optional PATH note, explicit verify/doctor/activate sequence,
+and documentation location after successful promotion. Installation remains
+nonactivating.
+
+The release-shaped candidate must contain the verifier, installer, stable-shim
+source, package archives, installed resource projection, dependency
+specification, manifests/inventories, legal/support/security material, one
+top-level orientation document, and the executable public quickstart. The
+quickstart is also a version-matched installed document or resolves to the
+same cataloged content so acquisition and post-install instructions cannot
+drift. Candidate evidence must establish exact contents, extraction root,
+entry points, target family, source revision, distribution/build/dependency
+identities, archive digest, and unpublished status.
+
+Stage 14 will replace the Stage 13 acquisition handoff with official public
+URLs, checksums/authenticity evidence, and final release identity. The allowed
+release-only metadata/name transformation must be explicit and mechanically
+bounded; any change to commands, payload behavior, compatibility eligibility,
+or quickstart substance returns to Stage 13 qualification.
+
+#### Requirements-to-work traceability
+
+| High-level requirement | Planned owner | Deliverable and acceptance obligation |
+|---|---|---|
+| A. Ordinary installation and first use | 13.B, qualified by 13.D | Verified candidate-to-active-software path with defaults, explicit override, direct launcher, diagnosis, next steps, and failure recovery |
+| B. Release-shaped candidate packaging | 13.A, qualified by 13.D | Two target-mapped unpublished artifacts, stable contents/extraction/naming contract, clean source and exact candidate-set identities |
+| C. Environment compatibility policy | 13.A, qualified by 13.D | Versioned semantics separating build provenance, formal cells, technical requirements, and eligible best-effort attempts while preserving exact closure and safety |
+| D. Public-facing quickstart | 13.B, qualified independently by 13.D | One candidate-contained and installed public document executed without checkout on each formal cell through a working fictional application |
+| E. Independent adopter project | 13.C, qualified on each cell by 13.D | Separately authored synthetic project using normal producer/provider seams through history, products, standalone initialization/run/customization/refresh |
+| F. Deep technical acceptance | 13.D | Candidate-first extension/reuse of existing isolation, integrity, lifecycle, analytics, application, privacy, adversarial, rollback, and recovery evidence on both cells |
+| G. Ordinary adopter acceptance | 13.D | Separately attributable execution of the exact quickstart from the transferred candidate on both cells, with no checkout or private harness knowledge |
+| H. Temporary development bridge closure | 13.A–13.D, finalized by 13.D | Checkout-built evidence no longer substitutes for candidate acceptance; rolling CI is not mislabeled support; stale docs/dev names are reconciled; valid development validators remain available |
+
+#### Proposed implementation sequence
+
+##### Increment 13.A — Qualification-candidate and environment-eligibility foundation
+
+**Objective:** establish the versioned unpublished candidate, target mapping,
+and bounded compatibility semantics required by every later Stage 13 path.
+
+**Existing basis:** the closed source authority and builder; standalone
+verifier; target-keyed dependency specification; exact installation identity;
+private restoration; strict verify/doctor; application lock construction; and
+distribution/installation adversaries.
+
+**Scope and deliverables:**
+
+- define the unpublished qualification-candidate state and the two-artifact
+  mapping without creating official `1.0.0` release state;
+- establish stable candidate archive/root naming, exact clean source revision,
+  candidate-set identity/evidence, target-family labels, and required manifest
+  and documentation fields;
+- version or clarify lifecycle authorities so exact build target, actual
+  technical eligibility, actual-host realization, and formal qualification are
+  noninterchangeable;
+- implement the same-platform/architecture, R >= 4.4.0 best-effort policy or
+  the human-approved revision of it;
+- reconcile installer eligibility, failure diagnostics, actual-host identity,
+  root conflict behavior, standalone lock derivation, and verify/doctor output;
+- retain exact repository/version/integrity/isolation/promotion/activation
+  safeguards and explicit rejection of ineligible targets; and
+- add focused positive, negative, same-target R-variation, and safe-failure
+  evidence without yet running the complete acceptance matrix.
+
+**Important decisions:** approve the proposed eligibility rule, exact target-
+family identifiers, candidate filename/root convention, repository default
+source, qualification-status representation, and deliberate non-support of
+same-distribution/multiple-R coexistence within one software root.
+
+**Evidence:** package-native contract/diagnostic tests; distribution and
+installer target-policy adversaries; exact dependency and integrity
+regressions; actual-host identity and strict verification; standalone-lock
+tests; atomic no-promotion/no-activation/no-mutation failures; both package
+build/checks; and current repository/package/distribution/installation
+regressions proportionate to changed owners.
+
+**Dependencies and exclusions:** begins only after detailed-plan approval and
+separate 13.A authorization. It does not alter analytical semantics, certify a
+new environment, build final candidate artifacts, implement the quickstart,
+publish, or create release state.
+
+**Exit criterion:** one coherent, tested candidate/environment contract can be
+used by later increments without conflating build provenance with support or
+best-effort eligibility. A separate human checkpoint accepts 13.A before 13.B.
+
+##### Increment 13.B — Ordinary installation experience and executable quickstart
+
+**Objective:** make the actual unfamiliar-user path coherent, public-facing,
+and executable while preserving deliberate installation and activation
+semantics.
+
+**Existing basis:** distribution-local verification/install; default user
+roots; stable shim; list/verify/doctor/activate/current/version; installed
+guides; fictional initializer/source/run/products/application operations.
+
+**Scope and deliverables:**
+
+- make the verified specification's single repository the proposed installer
+  default while retaining an explicit exactly matching override, unless human
+  review selects a different rule;
+- make successful install output report exact selector, launcher/direct path,
+  optional PATH guidance, verification/doctor, explicit activation, current
+  confirmation, documentation location, and bounded recovery;
+- create one concise public quickstart with the sequence above and ensure the
+  same version-matched content is available in the release-shaped candidate
+  and installed catalog;
+- reconcile distribution, installation, software-lifecycle, operator,
+  fictional-reference, root README, support, and security wording only where
+  needed to tell one current and truthful story;
+- validate that all quickstart commands and returned-identity handoffs work
+  with the current CLI on both target families; and
+- retain advanced guides for depth without making them prerequisites for first
+  success.
+
+**Important decisions:** approve repository-default behavior, quickstart's
+endpoint at the installed fictional application, direct-path/PATH wording,
+and the exact candidate documentation placement. No new CLI command is assumed.
+
+**Evidence:** focused installer-output/default/override/failure tests;
+documentation link and command review; candidate-content/catalog closure; one
+local execution of the exact quickstart from a prebuilt 13.A-shaped candidate;
+negative launcher/repository/activation cases; unchanged project on software
+failure; and all affected lifecycle regressions.
+
+**Dependencies and exclusions:** depends on accepted 13.A semantics. It does
+not add automatic activation, shell mutation, download behavior, a combined
+analytical command, independent-adopter evidence, support claims, or
+publication.
+
+**Exit criterion:** an unfamiliar technical user can follow one candidate-
+contained document from extracted bytes to an explicitly active verified
+installation and working fictional application without private knowledge. A
+separate human checkpoint accepts 13.B before 13.C.
+
+##### Increment 13.C — Separately authored adopter implementation proof
+
+**Objective:** prove that the supported authoring boundaries work for an
+independent implementation rather than only for the supplied fictional project.
+
+**Existing basis:** standard six-path project scaffold and authoring guide;
+thin registration adapter; hospital-owned producer/provider files; raw
+extension seam; two materially different producer mappings in package tests;
+durable operations, products, standalone lifecycle, and installed CLI.
+
+**Scope and deliverables:**
+
+- create one deterministic, visibly synthetic, test-owned adopter source and
+  project by starting from the normal standard initializer;
+- independently author source acquisition/mapping and provider calculation
+  without copying the fictional generator, registration, identifiers,
+  crosswalk, mapping implementation, private predictor, or provider logic;
+- exercise project validation, explicit state, at least two meaningful
+  analytical contexts, durable history/reopen, products/freshness, installed
+  application, standalone initialization and detached ordinary execution;
+- customize hospital-owned application bytes, advance products through a
+  managed-only refresh, and prove preservation/frozen-copy behavior;
+- verify dependency ownership, project portability, privacy-safe diagnostics,
+  private-field exclusion, failure and recovery behavior, and no generic
+  branch on adopter identity; and
+- document the evidence purpose without creating a second distributed product,
+  hospital repository, or privileged example mode.
+
+**Important decisions:** approve whether the test-owned adopter source is
+generated from compact committed fixtures or entirely constructed during the
+acceptance run; in either case it remains synthetic, bounded, independently
+authored, and nonshipping unless separately justified.
+
+**Evidence:** package/component conformance for the independent producer and
+provider; installed candidate execution from an unrelated non-Git project;
+history/product/application identity assertions; ordinary and isolated
+standalone HTTP/assets; customization/refresh/frozen-copy checks; controlled
+mapping/provider/compatibility/privacy failures; copy/reopen; and exact project,
+installation, and application nonmutation assertions.
+
+**Dependencies and exclusions:** depends on accepted 13.A and 13.B candidate
+and user paths. It does not add canonical domains, targets, provider features,
+project contracts, source adapters, production data, hospital secrets,
+clinical validation, or a second public tutorial product.
+
+**Exit criterion:** one nonfictional-by-construction test implementation proves
+the normal adopter seams and complete implemented lifecycle without relying on
+fictional internals. A separate human checkpoint accepts 13.C before 13.D.
+
+##### Increment 13.D — Candidate-first qualification matrix and Stage 13 closeout evidence
+
+**Objective:** assemble, execute, and attribute the complete deep, ordinary,
+and independent-adopter evidence against exact transferred candidates on both
+formal cells, then prepare—but not self-authorize—the Stage 13 acceptance
+record.
+
+**Existing basis:** all four human validators; current read-only hosted
+workflow; candidate/quickstart behavior from 13.A–13.B; independent adopter
+proof from 13.C; established process supervision, HTTP/assets, lifecycle
+adversaries, and privacy/nonmutation checks.
+
+**Scope and deliverables:**
+
+- retain `package-foundation` as development regression evidence while adding
+  the smallest candidate-first acceptance composition needed for Stage 13;
+- build one exact clean candidate per frozen cell, record archive digest and
+  internal identities, and transfer it to independent consumer contexts;
+- ensure the ordinary consumer has the candidate and its public documentation
+  but no source checkout, maintainer scripts, internal fixture, or undocumented
+  environment variable;
+- run the deep technical matrix against candidate-installed software rather
+  than silently substituting checkout code, reusing/refactoring the existing
+  installation proof instead of creating a parallel lifecycle implementation;
+- run the separate adopter project on each cell and attribute its evidence
+  independently from the fictional quickstart;
+- execute one representative newer-R best-effort attempt when practical and
+  prove either verified isolated success or complete safe failure without a
+  support claim;
+- close development bridges: require clean exact source for accepted
+  candidates, stop treating rolling `ubuntu-latest`/`R 4.4` evidence as a
+  support cell, reconcile stale public status, and ensure checkout-built
+  aggregates cannot substitute for candidate-first acceptance;
+- retain useful developer validators and historical records rather than
+  deleting them merely because a release-oriented profile now exists; and
+- consolidate privacy-safe evidence tying one source revision and two artifact
+  identities to exact environments, results, limitations, and known
+  incompatibilities.
+
+**Important decisions:** freeze exact R patches/OS images and macOS execution
+provider; approve the candidate transfer mechanism and evidence retention
+format; decide whether the newer-R probe is available and proportionate; and
+confirm that every required evidence class is independently attributable.
+
+**Evidence:** on both cells, exact candidate build/standalone verification,
+deep installation/lifecycle/analytics/history/products/application/adversarial
+matrix, exact public quickstart, separate adopter project, ordinary and
+isolated standalone runtime, failure/recovery/rollback, cleanup, and
+repository-independent operation. Shared evidence may include source-static,
+package build/check, contract, and deterministic identity proofs, but every
+formal-cell runtime claim must run independently. Final hygiene includes no
+retained process, listener, temporary root, generated archive, library,
+project, app, or confidential content in the source tree.
+
+**Dependencies and exclusions:** depends on separately accepted 13.A–13.C.
+It does not assign official `1.0.0`, publish artifacts, create a tag/release,
+select a release provider, or implement Stage 14. Passing evidence does not
+itself accept Stage 13.
+
+**Exit criterion:** the exact candidate set has complete, separately
+attributable evidence for every declared support cell and no unresolved
+acceptance-blocking discrepancy. The implementation record can present the
+candidate to the human maintainer for formal Stage 13 acceptance and
+architecture reconciliation.
+
+#### Evidence strategy
+
+| Evidence class | May be shared | Must be produced independently |
+|---|---|---|
+| Source/component foundation | Static governance, catalog closure, contract tests, package dependency/API checks, deterministic source identities, and invariant-focused unit tests may run once per exact source revision and continue in ordinary CI. | Both package builds/checks and any platform-sensitive tests must still pass in each formal build cell when they affect that artifact. |
+| Candidate identity | Candidate-set schema and source revision are shared. | Each target artifact has its own archive digest, distribution/build/dependency IDs, target provenance, extracted verification, and clean build record. |
+| Deep technical qualification | Test intent and reusable supervisors/adversaries may share source. | Each cell consumes its own transferred artifact and runs installation, isolation, strict verification/doctor, lifecycle, fictional and adopter analytics, history/products, app/standalone, privacy, failure/recovery, rollback, and cleanup evidence. |
+| Ordinary adopter qualification | The exact quickstart text is shared and version-matched. | Each cell executes that text from its candidate without checkout/private knowledge and records environment, archive identity, selector, successful fictional result, and bounded recovery observations. |
+| Independent adopter project | The separately authored synthetic fixture and conformance assertions may be shared. | Each cell initializes and operates a fresh independent project through its own installed candidate and records its analytical/application identities and results. |
+| Best-effort eligibility | Policy and failure invariants are shared. | One same-target newer-R attempt is sufficient if practical; it is explicitly non-support evidence and cannot replace either formal R 4.4 cell. |
+
+Evidence records must bind the clean source revision, archive SHA-256,
+distribution/build/dependency identities, actual host and build target, exact
+R/OS/architecture, configured repository, installation identity, formal or
+best-effort classification, validator/quickstart revision, and result. Failure
+records remain bounded and privacy-safe. Stage 13 acceptance names only the
+two cells whose full evidence passes.
+
+Stage 14 consumes the accepted source revision, candidate-set identities,
+support/eligibility statement, quickstart, and evidence summary. It may add
+official release state, public locations, checksums/authenticity, and public
+reacquisition proof. A candidate payload or command change invalidates the
+handoff and returns to Stage 13.
+
+#### Stage 13 acceptance criteria
+
+Stage 13 may be presented for final human acceptance only when:
+
+1. the exact clean source revision and two-member candidate set are recorded;
+2. each candidate has stable target mapping, naming, extraction, contents,
+   entry points, standalone verification, and archive/inventory digests;
+3. build provenance, exact formal cells, actual technical requirements,
+   eligible best-effort environments, and ineligible environments are distinct
+   in contracts, diagnostics, evidence, and documentation;
+4. exact repository, dependency versions, integrity, private isolation,
+   actual-host identity, fresh-process verification, atomic promotion,
+   activation/rollback, and fail-closed incompatibility remain intact;
+5. an eligible unverified host is not rejected solely for an unnecessary R-
+   version difference, and any attempted failure is nonpromoting/nonmutating;
+6. the ordinary installer uses accepted defaults/inputs and prints complete
+   actionable next steps without activating or editing shell configuration;
+7. the public quickstart exists as one version-matched candidate/installed
+   authority and contains no checkout, maintainer-only script, private
+   instruction, or undocumented variable;
+8. that quickstart passes independently from the transferred candidate on both
+   formal cells through a working fictional product/application result;
+9. distribution, software, and project diagnosis are clearly distinct and
+   usable through the documented launcher/direct fallback;
+10. the separately authored adopter project passes producer/provider,
+    analytics, durable history, products, standalone application, customization,
+    managed refresh, and copied/frozen behavior on both cells;
+11. deep technical qualification passes against candidate-installed software
+    on both cells, including integrity, adversarial, privacy, interruption,
+    recovery, rollback, uninstall, and cleanup boundaries;
+12. ordinary, deep, and adopter evidence are separately attributable even
+    where they reuse underlying operations;
+13. public README/support/security and installed guides state current
+    capability, prerequisites, support cells, best-effort limits, and
+    unreleased status truthfully;
+14. all temporary development bridges with satisfied replacement conditions
+    are closed, while useful development evidence remains maintained;
+15. no checkout, sibling repository, ambient undeclared library, real data,
+    credential, private mapping, Git-state requirement, or project mutation by
+    installation enters the accepted product path;
+16. no generated archive, project, application, library, process, listener, or
+    acceptance temporary state remains in the source repository;
+17. architecture reconciliation finds no unresolved deviation; and
+18. the human maintainer explicitly accepts the exact candidate and Stage 13
+    evidence before Stage 14 planning or implementation proceeds.
+
+#### Governance gates
+
+- **Gate A — Detailed-plan approval:** the human maintainer must approve or
+  revise this first-pass plan, including its proposed compatibility policy,
+  matrix-freeze process, candidate convention, installer default, quickstart
+  endpoint, and four-increment sequence. Until then no Stage 13 implementation
+  is authorized.
+- **Gate B — Increment authorization and acceptance:** each increment requires
+  a separate implementation request, proportional local evidence, exact-
+  revision hosted/cross-platform evidence where its claim requires it, record
+  update, and human acceptance before the dependent increment begins. Passing
+  tests alone does not authorize progression.
+- **Gate C — Stage acceptance:** after 13.D, the human maintainer reviews the
+  exact two-artifact candidate set, all three evidence classes, environment
+  claims, architecture reconciliation, remaining limitations, and bridge
+  closure. Only explicit Stage 13 acceptance authorizes detailed Stage 14
+  planning; it does not itself authorize publication.
+
+#### Decisions requiring approval with this draft
+
+Unless revised by the maintainer, approval of the detailed plan would accept
+these planning defaults:
+
+1. two separate `.tar` candidate families, `macos-arm64` and
+   `ubuntu-x86_64`, with visibly unpublished working names and one clean source
+   revision;
+2. exact R 4.4 patch and exact OS/image identities frozen before 13.D, with the
+   same patch preferred but exact per-cell claims permitted;
+3. R >= 4.4.0 plus exact artifact platform/architecture as the bounded
+   best-effort eligibility rule, with only completed exact cells formally
+   supported;
+4. no promise that one distribution can coexist under multiple R versions in
+   one software root;
+5. the integrity-bound repository recorded by the candidate as the installer
+   default, with an explicit override accepted only when it agrees exactly;
+6. explicit activation, no PATH/shell mutation, and installer output/direct-
+   path guidance rather than a new convenience command;
+7. the quickstart's first visible endpoint as the installed fictional
+   product-only application, with standalone creation as the documented next
+   optional workflow;
+8. a separate candidate-first qualification composition rather than treating
+   the checkout-building installation aggregate as ordinary-adopter evidence;
+9. a pinned hosted or otherwise controlled clean macOS arm64 cell chosen and
+   recorded before 13.D; and
+10. Stage 13 acceptance records exact candidates and behavior while Stage 14
+    alone assigns official release identity, public locations, and publication
+    state.
+
+No conflict with Platform True North or Platform Architecture is known. The
+architecture's exact-evidence rule governs affirmative support; the proposed
+best-effort path does not broaden that claim. If implementation reconnaissance
+in 13.A establishes that same-target R-version relaxation violates a real
+dependency or runtime requirement, work stops for a focused plan amendment
+rather than weakening integrity or silently broadening scope.
+
 ## Stage 14 — Release qualification and publication
 
-**Planning status:** high-level roadmap reconciled on 2026-10-23; not detailed,
-started, accepted, or authorized for implementation or publication.
+**Planning status:** high-level roadmap formally accepted on 2026-10-23; Stage
+14 is not detailed, started, accepted as complete, or authorized for
+implementation or publication.
 
 ### Objective and responsibilities
 
