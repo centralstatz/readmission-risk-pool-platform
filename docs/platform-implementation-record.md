@@ -8513,3 +8513,47 @@ tag, publication, or remote mutation was authorized or created. Stage 13 and
 Stage 14 remain unstarted. The next required decision is human approval of the
 revised high-level roadmap before detailed Stage 13 planning may be
 authorized.
+
+## High-level roadmap acceptance and first-pass Stage 13 planning — 2026-10-23
+
+The human maintainer reviewed and formally accepted the reconciled high-level
+Stage 13/14 roadmap recorded above, including all six assessment-derived
+adjustments as incorporated. The accepted remaining boundary is unchanged:
+Stage 13 completes and independently qualifies adopter-facing product behavior
+and release-shaped candidates; Stage 14 freezes, publishes, and independently
+verifies only the product accepted by Stage 13. A Stage 14 product-behavior
+change must return to Stage 13 qualification.
+
+That governance decision authorized detailed Stage 13 planning, not
+implementation. Repository-grounded reconnaissance reviewed the current closed
+distribution builder and verifier, exact private restoration and installation
+lifecycle, stable launcher/CLI, project and authoring surfaces, fictional and
+independent mapping evidence, analytical history/products, installed and
+standalone applications, installed documentation, all four validation
+aggregates, and the hosted workflow. It found a strong implemented product
+base and four remaining planning work classes: candidate/environment contract
+refinement; ordinary installer and quickstart usability; a separately authored
+adopter proof; and candidate-first cross-cell qualification.
+
+The implementation plan now contains a four-increment first-pass draft:
+
+1. 13.A — Qualification-candidate and environment-eligibility foundation;
+2. 13.B — Ordinary installation experience and executable quickstart;
+3. 13.C — Separately authored adopter implementation proof; and
+4. 13.D — Candidate-first qualification matrix and Stage 13 closeout evidence.
+
+The draft recommends two target-specific unpublished `.tar` candidate families,
+exact R 4.4/OS cells frozen before final qualification, R >= 4.4.0 plus exact
+artifact platform/architecture as bounded best-effort eligibility, exact
+repository/dependency/integrity preservation, an integrity-bound repository
+default, explicit nonautomatic activation, an installed-application quickstart
+endpoint, and separate deep, ordinary, and adopter evidence on both formal
+cells. These are proposed detailed decisions awaiting human review; they are
+not implemented or accepted merely by appearing in the draft.
+
+**Governance state:** **high-level Stage 13/14 roadmap accepted; first-pass
+detailed Stage 13 plan drafted and awaiting human review.** Stage 13 remains
+unstarted. No increment is authorized, no qualification candidate was built,
+and no release construction, tag, publication, or remote mutation is
+authorized. The next decision is human approval or revision of the detailed
+Stage 13 plan before any implementation begins.
