@@ -24,6 +24,7 @@ expected_files <- c(
   "docs/assessments/post-stage-11-manual-platform-assessment.md",
   "docs/assessments/post-stage-12-standalone-application-assessment.md",
   "docs/assessments/pre-stage-11-manual-platform-assessment.md",
+  "docs/assessments/rrp-1.0.0-remaining-roadmap-readiness-assessment.md",
   "docs/assessments/stage-11-assessment.md",
   "docs/assessments/stage-7-bundle-scope-assessment.md",
   "docs/assessments/stage-8-authoring-ux-installed-documentation-assessment.md",
