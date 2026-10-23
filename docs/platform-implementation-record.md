@@ -8381,3 +8381,92 @@ implementation or release claim. Increments 12.A and 12.B retain their earlier
 independent acceptance revisions. Stage 13 is the next eligible stage for a
 separately authorized detailed-planning task and has not begun. Stage 14 has
 not begun.
+
+## Post-Stage-12 Standalone Application Assessment completion record (2026-10-23)
+
+**Outcome:** **PASS**
+
+**Assessment type:** manual, human-operated, post-acceptance assessment.
+
+After formal Stage 12 acceptance, the platform developer completed the
+[Post-Stage-12 Standalone Application Assessment](assessments/post-stage-12-standalone-application-assessment.md)
+on one macOS development machine. The exercise used an independently built,
+verified, isolated, and activated RRP `1.0.0-dev` distribution, the supplied
+fictional hospital project, and the generated hospital-owned standalone Shiny
+application. No failure or discrepancy was reported.
+
+### Assessed identities
+
+- Source revision: `adc4e17afa4cf487794d3cef0ed23c2bff49305d`.
+- Distribution ID:
+  `c9523c0d9e1bf90a798e8b8249ba8cde5333fa6a90a8fc06de1854af51cd8add`.
+- Installation ID:
+  `bd8d38695f97e9bc049eb943b136e0b07bdf2bdcfa9be6bd0bca5183407fa8d5`.
+
+| Context | Analytical cutoff | Operation run | Product set | Materialization |
+|---|---|---|---|---|
+| Time 1 | `2026-01-19T12:00:00Z` | `rrp.operation-run.0b418814314bf8ae` | `rrp.product-set.65b74a893f47f709` | `rrp.materialization.2e9471f541179eed` |
+| Time 2 | `2026-01-20T12:00:00Z` | `rrp.operation-run.0b418815314bf8af` | `rrp.product-set.76f7348b5b38a6c0` | `rrp.materialization.351758bd1bc93eb2` |
+
+### Evidence reported from commands
+
+The distribution build and standalone verification passed. Installation into
+the assessment-owned software root, exact activation, installed `rrp` CLI
+invocation, fictional-project initialization, source preparation,
+project/state initialization and validation, both governed analytical runs,
+both materializations, and the corresponding product-freshness checks all
+completed successfully.
+
+Standalone initialization and validation passed. The time-1 application was
+copied outside the fictional project and the detached copy validated. After
+the original `www/rrp.css` was changed, validation continued to accept its
+managed analytical content while correctly reporting
+`source_baseline_status: drifted`. Time-2 products were materialized before
+`rrp app refresh`; refresh advanced only the original application's managed
+product set, preserved the customized source and its expected drift status,
+and left the detached time-1 snapshot unchanged. Both detached snapshots
+passed validation, with the first retaining time-1 products and the second
+containing time-2 products.
+
+### Behavior confirmed by manual browser inspection
+
+The required ordinary Shiny dependencies were already available in the
+developer's local R library. The original time-1 application, detached time-1
+copy, customized original, refreshed time-2 original, and detached time-2 copy
+all launched through `Rscript --vanilla` and `shiny::runApp()` and behaved as
+intended. These launches did not use the RRP CLI and did not execute the RRP
+analytical runtime.
+
+### Additional exploratory portability evidence
+
+Beyond the prescribed procedure, the developer copied the generated
+application to the ordinary Documents location:
+
+```text
+~/Documents/CentralStatz/Readmissions/Readmission Risk Pool Platform/detached_app_testing/app_stage12
+```
+
+After renaming the application directory to `app_stage12`, launching from its
+parent directory also succeeded:
+
+```sh
+Rscript --vanilla -e 'shiny::runApp("app_stage12", host = "127.0.0.1", port = 45821, launch.browser = TRUE)'
+```
+
+This is additional practical evidence that the generated application does not
+depend on its original fictional-project path or directory name.
+
+### Boundaries and governance effect
+
+This assessment used one macOS development machine, existing ordinary Shiny
+dependencies in that developer's local R library, and fictional reference
+data. It was not an independent clean-machine or cross-platform portability
+assessment and does not establish production deployment readiness, real-EHR
+integration readiness, clinical validation, or broader operational
+suitability. Those limits are assessment boundaries, not observed failures.
+
+This completion record is subsequent human evidence. It does not retroactively
+change or extend the formal Stage 12 acceptance at
+`49e96471da63d07c5872a28e80f8216cd0bdef72`, constitute Stage 13 planning or
+acceptance, or authorize Stage 14 release qualification, publication, or
+deployment. Stage 13 and Stage 14 remain unstarted.

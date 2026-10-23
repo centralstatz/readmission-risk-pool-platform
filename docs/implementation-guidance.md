@@ -82,8 +82,12 @@ three installed CLI intentions; both increments are formally accepted.
 Increment 12.C now extends the existing clean temporary-user installation
 proof through detached ordinary and exact-closure isolated execution,
 customized time-2 refresh, frozen time-1 comparison, and representative
-recovery adversaries. It is locally qualified but awaits exact-revision hosted
-evidence and separate Stage 12 acceptance.
+recovery adversaries. Increment 12.C and Stage 12 are formally accepted at
+exact revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after
+revision-matched hosted evidence. The subsequent Post-Stage-12 Standalone
+Application Assessment was completed successfully on 2026-10-23 against
+source revision `adc4e17afa4cf487794d3cef0ed23c2bff49305d`; it is manual
+post-acceptance evidence rather than a new stage-acceptance claim.
 The software now owns strict
 project contracts, an explicit trusted loader, transactional standard-project
 initialization, a bounded project doctor, and the closed installed canonical
@@ -107,8 +111,9 @@ found no blocking implementation or evidence discrepancy. Stage 11 is formally
 accepted and complete. Post-acceptance Increment 11.I is also formally accepted
 with conventional private-library permissions and strict installed-content
 verification. Its retained nonblocking qualification consideration and later-
-stage deferrals remain explicit. Increment 12.A is implementation-complete and
-pending formal acceptance; Stage 12 remains incomplete.
+stage deferrals remain explicit. Stage 12 is formally accepted and complete.
+Stage 13 is next eligible for separately authorized planning and has not
+begun.
 
 ## Read authority before source
 

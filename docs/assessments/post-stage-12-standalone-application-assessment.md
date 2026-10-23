@@ -1,13 +1,16 @@
 # Post-Stage-12 Assessment — Standalone Application
 
-**Status:** Human-operated, non-authoritative assessment guide — not yet
-executed
+**Status:** Human-operated, non-authoritative assessment — completed
+successfully on 2026-10-23; procedure retained for reuse
 
 **Accepted Stage 12 implementation:**
 `49e96471da63d07c5872a28e80f8216cd0bdef72`
 
 **Formal Stage 12 acceptance closeout when authored:**
 `3158d78ecca3c6430ef2a55d769561efb83e55e8`
+
+**Completion evidence:**
+[Post-Stage-12 Standalone Application Assessment completion record](../platform-implementation-record.md#post-stage-12-standalone-application-assessment-completion-record-2026-10-23)
 
 ## A. Purpose and boundary
 
@@ -46,6 +49,11 @@ record, production deployment procedure, comprehensive CLI tutorial, Stage 13
 adopter exercise, or release qualification. Stage 12 is already formally
 accepted. A usability finding here should be recorded and assessed on its own
 merits; it does not automatically reopen that acceptance.
+
+The platform developer completed this procedure successfully on 2026-10-23.
+The linked completion record is the concise historical certification; the
+commands, expected results, troubleshooting, and cleanup below remain the
+reusable human procedure.
 
 Use only the supplied fictional, nonclinical project. Do not use real patient
 data, credentials, private hospital mappings, or a real model.
@@ -719,22 +727,24 @@ Optional observation: _________________________________________________
 
 ## L. Assessment results
 
-Complete this table only after personally performing the walkthrough.
+The platform developer reported the following results for the completed
+2026-10-23 walkthrough. A future assessor may copy this table and reset its
+result cells when reusing the procedure.
 
 | Checkpoint | Result | Observations / issues |
 |---|---|---|
-| Original project `app/` generated and validated | Not run | |
-| Original app launched with ordinary R | Not run | |
-| Complete time-1 directory copied | Not run | |
-| Detached time-1 app launched | Not run | |
-| Detached app displayed analytical products and local assets | Not run | |
-| Human-owned customization was visible | Not run | |
-| Distinct second product set generated | Not run | |
-| Original app managed refresh succeeded | Not run | |
-| Hospital-owned customization survived refresh | Not run | |
-| Original app displayed time-2 products | Not run | |
-| Detached time-1 copy remained unchanged | Not run | |
-| Refreshed time-2 copy launched independently | Not run | |
+| Original project `app/` generated and validated | Successful | Initialization and validation passed. |
+| Original app launched with ordinary R | Successful | Launched through `Rscript --vanilla` and `shiny::runApp()`. |
+| Complete time-1 directory copied | Successful | Copied outside the fictional project. |
+| Detached time-1 app launched | Successful | Launched through ordinary R/Shiny. |
+| Detached app displayed analytical products and local assets | Successful | No reported discrepancy. |
+| Human-owned customization was visible | Successful | CSS edit remained usable; validation reported expected source-baseline drift. |
+| Distinct second product set generated | Successful | Time-2 run and materialization completed. |
+| Original app managed refresh succeeded | Successful | Managed content advanced to time 2. |
+| Hospital-owned customization survived refresh | Successful | Customized source remained intact. |
+| Original app displayed time-2 products | Successful | Refreshed app launched through ordinary R/Shiny. |
+| Detached time-1 copy remained unchanged | Successful | Retained its time-1 product set. |
+| Refreshed time-2 copy launched independently | Successful | Validated and launched through ordinary R/Shiny. |
 
 Record the human evaluation:
 
@@ -759,7 +769,7 @@ Record the human evaluation:
 - Documentation gaps or potential future improvements:
   _________________________________________________________________
 
-**Overall assessment:** [ ] Successful  [ ] Successful with observations
+**Overall assessment:** [x] Successful  [ ] Successful with observations
 [ ] Unsuccessful  [ ] Not completed
 
 Human usability observations are subsequent assessment evidence. They are not
@@ -896,5 +906,7 @@ time-1 applications, one hospital-owned CSS customization, a governed time-2
 product refresh, and an independently launched time-2 copy. It does not test
 external hosting, deployment, authentication, protected-data controls,
 production model governance, Stage 13 adopter qualification, Stage 14 release,
-or publication. Its status remains **not yet executed** until a human records
-actual observations and an overall result above.
+or publication. The documented assessment was completed successfully on
+2026-10-23. Its result remains subsequent human assessment evidence rather
+than formal stage acceptance, automated validation, release qualification, or
+deployment evidence.
