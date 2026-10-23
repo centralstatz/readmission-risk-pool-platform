@@ -26,8 +26,11 @@ revision-matched `package-foundation` run `39767333474`, job `119785937864`.
 Increment 12.C and Stage 12 were formally accepted on 2026-10-22 at exact
 revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after successful
 revision-matched `package-foundation` run `39825668962`, job `119988175889`,
-under hosted Ubuntu/R 4.4. Stage 13 is the next eligible stage for separately
-authorized detailed planning and has not begun.
+under hosted Ubuntu/R 4.4. The high-level Stage 13 and 14 roadmap has been
+reconciled with the six maintainer-approved recommendations in the 2026-10-23
+remaining-roadmap readiness assessment. The revised roadmap awaits separate
+human review and approval before detailed Stage 13 planning may begin. Stage
+13 has not begun.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -115,8 +118,10 @@ Increment 12.B are formally accepted at exact revision
 `1dee47d3f38f2048f8f60dae00dc843ca4479a23` after revision-matched hosted
 qualification. Increment 12.C and Stage 12 are formally accepted at exact
 revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after revision-matched
-hosted qualification. Stage 13 is next eligible for separately authorized
-detailed planning and has not begun. After a stage is implemented:
+hosted qualification. The remaining two-stage roadmap has been reconciled at
+high level and awaits human approval. Stage 13 detailed planning remains a
+separate, unauthorized next step, and Stage 13 has not begun. After a stage is
+implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -146,8 +151,8 @@ Their bounded decisions are resolved just before they become material.
 | 10 | Supplied product-only application | The supplied application works only through validated products and proves the application boundary, but normal operators do not yet have the complete installed CLI and distribution. |
 | 11 | CLI, closed RRP-owned-payload distribution, installation, and upgrade | A human can build, install, verify, activate, operate, upgrade, roll back, and uninstall versioned RRP software without mutating a project, but the standalone project application is not yet available. |
 | 12 | Standalone project application | Installed RRP can instantiate its supplied product-only Shiny app as hospital-owned `app/` source, prove independent runtime closure, and refresh compatible products without overwriting application code. |
-| 13 | Clean-system and adopter acceptance | Supported clean environments prove installed RRP, the fictional project, and a separate adopter implementation through the full implemented lifecycle, but no 1.0.0 release is yet authorized. |
-| 14 | Release qualification and publication | Exact accepted bytes can be prepared, explicitly published, publicly reacquired, and verified as immutable RRP 1.0.0. |
+| 13 | Clean-system and adopter acceptance | Declared clean support cells prove both the deep product matrix and the public-style ordinary adopter path from release-shaped candidates, including a separate adopter implementation, but no 1.0.0 release is yet authorized. |
+| 14 | Release qualification and publication | Exact Stage 13-accepted behavior and bytes can be frozen, explicitly published, publicly reacquired, and verified as immutable RRP 1.0.0 without introducing new product semantics. |
 
 ## Architectural dependency path
 
@@ -9636,35 +9641,149 @@ release and public publication.
 
 ## Stage 13 — Clean-system and adopter acceptance
 
+**Planning status:** high-level roadmap reconciled on 2026-10-23 from the
+maintainer-approved remaining-roadmap readiness assessment; awaiting human
+review and approval before detailed Stage 13 planning. Stage 13 has not begun.
+
 ### Objective and responsibilities
 
-Prove the architecture's complete clean-install matrix on declared macOS arm64
-and Ubuntu x86_64 evidence cells: distribution install/doctor, fictional
-project, separate adopter project, custom producer and provider, dependency
-isolation, reproducible dependency restoration from configured repositories,
-durable history, product materialization, standalone application initialization,
-copied-app dependency restoration and independent local execution, compatible
-managed-product refresh with hospital-file preservation, provenance/integrity,
-version activation/rollback, and privacy/safety failure and recovery behavior.
-This matrix does not require bundled third-party artifacts, offline
-installation, Posit/Connect publication, Docker/OCI images, or any other live
-external hosting demonstration. Close all temporary development bridges whose
-replacement conditions have passed.
+Complete and independently qualify the adopter-facing RRP software product on
+declared macOS arm64 and Ubuntu x86_64 R 4.4.x evidence cells before release
+identity or publication is authorized. Stage 13 may make bounded final product
+changes necessary to satisfy this release-readiness boundary; every such
+change remains subject to the complete applicable qualification evidence.
+
+The stage owns these high-level outcomes:
+
+- finalize one coherent ordinary installation and first-use experience for a
+  technically capable R user who can independently acquire an already-built,
+  release-shaped candidate but has no development checkout or private
+  repository knowledge;
+- establish reasonable installer defaults and justified explicit inputs,
+  standalone verification, stable-launcher discovery with a direct-path
+  fallback, exact software selection, verification and doctor, explicit
+  activation and confirmation, actionable next steps, and safe failure and
+  recovery behavior without predetermining automatic activation, shell-profile
+  mutation, repository defaults, or new CLI shorthand;
+- produce and qualify one concise public-facing quickstart that uses only the
+  prebuilt candidate, publicly intended documentation, and stated technical
+  prerequisites to reach a successful fictional reference workflow, without
+  maintainer scripts, internal harness knowledge, undocumented environment
+  variables, or development-repository access;
+- stabilize the adopter-visible release-shaped distribution contract,
+  including candidate structure and extraction expectations, contents and
+  entry points, target-to-artifact mapping, candidate naming, installation and
+  verification behavior, required resources and documentation, and the
+  compatibility/eligibility semantics used for artifact selection;
+- prove the complete clean-install lifecycle: distribution install and doctor,
+  dependency isolation and exact restoration from configured repositories,
+  software verification/selection/activation/rollback, fictional project,
+  durable history, product materialization, standalone application
+  initialization, copied-app dependency restoration and independent local
+  execution, hospital-owned application customization, compatible managed-
+  product refresh with hospital-file preservation, provenance/integrity, and
+  privacy/safety failure and recovery;
+- qualify a separately authored adopter project through the normal supported
+  producer and provider customization interfaces, analytical execution,
+  durable history and products, and standalone application behavior without
+  reusing the fictional project's private registration or assumptions; and
+- close all temporary development bridges whose replacement conditions have
+  passed and record explicit release-candidate acceptance evidence.
+
+Stage 13 exercises unpublished release-shaped candidates representing the
+intended supported environments. It does not assign the final official
+`1.0.0` release identity or publish anything.
+
+### Environment requirements and qualification evidence
+
+Stage 13 must distinguish four concepts that must not be collapsed:
+
+1. **build provenance** — the exact environment and dependency inputs used to
+   construct a candidate;
+2. **formally verified environments** — the exact cells whose complete Stage
+   13 acceptance matrix passed and for which RRP may make an affirmative
+   support claim;
+3. **actual technical requirements** — conditions genuinely necessary for
+   safe installation or operation; and
+4. **unverified but eligible environments** — environments that may attempt
+   installation and operation on a best-effort basis without acquiring a
+   support or compatibility guarantee.
+
+The governing principle is: **RRP guarantees only what it has verified, but
+does not prohibit what it has not verified.** A successful best-effort
+installation establishes only that installation's verified result; it does not
+qualify the environment, promise every analytical or application operation,
+or expand the supported matrix. A later feature failure caused by a genuine
+incompatibility in an unverified environment may remain an unsupported result.
+An operation must not, however, reject an environment solely because it differs
+from the build environment when that difference is not a technical
+requirement.
+
+Detailed Stage 13 planning must therefore evaluate and appropriately reconcile
+the current distribution `Target-*` metadata, installer eligibility checks,
+exact dependency restoration, actual-host installation identity, installation
+destination and coexistence behavior, standalone-application dependency-lock
+derivation, and software verification/doctor behavior. It must preserve exact
+build and dependency provenance, exact dependency versions and configured
+repository, distribution and installation integrity, private-library
+isolation, actual-host installation identity, fresh-process verification,
+atomic promotion, activation/rollback protections, and fail-closed rejection
+of genuine technical incompatibility. Where exact environment equality is not
+technically necessary, use the smallest safe relaxation supported by evidence;
+do not create a general target-family, ABI, or automatic compatibility
+framework.
+
+Stage 13 must declare the exact formally verified R/OS/architecture cells,
+establish actual minimum technical requirements, define which other
+environments are reasonably eligible to attempt installation, and preserve
+clear rejection and diagnosis of genuine incompatibilities. When practical
+and inexpensive, it should exercise one representative unverified newer-R
+attempt and prove that failure cannot promote, activate, corrupt, or replace
+an existing installation. Separate macOS arm64 and Ubuntu x86_64 candidates
+remain the starting assumption unless Stage 13 evidence justifies a different
+mapping. Simultaneous installation of one distribution under multiple R
+versions in one software root is not a prerequisite.
+
+### Acceptance evidence and boundary
+
+Acceptance requires two separately attributable evidence classes on every
+declared formally supported cell:
+
+- **deep technical qualification** proves the rigorous isolation, exact
+  restoration, integrity, lifecycle, analytical, application, adversarial,
+  privacy, failure, and recovery matrix; and
+- **ordinary adopter qualification** proves that a technically capable
+  independent user can execute the actual public-style quickstart from a
+  prebuilt candidate without a development checkout or private knowledge.
+
+The evidence classes may share implementation or infrastructure, but neither
+substitutes for the other. The separately authored adopter-project proof is an
+additional required part of Stage 13 acceptance. Final evidence must identify
+build provenance, technical prerequisites, formally verified cells,
+best-effort eligibility, and known incompatibilities without representing
+unverified environments as supported. Existing mismatch and integrity
+adversaries must continue to reject genuinely invalid prerequisites.
 
 ### Why here and dependencies
 
 Only a complete candidate can prove that the development tree, installed
 software, project, state, immutable products, and standalone application are
 genuinely independent where the architecture requires it. This stage turns
-accumulated component evidence into a supportable system claim before release
-metadata is frozen.
+accumulated component evidence into a supportable system claim, completes the
+ordinary adopter product path, and freezes adopter-visible packaging semantics
+before official release metadata is created. Publication machinery cannot be
+allowed to define or repair missing product behavior after this boundary.
 
 ### Plain-language exit state
 
-> Independent clean environments and a separately authored adopter project
-> prove the complete RRP 1.0 product boundary and supported platform cells. The
-> software is accepted as a release candidate but is not yet published as
-> version 1.0.0.
+> On every declared supported cell, independent clean environments prove both
+> the deep technical matrix and the documented ordinary path from an
+> unpublished release-shaped candidate through a working fictional example. A
+> separately authored adopter project proves the supported customization and
+> complete analytical/application boundary. Technical prerequisites,
+> best-effort eligibility, and unsupported environments are stated truthfully.
+> The adopter-facing software and packaging contract is accepted as a release
+> candidate, but no official 1.0.0 identity or publication is yet authorized.
 
 ### Expected historical reuse
 
@@ -9678,38 +9797,86 @@ return.
 
 ### Major deferrals
 
-Clinical validation, production authorization, additional OS/R cells,
-performance/service objectives, signing mechanism, external application
-hosting/deployment certification, and actual remote release publication remain
-outside this acceptance claim. Absence of a deployed Posit application or
+Clinical validation, production authorization, exhaustive future-R testing,
+additional supported OS/architecture cells, Windows qualification, a general
+target-family or ABI framework, bundled R or third-party package closure,
+offline installation, graphical installation, performance/service objectives,
+signing mechanism, external application hosting/deployment certification, and
+actual remote release publication remain outside this acceptance claim. Stage
+13 need not guarantee all features in unverified environments or repair every
+incompatibility encountered there. Absence of a deployed Posit application or
 Docker/OCI image does not fail Stage 13.
+
+Detailed Stage 13 planning must resolve the exact supported cell/artifact
+matrix, minimum technical prerequisites, eligible best-effort boundary,
+`Target-*` semantics, installer defaults and required inputs, launcher/next-step
+presentation, candidate naming, and public quickstart form. Those are planning
+responsibilities, not decisions made by this high-level reconciliation.
 
 ## Stage 14 — Release qualification and publication
 
+**Planning status:** high-level roadmap reconciled on 2026-10-23; not detailed,
+started, accepted, or authorized for implementation or publication.
+
 ### Objective and responsibilities
 
-Freeze exact `1.0.0` candidate identity from a clean authorized revision;
-produce licenses, notices, changelog, support/security, source and distribution
-artifacts, dependency/build evidence, checksums and any accepted authenticity
-evidence; require explicit publication authorization; verify immutable remote
-identity/assets; and prove public reacquisition, installation, doctor, example,
-and recovery behavior.
+Consume the exact Stage 13-accepted behavior and candidates, implement the
+remaining release-governance and publication boundary, and freeze the official
+RRP `1.0.0` release from a clean authorized revision. Stage 14 must establish:
+
+- exact accepted source revision, official release/candidate state, and final
+  `1.0.0` product and package identities;
+- final supported-target source and distribution artifact set and official
+  asset names, with final release metadata, changelog, release notes, licenses,
+  notices, security and support information;
+- dependency and build provenance, exact checksums, and any accepted
+  authenticity evidence;
+- deterministic unpublished preparation, zero-mutation publication preflight,
+  and an explicit human authorization boundary;
+- immutable remote tag, release, and asset publication plus exact remote-state
+  verification and bounded recovery after partial publication; and
+- independent public reacquisition followed by verification, installation,
+  software diagnosis, the accepted first example/quickstart, and recovery from
+  the official public artifacts, ending in explicit human release acceptance.
 
 Stage 14 publishes and verifies the RRP software release. It does not publish,
 host, or certify a hospital-owned standalone application or its deployment.
+It may finalize the quickstart's official release identity and public
+acquisition references, but not change the substantive adopter workflow
+accepted in Stage 13.
+
+### No-new-product rule
+
+Stage 14 may implement release-governance, identity, authorization,
+publication, remote-verification, and recovery machinery. It must not
+independently change installation behavior, distribution semantics, dependency
+restoration, compatibility eligibility, public CLI commands, project
+authoring, analytical behavior, or standalone application behavior. If release
+preparation exposes a necessary change to any such adopter-facing product
+behavior, the affected candidate returns to Stage 13 qualification before
+publication. Unpublished preparation and authorized remote publication remain
+separate states.
+
+Stage 14 reports the exact build provenance, technical prerequisites, formally
+verified environment matrix, permitted best-effort behavior, and known
+incompatibilities accepted by Stage 13. It introduces no new compatibility
+mechanism or support claim.
 
 ### Why here and dependencies
 
 Publication is a lifecycle mutation, not another form of development
 validation. It follows complete Stage 13 acceptance so release tooling never
-defines or compensates for missing product behavior.
+defines or compensates for missing product behavior. The exact Stage 13
+candidate, its qualification evidence, and separate human authorization are
+prerequisites for any remote mutation.
 
 ### Plain-language exit state
 
 > The exact accepted RRP 1.0.0 software is immutably published, publicly
-> reacquirable, independently verifiable, and supported by complete release
-> evidence; forward development can begin only under a new development
-> identity.
+> reacquirable, independently verifiable, installable through the accepted
+> ordinary workflow, and supported by complete release evidence. Public
+> artifacts reproduce the Stage 13-accepted product without new semantics, and
+> forward development can begin only under a new development identity.
 
 ### Expected historical reuse
 
@@ -9722,8 +9889,12 @@ payload, and version-specific hard-coding must not return.
 ### Major deferrals
 
 Publication provider, signing technology, final asset formats, retention, and
-support-matrix expansion are decided from Stage 13 evidence. No publication,
-tag, remote, or release is authorized by this plan itself.
+any support-matrix expansion are decided from Stage 13 evidence. Stage 14 does
+not add Windows qualification, broad operating-system or future-R
+certification, Docker/OCI distribution, hosted deployment automation, bundled
+third-party packages, or clinical production qualification. No publication,
+tag, remote, or release is authorized by this plan itself; each remote mutation
+requires the later detailed plan and explicit human release authorization.
 
 ## Cross-stage validation growth
 
