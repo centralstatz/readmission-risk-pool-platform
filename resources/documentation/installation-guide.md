@@ -6,8 +6,11 @@ edit `PATH` or a shell profile, discover a project, or write project files.
 
 ## Prerequisites
 
-Use the R 4.4.x installation that matches the distribution target. The host
-must have network access to the exact credential-free HTTPS R package
+Use R 4.4.0 or later on the exact platform and architecture named by the
+distribution. The exact `Target-R-Version` remains build provenance. A host R
+version that differs from it is eligible for a fail-closed best-effort attempt,
+not automatically rejected and not thereby declared formally supported. The
+host must have network access to the exact credential-free HTTPS R package
 repository recorded by the distribution, normal package compilation support
 when that repository supplies source packages, and either `sha256sum` or
 `shasum`. Credentials, when an organization requires them outside the URL,
@@ -57,6 +60,13 @@ verification. The installation record binds the private-library inventory
 digest without changing the established installation identity. Repository
 authentication, when required by local policy, stays outside retained RRP
 evidence.
+
+`artifact.dcf` preserves the distribution's build target, target family,
+technical minimum, and pending external qualification state. The installation
+record separately preserves the actual host R executable, version, platform,
+and architecture. `software verify` and `software doctor` report those facts
+alongside `exact_build_target_unqualified` or `eligible_best_effort`; neither
+operation turns successful installation into a formal support claim.
 
 RRP preserves the conventional file and directory permissions produced by R
 package installation. It does not recursively rewrite the private library as
@@ -108,11 +118,18 @@ Guide.
 A network, repository, lock, package, compilation, verification, or promotion
 failure leaves no promoted partial version and does not change an existing
 installation. Correct the reported condition and rerun the same command. An
-exact reinstall validates and reuses the existing verified realization; a
-conflicting realization fails loudly. Distinct development content identities
-may coexist under the development product version for controlled testing, but
-a published product version permits only one official distribution identity;
-different official content under that same version is rejected. Do not edit an
+older-R, cross-platform, cross-architecture, repository-mismatched, integrity-
+invalid, or genuinely incompatible attempt follows the same fail-closed
+boundary. An eligible R variation must still restore the exact closure and
+pass fresh-process verification before promotion. An installation root does
+not promise simultaneous realizations of the same distribution under multiple
+R versions; use a separate disposable root for controlled compatibility
+experiments. An exact reinstall validates and reuses the existing verified
+realization; a conflicting realization fails loudly. Distinct development
+content identities may coexist under the development product version for
+controlled testing, but a published product version permits only one official
+distribution identity; different official content under that same version is
+rejected. Do not edit an
 installation in place. Use the Software Lifecycle Guide for side-by-side
 activation, rollback, and exact inactive uninstall.
 

@@ -62,9 +62,16 @@ rrp_install_bootstrap <- function(arguments = commandArgs(trailingOnly = TRUE)) 
     }
   )
   cat(sprintf(
-    "PASS installation %s\nLocation: %s\nStable launcher: %s\nReused: %s\n",
+    paste0(
+      "PASS installation %s\nLocation: %s\nStable launcher: %s\n",
+      "Artifact state: %s\nTarget family: %s\n",
+      "Build target R: %s\nActual host R: %s\n",
+      "Eligibility: %s\nQualification: %s\nReused: %s\n"
+    ),
     result$installation_id, result$installation_root,
-    result$shim_path,
+    result$shim_path, result$artifact_state, result$target_family,
+    result$build_target_r_version, result$host_r_version,
+    result$eligibility_status, result$qualification_status,
     if (result$reused) "yes" else "no"
   ))
   invisible(result)

@@ -291,8 +291,12 @@ Standalone Application Guide. Increment 12.B is formally accepted. Increment
 12.C extends the existing clean temporary-user installation validator through
 detached ordinary and exact 72-package declared-closure execution, controlled
 hospital customization, a later managed refresh, frozen time-1/runtime time-2
-lineage comparison, and representative recovery adversaries. It is
-implementation-complete and locally qualified on an uncommitted candidate;
-exact-revision hosted Ubuntu/R 4.4 evidence and separate formal Stage 12
-acceptance remain pending. No deployment, image, publication, or remote
-behavior exists.
+lineage comparison, and representative recovery adversaries. Increment 12.C
+and Stage 12 are formally accepted. Increment 13.A grows the catalog to 76
+resources with the distribution-artifact authority and adds clean-source,
+two-family unpublished candidate identity/evidence, bounded same-target
+R >= 4.4.0 eligibility, actual-host-aware installation/application locks, and
+distinct build, eligibility, realization, and external-qualification facts.
+It is implemented and locally validated but awaits human acceptance. No final
+candidate set, qualified support cell, official release identity, deployment,
+publication, or remote behavior exists.

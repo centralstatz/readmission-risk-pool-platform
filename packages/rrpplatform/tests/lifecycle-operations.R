@@ -239,11 +239,15 @@ stopifnot(
 contracts <- getFromNamespace("rrp_lifecycle_contracts", "rrpplatform")(catalog)
 stopifnot(
   identical(names(contracts), c(
-    "distribution", "dependencies", "installation", "activation",
+    "distribution", "artifact", "dependencies", "installation", "activation",
     "installed_diagnosis", "project_lifecycle", "cli_json"
   )),
   identical(
     contracts$distribution[["Payload-Closure"]], "rrp_owned_members_only"
+  ),
+  identical(
+    contracts$artifact[["Build-Target-Role"]],
+    "exact_provenance_not_support_claim"
   ),
   identical(
     contracts$dependencies[["Bundled-Transitive-Artifacts"]], "not_required"

@@ -18,10 +18,23 @@ record <- c(
   "Product-ID" = "readmission-risk-pool-platform",
   "Product-Version" = "1.0.0-dev",
   "Installation-ID" = paste(rep("b", 64L), collapse = ""),
-  "Distribution-ID" = paste(rep("a", 64L), collapse = "")
+  "Distribution-ID" = paste(rep("a", 64L), collapse = ""),
+  "Host-R-Version" = as.character(getRversion()),
+  "Platform" = R.version$platform,
+  "Architecture" = R.version$arch
 )
 verified <- list(
-  record = record, selector = valid_selector, activation_status = "inactive"
+  record = record,
+  artifact = c(
+    "Artifact-State" = "development",
+    "Target-Family" = "development-local",
+    "Target-R-Version" = as.character(getRversion()),
+    "Target-Platform" = R.version$platform,
+    "Target-Architecture" = R.version$arch,
+    "Qualification-Status" = "not_applicable"
+  ),
+  eligibility_status = "exact_build_target_unqualified",
+  selector = valid_selector, activation_status = "inactive"
 )
 diagnosis <- internal("rrp_software_diagnosis_value")(verified)
 stopifnot(
@@ -30,8 +43,11 @@ stopifnot(
     ",", fixed = TRUE
   )[[1L]]),
   identical(diagnosis$software_status, "ready"),
+  identical(diagnosis$artifact_state, "development"),
+  identical(diagnosis$eligibility_status, "exact_build_target_unqualified"),
+  identical(diagnosis$qualification_status, "not_applicable"),
   identical(diagnosis$activation_status, "inactive"),
-  length(diagnosis$checks) == 6L
+  length(diagnosis$checks) == 7L
 )
 
 invalid <- diagnosis

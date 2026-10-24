@@ -176,6 +176,98 @@ rrp_software_record <- function(path) {
   record
 }
 
+rrp_software_candidate_set_id <- function(source_revision) {
+  rrp_software_hash_lines(c(
+    "rrp-qualification-candidate-set-v1",
+    "product=readmission-risk-pool-platform",
+    "product-version=1.0.0-dev",
+    paste0("source-revision=", source_revision),
+    "families=macos-arm64,ubuntu-x86_64"
+  ))
+}
+
+rrp_software_artifact <- function(path, manifest, record) {
+  records <- rrp_software_read_dcf(
+    file.path(path, "artifact.dcf"), "invalid_artifact_metadata"
+  )
+  fields <- c(
+    "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+    "Product-Version", "Artifact-State", "Target-Family",
+    "Expected-Archive-Name", "Extraction-Root", "Candidate-Set-ID",
+    "Technical-Minimum-R-Version", "Qualification-Status",
+    "Official-Release-State", "Source-Revision", "Source-State",
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )
+  expected <- c(
+    "Record-Type" = "rrp-distribution-artifact",
+    "Contract-ID" = "rrp.distribution-artifact",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = "1.0.0-dev",
+    "Technical-Minimum-R-Version" = "4.4.0",
+    "Official-Release-State" = "not_assigned"
+  )
+  if (length(records) != 1L || !identical(names(records[[1L]]), fields)) {
+    rrp_software_abort("invalid_artifact_metadata")
+  }
+  artifact <- records[[1L]]
+  valid <- all(vapply(names(expected), function(field) {
+      identical(unname(artifact[[field]]), unname(expected[[field]]))
+    }, logical(1L))) &&
+    identical(
+      as.character(unname(artifact[c(
+        "Product-ID", "Product-Version", "Source-Revision", "Source-State",
+        "Target-R-Version", "Target-Platform", "Target-Architecture"
+      )])),
+      as.character(unname(manifest[c(
+        "Product-ID", "Product-Version", "Source-Revision", "Source-State",
+        "Target-R-Version", "Target-Platform", "Target-Architecture"
+      )]))
+    ) && identical(
+      as.character(unname(record[c("Platform", "Architecture")])),
+      as.character(unname(artifact[c("Target-Platform", "Target-Architecture")]))
+    ) && isTRUE(tryCatch(
+      numeric_version(record[["Host-R-Version"]]) >=
+        numeric_version(artifact[["Technical-Minimum-R-Version"]]),
+      error = function(condition) FALSE
+    ))
+  if (identical(artifact[["Artifact-State"]], "development")) {
+    valid <- valid && identical(as.character(unname(artifact[c(
+      "Target-Family", "Expected-Archive-Name", "Extraction-Root",
+      "Candidate-Set-ID", "Qualification-Status"
+    )])), c(
+      "development-local", "caller-selected-development-archive",
+      "rrp-1.0.0-dev", "not_applicable", "not_applicable"
+    ))
+  } else if (identical(
+    artifact[["Artifact-State"]], "qualification_candidate"
+  )) {
+    family <- artifact[["Target-Family"]]
+    targets <- list(
+      "macos-arm64" = c("aarch64-apple-darwin20", "aarch64"),
+      "ubuntu-x86_64" = c("x86_64-pc-linux-gnu", "x86_64")
+    )
+    base <- paste0("rrp-1.0.0-candidate-", family)
+    valid <- valid && family %in% names(targets) && identical(
+      as.character(unname(artifact[c("Target-Platform", "Target-Architecture")])),
+      targets[[family]]
+    ) && identical(artifact[["Expected-Archive-Name"]], paste0(base, ".tar")) &&
+      identical(artifact[["Extraction-Root"]], base) &&
+      identical(artifact[["Qualification-Status"]], "pending_external_evidence") &&
+      identical(artifact[["Source-State"]], "clean") &&
+      grepl("^[0-9a-f]{40,64}$", artifact[["Source-Revision"]]) &&
+      identical(
+        artifact[["Candidate-Set-ID"]],
+        rrp_software_candidate_set_id(artifact[["Source-Revision"]])
+      )
+  } else valid <- FALSE
+  if (!isTRUE(valid)) rrp_software_abort("invalid_artifact_metadata")
+  eligibility <- if (identical(
+    record[["Host-R-Version"]], artifact[["Target-R-Version"]]
+  )) "exact_build_target_unqualified" else "eligible_best_effort"
+  list(artifact = artifact, eligibility = eligibility)
+}
+
 rrp_software_activation_record <- function(root, required = FALSE) {
   path <- file.path(root, "active.dcf")
   if (!file.exists(path)) {
@@ -443,12 +535,13 @@ rrp_software_verify_success <- function(path, root, verify_library = TRUE) {
     "Development-Version" = "1.0.0-dev",
     "Resource-Catalog-ID" = "rrp.software-resources"
   )
+  artifact_info <- rrp_software_artifact(path, manifest, record)
   identity_path <- file.path(path, "identity.txt")
   identity_lines <- if (file.exists(identity_path)) {
     readLines(identity_path, warn = FALSE, encoding = "UTF-8")
   } else character()
-  identity_sources <- if (length(identity_lines) > 2L) {
-    identity_lines[-c(1L, length(identity_lines))]
+  identity_sources <- if (length(identity_lines) > 3L) {
+    identity_lines[-c(1L, 2L, length(identity_lines))]
   } else character()
   if (!identical(names(manifest), manifest_fields) ||
       !identical(unname(manifest[names(manifest_expected)]),
@@ -467,8 +560,11 @@ rrp_software_verify_success <- function(path, root, verify_library = TRUE) {
       !identical(manifest[["Inventory-Digest"]],
         rrp_software_sha256(file.path(path, "inventory.dcf"))) ||
       !identical(rrp_software_sha256(identity_path),
-        manifest[["Distribution-ID"]]) || length(identity_lines) < 3L ||
-      !identical(identity_lines[[1L]], "rrp-distribution-identity-v1") ||
+        manifest[["Distribution-ID"]]) || length(identity_lines) < 4L ||
+      !identical(identity_lines[[1L]], "rrp-distribution-identity-v2") ||
+      !identical(identity_lines[[2L]], paste0(
+        "artifact-metadata=", rrp_software_sha256(file.path(path, "artifact.dcf"))
+      )) ||
       any(!grepl("^source:[^=]+=[0-9a-f]{64}$", identity_sources)) ||
       !identical(utils::tail(identity_lines, 1L), paste0(
         "dependency-specification=", rrp_software_sha256(file.path(
@@ -641,6 +737,8 @@ rrp_software_verify_success <- function(path, root, verify_library = TRUE) {
   }
   list(
     record = record,
+    artifact = artifact_info$artifact,
+    eligibility_status = artifact_info$eligibility,
     selector = paste(record[["Product-Version"]], record[["Distribution-ID"]], sep = "/"),
     activation_status = activation_status
   )
@@ -651,6 +749,7 @@ rrp_software_diagnosis_value <- function(verified, status = "ready", checks = NU
   if (is.null(checks)) checks <- list(
     rrp_lifecycle_check("installation_record", "pass"),
     rrp_lifecycle_check("distribution_integrity", "pass"),
+    rrp_lifecycle_check("environment_eligibility", "pass"),
     rrp_lifecycle_check("host_r", "pass"),
     rrp_lifecycle_check("private_library", "pass"),
     rrp_lifecycle_check("software_resources", "pass"),
@@ -662,6 +761,18 @@ rrp_software_diagnosis_value <- function(verified, status = "ready", checks = NU
     product_version = unname(record[["Product-Version"]]),
     installation_id = unname(record[["Installation-ID"]]),
     distribution_id = unname(record[["Distribution-ID"]]),
+    artifact_state = unname(verified$artifact[["Artifact-State"]]),
+    target_family = unname(verified$artifact[["Target-Family"]]),
+    build_target_r_version = unname(verified$artifact[["Target-R-Version"]]),
+    build_target_platform = unname(verified$artifact[["Target-Platform"]]),
+    build_target_architecture =
+      unname(verified$artifact[["Target-Architecture"]]),
+    host_r_version = unname(record[["Host-R-Version"]]),
+    host_platform = unname(record[["Platform"]]),
+    host_architecture = unname(record[["Architecture"]]),
+    eligibility_status = verified$eligibility_status,
+    qualification_status =
+      unname(verified$artifact[["Qualification-Status"]]),
     host_r_status = "ready",
     private_library_status = "ready",
     resource_status = "ready",
@@ -682,6 +793,15 @@ rrp_software_diagnosis_validate_value <- function(value) {
   check_statuses <- strsplit(
     contract[["Check-Status-Values"]], ",", fixed = TRUE
   )[[1L]]
+  artifact_states <- strsplit(
+    contract[["Artifact-State-Values"]], ",", fixed = TRUE
+  )[[1L]]
+  eligibility_statuses <- strsplit(
+    contract[["Eligibility-Status-Values"]], ",", fixed = TRUE
+  )[[1L]]
+  qualification_statuses <- strsplit(
+    contract[["Qualification-Status-Values"]], ",", fixed = TRUE
+  )[[1L]]
   scalar_fields <- setdiff(fields, "checks")
   optional_identity_fields <- c(
     "product_version", "installation_id", "distribution_id"
@@ -695,7 +815,11 @@ rrp_software_diagnosis_validate_value <- function(value) {
     )) && all(vapply(value[optional_identity_fields], function(item) {
       is.character(item) && length(item) == 1L && !is.na(item)
     }, logical(1L))) &&
-    value$software_status %in% statuses && is.list(value$checks) &&
+    value$software_status %in% statuses &&
+    value$artifact_state %in% artifact_states &&
+    value$eligibility_status %in% eligibility_statuses &&
+    value$qualification_status %in% qualification_statuses &&
+    is.list(value$checks) &&
     all(vapply(value$checks, function(check) {
       is.list(check) && identical(
         names(check), c("check_id", "status", "recovery_code")
@@ -998,6 +1122,13 @@ rrp_software_doctor <- function(root, selector, stable_shim = "") {
     value <- list(
       software_status = "blocked", product_id = "readmission-risk-pool-platform",
       product_version = "", installation_id = "", distribution_id = "",
+      artifact_state = "unavailable", target_family = "unavailable",
+      build_target_r_version = "unavailable",
+      build_target_platform = "unavailable",
+      build_target_architecture = "unavailable",
+      host_r_version = "unavailable", host_platform = "unavailable",
+      host_architecture = "unavailable", eligibility_status = "unavailable",
+      qualification_status = "unavailable",
       host_r_status = "blocked", private_library_status = "blocked",
       resource_status = "blocked", launcher_status = "blocked",
       activation_status = "not_selected",
@@ -1021,6 +1152,13 @@ rrp_software_doctor <- function(root, selector, stable_shim = "") {
       software_status = "blocked", product_id = "readmission-risk-pool-platform",
       product_version = strsplit(selected, "/", fixed = TRUE)[[1L]][[1L]],
       installation_id = "", distribution_id = strsplit(selected, "/", fixed = TRUE)[[1L]][[2L]],
+      artifact_state = "unavailable", target_family = "unavailable",
+      build_target_r_version = "unavailable",
+      build_target_platform = "unavailable",
+      build_target_architecture = "unavailable",
+      host_r_version = "unavailable", host_platform = "unavailable",
+      host_architecture = "unavailable", eligibility_status = "unavailable",
+      qualification_status = "unavailable",
       host_r_status = "blocked", private_library_status = "blocked",
       resource_status = "blocked", launcher_status = "blocked",
       activation_status = if (inherits(active, "rrp_software_error")) "invalid" else "not_selected",

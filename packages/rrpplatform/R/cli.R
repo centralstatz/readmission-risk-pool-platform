@@ -1070,7 +1070,10 @@ rrp_cli_software_install_result <- function(parsed, context) {
       "Record-Type", "Installation-ID", "Product-Version", "Distribution-ID",
       "Build-ID", "Dependency-Specification-ID", "Installation-Root",
       "Private-Library", "Resource-Root", "Host-R-Version", "Platform",
-      "Architecture", "Shim-Path", "Reused"
+      "Architecture", "Artifact-State", "Target-Family",
+      "Build-Target-R-Version", "Build-Target-Platform",
+      "Build-Target-Architecture", "Eligibility-Status",
+      "Qualification-Status", "Shim-Path", "Reused"
     )
     if (!identical(names(record), fields) ||
         !identical(unname(record[["Record-Type"]]), "rrp-install-result") ||
@@ -1089,6 +1092,14 @@ rrp_cli_software_install_result <- function(parsed, context) {
       host_r_version = unname(record[["Host-R-Version"]]),
       platform = unname(record[["Platform"]]),
       architecture = unname(record[["Architecture"]]),
+      artifact_state = unname(record[["Artifact-State"]]),
+      target_family = unname(record[["Target-Family"]]),
+      build_target_r_version = unname(record[["Build-Target-R-Version"]]),
+      build_target_platform = unname(record[["Build-Target-Platform"]]),
+      build_target_architecture =
+        unname(record[["Build-Target-Architecture"]]),
+      eligibility_status = unname(record[["Eligibility-Status"]]),
+      qualification_status = unname(record[["Qualification-Status"]]),
       shim_path = unname(record[["Shim-Path"]]),
       reused = identical(unname(record[["Reused"]]), "true")
     )
@@ -1115,6 +1126,9 @@ rrp_cli_value_fields <- function(operation_id) {
       "installation_id", "product_version", "distribution_id", "build_id",
       "dependency_specification_id", "installation_root", "private_library",
       "resource_root", "host_r_version", "platform", "architecture",
+      "artifact_state", "target_family", "build_target_r_version",
+      "build_target_platform", "build_target_architecture",
+      "eligibility_status", "qualification_status",
       "shim_path", "reused"
     ),
     "rrp.software-list" = c(

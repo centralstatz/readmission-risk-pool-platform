@@ -61,6 +61,194 @@ distribution_hash_lines <- function(lines) {
   distribution_sha256(path)
 }
 
+distribution_git_output <- function(repository_root, arguments) {
+  output <- suppressWarnings(system2(
+    "git", c("-C", repository_root, arguments), stdout = TRUE, stderr = TRUE
+  ))
+  status <- attr(output, "status")
+  if (!is.null(status) && status != 0L) return(NULL)
+  output
+}
+
+distribution_source_state <- function(repository_root, require_clean = FALSE) {
+  top <- distribution_git_output(
+    repository_root, c("rev-parse", "--show-toplevel")
+  )
+  revision <- distribution_git_output(repository_root, c("rev-parse", "HEAD"))
+  status <- distribution_git_output(
+    repository_root, c("status", "--porcelain", "--untracked-files=all")
+  )
+  valid <- !is.null(top) && length(top) == 1L && !is.null(revision) &&
+    length(revision) == 1L && !is.null(status) &&
+    identical(
+      normalizePath(top[[1L]], winslash = "/", mustWork = TRUE),
+      normalizePath(repository_root, winslash = "/", mustWork = TRUE)
+    ) && grepl("^[0-9a-f]{40,64}$", revision[[1L]])
+  result <- if (valid) list(
+    revision = revision[[1L]],
+    state = if (length(status)) "modified" else "clean"
+  ) else list(revision = "unavailable", state = "unavailable")
+  if (isTRUE(require_clean) &&
+      (!identical(result$state, "clean") ||
+        !grepl("^[0-9a-f]{40,64}$", result$revision))) {
+    distribution_stop(
+      "candidate_source_state",
+      "A qualification candidate requires one exact clean Git source revision."
+    )
+  }
+  result
+}
+
+distribution_candidate_families <- function() list(
+  "macos-arm64" = c(
+    platform = "aarch64-apple-darwin20", architecture = "aarch64"
+  ),
+  "ubuntu-x86_64" = c(
+    platform = "x86_64-pc-linux-gnu", architecture = "x86_64"
+  )
+)
+
+distribution_candidate_set_id <- function(source_revision) {
+  if (!is.character(source_revision) || length(source_revision) != 1L ||
+      !grepl("^[0-9a-f]{40,64}$", source_revision)) {
+    distribution_stop(
+      "candidate_source_revision", "Candidate-set source revision is invalid."
+    )
+  }
+  distribution_hash_lines(c(
+    "rrp-qualification-candidate-set-v1",
+    "product=readmission-risk-pool-platform",
+    "product-version=1.0.0-dev",
+    paste0("source-revision=", source_revision),
+    "families=macos-arm64,ubuntu-x86_64"
+  ))
+}
+
+distribution_artifact_record <- function(mode, family, target, source) {
+  if (!identical(sort(names(target)), sort(c(
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )))) distribution_stop("artifact_target", "Artifact target is incomplete.")
+  if (identical(mode, "development")) {
+    values <- list(
+      state = "development", family = "development-local",
+      archive = "caller-selected-development-archive",
+      root = "rrp-1.0.0-dev", set_id = "not_applicable",
+      qualification = "not_applicable"
+    )
+  } else if (identical(mode, "qualification_candidate")) {
+    families <- distribution_candidate_families()
+    if (!family %in% names(families) || !identical(
+      unname(target[c("Target-Platform", "Target-Architecture")]),
+      unname(families[[family]])
+    )) distribution_stop(
+      "candidate_target_family",
+      "Qualification candidate family does not match the exact build platform and architecture."
+    )
+    if (!identical(source$state, "clean") ||
+        !grepl("^[0-9a-f]{40,64}$", source$revision)) {
+      distribution_stop(
+        "candidate_source_state",
+        "A qualification candidate requires one exact clean Git source revision."
+      )
+    }
+    base <- paste0("rrp-1.0.0-candidate-", family)
+    values <- list(
+      state = "qualification_candidate", family = family,
+      archive = paste0(base, ".tar"), root = base,
+      set_id = distribution_candidate_set_id(source$revision),
+      qualification = "pending_external_evidence"
+    )
+  } else distribution_stop("artifact_state", "Artifact state is unsupported.")
+  c(
+    "Record-Type" = "rrp-distribution-artifact",
+    "Contract-ID" = "rrp.distribution-artifact",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = "1.0.0-dev",
+    "Artifact-State" = values$state,
+    "Target-Family" = values$family,
+    "Expected-Archive-Name" = values$archive,
+    "Extraction-Root" = values$root,
+    "Candidate-Set-ID" = values$set_id,
+    "Technical-Minimum-R-Version" = "4.4.0",
+    "Qualification-Status" = values$qualification,
+    "Official-Release-State" = "not_assigned",
+    "Source-Revision" = source$revision,
+    "Source-State" = source$state,
+    target
+  )
+}
+
+distribution_validate_artifact_record <- function(record, manifest = NULL) {
+  fields <- c(
+    "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+    "Product-Version", "Artifact-State", "Target-Family",
+    "Expected-Archive-Name", "Extraction-Root", "Candidate-Set-ID",
+    "Technical-Minimum-R-Version", "Qualification-Status",
+    "Official-Release-State", "Source-Revision", "Source-State",
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )
+  expected <- c(
+    "Record-Type" = "rrp-distribution-artifact",
+    "Contract-ID" = "rrp.distribution-artifact",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = "1.0.0-dev",
+    "Technical-Minimum-R-Version" = "4.4.0",
+    "Official-Release-State" = "not_assigned"
+  )
+  valid <- (is.character(record) || is.list(record)) &&
+    identical(names(record), fields) &&
+    all(vapply(record, function(value) {
+      is.character(value) && length(value) == 1L && !is.na(value)
+    }, logical(1L))) &&
+    all(vapply(names(expected), function(field) {
+      identical(unname(record[[field]]), unname(expected[[field]]))
+    }, logical(1L))) &&
+    nzchar(record[["Target-R-Version"]]) &&
+    nzchar(record[["Target-Platform"]]) &&
+    nzchar(record[["Target-Architecture"]])
+  if (!valid) distribution_stop("artifact_metadata", "Artifact metadata is invalid.")
+  if (identical(record[["Artifact-State"]], "development")) {
+    valid <- identical(as.character(unname(record[c(
+      "Target-Family", "Expected-Archive-Name", "Extraction-Root",
+      "Candidate-Set-ID", "Qualification-Status"
+    )])), c(
+      "development-local", "caller-selected-development-archive",
+      "rrp-1.0.0-dev", "not_applicable", "not_applicable"
+    )) && record[["Source-State"]] %in% c("clean", "modified", "unavailable")
+  } else if (identical(record[["Artifact-State"]], "qualification_candidate")) {
+    family <- record[["Target-Family"]]
+    families <- distribution_candidate_families()
+    base <- paste0("rrp-1.0.0-candidate-", family)
+    valid <- family %in% names(families) && identical(
+      as.character(unname(record[c("Target-Platform", "Target-Architecture")])),
+      unname(families[[family]])
+    ) && identical(record[["Expected-Archive-Name"]], paste0(base, ".tar")) &&
+      identical(record[["Extraction-Root"]], base) &&
+      identical(record[["Qualification-Status"]], "pending_external_evidence") &&
+      identical(record[["Source-State"]], "clean") &&
+      grepl("^[0-9a-f]{40,64}$", record[["Source-Revision"]]) &&
+      identical(
+        record[["Candidate-Set-ID"]],
+        distribution_candidate_set_id(record[["Source-Revision"]])
+      )
+  } else valid <- FALSE
+  if (!isTRUE(valid)) distribution_stop(
+    "artifact_metadata", "Artifact state, target, source, or qualification metadata conflicts."
+  )
+  agreement_fields <- c(
+    "Product-ID", "Product-Version", "Source-Revision", "Source-State",
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )
+  if (!is.null(manifest) && any(!vapply(agreement_fields, function(field) {
+    identical(unname(record[[field]]), unname(manifest[[field]]))
+  }, logical(1L)))) distribution_stop(
+    "artifact_metadata", "Artifact metadata disagrees with the distribution manifest."
+  )
+  invisible(record)
+}
+
 distribution_copy <- function(source, destination, executable = FALSE) {
   if (!file.exists(source) || !isTRUE(file_test("-f", source)) || nzchar(Sys.readlink(source))) {
     distribution_stop("source_file", paste("Source is missing, linked, or nonregular:", source))
@@ -477,13 +665,131 @@ distribution_inventory <- function(payload_root, roles, distribution_id) {
 }
 
 distribution_source_identity <- function(authority, resources, repository_root,
-                                         dependency_path) {
+                                         dependency_path, artifact_path) {
   paths <- sort(unique(c(authority$source_paths, resources$source_paths,
                          "distribution/source-inclusion.dcf")), method = "radix")
   facts <- vapply(paths, function(path) paste0(
     "source:", path, "=", distribution_sha256(file.path(repository_root, path))
   ), character(1L))
-  lines <- c("rrp-distribution-identity-v1", facts,
+  lines <- c("rrp-distribution-identity-v2",
+             paste0("artifact-metadata=", distribution_sha256(artifact_path)), facts,
              paste0("dependency-specification=", distribution_sha256(dependency_path)))
   list(id = distribution_hash_lines(lines), lines = lines)
+}
+
+distribution_candidate_evidence <- function(archive, artifact, manifest) {
+  distribution_validate_artifact_record(artifact, manifest)
+  if (!identical(artifact[["Artifact-State"]], "qualification_candidate") ||
+      !file.exists(archive) || !isTRUE(file_test("-f", archive)) ||
+      nzchar(Sys.readlink(archive)) ||
+      !identical(basename(archive), artifact[["Expected-Archive-Name"]])) {
+    distribution_stop(
+      "candidate_evidence", "Candidate archive or artifact metadata is invalid."
+    )
+  }
+  c(
+    "Record-Type" = "rrp-qualification-candidate-evidence",
+    "Contract-ID" = "rrp.qualification-candidate-evidence",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = manifest[["Product-ID"]],
+    "Product-Version" = manifest[["Product-Version"]],
+    "Candidate-Set-ID" = artifact[["Candidate-Set-ID"]],
+    "Target-Family" = artifact[["Target-Family"]],
+    "Archive-Name" = basename(archive),
+    "Extraction-Root" = artifact[["Extraction-Root"]],
+    "Archive-SHA256" = distribution_sha256(archive),
+    "Distribution-ID" = manifest[["Distribution-ID"]],
+    "Build-ID" = manifest[["Build-ID"]],
+    "Dependency-Specification-ID" = manifest[["Dependency-Specification-ID"]],
+    "Source-Revision" = manifest[["Source-Revision"]],
+    "Target-R-Version" = manifest[["Target-R-Version"]],
+    "Target-Platform" = manifest[["Target-Platform"]],
+    "Target-Architecture" = manifest[["Target-Architecture"]],
+    "Qualification-Status" = "pending_external_evidence"
+  )
+}
+
+distribution_candidate_set_evidence <- function(candidate_records) {
+  fields <- c(
+    "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+    "Product-Version", "Candidate-Set-ID", "Target-Family", "Archive-Name",
+    "Extraction-Root", "Archive-SHA256", "Distribution-ID", "Build-ID",
+    "Dependency-Specification-ID", "Source-Revision", "Target-R-Version",
+    "Target-Platform", "Target-Architecture", "Qualification-Status"
+  )
+  families <- names(distribution_candidate_families())
+  valid <- is.list(candidate_records) && length(candidate_records) == 2L &&
+    all(vapply(candidate_records, function(record) {
+      (is.character(record) || is.list(record)) &&
+        identical(names(record), fields) &&
+        all(vapply(record, function(value) {
+          is.character(value) && length(value) == 1L && !is.na(value)
+        }, logical(1L))) &&
+        all(vapply(names(c(
+          "Record-Type" = "rrp-qualification-candidate-evidence",
+          "Contract-ID" = "rrp.qualification-candidate-evidence",
+          "Contract-Version" = "0.1.0",
+          "Product-ID" = "readmission-risk-pool-platform",
+          "Product-Version" = "1.0.0-dev",
+          "Qualification-Status" = "pending_external_evidence"
+        )), function(field) identical(
+          as.character(record[[field]]),
+          c(
+            "Record-Type" = "rrp-qualification-candidate-evidence",
+            "Contract-ID" = "rrp.qualification-candidate-evidence",
+            "Contract-Version" = "0.1.0",
+            "Product-ID" = "readmission-risk-pool-platform",
+            "Product-Version" = "1.0.0-dev",
+            "Qualification-Status" = "pending_external_evidence"
+          )[[field]]
+        ), logical(1L))) && all(grepl("^[0-9a-f]{64}$", record[c(
+          "Candidate-Set-ID", "Archive-SHA256", "Distribution-ID", "Build-ID",
+          "Dependency-Specification-ID"
+        )])) && grepl("^[0-9a-f]{40,64}$", record[["Source-Revision"]])
+    }, logical(1L)))
+  if (!valid) distribution_stop(
+    "candidate_set_evidence", "Candidate-set evidence is incomplete or invalid."
+  )
+  found <- vapply(candidate_records, `[[`, character(1L), "Target-Family")
+  shared <- c("Candidate-Set-ID", "Source-Revision")
+  mapped <- all(vapply(candidate_records, function(record) {
+    family <- record[["Target-Family"]]
+    if (!family %in% families) return(FALSE)
+    base <- paste0("rrp-1.0.0-candidate-", family)
+    identical(record[["Archive-Name"]], paste0(base, ".tar")) &&
+      identical(record[["Extraction-Root"]], base) &&
+      identical(
+        as.character(unname(record[c(
+          "Target-Platform", "Target-Architecture"
+        )])),
+        unname(distribution_candidate_families()[[family]])
+      ) && nzchar(record[["Target-R-Version"]]) &&
+      identical(
+        record[["Candidate-Set-ID"]],
+        distribution_candidate_set_id(record[["Source-Revision"]])
+      )
+  }, logical(1L)))
+  if (!identical(sort(found, method = "radix"), sort(families, method = "radix")) ||
+      !mapped ||
+      any(vapply(shared, function(field) {
+        length(unique(vapply(candidate_records, `[[`, character(1L), field))) != 1L
+      }, logical(1L))) || anyDuplicated(vapply(
+        candidate_records, `[[`, character(1L), "Archive-Name"
+      ))) distribution_stop(
+    "candidate_set_evidence",
+    "Candidate artifacts do not form one source-consistent closed target set."
+  )
+  ordered <- candidate_records[match(families, found)]
+  header <- c(
+    "Record-Type" = "rrp-qualification-candidate-set",
+    "Contract-ID" = "rrp.qualification-candidate-set-evidence",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = "1.0.0-dev",
+    "Candidate-Set-ID" = ordered[[1L]][["Candidate-Set-ID"]],
+    "Source-Revision" = ordered[[1L]][["Source-Revision"]],
+    "Artifact-Count" = "2",
+    "Qualification-Status" = "pending_external_evidence"
+  )
+  c(list(header), ordered)
 }

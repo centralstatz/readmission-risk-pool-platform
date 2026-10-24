@@ -1404,6 +1404,51 @@ lifecycle_contract_resources <- function() list(
       "Additional-Records" = "prohibited"
     )
   ),
+  distribution_artifact = list(
+    id = "rrp.contract.distribution-artifact",
+    source_path = "resources/contracts/lifecycle/distribution-artifact.dcf",
+    installed_path = "resources/contracts/lifecycle/distribution-artifact.dcf",
+    document = c(
+      lifecycle_contract_header(
+        "distribution-artifact-contract", "rrp.distribution-artifact"
+      ),
+      "Artifact-Record-Type" = "rrp-distribution-artifact",
+      "Artifact-Fields" = paste(c(
+        "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+        "Product-Version", "Artifact-State", "Target-Family",
+        "Expected-Archive-Name", "Extraction-Root", "Candidate-Set-ID",
+        "Technical-Minimum-R-Version", "Qualification-Status",
+        "Official-Release-State", "Source-Revision", "Source-State",
+        "Target-R-Version", "Target-Platform", "Target-Architecture"
+      ), collapse = ","),
+      "Artifact-State-Values" = "development,qualification_candidate",
+      "Qualification-Candidate-Families" =
+        "macos-arm64,ubuntu-x86_64",
+      "Development-Target-Family" = "development-local",
+      "Technical-Minimum-R-Version" = "4.4.0",
+      "Candidate-Archive-Pattern" =
+        "^rrp-1[.]0[.]0-candidate-(macos-arm64|ubuntu-x86_64)[.]tar$",
+      "Candidate-Extraction-Root-Pattern" =
+        "^rrp-1[.]0[.]0-candidate-(macos-arm64|ubuntu-x86_64)$",
+      "Candidate-Set-ID-Role" =
+        "clean_source_revision_and_closed_family_contract_identity",
+      "Candidate-Source-State" = "clean",
+      "Qualification-Status-Values" =
+        "not_applicable,pending_external_evidence",
+      "Formal-Qualification-Authority" = "external_candidate_set_evidence",
+      "Official-Release-State-Values" = "not_assigned",
+      "Official-Release-Authority" = "unavailable_before_stage_14",
+      "Build-Target-Role" = "exact_provenance_not_support_claim",
+      "Technical-Eligibility" =
+        "host_r_at_least_minimum_and_exact_platform_architecture",
+      "Best-Effort-Meaning" = "eligible_unverified_not_formally_supported",
+      "Repository-And-Dependency-Compatibility" =
+        "exact_specification_integrity_and_private_realization",
+      "Same-Distribution-Multiple-R-One-Root" = "unsupported",
+      "Unknown-Fields" = "prohibited",
+      "Additional-Records" = "prohibited"
+    )
+  ),
   dependency_specification = list(
     id = "rrp.contract.dependency-specification",
     source_path = "resources/contracts/lifecycle/dependency-specification.dcf",
@@ -1515,10 +1560,22 @@ lifecycle_contract_resources <- function() list(
       "Operation-IDs" = "rrp.verify-installed-software,rrp.software-doctor",
       "Value-Fields" = paste(c(
         "software_status", "product_id", "product_version", "installation_id",
-        "distribution_id", "host_r_status", "private_library_status",
+        "distribution_id", "artifact_state", "target_family",
+        "build_target_r_version", "build_target_platform",
+        "build_target_architecture", "host_r_version", "host_platform",
+        "host_architecture", "eligibility_status", "qualification_status",
+        "host_r_status", "private_library_status",
         "resource_status", "launcher_status", "activation_status", "checks"
       ), collapse = ","),
       "Software-Status-Values" = "ready,ready_with_warnings,blocked",
+      "Artifact-State-Values" =
+        "development,qualification_candidate,unavailable",
+      "Eligibility-Status-Values" = paste0(
+        "exact_build_target_unqualified,eligible_best_effort,unavailable"
+      ),
+      "Qualification-Status-Values" =
+        "not_applicable,pending_external_evidence,unavailable",
+      "Qualification-Claim" = "external_evidence_only",
       "Check-Fields" = "check_id,status,recovery_code",
       "Check-Status-Values" = "pass,warning,failure",
       "Recovery-Code-Pattern" = "^[a-z][a-z0-9_]*$",
@@ -2726,12 +2783,12 @@ validate_resource_authority <- function(root, projection = FALSE) {
     "rrp.asset.supplied-application-css"
   )
   resource_require(
-    length(actual_ids) == 75L && identical(
+    length(actual_ids) == 76L && identical(
       sort(actual_ids, method = "radix"),
       sort(expected_ids, method = "radix")
     ),
     "resource_inventory",
-    "The software resource inventory must contain exactly 75 known entries."
+    "The software resource inventory must contain exactly 76 known entries."
   )
   validate_software_contract_resources(authority, root, projection)
   validate_software_template_resources(authority, root, projection)
@@ -5495,7 +5552,7 @@ validate_packages <- function() {
     "projection, explicit-root installed-package access, common result/diagnostic ",
     "canonical, five-resource runtime, four-resource logical-history, ",
     "three-resource state/adapter/backup, four-resource logical-product, and ",
-    "one-resource product-materialization and seven-resource lifecycle/result ",
+    "one-resource product-materialization and eight-resource lifecycle/result ",
     "contract relationships, dependency-light ",
     "logical history records/port, explicit project-state initialize/inspect, ",
     "private transactional DuckDB roundtrip/reopen/interruption evidence, ",

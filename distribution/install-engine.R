@@ -490,17 +490,48 @@ rrp_install_hash_lines <- function(lines) {
   rrp_sha256(path)
 }
 
-rrp_install_target <- function(manifest, dependencies, host, repository) {
+rrp_install_version_at_least <- function(version, minimum) {
+  isTRUE(tryCatch(
+    numeric_version(version) >= numeric_version(minimum),
+    error = function(condition) FALSE
+  ))
+}
+
+rrp_install_target <- function(manifest, artifact, dependencies, host, repository) {
   header <- dependencies[[1L]]
-  fields <- c(
-    "Target-R-Version" = "version", "Target-Platform" = "platform",
-    "Target-Architecture" = "architecture"
+  target_fields <- c(
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
   )
-  for (field in names(fields)) {
-    if (!identical(header[[field]], unname(host[[fields[[field]]]])) ||
-        !identical(manifest[[field]], header[[field]])) {
-      rrp_install_fail("incompatible_host_r", "Host R does not match the distribution target.")
-    }
+  if (!identical(
+    unname(manifest[target_fields]), unname(header[target_fields])
+  ) || !identical(
+    unname(artifact[target_fields]), unname(manifest[target_fields])
+  )) rrp_install_fail(
+    "distribution_target_mismatch",
+    "Distribution target provenance is internally inconsistent."
+  )
+  if (!identical(host[["platform"]], artifact[["Target-Platform"]])) {
+    rrp_install_fail(
+      "incompatible_host_platform",
+      "Host platform is ineligible for this target-specific distribution."
+    )
+  }
+  if (!identical(host[["architecture"]], artifact[["Target-Architecture"]])) {
+    rrp_install_fail(
+      "incompatible_host_architecture",
+      "Host architecture is ineligible for this target-specific distribution."
+    )
+  }
+  if (!rrp_install_version_at_least(
+    host[["version"]], artifact[["Technical-Minimum-R-Version"]]
+  )) {
+    rrp_install_fail(
+      "incompatible_host_r",
+      paste0(
+        "Host R is below the technical minimum R ",
+        artifact[["Technical-Minimum-R-Version"]], "."
+      )
+    )
   }
   repositories <- unique(vapply(
     dependencies[-1L], `[[`, character(1L), "Repository"
@@ -512,7 +543,11 @@ rrp_install_target <- function(manifest, dependencies, host, repository) {
       "Configured repository does not match the dependency specification."
     )
   }
-  invisible(TRUE)
+  if (identical(host[["version"]], artifact[["Target-R-Version"]])) {
+    "exact_build_target_unqualified"
+  } else {
+    "eligible_best_effort"
+  }
 }
 
 rrp_install_utf8_locale <- function() {
@@ -770,7 +805,9 @@ rrp_install_existing <- function(
   record
 }
 
-rrp_install_result <- function(record, destination, shim_path, reused) list(
+rrp_install_result <- function(
+  record, destination, shim_path, reused, artifact, eligibility
+) list(
   installation_id = unname(record[["Installation-ID"]]),
   product_version = unname(record[["Product-Version"]]),
   distribution_id = unname(record[["Distribution-ID"]]),
@@ -782,6 +819,13 @@ rrp_install_result <- function(record, destination, shim_path, reused) list(
   host_r_version = unname(record[["Host-R-Version"]]),
   platform = unname(record[["Platform"]]),
   architecture = unname(record[["Architecture"]]),
+  artifact_state = unname(artifact[["Artifact-State"]]),
+  target_family = unname(artifact[["Target-Family"]]),
+  build_target_r_version = unname(artifact[["Target-R-Version"]]),
+  build_target_platform = unname(artifact[["Target-Platform"]]),
+  build_target_architecture = unname(artifact[["Target-Architecture"]]),
+  eligibility_status = eligibility,
+  qualification_status = unname(artifact[["Qualification-Status"]]),
   shim_path = shim_path,
   reused = isTRUE(reused)
 )
@@ -835,8 +879,11 @@ rrp_install_distribution <- function(
   progress("Verify distribution")
   verified <- rrp_verify_distribution(distribution_root)
   manifest <- verified$manifest
+  artifact <- verified$artifact
   dependencies <- verified$dependencies
-  rrp_install_target(manifest, dependencies, host, repository)
+  eligibility <- rrp_install_target(
+    manifest, artifact, dependencies, host, repository
+  )
 
   root <- rrp_install_normalize_root(installation_root)
   rrp_install_create_directory(root, recursive = TRUE)
@@ -882,7 +929,9 @@ rrp_install_distribution <- function(
     shim <- rrp_install_provision_shim(
       destination, root, executable_root
     )
-    return(rrp_install_result(record, destination, shim, TRUE))
+    return(rrp_install_result(
+      record, destination, shim, TRUE, artifact, eligibility
+    ))
   }
 
   stage <- tempfile(".stage-", tmpdir = staging)
@@ -969,7 +1018,7 @@ rrp_install_distribution <- function(
     unlink(destination, recursive = TRUE, force = TRUE)
     stop(condition)
   })
-  rrp_install_result(record, destination, shim, FALSE)
+  rrp_install_result(record, destination, shim, FALSE, artifact, eligibility)
 }
 
 rrp_install_engine_arguments <- function(arguments) {
@@ -1027,6 +1076,13 @@ rrp_install_engine_main <- function(arguments = commandArgs(trailingOnly = TRUE)
     "Host-R-Version" = result$host_r_version,
     "Platform" = result$platform,
     "Architecture" = result$architecture,
+    "Artifact-State" = result$artifact_state,
+    "Target-Family" = result$target_family,
+    "Build-Target-R-Version" = result$build_target_r_version,
+    "Build-Target-Platform" = result$build_target_platform,
+    "Build-Target-Architecture" = result$build_target_architecture,
+    "Eligibility-Status" = result$eligibility_status,
+    "Qualification-Status" = result$qualification_status,
     "Shim-Path" = result$shim_path,
     "Reused" = if (result$reused) "true" else "false"
   )

@@ -9,6 +9,29 @@ RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
   Rscript --vanilla tools/build-distribution.R /absolute/output/rrp-1.0.0-dev.tar
 ```
 
+Stage 13 adds a separate unpublished qualification-candidate mode. It accepts
+only the two declared target families, requires an exact clean Git source
+revision, requires the family-specific archive name, and leaves the ordinary
+development-build form above available:
+
+```sh
+RRP_CRAN_REPOSITORY=https://cloud.r-project.org \
+  Rscript --vanilla tools/build-distribution.R \
+  --qualification-candidate macos-arm64 \
+  /absolute/output/rrp-1.0.0-candidate-macos-arm64.tar
+```
+
+Use `ubuntu-x86_64` and
+`rrp-1.0.0-candidate-ubuntu-x86_64.tar` on the exact Linux target. The builder
+rejects a family that disagrees with `R.version$platform` or
+`R.version$arch`. It creates the single extraction root named by the archive
+without `.tar` and an adjacent `.evidence.dcf` sidecar binding the archive
+SHA-256, distribution/build/dependency identities, source revision, target,
+and candidate-set identity. These are unpublished qualification inputs, not
+official `1.0.0` releases or evidence that either environment is supported.
+The two sidecars can form one candidate set only when they name both closed
+families and the same clean source revision and candidate-set identity.
+
 The build requires R 4.4 or later, the packages needed by the two internal RRP
 packages, `renv` for normalized installed-package integrity records, and either
 `sha256sum` or `shasum`. A concrete HTTPS CRAN repository must be supplied in
@@ -56,13 +79,18 @@ installation claim is made.
 
 The operation stages positive package projections, builds both package source
 archives without installing them, projects the exact resource catalog, writes
-the dependency specification, and constructs the payload. Its standalone
+the dependency specification and closed `artifact.dcf`, and constructs the
+payload. Artifact metadata distinguishes a development build from an
+unpublished qualification candidate, records exact build provenance and the
+R 4.4.0 technical minimum, and leaves formal qualification to external
+candidate-set evidence. Its standalone
 verifier runs before and after deterministic tar creation and extraction. Only
 then is the completed archive renamed to the requested destination.
 
 `Distribution-ID` is SHA-256 over the payload's `identity.txt`, whose canonical
-lines record normalized declared source/resource digests plus the dependency-
-specification digest. The standalone verifier recomputes that identity. It excludes time,
+lines record artifact metadata, normalized declared source/resource digests,
+and the dependency-specification digest. The standalone verifier recomputes
+that identity. It excludes time,
 temporary paths, usernames, checkout location, traversal order, and Git state.
 The concrete inventory separately authenticates every payload file, including
 package archive bytes; `Build-ID` and `Built-At` describe only that build

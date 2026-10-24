@@ -170,6 +170,7 @@ expected_files <- c(
   "resources/contracts/lifecycle/activation-record.dcf",
   "resources/contracts/lifecycle/cli-result-json.dcf",
   "resources/contracts/lifecycle/dependency-specification.dcf",
+  "resources/contracts/lifecycle/distribution-artifact.dcf",
   "resources/contracts/lifecycle/distribution-manifest.dcf",
   "resources/contracts/lifecycle/installation-record.dcf",
   "resources/contracts/lifecycle/installed-diagnosis.dcf",

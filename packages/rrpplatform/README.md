@@ -77,6 +77,13 @@ supervised application, both doctors, controlled incompatibility, compatible
 selection, rollback, and uninstall; it adds no package interface. Migration,
 scheduling, and daemon behavior remain unimplemented.
 
+Increment 13.A adds the eighth lifecycle authority for development versus
+unpublished qualification-candidate identity, exact build provenance, bounded
+R >= 4.4.0 same-platform/architecture eligibility, and external qualification
+status. Existing software verification, doctor, installation, and standalone-
+application lock derivation expose those distinctions without claiming a
+qualified support cell.
+
 Its current callable interfaces are:
 
 - `rrp_cli_dispatch(...)` validates one explicitly supplied installed software

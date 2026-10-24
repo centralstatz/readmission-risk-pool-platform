@@ -72,11 +72,20 @@ run_builder <- function(
   repository = Sys.getenv(
     "RRP_CRAN_REPOSITORY", unset = "https://cloud.r-project.org"
   ),
-  provenance = Sys.getenv("RRP_DEPENDENCY_PROVENANCE", unset = "")
+  provenance = Sys.getenv("RRP_DEPENDENCY_PROVENANCE", unset = ""),
+  source_root = repository_root,
+  candidate_family = NULL
 ) {
+  arguments <- c(
+    "--vanilla", file.path(source_root, "tools", "build-distribution.R")
+  )
+  if (!is.null(candidate_family)) arguments <- c(
+    arguments, "--qualification-candidate", candidate_family
+  )
+  arguments <- c(arguments, output)
   result <- suppressWarnings(system2(
     file.path(R.home("bin"), "Rscript"),
-    c("--vanilla", file.path(repository_root, "tools", "build-distribution.R"), output),
+    arguments,
     stdout = TRUE, stderr = TRUE,
     env = c(paste0("RRP_CRAN_REPOSITORY=", repository),
             paste0("RRP_DEPENDENCY_PROVENANCE=", provenance),
@@ -94,9 +103,9 @@ validate_distribution <- function() {
 
   authority <- distribution_source_authority(repository_root)
   resources <- distribution_resource_authority(repository_root)
-  require_true(length(authority$packages) == 2L && length(resources$entries) == 75L,
+  require_true(length(authority$packages) == 2L && length(resources$entries) == 76L,
                "Positive source/resource authorities are incomplete.")
-  cat("PASS positive source inclusion and 75-resource closure\n")
+  cat("PASS positive source inclusion and 76-resource closure\n")
 
   source_fixture <- file.path(work, "source-fixture")
   dir.create(source_fixture)
@@ -132,6 +141,169 @@ validate_distribution <- function() {
   expect_failure("duplicate source destination", distribution_source_authority(duplicate_authority),
                  "destinations conflict")
   cat("PASS missing/undeclared/excluded/unsafe/duplicate source-authority evidence\n")
+
+  target <- c(
+    "Target-R-Version" = as.character(getRversion()),
+    "Target-Platform" = R.version$platform,
+    "Target-Architecture" = R.version$arch
+  )
+  development_artifact <- distribution_artifact_record(
+    "development", "development-local", target,
+    list(revision = "unavailable", state = "unavailable")
+  )
+  distribution_validate_artifact_record(development_artifact)
+  expect_failure(
+    "reserved official release state",
+    distribution_artifact_record(
+      "official_release", "", target,
+      list(revision = paste(rep("a", 40L), collapse = ""), state = "clean")
+    ),
+    "Artifact state is unsupported"
+  )
+  families <- distribution_candidate_families()
+  host_family <- names(families)[vapply(families, function(value) {
+    identical(
+      unname(target[c("Target-Platform", "Target-Architecture")]),
+      unname(value)
+    )
+  }, logical(1L))]
+  require_true(length(host_family) == 1L,
+    "Distribution validation host is outside the accepted candidate families.")
+
+  clean_source <- file.path(work, "clean-candidate-source")
+  dir.create(clean_source)
+  source_entries <- list.files(
+    repository_root, all.files = TRUE, full.names = TRUE, no.. = TRUE
+  )
+  source_entries <- source_entries[basename(source_entries) != ".git"]
+  require_true(all(file.copy(
+    source_entries, clean_source, recursive = TRUE,
+    copy.mode = TRUE, copy.date = FALSE
+  )), "Could not construct clean candidate-source fixture.")
+  git_run <- function(arguments) {
+    result <- suppressWarnings(system2(
+      "git", c("-C", clean_source, arguments), stdout = TRUE, stderr = TRUE
+    ))
+    status <- attr(result, "status")
+    require_true(is.null(status) || status == 0L, paste(result, collapse = "\n"))
+    result
+  }
+  git_run(c("init", "-q"))
+  git_run(c("add", "--all"))
+  git_run(c(
+    "-c", "user.name=RRP-Validation", "-c",
+    "user.email=validation@example.invalid", "commit", "-q", "-m",
+    "candidate-contract-fixture"
+  ))
+  candidate_directory <- file.path(work, "candidate-output")
+  dir.create(candidate_directory)
+  candidate_name <- paste0(
+    "rrp-1.0.0-candidate-", host_family, ".tar"
+  )
+  candidate_archive <- file.path(candidate_directory, candidate_name)
+  candidate_build <- run_builder(
+    candidate_archive, source_root = clean_source,
+    candidate_family = host_family
+  )
+  require_true(
+    candidate_build$status == 0L, paste(candidate_build$output, collapse = "\n")
+  )
+  candidate_evidence_path <- paste0(candidate_archive, ".evidence.dcf")
+  require_true(file.exists(candidate_evidence_path),
+    "Qualification candidate evidence sidecar is absent.")
+  candidate_extract <- file.path(work, "candidate-extract")
+  dir.create(candidate_extract)
+  utils::untar(candidate_archive, exdir = candidate_extract)
+  candidate_root <- file.path(
+    candidate_extract, sub("[.]tar$", "", candidate_name)
+  )
+  candidate_verified <- rrp_verify_distribution(candidate_root)
+  candidate_evidence <- distribution_read_dcf(candidate_evidence_path)[[1L]]
+  require_true(
+    identical(candidate_verified$artifact[["Artifact-State"]],
+      "qualification_candidate") &&
+      identical(candidate_verified$artifact[["Target-Family"]], host_family) &&
+      identical(candidate_verified$artifact[["Qualification-Status"]],
+        "pending_external_evidence") &&
+      identical(candidate_evidence[["Archive-SHA256"]],
+        distribution_sha256(candidate_archive)) &&
+      identical(candidate_evidence[["Distribution-ID"]],
+        candidate_verified$manifest[["Distribution-ID"]]),
+    "Qualification candidate identity or archive evidence is inconsistent."
+  )
+  other_family <- setdiff(names(families), host_family)
+  other_evidence <- candidate_evidence
+  other_base <- paste0("rrp-1.0.0-candidate-", other_family)
+  other_evidence[["Target-Family"]] <- other_family
+  other_evidence[["Archive-Name"]] <- paste0(other_base, ".tar")
+  other_evidence[["Extraction-Root"]] <- other_base
+  other_evidence[["Archive-SHA256"]] <- paste(rep("b", 64L), collapse = "")
+  other_evidence[["Distribution-ID"]] <- paste(rep("c", 64L), collapse = "")
+  other_evidence[["Build-ID"]] <- paste(rep("d", 64L), collapse = "")
+  other_evidence[["Dependency-Specification-ID"]] <-
+    paste(rep("e", 64L), collapse = "")
+  other_evidence[["Target-Platform"]] <- families[[other_family]][["platform"]]
+  other_evidence[["Target-Architecture"]] <-
+    families[[other_family]][["architecture"]]
+  candidate_set <- distribution_candidate_set_evidence(list(
+    candidate_evidence, other_evidence
+  ))
+  require_true(
+    length(candidate_set) == 3L &&
+      identical(candidate_set[[1L]][["Artifact-Count"]], "2") &&
+      identical(candidate_set[[1L]][["Qualification-Status"]],
+        "pending_external_evidence"),
+    "Cross-target candidate-set evidence is invalid."
+  )
+  mismatched_set <- list(candidate_evidence, other_evidence)
+  mismatched_set[[2L]][["Source-Revision"]] <- paste(rep("f", 40L), collapse = "")
+  expect_failure(
+    "candidate-set source mismatch",
+    distribution_candidate_set_evidence(mismatched_set),
+    "do not form one source-consistent"
+  )
+  mismatched_target <- list(candidate_evidence, other_evidence)
+  mismatched_target[[2L]][["Target-Platform"]] <- "wrong-platform"
+  expect_failure(
+    "candidate-set target mismatch",
+    distribution_candidate_set_evidence(mismatched_target),
+    "do not form one source-consistent"
+  )
+  mismatched_name <- list(candidate_evidence, other_evidence)
+  mismatched_name[[2L]][["Archive-Name"]] <- "wrong-candidate.tar"
+  expect_failure(
+    "candidate-set archive-name mismatch",
+    distribution_candidate_set_evidence(mismatched_name),
+    "do not form one source-consistent"
+  )
+  mismatched_identity <- list(candidate_evidence, other_evidence)
+  for (i in seq_along(mismatched_identity)) {
+    mismatched_identity[[i]][["Candidate-Set-ID"]] <-
+      paste(rep("9", 64L), collapse = "")
+  }
+  expect_failure(
+    "candidate-set derived identity mismatch",
+    distribution_candidate_set_evidence(mismatched_identity),
+    "do not form one source-consistent"
+  )
+  write("dirty", file.path(clean_source, "README.md"), append = TRUE)
+  dirty_directory <- file.path(work, "dirty-candidate-output")
+  dir.create(dirty_directory)
+  dirty_archive <- file.path(dirty_directory, candidate_name)
+  dirty_build <- run_builder(
+    dirty_archive, source_root = clean_source,
+    candidate_family = host_family
+  )
+  require_true(
+    dirty_build$status != 0L && !file.exists(dirty_archive) &&
+      !file.exists(paste0(dirty_archive, ".evidence.dcf")) &&
+      grepl("candidate_source_state", paste(dirty_build$output, collapse = " ")),
+    "Dirty candidate source did not fail closed before output."
+  )
+  cat(paste0(
+    "PASS clean unpublished candidate build, exact family/root/name, archive ",
+    "evidence, cross-target set contract, reserved release state, and dirty-source rejection\n"
+  ))
 
   first <- run_builder(first_archive)
   second <- run_builder(second_archive)
@@ -320,7 +492,8 @@ validate_distribution <- function() {
   reversed_resources$source_paths <- rev(reversed_resources$source_paths)
   reordered_identity <- distribution_source_identity(
     reversed_authority, reversed_resources, repository_root,
-    file.path(root, "dependencies", "dependencies.dcf")
+    file.path(root, "dependencies", "dependencies.dcf"),
+    file.path(root, "artifact.dcf")
   )$id
   require_true(identical(verified$manifest[["Distribution-ID"]],
                          verified_second$manifest[["Distribution-ID"]]),

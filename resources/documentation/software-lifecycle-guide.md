@@ -24,6 +24,11 @@ host R, exact private library/resource paths, dependency specification,
 distribution manifest digest, and installation occurrence time.
 It also binds the digest of the exact path-sorted private-library regular-file
 inventory while preserving the established installation-identity derivation.
+The separate artifact record retains exact build provenance, target family,
+technical eligibility minimum, and external qualification state. Verification
+and doctor therefore report build target and actual host separately, classify
+exact-target versus eligible best-effort realization, and never infer formal
+qualification from a successful install.
 
 Every version owns a private runtime package library. Ambient user and site
 libraries cannot satisfy the dependency specification, and the runtime library
@@ -67,6 +72,11 @@ closure and complete realized-library inventory, installed resources, host R,
 and version launcher.
 `doctor` returns the same bounded identity plus readiness checks, warnings,
 and recovery codes; it diagnoses but does not repair or activate.
+
+For the current unpublished product, `not_applicable` identifies development
+build qualification and `pending_external_evidence` identifies a candidate
+whose formal environment matrix has not yet been accepted. Formal support is
+external candidate-set evidence, not a mutable local installation property.
 
 Installation/reinstallation, verified listing, explicit verification and
 doctor, activation/rollback, and exact uninstall perform complete library

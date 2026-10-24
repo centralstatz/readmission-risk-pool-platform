@@ -174,19 +174,61 @@ rrp_app_write_presentation <- function(model, staging) {
   rrp_app_sha256(file.path(staging, "rrp-data", "presentation.dcf"))
 }
 
+rrp_app_dependency_context <- function(header, artifact, installation_record,
+                                       host) {
+  valid <- identical(header[["Record-Type"]], "rrp-dependency-specification") &&
+    identical(header[["Target-R-Version"]], artifact[["Target-R-Version"]]) &&
+    identical(header[["Target-Platform"]], artifact[["Target-Platform"]]) &&
+    identical(header[["Target-Architecture"]], artifact[["Target-Architecture"]]) &&
+    identical(artifact[["Target-Platform"]], host[["platform"]]) &&
+    identical(artifact[["Target-Architecture"]], host[["architecture"]]) &&
+    identical(installation_record[["Host-R-Version"]], host[["version"]]) &&
+    identical(installation_record[["Platform"]], host[["platform"]]) &&
+    identical(installation_record[["Architecture"]], host[["architecture"]]) &&
+    isTRUE(tryCatch(
+      numeric_version(host[["version"]]) >=
+        numeric_version(artifact[["Technical-Minimum-R-Version"]]),
+      error = function(e) FALSE
+    ))
+  if (!valid) rrp_app_init_abort("application_dependency_provenance_invalid")
+  invisible(list(
+    build_target_r_version = artifact[["Target-R-Version"]],
+    host_r_version = host[["version"]],
+    eligibility_status = if (identical(
+      artifact[["Target-R-Version"]], host[["version"]]
+    )) "exact_build_target_unqualified" else "eligible_best_effort"
+  ))
+}
+
 rrp_app_dependency_lock <- function(staging, catalog) {
   roots <- c("bslib", "plotly", "reactable", "shiny")
+  manifest_records <- tryCatch(rrp_resource_read_dcf(
+    file.path(catalog$software_root, "manifest.dcf"),
+    "application_dependency_provenance_invalid", "Distribution manifest"),
+    error = function(e) rrp_app_init_abort("application_dependency_provenance_invalid"))
+  if (length(manifest_records) != 1L) {
+    rrp_app_init_abort("application_dependency_provenance_invalid")
+  }
+  installation_record <- tryCatch(
+    rrp_software_record(catalog$software_root),
+    error = function(e) rrp_app_init_abort("application_dependency_provenance_invalid")
+  )
+  artifact_info <- tryCatch(rrp_software_artifact(
+    catalog$software_root, manifest_records[[1L]], installation_record
+  ), error = function(e) rrp_app_init_abort("application_dependency_provenance_invalid"))
+  artifact <- artifact_info$artifact
   specification <- tryCatch(rrp_resource_read_dcf(
     file.path(catalog$software_root, "dependencies", "dependencies.dcf"),
     "application_dependency_provenance_invalid", "Dependency specification"),
     error = function(e) rrp_app_init_abort("application_dependency_provenance_invalid"))
   header <- specification[[1L]]
-  if (!identical(header[["Record-Type"]], "rrp-dependency-specification") ||
-      !identical(header[["Target-R-Version"]], as.character(getRversion())) ||
-      !identical(header[["Target-Platform"]], R.version$platform) ||
-      !identical(header[["Target-Architecture"]], R.version$arch)) {
-    rrp_app_init_abort("application_dependency_provenance_invalid")
-  }
+  rrp_app_dependency_context(
+    header, artifact, installation_record,
+    list(
+      version = as.character(getRversion()), platform = R.version$platform,
+      architecture = R.version$arch
+    )
+  )
   packages <- Filter(function(record) identical(record[["Record-Type"]], "rrp-dependency"), specification)
   by_name <- split(packages, vapply(packages, `[[`, character(1L), "Package"))
   requirements <- function(package) {

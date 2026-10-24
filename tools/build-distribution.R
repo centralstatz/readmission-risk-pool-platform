@@ -7,13 +7,22 @@ repository_root <- normalizePath(file.path(dirname(script_path), ".."), mustWork
 source(file.path(repository_root, "tools", "distribution-lib.R"), local = TRUE)
 
 build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
-  if (length(arguments) != 1L || !nzchar(arguments[[1L]])) {
+  candidate <- length(arguments) == 3L &&
+    identical(arguments[[1L]], "--qualification-candidate")
+  development <- length(arguments) == 1L
+  if ((!candidate && !development) || any(!nzchar(arguments))) {
     distribution_stop(
       "output_destination",
-      "Usage: Rscript --vanilla tools/build-distribution.R /absolute/nonexistent/output.tar"
+      paste(
+        "Usage: Rscript --vanilla tools/build-distribution.R",
+        "[--qualification-candidate macos-arm64|ubuntu-x86_64]",
+        "/absolute/nonexistent/output.tar"
+      )
     )
   }
-  output <- arguments[[1L]]
+  mode <- if (candidate) "qualification_candidate" else "development"
+  family <- if (candidate) arguments[[2L]] else "development-local"
+  output <- if (candidate) arguments[[3L]] else arguments[[1L]]
   if (!grepl("^[A-Za-z]:|^/", output) || !grepl("[.]tar$", output)) {
     distribution_stop("output_destination", "Output must be one explicit absolute .tar path.")
   }
@@ -25,13 +34,31 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
   if (file.exists(output) || dir.exists(output)) {
     distribution_stop("output_conflict", "Output already exists and will not be replaced.")
   }
+  evidence_output <- if (candidate) paste0(output, ".evidence.dcf") else ""
+  expected_archive <- if (candidate) {
+    paste0("rrp-1.0.0-candidate-", family, ".tar")
+  } else ""
+  if (candidate && (!family %in% names(distribution_candidate_families()) ||
+      !identical(basename(output), expected_archive) ||
+      file.exists(evidence_output) || dir.exists(evidence_output))) {
+    distribution_stop(
+      "candidate_output",
+      "Qualification candidate output must use its exact absent family archive name and absent evidence sidecar."
+    )
+  }
+
+  source_state <- distribution_source_state(
+    repository_root, require_clean = candidate
+  )
 
   stage <- tempfile(".rrp-distribution-stage-", tmpdir = output_parent)
   dir.create(stage)
   on.exit(unlink(stage, recursive = TRUE, force = TRUE), add = TRUE)
   package_build_root <- file.path(stage, "package-build")
   dir.create(package_build_root)
-  payload_name <- "rrp-1.0.0-dev"
+  payload_name <- if (candidate) {
+    paste0("rrp-1.0.0-candidate-", family)
+  } else "rrp-1.0.0-dev"
   payload <- file.path(stage, payload_name)
   dir.create(payload)
 
@@ -43,6 +70,11 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
   dependencies <- distribution_dependency_specification(repository_root)
   dependency_path <- file.path(payload, "dependencies", "dependencies.dcf")
   distribution_write_dcf(dependencies$records, dependency_path)
+  artifact <- distribution_artifact_record(
+    mode, family, dependencies$target, source_state
+  )
+  artifact_path <- file.path(payload, "artifact.dcf")
+  distribution_write_dcf(list(artifact), artifact_path)
 
   cat("[3/9] Build exact internal package artifacts\n")
   package_artifacts <- list()
@@ -62,10 +94,10 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
     roles[[path]] <<- role
   }
   for (package in sort(names(package_artifacts), method = "radix")) {
-    artifact <- package_artifacts[[package]]
-    destination <- file.path(payload, "packages", artifact$filename)
-    distribution_copy(artifact$path, destination)
-    add_role(paste0("packages/", artifact$filename), "internal-package")
+    package_artifact <- package_artifacts[[package]]
+    destination <- file.path(payload, "packages", package_artifact$filename)
+    distribution_copy(package_artifact$path, destination)
+    add_role(paste0("packages/", package_artifact$filename), "internal-package")
   }
 
   cat("[4/9] Project installed resources and direct payload\n")
@@ -83,10 +115,11 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
     add_role(destination, record[["Role"]])
   }
   add_role("dependencies/dependencies.dcf", "dependency-specification")
+  add_role("artifact.dcf", "artifact-metadata")
 
   cat("[5/9] Generate normalized identity, manifest, and inventory\n")
   identity <- distribution_source_identity(
-    authority, resources, repository_root, dependency_path
+    authority, resources, repository_root, dependency_path, artifact_path
   )
   distribution_id <- identity$id
   writeLines(identity$lines, file.path(payload, "identity.txt"), useBytes = TRUE)
@@ -96,14 +129,6 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
   distribution_write_dcf(inventory, inventory_path)
   built_at <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   build_id <- distribution_hash_lines(c(distribution_id, built_at, as.character(Sys.getpid())))
-  source_revision <- tryCatch(
-    trimws(system2("git", c("-C", repository_root, "rev-parse", "HEAD"), stdout = TRUE, stderr = FALSE)[[1L]]),
-    error = function(e) "unavailable"
-  )
-  source_status <- tryCatch(
-    if (length(system2("git", c("-C", repository_root, "status", "--porcelain"), stdout = TRUE, stderr = FALSE))) "modified" else "clean",
-    error = function(e) "unavailable"
-  )
   manifest <- c(
     "Record-Type" = "rrp-distribution",
     "Contract-ID" = "rrp.distribution-manifest",
@@ -117,8 +142,8 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
     "Dependency-Specification-ID" = dependencies$id,
     "Resource-Catalog-ID" = resources$header[["Catalog-ID"]],
     "Inventory-Digest" = distribution_sha256(inventory_path),
-    "Source-Revision" = source_revision,
-    "Source-State" = source_status,
+    "Source-Revision" = source_state$revision,
+    "Source-State" = source_state$state,
     "Built-At" = built_at
   )
   distribution_write_dcf(list(manifest), file.path(payload, "manifest.dcf"))
@@ -133,7 +158,9 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
   }
 
   cat("[7/9] Create archive\n")
-  staged_archive <- file.path(stage, "completed.tar")
+  staged_archive <- file.path(
+    stage, if (candidate) expected_archive else "completed.tar"
+  )
   old <- setwd(stage)
   on.exit(setwd(old), add = TRUE)
   utils::tar(staged_archive, files = payload_name, compression = "none", tar = "")
@@ -152,11 +179,29 @@ build_distribution <- function(arguments = commandArgs(trailingOnly = TRUE)) {
     distribution_stop("archive_verification", paste(result, collapse = "\n"))
   }
 
+  staged_evidence <- ""
+  if (candidate) {
+    staged_evidence <- file.path(stage, "candidate-evidence.dcf")
+    distribution_write_dcf(list(distribution_candidate_evidence(
+      staged_archive, artifact, manifest
+    )), staged_evidence)
+  }
+
   cat("[9/9] Promote completed archive\n")
   if (file.exists(output) || !isTRUE(file.rename(staged_archive, output))) {
     distribution_stop("promotion", "Completed archive could not be atomically promoted.")
   }
-  cat(sprintf("PASS distribution build\nOutput: %s\nDistribution-ID: %s\n", output, distribution_id))
+  if (candidate && (file.exists(evidence_output) ||
+      !isTRUE(file.rename(staged_evidence, evidence_output)))) {
+    unlink(output, force = TRUE)
+    distribution_stop("promotion", "Candidate evidence could not be atomically promoted.")
+  }
+  cat(sprintf(
+    "PASS distribution build\nOutput: %s\nArtifact-State: %s\nTarget-Family: %s\nDistribution-ID: %s\n%s",
+    output, artifact[["Artifact-State"]], artifact[["Target-Family"]],
+    distribution_id,
+    if (candidate) paste0("Candidate-Evidence: ", evidence_output, "\n") else "\n"
+  ))
   invisible(list(output = output, distribution_id = distribution_id,
                  dependency_count = length(dependencies$packages)))
 }

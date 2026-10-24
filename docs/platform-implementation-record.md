@@ -8575,3 +8575,113 @@ authorized.
 
 **Governance state:** **detailed Stage 13 plan accepted; detailed Increment
 13.A planning authorized; implementation unauthorized.**
+
+## Increment 13.A implementation — 2026-10-24
+
+The human maintainer separately authorized implementation of Increment 13.A —
+Qualification-candidate and environment-eligibility foundation — after
+accepting the detailed Stage 13 plan. This entry records implementation
+evidence, not human acceptance of the increment or qualification of an
+environment.
+
+The installed resource catalog now contains 76 resources and eight
+lifecycle/result authorities. New authority
+`rrp.distribution-artifact@0.1.0` gives each distribution a closed
+`artifact.dcf` record that keeps product/development identity, artifact state,
+target family, exact build target, minimum technical R version, source state,
+candidate-set identity, qualification status, and reserved official-release
+state distinct. Ordinary development builds remain `rrp-1.0.0-dev` builds.
+The separate unpublished qualification-candidate builder accepts only the
+closed `macos-arm64` and `ubuntu-x86_64` families, uses exact archive and root
+names `rrp-1.0.0-candidate-<family>.tar` and
+`rrp-1.0.0-candidate-<family>`, and requires one clean exact Git source
+revision. Candidate identity is content-bound through the distribution
+identity and closed inventory; an adjacent evidence record binds the archive
+SHA-256, source, target, distribution/build/dependency identities, and pending
+external qualification state. Candidate-set evidence requires exactly one
+artifact from each family and one shared clean source/candidate-set identity.
+No official `1.0.0` release identity or final candidate set was created.
+
+The installer now evaluates actual hosts against the artifact contract rather
+than treating exact build R as a blanket compatibility boundary. Exact
+platform and architecture, R >= 4.4.0, the configured repository, exact
+dependency versions and integrity, private-library isolation, fresh-process
+verification, and atomic promotion remain mandatory. An exact build target is
+reported as `exact_build_target_unqualified`; a different eligible R version
+on the same target is `eligible_best_effort`. Both remain externally
+unqualified until separate evidence exists. Installation evidence continues to
+record the exact actual-host R, platform, architecture, and executable without
+rewriting build provenance. Failed or conflicting attempts cannot promote,
+activate, replace an installation, or mutate a project, and the implementation
+still deliberately does not support same-distribution/multiple-R coexistence
+inside one software root.
+
+Strict software verification and doctor now report artifact state, target
+family, exact build target, actual installation host, technical eligibility,
+and external qualification as separate facts while preserving complete
+manifest, dependency, private-library, resource, launcher, and installation-
+identity verification. Standalone dependency-lock derivation likewise retains
+the distribution build target but derives the executable runtime requirement
+from the verified actual eligible host. Exact repository, closure, package
+versions, integrity, platform/architecture, customization, managed refresh,
+and frozen-copy behavior remain unchanged.
+
+Historical reconnaissance inspected immutable `v0.1.0` revision
+`7a3cca66db2cdd6f7796918282db294bbb7eb4e8`, especially
+`operations/lib/release-preparation-operation.R` and
+`docs/operations/release-preparation.md`. The clean committed-source check,
+content/checksum evidence, and explicit candidate-versus-publication boundary
+were retained as useful invariants under the current distribution owners. The
+old YAML release authority, `renv`-bound preparation, generated Hospital
+repository, repository-root operations, and publication workflow were rejected
+because they do not fit the clean RRP 1.0 architecture or the 13.A boundary.
+
+Implementation and reconciliation corrected four bounded defects found by the
+new evidence: DCF records read as named lists rather than only in-memory
+character vectors; a package-build loop variable shadowed candidate artifact
+metadata before sidecar creation; candidate-set comparisons retained DCF
+attributes; and one package operation-result fixture still expected 38 rather
+than 39 resources after adding the authority. The package validator's
+descriptive lifecycle count was also
+updated from seven to eight. Final reconciliation made the authority's allowed
+record value `not_assigned` distinct from the policy that official release
+authority is unavailable before Stage 14, and made candidate-set assembly
+rederive each family's archive/root/target mapping and set identity from its
+source revision. Focused adversaries reject target, archive-name, source, and
+derived-set-identity disagreement. No analytical, canonical, provider,
+product, application, CLI-command, deployment, or release behavior was added.
+
+Validation completed on macOS arm64 with R 4.4.1:
+
+- `Rscript --vanilla tools/validate-packages.R` passed the 76-resource
+  catalog and adversaries, both package builds, isolated install/load, both
+  `R CMD check --no-manual` runs with `Status: OK`, and the installed project,
+  provider, history, product, standalone-refresh, and application regressions;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-distribution.R` passed development and disposable clean-source
+  candidate construction, standalone archive verification, exact family/name/
+  root and sidecar evidence, source-consistent two-family set semantics,
+  official-release-state separation, dirty-source rejection, and existing
+  integrity/adversarial checks;
+- `RRP_CRAN_REPOSITORY=https://cloud.r-project.org Rscript --vanilla
+  tools/validate-installation.R` passed exact-target and bounded best-effort
+  policy, older-R/platform/architecture rejection, private restoration and the
+  5,111-file integrity inventory, atomic lifecycle safeguards, actual installed
+  application/HTTP execution, ordinary and exact 72-package standalone
+  execution, managed refresh/frozen-copy preservation, rollback, and uninstall;
+  and
+- `Rscript --vanilla tools/validate-repository.R` and `git diff --check`
+  passed the final repository and patch hygiene checks.
+
+The different eligible R-version cases are contract-level simulations; no
+second R runtime was available for actual cross-version execution. This local
+macOS evidence does not qualify macOS arm64 or Ubuntu x86_64 as formal support
+cells, and no Ubuntu candidate was built on an actual Ubuntu host. Later
+increments retain the ordinary installation/quickstart work (13.B), independent
+adopter proof (13.C), and exact candidate-first cross-cell qualification and
+Stage 13 closeout (13.D).
+
+**Implementation state:** **Increment 13.A implemented and locally validated —
+awaiting human acceptance.** Stage 13 remains in progress and unaccepted.
+Increment 13.B and Stage 14 remain unauthorized. No commit, tag, final
+candidate set, official release, publication, or remote mutation occurred.

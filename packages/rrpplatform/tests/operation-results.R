@@ -506,7 +506,7 @@ rrp_test_cases <- list(
         identical(result$value, list(
           catalog_id = "rrp.software-resources",
           catalog_version = "0.1.0",
-          resource_count = 38L
+          resource_count = 39L
         )),
         identical(result$diagnostics, list()),
         identical(rrp_operation_succeeded(result), TRUE)

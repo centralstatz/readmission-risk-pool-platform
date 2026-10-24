@@ -253,6 +253,65 @@ validate_installation <- function() {
   host_rscript <- normalizePath(
     file.path(dirname(host_r), "Rscript"), winslash = "/", mustWork = TRUE
   )
+  exact_host <- c(
+    version = verified$manifest[["Target-R-Version"]],
+    platform = verified$manifest[["Target-Platform"]],
+    architecture = verified$manifest[["Target-Architecture"]],
+    executable = host_r
+  )
+  require_true(identical(
+    rrp_install_target(
+      verified$manifest, verified$artifact, verified$dependencies,
+      exact_host, repository
+    ),
+    "exact_build_target_unqualified"
+  ), "Exact build target was not classified as unqualified exact-target use.")
+  varied_host <- exact_host
+  varied_host[["version"]] <- "4.99.0"
+  provenance_before <- unname(verified$manifest[c(
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )])
+  require_true(identical(
+    rrp_install_target(
+      verified$manifest, verified$artifact, verified$dependencies,
+      varied_host, repository
+    ),
+    "eligible_best_effort"
+  ) && identical(provenance_before, unname(verified$manifest[c(
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )])), "Eligible R variation changed build provenance or classification.")
+  old_host <- exact_host
+  old_host[["version"]] <- "4.3.99"
+  expect_failure(
+    "below-minimum host R",
+    rrp_install_target(
+      verified$manifest, verified$artifact, verified$dependencies,
+      old_host, repository
+    ),
+    "below the technical minimum"
+  )
+  wrong_platform <- exact_host
+  wrong_platform[["platform"]] <- "wrong-platform"
+  expect_failure(
+    "cross-platform host",
+    rrp_install_target(
+      verified$manifest, verified$artifact, verified$dependencies,
+      wrong_platform, repository
+    ),
+    "incompatible_host_platform"
+  )
+  wrong_architecture <- exact_host
+  wrong_architecture[["architecture"]] <- "wrong-architecture"
+  expect_failure(
+    "cross-architecture host",
+    rrp_install_target(
+      verified$manifest, verified$artifact, verified$dependencies,
+      wrong_architecture, repository
+    ),
+    "incompatible_host_architecture"
+  )
+  cat("PASS exact-target and bounded best-effort environment-eligibility contract\n")
+
   incompatible_host <- file.path(work, "incompatible-host-r")
   writeLines(c(
     "#!/bin/sh",
@@ -265,7 +324,7 @@ validate_installation <- function() {
       distribution_root, repository, incompatible_host,
       file.path(work, "incompatible-host-root")
     ),
-    "Host R does not match the distribution target"
+    "incompatible_host_platform"
   )
   project <- file.path(work, "independent-project")
   dir.create(project)

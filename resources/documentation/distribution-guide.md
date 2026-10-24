@@ -7,6 +7,18 @@ projection, license and product information, a target-keyed third-party
 dependency specification, a manifest, a SHA-256 inventory, and its own
 normalized identity evidence and standalone verifier.
 
+Every payload also contains closed `artifact.dcf` metadata. It distinguishes
+an ordinary development build from an unpublished qualification candidate,
+records its exact build R/platform/architecture, technical R minimum, target
+family, extraction convention, source state, and external qualification
+status. Candidate archive names are
+`rrp-1.0.0-candidate-macos-arm64.tar` and
+`rrp-1.0.0-candidate-ubuntu-x86_64.tar`; their filenames help selection but do
+not establish identity or integrity. A qualification candidate requires a
+clean exact source revision and remains pending external qualification until
+the complete environment-specific evidence is accepted. No current candidate
+metadata assigns official `1.0.0` release state.
+
 After extracting an archive, verify it before any later installation work:
 
 ```sh
@@ -14,7 +26,7 @@ Rscript --vanilla verify-distribution.R .
 ```
 
 Verification checks exact file closure, roles and SHA-256 digests, package and
-resource identities, dependency metadata, safe paths, and required legal and
+resource identities, artifact and dependency metadata, safe paths, and required legal and
 human documentation. It requires R 4.4 or later and either `sha256sum` or
 `shasum`; it does not install, repair, or fetch anything.
 
@@ -30,6 +42,13 @@ Rscript --vanilla install.R --repository HTTPS_URL
 The bootstrap and `rrp software install PATH --repository HTTPS_URL` share one
 installation engine. Both create an immutable per-user version with its own
 private library and do not activate it.
+
+The build target is provenance, not an unconditional support claim. The
+installer requires R 4.4.0 or later and exact agreement with the artifact's
+platform and architecture. A different eligible R version may attempt exact
+restoration and fresh-process verification as best-effort operation; success
+does not make that host formally qualified. Repository, dependency versions,
+integrity, and private-library isolation remain exact.
 
 The distribution contains no Git metadata, development tests or maintainer
 scripts, hospital project, patient data, project state, products, deployment

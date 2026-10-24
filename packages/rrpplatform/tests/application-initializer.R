@@ -3,6 +3,73 @@ library(rrpplatform)
 internal <- function(name) get(name, envir = asNamespace("rrpplatform"), inherits = FALSE)
 destination <- internal("rrp_app_destination")
 parse_cli <- internal("rrp_cli_parse")
+dependency_context <- internal("rrp_app_dependency_context")
+
+target_r <- as.character(getRversion())
+header <- c(
+  "Record-Type" = "rrp-dependency-specification",
+  "Target-R-Version" = target_r,
+  "Target-Platform" = R.version$platform,
+  "Target-Architecture" = R.version$arch
+)
+artifact <- c(
+  "Target-R-Version" = target_r,
+  "Target-Platform" = R.version$platform,
+  "Target-Architecture" = R.version$arch,
+  "Technical-Minimum-R-Version" = "4.4.0"
+)
+host <- list(
+  version = target_r, platform = R.version$platform,
+  architecture = R.version$arch
+)
+installation <- c(
+  "Host-R-Version" = host$version, "Platform" = host$platform,
+  "Architecture" = host$architecture
+)
+exact_context <- dependency_context(header, artifact, installation, host)
+stopifnot(
+  identical(exact_context$build_target_r_version, target_r),
+  identical(exact_context$host_r_version, target_r),
+  identical(exact_context$eligibility_status,
+    "exact_build_target_unqualified")
+)
+varied_host <- host
+varied_host$version <- "4.99.0"
+varied_installation <- installation
+varied_installation[["Host-R-Version"]] <- varied_host$version
+varied_context <- dependency_context(
+  header, artifact, varied_installation, varied_host
+)
+stopifnot(
+  identical(varied_context$build_target_r_version, target_r),
+  identical(varied_context$host_r_version, "4.99.0"),
+  identical(varied_context$eligibility_status, "eligible_best_effort")
+)
+old_host <- varied_host
+old_host$version <- "4.3.99"
+old_installation <- varied_installation
+old_installation[["Host-R-Version"]] <- old_host$version
+old_failure <- tryCatch(
+  dependency_context(header, artifact, old_installation, old_host),
+  error = identity
+)
+stopifnot(
+  inherits(old_failure, "rrp_application_initialization_error"),
+  identical(old_failure$code, "application_dependency_provenance_invalid")
+)
+wrong_platform <- varied_host
+wrong_platform$platform <- "wrong-platform"
+wrong_installation <- varied_installation
+wrong_installation[["Platform"]] <- wrong_platform$platform
+platform_failure <- tryCatch(
+  dependency_context(header, artifact, wrong_installation, wrong_platform),
+  error = identity
+)
+stopifnot(
+  inherits(platform_failure, "rrp_application_initialization_error"),
+  identical(platform_failure$code,
+    "application_dependency_provenance_invalid")
+)
 
 stopifnot(identical(as.list(formals(rrp_initialize_app)), as.list(alist(
   software_catalog = , project_root = , scope_id = , history_cutoff = ,

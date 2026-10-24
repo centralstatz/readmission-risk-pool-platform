@@ -56,6 +56,98 @@ rrp_sha256 <- function(path) {
   digest
 }
 
+rrp_hash_lines <- function(lines) {
+  path <- tempfile("rrp-verification-hash-")
+  on.exit(unlink(path, force = TRUE), add = TRUE)
+  writeLines(enc2utf8(lines), path, useBytes = TRUE)
+  rrp_sha256(path)
+}
+
+rrp_candidate_set_id <- function(source_revision) rrp_hash_lines(c(
+  "rrp-qualification-candidate-set-v1",
+  "product=readmission-risk-pool-platform",
+  "product-version=1.0.0-dev",
+  paste0("source-revision=", source_revision),
+  "families=macos-arm64,ubuntu-x86_64"
+))
+
+rrp_verify_artifact_record <- function(artifact, manifest) {
+  fields <- c(
+    "Record-Type", "Contract-ID", "Contract-Version", "Product-ID",
+    "Product-Version", "Artifact-State", "Target-Family",
+    "Expected-Archive-Name", "Extraction-Root", "Candidate-Set-ID",
+    "Technical-Minimum-R-Version", "Qualification-Status",
+    "Official-Release-State", "Source-Revision", "Source-State",
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )
+  rrp_require_fields(artifact, fields, "artifact_metadata")
+  expected <- c(
+    "Record-Type" = "rrp-distribution-artifact",
+    "Contract-ID" = "rrp.distribution-artifact",
+    "Contract-Version" = "0.1.0",
+    "Product-ID" = "readmission-risk-pool-platform",
+    "Product-Version" = "1.0.0-dev",
+    "Technical-Minimum-R-Version" = "4.4.0",
+    "Official-Release-State" = "not_assigned"
+  )
+  mismatched <- names(expected)[vapply(names(expected), function(field) {
+      !identical(unname(artifact[[field]]), unname(expected[[field]]))
+    }, logical(1L))]
+  if (length(mismatched)) {
+    rrp_distribution_fail(
+      "artifact_metadata", paste(
+        "Artifact identity or fixed policy is invalid:",
+        paste(mismatched, collapse = ",")
+      )
+    )
+  }
+  agreement_fields <- c(
+    "Product-ID", "Product-Version", "Source-Revision", "Source-State",
+    "Target-R-Version", "Target-Platform", "Target-Architecture"
+  )
+  if (any(!vapply(agreement_fields, function(field) {
+    identical(unname(artifact[[field]]), unname(manifest[[field]]))
+  }, logical(1L)))) rrp_distribution_fail(
+    "artifact_metadata", "Artifact metadata disagrees with build provenance."
+  )
+  valid <- TRUE
+  if (identical(artifact[["Artifact-State"]], "development")) {
+    valid <- valid && identical(as.character(unname(artifact[c(
+      "Target-Family", "Expected-Archive-Name", "Extraction-Root",
+      "Candidate-Set-ID", "Qualification-Status"
+    )])), c(
+      "development-local", "caller-selected-development-archive",
+      "rrp-1.0.0-dev", "not_applicable", "not_applicable"
+    )) && artifact[["Source-State"]] %in% c("clean", "modified", "unavailable")
+  } else if (identical(
+    artifact[["Artifact-State"]], "qualification_candidate"
+  )) {
+    family <- artifact[["Target-Family"]]
+    targets <- list(
+      "macos-arm64" = c("aarch64-apple-darwin20", "aarch64"),
+      "ubuntu-x86_64" = c("x86_64-pc-linux-gnu", "x86_64")
+    )
+    base <- paste0("rrp-1.0.0-candidate-", family)
+    valid <- valid && family %in% names(targets) && identical(
+      as.character(unname(artifact[c("Target-Platform", "Target-Architecture")])),
+      targets[[family]]
+    ) && identical(artifact[["Expected-Archive-Name"]], paste0(base, ".tar")) &&
+      identical(artifact[["Extraction-Root"]], base) &&
+      identical(artifact[["Qualification-Status"]], "pending_external_evidence") &&
+      identical(artifact[["Source-State"]], "clean") &&
+      grepl("^[0-9a-f]{40,64}$", artifact[["Source-Revision"]]) &&
+      identical(
+        artifact[["Candidate-Set-ID"]],
+        rrp_candidate_set_id(artifact[["Source-Revision"]])
+      )
+  } else valid <- FALSE
+  if (!isTRUE(valid)) rrp_distribution_fail(
+    "artifact_metadata",
+    "Artifact state, target, source, qualification, or manifest agreement is invalid."
+  )
+  invisible(artifact)
+}
+
 rrp_tree_entries <- function(root) {
   records <- list()
   visit <- function(directory, relative = "") {
@@ -156,6 +248,15 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("manifest", "Manifest target, source, or build metadata is invalid.")
   }
 
+  artifact_records <- rrp_read_dcf(
+    file.path(root, "artifact.dcf"), "artifact_metadata"
+  )
+  if (length(artifact_records) != 1L) rrp_distribution_fail(
+    "artifact_metadata", "Artifact metadata must contain exactly one record."
+  )
+  artifact <- artifact_records[[1L]]
+  rrp_verify_artifact_record(artifact, manifest)
+
   inventory_path <- file.path(root, "inventory.dcf")
   if (!identical(rrp_sha256(inventory_path), manifest[["Inventory-Digest"]])) {
     rrp_distribution_fail("inventory_digest", "Inventory digest does not match the manifest.")
@@ -220,7 +321,7 @@ rrp_verify_distribution <- function(root) {
   required_role_counts <- c(
     "internal-package" = 2L, "version-launcher" = 1L,
     "resource-catalog" = 1L, "dependency-specification" = 1L,
-    "distribution-identity" = 1L,
+    "distribution-identity" = 1L, "artifact-metadata" = 1L,
     "standalone-verifier" = 1L, "license" = 1L, "notice" = 1L,
     "version-information" = 1L, "installation-engine" = 1L,
     "bootstrap-installer" = 1L, "stable-shim" = 1L
@@ -240,13 +341,16 @@ rrp_verify_distribution <- function(root) {
   )
   identity_path <- file.path(root, "identity.txt")
   identity_lines <- readLines(identity_path, warn = FALSE, encoding = "UTF-8")
-  identity_sources <- if (length(identity_lines) > 2L) {
-    identity_lines[-c(1L, length(identity_lines))]
+  identity_sources <- if (length(identity_lines) > 3L) {
+    identity_lines[-c(1L, 2L, length(identity_lines))]
   } else character()
   identity_source_paths <- sub("^source:([^=]+)=.*$", "\\1", identity_sources)
   if (!identical(rrp_sha256(identity_path), manifest[["Distribution-ID"]]) ||
-      length(identity_lines) < 3L ||
-      !identical(identity_lines[[1L]], "rrp-distribution-identity-v1") ||
+      length(identity_lines) < 4L ||
+      !identical(identity_lines[[1L]], "rrp-distribution-identity-v2") ||
+      !identical(identity_lines[[2L]], paste0(
+        "artifact-metadata=", rrp_sha256(file.path(root, "artifact.dcf"))
+      )) ||
       !identical(
         tail(identity_lines, 1L),
         paste0("dependency-specification=", rrp_sha256(file.path(
@@ -336,7 +440,7 @@ rrp_verify_distribution <- function(root) {
     rrp_distribution_fail("resource_catalog", "Projected resource catalog is invalid.")
   }
   resources <- catalog_records[-1L]
-  if (length(resources) != 75L) {
+  if (length(resources) != 76L) {
     rrp_distribution_fail("resource_catalog", "Projected resource count is unsupported.")
   }
   resource_fields <- c(
@@ -437,7 +541,10 @@ rrp_verify_distribution <- function(root) {
       ) %in% version_lines)) {
     rrp_distribution_fail("legal_identity", "Legal or product-version content is inconsistent.")
   }
-  invisible(list(manifest = manifest, dependencies = dependencies, inventory = inventory))
+  invisible(list(
+    manifest = manifest, artifact = artifact, dependencies = dependencies,
+    inventory = inventory
+  ))
 }
 
 rrp_distribution_main <- function(arguments = commandArgs(trailingOnly = TRUE)) {
