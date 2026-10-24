@@ -30,9 +30,9 @@ under hosted Ubuntu/R 4.4. The high-level Stage 13 and 14 roadmap has been
 reconciled with the six maintainer-approved recommendations in the 2026-10-23
 remaining-roadmap readiness assessment and returned for separate review. The
 human maintainer accepted that high-level roadmap on 2026-10-23 and authorized
-the first-pass detailed planning draft below. The draft awaits separate human
-review and approval; Stage 13 implementation has not begun and is not
-authorized.
+the first-pass detailed planning below. The detailed Stage 13 plan was formally
+accepted by the human maintainer on 2026-10-24. Detailed Increment 13.A planning
+is authorized; Stage 13 implementation has not begun and is not authorized.
 
 This plan explains how the clean Readmission Risk Pool (RRP) 1.0.0 target will
 be constructed. It derives from [Platform True North](platform-true-north.md)
@@ -121,9 +121,10 @@ Increment 12.B are formally accepted at exact revision
 qualification. Increment 12.C and Stage 12 are formally accepted at exact
 revision `49e96471da63d07c5872a28e80f8216cd0bdef72` after revision-matched
 hosted qualification. The remaining two-stage roadmap was accepted at high
-level on 2026-10-23. The first-pass detailed Stage 13 plan below is now drafted
-for separate human review; it is not accepted implementation authority, and
-Stage 13 has not begun. After a stage is implemented:
+level on 2026-10-23. The detailed Stage 13 plan below was formally accepted on
+2026-10-24. It authorizes detailed Increment 13.A planning only; Stage 13 has
+not begun, and implementation remains unauthorized. After a stage is
+implemented:
 
 1. validate its stated exit claim;
 2. reconcile the implementation with True North and the architecture;
@@ -9643,9 +9644,10 @@ release and public publication.
 
 ## Stage 13 — Clean-system and adopter acceptance
 
-**Planning status:** high-level roadmap formally accepted on 2026-10-23. The
-first-pass detailed plan below is a draft awaiting human review and approval.
-Stage 13 implementation has not begun and is not authorized.
+**Planning status:** high-level roadmap formally accepted on 2026-10-23;
+detailed Stage 13 plan formally accepted on 2026-10-24. Detailed Increment
+13.A planning is authorized. Stage 13 implementation has not begun and is not
+authorized.
 
 ### Objective and responsibilities
 
@@ -9815,13 +9817,12 @@ matrix, minimum technical prerequisites, eligible best-effort boundary,
 presentation, candidate naming, and public quickstart form. Those are planning
 responsibilities, not decisions made by this high-level reconciliation.
 
-### Detailed Stage 13 implementation plan — draft
+### Detailed Stage 13 implementation plan — accepted
 
-**Status:** **Draft — first-pass detailed planning; awaiting human review and
-approval.** This draft is not implementation authority. Approval of the
-high-level roadmap authorized this planning work only; it did not start Stage
-13, authorize an increment, construct a candidate, or authorize Stage 14 or any
-remote mutation.
+**Status:** **Accepted — human-approved on 2026-10-24.** This plan authorizes
+detailed Increment 13.A planning only; it is not implementation authority. It
+does not start Stage 13, authorize Increment 13.A implementation, construct a
+candidate, or authorize Stage 14 or any remote mutation.
 
 #### Repository-grounded starting state
 
@@ -10279,11 +10280,11 @@ Stage 13 may be presented for final human acceptance only when:
 
 #### Governance gates
 
-- **Gate A — Detailed-plan approval:** the human maintainer must approve or
-  revise this first-pass plan, including its proposed compatibility policy,
-  matrix-freeze process, candidate convention, installer default, quickstart
-  endpoint, and four-increment sequence. Until then no Stage 13 implementation
-  is authorized.
+- **Gate A — Detailed-plan approval:** satisfied by human approval on
+  2026-10-24, including the compatibility policy, matrix-freeze process,
+  candidate convention, installer default, quickstart endpoint, and four-
+  increment sequence. This approval authorizes detailed Increment 13.A
+  planning only; no Stage 13 implementation is authorized.
 - **Gate B — Increment authorization and acceptance:** each increment requires
   a separate implementation request, proportional local evidence, exact-
   revision hosted/cross-platform evidence where its claim requires it, record
@@ -10295,10 +10296,10 @@ Stage 13 may be presented for final human acceptance only when:
   closure. Only explicit Stage 13 acceptance authorizes detailed Stage 14
   planning; it does not itself authorize publication.
 
-#### Decisions requiring approval with this draft
+#### Accepted planning defaults
 
-Unless revised by the maintainer, approval of the detailed plan would accept
-these planning defaults:
+Human approval of the detailed plan on 2026-10-24 accepted these ten planning
+defaults:
 
 1. two separate `.tar` candidate families, `macos-arm64` and
    `ubuntu-x86_64`, with visibly unpublished working names and one clean source
